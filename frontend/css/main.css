@@ -1,0 +1,227 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap");
+html {
+  font-size: 13.5px;
+}
+@media (max-width: 1536px) {
+  html {
+    font-size: 12.5px;
+  }
+}
+@media (max-width: 1280px) {
+  html {
+    font-size: 11.5px;
+  }
+}
+@media (max-width: 1024px) {
+  html {
+    font-size: 10.5px;
+  }
+}
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f9fafb;
+  color: #111827;
+}
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+body::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+body {
+  min-width: 320px;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+th {
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #4b5563;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 2px solid #e5e7eb;
+  white-space: nowrap;
+  background-color: #f3f4f6;
+}
+
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+}
+
+select.table-select,
+input.table-select,
+input[type=time].table-select,
+input[type=date].table-select {
+  background-color: transparent;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 100%;
+  color: #111827;
+  font-weight: 600;
+}
+select.table-select:hover,
+input.table-select:hover,
+input[type=time].table-select:hover,
+input[type=date].table-select:hover {
+  border-color: #d1d5db;
+  background-color: #f9fafb;
+}
+select.table-select:focus,
+input.table-select:focus,
+input[type=time].table-select:focus,
+input[type=date].table-select:focus {
+  border-color: #dc2626;
+  background-color: #fff;
+  cursor: text;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+select.card-select,
+input.card-select {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+select.card-select:focus,
+input.card-select:focus {
+  border-color: #dc2626;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+input[type=checkbox] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: #dc2626;
+  cursor: pointer;
+}
+
+#toast {
+  position: fixed;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  background-color: #ffffff;
+  border-left-width: 4px;
+  color: #111827;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateX(150%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slanted-logo-bg {
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+}
+
+.auth-hero {
+  background-color: #0b0f19;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  position: relative;
+  border-right: 4px solid #dc2626;
+}
+.auth-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.login-input {
+  background: #f9fafb !important;
+  border: 1px solid #d1d5db !important;
+  color: #111827 !important;
+  transition: all 0.2s ease !important;
+}
+.login-input::placeholder {
+  color: #9ca3af !important;
+}
+.login-input:focus {
+  background: #ffffff !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.login-btn {
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid #111827;
+  transition: all 0.2s ease;
+}
+.login-btn:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.2);
+}
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,19 @@
+@import "../abstracts/variables";
+
+#toast {
+  position: fixed;
+  bottom: 2.5rem; // 10 units
+  right: 2.5rem;
+  background-color: #ffffff;
+  border-left-width: 4px;
+  color: #111827;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: translateX(150%);
+  transition: transform $animation-speed ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

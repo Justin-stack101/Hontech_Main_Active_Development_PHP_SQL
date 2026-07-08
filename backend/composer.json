@@ -1,0 +1,14 @@
+{
+    "name": "hontech/operations-system",
+    "description": "HonTech AutoCenter Operations System - PHP Backend",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "firebase/php-jwt": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+    }
+}

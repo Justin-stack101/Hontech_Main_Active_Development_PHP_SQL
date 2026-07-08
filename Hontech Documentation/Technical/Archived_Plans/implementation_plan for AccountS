@@ -1,0 +1,78 @@
+# Implementation Plan - Google OAuth 2.0 & Online Status Tracking
+
+Upgrading account security with a production-ready Google OAuth flow and introducing real-time online status monitoring for the staff roster.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Google OAuth Configuration**:
+> We will add a real Google OAuth authorization callback on the backend (`GET /api/auth/google/callback`). 
+> * If `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set in your `.env`, clicking Google login will redirect to the Google Consent screen, verify your identity, and log you in.
+> * If they are not set, it will gracefully run in the **Developer Sandbox Simulation** window as before.
+
+> [!TIP]
+> **Online vs Active Status**:
+> We will distinguish between two fields:
+> 1. **Active/Suspended Status**: Managed by the owner to deactivate/activate staff accounts (saved in `isActive`).
+> 2. **Online/Offline Status**: Computed dynamically based on the user's last API request timestamp (`lastActiveAt`). If the user made any request within the last 5 minutes, they will show as **Online** with a green pulse dot in the staff roster.
+
+---
+
+## Proposed Changes
+
+### Database Layer
+
+#### [MODIFY] [User.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone Things/DeveloperVersion/backend/models/User.js)
+- Add `lastActiveAt` (Date, optional) to the schema.
+
+---
+
+### Backend Layer
+
+#### [MODIFY] [auth.js (middleware)](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone Things/DeveloperVersion/backend/middleware/auth.js)
+- Inside `authenticateUser`, update the user's `lastActiveAt` to `new Date()` asynchronously on every authenticated request.
+
+#### [MODIFY] [authController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone Things/DeveloperVersion/backend/controllers/authController.js)
+- **`getGoogleConfig`**: Returns whether Google OAuth is configured (`isConfigured`) and the client ID (`clientId`).
+- **`googleCallback`**: 
+  - Exposes `GET /api/auth/google/callback`.
+  - Exchanges the Google OAuth redirection `code` for an access token by calling `https://oauth2.googleapis.com/token`.
+  - Retrieves Google user info (`email`, `id`) from `https://www.googleapis.com/oauth2/v3/userinfo`.
+  - Searches database for matching `googleEmail`, `googleId`, or primary `email`.
+  - Logs them in (issues cookie JWT) and redirects to homepage, or redirects with error message `?error=google_not_linked` if no account is associated.
+- **`getStaff`**: Update roster list retrieval to include `lastActiveAt` in the response so the owner can view online status.
+
+#### [MODIFY] [authRoutes.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone Things/DeveloperVersion/backend/routes/authRoutes.js)
+- Expose GET `/api/auth/google/config`
+- Expose GET `/api/auth/google/callback`
+
+---
+
+### Frontend Layer
+
+#### [MODIFY] [index.html](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone Things/DeveloperVersion/frontend/index.html)
+- **Roster Online Indicators**: Update `renderStaffManagement` to render a pulsing green dot (`Online`) next to the staff name if their `lastActiveAt` is less than 5 minutes old, otherwise a gray dot (`Offline`).
+- **Google OAuth Integration**:
+  - Check `/api/auth/google/config` on load.
+  - If configured:
+    - Login: Redirect window to `https://accounts.google.com/o/oauth2/v2/auth`.
+    - Profile Link: Redirect window to link flow.
+  - If not configured:
+    - Fall back to the Google Sandbox simulation modal as before.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Build and run the server. Ensure routes compile.
+
+### Manual Verification
+1. **Online Status**:
+   - Log in as a staff member (e.g. `staff@hontech.com`).
+   - Log in as Owner.
+   - View the Staff Access roster. Verify that the staff member shows a **Green Online Dot** because they are active.
+   - Wait 5 minutes or manually modify `lastActiveAt` in MongoDB to a past date. Verify the indicator changes to **Gray Offline**.
+2. **Google OAuth redirect check**:
+   - Add dummy `GOOGLE_CLIENT_ID=test` to `.env`.
+   - Verify that clicking Google Sign-In redirects the browser tab directly to Google's consent screen.

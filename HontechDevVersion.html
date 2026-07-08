@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech — Developer Credentials</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 flex items-center justify-center p-6 md:p-12">
+    <div class="max-w-4xl w-full bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-10 shadow-2xl space-y-8">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-6">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-red-600/10 border border-red-500/20 text-red-500 rounded-2xl">
+                    <i data-lucide="key-round" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-black tracking-tight text-white">HonTech AutoCenter</h1>
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Developer Credentials Directory</p>
+                </div>
+            </div>
+            <a href="frontend/index.html" class="flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-black uppercase tracking-wider rounded-xl transition">
+                Go to App <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+
+        <p class="text-sm text-slate-300 leading-relaxed">
+            Welcome to the local development environment dashboard. Below are the pre-configured accounts seeded in the database. Use these credentials to test multi-branch role isolation, roster actions, and status updates.
+        </p>
+
+        <!-- Credentials Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Global Control Accounts -->
+            <div class="bg-slate-800/40 border border-slate-800/80 rounded-2xl p-6 space-y-4 md:col-span-2">
+                <h2 class="text-xs text-slate-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span> Global Control Accounts (All Branches)
+                </h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Owner -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-2 relative overflow-hidden">
+                        <span class="absolute top-2 right-2 text-[9px] bg-red-500/10 border border-red-500/20 text-red-400 font-black uppercase tracking-wider px-2 py-0.5 rounded">Owner</span>
+                        <div class="text-sm font-black text-white">System Owner</div>
+                        <div class="space-y-1 mt-2 text-xs">
+                            <div class="text-slate-400 font-medium">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">owner@hontech.com</code></div>
+                            <div class="text-slate-400 font-medium">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">owner123</code></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-2 relative overflow-hidden">
+                        <span class="absolute top-2 right-2 text-[9px] bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-black uppercase tracking-wider px-2 py-0.5 rounded">Admin</span>
+                        <div class="text-sm font-black text-white">System Admin</div>
+                        <div class="space-y-1 mt-2 text-xs">
+                            <div class="text-slate-400 font-medium">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">admin@hontech.com</code></div>
+                            <div class="text-slate-400 font-medium">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">admin123</code></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch A Accounts -->
+            <div class="bg-slate-800/40 border border-slate-800/80 rounded-2xl p-6 space-y-4">
+                <h2 class="text-xs text-red-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Branch A (Branch 1) - Main Site
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Assistant -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-black text-white">Jessica (Front Desk A)</span>
+                            <span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded">Assistant</span>
+                        </div>
+                        <div class="text-slate-400 text-xs">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">staff@hontech.com</code></div>
+                        <div class="text-slate-400 text-xs">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">staff123</code></div>
+                    </div>
+                    
+                    <!-- SA -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-black text-white">Mark (Advisor A)</span>
+                            <span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded">Advisor</span>
+                        </div>
+                        <div class="text-slate-400 text-xs">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">sa@hontech.com</code></div>
+                        <div class="text-slate-400 text-xs">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">sa123</code></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch B Accounts -->
+            <div class="bg-slate-800/40 border border-slate-800/80 rounded-2xl p-6 space-y-4">
+                <h2 class="text-xs text-indigo-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Branch B (Branch 2) - East Site
+                </h2>
+                
+                <div class="space-y-4">
+                    <!-- Assistant -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-black text-white">Jessica (Front Desk B)</span>
+                            <span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded">Assistant</span>
+                        </div>
+                        <div class="text-slate-400 text-xs">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">staff.east@hontech.com</code></div>
+                        <div class="text-slate-400 text-xs">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">staff123</code></div>
+                    </div>
+                    
+                    <!-- SA -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-1">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-black text-white">Dave (Advisor B)</span>
+                            <span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded">Advisor</span>
+                        </div>
+                        <div class="text-slate-400 text-xs">Email: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">sa.east@hontech.com</code></div>
+                        <div class="text-slate-400 text-xs">Password: <code class="text-slate-200 bg-slate-800 px-1 py-0.5 rounded font-mono select-all">sa123</code></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-[10px] text-slate-500 font-bold uppercase tracking-widest pt-4 border-t border-slate-800">
+            For local development and verification purposes only.
+        </div>
+
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

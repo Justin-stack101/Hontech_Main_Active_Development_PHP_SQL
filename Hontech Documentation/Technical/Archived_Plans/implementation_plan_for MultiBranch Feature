@@ -1,0 +1,61 @@
+# Implementation Plan: Multi-Branch (SaaS Multi-Tenancy) Architecture
+
+This plan outlines the architectural changes needed to upgrade the HonTech Operations System to support multiple physical branches (e.g., "HonTech Main", "HonTech South"). This is the first step toward a true B2B SaaS architecture.
+
+## User Review Required
+
+> [!WARNING]  
+> **Database Schema Change:** This requires adding a new `branchId` to both `User` and `Job` models. We must decide if we need a new `Branch` collection or if a simple String (like "MAIN_BRANCH") is sufficient for now.
+
+> [!CAUTION]  
+> **Data Migration Risk:** Existing data in the MongoDB database does not have a branch attached. We will need to write a script to set all existing users and jobs to a default branch (e.g., "MAIN") so the app doesn't break when deployed.
+
+## Open Questions
+
+1. **Owner Visibility:** Should the "Owner" role have a global dashboard that sees *all* branches combined, or should they have a dropdown menu to switch between viewing one branch at a time?
+2. **Branch Definitions:** Do we need a dedicated `branches` database collection to store branch addresses and names, or is a simple hardcoded list (e.g., Main, South, North) okay for this MVP expansion?
+3. **Cross-Branch Transfers:** Do you need the ability to transfer a car/job from one branch to another, or are they strictly isolated?
+
+## Proposed Changes
+
+### Database Models
+
+#### [MODIFY] [backend/models/User.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/User.js)
+- Add `branchId: { type: String, required: true, default: 'MAIN' }`.
+- This dictates which branch the staff member works at.
+
+#### [MODIFY] [backend/models/Job.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/Job.js)
+- Add `branchId: { type: String, required: true, default: 'MAIN' }`.
+- Ensures jobs created in one branch don't show up on another branch's TV monitor.
+
+---
+
+### Backend Logic & Security (Controllers)
+
+#### [MODIFY] [backend/middleware/auth.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/middleware/auth.js)
+- Update the JWT token generation to include the user's `branchId`.
+- When verifying the token, attach `req.user.branchId` to the request so all routes know which branch is asking for data.
+
+#### [MODIFY] [backend/controllers/jobController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/jobController.js)
+- **`getJobs`:** Update the query to filter by branch: `Job.find({ branchId: req.user.branchId })`. This prevents the "South" branch from seeing "Main" branch cars.
+- **`createJob`:** Automatically assign the incoming job to the branch of the Service Advisor who created it (`newJob.branchId = req.user.branchId`).
+
+#### [MODIFY] [backend/controllers/authController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/authController.js)
+- Update the User creation logic so the Owner can select which branch a new staff member is assigned to.
+
+---
+
+### Frontend UI
+
+#### [MODIFY] [frontend/index.html](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/frontend/index.html)
+- **Analytics Dashboard:** Temporarily remove or blank out the "Avg Service Time" metric (display as "N/A" or hide the card entirely) to avoid skewed data until Version 2.0 when proper "Wrench Time" tracking is built.
+- **Account Management Modal:** Add a dropdown to assign a branch when the Owner creates a new staff account.
+- **Header/Nav:** Add a visual indicator showing the currently logged-in user which branch they are managing (e.g., "HonTech - Main Branch").
+- **Owner Dashboard (Optional):** Add a dropdown filter to let the Owner toggle the analytics view between different branches.
+
+## Verification Plan
+
+### Automated / Manual Tests
+1. Log in as an SA in the "Main" branch and create a Job.
+2. Log in as an SA in the "South" branch and verify the Main branch job does *not* appear on the queue or TV monitor.
+3. Log in as an Owner and verify analytics can be viewed per branch.

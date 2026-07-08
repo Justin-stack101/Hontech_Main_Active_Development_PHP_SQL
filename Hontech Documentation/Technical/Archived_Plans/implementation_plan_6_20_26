@@ -1,0 +1,131 @@
+# Implementation Plan: Role Realignment, TV Layout Update, and Enhanced Analytics
+
+This plan outlines the changes required to reorganize user roles (adding an `admin` role, updating `owner`, renaming `Front Desk` to `Assistant Staff` and enforcing its restrictions), separate Status and Location columns in the Daily Intakes table, adjust the TV monitoring layout, and enhance the Analytics and Search functionality.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - We are introducing a new **Admin** role that will handle staff creation/management and records access.
+> - The **Owner** role will focus on branch-level analytics (Branch A & B) and records.
+> - The **Assistant Staff** role (formerly Front Desk) will have almost all controls disabled in the table, except for changing the **Arrival** time.
+> - The **Service Advisor (SA)** will have separated columns for Status and Location, and the Goal column will be renamed to a more professional tone (e.g., "Service SLA (2h)") and completely hidden for both Assistant Staff and SA roles.
+
+> [!WARNING]
+> Since we are adding a new `admin` role to the database, we need to update the Mongoose User model enum and update seed data so there is a default admin account. We will seed `admin@hontech.com` / `admin123` for this purpose.
+
+## Proposed Changes
+
+### Database Layer
+
+#### [MODIFY] [User.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/User.js)
+- Add `'admin'` to the `role` field enum: `enum: ['owner', 'admin', 'assistant', 'sa']`.
+
+#### [MODIFY] [Job.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/Job.js)
+- Add `branch` field: `type: String, enum: ['Branch A', 'Branch B'], default: 'Branch A'`.
+- Add `location` field: `type: String, enum: ['None', 'Lift 1', 'Lift 2', 'Lift 3', 'Lift 4'], default: 'None'`.
+- Update `status` to only accept standard status values: `Waiting`, `In Progress`, `Ready`, `Released`, `Completed`, `Carry Over`.
+
+---
+
+### Backend Logic
+
+#### [MODIFY] [server.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/server.js)
+- Seed a default Admin account: `{ name: 'System Admin', role: 'admin', email: 'admin@hontech.com', password: 'admin123' }`.
+- Seed jobs with random branches (`Branch A` / `Branch B`) for realistic analytics reporting.
+
+#### [MODIFY] [authRoutes.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/routes/authRoutes.js)
+- Allow both `'owner'` and `'admin'` to manage personnel: update `requireRole(['owner'])` to `requireRole(['owner', 'admin'])` for `/staff` endpoints.
+
+#### [MODIFY] [jobRoutes.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies%20/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/routes/jobRoutes.js)
+- Ensure `/analytics` can be accessed by `'owner'`.
+- Allow `'admin'` to delete or manage jobs: update `/` POST, PATCH, and DELETE endpoints to include `'admin'` where relevant.
+
+#### [MODIFY] [authController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/authController.js)
+- Update `updateStaffRole` validation to include `'admin'`: `const validRoles = ['owner', 'admin', 'assistant', 'sa'];`.
+
+#### [MODIFY] [jobController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/jobController.js)
+- Update `createJob` to accept the `branch` parameter.
+- Update `setJobStatus` to handle separate status and location changes:
+  - If a status changes to `Ready`, `Released`, or `Completed`, automatically set `location` to `None`.
+  - If location changes to `Lift X`, check for collisions on `location` (insuring only one active vehicle per Lift), and automatically set status to `In Progress`.
+  - If location changes to `None` and current status is `In Progress`, set status to `Waiting`.
+
+---
+
+### Frontend Layer
+
+#### [MODIFY] [index.html](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/frontend/index.html)
+
+##### 1. Login Credentials & Role Labels
+- Add `admin@hontech.com` / `admin123` quick-login card to the login screen.
+- Update role label mappings:
+  - `assistant` -> `Assistant Staff`
+  - `sa` -> `Service Advisor`
+  - `owner` -> `Owner`
+  - `admin` -> `Admin`
+
+##### 2. Navbar Realignment
+- **Owner (`owner`)**: sees Analytics (`dashboard`), Records (`queue`), and My Profile.
+- **Admin (`admin`)**: sees Staff Access (`staff`), Records (`queue`), and My Profile.
+- **Assistant Staff (`assistant`)**: sees Online Booking (`intake`), Master Queue (`queue`), and TV Monitor link.
+- **Service Advisor (`sa`)**: sees Walk-In Form (`intake`), Daily Intakes (`queue`), and TV Monitor link.
+
+##### 3. TV Monitoring layout (Slide 2)
+- Rearrange `tv-slide-2` columns:
+  - Left column: Ready for Release (Top), Upcoming Vehicles (Bottom).
+  - Right column: Carry-Over (Full Height).
+
+##### 4. Table Columns & Controls
+- **Goal column**:
+  - Rename to "Service SLA (2h)" or "SLA Status" for a professional tone.
+  - Hide this column entirely for `assistant` and `sa` roles. Keep it visible only for `owner` and `admin`.
+- **Status & Location separation**:
+  - Split "Status & Location" header and cells into two separate columns: "Status" and "Location".
+  - **Location column**: Displays dropdown for Lifts (`None`, `Lift 1`, `Lift 2`, `Lift 3`, `Lift 4`).
+    - If a Lift is occupied by another vehicle, color its dropdown option Red and append `(Occupied - [Plate])`.
+    - If the row is assigned to a Lift, display the lift badge in a prominent orange/red color.
+  - **Status column**:
+    - For SA, displays a dropdown containing only: `Ready` (Released (Show TV)), `Released` (Released (Remove)), and `Carry Over`.
+    - Read-only statuses like `Waiting` or `In Progress` are displayed as text.
+- **Remarks & Actions**:
+  - Separated into "Remarks/Reasons" and "Actions" columns.
+- **Assistant Staff table restriction**:
+  - For `assistant`, render all cells in the queue table as read-only text (using spans) *except* for the **Arrival** time field (which remains an editable `<input type="time">`). Disable all other select/input elements and hide action buttons (Claim, Release, Delete).
+
+##### 5. Analytics Upgrades (Owners Module)
+- Add a Branch selection filter (`All Branches`, `Branch A`, `Branch B`) to the dashboard.
+- Display Branch-specific metrics and comparative visualizations.
+- Add new **Efficiency & Volume Insights**:
+  - **Average Turnaround Time (TAT)** (Arrival to Departure).
+  - **Peak Intake Hours** (most frequent arrival hours).
+  - **Walk-in vs. Online Booking Ratio**.
+  - **SLA Violation Rate** (PMS exceeding 2h).
+
+##### 6. Search Engine (Period Record Log Table)
+- Implement a comprehensive search field that searches across Plate, Vehicle Model, Customer Name, Category, SA, Status, and Location in real-time.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run test` or check backend console output to verify database seeding and server startup.
+
+### Manual Verification
+1. Log in as **Admin** (`admin@hontech.com`):
+   - Verify Staff Access panel is visible and allows creation of new Admin/Owner/Staff/SA accounts.
+   - Verify Records table displays correctly with Goal column visible.
+2. Log in as **Owner** (`owner@hontech.com`):
+   - Verify Analytics dashboard is visible. Check Branch A vs Branch B filters.
+   - Verify new widgets for Average Turnaround Time, Walk-in/Online ratio, Peak Hours, and SLA violation rate.
+3. Log in as **Assistant Staff** (`staff@hontech.com`):
+   - Verify records table is completely read-only except for editing the **Arrival** time.
+   - Verify the "Goal" column is completely hidden.
+4. Log in as **Service Advisor** (`sa@hontech.com`):
+   - Verify the "Goal" column is completely hidden.
+   - Verify "Status" and "Location" are in separate columns.
+   - Set a location to a Lift. Verify it updates status to "In Progress".
+   - Open another row's location dropdown. Verify that the assigned lift is colored red and shows as occupied.
+   - Verify the Status dropdown only contains "Ready", "Released", and "Carry Over" options.
+5. Open TV Monitoring mode (`?mode=tv`):
+   - Verify Slide 2 displays "Ready for Release" at the top-left, "Upcoming Vehicles" at the bottom-left, and "Carry-Over" on the right.

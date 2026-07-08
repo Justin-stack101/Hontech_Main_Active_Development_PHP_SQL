@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech AutoCenter Inc. | Operations System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="h-screen overflow-hidden bg-gray-50">
+
+    <!-- Authentication View -->
+    <div id="auth-view" class="fixed inset-0 z-[500] hero-bg flex flex-col items-center justify-center p-6 overflow-y-auto">
+        
+        <div class="text-center mb-6 mt-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-1 italic shadow-sm">Welcome to</h2>
+            <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter text-white drop-shadow-lg">
+                HonTech <span class="text-red-600">Auto Center</span>
+            </h1>
+            <p class="text-sm md:text-base font-bold mt-4 text-gray-300 tracking-widest uppercase drop-shadow-md">Efficiency, Excellence & Trust</p>
+        </div>
+
+        <div class="bg-red-600 text-white px-8 py-4 rounded-md shadow-xl text-center w-full max-w-lg mb-10 border-b-4 border-red-800">
+            <h3 class="text-lg md:text-xl font-black uppercase tracking-wider">Internal Operations System</h3>
+            <p class="text-[10px] mt-1 font-bold opacity-90 uppercase tracking-widest">Authorized Personnel Only</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 relative">
+            <div class="space-y-4">
+                <div class="bg-gray-50 border border-gray-200 p-4 rounded-xl mb-6 flex items-start gap-3">
+                    <i data-lucide="shield-check" class="text-gray-600 w-5 h-5 shrink-0 mt-0.5"></i>
+                    <div class="text-[10px] font-bold text-gray-600 leading-relaxed w-full">
+                        <p class="uppercase mb-1 text-gray-800">Default System Credentials</p>
+                        <p class="mb-1 italic opacity-70">Note: New accounts can be created in the Owner's Staff Module.</p>
+                        <ul class="list-none mt-1 opacity-80 space-y-1">
+                            <li><span class="text-red-600">Owner:</span> owner@hontech.com / owner123</li>
+                            <li><span class="text-red-600">Asst:</span> staff@hontech.com / staff123</li>
+                            <li><span class="text-red-600">SA:</span> sa@hontech.com / sa123</li>
+                            <li><span class="text-red-600">Tech:</span> tech@hontech.com / tech123</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Email Address</label>
+                        <input type="email" id="login-email" class="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 outline-none font-semibold text-gray-900 text-sm transition" placeholder="Enter assigned email">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Password</label>
+                        <input type="password" id="login-pass" class="w-full bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 outline-none font-semibold text-gray-900 text-sm transition" placeholder="Enter password">
+                    </div>
+                    <button onclick="processLogin()" class="w-full bg-red-600 hover:bg-red-700 transition py-4 text-white font-black uppercase rounded-xl mt-4 shadow-lg shadow-red-600/30 text-sm tracking-widest">
+                        Access Portal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Shell -->
+    <div id="app-shell" class="hidden flex flex-col h-full bg-gray-100">
+        
+        <header class="bg-white shadow-md z-50 flex h-20 items-center justify-between border-b border-gray-200 shrink-0">
+            <div class="h-full bg-red-600 text-white flex items-center pl-8 pr-16 slanted-logo-bg shadow-inner">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="wrench" class="w-6 h-6"></i>
+                    <div>
+                        <span class="font-black italic uppercase tracking-tighter text-2xl leading-none block drop-shadow-md">HonTech</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav id="dynamic-nav" class="flex flex-1 items-center px-6 gap-2 md:gap-4 overflow-x-auto"></nav>
+
+            <div class="flex items-center gap-6 px-8 border-l border-gray-100 h-full">
+                <div id="header-status" class="hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold uppercase text-gray-600 tracking-widest">System Online</span>
+                </div>
+                
+                <div class="flex items-center gap-3 hidden md:flex">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-gray-900 leading-tight" id="sidebar-user-name">User</p>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="sidebar-user-role">Role</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </div>
+                </div>
+                
+                <button onclick="handleLogout()" class="text-gray-400 hover:text-red-600 transition" title="Logout">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto relative p-6 md:p-10" id="main-content">
+            
+            <div id="dashboard-header" class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div>
+                    <h2 id="view-title" class="text-2xl font-black uppercase tracking-tight text-gray-900">Dashboard</h2>
+                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">System Time: <span id="sys-clock" class="text-red-600">00:00</span></p>
+                </div>
+                
+                <div id="header-actions" class="hidden flex gap-3">
+                    <button onclick="exportData('PDF')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-widest transition shadow-sm" title="Export to PDF">
+                        <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> PDF
+                    </button>
+                    <button onclick="exportData('Word')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-widest transition shadow-sm" title="Export to Word">
+                        <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600"></i> Word
+                    </button>
+                </div>
+            </div>
+
+            <!-- ANALYTICS DASHBOARD -->
+            <div id="section-dashboard" class="section-content hidden fade-in space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white border-b-4 border-gray-800 p-8 rounded-2xl shadow-md text-center">
+                        <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Total Daily Intake</p>
+                        <h3 class="text-5xl font-black text-gray-900" id="metric-intake">0</h3>
+                        <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Vehicles Registered</p>
+                    </div>
+                    <div class="bg-white border-b-4 border-green-600 p-8 rounded-2xl shadow-md text-center">
+                        <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Released Today</p>
+                        <h3 class="text-5xl font-black text-gray-900" id="metric-completed">0</h3>
+                        <p class="text-[10px] text-green-600 font-bold uppercase mt-2">Services Completed</p>
+                    </div>
+                    <div class="bg-white border-b-4 border-orange-500 p-8 rounded-2xl shadow-md text-center">
+                        <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Active Carry-Overs</p>
+                        <h3 class="text-5xl font-black text-gray-900" id="metric-carryover">0</h3>
+                        <p class="text-[10px] text-orange-500 font-bold uppercase mt-2">Awaiting Parts/Extended</p>
+                    </div>
+                    <div class="bg-white border-b-4 border-red-600 p-8 rounded-2xl shadow-md text-center">
+                        <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">In Bays (Working)</p>
+                        <h3 class="text-5xl font-black text-gray-900" id="metric-inbay">0</h3>
+                        <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Currently on Lift</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STAFF MANAGEMENT -->
+            <div id="section-staff" class="section-content hidden fade-in space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-1 bg-white border border-gray-200 border-t-4 border-t-red-600 p-6 md:p-8 rounded-2xl shadow-md flex flex-col h-fit">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="p-3 bg-red-50 rounded-xl text-red-600"><i data-lucide="user-plus" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Add Personnel</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Create System Access</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Full Name</label>
+                                <input type="text" id="new-staff-name" placeholder="e.g. John Doe" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">System Role</label>
+                                <select id="new-staff-role" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition cursor-pointer">
+                                    <option value="assistant">Front Desk Assistant</option>
+                                    <option value="sa">Service Advisor</option>
+                                    <option value="tech">Workshop Technician</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Email Address (Login ID)</label>
+                                <input type="email" id="new-staff-email" placeholder="email@hontech.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Temporary Password</label>
+                                <input type="password" id="new-staff-pass" placeholder="Enter password" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+
+                            <button onclick="createStaffAccount()" class="w-full bg-gray-900 hover:bg-black transition py-3.5 text-white font-black uppercase rounded-xl mt-4 shadow-md text-sm tracking-widest flex items-center justify-center gap-2">
+                                <i data-lucide="save" class="w-4 h-4"></i> Create Account
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col min-h-[400px]">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-gray-100 rounded-xl text-gray-800"><i data-lucide="users" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Staff Roster</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Manage existing permissions</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto flex-1 border border-gray-200 rounded-xl">
+                            <table class="w-full text-left whitespace-nowrap min-w-[600px]">
+                                <thead>
+                                    <tr>
+                                        <th>Staff Name</th>
+                                        <th>Role / Access</th>
+                                        <th>Email (Login)</th>
+                                        <th>Password</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-staff-accounts"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VEHICLE INTAKE FORM -->
+            <div id="section-intake" class="section-content hidden fade-in space-y-6">
+                <div class="max-w-4xl bg-white border border-gray-200 p-8 rounded-3xl shadow-lg mx-auto">
+                    <div class="flex items-center gap-4 mb-8 border-b border-gray-100 pb-6">
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100" id="intake-icon-wrap">
+                            <i data-lucide="clipboard-edit" class="text-red-600 w-8 h-8" id="intake-icon"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black uppercase tracking-tight text-gray-900" id="intake-title">Intake Form</h3>
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1" id="intake-subtitle">Register customer data</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <!-- Hidden Inputs -->
+                        <input type="hidden" id="intake-source" value="">
+
+                        <div class="md:col-span-1">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Date</label>
+                            <input type="date" id="intake-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Plate Number <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-plate" placeholder="XYZ 9876" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm uppercase text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Customer Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-name" placeholder="Full Name" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                        </div>
+                        
+                        <div class="md:col-span-1">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Contact Number</label>
+                            <input type="text" id="intake-contact" placeholder="09XX-XXX-XXXX" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Vehicle Model <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-vehicle" placeholder="e.g. Honda Civic RS" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Service Category <span class="text-red-500">*</span></label>
+                            <select id="intake-category" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition cursor-pointer">
+                                <option value="PMS">Express / PMS</option>
+                                <option value="GR">General Repairs</option>
+                                <option value="Check-Up">Check-Up Only</option>
+                            </select>
+                        </div>
+
+                        <!-- Walk-in Specific (SA Role) -->
+                        <div id="div-walkin-fields" class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-6 hidden border-t border-gray-100 pt-6 mt-2">
+                            <div class="md:col-span-1">
+                                <label class="text-[11px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Arrival Time <span class="text-red-500">*</span></label>
+                                <input type="time" id="intake-arrival" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1 block">Auto-Generated Claim Stub</label>
+                                <input type="text" id="intake-stub-preview" disabled class="w-full bg-gray-100 border border-gray-200 rounded-xl px-4 py-3 font-mono font-bold text-gray-500 text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Booking Specific (Assistant Role) -->
+                        <div id="div-booking-fields" class="md:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-6 hidden border-t border-gray-100 pt-6 mt-2">
+                            <div class="md:col-span-1">
+                                <label class="text-[11px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Appt Date</label>
+                                <input type="date" id="intake-appt-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="text-[11px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Appt Time</label>
+                                <input type="time" id="intake-appt-time" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                            </div>
+                            <div class="md:col-span-1 flex items-center mt-6">
+                                <label class="flex items-center gap-3 cursor-pointer p-3 border border-gray-200 rounded-xl w-full bg-gray-50 hover:bg-gray-100 transition">
+                                    <input type="checkbox" id="intake-confirmed" class="w-5 h-5 rounded accent-red-600 cursor-pointer">
+                                    <span class="text-sm font-bold text-gray-700">Confirmed Booking</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="md:col-span-4">
+                            <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Specific Concerns / Notes for Technician</label>
+                            <textarea id="intake-concern" placeholder="Describe the vehicle issue..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm h-24 text-gray-900 transition resize-none"></textarea>
+                        </div>
+                    </div>
+                    <button onclick="processIntake()" id="intake-submit-btn" class="w-full bg-red-600 hover:bg-red-700 transition py-4 text-white font-black uppercase rounded-xl mt-8 shadow-lg shadow-red-600/20 text-lg tracking-wider">
+                        Register to System
+                    </button>
+                </div>
+            </div>
+
+            <!-- RECORDS & QUEUES VIEW -->
+            <div id="section-queue" class="section-content hidden fade-in space-y-8">
+                
+                <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
+                <div id="container-online-queue" class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-6 md:p-8 rounded-2xl shadow-md flex flex-col hidden min-h-[350px]">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-gray-100 rounded-xl text-gray-800"><i data-lucide="calendar-clock" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Booking Module</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Pending Online Inquiries</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto flex-1 border border-gray-200 rounded-xl">
+                        <table class="w-full text-left whitespace-nowrap min-w-[1000px]">
+                            <thead>
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <th>Plate No.</th>
+                                    <th>Model</th>
+                                    <th>Appointment (Date, Time)</th>
+                                    <th>Parts</th>
+                                    <th>Confirmed</th>
+                                    <th>Evaluation Notes</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-pending-express"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
+                <div id="container-daily-intakes" class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-6 md:p-8 rounded-2xl shadow-md flex flex-col hidden min-h-[350px]">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-red-50 rounded-xl text-red-600"><i data-lucide="list-todo" class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Daily Intakes Table</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Active Vehicles in Workshop</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto flex-1 border border-gray-200 rounded-xl">
+                        <table class="w-full text-left whitespace-nowrap min-w-[1200px]">
+                            <thead>
+                                <tr>
+                                    <th>Claim Stub</th>
+                                    <th>Plate No.</th>
+                                    <th>Model</th>
+                                    <th>Arrival</th>
+                                    <th>Departure</th>
+                                    <th class="text-center">Walk-in</th>
+                                    <th class="text-center">Appt</th>
+                                    <th>Status & Location</th>
+                                    <th class="w-64">Remarks / Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-daily-intakes"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TECHNICIAN BOARD (CARD VIEW) -->
+                <div id="container-tech-board" class="hidden flex-col gap-6">
+                    <div class="flex items-center gap-4 mb-2">
+                        <div class="p-3 bg-red-600 rounded-xl text-white shadow-md"><i data-lucide="wrench" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-black uppercase tracking-tight text-gray-900">Workshop Floor</h3>
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Active Jobs & Service Management</p>
+                        </div>
+                    </div>
+                    <div id="tech-cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+                </div>
+
+                <!-- CARRY OVER BOARD (Shared) -->
+                <div id="container-carry-over" class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-6 md:p-8 rounded-2xl shadow-md flex flex-col min-h-[350px] mt-8">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="p-3 bg-orange-50 rounded-xl text-orange-600"><i data-lucide="calendar-off" class="w-6 h-6"></i></div>
+                        <div>
+                            <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Carry-Over Data</h3>
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Vehicles requiring extended stays</p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto flex-1 border border-gray-200 rounded-xl">
+                        <table class="w-full text-left whitespace-nowrap min-w-[1000px]">
+                            <thead>
+                                <tr>
+                                    <th>Plate No.</th>
+                                    <th>Model</th>
+                                    <th>Date (Received, Promised)</th>
+                                    <th>Parts</th>
+                                    <th>Service Advisor</th>
+                                    <th>Evaluation</th>
+                                    <th>Remarks & Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-carry-over"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TV DISPLAY MONITOR -->
+            <div id="section-tv" class="section-content hidden fade-in h-full flex flex-col relative overflow-hidden bg-gray-900 p-4 rounded-3xl">
+                <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4 shrink-0 z-20 relative px-4">
+                    <div>
+                        <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
+                            <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
+                        </h1>
+                    </div>
+                    <div class="text-right">
+                        <p id="tv-clock-display" class="text-4xl font-black text-gray-400 tabular-nums">00:00</p>
+                        <div class="flex gap-2 justify-end mt-3">
+                            <span id="tv-dot-0" class="w-3 h-3 rounded-full bg-gray-600 transition-all"></span>
+                            <span id="tv-dot-1" class="w-3 h-3 rounded-full bg-gray-600 transition-all"></span>
+                            <span id="tv-dot-2" class="w-3 h-3 rounded-full bg-gray-600 transition-all"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 relative min-h-0">
+                    <div id="tv-slide-0" class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-gray-100 py-6 text-center shrink-0 border-b border-gray-200">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-gray-900">Express Lane</h2>
+                            <p class="text-gray-600 font-bold uppercase tracking-[0.2em] text-sm mt-2">Preventative Maintenance (PMS)</p>
+                        </div>
+                        <div class="flex-1 p-8 overflow-y-auto custom-scroll bg-gray-50">
+                            <div id="tv-express-list" class="grid grid-cols-2 lg:grid-cols-3 gap-8 text-center"></div>
+                        </div>
+                    </div>
+
+                    <div id="tv-slide-1" class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">General Repairs</h2>
+                            <p class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Active Bays</p>
+                        </div>
+                        <div class="flex-1 p-8 overflow-y-auto custom-scroll bg-gray-50">
+                            <div id="tv-grs-list" class="grid grid-cols-2 gap-8 h-full"></div>
+                        </div>
+                    </div>
+
+                    <div id="tv-slide-2" class="absolute inset-0 tv-slide hidden flex gap-6">
+                        <div class="flex-1 bg-white border-4 border-green-500 rounded-2xl overflow-hidden flex flex-col relative shadow-xl">
+                            <div class="bg-green-500 py-6 text-center shrink-0">
+                                <h2 class="text-4xl font-black uppercase tracking-widest text-white">Ready For Release</h2>
+                                <p class="text-green-100 font-bold uppercase tracking-[0.2em] text-[11px] mt-1">Please proceed to front desk</p>
+                            </div>
+                            <div class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-center custom-scroll bg-green-50">
+                                <div id="tv-ready-list" class="flex flex-col gap-6 text-center w-full"></div>
+                            </div>
+                        </div>
+                        <div class="flex-1 bg-white border-4 border-orange-500 rounded-2xl overflow-hidden flex flex-col relative shadow-xl">
+                            <div class="bg-orange-500 py-6 text-center shrink-0">
+                                <h2 class="text-4xl font-black uppercase tracking-widest text-white">Carry-Over</h2>
+                                <p class="text-orange-100 font-bold uppercase tracking-widest text-[11px] mt-1">Extended Stay / Awaiting Parts</p>
+                            </div>
+                            <div class="flex-1 p-6 overflow-y-auto flex flex-col items-center justify-start gap-4 custom-scroll bg-orange-50">
+                                <div id="tv-carryover-list" class="w-full space-y-4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Alert Toast Component -->
+    <div id="toast" class="fixed bottom-10 right-10 bg-white border-l-4 border-red-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform translate-x-[150%] transition-transform duration-300 z-[1000] flex items-center gap-4">
+        <i data-lucide="info" id="toast-icon" class="text-red-600 w-6 h-6"></i>
+        <div>
+            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-0.5" id="toast-title">System Alert</p>
+            <span id="toast-msg" class="font-bold text-sm text-gray-900">Action successful!</span>
+        </div>
+    </div>
+
+    <!-- CLIENT SCRIPT LOGIC -->
+    <script>
+        let allJobs = []; 
+        let staffAccounts = []; 
+        let currentUserRole = ''; 
+        let currentUserName = ''; 
+        let bays = [null, null, null, null]; 
+        
+        let tvSlideIndex = 0;
+        let tvInterval = null;
+
+        // Base fetch helper to deal with absolute URL resolutions and JSON conversions
+        async function apiRequest(url, options = {}) {
+            try {
+                const defaultOptions = {
+                    headers: { 'Content-Type': 'application/json' },
+                    ...options
+                };
+                if (defaultOptions.body && typeof defaultOptions.body === 'object') {
+                    defaultOptions.body = JSON.stringify(defaultOptions.body);
+                }
+                const response = await fetch(url, defaultOptions);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || 'Server request failed.');
+                }
+                return data;
+            } catch (err) {
+                console.error(`API Error on ${url}:`, err);
+                throw err;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isTVMode = urlParams.get('mode') === 'tv';
+
+            if (isTVMode) {
+                setupTVMode();
+                return; 
+            }
+
+            // Attempt auto-login if token cookie is already present
+            try {
+                const user = await apiRequest('/api/auth/me');
+                if (user) {
+                    currentUserName = user.name;
+                    handleLogin(user.role);
+                }
+            } catch (e) {
+                // Not logged in, stay on auth view
+            }
+
+            setInterval(updateClock, 1000);
+            updateClock();
+            updateStubPreview();
+            lucide.createIcons();
+        });
+
+        // --- AUTH & ROLE LOGIC ---
+        async function processLogin() {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            try {
+                const user = await apiRequest('/api/auth/login', {
+                    method: 'POST',
+                    body: { email, password: pass }
+                });
+                
+                currentUserName = user.name;
+                handleLogin(user.role);
+                showSystemToast('Logged in successfully.', 'success', 'Access Granted');
+            } catch (err) {
+                showSystemToast(err.message || 'Invalid credentials.', 'error', 'Authentication Failed');
+            }
+        }
+
+        async function handleLogin(role) {
+            currentUserRole = role;
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('app-shell').classList.remove('hidden');
+            
+            await loadData();
+            buildNavbar(role);
+        }
+
+        function buildNavbar(role) {
+            const nav = document.getElementById('dynamic-nav');
+            let navHTML = '';
+            let defaultView = 'queue';
+
+            document.getElementById('sidebar-user-name').innerText = currentUserName || 'System User';
+
+            if (role === 'owner') {
+                document.getElementById('sidebar-user-role').innerText = 'Admin / Owner';
+                document.getElementById('header-actions').classList.remove('hidden');
+                
+                navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
+                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
+                navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
+                
+                defaultView = 'dashboard';
+            }
+            else if (role === 'assistant') {
+                document.getElementById('sidebar-user-role').innerText = 'Front Desk';
+                document.getElementById('header-actions').classList.add('hidden');
+                
+                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking</button>`;
+                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
+                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                
+                setupIntakeForm('assistant');
+            } 
+            else if (role === 'sa') {
+                document.getElementById('sidebar-user-role').innerText = 'Reception';
+                document.getElementById('header-actions').classList.add('hidden');
+
+                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
+                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
+                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                
+                setupIntakeForm('sa');
+            }
+            else if (role === 'tech') {
+                document.getElementById('sidebar-user-role').innerText = 'Workshop';
+                document.getElementById('header-actions').classList.add('hidden');
+
+                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="wrench" class="w-4 h-4"></i> Tech Board</button>`;
+                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+            }
+
+            nav.innerHTML = navHTML;
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                const firstBtn = nav.querySelector('.nav-btn');
+                if(firstBtn) showSection(defaultView, firstBtn);
+                else showSection(defaultView);
+            }, 50);
+        }
+
+        async function handleLogout() {
+            try {
+                await apiRequest('/api/auth/logout', { method: 'POST' });
+            } catch(e) {}
+            
+            document.getElementById('app-shell').classList.add('hidden');
+            document.getElementById('auth-view').classList.remove('hidden');
+            currentUserRole = '';
+            currentUserName = '';
+            document.getElementById('login-pass').value = '';
+        }
+
+        function showSection(id, btnElement) {
+            document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
+            const targetSec = document.getElementById(`section-${id}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-red-50', 'text-red-600');
+                btn.classList.add('text-gray-600');
+            });
+            if(btnElement) {
+                btnElement.classList.add('bg-red-50', 'text-red-600');
+                btnElement.classList.remove('text-gray-600');
+            }
+
+            const titles = { 
+                'dashboard': 'Analytics Overview',
+                'staff': 'Staff & Access Management', 
+                'intake': currentUserRole === 'assistant' ? 'Online Appointments' : 'Walk-In Registration',
+                'queue': currentUserRole === 'tech' ? 'Workshop Active Jobs' : 'Master Data Records',
+                'tv': 'Live Display Monitor' 
+            };
+            if(titles[id]) document.getElementById('view-title').innerText = titles[id];
+            
+            if (id === 'dashboard') renderReports();
+            if (id === 'queue') renderStaffTables();
+            if (id === 'staff') renderStaffManagement(); 
+        }
+
+        function getRoleLabel(roleId) {
+            const roles = { 'owner': 'Administrator', 'assistant': 'Front Desk', 'sa': 'Service Advisor', 'tech': 'Technician' };
+            return roles[roleId] || roleId;
+        }
+
+        function getRoleColor(roleId) {
+            const colors = { 
+                'owner': 'bg-gray-800 text-white', 
+                'assistant': 'bg-blue-100 text-blue-700', 
+                'sa': 'bg-purple-100 text-purple-700', 
+                'tech': 'bg-orange-100 text-orange-700' 
+            };
+            return colors[roleId] || 'bg-gray-100 text-gray-700';
+        }
+
+        function renderStaffManagement() {
+            const tbody = document.getElementById('table-staff-accounts');
+            if(!tbody) return;
+
+            tbody.innerHTML = staffAccounts.map(user => `
+                <tr>
+                    <td>
+                        <div class="font-bold text-gray-900 flex items-center gap-2">
+                            <i data-lucide="user-circle" class="w-4 h-4 text-gray-400"></i> ${user.name}
+                        </div>
+                    </td>
+                    <td><span class="px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest ${getRoleColor(user.role)}">${getRoleLabel(user.role)}</span></td>
+                    <td class="text-gray-600 font-medium text-sm">${user.email}</td>
+                    <td class="text-gray-400 text-xs font-mono tracking-widest">••••••••</td>
+                    <td class="text-right">
+                        ${user.role === 'owner' 
+                            ? '<span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Sys Admin</span>' 
+                            : `<button onclick="deleteStaffAccount('${user._id}')" class="bg-gray-50 hover:bg-red-50 text-gray-400 hover:text-red-600 p-2 rounded-lg transition" title="Revoke Access"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`
+                        }
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        async function createStaffAccount() {
+            const name = document.getElementById('new-staff-name').value;
+            const role = document.getElementById('new-staff-role').value;
+            const email = document.getElementById('new-staff-email').value;
+            const pass = document.getElementById('new-staff-pass').value;
+
+            if(!name || !role || !email || !pass) return showSystemToast('All fields are required to create an account.', 'error', 'Validation Failed');
+
+            try {
+                await apiRequest('/api/auth/staff', {
+                    method: 'POST',
+                    body: { name, email, password: pass, role }
+                });
+                
+                await loadData();
+                renderStaffManagement(); 
+                showSystemToast(`${name} has been added to the system.`, 'success', 'Account Created');
+
+                document.getElementById('new-staff-name').value = '';
+                document.getElementById('new-staff-email').value = '';
+                document.getElementById('new-staff-pass').value = '';
+            } catch (err) {
+                showSystemToast(err.message || 'Could not create staff account.', 'error', 'Creation Failed');
+            }
+        }
+
+        async function deleteStaffAccount(id) {
+            if(!confirm('Are you sure you want to revoke system access for this personnel? This cannot be undone.')) return;
+            try {
+                await apiRequest(`/api/auth/staff/${id}`, { method: 'DELETE' });
+                await loadData();
+                renderStaffManagement();
+                showSystemToast('Staff account successfully removed.', 'success', 'Access Revoked');
+            } catch (err) {
+                showSystemToast(err.message || 'Could not revoke staff access.', 'error');
+            }
+        }
+
+        // Live claim stub preview generated local for guidance, final saved one is computed securely on the backend
+        function generateStubNumber() {
+            const d = new Date();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            const yy = String(d.getFullYear()).slice(2);
+            const datePrefix = `${mm}${dd}${yy}`;
+            const count = allJobs.filter(j => j.claimStub && j.claimStub.startsWith(datePrefix)).length + 1;
+            return `${datePrefix}-${count.toString().padStart(3, '0')}`;
+        }
+
+        function updateStubPreview() {
+            const preview = document.getElementById('intake-stub-preview');
+            if(preview) preview.value = generateStubNumber();
+        }
+
+        function setupIntakeForm(role) {
+            const title = document.getElementById('intake-title');
+            const subtitle = document.getElementById('intake-subtitle');
+            const source = document.getElementById('intake-source');
+            const walkinFields = document.getElementById('div-walkin-fields');
+            const bookingFields = document.getElementById('div-booking-fields');
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('intake-date').value = today;
+
+            if (role === 'assistant') {
+                title.innerText = 'Online Booking Form';
+                subtitle.innerText = 'Log online inquiries to Booking Module.';
+                source.value = 'Online';
+                walkinFields.classList.add('hidden');
+                bookingFields.classList.remove('hidden');
+            } else if (role === 'sa') {
+                title.innerText = 'Walk-In Form';
+                subtitle.innerText = 'Encode physical walk-in paperwork & assign Stub.';
+                source.value = 'Walk-in';
+                walkinFields.classList.remove('hidden');
+                bookingFields.classList.add('hidden');
+                updateStubPreview();
+            }
+        }
+
+        async function processIntake() {
+            const source = document.getElementById('intake-source').value;
+            const date = document.getElementById('intake-date').value;
+            const plate = document.getElementById('intake-plate').value.toUpperCase();
+            const name = document.getElementById('intake-name').value;
+            const contact = document.getElementById('intake-contact').value;
+            const category = document.getElementById('intake-category').value;
+            const vehicle = document.getElementById('intake-vehicle').value;
+            const concern = document.getElementById('intake-concern').value;
+
+            if (!plate || !name) return showSystemToast("Plate and Name are required.", "error");
+
+            const isWalkin = source === 'Walk-in';
+            let arrival = '';
+            let apptDate = '', apptTime = '', confirmed = false;
+
+            if (isWalkin) {
+                arrival = document.getElementById('intake-arrival').value || new Date().toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit'});
+            } else {
+                apptDate = document.getElementById('intake-appt-date').value;
+                apptTime = document.getElementById('intake-appt-time').value;
+                confirmed = document.getElementById('intake-confirmed').checked;
+            }
+
+            try {
+                await apiRequest('/api/jobs', {
+                    method: 'POST',
+                    body: {
+                        source, dateReceived: date, plate, name, contact, category, vehicle, concern,
+                        arrival, apptDate, apptTime, confirmed
+                    }
+                });
+
+                await loadData();
+                showSystemToast(`${plate} added successfully.`, 'success');
+                
+                ['plate', 'name', 'contact', 'vehicle', 'arrival', 'appt-time', 'appt-date', 'concern'].forEach(id => {
+                    if(document.getElementById(`intake-${id}`)) document.getElementById(`intake-${id}`).value = '';
+                });
+                if(document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
+
+                if(isWalkin) updateStubPreview();
+                renderStaffTables();
+            } catch (err) {
+                showSystemToast(err.message || 'Failed to submit intake.', 'error');
+            }
+        }
+
+        async function updateJobField(jobId, field, value) {
+            try {
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: { field, value }
+                });
+                // Update local array logic and rerender
+                const job = allJobs.find(j => j.id === jobId);
+                if (job) job[field] = value;
+                
+                renderTV();
+            } catch (err) {
+                showSystemToast(err.message || 'Error updating job property.', 'error');
+            }
+        }
+
+        function updateCheckbox(jobId, field, checked) {
+            updateJobField(jobId, field, checked);
+        }
+
+        async function setJobStatus(jobId, newStatus) {
+            try {
+                await apiRequest(`/api/jobs/${jobId}/status`, {
+                    method: 'PATCH',
+                    body: { status: newStatus }
+                });
+                
+                await loadData();
+                renderStaffTables(); 
+                renderTV();
+            } catch (err) {
+                showSystemToast(err.message || 'Error updating lift status.', 'error');
+                // Re-render to undo choice visually
+                renderStaffTables();
+            }
+        }
+
+        async function completeRelease(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if(!job) return;
+
+            if(!confirm(`Are you sure you want to finalize the release for ${job.plate}? This will remove the vehicle from the active system list.`)) return;
+            
+            try {
+                await apiRequest(`/api/jobs/${jobId}/status`, {
+                    method: 'PATCH',
+                    body: { status: 'Completed' }
+                });
+                
+                await loadData();
+                renderStaffTables();
+                renderReports(); 
+                renderTV();
+                showSystemToast(`${job.plate} has been successfully released and archived.`, 'success', 'Release Finalized');
+            } catch (err) {
+                showSystemToast(err.message || 'Error releasing vehicle.', 'error');
+            }
+        }
+
+        async function removeJob(jobId) {
+            if(!confirm("Remove this record entirely from the database?")) return;
+            try {
+                await apiRequest(`/api/jobs/${jobId}`, { method: 'DELETE' });
+                await loadData();
+                renderStaffTables();
+                renderTV();
+                showSystemToast('Job record deleted successfully.', 'success');
+            } catch (err) {
+                showSystemToast(err.message || 'Error deleting job.', 'error');
+            }
+        }
+
+        function renderStaffTables() {
+            const isOwner = currentUserRole === 'owner';
+            const isAsst = currentUserRole === 'assistant';
+            const isSA = currentUserRole === 'sa';
+            const isTech = currentUserRole === 'tech';
+
+            const onlineQueueEl = document.getElementById('container-online-queue');
+            const dailyIntakesEl = document.getElementById('container-daily-intakes');
+            const techBoardEl = document.getElementById('container-tech-board');
+
+            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isOwner));
+            if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech); 
+            if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
+            
+            // BOOKING MODULE
+            if ((isAsst || isOwner) && document.getElementById('table-pending-express')) {
+                const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
+                document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => `
+                    <tr>
+                        <td><div class="font-bold text-gray-900">${job.name}</div></td>
+                        <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
+                        <td class="text-gray-500 text-sm">${job.vehicle}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <input type="date" value="${job.apptDate}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-sm w-32 border border-gray-200">
+                                <input type="time" value="${job.apptTime}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-sm w-24 border border-gray-200">
+                            </div>
+                        </td>
+                        <td>
+                            <select onchange="updateJobField('${job.id}', 'partsAvailable', this.value)" class="table-select font-bold text-xs uppercase w-24 border border-gray-200" style="${job.partsAvailable==='Yes'?'color:#10b981':job.partsAvailable==='No'?'color:#ef4444':'color:#6b7280'}">
+                                <option value="Pending" ${job.partsAvailable==='Pending'?'selected':''}>Pend</option>
+                                <option value="Yes" ${job.partsAvailable==='Yes'?'selected':''}>Yes</option>
+                                <option value="No" ${job.partsAvailable==='No'?'selected':''}>No</option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)">
+                        </td>
+                        <td><input type="text" value="${job.evaluation || ''}" placeholder="Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 w-48 border border-gray-200 bg-white"></td>
+                        <td class="text-right flex items-center justify-end gap-2">
+                            <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-sm">Push Active</button>
+                            <button onclick="removeJob('${job.id}')" class="text-gray-400 hover:text-red-500 p-1 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </td>
+                    </tr>
+                `).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
+            }
+
+            // DAILY INTAKES
+            if (!isTech && document.getElementById('table-daily-intakes')) {
+                const activeJobs = allJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
+                document.getElementById('table-daily-intakes').innerHTML = activeJobs.map(job => {
+                    const canEditTimes = isAsst || isSA || isOwner;
+                    const canEditStatus = isAsst || isSA || isOwner;
+
+                    return `
+                    <tr class="${job.status === 'Ready' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
+                        <td><span class="font-mono text-gray-500 font-bold text-sm bg-gray-100 px-2 py-1 rounded">${job.claimStub || 'N/A'}</span></td>
+                        <td><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
+                        <td class="text-gray-500 text-sm">${job.vehicle}</td>
+                        
+                        <td>${canEditTimes ? `<input type="time" value="${job.arrival || ''}" onchange="updateJobField('${job.id}', 'arrival', this.value)" class="table-select text-sm w-28 border border-gray-200">` : `<span class="text-sm font-medium text-gray-600">${job.arrival || '--:--'}</span>`}</td>
+                        
+                        <td>${canEditTimes ? `<input type="time" value="${job.departure || ''}" onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select text-sm w-28 border border-gray-200">` : `<span class="text-sm font-medium text-gray-600">${job.departure || '--:--'}</span>`}</td>
+                        
+                        <td class="text-center"><i data-lucide="${job.source==='Walk-in'?'check-circle':'circle'}" class="w-5 h-5 mx-auto ${job.source==='Walk-in'?'text-red-600':'text-gray-300'}"></i></td>
+                        <td class="text-center"><i data-lucide="${job.source==='Online'?'check-circle':'circle'}" class="w-5 h-5 mx-auto ${job.source==='Online'?'text-red-600':'text-gray-300'}"></i></td>
+                        
+                        <td>
+                            ${canEditStatus ? `
+                                <select onchange="setJobStatus('${job.id}', this.value)" class="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 outline-none text-xs font-bold uppercase ${job.status==='Ready'?'text-green-600':'text-gray-700'} hover:border-red-400 w-36 transition cursor-pointer">
+                                    <option value="Waiting" ${job.status==='Waiting'?'selected':''}>Waiting</option>
+                                    ${[1,2,3,4].map(i => `<option value="Lift ${i}" ${job.status===`Lift ${i}`?'selected':''}>Lift 0${i}</option>`).join('')}
+                                    <option value="Ready" ${job.status==='Ready'?'selected':''}>Ready (Release)</option>
+                                    <option value="Carry Over" ${job.status==='Carry Over'?'selected':''}>Carry Over</option>
+                                    <option value="Released" ${job.status==='Released'?'selected':''}>Released</option>
+                                </select>
+                            ` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span>`}
+                        </td>
+                        
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <input type="text" value="${job.remarks || ''}" placeholder="Remarks..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 border border-gray-200 w-48 bg-white">
+                                
+                                ${job.status === 'Released' && canEditStatus ? `
+                                    <button onclick="completeRelease('${job.id}')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-[11px] font-black uppercase transition shadow-sm whitespace-nowrap flex items-center gap-1" title="Finalize and remove from list">
+                                        <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Released
+                                    </button>
+                                ` : ''}
+
+                                ${isAsst || isOwner ? `<button onclick="removeJob('${job.id}')" class="text-gray-400 hover:text-red-500 p-1.5 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`;
+            }
+
+            // TECH BOARD
+            if (isTech && document.getElementById('tech-cards-grid')) {
+                const activeJobs = allJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed' && j.status !== 'Released');
+                
+                document.getElementById('tech-cards-grid').innerHTML = activeJobs.map(job => `
+                    <div class="bg-white border ${job.status.startsWith('Lift') ? 'border-red-200 shadow-md' : 'border-gray-200 shadow-sm'} rounded-2xl p-6 flex flex-col gap-4 relative overflow-hidden transition hover:shadow-lg">
+                        ${job.status.startsWith('Lift') ? `<div class="absolute top-0 right-0 bg-red-600 px-4 py-1.5 text-[10px] font-black uppercase text-white rounded-bl-xl shadow-sm">${job.status}</div>` : ''}
+                        
+                        <div class="flex justify-between items-start pt-2">
+                            <div>
+                                <h4 class="text-2xl font-black text-gray-900 italic uppercase">${job.plate}</h4>
+                                <p class="text-xs text-gray-500 font-bold uppercase mt-1">${job.vehicle}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase ${job.category==='PMS'?'bg-blue-50 text-blue-600 border border-blue-200':job.category==='GR'?'bg-red-50 text-red-600 border border-red-200':'bg-gray-100 text-gray-600'}">${job.category}</span>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 min-h-[80px]">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Customer Concern / Notes:</p>
+                            <p class="text-sm text-gray-800 font-medium leading-relaxed">${job.concern || '<span class="italic text-gray-400">No notes provided.</span>'}</p>
+                        </div>
+                        
+                        <div class="space-y-3 mt-auto border-t border-gray-100 pt-4">
+                            <div>
+                                <label class="text-[10px] text-gray-500 font-bold uppercase ml-1 block mb-1">Parts Status</label>
+                                <select onchange="updateJobField('${job.id}', 'partsAvailable', this.value)" class="card-select font-bold" style="${job.partsAvailable==='Yes'?'color:#10b981':job.partsAvailable==='No'?'color:#ef4444':'color:#4b5563'}">
+                                    <option value="Pending" ${job.partsAvailable==='Pending'?'selected':''}>Pending Inspection</option>
+                                    <option value="Yes" ${job.partsAvailable==='Yes'?'selected':''}>Parts Available</option>
+                                    <option value="No" ${job.partsAvailable==='No'?'selected':''}>Waiting on Parts</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 font-bold uppercase ml-1 block mb-1">Tech Evaluation</label>
+                                <input type="text" value="${job.evaluation || ''}" placeholder="Enter diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="card-select">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 font-bold uppercase ml-1 block mb-1">Update Location / Status</label>
+                                <select onchange="setJobStatus('${job.id}', this.value)" class="card-select font-bold text-gray-900 border-gray-300">
+                                    <option value="Waiting" ${job.status==='Waiting'?'selected':''}>Waiting in Queue</option>
+                                    ${[1,2,3,4].map(i => `<option value="Lift ${i}" ${job.status===`Lift ${i}`?'selected':''}>Move to Lift 0${i}</option>`).join('')}
+                                    <option value="Ready" ${job.status==='Ready'?'selected':''}>Mark as Ready (Release)</option>
+                                    <option value="Carry Over" ${job.status==='Carry Over'?'selected':''}>Send to Carry Over</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `).join('') || `<div class="col-span-full text-center py-12 text-gray-500 font-medium bg-white rounded-2xl border border-gray-200">No active jobs in the workshop.</div>`;
+            }
+
+            // CARRY OVER BOARD
+            if (document.getElementById('table-carry-over')) {
+                const carryOverJobs = allJobs.filter(j => j.status === 'Carry Over');
+                document.getElementById('table-carry-over').innerHTML = carryOverJobs.map(job => {
+                    const canEdit = !isTech; 
+                    return `
+                    <tr>
+                        <td><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
+                        <td><span class="text-gray-600 text-sm font-medium">${job.vehicle}</span></td>
+                        <td>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-gray-500 text-xs w-24 bg-gray-100 px-2 py-1 rounded">${job.dateReceived}</span>
+                                ${canEdit ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="table-select text-orange-600 font-bold text-sm w-32 border border-gray-200 bg-white">` : `<span class="text-orange-600 font-bold text-sm w-28">${job.promisedDate || 'TBD'}</span>`}
+                            </div>
+                        </td>
+                        <td>
+                            ${canEdit ? `
+                            <select onchange="updateJobField('${job.id}', 'partsAvailable', this.value)" class="table-select font-bold text-xs uppercase w-24 border border-gray-200" style="${job.partsAvailable==='Yes'?'color:#10b981':job.partsAvailable==='No'?'color:#ef4444':'color:#6b7280'}">
+                                <option value="Yes" ${job.partsAvailable==='Yes'?'selected':''}>Yes</option>
+                                <option value="No" ${job.partsAvailable==='No'?'selected':''}>No</option>
+                                <option value="Pending" ${job.partsAvailable==='Pending'?'selected':''}>Pend</option>
+                            </select>
+                            ` : `<span class="text-xs font-bold uppercase ${job.partsAvailable==='Yes'?'text-green-600':job.partsAvailable==='No'?'text-red-600':'text-gray-500'}">${job.partsAvailable}</span>`}
+                        </td>
+                        <td>${canEdit ? `<input type="text" value="${job.saName || ''}" onchange="updateJobField('${job.id}', 'saName', this.value)" class="table-select text-gray-900 font-medium w-36 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.saName || '-'}</span>`}</td>
+                        <td>${canEdit ? `<input type="text" value="${job.evaluation || ''}" onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.evaluation || '-'}</span>`}</td>
+                        <td>
+                            <div class="flex gap-2 items-center">
+                                ${canEdit ? `<input type="text" value="${job.remarks || ''}" placeholder="Status, Reasons..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm w-48 block">${job.remarks || '-'}</span>`}
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-gray-100 text-gray-600 hover:bg-gray-200 px-3 py-2 rounded-lg text-[10px] font-bold uppercase transition w-full whitespace-nowrap">Return Active</button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('') || `<tr><td colspan="7" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+            }
+
+            lucide.createIcons();
+        }
+
+        function renderReports() {
+            if(currentUserRole !== 'owner') return;
+            const today = new Date().toISOString().split('T')[0];
+            const todayJobs = allJobs.filter(j => j.dateReceived === today);
+            
+            document.getElementById('metric-intake').innerText = todayJobs.length;
+            document.getElementById('metric-completed').innerText = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === today).length;
+            document.getElementById('metric-carryover').innerText = allJobs.filter(j => j.status === 'Carry Over').length;
+            document.getElementById('metric-inbay').innerText = allJobs.filter(j => j.status && j.status.startsWith('Lift')).length;
+        }
+
+        function exportData(format) {
+            showSystemToast(`Consolidating operational data for ${format} export...`, 'info', 'Management Module');
+            setTimeout(() => {
+                showSystemToast(`Hontech_Report.${format.toLowerCase()} has been generated.`, 'success', 'Export Complete');
+            }, 1500);
+        }
+
+        function showSystemToast(msg, type='info', title='System Alert') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            document.getElementById('toast-title').innerText = title;
+            
+            const icon = document.getElementById('toast-icon');
+            if(type === 'error') { icon.setAttribute('data-lucide', 'alert-circle'); icon.className = 'text-red-600 w-6 h-6'; toast.className = 'fixed bottom-10 right-10 bg-white border-l-4 border-red-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform transition-transform duration-300 z-[1000] flex items-center gap-4'; }
+            else if(type === 'success') { icon.setAttribute('data-lucide', 'check-circle'); icon.className = 'text-green-600 w-6 h-6'; toast.className = 'fixed bottom-10 right-10 bg-white border-l-4 border-green-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform transition-transform duration-300 z-[1000] flex items-center gap-4'; }
+            else { icon.setAttribute('data-lucide', 'info'); icon.className = 'text-blue-600 w-6 h-6'; toast.className = 'fixed bottom-10 right-10 bg-white border-l-4 border-blue-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform transition-transform duration-300 z-[1000] flex items-center gap-4'; }
+            
+            lucide.createIcons();
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => { toast.style.transform = 'translateX(150%)'; }, 3000);
+        }
+
+        function launchTVMode() { window.open(window.location.href.split('?')[0] + '?mode=tv', '_blank'); }
+
+        function setupTVMode() {
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('app-shell').classList.remove('hidden');
+            document.querySelector('header').classList.add('hidden');
+            
+            const mainContent = document.getElementById('main-content');
+            mainContent.classList.remove('p-6', 'md:p-10');
+            mainContent.classList.add('p-2');
+            document.getElementById('dashboard-header').classList.add('hidden');
+            
+            showSection('tv');
+            
+            // TV synchronization via REST API polling
+            setInterval(async () => {
+                try {
+                    await loadData();
+                    renderTV();
+                } catch (e) {
+                    console.error('Error refreshing TV monitor:', e);
+                }
+            }, 2000);
+            
+            tvInterval = setInterval(rotateTVSlides, 10000);
+            setInterval(updateClock, 1000);
+            loadData().then(() => renderTV()); 
+        }
+
+        function rotateTVSlides() {
+            const slides = ['tv-slide-0', 'tv-slide-1', 'tv-slide-2'];
+            const currentEl = document.getElementById(slides[tvSlideIndex]);
+            if (!currentEl) return;
+            currentEl.classList.remove('fade-in');
+            currentEl.classList.add('fade-out');
+            
+            setTimeout(() => {
+                currentEl.classList.add('hidden');
+                tvSlideIndex = (tvSlideIndex + 1) % slides.length;
+                const nextEl = document.getElementById(slides[tvSlideIndex]);
+                if (nextEl) {
+                    nextEl.classList.remove('hidden', 'fade-out');
+                    nextEl.classList.add('fade-in');
+                }
+
+                [0,1,2].forEach(i => {
+                    const dot = document.getElementById(`tv-dot-${i}`);
+                    if (dot) {
+                        dot.className = `w-3 h-3 rounded-full transition-all ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600'}`;
+                    }
+                });
+            }, 300); 
+        }
+
+        function renderTV() {
+            const expressJobs = allJobs.filter(j => (j.category === 'PMS' || j.category === 'Check-Up') && j.status !== 'Pending' && j.status !== 'Released' && j.status !== 'Carry Over' && j.status !== 'Completed');
+            const tvExpress = document.getElementById('tv-express-list');
+            if(tvExpress) {
+                tvExpress.innerHTML = expressJobs.map(job => `
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col justify-center h-32 relative shadow-md ${job.status === 'Ready' ? 'border-green-500 bg-green-50' : ''}">
+                        <span class="text-4xl font-black uppercase italic text-gray-900 tracking-tight">${job.plate}</span>
+                        <span class="text-xs text-gray-500 font-bold uppercase mt-1">${job.vehicle}</span>
+                        <span class="text-xs font-black uppercase tracking-widest text-blue-600 mt-2">
+                            ${job.status.startsWith('Lift') ? 'BAY ' + job.status.split(' ')[1] : (job.status === 'Ready' ? '<span class="text-green-600">READY</span>' : 'IN QUEUE')}
+                        </span>
+                    </div>
+                `).join('') || `<div class="col-span-full text-gray-400 font-black italic uppercase mt-20 text-center w-full">Express Lane Available</div>`;
+            }
+
+            const tvGRS = document.getElementById('tv-grs-list');
+            if(tvGRS) {
+                let liftsHTML = '';
+                for(let i=1; i<=4; i++) {
+                    const job = allJobs.find(j => j.status === `Lift ${i}` && j.category === 'GR');
+                    if (job) {
+                        liftsHTML += `
+                            <div class="bg-white border-2 border-red-600 rounded-2xl p-8 flex flex-col justify-center relative overflow-hidden shadow-lg">
+                                <div class="absolute top-0 right-0 bg-red-600 px-4 py-1.5 text-white font-black text-sm uppercase rounded-bl-2xl flex gap-2 items-center"><i data-lucide="wrench" class="w-4 h-4"></i> Lift 0${i}</div>
+                                <span class="text-6xl font-black uppercase italic text-gray-900 tracking-tighter mb-2">${job.plate}</span>
+                                <span class="text-sm font-bold uppercase tracking-widest text-gray-500">${job.vehicle} | ${job.category}</span>
+                            </div>`;
+                    } else {
+                        liftsHTML += `
+                            <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-2xl p-8 flex flex-col justify-center relative">
+                                <div class="absolute top-0 right-0 bg-gray-300 px-4 py-1.5 text-gray-600 font-black text-sm uppercase rounded-bl-2xl">Lift 0${i}</div>
+                                <span class="text-3xl font-black uppercase italic text-gray-400 text-center">Available</span>
+                            </div>`;
+                    }
+                }
+                tvGRS.innerHTML = liftsHTML;
+            }
+
+            const tvReady = document.getElementById('tv-ready-list');
+            const tvCarry = document.getElementById('tv-carryover-list');
+            
+            if(tvReady) {
+                const readyJobs = allJobs.filter(j => j.status === 'Ready');
+                tvReady.innerHTML = readyJobs.map(job => `
+                    <div class="bg-white border border-green-200 rounded-2xl px-10 py-6 text-center shadow-md w-full max-w-sm mx-auto">
+                        <span class="text-5xl font-black uppercase italic text-green-700 tracking-tighter block">${job.plate}</span>
+                        <span class="text-xs text-gray-500 font-bold uppercase block mt-2">${job.vehicle}</span>
+                    </div>
+                `).join('') || `<div class="text-green-700/50 font-black italic uppercase text-2xl mt-20 text-center w-full">Waiting for completed jobs</div>`;
+            }
+            if(tvCarry) {
+                const carryJobs = allJobs.filter(j => j.status === 'Carry Over');
+                tvCarry.innerHTML = carryJobs.map(job => `
+                    <div class="bg-white border border-orange-200 rounded-2xl px-6 py-4 flex justify-between items-center shadow-sm w-full">
+                        <div>
+                            <span class="text-3xl font-black uppercase italic text-gray-900 tracking-tight block">${job.plate}</span>
+                            <span class="text-xs text-gray-500 font-bold uppercase block mt-1">${job.vehicle}</span>
+                        </div>
+                        <span class="text-[10px] font-black uppercase text-orange-600 bg-orange-50 border border-orange-100 px-3 py-1.5 rounded-lg">Staying Overnight</span>
+                    </div>
+                `).join('') || `<div class="text-orange-400/50 font-black italic uppercase text-lg mt-20 text-center w-full">No carry-overs</div>`;
+            }
+            lucide.createIcons();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
+            if(document.getElementById('sys-clock')) document.getElementById('sys-clock').innerText = timeStr;
+            if(document.getElementById('tv-clock-display')) document.getElementById('tv-clock-display').innerText = timeStr;
+        }
+
+        async function loadData() {
+            try {
+                allJobs = await apiRequest('/api/jobs');
+                if (currentUserRole === 'owner') {
+                    staffAccounts = await apiRequest('/api/auth/staff');
+                }
+            } catch (err) {
+                console.error('Failed to load operational data:', err);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+@import "../abstracts/variables";
+
+.hero-bg {
+  background: linear-gradient(rgba(17, 24, 39, 0.85), rgba(17, 24, 39, 0.85)), 
+              url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+}

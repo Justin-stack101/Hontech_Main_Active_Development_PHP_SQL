@@ -1,0 +1,60 @@
+@import "../abstracts/variables";
+
+// Form & Table Inputs for Light Theme
+select.table-select,
+input.table-select,
+input[type="time"].table-select,
+input[type="date"].table-select {
+  background-color: transparent;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: all $transition-speed;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 100%;
+  color: #111827;
+  font-weight: 600;
+
+  &:hover {
+    border-color: #d1d5db;
+    background-color: #f9fafb;
+  }
+
+  &:focus {
+    border-color: $brand-red;
+    background-color: #fff;
+    cursor: text;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+  }
+}
+
+// Tech Card Selects
+select.card-select,
+input.card-select {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all $transition-speed;
+
+  &:focus {
+    border-color: $brand-red;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+  }
+}
+
+// Custom Checkbox
+input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: $brand-red;
+  cursor: pointer;
+}

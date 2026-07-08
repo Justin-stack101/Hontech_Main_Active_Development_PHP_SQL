@@ -1,0 +1,57 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+html {
+  font-size: 16px;
+  
+  // Smoothly scale down text and margins on smaller PC and laptop resolutions
+  @media (max-width: 1536px) {
+    font-size: 14.5px;
+  }
+  @media (max-width: 1280px) {
+    font-size: 13px;
+  }
+  @media (max-width: 1024px) {
+    font-size: 12px;
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: $brand-light;
+  color: $text-dark;
+  @include custom-scrollbar;
+  min-width: 320px;
+}
+
+
+// Fade in and out transitions
+.fade-in {
+  animation: fadeIn $animation-speed ease-out forwards;
+}
+
+.fade-out {
+  animation: fadeOut $animation-speed ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}

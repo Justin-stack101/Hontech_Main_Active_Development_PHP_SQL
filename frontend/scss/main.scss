@@ -1,0 +1,22 @@
+// Abstract variables and mixins
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+// Base rules (reset and typography)
+@import "base/reset";
+@import "base/typography";
+
+// Component rules
+@import "components/tables";
+@import "components/forms";
+@import "components/toast";
+
+// Layout rules
+@import "layout/header";
+@import "layout/navbar";
+@import "layout/shell";
+
+// Pages
+@import "pages/auth";
+@import "pages/dashboard";
+@import "pages/tv";

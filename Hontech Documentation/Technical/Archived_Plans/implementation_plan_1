@@ -1,0 +1,169 @@
+# HonTech AutoCenter Operations System Blueprint
+
+This document details the assessment and blueprint planning for upgrading the **HonTech AutoCenter Inc. Operations System** from a client-side prototype (relying on `localStorage` and plaintext mock users) to a fully functional, secure, database-backed web application.
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> The proposed architecture moves the application from a single static HTML file (`DayneImproved_Owner.html`) to a professional **Client-Server Architecture**. Below is a summary of the critical updates. Please review and provide feedback.
+
+### Key Decisions
+1. **Backend Stack:** Node.js (with Express) using **Vanilla JavaScript** (CommonJS modules or ES Modules) to keep codebases simple and native to JS.
+2. **Database:** MongoDB (using Mongoose ODM) to store, query, and manage active jobs, staff accounts, analytics, and history.
+3. **Frontend Evolution:** Maintaining pure vanilla HTML and JS, extracting inline styles and scripts into structured Sass files and external JS modules.
+4. **Security Enhancements:** Replacing the plaintext localStorage user session with secure, HTTP-only JWT cookies, bcrypt password hashing, and API sanitization.
+
+---
+
+## Open Questions
+
+> [!WARNING]
+> Please address these architectural questions to align our next steps:
+> 1. **Hosting and Deployment:** Are you planning to host the backend and database on a specific cloud service (e.g., Render, Railway, MongoDB Atlas for database)?
+> 2. **Sass Compiler Preference:** Since we are writing CSS in Sass, do you prefer a simple npm script running `sass --watch` to compile it to CSS, or a bundle tool like Vite? (A simple `sass` compiler is recommended for pure HTML/JS projects).
+> 3. **Offline Tolerance:** Since this is an in-shop operations tool, does the shop have unstable internet where we should design a service worker to cache views, or is a standard online client-server model preferred?
+
+---
+
+## Proposed Changes
+
+We recommend structuring the workspace as follows:
+```text
+/hontech-ops-system
+├── /backend
+│   ├── /config          # Database config, env loader
+│   ├── /controllers     # Route controllers (MVC: Controller)
+│   ├── /middleware      # Auth, rate-limiter, error handlers
+│   ├── /models          # Mongoose schemas (MVC: Model)
+│   ├── /routes          # Express endpoints (API routing)
+│   ├── server.js        # App entry point
+│   └── .env             # Environment variables (secrets)
+├── /frontend
+│   ├── /js
+│   │   ├── auth.js      # Login/Logout & token management
+│   │   ├── queue.js     # Master queue & tech cards logic
+│   │   ├── tv.js        # Live display monitor rotations
+│   │   └── api.js       # Central API client (fetch wrapper)
+│   ├── /scss            # Sass Styling directory
+│   └── index.html       # The main client view (upgraded DayneImproved_Owner.html)
+└── package.json
+```
+
+---
+
+### Component Architecture & Technical Assessment
+
+---
+
+### 1. Backend Architecture (Node.js & Express)
+
+To support MongoDB database integration, we must introduce a server. Express will act as our routing framework, and Mongoose will manage the schema and validation layers.
+
+#### SOLID Design Pattern Alignment
+- **Single Responsibility Principle (SRP):** Each controller file is dedicated to a single resource (e.g., `authController.js` handles security sessions, `jobController.js` handles work order state).
+- **Open/Closed Principle:** Middleware pipelines (e.g., authorization check, role check, input validator) can be extended with new logic without altering the existing endpoint routers.
+- **Repository/Model Separation:** Database queries are encapsulated within Mongoose schemas, keeping controllers clean of low-level queries.
+
+#### Database Models (Mongoose Schema Design)
+We will define two primary collections in MongoDB:
+- **Staff (Users):**
+  ```javascript
+  const userSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true, lowercase: true },
+    passwordHash: { type: String, required: true },
+    role: { type: String, enum: ['owner', 'assistant', 'sa', 'tech'], required: true },
+    isActive: { type: Boolean, default: true }
+  }, { timestamps: true });
+  ```
+- **Jobs (Intakes):**
+  ```javascript
+  const jobSchema = new mongoose.Schema({
+    id: { type: String, required: true, unique: true }, // e.g. WLK-1234 or ONL-5678
+    source: { type: String, enum: ['Walk-in', 'Online'], required: true },
+    plate: { type: String, required: true, uppercase: true },
+    name: { type: String, required: true },
+    contact: { type: String },
+    vehicle: { type: String, required: true },
+    category: { type: String, enum: ['PMS', 'GR', 'Check-Up'], required: true },
+    concern: { type: String },
+    dateReceived: { type: Date, default: Date.now },
+    arrival: { type: String },
+    departure: { type: String },
+    apptDate: { type: Date },
+    apptTime: { type: String },
+    confirmed: { type: Boolean, default: false },
+    claimStub: { type: String },
+    partsAvailable: { type: String, enum: ['Pending', 'Yes', 'No'], default: 'Pending' },
+    evaluation: { type: String, default: '' },
+    status: { type: String, required: true, default: 'Pending' },
+    bayAssigned: { type: Number, default: null }, // 0 to 3 for lifts
+    promisedDate: { type: Date },
+    remarks: { type: String, default: '' },
+    saName: { type: String, default: '' }
+  }, { timestamps: true });
+  ```
+
+---
+
+### 2. Sass Directory Structure (The 7-1 Pattern)
+
+Using a clean CSS structure ensures the style system scales well as we add layouts, dashboard metrics, and interactive components. We recommend using a modular Sass architecture:
+
+```text
+/frontend/scss/
+├── /abstracts/
+│   ├── _variables.scss   # Colors ($brand-red, $bg-light), typography
+│   └── _mixins.scss      # Media queries, flex/grid helpers
+├── /base/
+│   ├── _reset.scss       # Default browser resets
+│   └── _typography.scss  # Google Fonts import (Inter) and global font-sizes
+├── /components/
+│   ├── _buttons.scss     # Portal access button, push active, finalize
+│   ├── _tables.scss      # Table layouts, row hover styles, cell spacing
+│   ├── _forms.scss       # Card selects, textareas, inputs
+│   └── _toast.scss       # Fixed bottom-right toast message alerts
+├── /layout/
+│   ├── _header.scss      # Brand bar with slanted logo clip-path
+│   ├── _navbar.scss      # Role-based dynamic navigation list
+│   └── _shell.scss       # h-screen overflow-hidden base dashboard container
+├── /pages/
+│   ├── _auth.scss        # Fullscreen login view with backdrop Unsplash image
+│   ├── _dashboard.scss   # Metric analytics layout
+│   └── _tv.scss          # Dark theme live monitor display layout
+└── main.scss             # Primary compiler node that @imports all of the above
+```
+
+*In `main.scss` compilation compile output to `/frontend/css/main.css` for integration in HTML head.*
+
+---
+
+### 3. Security Implementation
+
+To safeguard system integrity and secure business intelligence, we will apply industry-standard backend security layers:
+
+| Vulnerability / Risk | Mitigation Strategy | Implementation Tool |
+| :--- | :--- | :--- |
+| **Plaintext Password Leaks** | Hash passwords at rest using adaptive hashing algorithms. | `bcrypt` (10 salt rounds) |
+| **Session Hijacking / CSRF** | Issue signed HTTP-only, secure cookies with short expiration windows. | `jsonwebtoken` (JWT) cookie storage |
+| **Unauthorized Role Access** | Check user roles in middleware before letting requests reach controller logic. | Custom express role verification helper |
+| **SQL/NoSQL Injections** | Use schemas with strict casting. Sanitize incoming payload fields. | Mongoose Models + `express-validator` |
+| **DoS / Rate Limit Attacks** | Limit query counts on open auth/login routes. | `express-rate-limit` |
+| **Cross-Origin / Header Risks** | Establish secure request validation and block insecure HTTP protocols. | `helmet` + configured `cors` middleware |
+
+---
+
+## Verification Plan
+
+### Automated Test Setup
+- Create a test suite using `supertest` and `jest` to mock Express endpoints.
+- **Commands:**
+  - `npm install --save-dev jest supertest`
+  - `npm run test` (executes integration tests for routes)
+
+### Manual Verification
+1. **Role Access Testing:** Attempt to request `/api/staff` data using an authorization token signed for a `tech` or `sa` role. Verify that the server returns a `403 Forbidden` response.
+2. **TV Synchronization:** Modify a vehicle status on the Advisor terminal. Verify that the TV live display updates immediately using Server-Sent Events (SSE) or database polling.
+3. **Password Validation:** Attempt to authenticate with a modified password block to confirm `bcrypt` matching behaves correctly.

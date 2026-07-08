@@ -1,0 +1,42 @@
+# .gitignore for HonTech - PHP/SQL Project
+
+# XAMPP / PHP environment
+*.log
+*.pid
+*.sock
+
+# Composer
+/vendor/
+composer.lock
+
+# Environment & sensitive config
+.env
+.env.local
+config/database.php
+
+# Node modules (if any)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Upload directories (user content - don't commit)
+uploads/
+storage/
+
+# PHP cache
+*.cache

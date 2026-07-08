@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> HonTech</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        red: {
+                            50: 'var(--color-red-50)',
+                            100: 'var(--color-red-100)',
+                            200: 'var(--color-red-200)',
+                            300: 'var(--color-red-300)',
+                            400: 'var(--color-red-400)',
+                            500: 'var(--color-red-500)',
+                            600: 'var(--color-red-600)',
+                            700: 'var(--color-red-700)',
+                            800: 'var(--color-red-800)',
+                            900: 'var(--color-red-900)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        :root {
+            /* Default Red Theme */
+            --color-red-50: #fef2f2;
+            --color-red-100: #fee2e2;
+            --color-red-200: #fecaca;
+            --color-red-300: #fca5a5;
+            --color-red-400: #f87171;
+            --color-red-500: #ef4444;
+            --color-red-600: #dc2626;
+            --color-red-700: #b91c1c;
+            --color-red-800: #991b1b;
+            --color-red-900: #7f1d1d;
+        }
+
+        .tv-slide.hidden {
+            display: none !important;
+        }
+
+        /* Custom Table Aesthetics (Slightly Darker & alternating rows to prevent too white look) */
+        #main-content table th {
+            color: #374151 !important; /* text-gray-700 */
+            background-color: #e5e7eb !important; /* bg-gray-200 */
+            border-bottom: 2px solid #d1d5db !important;
+        }
+        #main-content table thead tr {
+            background-color: #e5e7eb !important;
+        }
+        #main-content table tbody tr:nth-child(even):not([class*="bg-"]) {
+            background-color: #f9fafb !important; /* bg-gray-50 */
+        }
+        #main-content table tbody tr:hover:not([class*="bg-"]) {
+            background-color: #f3f4f6 !important; /* bg-gray-100 */
+            transition: background-color 0.15s ease-in-out;
+        }
+        
+        
+        /* Sidebar transition and styles */
+        #app-sidebar {
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-collapsed {
+            width: 5rem !important; /* w-20 */
+        }
+        .sidebar-collapsed .sidebar-expand-only {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            pointer-events: none;
+            display: none !important;
+        }
+        .sidebar-collapsed .nav-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            display: none !important;
+        }
+        .sidebar-collapsed #sidebar-footer-expanded {
+            display: none !important;
+        }
+        .sidebar-collapsed #sidebar-footer-collapsed {
+            display: flex !important;
+        }
+        .sidebar-collapsed #sidebar-toggle-icon {
+            transform: rotate(180deg);
+        }
+        /* Sidebar toggle buttons hover visibility */
+        .sidebar-header .sidebar-toggle-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .sidebar-header:hover .sidebar-toggle-btn {
+            opacity: 1 !important;
+        }
+
+        .sidebar-collapsed .sidebar-header {
+            justify-content: center !important;
+            padding: 0 !important;
+            position: relative;
+        }
+        .sidebar-collapsed .logo-container {
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+            margin: 0 auto;
+        }
+        .sidebar-collapsed .sidebar-header:hover .logo-container {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sidebar-collapsed #sidebar-expand-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0 !important;
+        }
+        .sidebar-collapsed .sidebar-header:hover #sidebar-expand-btn {
+            opacity: 1 !important;
+        }
+        .sidebar-collapsed .nav-btn {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        /* Top Navigation vs Sidebar hiding rules */
+        .layout-top #app-sidebar {
+            display: none !important;
+        }
+        .layout-sidebar header #dynamic-nav {
+            display: none !important;
+        }
+        .layout-sidebar header #header-logo-container {
+            display: none !important;
+        }
+
+        /* Premium Dark Sidebar styles */
+        #app-sidebar {
+            background-color: #0f172a !important; /* bg-slate-900 */
+            border-right-color: #1e293b !important; /* border-slate-800 */
+            color: #cbd5e1 !important; /* text-slate-300 */
+        }
+        #app-sidebar .bg-gray-50 {
+            background-color: #020617 !important; /* bg-slate-950 */
+        }
+        #app-sidebar .bg-gray-100\/30 {
+            background-color: #020617 !important; /* bg-slate-950 */
+        }
+        #app-sidebar .border-b, #app-sidebar .border-t {
+            border-color: #1e293b !important; /* border-slate-800 */
+        }
+        #app-sidebar .text-gray-900 {
+            color: #ffffff !important;
+        }
+        #app-sidebar .text-gray-600, #app-sidebar .text-gray-500 {
+            color: #94a3b8 !important; /* text-slate-400 */
+        }
+        #app-sidebar .nav-btn {
+            color: #cbd5e1 !important;
+            transition: all 0.2s ease;
+        }
+        #app-sidebar .nav-btn:hover {
+            background-color: #1e293b !important; /* hover:bg-slate-800 */
+            color: #ffffff !important;
+        }
+        #app-sidebar .nav-btn.bg-gray-100 {
+            background-color: #dc2626 !important; /* active: bg-red-600 */
+            color: #ffffff !important;
+        }
+        #app-sidebar button:hover {
+            background-color: #1e293b !important;
+        }
+        #sidebar-user-dropdown {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            color: #ffffff !important;
+        }
+        #sidebar-user-dropdown button {
+            color: #cbd5e1 !important;
+        }
+        #sidebar-user-dropdown button:hover {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+        }
+        #sidebar-user-dropdown .divide-y > * + * {
+            border-color: #334155 !important;
+        }
+        #sidebar-menu-user-role {
+            color: #ef4444 !important; /* Red accent role */
+        }
+        
+        /* Overlapping arrow spacing fix for narrow table select elements */
+        select.table-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: none !important;
+            padding-right: 4px !important;
+            padding-left: 4px !important;
+            text-align-last: center;
+        }
+    </style>
+</head>
+
+<body class="h-screen overflow-hidden bg-gray-50">
+
+    <!-- Authentication View -->
+    <div id="auth-view" class="fixed inset-0 z-[500] grid grid-cols-1 lg:grid-cols-12 bg-white overflow-hidden">
+
+        <!-- Left Side: Branding / Hero Banner (visible on large screens) -->
+        <div
+            class="lg:col-span-5 hidden lg:flex flex-col justify-between p-12 text-white relative auth-hero select-none">
+
+            <!-- Logo & Brand Header -->
+            <div class="flex items-center gap-3 z-10">
+                <i data-lucide="wrench" class="w-8 h-8 text-red-500 drop-shadow"></i>
+                <div class="flex flex-col">
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-black italic uppercase tracking-tighter text-3xl leading-none drop-shadow-md">
+                            HonTech
+                        </span>
+                        <span class="text-[10px] font-bold tracking-wider text-red-200 bg-red-800/30 px-1.5 py-0.5 rounded border border-red-500/30">v1.0.0-beta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Marketing Heading -->
+            <div class="space-y-6 my-auto z-10 max-w-md">
+
+
+                <h1
+                    class="text-4xl xl:text-5xl font-black italic tracking-tight leading-[1.15] text-white uppercase drop-shadow-lg">
+                    Web-Based <br>Vehicle Intake & <br>Queue <span class="text-red-500">Monitoring</span>
+                </h1>
+
+                <p class="text-sm text-gray-400 leading-relaxed font-semibold">
+                    Streamlining workshop vehicle intakes, service assignments, live monitoring, and front desk
+                    scheduling in a single, unified digital hub.
+                </p>
+            </div>
+
+            <!-- Footer / Copyright -->
+            <div class="z-10 text-xs text-gray-500 font-semibold space-y-1">
+                <p>© 2026 HonTech AutoCenter Inc. All rights reserved.</p>
+                <p>STI College Marikina | Developed by BSIT Students.</p>
+            </div>
+
+        </div>
+
+        <!-- Right Side: Clean Login Form Container -->
+        <div class="lg:col-span-7 flex flex-col min-h-screen bg-white overflow-y-auto">
+
+            <!-- Top Alert Banner (Black background with red accent border) -->
+            <div
+                class="bg-[#111827] text-gray-300 px-6 py-3.5 flex items-start gap-3 text-xs leading-relaxed shrink-0 border-b-2 border-red-600 shadow-sm">
+                <i data-lucide="shield-alert" class="w-5 h-5 shrink-0 text-red-500 mt-0.5 animate-pulse"></i>
+                <div>
+                    <strong class="uppercase font-extrabold tracking-wider text-red-500">Security Notice:</strong> This
+                    system is strictly for queue management and workshop operations. Access is authorized for registered
+                    HonTech personnel only.
+                </div>
+            </div>
+
+            <!-- Center Form Wrapper -->
+            <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-12 w-full max-w-xl mx-auto my-auto">
+
+                <div class="w-full space-y-8">
+                    <!-- Title -->
+                    <div>
+                        <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-2">Welcome back</h2>
+                        <p class="text-sm font-bold text-gray-500 uppercase tracking-wide">Access internal management
+                            dashboard.</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <div id="login-form-container" class="space-y-6">
+                        <div>
+                            <label
+                                class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Email
+                                Address</label>
+                            <div class="relative">
+                                <i data-lucide="mail" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                <input type="email" id="login-email"
+                                    class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
+                                    placeholder="Enter assigned email">
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label
+                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest">Password</label>
+                                <a href="javascript:void(0)" onclick="toggleForgotForm(true)"
+                                    class="text-xs font-bold text-red-600 hover:text-red-700 transition">Forgot
+                                    Password?</a>
+                            </div>
+                            <div class="relative">
+                                <i data-lucide="lock" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                <input type="password" id="login-pass"
+                                    class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
+                                    placeholder="Enter password">
+                            </div>
+                        </div>
+
+                        <!-- System Credentials styled beautifully like Dev Test links -->
+                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner">
+                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
+                                    <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy Dev Credentials</span>
+                                </div>
+                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-500 w-4.5 h-4.5 transition-transform duration-200"></i>
+                            </div>
+                            <div id="dev-credentials-grid" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] font-bold text-gray-600 leading-normal mt-3">
+                                 <!-- Global Accounts -->
+                                 <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Owner (Global)</span>
+                                     <span class="text-gray-900">owner@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: owner123</span>
+                                 </div>
+                                 <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Global)</span>
+                                     <span class="text-gray-900">admin@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                 </div>
+
+                                 <!-- Branch A Accounts -->
+                                 <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch A)</span>
+                                     <span class="text-gray-900">staff@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                 </div>
+                                 <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch A)</span>
+                                     <span class="text-gray-900">sa@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
+                                 </div>
+
+                                 <!-- Branch B Accounts -->
+                                 <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch B)</span>
+                                     <span class="text-gray-900">staff.east@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                 </div>
+                                 <div onclick="document.getElementById('login-email').value='sa.east@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch B)</span>
+                                     <span class="text-gray-900">sa.east@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
+                                 </div>
+                             </div>
+                        </div>
+
+                        <!-- Access Portal Action Button -->
+                        <button onclick="processLogin()"
+                            class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2">
+                            Access Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+
+                        <!-- Google Sign In -->
+                        <div class="relative flex py-2 items-center">
+                            <div class="flex-grow border-t border-gray-200"></div>
+                            <span
+                                class="flex-shrink mx-4 text-gray-400 text-[9px] font-black uppercase tracking-wider">or
+                                security recover</span>
+                            <div class="flex-grow border-t border-gray-200"></div>
+                        </div>
+                        <button onclick="triggerGoogleLogin()"
+                            class="w-full bg-white hover:bg-gray-50 text-gray-700 font-bold border border-gray-300 py-3.5 rounded-xl shadow-sm text-xs flex items-center justify-center gap-3 transition">
+                            <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" width="24" height="24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g transform="matrix(1, 0, 0, 1, 0, 0)">
+                                    <path
+                                        d="M21.35,11.1H12v2.7h5.38c-0.24,1.28 -0.96,2.37 -2.04,3.1v2.57h3.3c1.93,-1.78 3.04,-4.4 3.04,-7.49C21.68,11.75 21.56,11.4 21.35,11.1z"
+                                        fill="#4285F4" />
+                                    <path
+                                        d="M12,21c2.43,0 4.47,-0.8 5.96,-2.18l-3.3,-2.57c-0.9,0.6 -2.07,0.98 -3.36,0.98 -2.35,0 -4.33,-1.58 -5.04,-3.7H2.92v2.66C4.4,18.06 8,21 12,21z"
+                                        fill="#34A853" />
+                                    <path
+                                        d="M6.96,13.53C6.78,13 6.69,12.42 6.69,11.82c0,-0.6 0.09,-1.18 0.27,-1.71V7.45H2.92C2.33,8.64 2,9.98 2,11.82c0,1.84 0.33,3.18 0.92,4.37L6.96,13.53z"
+                                        fill="#FBBC05" />
+                                    <path
+                                        d="M12,6.72c1.32,0 2.5,0.45 3.44,1.35l2.58,-2.58C16.46,4.09 14.43,3.3 12,3.3c-4,0 -7.6,2.94 -9.08,6.81l4.04,3.14C7.67,8.3 9.65,6.72 12,6.72z"
+                                        fill="#EA4335" />
+                                </g>
+                            </svg>
+                            Continue with Google
+                        </button>
+                    </div>
+
+                    <!-- Two-Factor Authentication Verification View -->
+                    <div id="mfa-form-container" class="hidden space-y-6">
+                        <div>
+                            <h2 class="text-2xl font-black text-gray-900 tracking-tight mb-2">MFA Authentication</h2>
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-wide">Account security check
+                                required.</p>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 shadow-sm text-center">
+                            <span class="text-[9px] font-black uppercase text-red-600 tracking-wider">Verification Code
+                                Required</span>
+                            <p class="text-xs text-gray-600 font-semibold mt-1">Check Google Authenticator or use a
+                                Backup Code for <span id="mfa-email-display" class="font-bold text-gray-900">...</span>
+                            </p>
+                        </div>
+                        <input type="hidden" id="mfa-user-id">
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">MFA
+                                    OTP or Backup Code</label>
+                                <div class="relative">
+                                    <i data-lucide="key-round"
+                                        class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                    <input type="text" id="mfa-code-input"
+                                        class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-bold text-sm transition tracking-widest text-center"
+                                        placeholder="Enter code or backup code">
+                                </div>
+                            </div>
+                            <button onclick="submitMfaCode()"
+                                class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2">
+                                Verify and Access <i data-lucide="check" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="text-center pt-2">
+                            <button onclick="cancelMfa()"
+                                class="text-xs font-bold text-gray-500 hover:text-gray-700 transition uppercase tracking-widest">
+                                Cancel / Back
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Forgot Password Form -->
+                    <div id="forgot-form-container" class="hidden space-y-6">
+                        <div>
+                            <h2 class="text-2xl font-black text-gray-900 tracking-tight mb-2">Reset Password</h2>
+                            <p class="text-sm font-bold text-gray-500 uppercase tracking-wide">Request a code to reset
+                                your password.</p>
+                        </div>
+
+                        <!-- Step 1: Request Code -->
+                        <div id="forgot-step-1" class="space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Email
+                                    Address</label>
+                                <div class="relative">
+                                    <i data-lucide="mail" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                    <input type="email" id="forgot-email"
+                                        class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
+                                        placeholder="Enter registered email">
+                                </div>
+                            </div>
+
+                            <button onclick="requestResetCode()"
+                                class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2">
+                                Send Reset Code <i data-lucide="mail-check" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 2: Enter Code & New Password -->
+                        <div id="forgot-step-2" class="hidden space-y-6">
+                            <div>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Reset
+                                    Code (OTP)</label>
+                                <div class="relative">
+                                    <i data-lucide="key-round"
+                                        class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                    <input type="text" id="reset-token"
+                                        class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition font-mono tracking-widest text-center"
+                                        placeholder="Enter 6-digit code">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">New
+                                    Password</label>
+                                <div class="relative">
+                                    <i data-lucide="lock" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="reset-new-pass"
+                                        class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
+                                        placeholder="Enter new password">
+                                </div>
+                            </div>
+
+                            <button onclick="submitNewPassword()"
+                                class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2">
+                                Reset Password <i data-lucide="check" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center pt-2">
+                            <button onclick="toggleForgotForm(false)"
+                                class="text-xs font-bold text-gray-500 hover:text-gray-700 transition uppercase tracking-widest">
+                                Back to Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Application Shell -->
+    <div id="app-shell" class="hidden flex h-full bg-gray-100 overflow-hidden layout-sidebar">
+
+        <!-- Left Sidebar (Google Chat style) -->
+        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-64 select-none shrink-0">
+            <!-- Sidebar Header / Logo -->
+            <div class="sidebar-header h-20 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
+                <div class="flex items-center gap-1.5 overflow-hidden logo-container">
+                    <!-- Sidebar Logo -->
+                    <div class="shrink-0 flex items-center justify-center w-8 h-8 text-red-600">
+                        <i data-lucide="wrench" class="w-8 h-8"></i>
+                    </div>
+                    <div class="flex flex-col sidebar-expand-only transition-all duration-300">
+                        <div class="flex items-baseline gap-2">
+                            <span class="font-black italic uppercase tracking-tighter text-xl leading-none text-gray-900">HonTech</span>
+                            <span class="text-[9px] font-bold tracking-wider text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">v1.0</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Collapse Button -->
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
+                    <i data-lucide="chevrons-left" id="sidebar-toggle-icon" class="w-4 h-4"></i>
+                </button>
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
+                    <i data-lucide="chevrons-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Sidebar Navigation Content -->
+            <div class="flex-1 overflow-y-auto py-6 px-4 space-y-6">
+                <!-- Main Nav Links -->
+                <nav id="sidebar-dynamic-nav" class="space-y-1.5"></nav>
+            </div>
+
+            <!-- Sidebar Footer (User info & Settings) -->
+            <div class="p-4 border-t border-gray-200 bg-gray-100/30 shrink-0 relative">
+                <!-- Sidebar Dropdown Menu (Pops up) -->
+                <div id="sidebar-user-dropdown" class="hidden absolute left-4 bottom-[100%] mb-2 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
+
+
+                    <!-- Account Settings Link -->
+                    <div class="px-3 py-2">
+                        <button onclick="showSection('settings'); toggleSidebarDropdown()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition">
+                            <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
+                            Account Settings
+                        </button>
+                    </div>
+
+                    <!-- Sign Out Action -->
+                    <div class="px-3 py-2">
+                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Collapsed View footer -->
+                <div id="sidebar-footer-collapsed" class="hidden flex flex-col items-center gap-4">
+                    <button onclick="toggleSidebarDropdown()" class="w-10 h-10 rounded-full bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold" title="Settings">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="toggleSidebarDropdown()" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600" title="Settings">
+                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <!-- Expanded View footer -->
+                <div id="sidebar-footer-expanded" class="flex items-center justify-between gap-3">
+                    <button onclick="toggleSidebarDropdown()" class="flex flex-1 items-center gap-3 min-w-0 text-left hover:opacity-90 transition">
+                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold shrink-0">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-black text-gray-900" id="sidebar-menu-user-name">User</p>
+                            <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest" id="sidebar-menu-user-role">Role</p>
+                        </div>
+                    </button>
+                    <button onclick="toggleSidebarDropdown()" class="p-2 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition shrink-0">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <div id="app-main-wrapper" class="flex-1 flex flex-col h-full overflow-hidden">
+
+            <header
+                class="bg-white shadow-md z-50 flex h-20 items-center justify-between border-b border-gray-200 shrink-0">
+                <div id="header-logo-container" class="h-full bg-red-600 text-white flex items-center pl-8 pr-16 slanted-logo-bg shadow-inner">
+                    <div class="flex items-center gap-3">
+                        <!-- Header Brand Logo -->
+                        <div class="shrink-0 flex items-center justify-center w-6 h-6 text-white">
+                            <i data-lucide="wrench" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline gap-2">
+                                <span class="font-black italic uppercase tracking-tighter text-2xl leading-none block drop-shadow-md">HonTech</span>
+                                <span class="text-[10px] font-bold tracking-wider text-red-200 bg-red-800/30 px-1.5 py-0.5 rounded border border-red-500/30">v1.0.0-beta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <nav id="dynamic-nav" class="flex flex-1 items-center px-6 gap-2 md:gap-4 overflow-x-auto"></nav>
+
+            <div id="header-user-section" class="flex items-center gap-6 px-8 border-l border-gray-100 h-full">
+                <div id="header-status"
+                    class="hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] font-bold uppercase text-gray-600 tracking-widest">System Online</span>
+                </div>
+
+                <!-- User Profile Dropdown Container -->
+                <div class="relative">
+                    <button onclick="toggleUserDropdown()" class="flex items-center gap-3 focus:outline-none hover:opacity-90 transition">
+                        <div class="text-right hidden md:block">
+                            <p class="text-sm font-bold text-gray-900 leading-tight" id="sidebar-user-name">User</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="sidebar-user-role">Role</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold relative">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
+                        </div>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
+
+
+                        <!-- Account Settings Link -->
+                        <div class="px-3 py-2">
+                            <button onclick="showSection('settings'); toggleUserDropdown()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition">
+                                <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
+                                Account Settings
+                            </button>
+                        </div>
+
+                        <!-- Sign Out Action -->
+                        <div class="px-3 py-2">
+                            <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition">
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto relative p-4 md:p-6" id="main-content">
+
+            <div id="dashboard-header"
+                class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                <div>
+                    <h2 id="view-title" class="text-2xl font-black uppercase tracking-tight text-gray-900">Dashboard
+                    </h2>
+                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">System Time: <span
+                            id="sys-clock" class="text-red-600">00:00</span></p>
+                </div>
+
+                <div id="header-actions" class="hidden flex gap-3">
+                    <button onclick="exportData('PDF')"
+                        class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-widest transition shadow-sm"
+                        title="Export to PDF">
+                        <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> PDF
+                    </button>
+                    <button onclick="exportData('Word')"
+                        class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-widest transition shadow-sm"
+                        title="Export to Word">
+                        <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600"></i> Word
+                    </button>
+                </div>
+            </div>
+
+            <!-- ANALYTICS DASHBOARD -->
+            <div id="section-dashboard" class="section-content hidden fade-in space-y-8">
+                <div class="flex border-b border-gray-200 mb-6 gap-6">
+                    <button id="btn-db-tab-monitor" onclick="switchDashboardTab('monitor')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-4 h-4"></i> Live Operations Monitor
+                    </button>
+                    <button id="btn-db-tab-analytics" onclick="switchDashboardTab('analytics')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics & Reports Center
+                    </button>
+                    <button id="btn-db-tab-periodic" onclick="switchDashboardTab('periodic')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
+                        <i data-lucide="table" class="w-4 h-4"></i> Periodic Table
+                    </button>
+                </div>
+
+                <!-- SHARED ANALYTICS & PERIODIC SELECTORS -->
+                <div id="db-analytics-selectors" class="hidden mb-6">
+                    <!-- Range Selectors & Filter Row -->
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <div>
+                                <label
+                                    class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Report
+                                    Scope</label>
+                                <select id="analytics-scope" onchange="handleScopeChange()"
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="daily">Daily Report</option>
+                                    <option value="weekly">Weekly Report</option>
+                                    <option value="monthly">Monthly Report</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Branch</label>
+                                <select id="analytics-branch" onchange="loadAnalyticsData()"
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All Branches</option>
+                                    <option value="Branch A">Branch A</option>
+                                    <option value="Branch B">Branch B</option>
+                                </select>
+                            </div>
+                            <div id="picker-daily">
+                                <label
+                                    class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Select
+                                    Date</label>
+                                <input type="date" id="analytics-date" onchange="loadAnalyticsData()"
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition">
+                            </div>
+                            <div id="picker-weekly" class="hidden">
+                                <label
+                                    class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Select
+                                    Week (Any Day)</label>
+                                <input type="date" id="analytics-week-date" onchange="loadAnalyticsData()"
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition">
+                            </div>
+                            <div id="picker-monthly" class="hidden">
+                                <label
+                                    class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Select
+                                    Month</label>
+                                <input type="month" id="analytics-month" onchange="loadAnalyticsData()"
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div>
+                            <span id="analytics-period-label"
+                                class="bg-red-50 text-red-600 font-black text-[11px] uppercase tracking-widest px-4 py-3 rounded-xl border border-red-100 shadow-sm block text-center">
+                                Period: -
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 1: LIVE OPERATIONS MONITOR -->
+                <div id="db-tab-monitor" class="space-y-8">                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Card 1: Total Daily Intake -->
+                        <div class="bg-white border border-gray-200 hover:border-red-500/30 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center flex flex-col items-center justify-between group">
+                            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="calendar-plus" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Total Daily Intake</p>
+                            <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-intake">0</h3>
+                            <p class="text-[10px] text-red-650 font-bold uppercase tracking-wider mt-1.5">Vehicles Registered</p>
+                        </div>
+                        
+                        <!-- Card 2: Released Today -->
+                        <div class="bg-white border border-gray-200 hover:border-emerald-500/30 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center flex flex-col items-center justify-between group">
+                            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Released Today</p>
+                            <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-completed">0</h3>
+                            <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mt-1.5" id="metric-completed-subtext">Services Completed</p>
+                        </div>
+
+                        <!-- Card 3: Active Carry-Overs -->
+                        <div class="bg-white border border-gray-200 hover:border-amber-500/30 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center flex flex-col items-center justify-between group">
+                            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="history" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Active Carry-Overs</p>
+                            <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-carryover">0</h3>
+                            <p class="text-[10px] text-amber-600 font-bold uppercase tracking-wider mt-1.5">Awaiting Parts/Extended</p>
+                        </div>
+
+                        <!-- Card 4: In Bays (Working) -->
+                        <div class="bg-white border border-gray-200 hover:border-blue-500/30 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center flex flex-col items-center justify-between group">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                <i data-lucide="wrench" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">In Bays (Working)</p>
+                            <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-inbay">0</h3>
+                            <p class="text-[10px] text-blue-650 font-bold uppercase tracking-wider mt-1.5" id="metric-inbay-subtext">Currently on Lift</p>
+                        </div>
+                    </div>>
+                </div>
+
+                <!-- TAB 2: ANALYTICS & REPORTS CENTER -->
+                <div id="db-tab-analytics" class="hidden space-y-8">
+
+                    <!-- Period Summary Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Intakes Card -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm text-center">
+                            <div
+                                class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Total Intakes
+                            </p>
+                            <h3 class="text-3xl font-black text-gray-900" id="analytic-metric-intake">0</h3>
+                            <p class="text-[9px] text-red-600 font-bold uppercase mt-1">Vehicles Registered</p>
+                            <div class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around">
+                                <span>Branch A: <strong id="branch-a-intake" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="branch-b-intake" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
+                        </div>
+                        <!-- Completed Card -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm text-center">
+                            <div
+                                class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="check-square" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Completed
+                                Jobs</p>
+                            <h3 class="text-3xl font-black text-gray-900" id="analytic-metric-completed">0</h3>
+                            <p class="text-[9px] text-green-600 font-bold uppercase mt-1">Released to Clients</p>
+                            <div class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around">
+                                <span>Branch A: <strong id="branch-a-completed" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="branch-b-completed" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
+                        </div>
+                        <!-- Carryovers Card -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm text-center">
+                            <div
+                                class="w-10 h-10 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Carry Overs
+                            </p>
+                            <h3 class="text-3xl font-black text-gray-900" id="analytic-metric-carryover">0</h3>
+                            <p class="text-[9px] text-orange-600 font-bold uppercase mt-1">Active Carry-Overs</p>
+                            <div class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around">
+                                <span>Branch A: <strong id="branch-a-carryover" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="branch-b-carryover" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
+                        </div>
+                        <!-- Average Duration Card -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm text-center">
+                            <div
+                                class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i data-lucide="timer" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Avg Service
+                                Time</p>
+                            <h3 class="text-3xl font-black text-gray-900" id="analytic-metric-duration">--</h3>
+                            <p class="text-[9px] text-blue-600 font-bold uppercase mt-1">Arrival to Departure</p>
+                            <div class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around">
+                                <span>Branch A: <strong id="branch-a-duration" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="branch-b-duration" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 1 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Volume Trend Chart (takes 2 columns) -->
+                        <div
+                            class="lg:col-span-2 bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="trending-up" class="w-4 h-4 text-red-600"></i> Period Intake &
+                                Completion Trends
+                            </h4>
+                            <div class="flex-1 min-h-[260px] max-h-[300px] relative">
+                                <canvas id="chart-volume-trend"></canvas>
+                            </div>
+                        </div>
+                        <!-- Service Category Breakdown Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Service Categories
+                                Breakdown
+                            </h4>
+                            <div class="flex-1 min-h-[260px] max-h-[300px] relative flex items-center justify-center">
+                                <canvas id="chart-category-breakdown"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 2 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Intake Channel Share Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i> Booking Channels Share
+                            </h4>
+                            <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
+                                <canvas id="chart-channel-breakdown"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Performance & Efficiency Insights Grid -->
+                        <div
+                            class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col lg:col-span-2">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="gauge" class="w-4 h-4 text-red-600"></i> Efficiency & Volume Insights
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Completion
+                                        Success Rate</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-completion-rate">0%
+                                    </p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Ratio of completed jobs versus total intakes.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                                        Complimentary Check-Ups</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-checkups-count">0</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Total free diagnostics and check-ups performed.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Preventive
+                                        Maintenance (PMS)</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-pms-count">0</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Total volume of routine maintenance services.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">General
+                                        Repairs (GR)</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-gr-count">0</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Total volume of heavy repairs (brakes, engine, etc).</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PMS Goal Success Rate</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-pms-success-rate">0%</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Percentage of PMS jobs completed within 2 hours.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PMS Success / Failure</p>
+                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-pms-success-counts">0 S / 0 F</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Met the 2-hour goal (S) vs exceeded it (F).</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Peak Intake Hours</p>
+                                    <p class="text-xl font-black text-gray-900 mt-1" id="insight-peak-hour">--</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Time window with the highest intake volume.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Walk-in / Online Ratio</p>
+                                    <p class="text-xl font-black text-gray-900 mt-1" id="insight-booking-ratio">--</p>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Comparison of walk-ins vs online registrations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 3 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Branch Share Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="map" class="w-4 h-4 text-red-600"></i> Branch Volume Share
+                            </h4>
+                            <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
+                                <canvas id="chart-branch-share"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Lane Share Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="route" class="w-4 h-4 text-red-600"></i> Lane Allocation Breakdown
+                            </h4>
+                            <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
+                                <canvas id="chart-lane-share"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Parts Status Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="settings-2" class="w-4 h-4 text-red-600"></i> Parts Status Breakdown
+                            </h4>
+                            <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
+                                <canvas id="chart-parts-status"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid Row 4 -->
+                    <div class="grid grid-cols-1 gap-6">
+                        <!-- SA Workload Chart -->
+                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
+                                <i data-lucide="user-check" class="w-4 h-4 text-red-600"></i> Service Advisor Workload Distribution
+                            </h4>
+                            <div class="flex-1 min-h-[240px] max-h-[300px] relative">
+                                <canvas id="chart-sa-workload"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PERIODIC TABLE -->
+                <div id="db-tab-periodic" class="hidden space-y-8">
+                    <!-- Period Log Records Table -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="border-b border-gray-150 px-6 py-4.5 flex items-center justify-between bg-gray-50">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                <i data-lucide="list" class="w-4 h-4 text-red-600"></i> Period Record Log Table
+                            </h4>
+                            <span
+                                class="text-[10px] font-black text-red-600 uppercase bg-red-50 border border-red-100 px-3 py-1 rounded-full"
+                                id="analytic-table-count">
+                                0 records
+                            </span>
+                        </div>
+                        <div class="bg-gray-50 border-b border-gray-150 px-6 py-3 flex flex-wrap items-center gap-4">
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Handled
+                                    By (SA)</label>
+                                <select id="filter-analytic-sa" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All SAs</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Service
+                                    Status</label>
+                                <select id="filter-analytic-status" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Waiting">Waiting</option>
+                                    <option value="Ready">Ready</option>
+                                    <option value="Carry Over">Carry Over</option>
+                                    <option value="Released">Released</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Goal
+                                    Remarks</label>
+                                <select id="filter-analytic-goal" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All Goals</option>
+                                    <option value="Successful">Successful</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Search</label>
+                                <input type="text" id="filter-analytic-search" oninput="applyAnalyticFilters()" placeholder="Plate, Model, SA..."
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition placeholder-gray-400 w-44">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
+                                <input type="date" id="filter-analytic-start-date" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
+                                <input type="date" id="filter-analytic-end-date" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-white">
+                                    <tr
+                                        class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                        <th class="px-6 py-4 bg-white">Date Recv</th>
+                                        <th class="px-6 py-4 bg-white">Claim Stub</th>
+                                        <th class="px-6 py-4 bg-white">Plate No.</th>
+                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
+                                        <th class="px-6 py-4 bg-white">Category</th>
+                                        <th class="px-6 py-4 bg-white">Branch</th>
+                                        <th class="px-6 py-4 bg-white">Source</th>
+                                        <th class="px-6 py-4 bg-white">Arrival</th>
+                                        <th class="px-6 py-4 bg-white">Departure</th>
+                                        <th class="px-6 py-4 bg-white">Goal Remarks</th>
+                                        <th class="px-6 py-4 bg-white">Handled By</th>
+                                        <th class="px-6 py-4 bg-white">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-analytics-body"
+                                    class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <tr>
+                                        <td colspan="11" class="text-center py-12 text-gray-500 font-medium">
+                                            Select a range and filter to view period records.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- STAFF MANAGEMENT -->
+            <div id="section-staff" class="section-content hidden fade-in space-y-6">
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-gray-200 mb-6 gap-6">
+                    <button id="btn-staff-tab-roster" onclick="switchStaffTab('roster')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 focus:outline-none">
+                        <i data-lucide="users" class="w-4 h-4"></i> Staff Roster
+                    </button>
+                    <button id="btn-staff-tab-branches" onclick="switchStaffTab('branches')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 focus:outline-none">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i> Branch Management
+                    </button>
+                    <button id="btn-staff-tab-trash" onclick="switchStaffTab('trash')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 focus:outline-none">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i> Recovery Bin
+                    </button>
+                </div>
+
+                <!-- Tab 1: Staff Roster -->
+                <div id="staff-tab-roster" class="staff-tab-content space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-1 bg-white border border-gray-200 border-t-4 border-t-red-600 p-6 md:p-8 rounded-2xl shadow-md flex flex-col h-fit">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-3 bg-red-50 rounded-xl text-red-600"><i data-lucide="user-plus" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Add Personnel</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Create System Access</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Full Name</label>
+                                    <input type="text" id="new-staff-name" placeholder="e.g. John Doe"
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">System Role</label>
+                                    <select id="new-staff-role"
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition cursor-pointer">
+                                        <option value="assistant">Assistant Staff</option>
+                                        <option value="sa">Service Advisor</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="owner">Owner</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Branch Site</label>
+                                    <select id="new-staff-branch"
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition cursor-pointer">
+                                        <!-- Populated dynamically -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Email Address (Login ID)</label>
+                                    <input type="email" id="new-staff-email" placeholder="email@hontech.com"
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Temporary Password</label>
+                                    <input type="password" id="new-staff-pass" placeholder="Enter password"
+                                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                                </div>
+     
+                                <button onclick="createStaffAccount()"
+                                    class="w-full bg-gray-900 hover:bg-black transition py-3.5 text-white font-black uppercase rounded-xl mt-4 shadow-md text-sm tracking-widest flex items-center justify-center gap-2">
+                                    <i data-lucide="save" class="w-4 h-4"></i> Create Account
+                                </button>
+                            </div>
+                        </div>
+     
+                        <div class="lg:col-span-2 bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col min-h-[400px]">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="p-3 bg-gray-100 rounded-xl text-gray-800"><i data-lucide="users" class="w-6 h-6"></i></div>
+                                    <div>
+                                        <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Staff Roster</h3>
+                                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Manage existing permissions</p>
+                                    </div>
+                                </div>
+                            </div>
+     
+                            <div class="overflow-x-auto max-h-[350px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                                <table class="w-full text-left">
+                                    <thead class="sticky top-0 z-10 bg-white">
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-6 py-4 bg-white">Staff Name</th>
+                                            <th class="px-6 py-4 bg-white">Role / Access</th>
+                                            <th class="px-6 py-4 bg-white">Branch</th>
+                                            <th class="px-6 py-4 bg-white">Email (Login)</th>
+                                            <th class="px-6 py-4 bg-white">Status</th>
+                                            <th class="px-6 py-4 bg-white">Password</th>
+                                            <th class="px-6 py-4 text-right bg-white">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-staff-accounts"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Branch Management -->
+                <div id="staff-tab-branches" class="staff-tab-content hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-1 bg-white border border-gray-200 border-t-4 border-t-red-600 p-6 md:p-8 rounded-2xl shadow-md flex flex-col h-fit">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-3 bg-red-50 rounded-xl text-red-600"><i data-lucide="map-pin" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 id="branch-form-title" class="text-xl font-black uppercase tracking-tight text-gray-900">Add Branch</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure workshop branches</p>
+                                </div>
+                            </div>
+                            <input type="hidden" id="edit-branch-id">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Branch Name</label>
+                                    <input type="text" id="branch-name" placeholder="e.g. Branch C" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                                </div>
+                                <div>
+                                    <label class="text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Branch Code</label>
+                                    <input type="text" id="branch-code" placeholder="e.g. BR-C" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-red-600 focus:bg-white outline-none font-semibold text-sm text-gray-900 transition">
+                                </div>
+                                <div class="flex gap-3">
+                                    <button id="btn-cancel-branch-edit" onclick="cancelBranchEdit()" class="hidden flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 transition py-3 text-xs font-bold uppercase rounded-xl shadow-sm">Cancel</button>
+                                    <button id="btn-save-branch" onclick="saveBranch()" class="flex-1 bg-gray-900 hover:bg-black transition py-3 text-white font-black uppercase rounded-xl shadow-sm text-xs tracking-widest flex items-center justify-center gap-2">
+                                        <i data-lucide="save" class="w-4 h-4"></i> Save Branch
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col min-h-[400px]">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div class="p-3 bg-gray-100 rounded-xl text-gray-800"><i data-lucide="list" class="w-6 h-6"></i></div>
+                                    <div>
+                                        <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Branch Register</h3>
+                                        <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Manage workshop branch sites</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto max-h-[350px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                                <table class="w-full text-left">
+                                    <thead class="sticky top-0 z-10 bg-white">
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-6 py-4 bg-white">Branch Code</th>
+                                            <th class="px-6 py-4 bg-white">Branch Name</th>
+                                            <th class="px-6 py-4 bg-white">Status</th>
+                                            <th class="px-6 py-4 text-right bg-white">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-branches-list"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Recovery Bin -->
+                <div id="staff-tab-trash" class="staff-tab-content hidden space-y-6">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="user-x" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Deleted Staff Accounts</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Restore access or permanently purge</p>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto max-h-[250px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                                <table class="w-full text-left">
+                                    <thead class="sticky top-0 z-10 bg-white">
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-6 py-4 bg-white">Staff Name</th>
+                                            <th class="px-6 py-4 bg-white">Role</th>
+                                            <th class="px-6 py-4 bg-white">Email</th>
+                                            <th class="px-6 py-4 bg-white">Deleted At</th>
+                                            <th class="px-6 py-4 text-right bg-white">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-trash-staff"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="file-x" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Deleted Intake Records</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Restore intakes back to active queue</p>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto max-h-[250px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                                <table class="w-full text-left">
+                                    <thead class="sticky top-0 z-10 bg-white">
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-6 py-4 bg-white">Plate / ID</th>
+                                            <th class="px-6 py-4 bg-white">Customer Name</th>
+                                            <th class="px-6 py-4 bg-white">Vehicle</th>
+                                            <th class="px-6 py-4 bg-white">Category</th>
+                                            <th class="px-6 py-4 bg-white">Deleted At</th>
+                                            <th class="px-6 py-4 text-right bg-white">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-trash-jobs"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>>
+
+            <!-- VEHICLE INTAKE FORM -->
+            <div id="section-intake" class="section-content hidden fade-in space-y-4">
+                <div class="max-w-4xl bg-white border border-gray-200 p-5 md:p-6 rounded-2xl shadow-md mx-auto">
+                    <div class="flex items-center gap-3 mb-5 bg-gray-50 p-4 rounded-xl border border-gray-200" id="intake-header-div">
+                        <div class="p-2.5 bg-white rounded-xl border border-gray-200" id="intake-icon-wrap">
+                            <i data-lucide="clipboard-edit" class="text-red-600 w-6 h-6" id="intake-icon"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black uppercase tracking-tight text-gray-900" id="intake-title">
+                                Intake Form</h3>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-0.5"
+                                id="intake-subtitle">Register customer data</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Hidden Inputs -->
+                        <input type="hidden" id="intake-source" value="">
+
+                        <div class="md:col-span-1">
+                            <label
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Date</label>
+                            <input type="date" id="intake-date"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Plate
+                                Number <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-plate" placeholder="XYZ 9876"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs uppercase text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Customer
+                                Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-name" placeholder="Full Name"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
+                        </div>
+
+                        <div class="md:col-span-1">
+                            <label
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Contact
+                                Number</label>
+                            <input type="text" id="intake-contact" placeholder="09XX-XXX-XXXX"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Vehicle
+                                Model <span class="text-red-500">*</span></label>
+                            <input type="text" id="intake-vehicle" placeholder="e.g. Honda Civic RS"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Service
+                                Category <span class="text-red-500">*</span></label>
+                            <select id="intake-category" onchange="toggleCategoryOther()"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition cursor-pointer">
+                                <option value="PMS">PMS</option>
+                                <option value="GRS">GRS</option>
+                                <option value="PMS AND GRS">PMS AND GRS</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <input type="text" id="intake-category-other" placeholder="Specify category..."
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition mt-2 hidden">
+                        </div>
+
+                        <!-- Walk-in Specific (SA Role) -->
+                        <div id="div-walkin-fields"
+                            class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
+                            <div class="md:col-span-1">
+                                <label
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Arrival
+                                    Time <span class="text-red-500">*</span></label>
+                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
+                                    <select id="intake-arrival-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
+                                    <span class="text-gray-500 font-bold">:</span>
+                                    <select id="intake-arrival-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
+                                </div>
+                            </div>
+                            <div class="md:col-span-1">
+                                <label
+                                    class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 block">Auto-Generated
+                                    Claim Stub</label>
+                                <input type="text" id="intake-stub-preview" disabled
+                                    class="w-full bg-gray-100 border border-gray-200 rounded-xl px-3.5 py-2.5 font-mono font-bold text-gray-500 text-xs">
+                            </div>
+                        </div>
+                        <!-- Booking Specific (Assistant Role) -->
+                        <div id="div-booking-fields"
+                            class="md:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
+                            <div class="md:col-span-1">
+                                <label
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Appt
+                                    Time <span class="text-red-500">*</span></label>
+                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
+                                    <select id="intake-appt-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
+                                    <span class="text-gray-500 font-bold">:</span>
+                                    <select id="intake-appt-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
+                                </div>
+                            </div>
+                            <div class="md:col-span-1 hidden">
+                                <select id="intake-lane-type" class="hidden">
+                                    <option value="Flexible" selected>Flexible</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-1 flex items-center mt-5">
+                                <label
+                                    class="flex items-center gap-3 cursor-pointer py-2 px-3.5 border border-gray-200 rounded-xl w-full bg-gray-50 hover:bg-gray-100 transition">
+                                    <input type="checkbox" id="intake-confirmed"
+                                        class="w-4 h-4 rounded accent-red-600 cursor-pointer">
+                                    <span class="text-xs font-bold text-gray-700">Confirmed Booking</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Concerns (Walk-in only - Hidden) -->
+                        <div id="div-concern-field" class="hidden">
+                            <textarea id="intake-concern" class="hidden"></textarea>
+                        </div>
+                    </div>
+                    <button onclick="processIntake()" id="intake-submit-btn"
+                        class="w-full bg-red-600 hover:bg-red-700 transition py-3 text-white font-black uppercase rounded-xl mt-4 shadow-md shadow-red-600/20 text-sm tracking-wider">
+                        Register to System
+                    </button>
+                </div>
+            </div>
+
+            <!-- RECORDS & QUEUES VIEW -->
+            <div id="section-queue" class="section-content hidden fade-in space-y-4">
+
+                <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
+                <div id="container-online-queue"
+                    class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-4 md:p-5 rounded-2xl shadow-md flex flex-col hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-gray-100 rounded-lg text-gray-800"><i data-lucide="calendar-clock"
+                                    class="w-5 h-5"></i></div>
+                            <div>
+                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Booking Module
+                                </h3>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Pending
+                                    Online Inquiries</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                        <table class="w-full text-left min-w-full">
+                            <thead class="sticky top-0 z-10 bg-gray-50">
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                    <th class="px-3 py-3.5 bg-gray-50">Customer Name</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Model</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Lane Type</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Appointment (Date, Time)</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Confirmed</th>
+                                    <th class="px-3 py-3.5 text-right bg-gray-50">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-pending-express"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
+                <div id="container-daily-intakes"
+                    class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-4 md:p-5 rounded-2xl shadow-md flex flex-col hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
+                                    class="w-5 h-5"></i></div>
+                            <div>
+                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active
+                                    Vehicles in Workshop</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
+                        <table class="w-full text-left min-w-full">
+                            <thead>
+                                <tr>
+                                    <th>Claim Stub</th>
+                                    <th>Plate No.</th>
+                                    <th>Model & Category</th>
+                                    <th>Source</th>
+                                    <th>Arrival</th>
+                                    <th>Departure</th>
+                                    <th>Evaluation / Diagnosis</th>
+                                    <th>Status</th>
+                                    <th>Location</th>
+                                    <th>Reasons</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-daily-intakes"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TECHNICIAN BOARD (CARD VIEW) -->
+                <div id="container-tech-board" class="hidden flex-col gap-4">
+                    <div class="flex items-center gap-3 mb-1">
+                        <div class="p-2 bg-red-600 rounded-lg text-white shadow-md"><i data-lucide="wrench"
+                                class="w-5 h-5"></i></div>
+                        <div>
+                            <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Workshop Floor</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Jobs
+                                & Service Management</p>
+                        </div>
+                    </div>
+                    <div id="tech-cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                </div>
+
+                <!-- CARRY OVER BOARD (Shared) -->
+                <div id="container-carry-over"
+                    class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-4 md:p-5 rounded-2xl shadow-md flex flex-col mt-4">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 bg-orange-50 rounded-lg text-orange-600"><i data-lucide="calendar-off"
+                                class="w-5 h-5"></i></div>
+                        <div>
+                            <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Carry-Over Data</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Vehicles
+                                requiring extended stays</p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                        <table class="w-full text-left min-w-full">
+                            <thead class="sticky top-0 z-10 bg-gray-50">
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                    <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Model</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Date (Received, Promised)</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Service Advisor</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Evaluation</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Status</th>
+                                    <th class="px-3 py-3.5 text-right w-48 bg-gray-55">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-carry-over"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- PERIODIC RECORD LOG (Shared History Search) -->
+                <div id="container-periodic-records" class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-4 md:p-5 rounded-2xl shadow-md flex flex-col mt-4">
+                    <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="history" class="w-5 h-5"></i></div>
+                            <div>
+                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Periodic Record Log</h3>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Search and retrieve historical workshop entries</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-black text-red-600 uppercase bg-red-50 border border-red-100 px-3 py-1 rounded-full" id="periodic-table-count">0 records</span>
+                    </div>
+                    
+                    <!-- Search inputs -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-150 mb-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Search Keywords</label>
+                            <input type="text" id="periodic-search-query" oninput="applyPeriodicFilters()" placeholder="Search by name, contact, plate, vehicle model..." class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition placeholder-gray-400">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Filter Channel</label>
+                            <select id="periodic-search-source" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                <option value="all">All Channels</option>
+                                <option value="Walk-in">Walk-In</option>
+                                <option value="Online">Online Booking</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Filter Branch</label>
+                            <select id="periodic-search-branch" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                <option value="all">All Branches</option>
+                                <option value="Branch A">Branch A</option>
+                                <option value="Branch B">Branch B</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Handled By (SA)</label>
+                            <select id="periodic-search-sa" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                <option value="all">All SAs</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Service Status</label>
+                            <select id="periodic-search-status" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Waiting">Waiting</option>
+                                <option value="Ready">Ready</option>
+                                <option value="Carry Over">Carry Over</option>
+                                <option value="Released">Released</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Goal Remarks</label>
+                            <select id="periodic-search-goal" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                <option value="all">All Goals</option>
+                                <option value="Successful">Successful</option>
+                                <option value="Failed">Failed</option>
+                                <option value="N/A">N/A</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
+                                    <input type="date" id="periodic-search-start-date" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-2 py-2 font-bold text-[11px] text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
+                                    <input type="date" id="periodic-search-end-date" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-2 py-2 font-bold text-[11px] text-gray-900 outline-none focus:border-red-650 transition cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Table -->
+                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                        <table class="w-full text-left border-collapse min-w-full">
+                            <thead class="sticky top-0 z-10 bg-gray-50">
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                    <th class="px-3 py-3.5 bg-gray-50">Date Recv</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Claim Stub</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Customer Name</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Contact No.</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Vehicle Model</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Category</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Channel</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Branch</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">SLA (Goal)</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Handled By</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Status</th>
+                                    <th class="px-3 py-3.5 bg-gray-50">Remarks / Evaluation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-periodic-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                <!-- Injected dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TV DISPLAY MONITOR -->
+            <div id="section-tv"
+                class="section-content hidden fade-in h-full flex flex-col relative overflow-hidden bg-gray-900">
+                <div
+                    class="flex justify-between items-end mb-6 border-b border-gray-800 pt-4 pb-4 shrink-0 z-20 relative px-6">
+                    <div>
+                        <h1
+                            class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
+                            <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
+                        </h1>
+                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Sunday, June 21, 2026</p>
+                    </div>
+                    <div class="flex items-center gap-6 text-right">
+                        <!-- Weather Widget -->
+                        <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
+                            <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
+                                <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                            </span>
+                            <div class="text-left leading-none">
+                                <p id="tv-temp-display" class="text-lg font-black text-white">32°C</p>
+                                <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none">00:00</p>
+                            <div class="flex gap-2 justify-end mt-2">
+                                <span id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                                <span id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                                <span id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 relative min-h-0">
+                    <div id="tv-slide-1"
+                        class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">Bay Monitoring</h2>
+                            <p class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Active Bays</p>
+                        </div>
+                        <div class="flex-1 p-8 overflow-y-auto custom-scroll bg-gray-50">
+                            <div id="tv-grs-list" class="grid grid-cols-2 gap-8 h-full"></div>
+                        </div>
+                    </div>
+                    <div id="tv-slide-2"
+                        class="absolute inset-0 tv-slide hidden flex flex-col gap-6 p-6 bg-gray-50 rounded-2xl overflow-hidden shadow-2xl">
+                        
+                        <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Equal Size side-by-side) -->
+                        <div class="flex-1 grid grid-cols-2 gap-6 min-h-0">
+                            <!-- Service Queue (Waiting List) -->
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-md border border-blue-200">
+                                <div class="bg-blue-600 py-3 text-center shrink-0 border-b border-blue-700">
+                                    <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                        Service Queue
+                                        <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-blue-700 text-white border border-blue-500" id="tv-all-upcoming-count">0</span>
+                                    </h3>
+                                    <p class="text-blue-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
+                                </div>
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
+                                    <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
+                                </div>
+                            </div>
+
+                            <!-- Ready for Release -->
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-md border border-green-200">
+                                <div class="bg-green-600 py-3 text-center shrink-0 border-b border-green-700">
+                                    <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                        Ready for Release
+                                        <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-green-700 text-white border border-green-500" id="tv-all-released-count">0</span>
+                                    </h3>
+                                    <p class="text-green-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
+                                </div>
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
+                                    <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Carry-Over (Full width / Bigger) -->
+                        <div class="flex-1 flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-md border border-orange-200">
+                            <div class="bg-orange-500 py-3 text-center shrink-0 border-b border-orange-600">
+                                <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                    Carry-Over
+                                    <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-orange-600 text-white border border-orange-400" id="tv-all-carryover-count">0</span>
+                                </h3>
+                                <p class="text-orange-100 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
+                            </div>
+                            <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
+                                <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tv-slide-3"
+                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
+                            <p class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Live Lane Status</p>
+                        </div>
+                        <div class="flex-1 p-8 overflow-hidden bg-gray-50 flex gap-8">
+                            <!-- Express Lane Column -->
+                            <div class="flex-1 bg-red-50/30 rounded-2xl border-2 border-red-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-red-600 py-3.5 text-center border-b border-red-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Express Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-express-lane-list"></div>
+                            </div>
+                            <!-- Flexible Lane Column -->
+                            <div class="flex-1 bg-blue-50/30 rounded-2xl border-2 border-blue-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-blue-600 py-3.5 text-center border-b border-blue-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Flexible Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-flexible-lane-list"></div>
+                            </div>
+                            <!-- Special Lane Column -->
+                            <div class="flex-1 bg-purple-50/30 rounded-2xl border-2 border-purple-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-purple-600 py-3.5 text-center border-b border-purple-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Special Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-special-lane-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY PROFILE & SECURITY -->
+            <div id="section-profile" class="section-content hidden fade-in space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- Profile Details & Email Change -->
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="user-cog"
+                                    class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Personal Profile
+                                </h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Manage
+                                    credentials & validation</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Full
+                                    Name</span>
+                                <span id="profile-name-display"
+                                    class="font-bold text-gray-900 text-base">Loading...</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Access
+                                    Role</span>
+                                <span id="profile-role-display"
+                                    class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest bg-gray-100 text-gray-700">Loading...</span>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Primary
+                                    Email Address</span>
+                                <div
+                                    class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mt-1">
+                                    <span id="profile-email-display"
+                                        class="font-bold text-gray-700 font-mono text-sm">Loading...</span>
+                                    <button onclick="openEmailChangeModal()"
+                                        class="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition shadow-sm">
+                                        Change Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Change Password -->
+                    <div id="profile-change-password-container" class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleCollapse('pwd-collapse')">
+                            <div class="flex items-center gap-4 border-b border-gray-200 pb-4 w-full">
+                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="lock" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Update Password</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Reset your login password</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-down" id="pwd-collapse-icon"></i>
+                        </div>
+                        <div id="pwd-collapse" class="space-y-4">
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Current Password</label>
+                                <div class="relative">
+                                    <i data-lucide="shield-alert" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="change-pwd-current" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Enter current password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-current', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">New Password</label>
+                                <div class="relative">
+                                    <i data-lucide="lock" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="change-pwd-new" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Enter new password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-new', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Confirm New Password</label>
+                                <div class="relative">
+                                    <i data-lucide="lock-keyhole" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="change-pwd-confirm" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Confirm new password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-confirm', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="submitPasswordChange()" class="w-full bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider py-3.5 rounded-xl transition shadow-md">
+                                Save New Password
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Factor Authentication (MFA) -->
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="shield-check"
+                                    class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Two-Factor
+                                    Authentication</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Secure
+                                    against unauthorized logins</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">MFA
+                                        Status</span>
+                                    <span id="mfa-status-display"
+                                        class="font-extrabold text-sm text-gray-900 font-mono">Disabled</span>
+                                </div>
+                                <div id="mfa-toggle-btn-container">
+                                    <!-- Setup button dynamic -->
+                                </div>
+                            </div>
+
+                            <!-- MFA Setup panel (Hidden by default) -->
+                            <div id="mfa-config-panel"
+                                class="hidden border border-gray-200 pt-4 space-y-4 bg-white p-4 rounded-xl">
+                                <p class="text-xs text-gray-600 font-bold leading-relaxed">
+                                    1. Scan this QR code in Google Authenticator or enter the manual secret key:
+                                </p>
+                                <div
+                                    class="flex justify-center py-2 bg-white rounded-xl border border-gray-200 max-w-[220px] mx-auto shadow-sm">
+                                    <img id="mfa-qr-image" src="" alt="MFA QR Code" class="w-[200px] h-[200px]">
+                                </div>
+                                <div
+                                    class="text-center font-mono font-bold text-xs text-gray-700 select-all p-3 bg-gray-100 rounded-xl border border-gray-200 block">
+                                    Secret Key: <span id="mfa-secret-display" class="text-red-600">...</span>
+                                </div>
+                                <p class="text-xs text-gray-600 font-bold leading-relaxed">
+                                    2. Enter the 6-digit verification code from your Authenticator App:
+                                </p>
+                                <div class="flex gap-3">
+                                    <input type="text" id="mfa-otp-input"
+                                        class="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-sm tracking-widest text-center"
+                                        placeholder="000000" maxlength="6">
+                                    <button onclick="submitMfaEnable()"
+                                        class="bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs tracking-wider px-6 rounded-xl transition shadow-md shadow-red-600/10">
+                                        Enable
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Backup Codes panel -->
+                            <div id="mfa-backup-codes-panel"
+                                class="hidden border border-green-200 bg-green-50/50 rounded-2xl p-4 space-y-3">
+                                <div
+                                    class="flex items-center gap-2 text-green-700 font-bold text-xs uppercase tracking-wider">
+                                    <i data-lucide="key" class="w-4 h-4"></i> Backup Recovery Codes
+                                </div>
+                                <p class="text-[10px] text-gray-500 font-semibold leading-relaxed">
+                                    Save these codes! Each code can be used ONCE to log in if you lose your phone. They
+                                    will not be shown again:
+                                </p>
+                                <div id="backup-codes-grid"
+                                    class="grid grid-cols-2 gap-2 text-xs font-mono font-bold text-gray-900 bg-white p-3 rounded-lg border border-gray-200">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linked Accounts & Account Recovery -->
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="shield-alert"
+                                    class="w-6 h-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Account Recovery
+                                </h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure
+                                    secondary recovery links</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Google Account Link -->
+                            <div class="space-y-2">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Google
+                                    Login Link</span>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span id="google-link-status" class="font-extrabold text-sm text-gray-900">Not
+                                            Linked</span>
+                                    </div>
+                                    <div id="google-link-btn-container">
+                                        <!-- Linked dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Backup Recovery Email -->
+                            <div class="border-t border-gray-100 pt-4 space-y-2">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Backup
+                                    Recovery Email</span>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <span id="backup-email-display"
+                                            class="font-extrabold text-sm text-gray-900 font-mono text-sm">Not
+                                            Configured</span>
+                                    </div>
+                                    <div>
+                                        <button onclick="openBackupEmailModal()"
+                                            class="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition shadow-sm">
+                                            Configure
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Account Settings Section -->
+            <div id="section-settings" class="section-content hidden fade-in space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                       <!-- System Personalization -->
+                    <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="palette" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Personalization</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Change look and UI behaviors</p>
+                            </div>
+                        </div>
+ 
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Sidebar Style</label>
+                                <select id="settings-sidebar-style" onchange="saveSystemSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="expanded">Expanded (Default)</option>
+                                    <option value="icons">Icons Only</option>
+                                </select>
+                            </div>
+ 
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">System Clock Format</label>
+                                <select id="settings-time-format" onchange="saveSystemSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="12h">12-Hour format (AM/PM)</option>
+                                    <option value="24h">24-Hour format (Military)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Session & Security Preferences -->
+                    <div id="settings-security-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="shield" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Security Preferences</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure active sessions & idle rules</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Automatic Logout Idle Time</label>
+                                <select id="settings-idle-timeout" onchange="saveSystemSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="15">15 Minutes</option>
+                                    <option value="30" selected>30 Minutes</option>
+                                    <option value="60">1 Hour</option>
+                                    <option value="0">Never (Not Recommended)</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-3">
+                                <span class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block">Logged In Devices</span>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="laptop" class="w-5 h-5 text-gray-400"></i>
+                                            <div>
+                                                <span class="font-bold text-xs text-gray-900 block">Windows PC · Chrome</span>
+                                                <span class="text-[9px] text-green-600 font-extrabold uppercase">Current Active Session</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
+                                        <div class="flex items-center gap-3">
+                                            <i data-lucide="smartphone" class="w-5 h-5 text-gray-400"></i>
+                                            <div>
+                                                <span class="font-bold text-xs text-gray-900 block">iPhone 14 · Safari</span>
+                                                <span class="text-[9px] text-gray-500 font-bold">Last active: 2 hours ago</span>
+                                            </div>
+                                        </div>
+                                        <button onclick="showSystemToast('Logged out device successfully!', 'success', 'Session Revoked')" class="text-[10px] font-black uppercase text-red-600 bg-red-50 hover:bg-red-100 border border-red-100 rounded-lg px-2.5 py-1">Terminate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-100 pt-6 flex justify-end">
+                            <button onclick="saveSystemSettings()" class="bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider px-6 py-3 rounded-xl transition shadow-md">
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Help & Support Section -->
+            <div id="section-support" class="section-content hidden fade-in space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- FAQ Section -->
+                    <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6 lg:col-span-2">
+                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="help-circle" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Knowledge Base & FAQ</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Frequently asked questions and guides</p>
+                            </div>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="relative">
+                            <i data-lucide="search" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                            <input type="text" placeholder="Search for questions or keywords..." class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-12 pr-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                        </div>
+
+                        <!-- FAQ Accordion -->
+                        <div class="space-y-3">
+                            <details class="group bg-gray-50 border border-gray-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden">
+                                <summary class="flex justify-between items-center cursor-pointer select-none">
+                                    <span class="font-bold text-xs text-gray-900">How do I add a new vehicle to the Queue?</span>
+                                    <span class="transition duration-300 group-open:rotate-180">
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                                    </span>
+                                </summary>
+                                <p class="mt-3 text-xs text-gray-600 font-semibold leading-relaxed border-t border-gray-200 pt-3">
+                                    Go to the "Intake" view in the navigation, fill in the customer name, license plate, vehicle brand/model, and select the service. Once submitted, it automatically appears in the live queue dashboard.
+                                </p>
+                            </details>
+
+                            <details class="group bg-gray-50 border border-gray-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden">
+                                <summary class="flex justify-between items-center cursor-pointer select-none">
+                                    <span class="font-bold text-xs text-gray-900">How can I download a PDF or Word report?</span>
+                                    <span class="transition duration-300 group-open:rotate-180">
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                                    </span>
+                                </summary>
+                                <p class="mt-3 text-xs text-gray-600 font-semibold leading-relaxed border-t border-gray-200 pt-3">
+                                    In the "Dashboard" overview screen, there are dedicated export buttons at the top right of the screen. Click on "PDF" or "Word" to instantly download the generated report documents.
+                                </p>
+                            </details>
+
+                            <details class="group bg-gray-50 border border-gray-200 rounded-xl p-4 [&_summary::-webkit-details-marker]:hidden">
+                                <summary class="flex justify-between items-center cursor-pointer select-none">
+                                    <span class="font-bold text-xs text-gray-900">How do I change color themes?</span>
+                                    <span class="transition duration-300 group-open:rotate-180">
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                                    </span>
+                                </summary>
+                                <p class="mt-3 text-xs text-gray-600 font-semibold leading-relaxed border-t border-gray-200 pt-3">
+                                    Click your user profile avatar in the upper right header to expand the user dropdown menu. Under "Switch Color Theme", click on the colored circles (Teal, Blue, Purple, Orange, Red) to change colors.
+                                </p>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Create Ticket Form -->
+                    <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="message-square" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Submit Ticket</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Get developer assistance</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Ticket Subject</label>
+                                <input type="text" placeholder="e.g. System slow on loading, UI bug" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Priority Level</label>
+                                <select class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                                    <option>Low Priority</option>
+                                    <option>Medium Priority</option>
+                                    <option>High Priority / Blocked</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Problem Details</label>
+                                <textarea rows="4" placeholder="Briefly describe what happened..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"></textarea>
+                            </div>
+
+                            <button onclick="showSystemToast('Support ticket mock submitted!', 'success', 'Ticket Submitted')" class="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs tracking-wider py-3 rounded-xl transition shadow-md shadow-red-600/20">
+                                Send Help Request
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+    <!-- Alert Toast Component -->
+    <div id="toast"
+        class="fixed bottom-10 right-10 bg-white border-l-4 border-red-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform translate-x-[150%] transition-transform duration-300 z-[1000] flex items-center gap-4">
+        <i data-lucide="info" id="toast-icon" class="text-red-600 w-6 h-6"></i>
+        <div>
+            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-0.5" id="toast-title">System
+                Alert</p>
+            <span id="toast-msg" class="font-bold text-sm text-gray-900">Action successful!</span>
+        </div>
+    </div>
+
+    <!-- Staff Password Reset Modal -->
+    <div id="staff-pwd-modal"
+        class="fixed inset-0 z-[600] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 space-y-6">
+            <div>
+                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Reset Staff Password</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1" id="staff-pwd-name">User Name
+                </p>
+            </div>
+            <input type="hidden" id="staff-pwd-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">New
+                        Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                        <input type="password" id="staff-pwd-input"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-12 pr-12 py-3 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                            placeholder="Enter new password">
+                        <button type="button" onclick="togglePasswordVisibility('staff-pwd-input', this)"
+                            class="absolute right-4 top-3.5 text-gray-400 hover:text-gray-600">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="closeStaffPasswordReset()"
+                    class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                <button onclick="submitStaffPasswordReset()"
+                    class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20">Save
+                    Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Staff Modal -->
+    <div id="staff-edit-modal"
+        class="fixed inset-0 z-[600] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 space-y-6">
+            <div>
+                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Edit Staff Details</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">Modify staff profile information</p>
+            </div>
+            <input type="hidden" id="staff-edit-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Full Name</label>
+                    <input type="text" id="staff-edit-name" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Email (Login ID)</label>
+                    <input type="email" id="staff-edit-email" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">System Role</label>
+                    <select id="staff-edit-role" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                        <option value="assistant">Assistant Staff</option>
+                        <option value="sa">Service Advisor</option>
+                        <option value="admin">Admin</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Branch Site</label>
+                    <select id="staff-edit-branch" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="closeStaffEditModal()"
+                    class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                <button onclick="submitStaffEdit()"
+                    class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Change Dialog Modal -->
+    <div id="email-change-modal"
+        class="fixed inset-0 z-[600] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 space-y-6">
+            <div>
+                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Change Primary Email</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">Requires validation before
+                    change takes effect</p>
+            </div>
+
+            <!-- Step 1: Input email & password -->
+            <div id="email-change-step-1" class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">New Email
+                        Address</label>
+                    <input type="email" id="email-change-new"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                        placeholder="newemail@hontech.com">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Confirm
+                        Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                        <input type="password" id="email-change-pass"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                            placeholder="Enter password to authorize">
+                        <button type="button" onclick="togglePasswordVisibility('email-change-pass', this)"
+                            class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button onclick="closeEmailChangeModal()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                    <button onclick="requestEmailChangeSubmit()"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/10">Send
+                        Code</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Input OTP code -->
+            <div id="email-change-step-2" class="hidden space-y-4">
+                <p class="text-xs text-gray-600 font-medium">A 6-digit verification code has been sent to your new
+                    email. Please input it below:</p>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Verification
+                        OTP Code</label>
+                    <input type="text" id="email-change-otp"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm tracking-widest text-center"
+                        placeholder="000000" maxlength="6">
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button onclick="closeEmailChangeModal()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                    <button onclick="submitEmailChangeVerify()"
+                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-green-600/10">Verify
+                        & Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Email Dialog Modal -->
+    <div id="backup-email-modal"
+        class="fixed inset-0 z-[600] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 space-y-6">
+            <div>
+                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Backup Recovery Email</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">Set a secondary email for
+                    password resets</p>
+            </div>
+
+            <!-- Step 1: Input email & password -->
+            <div id="backup-email-step-1" class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Backup Email
+                        Address</label>
+                    <input type="email" id="backup-email-new"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                        placeholder="recovery@gmail.com">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Confirm
+                        Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                        <input type="password" id="backup-email-pass"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                            placeholder="Enter password to authorize">
+                        <button type="button" onclick="togglePasswordVisibility('backup-email-pass', this)"
+                            class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button onclick="closeBackupEmailModal()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                    <button onclick="requestBackupEmailSubmit()"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/10">Send
+                        Code</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Input OTP code -->
+            <div id="backup-email-step-2" class="hidden space-y-4">
+                <p class="text-xs text-gray-600 font-medium">A 6-digit verification code has been sent to your backup
+                    recovery email. Please input it below:</p>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Verification
+                        OTP Code</label>
+                    <input type="text" id="backup-email-otp"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm tracking-widest text-center"
+                        placeholder="000000" maxlength="6">
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button onclick="closeBackupEmailModal()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                    <button onclick="submitBackupEmailVerify()"
+                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-green-600/10">Verify
+                        & Configure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Auth Simulation Dialog -->
+    <div id="google-sim-modal"
+        class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8 border border-gray-100 text-center space-y-6">
+            <div
+                class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto text-red-600 border border-red-100">
+                <i data-lucide="shield-check" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black text-gray-900 tracking-tight">Google Account Sandbox</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Simulated Google Auth Service
+                </p>
+            </div>
+            <p class="text-sm text-gray-600 leading-relaxed font-semibold">
+                Since Google Client ID is not configured in `.env`, we are using the secure sandbox simulation to test
+                the login/recovery flow.
+            </p>
+            <div class="space-y-4 pt-2 text-left">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1.5 block font-black">Select Seeded Account</label>
+                    <select id="google-sim-select" onchange="document.getElementById('google-sim-custom-email').value = this.value" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                        <option value="owner@hontech.com">System Owner (owner@hontech.com)</option>
+                        <option value="admin@hontech.com">System Admin (admin@hontech.com)</option>
+                        <option value="staff@hontech.com">Front Desk A (staff@hontech.com)</option>
+                        <option value="sa@hontech.com">Service Advisor A (sa@hontech.com)</option>
+                        <option value="staff.east@hontech.com">Front Desk B (staff.east@hontech.com)</option>
+                        <option value="sa.east@hontech.com">Service Advisor B (sa.east@hontech.com)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1.5 block font-black">Or Custom Google Email</label>
+                    <input type="email" id="google-sim-custom-email" value="owner@hontech.com" placeholder="email@google.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                </div>
+                <button onclick="submitGoogleSim()"
+                    class="w-full py-3.5 bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Authenticate via Google
+                </button>
+            </div>
+            <button onclick="closeGoogleSim()"
+                class="text-xs font-bold text-gray-400 hover:text-gray-600 transition uppercase tracking-widest pt-2 block mx-auto">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Beautiful Custom Delete Confirmation Modal -->
+    <div id="delete-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 text-center space-y-5">
+            <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mx-auto text-red-600 border border-red-100">
+                <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black text-gray-900 tracking-tight">Confirm Deletion</h3>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">This action cannot be undone</p>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed" id="delete-confirm-message">
+                Are you sure you want to permanently delete this booking record?
+            </p>
+            <input type="hidden" id="delete-confirm-job-id">
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeDeleteConfirmModal()"
+                    class="flex-1 py-3 bg-gray-100 hover:bg-gray-250 text-gray-700 font-black uppercase text-[10px] tracking-wider rounded-xl transition">
+                    Cancel
+                </button>
+                <button onclick="confirmDeleteJob()"
+                    class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase text-[10px] tracking-wider rounded-xl transition shadow-md shadow-red-600/10">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Beautiful Custom Release Confirmation Modal -->
+    <div id="release-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 text-center space-y-5">
+            <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mx-auto text-green-600 border border-green-100">
+                <i data-lucide="check-circle" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black text-gray-900 tracking-tight">Finalize Release</h3>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">Archiving vehicle record</p>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed" id="release-confirm-message">
+                Are you sure you want to finalize the release? This will remove the vehicle from the active workshop view.
+            </p>
+            <input type="hidden" id="release-confirm-job-id">
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeReleaseConfirmModal()"
+                    class="flex-1 py-3 bg-gray-100 hover:bg-gray-250 text-gray-700 font-black uppercase text-[10px] tracking-wider rounded-xl transition">
+                    Cancel
+                </button>
+                <button onclick="confirmReleaseJob()"
+                    class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase text-[10px] tracking-wider rounded-xl transition shadow-md shadow-emerald-500/10">
+                    Release
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Confirm Modal -->
+    <div id="assign-confirm-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full border border-gray-200 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 pb-3">
+                <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="user-check" class="w-6 h-6"></i></div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Take Job</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Assign to yourself</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed">
+                Are you sure you want to assign this vehicle to yourself?
+            </p>
+            <input type="hidden" id="assign-job-id">
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="document.getElementById('assign-confirm-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="confirmAssignJob()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-blue-500/10">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carry-Over Details Modal -->
+    <div id="carryover-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-gray-200 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 border-b border-gray-150 pb-3">
+                <div class="p-2.5 bg-orange-50 text-orange-655 rounded-xl"><i data-lucide="calendar-off" class="w-6 h-6 text-orange-600"></i></div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Carry-Over Details</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Specify promised date and status</p>
+                </div>
+            </div>
+            <input type="hidden" id="carryover-job-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Promised Completion Date <span class="text-red-500">*</span></label>
+                    <input type="date" id="carryover-promised-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm focus:border-orange-500 transition">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
+                    <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
+                        <option value="Awaiting Parts">Awaiting Parts</option>
+                        <option value="Extended Repair">Extended Repair</option>
+                        <option value="Technician Unavailable">Technician Unavailable</option>
+                        <option value="WCA">WCA</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="closeCarryoverModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="submitCarryoverDetails()" class="px-5 py-2 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-orange-500/10">Confirm Carry-Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Dev Mailbox Widget -->
+    <div id="dev-mailbox-trigger" class="fixed bottom-6 right-6 z-[999] flex items-center justify-center">
+        <button onclick="toggleDevMailbox()"
+            class="bg-gray-900 hover:bg-black text-white px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-3 border border-red-600 transition duration-300 transform hover:scale-105 active:scale-95 group font-extrabold tracking-wider text-[11px] uppercase">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+            </span>
+            <i data-lucide="mail" class="w-4 h-4 text-red-500 group-hover:rotate-6 transition-transform"></i>
+            <span>Dev Mailbox</span>
+            <span id="dev-mailbox-badge"
+                class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full hidden">0</span>
+        </button>
+    </div>
+
+    <!-- Dev Mailbox Simulator Modal (Gmail Mockup) -->
+    <div id="dev-mailbox-modal"
+        class="fixed inset-0 z-[1000] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 select-none">
+        <div
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-5xl h-[75vh] flex flex-col overflow-hidden border border-gray-200 fade-in">
+            <!-- Gmail-like Header -->
+            <div class="bg-gray-50 border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="bg-red-600 text-white p-2.5 rounded-xl flex items-center justify-center shadow-md">
+                        <i data-lucide="mail-open" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-md font-black uppercase text-gray-900 tracking-wider">DevMail Sandbox</h3>
+                        <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Simulated Local
+                            Inbox</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="clearMailboxHistory()"
+                        class="bg-white hover:bg-red-50 text-red-600 hover:text-red-700 px-3.5 py-2 rounded-xl border border-gray-200 hover:border-red-200 transition text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Inbox
+                    </button>
+                    <button onclick="toggleDevMailbox()"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700 p-2.5 rounded-full transition shadow-sm">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Gmail Sidebar -->
+                <div
+                    class="w-60 bg-gray-50 border-r border-gray-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex">
+                    <div class="space-y-1">
+                        <a href="javascript:void(0)"
+                            class="flex items-center justify-between px-4 py-3 bg-red-50 text-red-700 rounded-xl font-extrabold text-[11px] uppercase tracking-wider transition">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="inbox" class="w-4 h-4 text-red-600"></i>
+                                <span>Inbox</span>
+                            </div>
+                            <span id="sidebar-inbox-count"
+                                class="bg-red-200 text-red-800 text-[10px] font-black px-2 py-0.5 rounded-full hidden">0</span>
+                        </a>
+                    </div>
+                    <div
+                        class="p-4 bg-gray-100 border border-gray-200 rounded-2xl text-[10px] font-bold text-gray-500 leading-relaxed">
+                        <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-1">Sandbox Tip</span>
+                        Click on any email in the list to preview the HTML code, and use the quick action button to copy
+                        verification codes instantly.
+                    </div>
+                </div>
+
+                <!-- Email Inbox List -->
+                <div id="mailbox-list-pane"
+                    class="w-full md:w-[320px] border-r border-gray-200 flex flex-col overflow-y-auto bg-white shrink-0">
+                    <div id="mailbox-list-empty"
+                        class="flex-1 flex flex-col items-center justify-center p-8 text-center text-gray-400 font-medium space-y-3">
+                        <i data-lucide="mail-warning" class="w-8 h-8 text-gray-300"></i>
+                        <p class="text-xs font-extrabold uppercase tracking-wider text-gray-500">Inbox is empty</p>
+                        <p class="text-[10px] text-gray-400 max-w-[200px] leading-relaxed">System notifications, OTPs,
+                            and recovery links will appear here in real-time when triggered.</p>
+                    </div>
+                    <div id="mailbox-list-container" class="divide-y divide-gray-100"></div>
+                </div>
+
+                <!-- Email Detail Viewer -->
+                <div id="mailbox-detail-pane" class="flex-grow bg-gray-50 flex flex-col overflow-hidden relative">
+                    <!-- Detail Headers -->
+                    <div id="mailbox-detail-header"
+                        class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shrink-0 hidden">
+                        <div class="min-w-0 pr-4">
+                            <h4 id="mail-detail-subject" class="text-xs font-black text-gray-900 leading-snug truncate">
+                                Subject Line</h4>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">To: <span
+                                    id="mail-detail-to" class="text-gray-600 font-mono">email@domain.com</span></p>
+                        </div>
+                        <button id="mail-copy-otp-btn" onclick="copyOtpFromCurrentMail()"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl transition text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-md shadow-red-600/10 shrink-0">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy OTP
+                        </button>
+                    </div>
+
+                    <!-- Detail Body (HTML Preview Iframe) -->
+                    <div id="mailbox-detail-body" class="flex-1 p-6 overflow-hidden flex items-center justify-center">
+                        <div id="mailbox-detail-placeholder" class="text-center text-gray-400 font-medium space-y-2">
+                            <i data-lucide="mail-question" class="w-10 h-10 text-gray-300 mx-auto"></i>
+                            <p class="text-xs font-extrabold uppercase tracking-wider text-gray-500">No email selected
+                            </p>
+                            <p class="text-[10px] text-gray-400">Select an email from the left pane to preview its
+                                message details.</p>
+                        </div>
+                        <iframe id="mail-preview-iframe"
+                            class="w-full h-full rounded-2xl bg-white border border-gray-200 shadow-inner hidden"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLIENT SCRIPT LOGIC -->
+    <script src="js/app.js?v=2.0"></script>
+</body>
+
+</html>

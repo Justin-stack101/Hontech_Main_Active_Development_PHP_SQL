@@ -1,0 +1,79 @@
+# Implementation Plan - Owner's Analytics, DB Logic, and Export Refinement
+
+This plan details the design and implementation steps to enhance the **Owner's Module** for Hontech AutoCenter Inc. It covers changing the database logic to persist completed jobs, building a dynamic daily/weekly/monthly analytics screen with Chart.js, and creating professionally styled PDF/Word exportable reports.
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Database Storing Logic Change**: 
+> Previously, jobs marked as `Completed` were deleted entirely from MongoDB, leaving no historical records. We will transition to keeping completed jobs in the database by setting their status to `Completed` and tracking the completion date (`dateCompleted`). 
+> 
+> To prevent active dashboard views (like TV mode and intake lists) from slowing down as completed jobs accumulate, we will update the primary `/api/jobs` query to exclude completed jobs. We will create a secure, dedicated `/api/jobs/analytics` endpoint for the owner to retrieve historical completed records for reports.
+
+---
+
+## Proposed Changes
+
+### Database Layer & API Enpoints
+
+#### [MODIFY] [Job.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/Job.js)
+- Add a new field: `dateCompleted: { type: String, default: '' }` (stored as `YYYY-MM-DD` for consistency).
+
+#### [MODIFY] [jobController.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/jobController.js)
+- **`setJobStatus`**: Instead of calling `findOneAndDelete` when `status === 'Completed'`, set `job.status = 'Completed'`, save `job.dateCompleted = todayStr`, and store `job.departure` time.
+- **`getJobs`**: Modify query from `Job.find({})` to `Job.find({ status: { $ne: 'Completed' } })` to only fetch active queue items, keeping client updates and TV-mode quick.
+- **`getAnalyticsData` [NEW]**: Create a new controller function that finds jobs by a given date range (or returns all if no range is specified), including completed ones.
+
+#### [MODIFY] [jobRoutes.js](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/routes/jobRoutes.js)
+- Register `router.get('/analytics', requireRole(['owner']), getAnalyticsData);` before other GET requests to secure the endpoint for owner access only.
+
+---
+
+### Frontend & Analytics Module
+
+#### [MODIFY] [index.html](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/frontend/index.html)
+- **Library Updates**: Load `Chart.js` via CDN in the `<head>` tag: `<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>`.
+- **UI Design (Dashboard Section)**: Redesign `#section-dashboard` to feature two view toggles:
+  1. **Live Operations Monitor**: Displays the 4 real-time dashboard cards (daily intake count, carry-overs, lift statuses).
+  2. **Analytics & Formal Reports Center**: A premium interface featuring:
+     - **Report Scope Selectors**: Toggle between **Daily**, **Weekly**, and **Monthly** scope.
+     - **Date/Period Pickers**: Select specific dates, weeks, or months to review.
+     - **Chart Grid**:
+       - *Intake & Output Volume Chart* (Bar/Line: comparing registered intakes vs completed releases).
+       - *Service Category Share* (Doughnut: PMS vs GR vs Check-ups).
+       - *Intake Channel Share* (Pie: Walk-In vs Facebook Messenger Online bookings).
+       - *Average Service Duration Card*: Calculates time differences between intake `arrival` and final `departure` for completed jobs.
+     - **Report Preview Table**: A stylized grid displaying the specific records matching the report period.
+- **Exporting Upgrades**:
+  - **`exportPDF()`**: Dynamically read the selected report type and list of filtered jobs. Draw a high-fidelity capstone-quality PDF utilizing:
+    - Formal corporate heading with branch locator (Marikina branch).
+    - Grid-based layout for summary stats.
+    - Full table printout of jobs with auto-wrapping fields using `jspdf-autotable`.
+    - Page-footer with page counts ("Page X of Y").
+  - **`exportWord()`**: Build a stylized HTML wrapper styled explicitly for Word's renderer (border collapses, standard font alignments, professional paddings, and background fills) and export as a `.doc` file.
+  - Make sure the header action buttons (`Export PDF`, `Export Word`) on the main layout link to these improved analytics exports.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Build and run the server using `npm run dev`.
+- Verify there are no schema compilation or syntax errors.
+
+### Manual Verification
+1. **Database Completion Persistence**:
+   - Log in as Front Desk (`sa@hontech.com` / `sa123`).
+   - Move an active vehicle to `Released` and then finalize release (`Completed`).
+   - Query MongoDB (via a test call or database viewer/logs) to verify the job is **not** deleted but has its status updated to `Completed` with `dateCompleted` filled.
+2. **Active Dashboard Filtering**:
+   - Verify that finalized completed jobs do not display in the active "Master Queue" or "Tech Board".
+3. **Analytics Dashboard**:
+   - Log in as the Owner (`owner@hontech.com` / `owner123`).
+   - Navigate to the **Analytics Dashboard**.
+   - Select different report types (Daily, Weekly, Monthly) and dates. Verify charts and tables load properly.
+4. **Document Exports**:
+   - Trigger PDF and Word exports for Daily, Weekly, and Monthly reports.
+   - Open the generated PDF and Word documents to verify visual layouts, table borders, and header details.

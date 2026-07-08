@@ -1,0 +1,381 @@
+# HonTech AutoCenter — Full Development Walkthrough
+**Capstone Project: Web-Based Vehicle Intake & Queue Monitoring System**
+**Institution:** STI College Marikina | BSIT Students
+**Last Updated:** June 19, 2026
+
+---
+
+## 1. What Is This System?
+
+HonTech is a **web-based operations management system** for an automotive service center. It handles:
+- Vehicle walk-in registration and online booking
+- Daily service queue management and technician bay monitoring
+- TV display for customer-facing status boards
+- Role-based access control for staff
+- Analytics and reporting for management
+
+The system runs on a **Node.js + Express backend** with a **MongoDB (Mongoose) database**, and a **single-page HTML/JS/CSS frontend** served statically.
+
+---
+
+## 2. Where We Started — The Original User Request
+
+The development session began from a user prompt that contained multiple feature requests all at once. These were the key points:
+
+### From TV Monitoring
+- Move **"Released"** label to the **left side** of Slide 2
+- Put **"Upcoming Vehicles"** at the **bottom** of Slide 2
+- Put **"Ready for Release"** at the **top-left** of Slide 2
+
+### From the Daily Intakes Table
+- **Remove** the **Goal** columns for both **Assistant Staff** and **Service Adviser**
+- **Rename** "Front Desk" to **"Assistant Staff"** everywhere
+- **Separate** "Status & Location" into **two distinct columns**
+- Location column: focus only on **Lift 1, Lift 2, Lift 3, Lift 4** (occupied lifts must be color-coded)
+- Status column (SA only): only show **Released (Show TV Screen)**, **Released (Removes list)**, and **Carry Over**
+- Make a **separate column for Remarks/Reasons** and **Actions**
+
+### From the Assistant Staff Module
+The Assistant Staff should be **read-only in the table** except for editing **Arrival time**. Specifically remove:
+- Departure control
+- Parts control
+- Evaluation/Diagnosis control
+- Goal (both)
+- Status and Location controls
+- Remarks / Action buttons
+
+### From the SA Module
+- Rename "GOAL (2H)" with a **professional tone** → renamed to **"SLA Status (2h)"**
+- Status dropdown (SA only): only contains **Released (Show TV Screen)**, **Released (Removes List)**, **Carry Over**
+- Location dropdown: Lift 1–4 only; **occupied lifts shown in red**
+- Separate column for **Status** and **Reasons**
+
+### New Roles Added
+- **Owner** — Analytics, Records
+- **Admin** — Staff Access, Records (new role, formerly owner's job)
+- **Assistant Staff** — Online Booking, Master Queue (read-only table except Arrival)
+- **Service Advisor (SA)** — Walk-In Form, Daily Intakes
+
+### Quick Copy Dev Credentials
+- All credential cards on the login page should **auto-fill email + password** when clicked
+
+---
+
+## 3. How the Implementation Plan Was Formed
+
+The implementation plan was built by analyzing the user's requirements and breaking them into **layers of the system**. The principle was: *don't break what's working — change from the inside out.*
+
+### Layer-by-Layer Reasoning
+
+#### Database Layer (Why we touched it first)
+- The `'admin'` role didn't exist in the User model enum — if we added an admin user without updating the schema, MongoDB would reject it.
+- The `branch` field didn't exist in the Job model — analytics comparing Branch A vs Branch B would have no data source.
+- The `location` field was previously stored inside the `status` string (e.g., `status: 'Lift 1'`) — this made it impossible to have a separate Status column and a separate Location column.
+
+**Decision:** We updated the database models **first** so the rest of the application could rely on clean, typed fields.
+
+#### Backend Layer (Why it follows the database)
+- With new fields and a new role enum, all the backend **middleware guards** (like `requireRole(['owner'])`) needed to be updated to also allow `'admin'`.
+- The `seedDatabase()` function in `server.js` needed to create the admin seed account and generate jobs with random branch assignments so that analytics would have real data to display.
+- The `jobController.js` had all its status/location logic tightly coupled — we separated them.
+
+**Decision:** Backend was updated to enforce the new permissions and accept the new data fields.
+
+#### Frontend Layer (Built last, relies on both)
+- The navbar, table column structure, and all role-based visibility logic live entirely in `index.html` as a single-file application.
+- We could not split Status and Location columns in the UI until the database and backend separately stored those fields.
+- Analytics Branch A/B comparison needed the `branch` field to exist in job records.
+
+**Decision:** Frontend was updated last, building on the verified backend.
+
+---
+
+## 4. All Files Modified
+
+### Backend Files
+
+| File | What Changed |
+|------|-------------|
+| [`backend/models/User.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/User.js) | Added `'admin'` to the `role` enum field |
+| [`backend/models/Job.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/models/Job.js) | Added `branch` field (Branch A/B), added `location` field (None/Lift 1–4), cleaned up status enum |
+| [`backend/server.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/server.js) | Seeded `admin@hontech.com` / `admin123`, seeded historical jobs with random branches |
+| [`backend/routes/authRoutes.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/routes/authRoutes.js) | Updated staff management endpoints to allow both `'owner'` and `'admin'` |
+| [`backend/routes/jobRoutes.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/routes/jobRoutes.js) | Updated job POST/PATCH/DELETE to allow `'admin'` access |
+| [`backend/controllers/authController.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/authController.js) | Updated `validRoles` to include `'admin'` for role assignment |
+| [`backend/controllers/jobController.js`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/backend/controllers/jobController.js) | Updated `createJob` to accept `branch`, updated status/location logic |
+
+### Frontend File
+
+| File | What Changed |
+|------|-------------|
+| [`frontend/index.html`](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/frontend/index.html) | All UI/UX changes listed in Section 5 below |
+
+---
+
+## 5. What Was Built — Feature by Feature
+
+### 5.1 Login Page — Quick Copy Dev Credentials
+
+**What it does:** Each credential card on the login screen auto-fills the email and password fields when clicked — no manual typing needed.
+
+**How it works:**
+```html
+<div onclick="
+  document.getElementById('login-email').value='admin@hontech.com';
+  document.getElementById('login-pass').value='admin123';
+">
+  System Admin
+</div>
+```
+
+**Cards available:**
+| Card Label | Email | Password |
+|---|---|---|
+| System Owner | owner@hontech.com | owner123 |
+| System Admin | admin@hontech.com | admin123 |
+| Assistant Staff | staff@hontech.com | staff123 |
+| Service Advisor 1 | sa@hontech.com | sa123 |
+| Service Advisor 2 | tech@hontech.com | tech123 |
+
+---
+
+### 5.2 Role-Based Navigation (Navbar)
+
+Each role sees a **different set of navigation buttons** after logging in.
+
+| Role | Nav Items |
+|---|---|
+| **Owner** | Analytics · Records · My Profile |
+| **Admin** | Staff Access · Records · My Profile |
+| **Assistant Staff** | Online Booking · Master Queue · TV Monitor · My Profile |
+| **Service Advisor** | Walk-In Form · Daily Intakes · TV Monitor · My Profile |
+
+**How it's built:** The `buildNavbar(role)` JavaScript function runs after login and injects the correct `<button>` elements into the `<nav>` element dynamically.
+
+---
+
+### 5.3 TV Monitor — Slide 2 Layout
+
+**Slide 1** — Bay Monitoring (active lifts, who is working)
+
+**Slide 2** — Customer-Facing Status Board
+- **Top-Left panel:** "Ready for Release" (green header) — vehicles whose service is done
+- **Bottom-Left panel:** "Upcoming Vehicles" (blue header) — vehicles in queue
+- **Right panel (full height):** "Carry-Over" (orange header) — vehicles staying overnight
+
+This was built using a `flex-row` layout in HTML with `flex-col` on the left side containing two `flex-1` panels stacked vertically.
+
+---
+
+### 5.4 Daily Intakes Table — Column Restructure
+
+**Old structure (before):**
+```
+Claim Stub | Plate | Model & Category | Arrival | Departure | Parts | Evaluation | Goal (2h) | Status & Location | Remarks / Action
+```
+
+**New structure (after):**
+```
+Claim Stub | Plate | Model & Category | Branch | Arrival | Departure | Parts | Evaluation | [SLA Status]* | Status | Location | Remarks/Reasons | Action
+```
+> *SLA Status column only visible to Owner and Admin roles
+
+**Key changes:**
+- `Status` and `Location` are now **fully separate columns**
+- `Branch` column added to show which branch each vehicle belongs to
+- `Goal (2h)` renamed to `SLA Status (2h)` — hidden for SA and Assistant Staff
+- `Remarks / Action` split into **two distinct columns**
+
+---
+
+### 5.5 Role-Based Table Cell Controls
+
+The table is rendered dynamically by the `renderJobRows()` JavaScript function. Each cell checks the current user's role before deciding what to render.
+
+#### Assistant Staff — Read-Only Table (except Arrival)
+
+| Column | What Assistant Staff Sees |
+|---|---|
+| Arrival | ✅ Editable `<input type="time">` |
+| Departure | 🔒 Read-only text |
+| Parts | 🔒 Read-only text |
+| Evaluation/Diagnosis | 🔒 Read-only text |
+| SLA Status (2h) | ❌ Column hidden |
+| Status | 🔒 Read-only badge |
+| Location | 🔒 Read-only badge |
+| Remarks/Reasons | 🔒 Read-only text |
+| Action (Claim/Release/Delete) | ❌ Not shown |
+
+#### Service Advisor — Full Controls (with restrictions)
+
+| Column | What SA Sees |
+|---|---|
+| Arrival | ✅ Editable |
+| Departure | ✅ Editable |
+| Parts | ✅ Dropdown (Pending/Yes/No/WCA) |
+| Evaluation/Diagnosis | ✅ Text input |
+| SLA Status (2h) | ❌ Column hidden |
+| Status | ✅ Dropdown (Waiting\*, In Progress\*, Ready/Show TV, Carry Over, Released/Remove) |
+| Location | ✅ Dropdown (Waiting Area, Lift 1–4 with occupied detection) |
+| Remarks/Reasons | ✅ Text input |
+| Claim button | ✅ Shown for unassigned jobs |
+| Delete button | ❌ Not shown |
+
+> \* Waiting and In Progress appear as disabled read-only options when the job is in that state
+
+#### Owner / Admin — Full Access
+
+- All columns visible including **SLA Status (2h)**
+- Full status dropdown (Waiting, In Progress, Ready, Carry Over, Released)
+- Delete button available
+
+---
+
+### 5.6 Location Column — Lift Occupancy Detection
+
+When a SA opens a job's Location dropdown, the system checks **all other jobs** in memory to see which Lifts are already in use.
+
+```
+Lift 1          ← available (black text)
+Lift 2 (Occupied - ABC 123)  ← disabled, red text
+Lift 3          ← available
+Lift 4          ← available
+```
+
+- Occupied lifts are shown in **red** and are **disabled** (cannot be selected)
+- The current job's own lift is excluded from the occupancy check
+
+---
+
+### 5.7 Analytics Dashboard (Owner Only)
+
+The analytics section has two sub-tabs:
+
+#### Tab 1: Live Operations Monitor
+- Total Daily Intake count
+- Released Today count
+- Active Carry-Overs count
+- In Bays (Working) count
+
+#### Tab 2: Analytics & Reports Center
+
+**Filters:**
+- Report Scope: Daily / Weekly / Monthly
+- Branch Filter: All Branches / Branch A / Branch B
+
+**Summary Cards (with Branch A vs Branch B breakdown):**
+| Card | Shows |
+|---|---|
+| Total Intakes | Total + Branch A count + Branch B count |
+| Completed Jobs | Total + Branch A + Branch B |
+| Carry Overs | Total + Branch A + Branch B |
+| Avg Service Time | Overall + Branch A + Branch B |
+
+**Charts:**
+- Period Intake & Completion Trends (bar/line chart)
+- Service Categories Breakdown (doughnut)
+- Booking Channels Share (pie — Walk-in vs Online)
+
+**Efficiency & Volume Insights:**
+| Insight | Description |
+|---|---|
+| Completion Success Rate | % of completed jobs vs total |
+| Complimentary Check-Ups | Count of free diagnostic jobs |
+| PMS Volume | Preventive maintenance jobs |
+| General Repairs (GR) | Heavy repair jobs |
+| PMS Goal Success Rate | % of PMS jobs completed within 2 hours |
+| PMS Success / Failure | Exact count of met vs missed 2-hour goal |
+| Peak Intake Hours | Hour window with most arrivals (e.g. "9:00 AM (14 cars)") |
+| Walk-in / Online Ratio | Percentage split (e.g. "72% W / 28% O") |
+
+**Period Record Log Table:**
+- Full searchable table of all jobs in the selected period
+- Filters: SA Name, Service Status, Branch
+- Real-time keyword search across Plate, Model, Customer, Category, SA, Status
+
+---
+
+## 6. Database Seed Accounts
+
+These accounts are automatically created the first time the server starts with an empty database:
+
+| Name | Role | Email | Password |
+|---|---|---|---|
+| System Owner | owner | owner@hontech.com | owner123 |
+| System Admin | admin | admin@hontech.com | admin123 |
+| Jessica (Front Desk) | assistant | staff@hontech.com | staff123 |
+| Mark (Advisor) | sa | sa@hontech.com | sa123 |
+| Dave (Advisor) | sa | tech@hontech.com | tech123 |
+
+---
+
+## 7. Fixes Applied During Verification
+
+After the initial implementation, a visual check of the live application revealed three bugs that were fixed:
+
+| Bug | Fix Applied |
+|---|---|
+| Static Daily Intakes `<thead>` still used old column names (`Goal (2h)`, `Status & Location`) | Updated to match the new JS-rendered header structure |
+| TV Slide 2 closing `</div>` had an extra stray `>` character (`</div>>`) which could cause rendering issues | Removed the stray `>` |
+| SA Status dropdown text was too long and got clipped in the column (`Released (show TV screen)`) | Shortened to `Ready (Show TV)` and `Released (Remove List)` |
+
+---
+
+## 8. Git Commit History (This Session)
+
+All changes were committed to the GitHub repository:
+**`Justin-stack101/CapstoneOfficial2_Development`** on branch `main`
+
+| Commit | Description |
+|---|---|
+| `44e19ed` | fix: update Daily Intakes table headers, fix TV slide2 stray gt, shorten SA status labels |
+| *(earlier commits)* | feat: role realignment, analytics upgrades, Branch A/B metrics, TV slide layout, Assistant Staff read-only table |
+
+---
+
+## 9. How to Verify Everything is Working
+
+### Login as Admin (`admin@hontech.com`)
+1. Should land on **Staff Access** panel
+2. Can create new accounts for any role
+3. Can see **Records** table with all columns including SLA Status
+
+### Login as Owner (`owner@hontech.com`)
+1. Should land on **Analytics** dashboard
+2. Can switch between **Live Monitor** and **Analytics & Reports Center**
+3. Branch A / Branch B breakdown visible in cards
+4. Peak Hours, Walk-in/Online ratio, PMS stats all showing
+
+### Login as Assistant Staff (`staff@hontech.com`)
+1. Should land on **Online Booking** form
+2. Clicking **Master Queue** shows the table
+3. Table should be **completely read-only except Arrival time**
+4. No Claim, Release, or Delete buttons visible
+5. No SLA Status (2h) column visible
+
+### Login as Service Advisor (`sa@hontech.com`)
+1. Should land on **Walk-In Form**
+2. Clicking **Daily Intakes** shows the table split into "My Active Jobs" and "Unassigned & Other Advisor Jobs"
+3. Status dropdown should show: `Waiting`\* / `In Progress`\* / `Ready (Show TV)` / `Carry Over` / `Released (Remove List)`
+4. Location dropdown should show Lifts with red/disabled for occupied ones
+5. No SLA Status (2h) column visible
+6. No Delete button visible
+
+### Open TV Monitor (`http://localhost:5001/?mode=tv`)
+1. Slide 1 — Bay Monitoring with active lift cards
+2. Slide 2 — Left side: Ready for Release (top) + Upcoming Vehicles (bottom); Right side: Carry-Over (full)
+
+---
+
+## 10. Technology Stack Summary
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5, Vanilla JS, TailwindCSS (CDN), Lucide Icons, Chart.js, jsPDF |
+| Backend | Node.js, Express.js |
+| Database | MongoDB Atlas + Mongoose ODM |
+| Authentication | JWT (HTTP-only cookies), bcryptjs password hashing |
+| Security | Helmet, CORS, express-rate-limit, MFA (TOTP via speakeasy) |
+| Email | Nodemailer (simulated dev mailbox) |
+| Hosting | Local dev server on port 5001 |
+| Version Control | Git + GitHub (`Justin-stack101/CapstoneOfficial2_Development`) |

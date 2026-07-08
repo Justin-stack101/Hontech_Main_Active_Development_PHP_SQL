@@ -1,0 +1,54 @@
+@import "../abstracts/variables";
+
+.auth-hero {
+  background: linear-gradient(180deg, #111827 0%, #1f2937 100%);
+  position: relative;
+  border-right: 4px solid $brand-red;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+.login-input {
+  background: #f9fafb !important;
+  border: 1px solid #d1d5db !important;
+  color: #111827 !important;
+  transition: all 0.2s ease !important;
+  
+  &::placeholder {
+    color: #9ca3af !important;
+  }
+  
+  &:focus {
+    background: #ffffff !important;
+    border-color: $brand-red !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+  }
+}
+
+.login-btn {
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid #111827;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: $brand-red;
+    border-color: $brand-red;
+    box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.2);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+
+

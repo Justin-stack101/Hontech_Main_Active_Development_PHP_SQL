@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# =============================================
+# API Routing — Forward /api/* to PHP backend
+# =============================================
+RewriteRule ^api/(.*)$ backend/index.php [QSA,L]
+
+# =============================================
+# Static Frontend Assets — Serve directly
+# =============================================
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# =============================================
+# SPA Fallback — Serve frontend/index.html
+# =============================================
+RewriteRule ^frontend/.*$ frontend/index.html [L]
