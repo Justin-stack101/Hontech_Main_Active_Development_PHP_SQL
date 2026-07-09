@@ -719,7 +719,7 @@
                     <div
                         class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                         <div class="flex flex-wrap items-center gap-4">
-                            <div>
+                            <div id="wrapper-analytics-scope">
                                 <label
                                     class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Report
                                     Scope</label>
@@ -733,7 +733,7 @@
                             <div>
                                 <label
                                     class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Branch</label>
-                                <select id="analytics-branch" onchange="loadAnalyticsData()"
+                                <select id="analytics-branch" onchange="handleBranchChange()"
                                     class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
                                     <option value="all">All Branches</option>
                                     <option value="Branch A">Branch A</option>
@@ -763,7 +763,7 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div id="wrapper-analytics-period">
                             <span id="analytics-period-label"
                                 class="bg-red-50 text-red-600 font-black text-[11px] uppercase tracking-widest px-4 py-3 rounded-xl border border-red-100 shadow-sm block text-center">
                                 Period: -
@@ -773,15 +773,19 @@
                 </div>
 
                 <!-- TAB 1: LIVE OPERATIONS MONITOR -->
-                <div id="db-tab-monitor" class="space-y-8">                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <!-- Card 1: Total Daily Intake -->
+                <div id="db-tab-monitor" class="space-y-8">                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">                        <!-- Card 1: Total Daily Intake -->
                         <div class="bg-white border border-gray-200 hover:border-red-500/30 p-6 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-center flex flex-col items-center justify-between group">
-                            <div class="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                            <div class="w-12 h-12 bg-red-50 text-red-650 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
                                 <i data-lucide="calendar-plus" class="w-6 h-6"></i>
                             </div>
                             <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Total Daily Intake</p>
                             <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-intake">0</h3>
                             <p class="text-[10px] text-red-650 font-bold uppercase tracking-wider mt-1.5">Vehicles Registered</p>
+                            <div id="live-intake-branch-split" class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around w-full">
+                                <span>Branch A: <strong id="live-branch-a-intake" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="live-branch-b-intake" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
                         </div>
                         
                         <!-- Card 2: Released Today -->
@@ -792,6 +796,11 @@
                             <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Released Today</p>
                             <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-completed">0</h3>
                             <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider mt-1.5" id="metric-completed-subtext">Services Completed</p>
+                            <div id="live-completed-branch-split" class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around w-full">
+                                <span>Branch A: <strong id="live-branch-a-completed" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="live-branch-b-completed" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
                         </div>
 
                         <!-- Card 3: Active Carry-Overs -->
@@ -802,6 +811,11 @@
                             <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">Active Carry-Overs</p>
                             <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-carryover">0</h3>
                             <p class="text-[10px] text-amber-600 font-bold uppercase tracking-wider mt-1.5">Awaiting Parts/Extended</p>
+                            <div id="live-carryover-branch-split" class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around w-full">
+                                <span>Branch A: <strong id="live-branch-a-carryover" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="live-branch-b-carryover" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
                         </div>
 
                         <!-- Card 4: In Bays (Working) -->
@@ -812,8 +826,13 @@
                             <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-1.5">In Bays (Working)</p>
                             <h3 class="text-5xl font-black text-gray-900 leading-none my-2" id="metric-inbay">0</h3>
                             <p class="text-[10px] text-blue-650 font-bold uppercase tracking-wider mt-1.5" id="metric-inbay-subtext">Currently on Lift</p>
+                            <div id="live-inbay-branch-split" class="text-[10px] text-gray-500 font-semibold mt-3 border-t border-gray-100 pt-2.5 flex justify-around w-full">
+                                <span>Branch A: <strong id="live-branch-a-inbay" class="text-gray-900 font-bold">0</strong></span>
+                                <span class="text-gray-300">|</span>
+                                <span>Branch B: <strong id="live-branch-b-inbay" class="text-gray-900 font-bold">0</strong></span>
+                            </div>
                         </div>
-                    </div>>
+                    </div>
                 </div>
 
                 <!-- TAB 2: ANALYTICS & REPORTS CENTER -->
@@ -1016,19 +1035,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Charts Grid Row 4 -->
-                    <div class="grid grid-cols-1 gap-6">
-                        <!-- SA Workload Chart -->
-                        <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="user-check" class="w-4 h-4 text-red-600"></i> Service Advisor Workload Distribution
-                            </h4>
-                            <div class="flex-1 min-h-[240px] max-h-[300px] relative">
-                                <canvas id="chart-sa-workload"></canvas>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- TAB 3: PERIODIC TABLE -->
@@ -1145,10 +1151,6 @@
                     <button id="btn-staff-tab-branches" onclick="switchStaffTab('branches')"
                         class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 focus:outline-none">
                         <i data-lucide="map-pin" class="w-4 h-4"></i> Branch Management
-                    </button>
-                    <button id="btn-staff-tab-trash" onclick="switchStaffTab('trash')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 focus:outline-none">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i> Recovery Bin
                     </button>
                 </div>
 
@@ -1291,61 +1293,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Tab 3: Recovery Bin -->
-                <div id="staff-tab-trash" class="staff-tab-content hidden space-y-6">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="user-x" class="w-6 h-6"></i></div>
-                                <div>
-                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Deleted Staff Accounts</h3>
-                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Restore access or permanently purge</p>
-                                </div>
-                            </div>
-                            <div class="overflow-x-auto max-h-[250px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full text-left">
-                                    <thead class="sticky top-0 z-10 bg-white">
-                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                            <th class="px-6 py-4 bg-white">Staff Name</th>
-                                            <th class="px-6 py-4 bg-white">Role</th>
-                                            <th class="px-6 py-4 bg-white">Email</th>
-                                            <th class="px-6 py-4 bg-white">Deleted At</th>
-                                            <th class="px-6 py-4 text-right bg-white">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-trash-staff"></tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md flex flex-col">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="file-x" class="w-6 h-6"></i></div>
-                                <div>
-                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Deleted Intake Records</h3>
-                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Restore intakes back to active queue</p>
-                                </div>
-                            </div>
-                            <div class="overflow-x-auto max-h-[250px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full text-left">
-                                    <thead class="sticky top-0 z-10 bg-white">
-                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                            <th class="px-6 py-4 bg-white">Plate / ID</th>
-                                            <th class="px-6 py-4 bg-white">Customer Name</th>
-                                            <th class="px-6 py-4 bg-white">Vehicle</th>
-                                            <th class="px-6 py-4 bg-white">Category</th>
-                                            <th class="px-6 py-4 bg-white">Deleted At</th>
-                                            <th class="px-6 py-4 text-right bg-white">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-trash-jobs"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>>
+            </div>
 
             <!-- VEHICLE INTAKE FORM -->
             <div id="section-intake" class="section-content hidden fade-in space-y-4">

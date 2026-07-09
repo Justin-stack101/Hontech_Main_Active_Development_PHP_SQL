@@ -16,7 +16,6 @@ use App\Middleware\Auth;
 use App\Controllers\AuthController;
 use App\Controllers\JobController;
 use App\Controllers\BranchController;
-use App\Controllers\TrashController;
 
 // Load environment
 Env::load();
@@ -277,22 +276,6 @@ if ($method === 'POST' && preg_match('#^/branches/(\d+)/restore$#', $route, $m))
     exit;
 }
 
-// --- Protected Trash Bin Routes ---
-if ($method === 'GET' && $route === '/admin/trash') {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    TrashController::getTrash();
-    exit;
-}
-if ($method === 'POST' && $route === '/admin/trash/restore') {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    TrashController::restoreItem();
-    exit;
-}
-if ($method === 'DELETE' && $route === '/admin/trash/purge') {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    TrashController::purgeItem();
-    exit;
-}
 
 // =============================================
 // 404 — Route not found

@@ -342,7 +342,7 @@ class AuthController
                 return;
             }
 
-            $stmt = $db->prepare('UPDATE users SET is_deleted = 1, is_active = 0 WHERE id = ?');
+            $stmt = $db->prepare('DELETE FROM users WHERE id = ?');
             $stmt->execute([$id]);
 
             echo json_encode(['message' => 'Staff access successfully revoked.']);

@@ -36,8 +36,7 @@
             channel: null,
             branchShare: null,
             laneShare: null,
-            partsStatus: null,
-            saWorkload: null
+            partsStatus: null
         };
 
         // Base fetch helper to deal with absolute URL resolutions and JSON conversions
@@ -649,6 +648,9 @@
             if (id === 'profile') {
                 loadSystemSettingsIntoForm();
             }
+            if (id === 'dashboard') {
+                switchDashboardTab(currentDashboardTab || 'monitor');
+            }
         }
 
         function getRoleLabel(roleId) {
@@ -769,14 +771,14 @@
         }
 
         async function deleteStaffAccount(id) {
-            if (!confirm('Are you sure you want to suspend system access for this personnel? They will be moved to the Recovery Bin.')) return;
+            if (!confirm('Are you sure you want to permanently delete this personnel? This action cannot be undone.')) return;
             try {
                 await apiRequest(`/api/auth/staff/${id}`, { method: 'DELETE' });
                 await loadData();
                 renderStaffManagement();
-                showSystemToast('Staff account successfully suspended and moved to trash.', 'success', 'Access Suspended');
+                showSystemToast('Staff account successfully deleted.', 'success', 'Account Deleted');
             } catch (err) {
-                showSystemToast(err.message || 'Could not suspend staff access.', 'error');
+                showSystemToast(err.message || 'Could not delete staff account.', 'error');
             }
         }
 
@@ -822,7 +824,7 @@
             document.querySelectorAll('.staff-tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`staff-tab-${tab}`).classList.remove('hidden');
 
-            const tabs = ['roster', 'branches', 'trash'];
+            const tabs = ['roster', 'branches'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`btn-staff-tab-${t}`);
                 if (btn) {
@@ -836,8 +838,6 @@
 
             if (tab === 'branches') {
                 loadBranchesList();
-            } else if (tab === 'trash') {
-                loadTrashBin();
             } else if (tab === 'roster') {
                 loadBranches();
             }
@@ -975,96 +975,6 @@
                 loadBranches();
             } catch (err) {
                 showSystemToast(err.message || "Failed to restore branch.", "error");
-            }
-        }
-
-        // Trash Bin operations
-        async function loadTrashBin() {
-            try {
-                const trash = await apiRequest('/api/admin/trash');
-                
-                const staffTbody = document.getElementById('table-trash-staff');
-                const jobsTbody = document.getElementById('table-trash-jobs');
-
-                if (staffTbody) {
-                    staffTbody.innerHTML = trash.staff.map(u => `
-                        <tr>
-                            <td class="px-6 py-4 font-bold text-gray-900">${u.name}</td>
-                            <td class="px-6 py-4 text-xs font-bold uppercase text-gray-600">${u.role}</td>
-                            <td class="px-6 py-4 text-gray-600 font-mono text-xs">${u.email}</td>
-                            <td class="px-6 py-4 text-gray-500 text-xs">${new Date(u.deletedAt).toLocaleString()}</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex gap-2 justify-end">
-                                    <button onclick="restoreTrashItem('staff', '${u._id}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-green-600 hover:bg-green-50 transition" title="Restore Account">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="purgeTrashItem('staff', '${u._id}', '${u.name}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Purge Permanently">
-                                        <i data-lucide="trash" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('') || `<tr><td colspan="5" class="text-center py-8 text-gray-500 font-medium">No deleted staff accounts.</td></tr>`;
-                }
-
-                if (jobsTbody) {
-                    jobsTbody.innerHTML = trash.jobs.map(j => `
-                        <tr>
-                            <td class="px-6 py-4"><div class="font-black italic text-gray-700 text-base">${j.plate}</div><div class="text-[9px] text-gray-400 font-mono">${j.jobId}</div></td>
-                            <td class="px-6 py-4 font-bold text-gray-900">${j.name}</td>
-                            <td class="px-6 py-4 text-gray-600 text-sm">${j.vehicle}</td>
-                            <td class="px-6 py-4 text-xs font-bold text-gray-500">${j.category}</td>
-                            <td class="px-6 py-4 text-gray-500 text-xs">${new Date(j.deletedAt).toLocaleString()}</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex gap-2 justify-end">
-                                    <button onclick="restoreTrashItem('job', '${j.jobId}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-green-600 hover:bg-green-50 transition" title="Restore Record">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="purgeTrashItem('job', '${j.jobId}', '${j.plate}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Purge Permanently">
-                                        <i data-lucide="trash" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `).join('') || `<tr><td colspan="6" class="text-center py-8 text-gray-500 font-medium">No deleted intake records.</td></tr>`;
-                }
-                lucide.createIcons();
-            } catch (err) {
-                showSystemToast("Failed to load recovery bin details.", "error");
-            }
-        }
-
-        async function restoreTrashItem(type, id) {
-            try {
-                await apiRequest('/api/admin/trash/restore', {
-                    method: 'POST',
-                    body: { type, id }
-                });
-                showSystemToast("Record successfully restored.", "success");
-                loadTrashBin();
-                await loadData();
-                renderStaffTables();
-                if (type === 'staff') {
-                    renderStaffManagement();
-                }
-            } catch (err) {
-                showSystemToast(err.message || "Failed to restore item.", "error");
-            }
-        }
-
-        async function purgeTrashItem(type, id, displayName) {
-            const confirmPurge = confirm(`Are you absolutely sure you want to PERMANENTLY delete "${displayName}"? This action is irreversible and all historical data will be removed.`);
-            if (!confirmPurge) return;
-
-            try {
-                await apiRequest('/api/admin/trash/purge', {
-                    method: 'DELETE',
-                    body: { type, id }
-                });
-                showSystemToast("Record permanently deleted.", "success");
-                loadTrashBin();
-            } catch (err) {
-                showSystemToast(err.message || "Failed to purge item.", "error");
             }
         }
 
@@ -2300,21 +2210,66 @@
         function renderReports() {
             if (currentUserRole !== 'owner' && currentUserRole !== 'admin') return;
 
+            // Read selected branch filter if it exists
+            const branchVal = document.getElementById('analytics-branch') ? document.getElementById('analytics-branch').value : 'all';
+            let listForReports = [...allJobs];
+            if (branchVal !== 'all') {
+                listForReports = listForReports.filter(j => j.branch === branchVal);
+            }
+
             // Render live operations cards (Tab 1)
             const today = new Date().toISOString().split('T')[0];
-            const todayJobs = allJobs.filter(j => j.dateReceived === today);
+            const todayJobs = listForReports.filter(j => j.dateReceived === today);
             
-            const releasedCount = allJobs.filter(j => j.status === 'Completed' && j.dateCompleted === today).length;
-            const readyToReleaseCount = allJobs.filter(j => j.status === 'Ready to Release' || j.status === 'Ready').length;
-            const carryoverCount = allJobs.filter(j => j.status === 'Carry Over').length;
+            const releasedCount = listForReports.filter(j => j.status === 'Completed' && j.dateCompleted === today).length;
+            const readyToReleaseCount = listForReports.filter(j => j.status === 'Ready to Release' || j.status === 'Ready').length;
+            const carryoverCount = listForReports.filter(j => j.status === 'Carry Over').length;
             
-            const inBayCount = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released').length;
-            const monitoringCount = allJobs.filter(j => j.status === 'Monitoring').length;
+            const inBayCount = listForReports.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released').length;
+            const monitoringCount = listForReports.filter(j => j.status === 'Monitoring').length;
 
             document.getElementById('metric-intake').innerText = todayJobs.length;
             document.getElementById('metric-completed').innerText = releasedCount;
             document.getElementById('metric-carryover').innerText = carryoverCount;
             document.getElementById('metric-inbay').innerText = inBayCount;
+
+            // Calculate live branch splits
+            const intakeA = allJobs.filter(j => j.dateReceived === today && j.branch === 'Branch A').length;
+            const intakeB = allJobs.filter(j => j.dateReceived === today && j.branch === 'Branch B').length;
+
+            const completedA = allJobs.filter(j => j.status === 'Completed' && j.dateCompleted === today && j.branch === 'Branch A').length;
+            const completedB = allJobs.filter(j => j.status === 'Completed' && j.dateCompleted === today && j.branch === 'Branch B').length;
+
+            const carryA = allJobs.filter(j => j.status === 'Carry Over' && j.branch === 'Branch A').length;
+            const carryB = allJobs.filter(j => j.status === 'Carry Over' && j.branch === 'Branch B').length;
+
+            const inbayA = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch A').length;
+            const inbayB = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch B').length;
+
+            if (document.getElementById('live-branch-a-intake')) document.getElementById('live-branch-a-intake').innerText = intakeA;
+            if (document.getElementById('live-branch-b-intake')) document.getElementById('live-branch-b-intake').innerText = intakeB;
+
+            if (document.getElementById('live-branch-a-completed')) document.getElementById('live-branch-a-completed').innerText = completedA;
+            if (document.getElementById('live-branch-b-completed')) document.getElementById('live-branch-b-completed').innerText = completedB;
+
+            if (document.getElementById('live-branch-a-carryover')) document.getElementById('live-branch-a-carryover').innerText = carryA;
+            if (document.getElementById('live-branch-b-carryover')) document.getElementById('live-branch-b-carryover').innerText = carryB;
+
+            if (document.getElementById('live-branch-a-inbay')) document.getElementById('live-branch-a-inbay').innerText = inbayA;
+            if (document.getElementById('live-branch-b-inbay')) document.getElementById('live-branch-b-inbay').innerText = inbayB;
+
+            // Toggle visibility of live breakdowns depending on branchVal
+            const liveSplits = ['live-intake-branch-split', 'live-completed-branch-split', 'live-carryover-branch-split', 'live-inbay-branch-split'];
+            liveSplits.forEach(sId => {
+                const el = document.getElementById(sId);
+                if (el) {
+                    if (branchVal === 'all') {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
 
             // Update subtext labels to show supplementary stats
             const completedSub = document.getElementById('metric-completed-subtext');
@@ -2354,10 +2309,25 @@
             if (secPeriodic) secPeriodic.classList.add('hidden');
             
             // Show/Hide selectors container
-            if (tab === 'analytics' || tab === 'periodic') {
-                if (secSelectors) secSelectors.classList.remove('hidden');
-            } else {
-                if (secSelectors) secSelectors.classList.add('hidden');
+            if (secSelectors) {
+                secSelectors.classList.remove('hidden');
+                const wrapScope = document.getElementById('wrapper-analytics-scope');
+                const wrapPeriod = document.getElementById('wrapper-analytics-period');
+                const pickerDaily = document.getElementById('picker-daily');
+                const pickerWeekly = document.getElementById('picker-weekly');
+                const pickerMonthly = document.getElementById('picker-monthly');
+
+                if (tab === 'monitor') {
+                    if (wrapScope) wrapScope.classList.add('hidden');
+                    if (wrapPeriod) wrapPeriod.classList.add('hidden');
+                    if (pickerDaily) pickerDaily.classList.add('hidden');
+                    if (pickerWeekly) pickerWeekly.classList.add('hidden');
+                    if (pickerMonthly) pickerMonthly.classList.add('hidden');
+                } else {
+                    if (wrapScope) wrapScope.classList.remove('hidden');
+                    if (wrapPeriod) wrapPeriod.classList.remove('hidden');
+                    handleScopeChange();
+                }
             }
 
             btnMonitor.className = inactiveClass;
@@ -2382,6 +2352,16 @@
                 } else {
                     applyAnalyticFilters();
                 }
+            }
+        }
+
+        function handleBranchChange() {
+            if (currentDashboardTab === 'monitor') {
+                renderReports();
+            } else if (currentDashboardTab === 'analytics') {
+                loadAnalyticsData();
+            } else if (currentDashboardTab === 'periodic') {
+                applyAnalyticFilters();
             }
         }
 
@@ -2708,7 +2688,6 @@
             if (chartInstances.branchShare) chartInstances.branchShare.destroy();
             if (chartInstances.laneShare) chartInstances.laneShare.destroy();
             if (chartInstances.partsStatus) chartInstances.partsStatus.destroy();
-            if (chartInstances.saWorkload) chartInstances.saWorkload.destroy();
 
             // --- 1. TREND CHART (Intakes vs Completions vs Carry Overs) ---
             let labels = [];
@@ -3003,49 +2982,6 @@
                 }
             });
 
-            // --- 7. SERVICE ADVISOR WORKLOAD ---
-            const saCounts = {};
-            jobs.forEach(j => {
-                const name = j.saName || 'Unassigned';
-                saCounts[name] = (saCounts[name] || 0) + 1;
-            });
-            const saLabels = Object.keys(saCounts);
-            const saData = Object.values(saCounts);
-
-            const ctxSa = document.getElementById('chart-sa-workload').getContext('2d');
-            chartInstances.saWorkload = new Chart(ctxSa, {
-                type: 'bar',
-                data: {
-                    labels: saLabels,
-                    datasets: [{
-                        label: 'Assigned Vehicles',
-                        data: saData,
-                        backgroundColor: 'rgba(71, 85, 105, 0.85)',
-                        borderColor: 'rgb(71, 85, 105)',
-                        borderWidth: 1.5,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: { stepSize: 1, color: '#64748b' },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        y: {
-                            ticks: { color: '#64748b', font: { weight: 'bold', size: 10 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
         }
 
         function exportData(format) {

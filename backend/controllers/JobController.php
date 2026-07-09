@@ -523,7 +523,7 @@ class JobController
                 return;
             }
 
-            $stmt = $db->prepare('UPDATE jobs SET is_deleted = 1 WHERE job_id = ?');
+            $stmt = $db->prepare('DELETE FROM jobs WHERE job_id = ?');
             $stmt->execute([$jobId]);
 
             echo json_encode(['message' => 'Job successfully removed from system.']);
