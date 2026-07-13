@@ -24,6 +24,7 @@ A centralized command center for business owners and supervisors to oversee dail
 *   **1.3.1. Centralized Database Synchronization**: A real-time database that bridges the front desk, workshop floor, and management, ensuring data consistency across all users.
 *   **1.3.2. Role-Based Access Control (RBAC)**: A security layer ensuring that specific modules are restricted to their designated roles (e.g., Assistants cannot access Admin reports, Owners/Admins have view-only access to active workshop queue logs, and only SAs can make operational updates).
 *   **1.3.3. Live TV Monitor Display Engine**: A passive public display infrastructure that queries active queue data to show waiting customers their vehicle's status without allowing interaction.
+*   **1.3.4. Multi-Branch Data Partitioning**: The system natively supports multi-branch scaling, partitioning database schedules, rosters, and operational queues based on branch assignments.
 
 ---
 
@@ -37,4 +38,4 @@ To ensure the project remains focused and achievable within the capstone timefra
 4.  **No Inventory Management**: The tracking of automotive parts availability, tool stocks, and supplies is outside the system's scope. Staff will still manually determine if parts are unavailable, which triggers a carry-over status in the system.
 5.  **No Automated Vehicle Diagnostics (OBD Integration)**: The system functions purely as a queue and intake monitoring tool. It will not integrate with automotive diagnostic scanners to read vehicle fault codes automatically.
 6.  **Internet Dependency**: As a web-based application, continuous and stable internet connectivity is required for real-time queue synchronization and saving records.
-7.  **Multi-Branch Isolation Limits**: The system supports multi-branch operations (e.g., Branch A, Branch B) and isolates data views per branch for Admins, Service Advisors, and staff. Only the global Owner maintains cross-branch viewing rights.
+7.  **Cross-Branch Access Restrictions**: Staff members and branch managers (Admins) are strictly restricted from accessing, modifying, or transferring records of other branches. Cross-branch management and consolidated analytics viewing remain restricted solely to the global System Owner role.

@@ -191,6 +191,7 @@
             <li class="req-item"><span class="req-code">1.3.1</span><strong>Centralized Database Synchronization:</strong> A real-time database that bridges the front desk, workshop floor, and management, ensuring data consistency across all users.</li>
             <li class="req-item"><span class="req-code">1.3.2</span><strong>Role-Based Access Control (RBAC):</strong> A security layer ensuring that specific modules are restricted to their designated roles (e.g., Assistants cannot access Admin reports, Owners/Admins have view-only access to active workshop queue logs, and only SAs can make operational updates).</li>
             <li class="req-item"><span class="req-code">1.3.3</span><strong>Live TV Monitor Display Engine:</strong> A passive public display infrastructure that queries active queue data to show waiting customers their vehicle's status without allowing interaction.</li>
+            <li class="req-item"><span class="req-code">1.3.4</span><strong>Multi-Branch Data Partitioning:</strong> The system natively supports multi-branch scaling, partitioning database schedules, rosters, and operational queues based on branch assignments.</li>
         </ul>
 
         <!-- Section 2 -->
@@ -202,7 +203,7 @@
             <li class="req-item"><span class="req-code">LIMIT-4</span><strong>No Inventory Management:</strong> The tracking of automotive parts availability, tool stocks, and supplies is outside the system's scope. Staff will still manually determine if parts are unavailable, which triggers a carry-over status in the system.</li>
             <li class="req-item"><span class="req-code">LIMIT-5</span><strong>No Automated Vehicle Diagnostics (OBD Integration):</strong> The system functions purely as a queue and intake monitoring tool. It will not integrate with automotive diagnostic scanners to read vehicle fault codes automatically.</li>
             <li class="req-item"><span class="req-code">LIMIT-6</span><strong>Internet Dependency:</strong> As a web-based application, continuous and stable internet connectivity is required for real-time queue synchronization and saving records.</li>
-            <li class="req-item"><span class="req-code">LIMIT-7</span><strong>Multi-Branch Isolation Limits:</strong> The system supports multi-branch operations (e.g., Branch A, Branch B) and isolates data views per branch for Admins, Service Advisors, and staff. Only the global Owner maintains cross-branch viewing rights.</li>
+            <li class="req-item"><span class="req-code">LIMIT-7</span><strong>Cross-Branch Access Restrictions:</strong> Staff members and branch managers (Admins) are strictly restricted from accessing, modifying, or transferring records of other branches. Cross-branch management and consolidated analytics viewing remain restricted solely to the global System Owner role.</li>
         </ul>
 
         <div class="footer">
