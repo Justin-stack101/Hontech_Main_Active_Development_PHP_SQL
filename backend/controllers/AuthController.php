@@ -237,8 +237,15 @@ class AuthController
     public static function getStaff(): void
     {
         try {
+            $user = $GLOBALS['user'];
             $db   = Database::getConnection();
-            $stmt = $db->query('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 ORDER BY created_at ASC');
+            
+            if ($user['role'] === 'admin') {
+                $stmt = $db->prepare('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 AND branch = ? ORDER BY created_at ASC');
+                $stmt->execute([$user['branch']]);
+            } else {
+                $stmt = $db->query('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 ORDER BY created_at ASC');
+            }
             $staff = $stmt->fetchAll();
 
             // Normalize field names for frontend compatibility
@@ -274,12 +281,18 @@ class AuthController
      */
     public static function createStaff(): void
     {
+        $currentUser = $GLOBALS['user'];
         $input    = json_decode(file_get_contents('php://input'), true) ?? [];
         $name     = trim($input['name'] ?? '');
         $email    = trim($input['email'] ?? '');
         $password = $input['password'] ?? '';
         $role     = $input['role'] ?? '';
         $branch   = $input['branch'] ?? 'Branch A';
+
+        // Enforce Admin's branch
+        if ($currentUser['role'] === 'admin') {
+            $branch = $currentUser['branch'];
+        }
 
         if (empty($name) || empty($email) || empty($password) || empty($role)) {
             http_response_code(400);
@@ -325,8 +338,9 @@ class AuthController
     public static function deleteStaff(string $id): void
     {
         try {
+            $currentUser = $GLOBALS['user'];
             $db   = Database::getConnection();
-            $stmt = $db->prepare('SELECT id, name, role FROM users WHERE id = ?');
+            $stmt = $db->prepare('SELECT id, name, role, branch FROM users WHERE id = ?');
             $stmt->execute([$id]);
             $user = $stmt->fetch();
 
@@ -339,6 +353,13 @@ class AuthController
             if ($user['role'] === 'owner') {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. System Owner accounts cannot be deleted.']);
+                return;
+            }
+
+            // Enforce Admin's branch restriction
+            if ($currentUser['role'] === 'admin' && $user['branch'] !== $currentUser['branch']) {
+                http_response_code(403);
+                echo json_encode(['message' => 'Access forbidden. You can only manage staff of your own branch.']);
                 return;
             }
 
@@ -1124,13 +1145,27 @@ class AuthController
             $db = Database::getConnection();
 
             // Verify staff member exists
-            $stmt = $db->prepare('SELECT id, role, email FROM users WHERE id = ? AND is_deleted = 0');
+            $stmt = $db->prepare('SELECT id, role, email, branch FROM users WHERE id = ? AND is_deleted = 0');
             $stmt->execute([$id]);
             $user = $stmt->fetch();
 
             if (!$user) {
                 http_response_code(404);
                 echo json_encode(['message' => 'Staff member not found.']);
+                return;
+            }
+
+            // Enforce Admin branch restrictions on target staff
+            if ($currentUser['role'] === 'admin' && $user['branch'] !== $currentUser['branch']) {
+                http_response_code(403);
+                echo json_encode(['message' => 'Access forbidden. You can only manage staff of your own branch.']);
+                return;
+            }
+
+            // Enforce Admin branch restrictions on target branch value
+            if ($currentUser['role'] === 'admin' && $branch !== $currentUser['branch']) {
+                http_response_code(403);
+                echo json_encode(['message' => 'Access forbidden. You cannot transfer staff to another branch.']);
                 return;
             }
 

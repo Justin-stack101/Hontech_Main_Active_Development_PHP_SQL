@@ -23,7 +23,8 @@ echo "=== HonTech Database Seeder ===\n\n";
 // =============================================
 $defaultUsers = [
     ['name' => 'System Owner',           'role' => 'owner',     'email' => 'owner@hontech.com', 'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Branch A'],
-    ['name' => 'System Admin',           'role' => 'admin',     'email' => 'admin@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Branch A'],
+    ['name' => 'System Admin (Branch A)', 'role' => 'admin',     'email' => 'admin@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Branch A'],
+    ['name' => 'System Admin (Branch B)', 'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Branch B'],
     
     // Branch A (Branch 1) Test Users
     ['name' => 'Jessica (Front Desk A)', 'role' => 'assistant', 'email' => 'staff@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Branch A'],

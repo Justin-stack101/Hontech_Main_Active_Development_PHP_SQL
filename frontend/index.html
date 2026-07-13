@@ -336,7 +336,7 @@
                                      <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: owner123</span>
                                  </div>
                                  <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Global)</span>
+                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch A)</span>
                                      <span class="text-gray-900">admin@hontech.com</span>
                                      <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
                                  </div>
@@ -354,6 +354,11 @@
                                  </div>
 
                                  <!-- Branch B Accounts -->
+                                 <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                     <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch B)</span>
+                                     <span class="text-gray-900">admin.east@hontech.com</span>
+                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                 </div>
                                  <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
                                      <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch B)</span>
                                      <span class="text-gray-900">staff.east@hontech.com</span>
@@ -707,10 +712,6 @@
                         class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
                         <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics & Reports Center
                     </button>
-                    <button id="btn-db-tab-periodic" onclick="switchDashboardTab('periodic')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
-                        <i data-lucide="table" class="w-4 h-4"></i> Periodic Table
-                    </button>
                 </div>
 
                 <!-- SHARED ANALYTICS & PERIODIC SELECTORS -->
@@ -1036,109 +1037,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- TAB 3: PERIODIC TABLE -->
-                <div id="db-tab-periodic" class="hidden space-y-8">
-                    <!-- Period Log Records Table -->
-                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                        <div class="border-b border-gray-150 px-6 py-4.5 flex items-center justify-between bg-gray-50">
-                            <h4
-                                class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
-                                <i data-lucide="list" class="w-4 h-4 text-red-600"></i> Period Record Log Table
-                            </h4>
-                            <span
-                                class="text-[10px] font-black text-red-600 uppercase bg-red-50 border border-red-100 px-3 py-1 rounded-full"
-                                id="analytic-table-count">
-                                0 records
-                            </span>
-                        </div>
-                        <div class="bg-gray-50 border-b border-gray-150 px-6 py-3 flex flex-wrap items-center gap-4">
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Handled
-                                    By (SA)</label>
-                                <select id="filter-analytic-sa" onchange="applyAnalyticFilters()"
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                    <option value="all">All SAs</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Service
-                                    Status</label>
-                                <select id="filter-analytic-status" onchange="applyAnalyticFilters()"
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                    <option value="all">All Statuses</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Waiting">Waiting</option>
-                                    <option value="Ready">Ready</option>
-                                    <option value="Carry Over">Carry Over</option>
-                                    <option value="Released">Released</option>
-                                    <option value="Completed">Completed</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Goal
-                                    Remarks</label>
-                                <select id="filter-analytic-goal" onchange="applyAnalyticFilters()"
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                    <option value="all">All Goals</option>
-                                    <option value="Successful">Successful</option>
-                                    <option value="Failed">Failed</option>
-                                    <option value="N/A">N/A</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Search</label>
-                                <input type="text" id="filter-analytic-search" oninput="applyAnalyticFilters()" placeholder="Plate, Model, SA..."
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition placeholder-gray-400 w-44">
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
-                                <input type="date" id="filter-analytic-start-date" onchange="applyAnalyticFilters()"
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                            </div>
-                            <div>
-                                <label
-                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
-                                <input type="date" id="filter-analytic-end-date" onchange="applyAnalyticFilters()"
-                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
-                            <table class="w-full text-left border-collapse">
-                                <thead class="sticky top-0 z-10 bg-white">
-                                    <tr
-                                        class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                        <th class="px-6 py-4 bg-white">Date Recv</th>
-                                        <th class="px-6 py-4 bg-white">Claim Stub</th>
-                                        <th class="px-6 py-4 bg-white">Plate No.</th>
-                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
-                                        <th class="px-6 py-4 bg-white">Category</th>
-                                        <th class="px-6 py-4 bg-white">Branch</th>
-                                        <th class="px-6 py-4 bg-white">Source</th>
-                                        <th class="px-6 py-4 bg-white">Arrival</th>
-                                        <th class="px-6 py-4 bg-white">Departure</th>
-                                        <th class="px-6 py-4 bg-white">Goal Remarks</th>
-                                        <th class="px-6 py-4 bg-white">Handled By</th>
-                                        <th class="px-6 py-4 bg-white">Remarks</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-analytics-body"
-                                    class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
-                                    <tr>
-                                        <td colspan="11" class="text-center py-12 text-gray-500 font-medium">
-                                            Select a range and filter to view period records.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+>
             </div>
             <!-- STAFF MANAGEMENT -->
             <div id="section-staff" class="section-content hidden fade-in space-y-6">
@@ -1535,109 +1434,6 @@
                                 </tr>
                             </thead>
                             <tbody id="table-carry-over"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- PERIODIC RECORD LOG (Shared History Search) -->
-                <div id="container-periodic-records" class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-4 md:p-5 rounded-2xl shadow-md flex flex-col mt-4">
-                    <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="history" class="w-5 h-5"></i></div>
-                            <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Periodic Record Log</h3>
-                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Search and retrieve historical workshop entries</p>
-                            </div>
-                        </div>
-                        <span class="text-[10px] font-black text-red-600 uppercase bg-red-50 border border-red-100 px-3 py-1 rounded-full" id="periodic-table-count">0 records</span>
-                    </div>
-                    
-                    <!-- Search inputs -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-150 mb-4">
-                        <div class="md:col-span-2">
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Search Keywords</label>
-                            <input type="text" id="periodic-search-query" oninput="applyPeriodicFilters()" placeholder="Search by name, contact, plate, vehicle model..." class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition placeholder-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Filter Channel</label>
-                            <select id="periodic-search-source" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="all">All Channels</option>
-                                <option value="Walk-in">Walk-In</option>
-                                <option value="Online">Online Booking</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Filter Branch</label>
-                            <select id="periodic-search-branch" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="all">All Branches</option>
-                                <option value="Branch A">Branch A</option>
-                                <option value="Branch B">Branch B</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Handled By (SA)</label>
-                            <select id="periodic-search-sa" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="all">All SAs</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Service Status</label>
-                            <select id="periodic-search-status" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="all">All Statuses</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Waiting">Waiting</option>
-                                <option value="Ready">Ready</option>
-                                <option value="Carry Over">Carry Over</option>
-                                <option value="Released">Released</option>
-                                <option value="Completed">Completed</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Goal Remarks</label>
-                            <select id="periodic-search-goal" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="all">All Goals</option>
-                                <option value="Successful">Successful</option>
-                                <option value="Failed">Failed</option>
-                                <option value="N/A">N/A</option>
-                            </select>
-                        </div>
-                        <div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
-                                    <input type="date" id="periodic-search-start-date" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-2 py-2 font-bold text-[11px] text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                </div>
-                                <div>
-                                    <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
-                                    <input type="date" id="periodic-search-end-date" onchange="applyPeriodicFilters()" class="w-full bg-white border border-gray-200 rounded-xl px-2 py-2 font-bold text-[11px] text-gray-900 outline-none focus:border-red-650 transition cursor-pointer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Table -->
-                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                        <table class="w-full text-left border-collapse min-w-full">
-                            <thead class="sticky top-0 z-10 bg-gray-50">
-                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                    <th class="px-3 py-3.5 bg-gray-50">Date Recv</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Claim Stub</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Customer Name</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Contact No.</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Vehicle Model</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Category</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Channel</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Branch</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">SLA (Goal)</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Handled By</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Status</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Remarks / Evaluation</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-periodic-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
-                                <!-- Injected dynamically -->
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -2682,7 +2478,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.0"></script>
+    <script src="js/app.js?v=2.2"></script>
 </body>
 
 </html>

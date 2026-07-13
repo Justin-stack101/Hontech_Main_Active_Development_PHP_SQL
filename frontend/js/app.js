@@ -42,11 +42,11 @@
         // Base fetch helper to deal with absolute URL resolutions and JSON conversions
         async function apiRequest(url, options = {}) {
             try {
-                // Dynamically build the absolute path so we can survive folder renaming
+                // Dynamically build the absolute path to target index.php directly (bypasses mod_rewrite issues)
                 const path = window.location.pathname;
                 const basePath = path.includes('/frontend') 
-                    ? path.substring(0, path.lastIndexOf('/frontend')) + '/api' 
-                    : path.replace(/\/$/, '') + '/api';
+                    ? path.substring(0, path.lastIndexOf('/frontend')) + '/backend/index.php/api' 
+                    : path.replace(/\/$/, '') + '/backend/index.php/api';
 
                 const finalUrl = url.replace(/^\/api/, basePath);
 
@@ -1578,28 +1578,41 @@
                         <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
                         <td class="text-gray-500 text-sm">${job.vehicle}</td>
                         <td>
-                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 w-32">
-                                <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
-                                <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
-                            </select>
+                            ${isOwnerOrAdmin ? `
+                                <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible'}</span>
+                            ` : `
+                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 w-32">
+                                    <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
+                                    <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
+                                    <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
+                                </select>
+                            `}
                         </td>
                         <td>
-                            <div class="flex flex-col gap-1.5">
-                                <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-28">
-                                <input type="time" value="${job.apptTime || ''}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-24">
-                            </div>
+                            ${isOwnerOrAdmin ? `
+                                <div class="text-xs text-gray-700 font-bold">${job.apptDate || 'N/A'}</div>
+                                <div class="text-xs text-gray-500 font-mono mt-0.5">${job.apptTime ? formatTime12Hour(job.apptTime) : 'N/A'}</div>
+                            ` : `
+                                <div class="flex flex-col gap-1.5">
+                                    <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-28">
+                                    <input type="time" value="${job.apptTime || ''}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-24">
+                                </div>
+                            `}
                         </td>
                         <td class="text-center">
-                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 cursor-pointer">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isOwnerOrAdmin ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isOwnerOrAdmin ? 'cursor-not-allowed' : 'cursor-pointer'}">
                         </td>
                         <td class="text-right flex items-center justify-end gap-2">
-                            <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
-                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
-                            </button>
-                            <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                            </button>
+                            ${isOwnerOrAdmin ? `
+                                <span class="text-xs font-bold text-gray-400 italic">View Only</span>
+                            ` : `
+                                <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
+                                </button>
+                                <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            `}
                         </td>
                     </tr>
                     `;
@@ -1722,7 +1735,7 @@
                                             ` : `<span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-lg text-[10px] font-bold uppercase text-gray-900 shrink-0"><i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i><span>${job.category || '-'}</span></span>`}
                                             
                                             <div class="flex items-center shrink-0 whitespace-nowrap">
-                                                ${job.saName ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500">SA: <i data-lucide="user" class="w-3 h-3 text-gray-400"></i> <span class="text-gray-800 font-black">${job.saName}</span></span>` : (isAsst ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="text-gray-500 ml-1">Unassigned</span>` : `<span class="text-gray-400 font-bold mx-0.5">|</span> <button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-bold bg-transparent border-none p-0 cursor-pointer text-[10px] ml-1">Assign to Me</button>`)}
+                                                ${job.saName ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500">SA: <i data-lucide="user" class="w-3 h-3 text-gray-400"></i> <span class="text-gray-800 font-black">${job.saName}</span></span>` : ((isAsst || isOwnerOrAdmin) ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="text-gray-500 ml-1">Unassigned</span>` : `<span class="text-gray-400 font-bold mx-0.5">|</span> <button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-bold bg-transparent border-none p-0 cursor-pointer text-[10px] ml-1">Assign to Me</button>`)}
                                             </div>
                                         </div>
                                     </div>
@@ -3001,29 +3014,22 @@
         }
 
         function downloadBlob(blob, filename) {
-            const reader = new FileReader();
-            reader.onloadend = async function () {
-                const base64data = reader.result.split(',')[1];
-                try {
-                    const res = await apiRequest('/api/jobs/export-temp', {
-                        method: 'POST',
-                        body: {
-                            fileData: base64data,
-                            fileName: filename,
-                            contentType: blob.type
-                        }
-                    });
-
-                    if (res && res.fileId) {
-                        // Directly trigger GET download, bypassing any iframe/drive-by restrictions
-                        window.location.href = `/api/jobs/export-download/${res.fileId}`;
-                    }
-                } catch (err) {
-                    console.error('Error initiating download:', err);
-                    showSystemToast('Failed to download report.', 'error', 'Export Failed');
-                }
-            };
-            reader.readAsDataURL(blob);
+            try {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+            } catch (err) {
+                console.error('Error initiating download:', err);
+                showSystemToast('Failed to download report.', 'error', 'Export Failed');
+            }
         }
 
         function exportPDF() {
@@ -3391,15 +3397,75 @@
                 headStyles: { fillColor: [248, 250, 252], textColor: [71, 85, 105], fontStyle: 'bold', halign: 'center' }
             });
 
-            nextY = doc.autoTable.previous.finalY + 10;
-
-            // Prevent overflow for section title
-            if (nextY > 260) {
-                doc.addPage();
-                nextY = 20;
+            // PAGE 2: VISUAL CHARTS & GRAPHS
+            doc.addPage();
+            
+            // Header bar on page 2
+            doc.setFillColor(220, 38, 38);
+            doc.rect(0, 0, 210, 8, 'F');
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.setTextColor(17, 24, 39);
+            doc.text('VISUAL ANALYTICS & CHARTS', 14, 20);
+            doc.setFontSize(9);
+            doc.setTextColor(100, 116, 139);
+            doc.text(`Report Period: ${periodText}`, 14, 25);
+            
+            doc.setDrawColor(226, 232, 240);
+            doc.line(14, 28, 196, 28);
+            
+            let chartY = 35;
+            
+            const volumeCanvas = document.getElementById('chart-volume-trend');
+            if (volumeCanvas) {
+                try {
+                    const volumeImg = volumeCanvas.toDataURL('image/png');
+                    doc.setFontSize(10);
+                    doc.setTextColor(71, 85, 105);
+                    doc.text('1. Job Volume Trend (Intakes vs Completions)', 14, chartY);
+                    doc.addImage(volumeImg, 'PNG', 14, chartY + 3, 180, 50);
+                    chartY += 60;
+                } catch (e) {
+                    console.error('Error adding Volume Trend Chart to PDF:', e);
+                }
+            }
+            
+            const categoryCanvas = document.getElementById('chart-category-breakdown');
+            if (categoryCanvas) {
+                try {
+                    const categoryImg = categoryCanvas.toDataURL('image/png');
+                    doc.setFontSize(10);
+                    doc.setTextColor(71, 85, 105);
+                    doc.text('2. Service Category Breakdown', 14, chartY);
+                    doc.addImage(categoryImg, 'PNG', 14, chartY + 3, 85, 50);
+                } catch (e) {
+                    console.error('Error adding Category Breakdown Chart to PDF:', e);
+                }
+            }
+            
+            const channelCanvas = document.getElementById('chart-channel-breakdown');
+            if (channelCanvas) {
+                try {
+                    const channelImg = channelCanvas.toDataURL('image/png');
+                    doc.setFontSize(10);
+                    doc.setTextColor(71, 85, 105);
+                    doc.text('3. Booking Channel Breakdown', 110, chartY);
+                    doc.addImage(channelImg, 'PNG', 110, chartY + 3, 85, 50);
+                } catch (e) {
+                    console.error('Error adding Channel Breakdown Chart to PDF:', e);
+                }
             }
 
-            // Section: Detailed Records Log
+            // PAGE 3+: Detailed Records Log
+            doc.addPage();
+            
+            // Header bar on page 3
+            doc.setFillColor(220, 38, 38);
+            doc.rect(0, 0, 210, 8, 'F');
+            
+            nextY = 20;
+            doc.setFont('helvetica', 'bold');
             doc.setFontSize(11);
             doc.setTextColor(17, 24, 39);
             doc.text('RECORD LOG LIST', 14, nextY);
@@ -3486,6 +3552,30 @@
             const avgMinutes = countTimed > 0 ? Math.round(totalMinutes / countTimed) : 0;
             const durationText = countTimed > 0 ? `${Math.floor(avgMinutes / 60)}h ${avgMinutes % 60}m` : 'N/A';
 
+            // Get charts base64 image strings to embed directly in Word HTML
+            let volumeImgHtml = '';
+            let categoryImgHtml = '';
+            let channelImgHtml = '';
+            
+            const volumeCanvas = document.getElementById('chart-volume-trend');
+            if (volumeCanvas) {
+                try {
+                    volumeImgHtml = `<img src="${volumeCanvas.toDataURL('image/png')}" width="650" height="220" style="display:block; margin: 15px auto; max-width: 100%; border: 1px solid #e5e7eb;" />`;
+                } catch(e) { console.error(e); }
+            }
+            const categoryCanvas = document.getElementById('chart-category-breakdown');
+            if (categoryCanvas) {
+                try {
+                    categoryImgHtml = `<img src="${categoryCanvas.toDataURL('image/png')}" width="280" height="200" style="display:block; margin: 10px auto; max-width: 100%; border: 1px solid #e5e7eb;" />`;
+                } catch(e) { console.error(e); }
+            }
+            const channelCanvas = document.getElementById('chart-channel-breakdown');
+            if (channelCanvas) {
+                try {
+                    channelImgHtml = `<img src="${channelCanvas.toDataURL('image/png')}" width="280" height="200" style="display:block; margin: 10px auto; max-width: 100%; border: 1px solid #e5e7eb;" />`;
+                } catch(e) { console.error(e); }
+            }
+
             let htmlContent = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                 <head>
@@ -3516,7 +3606,7 @@
                             <td><strong>Generated By:</strong> ${currentUserName || 'System Admin'} (Role: ${currentUserRole})</td>
                         </tr>
                     </table>
-
+ 
                     <h2>OPERATIONAL METRICS SUMMARY</h2>
                     <table class="metric-table">
                         <thead>
@@ -3559,6 +3649,24 @@
                                 <td>${online}</td>
                             </tr>
                         </tbody>
+                    </table>
+
+                    <h2>VISUAL ANALYTICS & CHARTS</h2>
+                    <div style="margin-top:15px; margin-bottom: 20px;">
+                        <h3 style="font-size: 11pt; color: #4b5563; font-weight:bold; margin-bottom:5px;">1. Job Volume Trend (Intakes vs Completions)</h3>
+                        ${volumeImgHtml}
+                    </div>
+                    <table style="width: 100%; border: none; border-collapse:collapse; margin-top:15px; margin-bottom: 20px;">
+                        <tr>
+                            <td style="width: 50%; vertical-align: top; border: none; padding-right:10px;">
+                                <h3 style="font-size: 11pt; color: #4b5563; font-weight:bold; margin-bottom:5px;">2. Service Category Breakdown</h3>
+                                ${categoryImgHtml}
+                            </td>
+                            <td style="width: 50%; vertical-align: top; border: none; padding-left:10px;">
+                                <h3 style="font-size: 11pt; color: #4b5563; font-weight:bold; margin-bottom:5px;">3. Booking Channel Breakdown</h3>
+                                ${channelImgHtml}
+                            </td>
+                        </tr>
                     </table>
 
                     <h2>RECORD LOG DATA (${total} entries)</h2>

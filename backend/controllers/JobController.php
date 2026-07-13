@@ -118,7 +118,7 @@ class JobController
             }
 
             // Branch partitioning
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant') {
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant') {
                 $conditions[] = "branch = ?";
                 $params[]     = $user['branch'] ?: 'Branch A';
             }
@@ -250,6 +250,12 @@ class JobController
             }
 
             // Role Security
+            if ($user['role'] === 'owner' || $user['role'] === 'admin') {
+                http_response_code(403);
+                echo json_encode(['message' => 'Access forbidden. Owners and Admins have viewing-only access to workshop records.']);
+                return;
+            }
+
             if ($field === 'arrival' && $job['source'] === 'Online') {
                 if ($user['role'] !== 'sa' && $user['role'] !== 'assistant') {
                     http_response_code(403);
@@ -257,11 +263,6 @@ class JobController
                     return;
                 }
             } else {
-                if ($user['role'] === 'owner' || $user['role'] === 'admin') {
-                    http_response_code(403);
-                    echo json_encode(['message' => 'Access forbidden. Owners and Admins are read-only for operational records.']);
-                    return;
-                }
                 if ($user['role'] === 'assistant' && $job['status'] !== 'Pending') {
                     http_response_code(403);
                     echo json_encode(['message' => 'Access forbidden. Assistant is read-only for active workshop records.']);
@@ -400,7 +401,7 @@ class JobController
             // Role Security
             if ($user['role'] === 'owner' || $user['role'] === 'admin') {
                 http_response_code(403);
-                echo json_encode(['message' => 'Access forbidden. Owners and Admins are read-only for operational records.']);
+                echo json_encode(['message' => 'Access forbidden. Owners and Admins have viewing-only access to workshop records.']);
                 return;
             }
 
@@ -514,6 +515,12 @@ class JobController
             if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
+                return;
+            }
+
+            if ($user['role'] === 'owner' || $user['role'] === 'admin') {
+                http_response_code(403);
+                echo json_encode(['message' => 'Access forbidden. Owners and Admins have viewing-only access to workshop records.']);
                 return;
             }
 
