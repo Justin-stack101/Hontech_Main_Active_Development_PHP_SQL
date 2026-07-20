@@ -2,6 +2,9 @@
 namespace App\Controllers;
 
 use App\Config\Database;
+use App\Middleware\Auth;
+use App\Repositories\JobRepository;
+use App\Utils\ApiResponse;
 
 /**
  * Job Controller
@@ -29,7 +32,7 @@ class JobController
 
     private static function saveTempFiles(array $files): void
     {
-        file_put_contents(self::getTempStorePath(), json_encode($files));
+        file_put_contents(self::getTempStorePath(), json_encode($files), LOCK_EX);
     }
 
     /**
@@ -44,10 +47,8 @@ class JobController
         $yy = date('y');
         $datePrefix = "{$mm}{$dd}{$yy}";
 
-        $stmt = $db->prepare("SELECT COUNT(*) as cnt FROM jobs WHERE claim_stub LIKE ?");
-        $stmt->execute([$datePrefix . '-%']);
-        $row   = $stmt->fetch();
-        $count = (int)($row['cnt'] ?? 0);
+        $repo = new JobRepository($db);
+        $count = $repo->getNextStubCount($datePrefix);
 
         return $datePrefix . '-' . str_pad((string)($count + 1), 3, '0', STR_PAD_LEFT);
     }
@@ -99,44 +100,24 @@ class JobController
      */
     public static function getJobs(): void
     {
-        $user = $GLOBALS['user'];
+        $user = Auth::getCurrentUser();
 
         try {
-            $db         = Database::getConnection();
-            $conditions = ["is_deleted = 0"];
-            $params     = [];
+            $isAll = (isset($_GET['all']) && $_GET['all'] === 'true');
+            $isMonitor = (isset($_GET['monitor']) && $_GET['monitor'] === 'true');
 
-            if (isset($_GET['all']) && $_GET['all'] === 'true') {
-                if ($user['role'] !== 'owner' && $user['role'] !== 'admin') {
-                    http_response_code(403);
-                    echo json_encode(['message' => 'Access forbidden. Only Owners and Admins can access historical records.']);
-                    return;
-                }
-            } elseif (!isset($_GET['monitor']) || $_GET['monitor'] !== 'true') {
-                $conditions[] = "status != ?";
-                $params[]     = 'Completed';
+            if ($isAll && ($user['role'] !== 'owner' && $user['role'] !== 'admin')) {
+                ApiResponse::forbidden('Access forbidden. Only Owners and Admins can access historical records.');
+                return;
             }
 
-            // Branch partitioning
-            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant') {
-                $conditions[] = "branch = ?";
-                $params[]     = $user['branch'] ?: 'Branch A';
-            }
-
-            $where = '';
-            if (!empty($conditions)) {
-                $where = 'WHERE ' . implode(' AND ', $conditions);
-            }
-
-            $stmt = $db->prepare("SELECT * FROM jobs {$where} ORDER BY updated_at DESC");
-            $stmt->execute($params);
-            $jobs = $stmt->fetchAll();
+            $repo = new JobRepository();
+            $jobs = $repo->getFilteredJobs($user, $isAll, $isMonitor);
 
             $result = array_map([self::class, 'normalizeJob'], $jobs);
-            echo json_encode($result);
+            ApiResponse::json($result);
         } catch (\Exception $e) {
-            http_response_code(500);
-            echo json_encode(['message' => 'Error retrieving jobs.', 'error' => $e->getMessage()]);
+            ApiResponse::serverError('Error retrieving jobs.', $e->getMessage());
         }
     }
 

@@ -213,8 +213,8 @@ class AuthController
      */
     public static function getMe(): void
     {
-        $user = $GLOBALS['user'];
-        echo json_encode([
+        $user = Auth::getCurrentUser();
+        \App\Utils\ApiResponse::json([
             'id'           => $user['id'],
             'name'         => $user['name'],
             'email'        => $user['email'],

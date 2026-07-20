@@ -280,5 +280,4 @@ if ($method === 'POST' && preg_match('#^/branches/(\d+)/restore$#', $route, $m))
 // =============================================
 // 404 — Route not found
 // =============================================
-http_response_code(404);
-echo json_encode(['message' => 'API endpoint not found.', 'route' => $route, 'method' => $method]);
+\App\Utils\ApiResponse::notFound("API endpoint not found: {$method} {$route}");

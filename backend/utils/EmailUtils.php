@@ -41,7 +41,7 @@ class EmailUtils
      */
     public static function clearSimulatedEmails(): void
     {
-        file_put_contents(self::getStorePath(), '[]');
+        file_put_contents(self::getStorePath(), '[]', LOCK_EX);
     }
 
     /**
@@ -62,7 +62,7 @@ class EmailUtils
         unset($email);
 
         if ($found) {
-            file_put_contents(self::getStorePath(), json_encode($emails, JSON_PRETTY_PRINT));
+            file_put_contents(self::getStorePath(), json_encode($emails, JSON_PRETTY_PRINT), LOCK_EX);
         }
 
         return $found;
@@ -158,7 +158,7 @@ HTML;
             array_shift($emails);
         }
 
-        file_put_contents(self::getStorePath(), json_encode($emails, JSON_PRETTY_PRINT));
+        file_put_contents(self::getStorePath(), json_encode($emails, JSON_PRETTY_PRINT), LOCK_EX);
 
         error_log("[OUTGOING EMAIL (ID: {$id})] To: {$to} | Subject: {$subject}");
 

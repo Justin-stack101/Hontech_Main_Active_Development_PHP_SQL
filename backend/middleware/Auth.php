@@ -15,18 +15,28 @@ use Firebase\JWT\ExpiredException;
  */
 class Auth
 {
+    private static ?array $currentUser = null;
+
+    public static function getCurrentUser(): ?array
+    {
+        return self::$currentUser ?? ($GLOBALS['user'] ?? null);
+    }
+
+    public static function setCurrentUser(?array $user): void
+    {
+        self::$currentUser = $user;
+        $GLOBALS['user'] = $user;
+    }
+
     /**
      * Authenticate the user via JWT cookie.
-     * On success, sets $GLOBALS['user'] with the user's data (excluding password).
-     * On failure, sends a JSON error response and returns false.
      */
     public static function authenticateUser(): bool
     {
         $token = $_COOKIE['token'] ?? null;
 
         if (!$token) {
-            http_response_code(401);
-            echo json_encode(['message' => 'Authentication required. Access denied.']);
+            \App\Utils\ApiResponse::unauthorized('Authentication required. Access denied.');
             return false;
         }
 
@@ -42,13 +52,12 @@ class Auth
             $user = $stmt->fetch();
 
             if (!$user || !$user['is_active']) {
-                http_response_code(401);
-                echo json_encode(['message' => 'User account is inactive or deleted.']);
+                \App\Utils\ApiResponse::unauthorized('User account is inactive or deleted.');
                 return false;
             }
 
             // Normalize field names to camelCase for compatibility with frontend
-            $GLOBALS['user'] = [
+            $normalizedUser = [
                 '_id'          => $user['id'],
                 'id'           => $user['id'],
                 'name'         => $user['name'],
@@ -66,14 +75,14 @@ class Auth
                 'lastActive'   => $user['last_active'],
             ];
 
+            self::setCurrentUser($normalizedUser);
+
             return true;
         } catch (ExpiredException $e) {
-            http_response_code(401);
-            echo json_encode(['message' => 'Invalid or expired authentication token.']);
+            \App\Utils\ApiResponse::unauthorized('Invalid or expired authentication token.');
             return false;
         } catch (\Exception $e) {
-            http_response_code(401);
-            echo json_encode(['message' => 'Invalid or expired authentication token.']);
+            \App\Utils\ApiResponse::unauthorized('Invalid or expired authentication token.');
             return false;
         }
     }
@@ -84,17 +93,15 @@ class Auth
      */
     public static function requireRole(array $allowedRoles): bool
     {
-        $user = $GLOBALS['user'] ?? null;
+        $user = self::getCurrentUser();
 
         if (!$user) {
-            http_response_code(401);
-            echo json_encode(['message' => 'Authentication required.']);
+            \App\Utils\ApiResponse::unauthorized('Authentication required.');
             return false;
         }
 
         if (!in_array($user['role'], $allowedRoles, true)) {
-            http_response_code(403);
-            echo json_encode(['message' => 'Access forbidden. Insufficient permissions.']);
+            \App\Utils\ApiResponse::forbidden('Access forbidden. Insufficient permissions.');
             return false;
         }
 
