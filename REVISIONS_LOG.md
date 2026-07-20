@@ -52,3 +52,22 @@ This log documents all feature revisions, bugs resolved, and system updates comp
   * **Released Today**: Counts jobs by their actual completion date (`dateCompleted`), ensuring carry-overs released today are counted. Shows `(X Ready to Release)` subtext.
   * **In Bays (Working)**: Excludes completed/released jobs from the active bay count. Shows `(X Monitoring)` subtext.
   * **Branch Separation**: Removed the Branch column from table rows and moved it to the main top filters for better structure.
+
+---
+
+## 📅 July 20, 2026 (Backend Architecture & SOLID Refactoring Cycle)
+
+### 🏗️ Architectural Layering & SOLID Principles
+* **Data Access Repositories**: Extracted database query execution out of controllers into dedicated repository classes:
+  * `App\Repositories\BranchRepository`: Encapsulates branch queries, creation, soft-deletion, and restoration.
+  * `App\Repositories\UserRepository`: Encapsulates user lookups, staff roster queries, and credential management.
+  * `App\Repositories\JobRepository`: Encapsulates job record filtering, claim stub sequence generation, and analytics queries.
+* **Standardized Response Helper (`App\Utils\ApiResponse`)**: Introduced unified API response handling (`success`, `error`, `unauthorized`, `forbidden`, `notFound`, `serverError`) to eliminate duplicate header setting and `http_response_code` boilerplate.
+* **Encapsulated Auth Context**: Removed direct controller reliance on `$GLOBALS['user']` in favor of static `Auth::getCurrentUser()` / `Auth::setCurrentUser()`.
+* **File Concurrency Safety**: Applied `LOCK_EX` to file writing operations in `EmailUtils.php` and `JobController.php` to prevent temporary cache file corruption.
+
+### 🌐 Router & Dev Server Adjustments
+* **Asset Route Resolution**: Updated `router.php` to serve static assets (CSS, JS, fonts, images) directly from the `frontend/` directory with proper MIME `Content-Type` headers (`text/css`, `application/javascript`, etc.).
+* **API Prefix Compatibility**: Updated `router.php` to handle `/backend/index.php/api/` request prefixes cleanly, preventing API requests from falling back to HTML documents.
+* **Database Service**: Verified MariaDB/MySQL service on port 3307 and executed database migrations and seeders (`php backend/seed.php`).
+
