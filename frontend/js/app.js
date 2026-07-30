@@ -2464,9 +2464,12 @@
         }
 
         function applyAnalyticFilters() {
-            const saFilter = document.getElementById('filter-analytic-sa').value;
-            const statusFilter = document.getElementById('filter-analytic-status').value;
-            const goalFilter = document.getElementById('filter-analytic-goal').value;
+            const saFilterEl = document.getElementById('filter-analytic-sa');
+            const statusFilterEl = document.getElementById('filter-analytic-status');
+            const goalFilterEl = document.getElementById('filter-analytic-goal');
+            const saFilter = saFilterEl ? saFilterEl.value : 'all';
+            const statusFilter = statusFilterEl ? statusFilterEl.value : 'all';
+            const goalFilter = goalFilterEl ? goalFilterEl.value : 'all';
             const searchQuery = document.getElementById('filter-analytic-search') ? document.getElementById('filter-analytic-search').value.toLowerCase().trim() : '';
             const startDateVal = document.getElementById('filter-analytic-start-date') ? document.getElementById('filter-analytic-start-date').value : '';
             const endDateVal = document.getElementById('filter-analytic-end-date') ? document.getElementById('filter-analytic-end-date').value : '';
@@ -2532,7 +2535,10 @@
                     </tr>
                 `).join('') || `<tr><td colspan="12" class="text-center py-12 text-gray-400 font-medium">No record entries match this period.</td></tr>`;
             }
-            document.getElementById('analytic-table-count').innerText = `${filtered.length} records`;
+            const tableCountEl = document.getElementById('analytic-table-count');
+            if (tableCountEl) {
+                tableCountEl.innerText = `${filtered.length} records`;
+            }
         }
 
         function renderAnalytics(jobs, scope, startStr, endStr) {
