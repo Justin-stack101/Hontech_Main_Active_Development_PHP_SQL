@@ -241,10 +241,10 @@ class AuthController
             $db   = Database::getConnection();
             
             if ($user['role'] === 'admin') {
-                $stmt = $db->prepare('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 AND branch = ? ORDER BY created_at ASC');
+                $stmt = $db->prepare('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, (is_online = 1 AND last_active >= NOW() - INTERVAL 5 MINUTE) AS is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 AND branch = ? ORDER BY created_at ASC');
                 $stmt->execute([$user['branch']]);
             } else {
-                $stmt = $db->query('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 ORDER BY created_at ASC');
+                $stmt = $db->query('SELECT id, name, email, role, branch, is_active, backup_email, mfa_enabled, google_id, google_email, (is_online = 1 AND last_active >= NOW() - INTERVAL 5 MINUTE) AS is_online, last_active, created_at, updated_at FROM users WHERE is_deleted = 0 ORDER BY created_at ASC');
             }
             $staff = $stmt->fetchAll();
 
