@@ -595,11 +595,13 @@ class JobController
             $endDate   = $_GET['endDate'] ?? '';
 
             if (!empty($startDate)) {
-                $conditions[] = "date_received >= ?";
+                $conditions[] = "(date_received >= ? OR date_completed >= ?)";
+                $params[]     = $startDate;
                 $params[]     = $startDate;
             }
             if (!empty($endDate)) {
-                $conditions[] = "date_received <= ?";
+                $conditions[] = "(date_received <= ? OR date_completed <= ?)";
+                $params[]     = $endDate;
                 $params[]     = $endDate;
             }
 

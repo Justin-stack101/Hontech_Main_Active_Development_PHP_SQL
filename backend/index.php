@@ -75,6 +75,10 @@ if ($method === 'PATCH' && preg_match('#^/auth/developer/emails/([^/]+)/read$#',
     AuthController::markEmailRead($m[1]);
     exit;
 }
+if ($method === 'POST' && $route === '/auth/developer/reset-seed') {
+    AuthController::resetSeedDev();
+    exit;
+}
 
 // Public auth routes
 if ($method === 'POST' && $route === '/auth/login') {

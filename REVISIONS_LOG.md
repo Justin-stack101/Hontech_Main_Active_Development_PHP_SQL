@@ -71,3 +71,17 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **API Prefix Compatibility**: Updated `router.php` to handle `/backend/index.php/api/` request prefixes cleanly, preventing API requests from falling back to HTML documents.
 * **Database Service**: Verified MariaDB/MySQL service on port 3307 and executed database migrations and seeders (`php backend/seed.php`).
 
+---
+
+## 📅 August 8, 2026 (Developer Version & Diagnostics Enhancements)
+
+### ⚙️ Global Exception Handling & Developer Tools
+* **Global Error Overlay (Crash Reporter)**: Integrated window-level exception and promise rejection listeners. If any javascript runtime crash triggers, it captures the error name, triggered source file name, line number, and full stack trace in a premium red-themed overlay.
+* **Session & Environment Diagnostics Panel**: Added an expandable dashboard directly inside the crash overlay to inspect user state details (`currentUserRole`, `currentUserName`, `currentUserEmail`, active branch, and request URL) at the exact moment of crash.
+* **Instant Database Re-Seeding Trigger**: Included a **Reset & Seed DB** trigger that sends a secure request to a newly implemented developer route (`POST /api/auth/developer/reset-seed`) to cleanly truncate tables and re-execute mock seed data. Output logs are printed live inside the overlay.
+* **Diagnostic Crash Log Export**: Added a one-click **Export Log File** action that downloads a detailed report `.txt` file containing trace details, environment state, and localStorage details.
+
+### 👑 Owner Dashboard (Analytics Fixes)
+* **Auth Session Credentials**: Fixed a bug where credentials were not attached to same-origin fetch calls, preventing `/api/jobs/analytics` from verifying JWT tokens. Added `credentials: 'include'` to `apiRequest()`.
+* **Date Parsing & Range Query Fixes**: Fixed date conversions in `loadAnalyticsData` that caused timezone offsets. Enhanced `getAnalyticsData()` database query to check both `date_received` and `date_completed` to correctly capture vehicles within selected periods.
+

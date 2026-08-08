@@ -1206,4 +1206,38 @@ class AuthController
             echo json_encode(['message' => 'Error updating staff member details.', 'error' => $e->getMessage()]);
         }
     }
+
+    /**
+     * POST /api/auth/developer/reset-seed
+     */
+    public static function resetSeedDev(): void
+    {
+        try {
+            Env::load();
+            if (Env::get('APP_ENV', 'development') !== 'development') {
+                http_response_code(403);
+                echo json_encode(['message' => 'Database reset/seeding is only allowed in development environment.']);
+                return;
+            }
+
+            $db = Database::getConnection();
+            $db->exec("SET FOREIGN_KEY_CHECKS = 0;");
+            $db->exec("TRUNCATE TABLE jobs;");
+            $db->exec("TRUNCATE TABLE users;");
+            $db->exec("SET FOREIGN_KEY_CHECKS = 1;");
+
+            // Execute seeder file in buffer to capture its feedback
+            ob_start();
+            require __DIR__ . '/../seed.php';
+            $log = ob_get_clean();
+
+            echo json_encode([
+                'message' => 'Database successfully wiped and re-seeded!',
+                'log'     => $log
+            ]);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error during developer reset/seeding.', 'error' => $e->getMessage()]);
+        }
+    }
 }

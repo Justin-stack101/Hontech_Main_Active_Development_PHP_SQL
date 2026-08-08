@@ -52,6 +52,7 @@
 
                 const defaultOptions = {
                     headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
                     ...options
                 };
                 if (defaultOptions.body && typeof defaultOptions.body === 'object') {
@@ -79,6 +80,189 @@
                 throw err;
             }
         }
+
+        window.triggerDeveloperResetSeed = async function(btn) {
+            if (!confirm("WARNING: This will wipe all active records/users and re-seed the system. Are you sure you want to proceed?")) return;
+            const logContainer = document.getElementById('dev-reset-log-container');
+            const logPre = document.getElementById('dev-reset-log');
+            if (logContainer) logContainer.classList.add('hidden');
+
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg> Re-Seeding...`;
+
+            try {
+                const res = await apiRequest('/api/auth/developer/reset-seed', { method: 'POST' });
+                showSystemToast(res.message, 'success', 'Database Restored');
+                if (logPre) {
+                    logPre.innerText = res.log || 'Seeding succeeded without output.';
+                }
+                if (logContainer) logContainer.classList.remove('hidden');
+            } catch (err) {
+                showSystemToast(err.message || 'Developer seeding failed.', 'error', 'Reset Failed');
+                if (logPre) {
+                    logPre.innerText = `Error: ${err.message || 'Unknown error occurred.'}`;
+                }
+                if (logContainer) logContainer.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        };
+
+        window.downloadCrashLogFile = function(errorMsg, source, lineno, colno, stack) {
+            const time = new Date().toISOString();
+            const logContent = `==================================================
+HONTECH SYSTEM EXCEPTION DIAGNOSTICS REPORT
+==================================================
+Timestamp: ${time}
+Error Message: ${errorMsg}
+Location: ${source} (Line: ${lineno}, Col: ${colno})
+
+User Environment Diagnostics:
+- User Name: ${currentUserName || 'Not Logged In'}
+- User Email: ${currentUserEmail || 'N/A'}
+- User Role: ${currentUserRole || 'Guest / Guest Session'}
+- Active Branch: ${localStorage.getItem('selectedBranch') || 'Branch A'}
+- URL Path: ${window.location.href}
+- Local Storage State: ${JSON.stringify(localStorage)}
+
+==================================================
+STACK TRACE:
+==================================================
+${stack}
+==================================================
+Report Generated Automatically by Developer Crash Reporter.
+`;
+            const blob = new Blob([logContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `hontech_crash_${new Date().getTime()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+            showSystemToast('Diagnostic log file downloaded.', 'success');
+        };
+
+        // Global Crash / Error Handler Overlay
+        function showCrashOverlay(errorMsg, source, lineno, colno, errorObj) {
+            // Check if overlay already exists to prevent duplicate stack alerts
+            if (document.getElementById('system-crash-overlay')) return;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'system-crash-overlay';
+            overlay.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm';
+            
+            const file = source ? source.substring(source.lastIndexOf('/') + 1) : 'unknown';
+            const stack = errorObj && errorObj.stack ? errorObj.stack : 'No stack trace available.';
+            
+            overlay.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-2xl w-full border border-red-200 shadow-2xl p-6 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <div class="flex items-center gap-3 text-red-650">
+                            <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-black text-gray-905 uppercase tracking-wider">System Exception Detected</h3>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">The application encountered a runtime error</p>
+                            </div>
+                        </div>
+                        <span class="bg-red-50 text-red-650 font-black text-[9px] px-2.5 py-1 rounded-full uppercase tracking-wider border border-red-100">Dev Version</span>
+                    </div>
+                    
+                    <div class="bg-red-50/50 border border-red-100 rounded-xl p-4 flex flex-col gap-1.5">
+                        <p class="text-xs font-extrabold text-gray-900 leading-relaxed">${errorMsg}</p>
+                        <p class="text-[10px] text-red-650 font-bold uppercase tracking-wider">
+                            Triggered in: <span class="font-mono bg-white px-2 py-0.5 rounded border border-red-200/50 text-[10px]">${file}:${lineno}${colno ? ':' + colno : ''}</span>
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[10px] text-gray-500 font-black uppercase tracking-wider">Stack Trace / Details</label>
+                        <pre class="bg-gray-900 text-gray-300 font-mono text-[9px] p-4 rounded-xl max-h-[120px] overflow-auto whitespace-pre-wrap select-all leading-normal border border-gray-800">${stack}</pre>
+                    </div>
+
+                    <!-- Developer diagnostics expandable panel -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+                        <button onclick="document.getElementById('dev-diag-details').classList.toggle('hidden');" 
+                                class="w-full flex items-center justify-between px-4 py-3 bg-gray-100 hover:bg-gray-200/80 transition text-[10px] font-black uppercase tracking-wider text-gray-700 outline-none">
+                            <span>Session & Environment Diagnostics</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                        <div id="dev-diag-details" class="p-4 hidden flex flex-col gap-3 text-xs text-gray-700 border-t border-gray-200">
+                            <div class="grid grid-cols-2 gap-3 font-semibold">
+                                <div>Name: <span class="font-black text-gray-950">${currentUserName || 'Guest/Not Logged In'}</span></div>
+                                <div>Email: <span class="font-black text-gray-950">${currentUserEmail || 'N/A'}</span></div>
+                                <div>Role: <span class="font-black text-gray-950 uppercase tracking-widest">${currentUserRole || 'Guest'}</span></div>
+                                <div>Active Branch: <span class="font-black text-gray-950">${localStorage.getItem('selectedBranch') || 'Branch A'}</span></div>
+                            </div>
+                            <div class="text-[10px] text-gray-500 font-mono break-all border-t border-gray-200/60 pt-2">
+                                URL: ${window.location.href}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Developer Database Seeder Feedback panel -->
+                    <div id="dev-reset-log-container" class="hidden border border-emerald-200 rounded-xl overflow-hidden bg-emerald-50/30 p-4">
+                        <label class="block text-[9px] text-emerald-700 font-black uppercase tracking-wider mb-2">Reset & Seed Log Output</label>
+                        <pre id="dev-reset-log" class="bg-gray-900 text-emerald-400 font-mono text-[9px] p-3 rounded-lg max-h-[100px] overflow-auto whitespace-pre-wrap leading-normal border border-gray-800"></pre>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-gray-100 pt-4 mt-1">
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <button onclick="window.downloadCrashLogFile(\`${errorMsg}\`, \`${source}\`, ${lineno}, ${colno}, \`${stack.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
+                                    class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition flex items-center justify-center gap-1.5 border border-gray-200 flex-1 sm:flex-initial">
+                                Export Log File
+                            </button>
+                            <button onclick="window.triggerDeveloperResetSeed(this)" 
+                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition flex items-center justify-center gap-1.5 flex-1 sm:flex-initial shadow-md shadow-emerald-600/10">
+                                Reset & Seed DB
+                            </button>
+                        </div>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <button onclick="window.location.reload();" 
+                                    class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition flex-1 sm:flex-initial">
+                                Reload App
+                            </button>
+                            <button onclick="document.getElementById('system-crash-overlay').remove();" 
+                                    class="bg-red-650 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider transition shadow-md shadow-red-650/10 flex-1 sm:flex-initial">
+                                Dismiss
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        window.addEventListener('error', function(event) {
+            showCrashOverlay(event.message, event.filename, event.lineno, event.colno, event.error);
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            const reason = event.reason || {};
+            showCrashOverlay(
+                reason.message || 'Unhandled Promise Rejection',
+                reason.fileName || 'async_call',
+                reason.lineNumber || 'N/A',
+                reason.columnNumber || 'N/A',
+                reason
+            );
+        });
 
         document.addEventListener('DOMContentLoaded', async () => {
             initSystemSettings();
@@ -2414,20 +2598,30 @@
                 if (!val) return;
                 startDate = val;
                 endDate = val;
-                labelText = `Period: ${new Date(val).toLocaleDateString('en-US', { dateStyle: 'long' })}`;
+                const [y, m, d] = val.split('-').map(Number);
+                const dateObj = new Date(y, m - 1, d);
+                labelText = `Period: ${dateObj.toLocaleDateString('en-US', { dateStyle: 'long' })}`;
             } else if (scope === 'weekly') {
                 const val = document.getElementById('analytics-week-date').value;
                 if (!val) return;
 
                 // Calculate Monday and Sunday of selected week
-                const d = new Date(val);
-                const day = d.getDay();
-                const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-                const monday = new Date(d.setDate(diff));
-                const sunday = new Date(d.setDate(monday.getDate() + 6));
+                const [y, m, d] = val.split('-').map(Number);
+                const dateObj = new Date(y, m - 1, d);
+                const day = dateObj.getDay();
+                const diff = dateObj.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+                const monday = new Date(y, m - 1, diff);
+                const sunday = new Date(y, m - 1, diff + 6);
 
-                startDate = monday.toISOString().split('T')[0];
-                endDate = sunday.toISOString().split('T')[0];
+                const formatDate = (date) => {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                };
+
+                startDate = formatDate(monday);
+                endDate = formatDate(sunday);
                 labelText = `Period: ${monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} – ${sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
             } else if (scope === 'monthly') {
                 const val = document.getElementById('analytics-month').value; // YYYY-MM
