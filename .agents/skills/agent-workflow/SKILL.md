@@ -69,9 +69,9 @@ User
 Understand → Research → Plan → Approval
    │
    ▼
-Implementation
+ Implementation
    ├── Coding        → Implementation/CODING.md
-   ├── Architecture   → Implementation/ARCHITECTURE.md
+   ├── Architecture   → Implementation/ARCHITECTURE.md / DESIGN_PATTERNS.md
    ├── Performance    → Implementation/PERFORMANCE.md
    └── Security       → Implementation/SECURITY.md
    │
@@ -103,6 +103,9 @@ Read **Implementation/CODING.md** whenever: writing code, modifying code, or imp
 
 ### Architecture
 Read **Implementation/ARCHITECTURE.md** whenever: deciding where new code should live, introducing a new component/module boundary, or touching routing/composition patterns.
+
+### Design Patterns
+Read **Implementation/DESIGN_PATTERNS.md** whenever: choosing how to structure classes, handle object instantiation, compose code blocks, or manage communications between objects.
 
 ### Decisions
 Read **Implementation/DECISIONS.md** whenever: more than one valid implementation approach exists, or you're tempted to change something outside the requested scope.
