@@ -1,73 +1,91 @@
-# 🚀 Antigravity Agent Skills & Guidelines
+# 🚀 Antigravity Workspace Agent Skill Set — HonTech Edition
 
-A modular suite of agent guidelines for the Antigravity coding assistant, split into two parts:
-
-- **Portable core** (`SKILL.md`, `Implementation/`, `Planning/`, `Quality/`, `ui/`, `Models/`) -- generic engineering practice, safe to reuse in any project.
-- **Project profile** (`project-profile/PROJECT_PROFILE.md`) -- the concrete facts specific to *this* codebase (component names, auth mechanism, tooling). Replace this one file when adapting the skill set elsewhere.
-
-Earlier versions of this repo mixed the two together, which meant reusing it in a different project would make the agent confidently reference components and files (`ProtectedRoute`, `cn()`, `practicum_session`) that don't exist there. That's fixed now -- everything project-specific lives in one clearly labeled place.
+Welcome to the **Antigravity Workspace Agent Skill Set**. This directory contains an advanced behavioral and architectural framework designed to direct AI coding agents to produce clean, maintainable, SOLID-compliant, and secure production code.
 
 ---
 
-## 📂 Directory Structure
+## 🌟 Executive Summary
 
-```
-Antigravityskill/
-├── SKILL.md                       # Root routing table + always-on principles, reasoning mindset, conflict resolution
+AI coding assistants can sometimes write sloppy code, make wrong assumptions about database ports, or rewrite entire files unnecessarily. 
+
+This skill set acts as a **permanent engineering playbook** built directly into your workspace (`.Agents/skills/agent-workflow/`). Whenever an AI agent works on this codebase, it automatically reads these guidelines to enforce senior-level development standards.
+
+---
+
+## 💡 What Problem Does This Skill Set Solve?
+
+| Common AI Coding Problem | How This Skill Set Solves It | Key File Responsible |
+| :--- | :--- | :--- |
+| ❌ **Hasty, unreviewed code changes** | Mandates a 7-step workflow (**Understand ➔ Research ➔ Plan ➔ Approve ➔ Code ➔ Verify**). | [`SKILL.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/SKILL.md) |
+| ❌ **Monolithic & bloated classes** | Enforces **SOLID Principles** (SRP, OCP, LSP, ISP, DIP) on all backend controllers and modules. | [`ARCHITECTURE.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/Implementation/ARCHITECTURE.md) |
+| ❌ **Messy, unorganized code** | Mandates object-oriented **Design Patterns** (Repository, Singleton, Strategy, Facade, Builder). | [`DESIGN_PATTERNS.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/Implementation/DESIGN_PATTERNS.md) |
+| ❌ **Wrong port or stack assumptions** | Defines all facts about HonTech (MariaDB port `3307`, soft delete flags `is_deleted = 0`, JWT headers). | [`PROJECT_PROFILE.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/project-profile/PROJECT_PROFILE.md) |
+| ❌ **Vulnerabilities & SQL Injections** | Enforces strict parameter binding, JWT HTTP-only cookies, and XSS sanitization checklists. | [`SECURITY.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/Implementation/SECURITY.md) |
+| ❌ **Unverified & broken code** | Mandates running syntax checks and checking the **Manual QA Test Matrix** before completing tasks. | [`TESTING.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/.Agents/skills/agent-workflow/Quality/TESTING.md) |
+
+---
+
+## 📂 Detailed Directory & Skill Routing Table
+
+```text
+.Agents/skills/agent-workflow/
+├── SKILL.md                          # Root Router & Core Principles (Plan-first workflow, Reasoning mindset)
+├── project-profile/
+│   └── PROJECT_PROFILE.md            # HonTech Technical Profile (PHP 8.x, MariaDB 3307, HSL styling)
 ├── Implementation/
-│   ├── ARCHITECTURE.md            # Component/routing/utility conventions (generic)
-│   ├── CODING.md                  # Clean code, scope discipline, verification
-│   ├── DECISIONS.md               # How to choose between valid approaches; when not to change code
-│   ├── DOCUMENTATION.md           # When docs/comments need updating
-│   ├── PERFORMANCE.md             # Rendering, animation, bundle-size guidance
-│   ├── REFACTORING.md             # When refactoring is (and isn't) warranted
-│   └── SECURITY.md                # Access control, auth, input handling (generic)
-├── Planning/
-│   ├── PLANNING.md                # Understand -> plan -> approval workflow
-│   └── RESEARCH.md                # Search order + stopping rule for codebase research
-├── Quality/
-│   ├── COMMITS.md                 # Commit + branching hygiene, if the agent acts on the user's behalf
-│   ├── DEBUGGING.md               # Systematic troubleshooting (generic)
-│   └── TESTING.md                 # Verification before marking work done (generic)
+│   ├── ARCHITECTURE.md               # SOLID Principles (Single Responsibility, Dependency Inversion, etc.)
+│   ├── DESIGN_PATTERNS.md            # Structural Patterns (Singleton, Repository, Strategy, Facade, Adapter)
+│   ├── CODING.md                     # Clean Code, Early Returns, Readability, and Error Handling
+│   ├── SECURITY.md                   # Auth, Access Control, SQL Injection & XSS Guardrails
+│   ├── PERFORMANCE.md                # Execution speed, asset loading, and SQL query efficiency
+│   └── DECISIONS.md / REFACTORING.md # Rules on when (and when NOT) to rewrite or refactor code
 ├── ui/
-│   └── UI_BUILDING.md             # Visual design, page/dashboard composition, responsiveness, accessibility, interaction states, forms, motion
-├── Models/
-│   └── MODEL_SELECTION.md         # Capability-tier based model routing
-└── project-profile/
-    └── PROJECT_PROFILE.md         # Everything specific to this codebase -- replace when reusing elsewhere
+│   └── UI_BUILDING.md                # HSL Dark Glassmorphic Design System, Accessibility, Responsiveness
+└── Quality/
+    ├── TESTING.md                    # QA Matrix Verification Protocols
+    ├── DEBUGGING.md                  # Diagnostic Stack Trace Extraction Rules
+    └── COMMITS.md                    # Git Commit Hygiene Standards
 ```
 
-Notes on structure:
-- `ui/RESPONSIVE.md` and `ui/ACCESSIBILITY.md` from an earlier version were merged into `ui/UI_BUILDING.md` -- they duplicated most of its content and risked drifting out of sync as three separate files.
-- Reasoning/mindset guidance ("question assumptions," "prefer extension over replacement," etc.) lives directly in `SKILL.md` rather than a separate file, since it needs to be active on every task rather than conditionally loaded.
-- Cross-file conflicts are resolved by a short precedence rule in `SKILL.md` (user instruction > project-profile facts > security > existing conventions > general style), rather than a rigid ranking across all ten files -- most of them govern different concerns and rarely actually compete.
+---
+
+## 🔄 Agent Execution Workflow
+
+```text
+User Request
+     │
+     ▼
+Understand Request ➔ Research Codebase ➔ Create Plan ➔ Seek Approval
+                                                             │
+                                                             ▼
+                                                    Implementation Phase
+                                                    ├── Coding Style       → Implementation/CODING.md
+                                                    ├── Architecture      → Implementation/ARCHITECTURE.md
+                                                    ├── Design Patterns   → Implementation/DESIGN_PATTERNS.md
+                                                    ├── Security Rules     → Implementation/SECURITY.md
+                                                    └── UI Design Tokens   → ui/UI_BUILDING.md
+                                                             │
+                                                             ▼
+                                                    Quality & Verification
+                                                    ├── Testing & QA Matrix → Quality/TESTING.md
+                                                    └── Diagnostics          → Quality/DEBUGGING.md
+                                                             │
+                                                             ▼
+                                                    Done (Commit & Push)
+```
 
 ---
 
-## 🛠️ Category Breakdown
+## 🔑 Key Features for Readers
 
-### 1. ⚙️ Implementation (`/Implementation`)
-Clean, scalable, secure code: component boundaries, performance guardrails, security baselines, when to refactor, when to document, and how to choose between multiple valid approaches. Framework-specific tips (e.g. React/Vite) are flagged as assumptions, not treated as universal.
+1. **SOLID Architecture Integration**:
+   Every PHP class created by the agent must adhere to **Single Responsibility** (splitting large controllers into focused classes like `StaffController` and `PasswordResetController`) and **Dependency Inversion** (injecting repositories rather than writing inline queries).
 
-### 2. 📝 Planning (`/Planning`)
-The "understand → research → plan → approval" workflow, including a defined trivial/non-trivial threshold (see `SKILL.md`) and a dedicated research search-order/stopping-rule, so the agent doesn't over- or under-invoke planning or research.
+2. **Standardized Design Patterns**:
+   Guarantees the application uses industry design patterns (**Repository Pattern**, **Singleton Pattern**, **Strategy Pattern**, and **Facade Pattern**).
 
-### 3. 🧪 Quality (`/Quality`)
-Verification, troubleshooting, and commit hygiene, generalized so they apply regardless of whether the project has an automated test framework.
+3. **Repeatable QA Verification**:
+   Links directly to `Hontech Documentation/Technical/Testing_and_QA_Protocol.md`, enabling developers and agents to run through a formal QA test matrix before shipping updates.
 
-### 4. 🎨 UI (`/ui`)
-A single consolidated guide for visual design, responsive layout, and accessibility.
-
-### 5. 🧠 Models (`/Models`)
-Model selection framed around capability tiers (deep reasoning / balanced / fast) rather than hardcoded model names, so it doesn't go stale when model lineups change.
-
-### 6. 📋 Project Profile (`/project-profile`)
-The one non-portable file. Contains this project's actual stack, auth mechanism, component names, and testing setup.
-
----
-
-## 📖 How to Load this Skill in Antigravity
-
-1. Copy this folder into your project's customization root at `.agents/skills/agent/`.
-2. The Antigravity IDE agent will automatically discover and load `SKILL.md`.
-3. **Before reusing this in a different project:** rewrite or delete `project-profile/PROJECT_PROFILE.md` so the agent doesn't reference component names and mechanisms that don't exist in the new codebase.
+4. **Zero-Setup Maintenance**:
+   Since it resides inside `.Agents/skills/agent-workflow/`, any AI assistant opening this project will automatically discover and enforce these guidelines with no extra prompt setup needed.
