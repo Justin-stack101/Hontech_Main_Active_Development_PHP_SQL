@@ -23,3 +23,14 @@ Keep code organized so structure stays predictable as the codebase grows. The co
 # 3. Styling Utilities
 
 - If the project has a class-merging utility (e.g. `clsx` + `tailwind-merge`), always use it when combining static and dynamic classes rather than concatenating class strings by hand -- this avoids silent conflicts between classes (e.g. `px-2` vs `px-4`).
+
+---
+
+# 4. SOLID Architecture Principles
+
+Always design and modify code adhering strictly to SOLID principles:
+- **Single Responsibility (SRP)**: Keep classes, controllers, and components small and focused. For example, database queries belong in Repositories, email dispatching belongs in Mail Utilities, and request routing/validation belongs in middleware/controllers.
+- **Open/Closed (OCP)**: Code should be open for extension but closed for modification. Write classes and systems that can adapt via parameters, configurations, or polymorphism rather than hardcoding business logic that requires constant modification.
+- **Liskov Substitution (LSP)**: Derived classes or controllers must be completely interchangeable with their parent classes or abstractions without breaking the application.
+- **Interface Segregation (ISP)**: Avoid bloated interfaces. Create small, focused interfaces so classes are not forced to implement methods they do not need.
+- **Dependency Inversion (DIP)**: Depend on abstractions rather than concrete classes. Inject dependencies (like database connections or service utilities) instead of instantiating them directly inside classes.
