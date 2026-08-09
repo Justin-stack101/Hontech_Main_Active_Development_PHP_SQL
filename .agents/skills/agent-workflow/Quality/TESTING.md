@@ -25,3 +25,9 @@ Where no automated test covers the change, verify manually:
 # 3. Regression Check
 
 Confirm existing functionality adjacent to your change still works -- don't just verify the new behavior in isolation.
+
+---
+
+# 4. HonTech QA Test Matrix Protocol
+
+Refer to **`Hontech Documentation/Technical/Testing_and_QA_Protocol.md`** for the formal QA test matrix and bug report template covering Authentication, Staff Management, Password Recovery, Developer Sandboxes, and System Exception Diagnostics.

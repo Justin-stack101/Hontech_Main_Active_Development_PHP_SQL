@@ -16,6 +16,9 @@ use App\Middleware\Auth;
 use App\Controllers\AuthController;
 use App\Controllers\JobController;
 use App\Controllers\BranchController;
+use App\Controllers\StaffController;
+use App\Controllers\PasswordResetController;
+use App\Controllers\DeveloperController;
 
 // Load environment
 Env::load();
@@ -64,19 +67,19 @@ if ($route === '') $route = '/';
 
 // Developer sandbox email routes (public)
 if ($method === 'GET' && $route === '/auth/developer/emails') {
-    AuthController::getSimulatedEmails();
+    DeveloperController::getSimulatedEmails();
     exit;
 }
 if ($method === 'DELETE' && $route === '/auth/developer/emails') {
-    AuthController::clearSimulatedEmails();
+    DeveloperController::clearSimulatedEmails();
     exit;
 }
 if ($method === 'PATCH' && preg_match('#^/auth/developer/emails/([^/]+)/read$#', $route, $m)) {
-    AuthController::markEmailRead($m[1]);
+    DeveloperController::markEmailRead($m[1]);
     exit;
 }
 if ($method === 'POST' && $route === '/auth/developer/reset-seed') {
-    AuthController::resetSeedDev();
+    DeveloperController::resetSeedDev();
     exit;
 }
 
@@ -94,11 +97,11 @@ if ($method === 'POST' && $route === '/auth/logout') {
     exit;
 }
 if ($method === 'POST' && $route === '/auth/forgot-password') {
-    AuthController::forgotPassword();
+    PasswordResetController::forgotPassword();
     exit;
 }
 if ($method === 'POST' && $route === '/auth/reset-password') {
-    AuthController::resetPassword();
+    PasswordResetController::resetPassword();
     exit;
 }
 if ($method === 'POST' && $route === '/auth/google/login') {
@@ -177,27 +180,27 @@ if ($method === 'POST' && $route === '/auth/google/unlink') {
 // Staff management routes (Owner/Admin only)
 if ($method === 'GET' && $route === '/auth/staff') {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
-    AuthController::getStaff();
+    StaffController::getStaff();
     exit;
 }
 if ($method === 'POST' && $route === '/auth/staff') {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
-    AuthController::createStaff();
+    StaffController::createStaff();
+    exit;
+}
+if ($method === 'PUT' && preg_match('#^/auth/staff/(\d+)$#', $route, $m)) {
+    if (!Auth::requireRole(['owner', 'admin'])) exit;
+    StaffController::updateStaff((int)$m[1]);
     exit;
 }
 if ($method === 'DELETE' && preg_match('#^/auth/staff/(\d+)$#', $route, $m)) {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
-    AuthController::deleteStaff($m[1]);
-    exit;
-}
-if ($method === 'POST' && preg_match('#^/auth/staff/(\d+)/reset-password$#', $route, $m)) {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    AuthController::resetStaffPassword($m[1]);
+    StaffController::deleteStaff((int)$m[1]);
     exit;
 }
 if ($method === 'PATCH' && preg_match('#^/auth/staff/(\d+)/toggle-active$#', $route, $m)) {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
-    AuthController::toggleStaffActiveStatus($m[1]);
+    StaffController::toggleStaffActive((int)$m[1]);
     exit;
 }
 if ($method === 'PUT' && preg_match('#^/auth/staff/(\d+)/role$#', $route, $m)) {
