@@ -64,6 +64,13 @@ class UserRepository
         return $stmt->fetchAll();
     }
 
+    public function getStaffByBranch(string $branch): array
+    {
+        $stmt = $this->db->prepare("SELECT id, name, email, role, branch, is_active, is_online, last_active, created_at FROM users WHERE is_deleted = 0 AND branch = ? ORDER BY id ASC");
+        $stmt->execute([$branch]);
+        return $stmt->fetchAll();
+    }
+
     public function createStaffUser(string $name, string $email, string $password, string $role, string $branch): array
     {
         $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 10]);

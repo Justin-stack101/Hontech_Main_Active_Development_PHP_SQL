@@ -3038,24 +3038,26 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
             });
 
-            // --- 2. CATEGORY BREAKDOWN ---
+            // --- 2. CATEGORY BREAKDOWN (5 Capstone Manuscript Categories) ---
             const pms = jobs.filter(j => j.category && j.category.toUpperCase().includes('PMS')).length;
-            const gr = jobs.filter(j => j.category && j.category.toUpperCase().includes('GR')).length;
-            const checkups = jobs.filter(j => j.category && j.category.toUpperCase().includes('CHECK-UP')).length;
-            const othersCount = jobs.length - pms - gr - checkups;
+            const grs = jobs.filter(j => j.category && (j.category.toUpperCase().includes('GR') || j.category.toUpperCase().includes('REPAIR'))).length;
+            const bodyPaint = jobs.filter(j => j.category && (j.category.toUpperCase().includes('BODY') || j.category.toUpperCase().includes('PAINT'))).length;
+            const carWash = jobs.filter(j => j.category && j.category.toUpperCase().includes('WASH')).length;
+            const checkups = jobs.filter(j => j.category && (j.category.toUpperCase().includes('CHECK-UP') || j.category.toUpperCase().includes('COMPLIMENTARY'))).length;
 
             const ctxCat = document.getElementById('chart-category-breakdown').getContext('2d');
             chartInstances.category = new Chart(ctxCat, {
                 type: 'doughnut',
                 data: {
-                    labels: ['PMS', 'GR', 'Check-Up', 'Others'],
+                    labels: ['PMS', 'GRS', 'Body & Paint', 'Car Wash', 'Check-Ups'],
                     datasets: [{
-                        data: [pms, gr, checkups, othersCount],
+                        data: [pms, grs, bodyPaint, carWash, checkups],
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.85)',
                             'rgba(239, 68, 68, 0.85)',
-                            'rgba(16, 185, 129, 0.85)',
-                            'rgba(163, 163, 163, 0.85)'
+                            'rgba(168, 85, 247, 0.85)',
+                            'rgba(14, 165, 233, 0.85)',
+                            'rgba(16, 185, 129, 0.85)'
                         ],
                         borderColor: '#ffffff',
                         borderWidth: 2

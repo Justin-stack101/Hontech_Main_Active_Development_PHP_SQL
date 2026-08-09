@@ -593,6 +593,18 @@ class JobController
 
             $startDate = $_GET['startDate'] ?? '';
             $endDate   = $_GET['endDate'] ?? '';
+            $branch    = $_GET['branch'] ?? '';
+
+            $user = Auth::getCurrentUser();
+
+            // Limitation #7: Admins strictly restricted to their branch analytics
+            if ($user && $user['role'] === 'admin') {
+                $conditions[] = "branch = ?";
+                $params[]     = $user['branch'] ?? 'Marikina';
+            } elseif (!empty($branch) && !in_array($branch, ['All', 'Combined', 'both'], true)) {
+                $conditions[] = "branch = ?";
+                $params[]     = $branch;
+            }
 
             if (!empty($startDate)) {
                 $conditions[] = "(date_received >= ? OR date_completed >= ?)";

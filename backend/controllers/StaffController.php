@@ -26,7 +26,9 @@ class StaffController
             }
 
             $userRepo = new UserRepository();
-            $staff = $userRepo->getAllActiveStaff();
+            $staff = ($currentUser['role'] === 'owner') 
+                ? $userRepo->getAllActiveStaff() 
+                : $userRepo->getStaffByBranch($currentUser['branch'] ?? 'Marikina');
 
             ApiResponse::json($staff);
         } catch (\Exception $e) {
@@ -51,7 +53,12 @@ class StaffController
             $email  = trim($input['email'] ?? '');
             $pass   = $input['password'] ?? '';
             $role   = $input['role'] ?? 'assistant';
-            $branch = $input['branch'] ?? 'Branch A';
+            $branch = $input['branch'] ?? 'Marikina';
+
+            // Limitation #7: Enforce branch partitioning for Admin role
+            if ($currentUser['role'] === 'admin') {
+                $branch = $currentUser['branch'] ?? 'Marikina';
+            }
 
             if (empty($name) || empty($email) || empty($pass)) {
                 ApiResponse::badRequest('Name, email, and password are required.');
@@ -101,7 +108,12 @@ class StaffController
             $name   = trim($input['name'] ?? '');
             $email  = trim($input['email'] ?? '');
             $role   = $input['role'] ?? 'assistant';
-            $branch = $input['branch'] ?? 'Branch A';
+            $branch = $input['branch'] ?? 'Marikina';
+
+            // Limitation #7: Enforce branch partitioning for Admin role
+            if ($currentUser['role'] === 'admin') {
+                $branch = $currentUser['branch'] ?? 'Marikina';
+            }
 
             if (empty($name) || empty($email)) {
                 ApiResponse::badRequest('Name and email are required.');
@@ -112,6 +124,12 @@ class StaffController
             $targetUser = $userRepo->findById($id);
             if (!$targetUser) {
                 ApiResponse::notFound('Staff account not found.');
+                return;
+            }
+
+            // Enforce branch partitioning check for Admins
+            if ($currentUser['role'] === 'admin' && $targetUser['branch'] !== $currentUser['branch']) {
+                ApiResponse::forbidden('Access forbidden. You can only manage staff members assigned to your branch.');
                 return;
             }
 
