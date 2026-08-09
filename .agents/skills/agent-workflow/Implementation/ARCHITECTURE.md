@@ -34,3 +34,13 @@ Always design and modify code adhering strictly to SOLID principles:
 - **Liskov Substitution (LSP)**: Derived classes or controllers must be completely interchangeable with their parent classes or abstractions without breaking the application.
 - **Interface Segregation (ISP)**: Avoid bloated interfaces. Create small, focused interfaces so classes are not forced to implement methods they do not need.
 - **Dependency Inversion (DIP)**: Depend on abstractions rather than concrete classes. Inject dependencies (like database connections or service utilities) instead of instantiating them directly inside classes.
+
+---
+
+# 5. Core Design Patterns
+
+Enforce these structural design patterns across the codebase:
+- **Repository Pattern**: Never query databases directly from Controllers. Use Repository classes (e.g. `UserRepository`, `JobRepository`, `BranchRepository`) to run database queries, keeping data access separated from business logic.
+- **Model-View-Controller (MVC) Separation**: Keep business logic out of HTML templates. PHP API endpoints must return structured JSON format responses, and client-side scripts (`app.js`) must query these endpoints and render dynamic components on the frontend.
+- **Dependency Injection**: Pass database connections, environment variables, or config abstractions to class constructors rather than hardcoding global instantiations inside classes.
+- **Singleton Pattern**: Core services (like Database connection pools) should utilize Singletons to avoid duplicate connection attempts.
