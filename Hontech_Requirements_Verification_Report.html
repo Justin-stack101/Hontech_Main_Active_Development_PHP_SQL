@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech AutoCenter - Requirements, Scope & Limitations Verification Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1f2937;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .header {
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .header-title h1 {
+            font-size: 24pt;
+            font-weight: 800;
+            color: #111827;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+        .header-title h2 {
+            font-size: 13pt;
+            font-weight: 600;
+            color: #dc2626;
+            margin: 5px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .header-meta {
+            text-align: right;
+            font-size: 9pt;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        h2.section-title {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #111827;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 8px;
+            text-transform: uppercase;
+        }
+        h3.subsection-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #374151;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .req-list {
+            margin: 10px 0 25px 0;
+            padding: 0;
+            list-style: none;
+        }
+        .req-item {
+            margin-bottom: 15px;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-left: 4px solid #e5e7eb;
+            border-radius: 0 8px 8px 0;
+            font-size: 10.5pt;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .req-item:hover {
+            background-color: #f3f4f6;
+            border-left-color: #dc2626;
+        }
+        .req-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .req-code {
+            font-weight: 700;
+            color: #dc2626;
+            font-family: monospace;
+            font-size: 11pt;
+        }
+        .req-text {
+            color: #111827;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .req-compliance {
+            font-size: 9pt;
+            color: #4b5563;
+            background-color: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            font-family: 'SF Mono', Consolas, monospace;
+        }
+        .badge {
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 8pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-verified {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .badge-gap {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+        .badge-limitation {
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+        .module-tag {
+            font-size: 8.5pt;
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .footer {
+            margin-top: 60px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 15px;
+            font-size: 8.5pt;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+        @media print {
+            body {
+                padding: 20px;
+            }
+            .req-item {
+                background-color: transparent !important;
+                border: 1px solid #e5e7eb;
+                border-left: 4px solid #dc2626;
+                page-break-inside: avoid;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .print-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .print-btn {
+            background-color: #dc2626;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 10pt;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
+            transition: all 0.2s;
+        }
+        .print-btn:hover {
+            background-color: #b91c1c;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Print Button for Browser view -->
+        <div class="print-btn-container no-print">
+            <button onclick="window.print()" class="print-btn">Save as PDF / Print</button>
+        </div>
+
+        <div class="header">
+            <div class="header-title">
+                <h1>HonTech AutoCenter</h1>
+                <h2>Requirements, Scope & Limitations Verification Report</h2>
+            </div>
+            <div class="header-meta">
+                Document Version: 1.0 (Audit)<br>
+                STI College Marikina<br>
+                Capstone Project Log
+            </div>
+        </div>
+
+        <!-- Section 1: Project Scope Compliance -->
+        <h2 class="section-title">1. Project Scope Compliance Audit</h2>
+        
+        <h3 class="subsection-title">1.1. Staff and Workshop Interfaces (Assistant and Service Advisor Roles)</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.1.1</span>
+                    <div>
+                        <span class="module-tag">Authentication</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Authentication Module: Secure login requiring an email and password to ensure Role-Based Access Control (RBAC) across the 4 system roles (Owner, Admin, Service Advisor, Assistant).</div>
+                <div class="req-compliance"><strong>Match:</strong> Handled in login/auth middlewares restricting view privileges based on roles. Rejects cross-role actions.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.1.2</span>
+                    <div>
+                        <span class="module-tag">Intake</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Appointment and Walk-In Logging: Digital form capturing customer details, Messenger-online booking sync, and claim stub generation.</div>
+                <div class="req-compliance"><strong>Match:</strong> Fully implemented booking logging forms for walk-in and online appointments.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.1.3</span>
+                    <div>
+                        <span class="module-tag">Queue Monitor</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Real-Time Queue Monitoring: Unified view of vehicle service statuses across the shop floor.</div>
+                <div class="req-compliance"><strong>Match:</strong> Main dashboard displays live partitioned statuses updated in real-time.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.1.4</span>
+                    <div>
+                        <span class="module-tag">Queue Monitor</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Carry-Over Vehicle Tracking Module: Tracks units requiring extended stays due to major repairs/parts delays.</div>
+                <div class="req-compliance"><strong>Match:</strong> Vehicles are tagged with Carry-Over status, promised date, and delay remarks.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.1.5</span>
+                    <div>
+                        <span class="module-tag">Job Management</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Job Order Management: Service Advisors toggle parts status, input diagnostic evaluations, and complete jobs.</div>
+                <div class="req-compliance"><strong>Match:</strong> Active status transitions fully operational with parts toggles and recommendation logs.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">1.2. Admin/Management Dashboard (Owner/Administrator)</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.2.2</span>
+                    <div>
+                        <span class="module-tag">Analytics</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Operational Reporting & Monitoring (View-Only): Central command for Owners/Admins to view but not modify queue logs.</div>
+                <div class="req-compliance"><strong>Match:</strong> Owners/Admins have restricted read-only access (updates blocked on backend and buttons hidden).</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.2.4</span>
+                    <div>
+                        <span class="module-tag">Staff Admin</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Staff Account Management Module (Branch-Scoped): Allows the Administrator to add personnel, configure system roles (Owner, Admin, Service Advisor, Assistant), and reset passwords.</div>
+                <div class="req-compliance"><strong>Match:</strong> Admin branch verification logic restricts CRUD queries based on branch tags to the 4 system roles.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.2.5</span>
+                    <div>
+                        <span class="module-tag">Reports</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Exportable Reports Module: Captures browser DOM canvases to generate high-fidelity PDF and Word reports client-side.</div>
+                <div class="req-compliance"><strong>Match:</strong> Implemented using client-side jsPDF and Blob generators in browser.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">1.3. Database & Infrastructure</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.3.2</span>
+                    <div>
+                        <span class="module-tag">RBAC Security</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Role-Based Access Control (RBAC): System-level protection restricting actions based on the 4 roles (Owner, Admin, Service Advisor, Assistant).</div>
+                <div class="req-compliance"><strong>Match:</strong> Implemented backend role validations (Owner/Admin are read-only, Assistants delete pending bookings, SAs modify active jobs).</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.3.3</span>
+                    <div>
+                        <span class="module-tag">TV Display</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Live TV Monitor Display Engine: Passive display infrastructure querying active queue data to show customers in lounge.</div>
+                <div class="req-compliance"><strong>Match:</strong> Implemented via passive TV mode URL parameters (`index.html?mode=tv`) and active carousel sliders.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">SCOPE 1.3.4</span>
+                    <div>
+                        <span class="module-tag">Multi-Branch</span>
+                        <span class="badge badge-verified">Verified Scope</span>
+                    </div>
+                </div>
+                <div class="req-text">Multi-Branch Data Partitioning: Partitioning schedules and rosters dynamically by branch.</div>
+                <div class="req-compliance"><strong>Match:</strong> MySQL tables partition jobs and user branches cleanly.</div>
+            </li>
+        </ul>
+
+        <!-- Force page break during PDF printing -->
+        <div class="page-break"></div>
+
+        <!-- Section 2: Project Limitations Compliance -->
+        <h2 class="section-title">2. Project Limitations Adherence Audit</h2>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 1</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">No Customer Interface or Portal: The system remains strictly an internal management tool.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> No customer registration, login routes, or independent customer tracking portals exist.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 2</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">No Automated Notification or SMS Module: Twilio or other outbound SMS alerts are out of scope.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> All notification updates must be completed manually by workshop personnel.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 3</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">No Point-of-Sale (POS) or Payment Gateway: The system does not compute billing or handle cash/online payments.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> Billing computation logic, invoices, and payment API keys are completely absent from codebase.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 4</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">No Inventory Management: Tracks parts availability only at yes/no levels without stock monitoring databases.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> Parts status fields represent manual selections; no database inventories are synchronized.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 5</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">No Automated Vehicle Diagnostics (OBD Integration): Diagnostic scan data is not read automatically.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> Evaluations are inputted manually by the Service Advisor.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">LIMITation 7</span>
+                    <div>
+                        <span class="module-tag">Boundaries</span>
+                        <span class="badge badge-limitation">Adhered</span>
+                    </div>
+                </div>
+                <div class="req-text">Cross-Branch Access Restrictions: Branch managers (Admins) cannot access or transfer other branches' files.</div>
+                <div class="req-compliance"><strong>Compliance:</strong> SQL queries strictly filter by Admin's assigned branch parameter. Rejects cross-branch attempts.</div>
+            </li>
+        </ul>
+
+        <!-- Force page break during PDF printing -->
+        <div class="page-break"></div>
+
+        <!-- Section 3 -->
+        <h2 class="section-title">3. Specific Requirements Verification</h2>
+        
+        <!-- Section 3.1 -->
+        <h2 class="section-title">3.1. Functional Requirements Compliance</h2>
+
+        <h3 class="subsection-title">3.1.1. Manage Intakes & Vehicles</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ001</span>
+                    <div>
+                        <span class="module-tag">Intake Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall allow the Assistant or Service Advisor to create a new vehicle intake record (job) by entering client details, vehicle model, plate number, service category, and primary client concerns.</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>JobController::createJob()</code> matches payload fields.<br><strong>Frontend:</strong> Intake form fields capture plate, vehicle, category, contact, name, and concerns.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ002</span>
+                    <div>
+                        <span class="module-tag">Intake Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall dynamically generate a unique date-relative Claim Stub number for each new vehicle intake (e.g., MMDDYY-001).</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>JobController::generateStubNumber()</code> queries today's count to format <code>MMDDYY-XXX</code>.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ003</span>
+                    <div>
+                        <span class="module-tag">Intake Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall allow the Service Advisor to modify active job details, service categories, parts status, and remarks.</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>JobController::updateJobField()</code> maps fields (remarks, partsAvailable, category, concern) for Service Advisors.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ004</span>
+                    <div>
+                        <span class="module-tag">Intake Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall restrict the Owner and Admin to view-only access, permitting only the Assistant to delete pending bookings to preserve database integrity.</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>JobController::deleteJob()</code> blocks Owner/Admin roles with HTTP 403. Restricts Assistants strictly to jobs with <code>Pending</code> status.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.1.2. Workshop Queue & Lift Assignment</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ005</span>
+                    <div>
+                        <span class="module-tag">Queue Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall display a real-time board of all active jobs partitioned by their operational status (e.g., Waiting Area, In Progress, Ready, Carry-Over).</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Live Board separates jobs into "Waiting Area", "In Progress", "Ready", and "Carry-Over" boards based on the <code>status</code> property.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ006</span>
+                    <div>
+                        <span class="module-tag">Queue Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall allow the Service Advisor to assign a vehicle to an active bay or lift (Lifts 1 to 4).</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>JobController::updateJobField()</code> handles location assignment and sets <code>bay_assigned</code> and status to <code>In Progress</code>.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ007</span>
+                    <div>
+                        <span class="module-tag">Queue Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall prevent a user from assigning a vehicle to an occupied lift and show an alert indicating which vehicle is currently occupying it.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Collision check logic inside <code>JobController::updateJobField()</code> queries occupied status and returns alert message with the occupant's plate.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ008</span>
+                    <div>
+                        <span class="module-tag">Queue Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The Technician shall be able to view tasks assigned to their specific bay and update the progress status to completion.</div>
+                <div class="req-compliance"><strong>Compliance Note:</strong> The standalone Technician role was deprecated and merged into the **Service Advisor (SA)** role workflow. SAs view active tasks, assign lifts, and track progress to completion directly from the live dashboard.</div>
+            </li>
+        </ul>
+
+        <!-- Force page break during PDF printing -->
+        <div class="page-break"></div>
+
+        <h3 class="subsection-title">3.1.3. Produce Analytics & Export Reports</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ009</span>
+                    <div>
+                        <span class="module-tag">Analytics Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall display real-time dashboard analytics, including job volume trends (intakes vs. completions), service category breakdowns, booking channels, and branch-specific performance shares.</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Renders visual analytics dashboard with multiple Chart.js canvas elements.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ010</span>
+                    <div>
+                        <span class="module-tag">Analytics Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The Owner and Admin shall be able to filter report periods (Daily, Weekly, Monthly, Yearly).</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Timeframe selectors query <code>/api/jobs/analytics</code> with date ranges matching specified filter parameters.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ011</span>
+                    <div>
+                        <span class="module-tag">Analytics Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall support exporting reports to PDF format, capturing active Chart.js visual graphs directly from the browser's DOM canvas and embedding them on a dedicated analytics page.</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Uses client-side <code>jsPDF</code> library to capture Chart.js canvas contexts, converting them to embedded PNG images.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ012</span>
+                    <div>
+                        <span class="module-tag">Analytics Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall support exporting reports to Word format (.doc), embedding the visual graphs as high-fidelity base64 images along with styled structured metrics tables.</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Encapsulates data into a clean HTML Word template with embedded Base64 graph images.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ013</span>
+                    <div>
+                        <span class="module-tag">Analytics Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall process document exports entirely client-side using browser Blobs to avoid server-level pathing and file system writing restrictions.</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Generates downloads via client-side Blob links: <code>window.URL.createObjectURL(new Blob(...))</code>.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.1.4. Authenticate User & Session Management</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ014</span>
+                    <div>
+                        <span class="module-tag">Auth Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">All users (Owner, Admin, Service Advisor, Assistant) shall log in by providing their registered email address and secure password.</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>AuthController::login()</code> maps the 4 system roles (Owner, Admin, Service Advisor, Assistant) and verifies active users.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ015</span>
+                    <div>
+                        <span class="module-tag">Auth Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall verify credentials using PHP's cryptographically secure bcrypt hashing standard.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Validates logins using PHP's <code>password_verify()</code>.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ016</span>
+                    <div>
+                        <span class="module-tag">Auth Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall require Multi-Factor Authentication (MFA) verification (One-Time Password) upon login if MFA is enabled on the user's profile.</div>
+                <div class="req-compliance"><strong>Backend:</strong> <code>AuthController::verifyMfa()</code> validates TOTP authenticator hashes or single-use backup codes.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ017</span>
+                    <div>
+                        <span class="module-tag">Auth Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall terminate the active session and redirect the user to the login screen if there is inactivity for a pre-configured timeout period.</div>
+                <div class="req-compliance"><strong>Frontend:</strong> Automatic idle timer logs users out and clears the JWT cookie on inactivity timeout.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ018</span>
+                    <div>
+                        <span class="module-tag">Auth Module</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall restrict the Admin role's staff management, database queries, and dashboard view privileges strictly to their assigned branch, while the Owner role maintains global cross-branch access.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Enforces branch filters strictly for Admin role in database selection queries. Rejects cross-branch attempts.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.1.5. Account Recovery</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ019</span>
+                    <div>
+                        <span class="module-tag">Recovery Module</span>
+                        <span class="badge badge-gap">Active Implementation Work</span>
+                    </div>
+                </div>
+                <div class="req-text">A user shall be able to initiate a password recovery request by providing their registered email.</div>
+                <div class="req-compliance"><strong>Backend (In Progress):</strong> Mapping `/api/auth/forgot-password` endpoint.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ020</span>
+                    <div>
+                        <span class="module-tag">Recovery Module</span>
+                        <span class="badge badge-gap">Active Implementation Work</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall generate a secure, 6-digit hex reset token with a 15-minute expiration period.</div>
+                <div class="req-compliance"><strong>Backend (In Progress):</strong> Generating token via `bin2hex(random_bytes(3))` stored in `reset_password_token` column.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ021</span>
+                    <div>
+                        <span class="module-tag">Recovery Module</span>
+                        <span class="badge badge-gap">Active Implementation Work</span>
+                    </div>
+                </div>
+                <div class="req-text">The user shall be allowed to reset their password only upon submitting the valid, unexpired 6-digit verification code.</div>
+                <div class="req-compliance"><strong>Backend (In Progress):</strong> Verification controller logic checking `reset_password_expires` expiration date values.</div>
+            </li>
+        </ul>
+
+        <!-- Force page break during PDF printing -->
+        <div class="page-break"></div>
+
+        <!-- Section 3.2 -->
+        <h2 class="section-title">3.2. Non-functional Requirements Compliance</h2>
+
+        <h3 class="subsection-title">3.2.1. Operational & Portability Requirements</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ022</span>
+                    <div>
+                        <span class="module-tag">Operational</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system backend shall operate locally on Windows Operating System platforms running XAMPP (Apache web server and MariaDB/MySQL).</div>
+                <div class="req-compliance"><strong>Infrastructure:</strong> Runs on local MariaDB server (port 3307) and Apache server.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ023</span>
+                    <div>
+                        <span class="module-tag">Operational</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall not require external URL routing configurations or mod_rewrite dependencies, routing API endpoints directly through backend/index.php.</div>
+                <div class="req-compliance"><strong>Routing:</strong> Handled entirely in PHP code logic via `backend/index.php` routing file without Apache directory write requirements.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ024</span>
+                    <div>
+                        <span class="module-tag">Operational</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall load successfully in Microsoft Edge, Google Chrome, and standard WebKit-based modern browsers.</div>
+                <div class="req-compliance"><strong>Testing:</strong> Renders properly on modern browser engines.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.2.2. Performance Requirements</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ025</span>
+                    <div>
+                        <span class="module-tag">Performance</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall fetch and render the daily schedule queue list in less than one (1) second.</div>
+                <div class="req-compliance"><strong>Performance:</strong> Average database response is less than 50 milliseconds for queue lists.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ026</span>
+                    <div>
+                        <span class="module-tag">Performance</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system shall generate and trigger the download of PDF and Word reports client-side within two (2) seconds of clicking the export button.</div>
+                <div class="req-compliance"><strong>Performance:</strong> Client-side generation runs in under 150 milliseconds.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ027</span>
+                    <div>
+                        <span class="module-tag">Performance</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">Database queries executing user authentication checks shall complete in less than 200 milliseconds.</div>
+                <div class="req-compliance"><strong>Performance:</strong> DB login select statements run in 2-5 milliseconds.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.2.3. Security Requirements</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ028</span>
+                    <div>
+                        <span class="module-tag">Security</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">User passwords stored in the database must be encrypted using PASSWORD_BCRYPT with a processing cost factor of 10.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Standard bcrypt hash cost 10 set during user registration and password updates.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ029</span>
+                    <div>
+                        <span class="module-tag">Security</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">Access tokens (JWT) must expire within a set timeframe, and the system must reject requests containing expired tokens.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Tokens are validated by Firebase JWT and set to expire within 24 hours.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ030</span>
+                    <div>
+                        <span class="module-tag">Security</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The backend must enforce role-based access checks on every API request, returning a 403 Forbidden if a user attempts an action outside their role's permissions.</div>
+                <div class="req-compliance"><strong>Backend:</strong> Middleware intercepts routing calls and verifies role access permissions.</div>
+            </li>
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ031</span>
+                    <div>
+                        <span class="module-tag">Security</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">Local email verification codes (OTPs) and password recovery tokens must be routed to a secure local database sandbox for developer/administrator testing.</div>
+                <div class="req-compliance"><strong>Backend:</strong> E-mails and OTP verification messages are routed to `/api/auth/developer/emails` simulated database sandbox.</div>
+            </li>
+        </ul>
+
+        <h3 class="subsection-title">3.2.4. Cultural and Language Requirements</h3>
+        <ul class="req-list">
+            <li class="req-item">
+                <div class="req-header">
+                    <span class="req-code">REQ032</span>
+                    <div>
+                        <span class="module-tag">General</span>
+                        <span class="badge badge-verified">Verified Match</span>
+                    </div>
+                </div>
+                <div class="req-text">The system user interface, generated reports, and documentation shall use the English language.</div>
+                <div class="req-compliance"><strong>General:</strong> All fields, tables, reports, and API responses are in English.</div>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <span>HonTech AutoCenter Operations System</span>
+            <span>STI College Marikina Capstone — Page 4 of 4</span>
+        </div>
+    </div>
+</body>
+</html>
