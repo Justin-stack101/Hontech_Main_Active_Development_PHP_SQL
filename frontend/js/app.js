@@ -64,7 +64,7 @@
                 if (!response.ok) {
                     if (response.status === 401 && !url.includes('/login')) {
                         console.warn("Session expired. Redirecting to login...");
-                        alert("Your session has expired. Please log in again.");
+                        showSessionExpiredModal("Your session has expired. Please log in again.");
                         if (typeof handleLogout === 'function') {
                             handleLogout();
                         } else {
@@ -646,6 +646,31 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
+        function showSessionExpiredModal(reason = 'You have been logged out due to inactivity.') {
+            if (document.getElementById('session-expired-modal')) return;
+
+            const modal = document.createElement('div');
+            modal.id = 'session-expired-modal';
+            modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-md fade-in';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-md w-full border border-red-100 shadow-2xl p-6 text-center flex flex-col items-center gap-4">
+                    <div class="w-14 h-14 rounded-full bg-red-50 text-red-600 flex items-center justify-center border border-red-200/60 shadow-sm animate-pulse">
+                        <i data-lucide="shield-alert" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Session Expired</h3>
+                        <p class="text-xs text-gray-500 font-semibold mt-1 leading-relaxed">${reason}</p>
+                    </div>
+                    <button onclick="document.getElementById('session-expired-modal').remove(); handleLogout();" 
+                            class="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs py-3 rounded-xl transition shadow-md shadow-red-600/20 tracking-wider">
+                        Log In Again
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            if (window.lucide) window.lucide.createIcons();
+        }
+
         function resetIdleTimer() {
             if (idleLogoutTimer) {
                 clearTimeout(idleLogoutTimer);
@@ -657,7 +682,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
             idleLogoutTimer = setTimeout(() => {
                 handleLogout();
-                alert("Session Expired: You have been logged out due to inactivity.");
+                showSessionExpiredModal("You have been logged out due to inactivity.");
             }, timeoutMinutes * 60 * 1000);
         }
 
