@@ -53,6 +53,7 @@ For every non-trivial task, follow this workflow:
 5. Wait for explicit approval.
 6. Implement.
 7. Verify.
+8. **Save & Push to GitHub** (`git add`, `git commit`, `git push origin <branch>`).
 
 **Trivial** (skip straight to implementation): single-line fixes, typo corrections, copy edits, renaming a local variable, adding a comment.
 
@@ -78,9 +79,12 @@ Understand → Research → Plan → Approval
    ├── UI, layout, responsiveness, accessibility → ui/UI_BUILDING.md
    │
    ▼
-Quality
+Quality & Verification
    ├── Testing    → Quality/TESTING.md
    └── Debugging  → Quality/DEBUGGING.md
+   │
+   ▼
+Save & Push to GitHub → Quality/COMMITS.md (git add, git commit, git push)
    │
    ▼
 Done

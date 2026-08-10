@@ -1,36 +1,24 @@
-# Commit & Branching Guidelines
+# Mandatory Git Save & Push Protocol
 
-## Purpose
+After completing any task, fix, refactor, or feature verification, the agent MUST automatically save progress to GitHub:
 
-Keep history reviewable if the agent is committing or branching on the user's behalf.
-
----
-
-# One Logical Change per Commit
-
-Don't mix, in the same commit:
-
-- UI changes
-- Backend/API changes
-- Refactors
-- Dependency updates
+1. **Stage Changes**: Run `git add -u` (or `git add .` for new files).
+2. **Descriptive Commit**: Craft a clear conventional commit message (`feat:`, `fix:`, `docs:`, `refactor:`, `style:`) describing *what* changed and *why*.
+3. **Push to GitHub Remote**: Immediately execute `git push origin <active-branch>` to ensure all progress is safely backed up on remote GitHub repository.
+4. **Verify Clean Tree**: Confirm `git status` reports `nothing to commit, working tree clean`. Never leave uncommitted or unpushed work at the end of a turn.
 
 ---
 
-# Commit Messages
+# Commit Message Best Practices
 
-Describe what changed and why, not just which file was touched. Reference the task/ticket if one exists.
-
----
-
-# Branching
-
-- One feature/fix per branch, matching the one-logical-change rule above.
-- Keep branches short-lived; sync from the main line regularly rather than diverging for a long time.
-- Don't push directly to a main/production branch without checking the project's convention first -- see `project-profile/PROJECT_PROFILE.md` if one has been documented there.
+- Use clear conventional prefixes (`feat:`, `fix:`, `refactor:`, `docs:`, `style:`, `test:`).
+- Describe the exact operational impact or bug fix, not just file names.
+- Keep commits atomic and logical.
 
 ---
 
-# Before Committing
+# Branching & Push Guidelines
 
-Confirm with the user before committing (or pushing), unless they've already indicated that's expected as part of this task.
+- Maintain short-lived branches synced with the main branch.
+- Push directly to the active feature/development branch (`branch2-Security-Account-Recovery` or target active branch).
+- Automatically verify remote push status after executing `git push`.
