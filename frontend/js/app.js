@@ -4129,6 +4129,19 @@ Report Generated Automatically by Developer Crash Reporter.
         }
 
         function renderTV() {
+            // Update TV Header Branch Labels dynamically based on active branch
+            const activeBranch = localStorage.getItem('selectedBranch') || (currentUserRole === 'admin' ? currentUserBranch : 'Marikina Branch');
+            const branchDisplayName = activeBranch === 'all' ? 'All Branches (Combined)' : (activeBranch.includes('Branch') ? activeBranch : `${activeBranch} Branch`);
+
+            const tvHeaderLabel = document.getElementById('tv-branch-header-name');
+            if (tvHeaderLabel) tvHeaderLabel.innerText = branchDisplayName;
+
+            const tvSlide1Sub = document.getElementById('tv-slide1-sub');
+            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays — ${branchDisplayName}`;
+
+            const tvSlide3Sub = document.getElementById('tv-slide3-sub');
+            if (tvSlide3Sub) tvSlide3Sub.innerText = `Live Lane Status — ${branchDisplayName}`;
+
             // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
             const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');
             // Group 2: Released (Ready, Ready to Release)
