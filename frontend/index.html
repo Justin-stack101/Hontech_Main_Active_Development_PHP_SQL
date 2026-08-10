@@ -1216,48 +1216,48 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
                         <!-- Hidden Inputs -->
                         <input type="hidden" id="intake-source" value="">
 
-                        <div class="md:col-span-1">
+                        <div class="md:col-span-3">
                             <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Date</label>
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Date</label>
                             <input type="date" id="intake-date"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
                         </div>
-                        <div class="md:col-span-1">
-                            <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Plate
-                                Number <span class="text-red-500">*</span></label>
+                        <div class="md:col-span-3">
+                            <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Plate
+                                Number &nbsp;<span class="text-red-500">*</span></label>
                             <input type="text" id="intake-plate" placeholder="XYZ 9876"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs uppercase text-gray-900 transition">
                         </div>
-                        <div class="md:col-span-2">
+                        <div class="md:col-span-6">
                             <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Customer
-                                Name <span class="text-red-500">*</span></label>
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Customer
+                                Name &nbsp;<span class="text-red-500">*</span></label>
                             <input type="text" id="intake-name" placeholder="Full Name"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
                         </div>
 
-                        <div class="md:col-span-1">
+                        <div class="md:col-span-3">
                             <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Contact
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Contact
                                 Number</label>
                             <input type="text" id="intake-contact" placeholder="09XX-XXX-XXXX"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
                         </div>
-                        <div class="md:col-span-2">
+                        <div class="md:col-span-4">
                             <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Vehicle
-                                Model <span class="text-red-500">*</span></label>
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Vehicle
+                                Model &nbsp;<span class="text-red-500">*</span></label>
                             <input type="text" id="intake-vehicle" placeholder="e.g. Honda Civic RS"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition">
                         </div>
-                        <div class="md:col-span-1">
+                        <div class="md:col-span-5">
                             <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Service
-                                Category <span class="text-red-500">*</span></label>
+                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Service
+                                Category &nbsp;<span class="text-red-500">*</span></label>
                             <select id="intake-category" onchange="toggleCategoryOther()"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition cursor-pointer">
                                 <option value="PMS">Preventive Maintenance (PMS)</option>
@@ -1274,11 +1274,11 @@
 
                         <!-- Walk-in Specific (SA Role) -->
                         <div id="div-walkin-fields"
-                            class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
+                            class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
                             <div class="md:col-span-1">
                                 <label
-                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Arrival
-                                    Time <span class="text-red-500">*</span></label>
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Arrival
+                                    Time &nbsp;<span class="text-red-500">*</span></label>
                                 <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
                                     <select id="intake-arrival-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                     <span class="text-gray-500 font-bold">:</span>
@@ -1287,7 +1287,7 @@
                             </div>
                             <div class="md:col-span-1">
                                 <label
-                                    class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 block">Auto-Generated
+                                    class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Auto-Generated
                                     Claim Stub</label>
                                 <input type="text" id="intake-stub-preview" disabled
                                     class="w-full bg-gray-100 border border-gray-200 rounded-xl px-3.5 py-2.5 font-mono font-bold text-gray-500 text-xs">
@@ -1295,11 +1295,11 @@
                         </div>
                         <!-- Booking Specific (Assistant Role) -->
                         <div id="div-booking-fields"
-                            class="md:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
+                            class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
                             <div class="md:col-span-1">
                                 <label
-                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Appt
-                                    Time <span class="text-red-500">*</span></label>
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Appt
+                                    Time &nbsp;<span class="text-red-500">*</span></label>
                                 <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
                                     <select id="intake-appt-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                     <span class="text-gray-500 font-bold">:</span>
