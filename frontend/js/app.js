@@ -1901,7 +1901,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                 </div>
                                 <div class="text-[10px] text-gray-500 font-bold uppercase mt-1">
                                     <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
-                                        <div class="flex items-center flex-nowrap gap-1">
+                                        <div class="flex items-center flex-nowrap gap-1.5">
                                             ${isEditable ? `
                                             <div class="flex items-center gap-1 shrink-0 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-lg">
                                                 <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0"></i>
@@ -1919,7 +1919,22 @@ Report Generated Automatically by Developer Crash Reporter.
                                             ` : `<span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-lg text-[10px] font-bold uppercase text-gray-900 shrink-0"><i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i><span>${job.category || '-'}</span></span>`}
                                             
                                             <div class="flex items-center shrink-0 whitespace-nowrap">
-                                                ${job.saName ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="inline-flex items-center gap-1 text-[10px] font-bold text-gray-500">SA: <i data-lucide="user" class="w-3 h-3 text-gray-400"></i> <span class="text-gray-800 font-black">${job.saName}</span></span>` : ((isAsst || isOwnerOrAdmin) ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="text-gray-500 ml-1">Unassigned</span>` : `<span class="text-gray-400 font-bold mx-0.5">|</span> <button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-bold bg-transparent border-none p-0 cursor-pointer text-[10px] ml-1">Assign to Me</button>`)}
+                                                ${job.saName ? `
+                                                    <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 border border-slate-200 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
+                                                        <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
+                                                        <span>SA: ${job.saName}</span>
+                                                    </span>
+                                                ` : ((isAsst || isOwnerOrAdmin) ? `
+                                                    <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/80 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg">
+                                                        <i data-lucide="user-minus" class="w-3 h-3 text-amber-500"></i>
+                                                        <span>Unassigned</span>
+                                                    </span>
+                                                ` : `
+                                                    <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 px-2 py-0.5 rounded-lg transition-all shadow-xs cursor-pointer active:scale-95">
+                                                        <i data-lucide="user-plus" class="w-3 h-3"></i>
+                                                        <span>Assign to Me</span>
+                                                    </button>
+                                                `)}
                                             </div>
                                         </div>
                                     </div>
@@ -2165,10 +2180,16 @@ Report Generated Automatically by Developer Crash Reporter.
                     <tr>
                         <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
                         <td class="px-3 py-4"><span class="text-gray-600 text-sm font-medium">${job.vehicle}</span></td>
-                        <td class="px-3 py-4">
-                            <div class="flex gap-2 items-center">
-                                <span class="text-gray-500 text-xs w-24 bg-gray-100 px-2 py-1 rounded">${job.dateReceived}</span>
-                                ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="table-select text-orange-600 font-bold text-sm w-32 border border-gray-200 bg-white">` : `<span class="text-orange-600 font-bold text-sm w-28">${job.promisedDate || 'TBD'}</span>`}
+                        <td class="px-3.5 py-4 whitespace-nowrap">
+                            <div class="flex flex-col gap-1.5 min-w-[170px]">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-400 w-14 shrink-0">Recv:</span>
+                                    <span class="bg-gray-100 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded border border-gray-200">${job.dateReceived || '--'}</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-orange-500 w-14 shrink-0">Promised:</span>
+                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-orange-50 border border-orange-200 text-orange-700 font-bold font-mono text-xs rounded px-2 py-1 outline-none focus:border-orange-500 transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-orange-50 text-orange-700 px-2.5 py-1 rounded border border-orange-200">${job.promisedDate || 'TBD'}</span>`}
+                                </div>
                             </div>
                         </td>
                         <td class="px-3 py-4"><span class="text-gray-750 text-sm font-semibold">${job.saName || '-'}</span></td>
