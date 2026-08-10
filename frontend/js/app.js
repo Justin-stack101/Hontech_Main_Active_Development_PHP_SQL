@@ -220,21 +220,21 @@ Report Generated Automatically by Developer Crash Reporter.
                                 </svg> Session & Runtime Context
                             </label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                <div class="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-2xs">
                                     <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">User</span>
-                                    <span class="text-xs font-black text-gray-900 truncate block">${currentUserName || 'Guest User'}</span>
+                                    <span class="text-[11px] sm:text-xs font-black text-gray-900 leading-snug break-words block">${currentUserName || 'Guest User'}</span>
                                 </div>
-                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                <div class="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-2xs">
                                     <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Email</span>
-                                    <span class="text-xs font-black text-gray-900 truncate block">${currentUserEmail || 'N/A'}</span>
+                                    <span class="text-[11px] sm:text-xs font-black text-gray-900 leading-snug break-words block">${currentUserEmail || 'N/A'}</span>
                                 </div>
-                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                <div class="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-2xs">
                                     <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Role</span>
-                                    <span class="text-xs font-black text-red-600 uppercase tracking-widest block">${currentUserRole || 'Guest'}</span>
+                                    <span class="text-[11px] sm:text-xs font-black text-red-600 uppercase tracking-widest leading-snug block">${currentUserRole || 'Guest'}</span>
                                 </div>
-                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                <div class="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-2xs">
                                     <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Active Branch</span>
-                                    <span class="text-xs font-black text-gray-900 truncate block">${localStorage.getItem('selectedBranch') || 'Marikina Branch'}</span>
+                                    <span class="text-[11px] sm:text-xs font-black text-gray-900 leading-snug break-words block">${localStorage.getItem('selectedBranch') || 'Marikina Branch'}</span>
                                 </div>
                             </div>
                         </div>
