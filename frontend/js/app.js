@@ -62,7 +62,7 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    if (response.status === 401 && !url.includes('/login')) {
+                    if (response.status === 401 && !url.includes('/login') && !url.includes('/auth/me')) {
                         console.warn("Session expired. Redirecting to login...");
                         showSessionExpiredModal("Your session has expired. Please log in again.");
                         if (typeof handleLogout === 'function') {
