@@ -159,7 +159,7 @@ Report Generated Automatically by Developer Crash Reporter.
             showSystemToast('Diagnostic log file downloaded.', 'success');
         };
 
-        // Global Crash / Error Handler Overlay (Redesigned Spacious Developer UI)
+        // Global Crash / Error Handler Overlay (Redesigned High-Contrast Spacious Developer UI)
         function showCrashOverlay(errorMsg, source, lineno, colno, errorObj) {
             if (document.getElementById('system-crash-overlay')) return;
 
@@ -172,26 +172,28 @@ Report Generated Automatically by Developer Crash Reporter.
             
             overlay.innerHTML = `
                 <div class="bg-white rounded-3xl max-w-3xl w-full border border-red-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
-                    <!-- Header Bar -->
-                    <div class="bg-gradient-to-r from-red-650 to-red-700 text-white px-6 md:px-8 py-5 flex items-center justify-between border-b border-red-800 shrink-0">
+                    <!-- High Contrast Solid Header Bar -->
+                    <div class="bg-red-600 text-white px-6 md:px-8 py-5 flex items-center justify-between border-b border-red-700 shrink-0 shadow-md">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-white/10 text-white flex items-center justify-center shrink-0 border border-white/20 shadow-inner">
-                                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                            <div class="w-12 h-12 rounded-2xl bg-white/15 text-white flex items-center justify-center shrink-0 border border-white/30 shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
                             </div>
                             <div>
                                 <h3 class="text-lg font-black uppercase tracking-tight text-white">System Exception Diagnostics</h3>
-                                <p class="text-[10px] text-red-100 font-bold uppercase tracking-widest mt-0.5">Developer Runtime Exception & Recovery Portal</p>
+                                <p class="text-[11px] text-red-100 font-extrabold uppercase tracking-widest mt-0.5">Developer Runtime Exception & Recovery Portal</p>
                             </div>
                         </div>
-                        <span class="bg-white/15 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider border border-white/20 shrink-0">Dev Console</span>
+                        <span class="bg-white/20 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider border border-white/30 shrink-0">Dev Mode</span>
                     </div>
 
                     <!-- Scrollable Body -->
                     <div class="p-6 md:p-8 space-y-6 overflow-y-auto custom-scroll flex-1 bg-gray-50/50">
                         <!-- Primary Error Alert Box -->
-                        <div class="bg-red-50/80 border border-red-200/80 rounded-2xl p-5 space-y-3 shadow-sm">
+                        <div class="bg-red-50 border border-red-200 rounded-2xl p-5 space-y-3 shadow-sm">
                             <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-red-600 bg-red-100/80 px-2.5 py-1 rounded-lg border border-red-200">Exception Detail</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-red-700 bg-red-100/90 px-3 py-1 rounded-lg border border-red-200">Exception Detail</span>
                                 <span class="text-[10px] font-mono font-bold bg-white text-gray-800 px-3 py-1 rounded-lg border border-gray-200 shadow-2xs">${file}:${lineno}${colno ? ':' + colno : ''}</span>
                             </div>
                             <p class="text-sm font-black text-gray-900 leading-relaxed font-mono break-words">${errorMsg}</p>
@@ -200,34 +202,38 @@ Report Generated Automatically by Developer Crash Reporter.
                         <!-- Stack Trace Card -->
                         <div class="space-y-2">
                             <div class="flex items-center justify-between">
-                                <label class="text-[11px] text-gray-700 font-extrabold uppercase tracking-wider flex items-center gap-2">
-                                    <i data-lucide="terminal" class="w-3.5 h-3.5 text-gray-500"></i> Stack Trace Output
+                                <label class="text-[11px] text-gray-700 font-black uppercase tracking-wider flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+                                    </svg> Stack Trace Output
                                 </label>
                                 <span class="text-[9px] text-gray-400 font-bold uppercase">Mono Font Diagnostic Log</span>
                             </div>
-                            <pre class="bg-gray-950 text-emerald-400 font-mono text-[11px] p-5 rounded-2xl max-h-[160px] overflow-auto whitespace-pre-wrap select-all leading-relaxed border border-gray-800 shadow-inner custom-scroll">${stack}</pre>
+                            <pre class="bg-gray-950 text-emerald-400 font-mono text-[11px] p-5 rounded-2xl max-h-[170px] overflow-auto whitespace-pre-wrap select-all leading-relaxed border border-gray-800 shadow-inner custom-scroll">${stack}</pre>
                         </div>
 
                         <!-- Session & Environment Grid -->
                         <div class="space-y-2">
-                            <label class="text-[11px] text-gray-700 font-extrabold uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="cpu" class="w-3.5 h-3.5 text-gray-500"></i> Session & Runtime Context
+                            <label class="text-[11px] text-gray-700 font-black uppercase tracking-wider flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M12 3v1.5M15.75 3v1.5M3 8.25h18M3 12h18m-18 3.75h18M3 18.75h18" />
+                                </svg> Session & Runtime Context
                             </label>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-2xs">
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">User</span>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                    <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">User</span>
                                     <span class="text-xs font-black text-gray-900 truncate block">${currentUserName || 'Guest User'}</span>
                                 </div>
-                                <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-2xs">
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Email</span>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                    <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Email</span>
                                     <span class="text-xs font-black text-gray-900 truncate block">${currentUserEmail || 'N/A'}</span>
                                 </div>
-                                <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-2xs">
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Role</span>
-                                    <span class="text-xs font-black text-red-650 uppercase tracking-widest block">${currentUserRole || 'Guest'}</span>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                    <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Role</span>
+                                    <span class="text-xs font-black text-red-600 uppercase tracking-widest block">${currentUserRole || 'Guest'}</span>
                                 </div>
-                                <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-2xs">
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Active Branch</span>
+                                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-2xs">
+                                    <span class="text-[9px] text-gray-400 font-extrabold uppercase tracking-wider block mb-1">Active Branch</span>
                                     <span class="text-xs font-black text-gray-900 truncate block">${localStorage.getItem('selectedBranch') || 'Marikina Branch'}</span>
                                 </div>
                             </div>
@@ -240,26 +246,34 @@ Report Generated Automatically by Developer Crash Reporter.
                         </div>
                     </div>
 
-                    <!-- Footer Action Bar -->
+                    <!-- High Contrast Footer Action Bar -->
                     <div class="bg-gray-100 border-t border-gray-200 px-6 py-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
                         <div class="flex items-center gap-2">
                             <button onclick="window.downloadCrashLogFile(\`${errorMsg}\`, \`${source}\`, ${lineno}, ${colno}, \`${stack.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
-                                    class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
-                                <i data-lucide="download" class="w-4 h-4 text-gray-600"></i> Export Log
+                                    class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                                </svg> Export Log
                             </button>
                             <button onclick="window.triggerDeveloperResetSeed(this)" 
-                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/15 flex items-center gap-2 cursor-pointer">
-                                <i data-lucide="database" class="w-4 h-4"></i> Reset & Seed DB
+                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
+                                </svg> Reset & Seed DB
                             </button>
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="window.location.reload();" 
-                                    class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition shadow-md cursor-pointer flex items-center gap-2">
-                                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Reload App
+                                    class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                </svg> Reload App
                             </button>
                             <button onclick="document.getElementById('system-crash-overlay').remove();" 
-                                    class="bg-red-650 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition shadow-md shadow-red-650/15 cursor-pointer flex items-center gap-2">
-                                <i data-lucide="x" class="w-4 h-4"></i> Dismiss
+                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20 cursor-pointer flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-white">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg> Dismiss
                             </button>
                         </div>
                     </div>
