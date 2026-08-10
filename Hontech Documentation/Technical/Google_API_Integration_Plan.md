@@ -41,3 +41,10 @@ This document outlines the planned integrations for Google APIs and self-service
   - Add `/api/auth/google/config` to check if `GOOGLE_CLIENT_ID` is set.
 - **Frontend (`app.js`)**:
   - If a Client ID is configured, load the real Google Identity Services button client-side; otherwise, use the Sandbox Modal.
+
+### Phase 3: Google Drive API Automated Data Disaster Recovery
+- **Backend (`App\Services\GoogleDriveBackupService`)**:
+  - Integrate Google Drive API v3 to automate scheduled AES-256 encrypted MySQL database dumps (`hontech_db`).
+  - Add `/api/auth/developer/drive-backup` endpoint for 1-click database restoration from Google Drive.
+- **Frontend / Admin Panel**:
+  - Add a "Disaster Data Recovery" card in the System Settings allowing administrators to view, upload, and restore database checkpoints directly from Google Drive.

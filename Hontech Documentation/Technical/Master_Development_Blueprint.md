@@ -66,3 +66,23 @@ This document consolidates all previous roadmaps and outlines the strategic path
 - [ ] **Component Architecture:** Break the UI into SOLID React components (e.g., `<TVMonitor />`, `<WalkInForm />`, `<DailyIntakes />`).
 - [ ] **Global State Management:** Implement Context API or Redux for handling the `allJobs` state cleanly.
 - [ ] **SQL Migration:** Plan a transition from MongoDB to PostgreSQL for complex financial ledger transactions and inventory.
+
+---
+
+## 🔮 Phase 5: Future Client-Demand & Capstone Expansion Roadmap
+
+*Strategy: Reference this checklist whenever client demands, panel evaluations, or capstone defense requirements call for advanced features.*
+
+### 🛡️ Security, Recovery & Google API Expansions
+- [ ] **Google Drive API Automated Data Recovery**: Periodic MySQL AES-256 database dumps uploaded directly to Google Drive API v3 with a 1-click Admin Restoration Tool.
+- [ ] **Dynamic Google Identity (GIS) Live Switcher**: Check `.env` for `GOOGLE_CLIENT_ID` to dynamically toggle between real Google One-Tap SSO and the local developer sandbox.
+- [ ] **Live Gmail API / SMTP Security Dispatcher**: Connect real Gmail API OAuth2 or SMTP relay to dispatch live 6-digit OTP codes directly to user email inboxes.
+- [ ] **Google Calendar Master Sync**: Service Account integration to push confirmed repair appointments directly to customer Google Calendars.
+
+### 📱 Client-Facing & Shop Floor Features
+- [ ] **Public Customer Self-Service Tracking Portal**: Public tracking page where customers type their Claim Stub ID (`HT-MAR-2026-XXXX`) to view real-time repair progress without calling front desk.
+- [ ] **Digital Touchscreen Signature Pad**: Capture customer authorization signatures on tablets/phones during intake.
+- [ ] **Pre-Repair Vehicle Photo Attachment**: Upload pre-repair vehicle/appliance condition photos to job orders to prevent warranty disputes.
+- [ ] **Technician Bay Drag-and-Drop Kanban Board**: Visual drag-and-drop board for reassigning repair bays and service advisors.
+- [ ] **TV Audio Chime Notification**: Audible chime alert on the waiting room TV monitor when a repair job is marked `Completed / Ready for Pickup`.
+- [ ] **Automated Scheduled Weekly Email Reports**: Automated PDF executive summaries emailed to branch owners every Monday morning.
