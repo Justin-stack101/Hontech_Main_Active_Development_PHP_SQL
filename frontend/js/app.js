@@ -3239,20 +3239,64 @@ Report Generated Automatically by Developer Crash Reporter.
 
         }
 
-        function exportData(format) {
-            if (currentDashboardTab === 'analytics') {
-                if (format === 'PDF') {
-                    exportAnalyticsPDF();
-                } else if (format === 'Word') {
-                    exportAnalyticsWord();
-                }
-            } else {
-                if (format === 'PDF') {
-                    exportPDF();
-                } else if (format === 'Word') {
-                    exportWord();
+        function openReportExportModal(presetFormat) {
+            const modal = document.getElementById('report-export-modal');
+            if (!modal) return;
+
+            if (presetFormat) {
+                const formatRadio = modal.querySelector(`input[name="export-format"][value="${presetFormat}"]`);
+                if (formatRadio) formatRadio.checked = true;
+            }
+
+            const dateInput = document.getElementById('export-start-date');
+            if (dateInput) {
+                const analyticsDate = document.getElementById('analytics-date') ? document.getElementById('analytics-date').value : '';
+                dateInput.value = analyticsDate || new Date().toISOString().split('T')[0];
+            }
+
+            const branchSelect = document.getElementById('export-branch-scope');
+            if (branchSelect) {
+                if (currentUserRole === 'admin') {
+                    branchSelect.value = currentUserBranch || 'Marikina';
+                    branchSelect.disabled = true;
+                } else {
+                    branchSelect.disabled = false;
+                    const activeBranch = document.getElementById('analytics-branch') ? document.getElementById('analytics-branch').value : 'all';
+                    branchSelect.value = activeBranch;
                 }
             }
+
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeReportExportModal() {
+            const modal = document.getElementById('report-export-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function submitReportExport() {
+            const modal = document.getElementById('report-export-modal');
+            if (!modal) return;
+
+            const selectedReportType = modal.querySelector('input[name="export-report-type"]:checked')?.value || 'daily_intake';
+            const selectedFormat = modal.querySelector('input[name="export-format"]:checked')?.value || 'PDF';
+
+            closeReportExportModal();
+
+            if (selectedFormat === 'CSV') {
+                exportDataCSV(selectedReportType);
+            } else if (selectedReportType === 'monthly_sla') {
+                if (selectedFormat === 'PDF') exportAnalyticsPDF();
+                else if (selectedFormat === 'Word') exportAnalyticsWord();
+            } else {
+                if (selectedFormat === 'PDF') exportPDF();
+                else if (selectedFormat === 'Word') exportWord();
+            }
+        }
+
+        function exportData(format) {
+            openReportExportModal(format);
         }
 
         function downloadBlob(blob, filename) {
