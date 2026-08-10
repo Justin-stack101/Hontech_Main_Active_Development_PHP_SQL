@@ -30,6 +30,7 @@
         }
         let analyticsJobs = [];
         let idleLogoutTimer = null;
+        let lastUserActivityTimestamp = Date.now();
         let chartInstances = {
             volTrend: null,
             category: null,
@@ -63,8 +64,13 @@
 
                 if (!response.ok) {
                     if (response.status === 401 && !url.includes('/login') && !url.includes('/auth/me')) {
-                        console.warn("Session expired. Redirecting to login...");
-                        showSessionExpiredModal("Your session has expired. Please log in again.");
+                        const timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '15', 10);
+                        const isUserIdle = (Date.now() - lastUserActivityTimestamp) >= (timeoutMinutes * 60 * 1000);
+
+                        console.warn("Session 401 received. User idle status:", isUserIdle);
+                        if (isUserIdle) {
+                            showSessionExpiredModal(`You have been logged out after ${timeoutMinutes} minutes of inactivity.`);
+                        }
                         if (typeof handleLogout === 'function') {
                             handleLogout();
                         } else {
@@ -705,18 +711,19 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             if (!currentUserRole) return; // Only run if user is logged in
             
-            const timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '30', 10);
+            const timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '15', 10);
             if (timeoutMinutes === 0) return; // Disabled
 
             idleLogoutTimer = setTimeout(() => {
                 handleLogout();
-                showSessionExpiredModal("You have been logged out due to inactivity.");
+                showSessionExpiredModal(`You have been logged out after ${timeoutMinutes} minutes of inactivity.`);
             }, timeoutMinutes * 60 * 1000);
         }
 
         const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
         activityEvents.forEach(evt => {
             window.addEventListener(evt, () => {
+                lastUserActivityTimestamp = Date.now();
                 resetIdleTimer();
             });
         });
