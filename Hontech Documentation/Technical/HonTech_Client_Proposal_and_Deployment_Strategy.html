@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech Operations System — Client Proposal & Deployment Strategy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #d97706;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg-light: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            background-color: #f3f4f6;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Page Layout & Print Simulation */
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm 20mm 20mm 20mm;
+            margin: 20px auto;
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .page-header {
+            font-size: 8.5pt;
+            color: #6b7280;
+            border-b: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .page-footer {
+            font-size: 8.5pt;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 8px;
+            margin-top: 32px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-body {
+            flex: 1;
+        }
+
+        /* Title Page Layout */
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 250mm;
+        }
+
+        .sub-header-gold {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 11pt;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .main-title {
+            color: var(--primary);
+            font-size: 32pt;
+            font-weight: 900;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .main-subtitle {
+            color: #475569;
+            font-size: 14pt;
+            font-style: italic;
+            font-weight: 500;
+            margin-bottom: 60px;
+        }
+
+        .divider-line {
+            width: 100%;
+            height: 1.5px;
+            background: #cbd5e1;
+            margin: 40px 0;
+        }
+
+        .meta-block {
+            font-size: 10.5pt;
+            color: var(--text-main);
+            margin-bottom: 28px;
+        }
+
+        .meta-label {
+            font-size: 9pt;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .meta-title {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 11pt;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .team-member {
+            margin-bottom: 8px;
+        }
+
+        .team-name {
+            font-weight: 800;
+            font-size: 10.5pt;
+        }
+
+        .team-role {
+            font-weight: 700;
+            color: var(--primary-light);
+            font-size: 9.5pt;
+        }
+
+        /* Typography & Section Styles */
+        h2.section-title {
+            color: var(--primary);
+            font-size: 15pt;
+            font-weight: 800;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+
+        h3.subsection-title {
+            color: #1e293b;
+            font-size: 11.5pt;
+            font-weight: 800;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: 9.8pt;
+            color: #334155;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        li {
+            font-size: 9.5pt;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        li strong {
+            color: var(--primary);
+        }
+
+        /* Tables */
+        table.custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 9pt;
+        }
+
+        table.custom-table th {
+            background-color: var(--primary);
+            color: #ffffff;
+            font-weight: 700;
+            text-align: left;
+            padding: 10px 12px;
+            text-transform: uppercase;
+            font-size: 8.5pt;
+            letter-spacing: 0.5px;
+        }
+
+        table.custom-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: #334155;
+            vertical-align: top;
+        }
+
+        table.custom-table tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        .highlight-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary-light);
+            padding: 12px 16px;
+            margin: 14px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 9.5pt;
+            color: #1e3a8a;
+            font-weight: 500;
+        }
+
+        .signature-section {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .signature-block {
+            flex: 1;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 8px;
+            height: 40px;
+        }
+
+        .signature-label {
+            font-size: 9pt;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Print Page Break Controls */
+        @media print {
+            body {
+                background: none;
+            }
+
+            .page-container {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 15mm 15mm 15mm 15mm;
+                box-shadow: none;
+                page-break-after: always;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 11pt;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(30, 58, 138, 0.4);
+            transition: all 0.2s ease;
+            z-index: 9999;
+        }
+
+        .print-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF / Print</button>
+
+    <!-- PAGE 1: COVER PAGE -->
+    <div class="page-container">
+        <div class="content-body title-page">
+            <div class="sub-header-gold">HONTECH AUTOCENTER</div>
+            <h1 class="main-title">HonTech Operations System</h1>
+            <div class="main-subtitle">Client Proposal & Deployment Strategy</div>
+
+            <div class="divider-line"></div>
+
+            <div class="meta-block">
+                <div class="meta-label">Prepared for</div>
+                <div class="meta-title">HonTech AutoCenter — Management & Ownership</div>
+            </div>
+
+            <div class="meta-block" style="margin-top: 20px;">
+                <div class="meta-label">Prepared by</div>
+                <div class="meta-title" style="margin-bottom: 12px;">HonTech Systems Development Team:</div>
+                
+                <div class="team-member">
+                    <div class="team-name">Justin Nolasco J.</div>
+                    <div class="team-role">(Developer)</div>
+                </div>
+                <div class="team-member">
+                    <div class="team-name">Mary Dayne Villas T.</div>
+                    <div class="team-role">(Designer)</div>
+                </div>
+                <div class="team-member">
+                    <div class="team-name">Catherine Ramos G.</div>
+                    <div class="team-role">(Documentation)</div>
+                </div>
+            </div>
+
+            <div class="meta-block" style="margin-top: 30px;">
+                <div class="team-name">Mr. Ar-Jay C. Agbayani</div>
+                <div class="team-role" style="color: var(--text-muted);">Capstone Project Adviser</div>
+            </div>
+
+            <div style="margin-top: 40px; font-size: 9.5pt; font-weight: 600; color: #64748b;">
+                July 9, 2026
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: TABLE OF CONTENTS -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body">
+            <h2 class="section-title" style="margin-top: 20px; margin-bottom: 24px;">Table of Contents</h2>
+            
+            <table class="custom-table" style="font-size: 10.5pt;">
+                <tbody>
+                    <tr>
+                        <td style="font-weight: 700; width: 85%;">1. Executive Summary</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">2. Architecture Strategy & Local Domain Addressing (http://hontech.ph)</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">3. Hardware Requirements</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">4. Financial Analysis: Local vs. Cloud</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">4</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">5. Investment & Support Structure</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">6. Security, Data Privacy & Maintenance</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">7. Deployment Roadmap</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">8. Project Deliverables</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">6</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: 700;">9. Next Steps & Client Requirements</td>
+                        <td style="text-align: right; font-weight: 800; color: var(--primary);">6</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 2 of 7</span>
+        </div>
+    </div>
+
+    <!-- PAGE 3: EXECUTIVE SUMMARY & ARCHITECTURE STRATEGY -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body">
+            <h2 class="section-title">1. Executive Summary</h2>
+            <p>Running a busy auto center depends on speed and clear communication. Today, HonTech AutoCenter relies on paper claim stubs and verbal updates between the front desk, the service bays, and waiting customers. This creates avoidable bottlenecks: the front desk cannot see what mechanics are doing in real time, mechanics wait on approvals that get lost in the shuffle, and customers in the lounge are left guessing about the status of their vehicle.</p>
+            
+            <p>This proposal introduces the <strong>HonTech Operations System</strong>, a fully digital, real-time management dashboard that connects the front desk, service bays, and customer lounge on one shared platform—with no one needing to leave their station to stay informed.</p>
+
+            <h3 class="subsection-title" style="color: var(--accent);">Why This Matters to HonTech</h3>
+            <ul>
+                <li><strong>Speed & Organization</strong> — staff always know exactly which vehicles are on which lifts and what stage each job is in.</li>
+                <li><strong>Customer Trust</strong> — a live status monitor in the lounge keeps customers calm, informed, and confident in the shop.</li>
+                <li><strong>Cost Efficiency</strong> — the system is built to run on a local network, eliminating recurring monthly cloud hosting fees.</li>
+                <li><strong>Absolute Privacy</strong> — customer and vehicle data stay physically inside the HonTech building at all times.</li>
+            </ul>
+
+            <p>The remainder of this document walks through the recommended architecture, local domain network configuration, hardware requirements, full cost comparison, investment structure, security posture, and the step-by-step rollout plan that will bring this system to life on the shop floor.</p>
+
+            <h2 class="section-title" style="margin-top: 24px;">2. Architecture Strategy & Local Domain Addressing</h2>
+            <p>We recommend deploying the HonTech Operations System on a local intranet server rather than a cloud-hosting platform. This decision is grounded in three priorities that matter most to a shop like HonTech: eliminating recurring costs, minimizing the technical knowledge required to keep the system running day to day, and guaranteeing that sensitive customer data never leaves the premises.</p>
+
+            <h3 class="subsection-title">2.1 Local Wi-Fi Domain Name Resolution (http://hontech.ph)</h3>
+            <p>To ensure maximum convenience for staff and waiting room display monitors, access to the server does <strong>not</strong> require memorizing numerical IP addresses (such as <code>192.168.1.105</code>). Instead, we configure a <strong>Clean Local Domain Name</strong> (e.g., <code>http://hontech.ph</code> or <code>http://hontech.local</code>) directly on the shop's local Wi-Fi router network.</p>
+
+            <div class="highlight-box">
+                <p>💡 <strong>Client & Adviser Technical Advantage:</strong> This local domain setup operates for <strong>₱0 monthly fees</strong>, requires <strong>zero internet registration paperwork</strong>, and remains <strong>100% operational offline</strong> even if external internet service goes down.</p>
+            </div>
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Priority</th>
+                        <th>How Local Deployment & Local Domain Delivers It</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lower Cost</strong></td>
+                        <td>No monthly hosting or domain fees — a clean local address (<code>http://hontech.ph</code>) replaces years of recurring bills.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simplicity</strong></td>
+                        <td>Managed entirely through a familiar Windows interface — staff type <code>http://hontech.ph</code> into any tablet or TV browser.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Privacy</strong></td>
+                        <td>All records stay on-site on the shop's own server, never transmitted to a third-party data center.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title" style="margin-top: 20px;">3. Hardware Requirements</h2>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 3 of 7</span>
+        </div>
+    </div>
+
+    <!-- PAGE 4: HARDWARE & FINANCIAL ANALYSIS -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body">
+            <p>To run the local server architecture, HonTech will need to prepare the following on-site hardware.</p>
+
+            <h3 class="subsection-title">3.1 Primary Application Server (Local XAMPP Server)</h3>
+            <p>This machine is the brain of the operation and should remain powered on during all business hours.</p>
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Specification</th>
+                        <th>Requirement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Form Factor</strong></td>
+                        <td>Desktop PC or Mini-PC (avoid laptops — 24/7 plug-in use risks battery swelling)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operating System</strong></td>
+                        <td>Windows 10 or 11 (64-bit)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Processor</strong></td>
+                        <td>Intel Core i3 (10th Gen+) or AMD Ryzen 3</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memory (RAM)</strong></td>
+                        <td>8GB DDR4 minimum, 16GB recommended</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Storage</strong></td>
+                        <td>256GB SSD required for fast database read/write speeds</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Networking</strong></td>
+                        <td>Wired RJ45 Ethernet connection to the shop router (Wi-Fi not recommended for the server)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="font-size: 8.5pt; font-style: italic; color: #64748b;">Budget note: a new machine meeting these specs runs approximately ₱16,500–₱22,000. If HonTech has a spare desktop on hand, it can be wiped and repurposed to reduce this cost to ₱0.</p>
+
+            <h3 class="subsection-title">3.2 Staff Terminals (Front Desk & Service Advisors)</h3>
+            <ul>
+                <li>Standard PCs, budget laptops, or tablets (e.g., iPads)</li>
+                <li>Any device capable of running a modern web browser — Chrome, Edge, or Safari</li>
+            </ul>
+
+            <h3 class="subsection-title">3.3 Waiting Lounge Broadcast Monitor</h3>
+            <ul>
+                <li>40-inch or larger Smart TV</li>
+                <li>Built-in web browser, or a streaming stick (Chromecast / Fire Stick) to display the live dashboard</li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 24px;">4. Financial Analysis: Local vs. Cloud</h2>
+            <p>Choosing a local server shifts the cost structure from a recurring monthly expense to a single upfront asset purchase — with substantial savings over time.</p>
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Expense Category</th>
+                        <th>Cloud Deployment (AWS / DigitalOcean)</th>
+                        <th>Local Intranet Server (XAMPP + Local Domain)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Server Hardware</strong></td>
+                        <td>₱0 (rented off-site)</td>
+                        <td>₱16,500 – ₱22,000 (one-time)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monthly Hosting Fee</strong></td>
+                        <td>₱1,300 – ₱2,700 / month</td>
+                        <td><strong>₱0 / month</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Domain Name Fee</strong></td>
+                        <td>₱800 / year (hontech.com)</td>
+                        <td><strong>₱0 / year (Clean Local Address: http://hontech.ph)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Database Storage Limits</strong></td>
+                        <td>Pay-per-GB, scaled pricing</td>
+                        <td>Unlimited (up to 256GB local SSD)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Internet Bandwidth Costs</strong></td>
+                        <td>Subject to provider fees</td>
+                        <td><strong>₱0 (runs on local shop network)</strong></td>
+                    </tr>
+                    <tr style="background-color: #f1f5f9; font-weight: 800;">
+                        <td><strong>5-Year Total Estimate</strong></td>
+                        <td>₱80,000 – ₱165,000+</td>
+                        <td style="color: var(--primary);">≈ ₱22,000 total</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <p>💰 <strong>Bottom line:</strong> Over a five-year horizon, the local deployment saves HonTech an estimated <strong>₱58,000 to ₱143,000</strong> compared to an equivalent cloud-hosted solution.</p>
+            </div>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 4 of 7</span>
+        </div>
+    </div>
+
+    <!-- PAGE 5: INVESTMENT, SECURITY & ROADMAP -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body">
+            <h2 class="section-title">5. Investment & Support Structure</h2>
+            
+            <h3 class="subsection-title">5.1 System Development (One-Time Cost)</h3>
+            <p>To keep the transition manageable, the software development fee is divided into two milestones:</p>
+            <ul>
+                <li><strong>Project Initiation (30%):</strong> an initial deposit to begin hardware preparation and setup work.</li>
+                <li><strong>Final Turnover (70%):</strong> the remaining balance, due only once the client is fully satisfied with the Dry Run and the system is actively supporting shop operations.</li>
+            </ul>
+
+            <h3 class="subsection-title">5.2 Complimentary Support & Future Maintenance</h3>
+            <ul>
+                <li><strong>1–2 Months Free Maintenance (tentative):</strong> as the system is newly deployed, the first 1–2 months after launch include free maintenance and bug fixes while staff adjust to the new workflow.</li>
+                <li><strong>Ongoing IT Retainer (optional):</strong> after the free period, HonTech may opt into a maintenance contract covering routine database backups, password resets, and disaster recovery. Even with a modest retainer, total savings versus cloud hosting still exceed ₱165,000 over five years.</li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 24px;">6. Security, Data Privacy & Maintenance</h2>
+            <p>Running on a local XAMPP server rather than the cloud brings meaningful security and operational advantages:</p>
+            <ul>
+                <li><strong>Physical Security</strong> — the customer database (names, phone numbers, vehicle records) never leaves the HonTech building.</li>
+                <li><strong>Air-Gapped Isolation</strong> — the server is not exposed to the public internet, so it cannot be breached remotely by internet scanners.</li>
+                <li><strong>Data Sovereignty</strong> — HonTech owns 100% of its data, with no reliance on third-party cloud providers.</li>
+                <li><strong>Local Subnet Domain Security</strong> — <code>http://hontech.ph</code> resolves strictly within shop router boundary, keeping internal shop operations invisible to external networks.</li>
+                <li><strong>Zero Command-Line Administration</strong> — the system is fully managed through a standard Windows interface—no Linux knowledge required.</li>
+                <li><strong>One-Click Boot</strong> — starting the server is as simple as powering it on and opening the XAMPP Control Panel.</li>
+                <li><strong>No Cloud Outages</strong> — the system stays fully operational even if the shop's external internet connection goes down.</li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 24px;">7. Deployment Roadmap</h2>
+            <p><strong>Phase 1 — Procurement & Setup</strong></p>
+            <ul>
+                <li>Procure a server PC, or repurpose a spare unit; assess the lounge TV setup.</li>
+                <li>Physically install and wire the server PC to the local router.</li>
+            </ul>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 5 of 7</span>
+        </div>
+    </div>
+
+    <!-- PAGE 6: DELIVERABLES & NEXT STEPS -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body">
+            <ul>
+                <li>Install XAMPP, migrate the HonTech database, and test terminal connections for fast load times. Configure local router domain entry (<code>http://hontech.ph</code>).</li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>Phase 2 — On-Site Client Testing ("Dry Run")</strong></p>
+            <ul>
+                <li>Staff continue using paper stubs for safety while also entering data into the new digital system.</li>
+                <li>Goal: let staff stress-test the software and get comfortable with the workflow without risking live operations.</li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>Phase 3 — Staff Training & Go-Live Cutover</strong></p>
+            <ul>
+                <li>Conduct final training sessions informed by Dry Run feedback.</li>
+                <li>Officially retire paper stubs — from this point forward, all intake and status tracking is fully digital.</li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>Phase 4 — Post-Launch Observation (Free Maintenance Period)</strong></p>
+            <ul>
+                <li>Developer closely monitors the system for 1–2 months to ensure stability, resolve bugs, and support staff adoption.</li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 24px;">8. Project Deliverables</h2>
+            <p>Upon final payment and official Go-Live cutover, HonTech will receive the following, ensuring full ownership and understanding of the system:</p>
+            <ul>
+                <li><strong>User Manuals</strong> — step-by-step PDF guides with screenshots for front desk and service advisor staff.</li>
+                <li><strong>Administrator & Security Guide</strong> — instructions for the owner on password resets, analytics, and managing employee access.</li>
+                <li><strong>Emergency Protocol Document</strong> — clear steps for server crashes, power outages, or internet loss, including temporary fallback to paper stubs.</li>
+                <li><strong>Source Code License / Contract</strong> — the legal document defining code ownership and terms of use.</li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 24px;">9. Next Steps & Client Requirements</h2>
+            <p>The following action items will conclude the proposal meeting and set the project in motion:</p>
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">#</th>
+                        <th style="width: 35%;">Action Item</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td><strong>Approval & Sign-Off</strong></td>
+                        <td>Client agrees to the hardware list, local domain configuration (<code>http://hontech.ph</code>), and payment structure.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><strong>Hardware Procurement</strong></td>
+                        <td>Client purchases the required lounge TV and server PC (or identifies spare shop desktop).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><strong>Payment</strong></td>
+                        <td>Collection of the Milestone 1 deposit.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td><strong>Schedule the Dry Run</strong></td>
+                        <td>Select a slow day (e.g., a Tuesday) to begin Phase 2 testing.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 6 of 7</span>
+        </div>
+    </div>
+
+    <!-- PAGE 7: APPROVAL SIGNATURES -->
+    <div class="page-container">
+        <div class="page-header">
+            <span>HonTech Operations System — Client Proposal</span>
+            <span>HonTech AutoCenter</span>
+        </div>
+        <div class="content-body" style="display: flex; flex-direction: column; justify-content: space-between; height: 220mm;">
+            <div>
+                <h2 class="section-title" style="margin-top: 20px;">Approval</h2>
+                <p style="margin-top: 20px;">By signing below, HonTech AutoCenter management approves the operational scope, local intranet architecture, <code>http://hontech.ph</code> local domain setup, and project milestones outlined in this proposal.</p>
+            </div>
+
+            <div class="signature-section" style="margin-bottom: 120px;">
+                <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Client Signature — HonTech AutoCenter</div>
+                </div>
+                <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Date</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="divider-line" style="margin: 20px 0;"></div>
+                <div style="font-size: 8.5pt; color: #94a3b8; text-align: center;">
+                    HonTech AutoCenter Operations System — Prepared by Justin Nolasco J., Mary Dayne Villas T., Catherine Ramos G. | Adviser: Mr. Ar-Jay C. Agbayani
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">
+            <span>HonTech Systems Development Team</span>
+            <span>Page 7 of 7</span>
+        </div>
+    </div>
+
+</body>
+</html>
