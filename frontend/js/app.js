@@ -239,6 +239,29 @@ Report Generated Automatically by Developer Crash Reporter.
                             </div>
                         </div>
 
+                        <!-- Development Team Technical Support Card -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
+                            <div class="flex items-center gap-3 text-left w-full sm:w-auto">
+                                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-black text-gray-900 uppercase tracking-wide">Hontech Development & Support Team</h4>
+                                    <p class="text-[10px] text-blue-700 font-bold uppercase tracking-wider mt-0.5">Need help? Contact lead developer support hotline</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+                                <a href="mailto:support@hontech.com?subject=Hontech%20System%20Exception%20Report" 
+                                   class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition shadow-xs flex items-center gap-1.5 no-underline cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                                    </svg> Contact Dev Team
+                                </a>
+                            </div>
+                        </div>
+
                         <!-- Developer Reset Log Output -->
                         <div id="dev-reset-log-container" class="hidden border border-emerald-200 rounded-2xl overflow-hidden bg-emerald-50/40 p-4 space-y-2">
                             <label class="block text-[10px] text-emerald-800 font-black uppercase tracking-wider">Database Seeder Feedback</label>
