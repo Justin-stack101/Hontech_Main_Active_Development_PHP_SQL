@@ -3,6 +3,7 @@
         let currentUserRole = '';
         let currentUserName = '';
         let currentUserEmail = '';
+        let currentUserBranch = 'Branch A';
         let bays = [null, null, null, null];
 
         let tvSlideIndex = 0;
@@ -278,6 +279,12 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                                 </svg> Export Log
                             </button>
+                            <button onclick="window.copyStackToClipboard(\`${stack.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
+                                    class="bg-white hover:bg-gray-50 border border-gray-200 text-blue-700 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-blue-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5" />
+                                </svg> Copy Trace
+                            </button>
                             <button onclick="window.triggerDeveloperResetSeed(this)" 
                                     class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white">
@@ -305,6 +312,18 @@ Report Generated Automatically by Developer Crash Reporter.
             document.body.appendChild(overlay);
             if (window.lucide) window.lucide.createIcons();
         }
+
+        window.copyStackToClipboard = function(stackText) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(stackText).then(() => {
+                    if (typeof showSystemToast === 'function') showSystemToast('Stack trace copied to clipboard!', 'success', 'Diagnostic Copy');
+                }).catch(() => {
+                    prompt('Copy stack trace below:', stackText);
+                });
+            } else {
+                prompt('Copy stack trace below:', stackText);
+            }
+        };
 
         window.triggerTestCrash = function() {
             try {
@@ -3329,7 +3348,7 @@ Report Generated Automatically by Developer Crash Reporter.
             const branchSelect = document.getElementById('export-branch-scope');
             if (branchSelect) {
                 if (currentUserRole === 'admin') {
-                    branchSelect.value = currentUserBranch || 'Marikina';
+                    branchSelect.value = (typeof currentUserBranch !== 'undefined' && currentUserBranch) ? currentUserBranch : (localStorage.getItem('selectedBranch') || 'Branch A');
                     branchSelect.disabled = true;
                 } else {
                     branchSelect.disabled = false;
