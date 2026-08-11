@@ -52,69 +52,92 @@ foreach ($defaultUsers as $u) {
 // =============================================
 // SEED JOBS
 // =============================================
-$stmt = $db->query('SELECT COUNT(*) as cnt FROM jobs');
-$jobCount = (int)$stmt->fetch()['cnt'];
+echo "\nSeeding active and historical jobs with current relative dates...\n";
+$db->exec('SET FOREIGN_KEY_CHECKS = 0;');
+$db->exec('TRUNCATE TABLE jobs;');
+$db->exec('SET FOREIGN_KEY_CHECKS = 1;');
 
-if ($jobCount <= 3) {
-    echo "\nSeeding initial placeholder and historical jobs...\n";
+$today = date('Y-m-d');
 
-    // Clear existing small seeds
-    $db->exec('DELETE FROM jobs');
+$getRelativeDate = function(int $offsetDays): string {
+    return date('Y-m-d', strtotime("-{$offsetDays} days"));
+};
 
-    $today = date('Y-m-d');
+// Build date-relative claim stubs
+$todayCompact = substr(str_replace('-', '', $today), 4); // MMDDYY from YYYYMMDD
 
-    $getRelativeDate = function(int $offsetDays): string {
-        return date('Y-m-d', strtotime("-{$offsetDays} days"));
-    };
+$defaultJobs = [
+    // BRANCH A — TODAY (Active & Completed)
+    [
+        'job_id' => 'ONL-1001', 'source' => 'Online', 'plate' => 'XYZ 123', 'name' => 'Alice Smith',
+        'contact' => '0912-345-6789', 'category' => 'PMS', 'vehicle' => 'Toyota Vios',
+        'concern' => 'Change Oil and Filter', 'date_received' => $today,
+        'appt_date' => $today, 'appt_time' => '08:00', 'confirmed' => 1,
+        'status' => 'Pending', 'parts_available' => 'Yes', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2002', 'source' => 'Walk-in', 'plate' => 'ABC 987', 'name' => 'Bob Jones',
+        'contact' => '0912-000-1111', 'category' => 'GR', 'vehicle' => 'Honda Civic',
+        'concern' => 'Brakes squeaking, check pads', 'date_received' => $today,
+        'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
+        'parts_available' => 'Pending', 'evaluation' => 'Checking pads',
+        'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 1,
+        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
+        'contact' => '0912-555-5555', 'category' => 'Check-Up', 'vehicle' => 'Nissan Navara',
+        'concern' => 'Scratch on front bumper & alignment', 'date_received' => $today,
+        'claim_stub' => "{$todayCompact}-002",
+        'parts_available' => 'Pending', 'evaluation' => 'Awaiting Paint',
+        'status' => 'Carry Over', 'promised_date' => $today,
+        'remarks' => 'Paint curing delay', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2004', 'source' => 'Walk-in', 'plate' => 'AAA 1111', 'name' => 'Dave Smith',
+        'contact' => '0917-111-2222', 'category' => 'PMS', 'vehicle' => 'Toyota Fortuner',
+        'concern' => '40k KM PMS checkup', 'date_received' => $today,
+        'arrival' => '08:30', 'departure' => '10:30',
+        'claim_stub' => "{$todayCompact}-003",
+        'status' => 'Completed', 'date_completed' => $today,
+        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'ONL-1005', 'source' => 'Online', 'plate' => 'BBB 2222', 'name' => 'Elena Rostova',
+        'contact' => '0918-333-4444', 'category' => 'GR', 'vehicle' => 'Hyundai Accent',
+        'concern' => 'Alternator replacement', 'date_received' => $today,
+        'arrival' => '10:00', 'departure' => '12:15',
+        'claim_stub' => "{$todayCompact}-004",
+        'status' => 'Completed', 'date_completed' => $today,
+        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
 
-    // Build date-relative claim stubs
-    $todayCompact = substr(str_replace('-', '', $today), 4); // MMDDYY from YYYYMMDD
-
-    $defaultJobs = [
-        // TODAY (Active & Completed)
-        [
-            'job_id' => 'ONL-1001', 'source' => 'Online', 'plate' => 'XYZ 123', 'name' => 'Alice Smith',
-            'contact' => '0912-345-6789', 'category' => 'PMS', 'vehicle' => 'Toyota Vios',
-            'concern' => 'Change Oil and Filter', 'date_received' => $today,
-            'appt_date' => $today, 'appt_time' => '08:00', 'confirmed' => 1,
-            'status' => 'Pending', 'parts_available' => 'Yes'
-        ],
-        [
-            'job_id' => 'WLK-2002', 'source' => 'Walk-in', 'plate' => 'ABC 987', 'name' => 'Bob Jones',
-            'contact' => '0912-000-1111', 'category' => 'GR', 'vehicle' => 'Honda Civic',
-            'concern' => 'Brakes squeaking, check pads', 'date_received' => $today,
-            'arrival' => '09:00', 'claim_stub' => "{$todayCompact}060626-001",
-            'parts_available' => 'Pending', 'evaluation' => 'Checking pads',
-            'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 0,
-            'sa_name' => 'Mark (Advisor)'
-        ],
-        [
-            'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
-            'contact' => '0912-555-5555', 'category' => 'Check-Up', 'vehicle' => 'Nissan City',
-            'concern' => 'Scratch on front bumper', 'date_received' => $today,
-            'claim_stub' => "{$todayCompact}060626-002",
-            'parts_available' => 'Pending', 'evaluation' => 'Awaiting Paint',
-            'status' => 'Carry Over', 'promised_date' => $today,
-            'remarks' => 'Paint curing delay', 'sa_name' => 'Mark (Advisor)'
-        ],
-        [
-            'job_id' => 'WLK-2004', 'source' => 'Walk-in', 'plate' => 'AAA 1111', 'name' => 'Dave Smith',
-            'category' => 'PMS', 'vehicle' => 'Toyota Fortuner',
-            'concern' => '40k KM PMS checkup', 'date_received' => $today,
-            'arrival' => '08:30', 'departure' => '10:30',
-            'claim_stub' => "{$todayCompact}060626-003",
-            'status' => 'Completed', 'date_completed' => $today,
-            'sa_name' => 'Mark (Advisor)'
-        ],
-        [
-            'job_id' => 'ONL-1005', 'source' => 'Online', 'plate' => 'BBB 2222', 'name' => 'Elena Rostova',
-            'category' => 'GR', 'vehicle' => 'Hyundai Accent',
-            'concern' => 'Alternator replacement', 'date_received' => $today,
-            'arrival' => '10:00', 'departure' => '12:15',
-            'claim_stub' => "{$todayCompact}060626-004",
-            'status' => 'Completed', 'date_completed' => $today,
-            'sa_name' => 'Mark (Advisor)'
-        ],
+    // BRANCH B — TODAY (Active & Completed)
+    [
+        'job_id' => 'WLK-3001', 'source' => 'Walk-in', 'plate' => 'EAS 101', 'name' => 'Michael Chang',
+        'contact' => '0919-888-9999', 'category' => 'GR', 'vehicle' => 'Mitsubishi Montero',
+        'concern' => 'Transmission fluid leak check', 'date_received' => $today,
+        'arrival' => '08:45', 'claim_stub' => "EAST-{$todayCompact}-001",
+        'parts_available' => 'Yes', 'evaluation' => 'Replacing seal',
+        'status' => 'In Progress', 'location' => 'Bay 1', 'bay_assigned' => 1,
+        'sa_name' => 'Dave (Advisor B)', 'branch' => 'Branch B'
+    ],
+    [
+        'job_id' => 'ONL-3002', 'source' => 'Online', 'plate' => 'EAS 202', 'name' => 'Sophia Loren',
+        'contact' => '0920-555-7777', 'category' => 'Check-Up', 'vehicle' => 'Ford Ranger',
+        'concern' => 'Aircon cleaning & freon recharge', 'date_received' => $today,
+        'appt_date' => $today, 'appt_time' => '10:30', 'confirmed' => 1,
+        'status' => 'Pending', 'parts_available' => 'Yes', 'branch' => 'Branch B'
+    ],
+    [
+        'job_id' => 'WLK-3003', 'source' => 'Walk-in', 'plate' => 'EAS 303', 'name' => 'Robert De Niro',
+        'contact' => '0921-444-3333', 'category' => 'PMS', 'vehicle' => 'Suzuki Swift',
+        'concern' => '10k KM PMS Service', 'date_received' => $today,
+        'arrival' => '09:15', 'departure' => '11:00',
+        'claim_stub' => "EAST-{$todayCompact}-002",
+        'status' => 'Completed', 'date_completed' => $today,
+        'sa_name' => 'Dave (Advisor B)', 'branch' => 'Branch B'
+    ],
 
         // YESTERDAY
         [
@@ -236,8 +259,5 @@ if ($jobCount <= 3) {
     }
 
     echo "\nAll seed jobs inserted successfully!\n";
-} else {
-    echo "\nJobs table already has {$jobCount} records — skipping job seeding.\n";
-}
 
 echo "\n=== Seeding Complete ===\n";
