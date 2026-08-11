@@ -131,11 +131,14 @@ Error Message: ${errorMsg}
 Location: ${source} (Line: ${lineno}, Col: ${colno})
 
 User Environment Diagnostics:
-- User Name: ${currentUserName || 'Not Logged In'}
+- User Name: ${currentUserName || 'Guest User'}
 - User Email: ${currentUserEmail || 'N/A'}
 - User Role: ${currentUserRole || 'Guest / Guest Session'}
 - Active Branch: ${localStorage.getItem('selectedBranch') || 'Branch A'}
 - URL Path: ${window.location.href}
+- Browser / UserAgent: ${navigator.userAgent}
+- Viewport Size: ${window.innerWidth}x${window.innerHeight} px
+- Root Cause Category: ${errorMsg.includes('ReferenceError') ? 'Scope / Global Variable Reference Error' : (errorMsg.includes('TypeError') ? 'Type Mismatch / Method Invocation Error' : 'Unhandled Runtime Exception')}
 - Local Storage State: ${JSON.stringify(localStorage)}
 
 ==================================================

@@ -24,3 +24,11 @@ Troubleshoot systematically instead of guessing. Project-specific gotchas (which
 - Use the browser's element inspector to see which classes actually applied, not just which ones you wrote.
 - If a class-merging utility exists in the project, dynamic classes failing to apply is often a sign the utility wasn't used -- check for direct string concatenation instead.
 - Verify dark-mode classes are explicitly defined where needed.
+
+---
+
+# 4. Global Scope & Reference Error Safeguards
+
+- When referencing global session variables (e.g. `currentUserBranch`, `currentUserRole`), always verify they are declared at top-level scope in `app.js`.
+- Use defensive fallback checks (`typeof var !== 'undefined' ? var : fallback`) or `localStorage` fallbacks to prevent `Uncaught ReferenceError` crashes during UI modal interactions.
+- Utilize the **Developer Crash Reporter Log** (`hontech_crash_*.txt`) to extract exact file paths, line numbers, browser UserAgent, and User Environment diagnostics.
