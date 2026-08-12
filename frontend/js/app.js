@@ -122,13 +122,20 @@
         };
 
         window.downloadCrashLogFile = function(errorMsg, source, lineno, colno, stack) {
+            const data = window.currentCrashLogData || {};
+            const eMsg = errorMsg || data.errorMsg || 'Unknown System Error';
+            const src = source || data.source || 'unknown_file.js';
+            const lNo = lineno || data.lineno || 0;
+            const cNo = colno || data.colno || 0;
+            const stk = stack || data.stack || 'No stack trace available.';
+
             const time = new Date().toISOString();
             const logContent = `==================================================
 HONTECH SYSTEM EXCEPTION DIAGNOSTICS REPORT
 ==================================================
 Timestamp: ${time}
-Error Message: ${errorMsg}
-Location: ${source} (Line: ${lineno}, Col: ${colno})
+Error Message: ${eMsg}
+Location: ${src} (Line: ${lNo}, Col: ${cNo})
 
 User Environment Diagnostics:
 - User Name: ${currentUserName || 'Guest User'}
@@ -138,17 +145,17 @@ User Environment Diagnostics:
 - URL Path: ${window.location.href}
 - Browser / UserAgent: ${navigator.userAgent}
 - Viewport Size: ${window.innerWidth}x${window.innerHeight} px
-- Root Cause Category: ${errorMsg.includes('ReferenceError') ? 'Scope / Global Variable Reference Error' : (errorMsg.includes('TypeError') ? 'Type Mismatch / Method Invocation Error' : 'Unhandled Runtime Exception')}
+- Root Cause Category: ${eMsg.includes('ReferenceError') ? 'Scope / Global Variable Reference Error' : (eMsg.includes('TypeError') ? 'Type Mismatch / Method Invocation Error' : 'Unhandled Runtime Exception')}
 - Local Storage State: ${JSON.stringify(localStorage)}
 
 ==================================================
 STACK TRACE:
 ==================================================
-${stack}
+${stk}
 ==================================================
 Report Generated Automatically by Developer Crash Reporter.
 `;
-            const blob = new Blob([logContent], { type: 'text/plain' });
+            const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
@@ -160,7 +167,48 @@ Report Generated Automatically by Developer Crash Reporter.
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
             }, 100);
-            showSystemToast('Diagnostic log file downloaded.', 'success');
+            if (typeof showSystemToast === 'function') {
+                showSystemToast('Diagnostic log file downloaded.', 'success');
+            }
+        };
+
+        window.copyStackToClipboard = function(stackText) {
+            const stk = stackText || (window.currentCrashLogData ? window.currentCrashLogData.stack : '') || 'No stack trace available.';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(stk).then(() => {
+                    if (typeof showSystemToast === 'function') showSystemToast('Stack trace copied to clipboard!', 'success', 'Diagnostic Copy');
+                }).catch(() => {
+                    prompt('Copy stack trace below:', stk);
+                });
+            } else {
+                prompt('Copy stack trace below:', stk);
+            }
+        };
+
+        window.triggerDeveloperResetSeed = async function(btnEl) {
+            if (btnEl) {
+                btnEl.disabled = true;
+                btnEl.innerHTML = `<svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Seeding DB...`;
+            }
+            const logContainer = document.getElementById('dev-reset-log-container');
+            const logEl = document.getElementById('dev-reset-log');
+            if (logContainer) logContainer.classList.remove('hidden');
+            if (logEl) logEl.innerText = 'Connecting to /api/auth/developer/reset-seed...';
+
+            try {
+                const res = await apiRequest('/api/auth/developer/reset-seed', { method: 'POST' });
+                if (logEl) logEl.innerText = res.output || res.message || 'Database reset & seed complete!';
+                if (typeof showSystemToast === 'function') showSystemToast(res.message || 'Database successfully re-seeded!', 'success', 'Developer Reset');
+                if (typeof loadData === 'function') await loadData();
+            } catch (err) {
+                if (logEl) logEl.innerText = `Seeding Error: ${err.message || err}`;
+                if (typeof showSystemToast === 'function') showSystemToast(err.message || 'Failed to seed database.', 'error', 'Reset Failed');
+            } finally {
+                if (btnEl) {
+                    btnEl.disabled = false;
+                    btnEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" /></svg> Reset & Seed DB`;
+                }
+            }
         };
 
         // Global Crash / Error Handler Overlay (Redesigned High-Contrast Spacious Developer UI)
@@ -174,6 +222,14 @@ Report Generated Automatically by Developer Crash Reporter.
             const file = source ? source.substring(source.lastIndexOf('/') + 1) : 'unknown_file.js';
             const stack = errorObj && errorObj.stack ? errorObj.stack : 'No stack trace available.';
             
+            window.currentCrashLogData = {
+                errorMsg: errorMsg || 'Unknown System Error',
+                source: source || 'unknown_file.js',
+                lineno: lineno || 0,
+                colno: colno || 0,
+                stack: stack
+            };
+
             overlay.innerHTML = `
                 <div class="bg-white rounded-3xl max-w-3xl w-full border border-red-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
                     <!-- High Contrast Solid Header Bar -->
@@ -276,20 +332,20 @@ Report Generated Automatically by Developer Crash Reporter.
                     <!-- High Contrast Footer Action Bar -->
                     <div class="bg-gray-100 border-t border-gray-200 px-6 py-4 flex flex-wrap items-center justify-between gap-3 shrink-0">
                         <div class="flex items-center gap-2">
-                            <button onclick="window.downloadCrashLogFile(\`${errorMsg}\`, \`${source}\`, ${lineno}, ${colno}, \`${stack.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
-                                    class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
+                            <button onclick="window.downloadCrashLogFile()" 
+                                     class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                </svg> Export Log
+                                </svg> Export Log (.txt)
                             </button>
-                            <button onclick="window.copyStackToClipboard(\`${stack.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)" 
-                                    class="bg-white hover:bg-gray-50 border border-gray-200 text-blue-700 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
+                            <button onclick="window.copyStackToClipboard()" 
+                                     class="bg-white hover:bg-gray-50 border border-gray-200 text-blue-700 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-blue-600">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5" />
                                 </svg> Copy Trace
                             </button>
                             <button onclick="window.triggerDeveloperResetSeed(this)" 
-                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer">
+                                     class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
                                 </svg> Reset & Seed DB
@@ -297,13 +353,13 @@ Report Generated Automatically by Developer Crash Reporter.
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="window.location.reload();" 
-                                    class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer flex items-center gap-2">
+                                     class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-white">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                                 </svg> Reload App
                             </button>
                             <button onclick="document.getElementById('system-crash-overlay').remove();" 
-                                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20 cursor-pointer flex items-center gap-2">
+                                     class="bg-red-600 hover:bg-red-700 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20 cursor-pointer flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-white">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg> Dismiss
@@ -314,18 +370,6 @@ Report Generated Automatically by Developer Crash Reporter.
             `;
             document.body.appendChild(overlay);
             if (window.lucide) window.lucide.createIcons();
-        }
-
-        window.copyStackToClipboard = function(stackText) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(stackText).then(() => {
-                    if (typeof showSystemToast === 'function') showSystemToast('Stack trace copied to clipboard!', 'success', 'Diagnostic Copy');
-                }).catch(() => {
-                    prompt('Copy stack trace below:', stackText);
-                });
-            } else {
-                prompt('Copy stack trace below:', stackText);
-            }
         };
 
         window.triggerTestCrash = function() {
@@ -582,8 +626,12 @@ Report Generated Automatically by Developer Crash Reporter.
             }
 
             if (role === 'owner') {
-                document.getElementById('sidebar-user-role').innerText = 'Owner';
-                document.getElementById('header-actions').classList.remove('hidden');
+                if (document.getElementById('sidebar-user-role')) {
+                    document.getElementById('sidebar-user-role').innerText = 'Owner';
+                }
+                if (document.getElementById('header-actions')) {
+                    document.getElementById('header-actions').classList.remove('hidden');
+                }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
@@ -596,8 +644,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 defaultView = 'dashboard';
             }
             else if (role === 'admin') {
-                document.getElementById('sidebar-user-role').innerText = 'Administrator';
-                document.getElementById('header-actions').classList.remove('hidden');
+                if (document.getElementById('sidebar-user-role')) {
+                    document.getElementById('sidebar-user-role').innerText = 'Administrator';
+                }
+                if (document.getElementById('header-actions')) {
+                    document.getElementById('header-actions').classList.remove('hidden');
+                }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
@@ -610,8 +662,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 defaultView = 'dashboard';
             }
             else if (role === 'assistant') {
-                document.getElementById('sidebar-user-role').innerText = 'Assistant Staff';
-                document.getElementById('header-actions').classList.add('hidden');
+                if (document.getElementById('sidebar-user-role')) {
+                    document.getElementById('sidebar-user-role').innerText = 'Assistant Staff';
+                }
+                if (document.getElementById('header-actions')) {
+                    document.getElementById('header-actions').classList.add('hidden');
+                }
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
@@ -625,8 +681,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 defaultView = 'intake';
             }
             else if (role === 'sa') {
-                document.getElementById('sidebar-user-role').innerText = 'Service Advisor';
-                document.getElementById('header-actions').classList.add('hidden');
+                if (document.getElementById('sidebar-user-role')) {
+                    document.getElementById('sidebar-user-role').innerText = 'Service Advisor';
+                }
+                if (document.getElementById('header-actions')) {
+                    document.getElementById('header-actions').classList.add('hidden');
+                }
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;

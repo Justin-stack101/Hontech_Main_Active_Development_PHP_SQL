@@ -1041,8 +1041,106 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Period Log Records Table -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden mt-6">
+                        <div class="border-b border-gray-150 px-6 py-4.5 flex items-center justify-between bg-gray-50">
+                            <h4
+                                class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                <i data-lucide="list" class="w-4 h-4 text-red-600"></i> Period Record Log Table
+                            </h4>
+                            <span
+                                class="text-[10px] font-black text-red-600 uppercase bg-red-50 border border-red-100 px-3 py-1 rounded-full"
+                                id="analytic-table-count">
+                                0 records
+                            </span>
+                        </div>
+                        <div class="bg-gray-50 border-b border-gray-150 px-6 py-3 flex flex-wrap items-center gap-4">
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Handled
+                                    By (SA)</label>
+                                <select id="filter-analytic-sa" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All SAs</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Service
+                                    Status</label>
+                                <select id="filter-analytic-status" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All Statuses</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Waiting">Waiting</option>
+                                    <option value="Ready">Ready</option>
+                                    <option value="Carry Over">Carry Over</option>
+                                    <option value="Released">Released</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Goal
+                                    Remarks</label>
+                                <select id="filter-analytic-goal" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                                    <option value="all">All Goals</option>
+                                    <option value="Successful">Successful</option>
+                                    <option value="Failed">Failed</option>
+                                    <option value="N/A">N/A</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Search</label>
+                                <input type="text" id="filter-analytic-search" oninput="applyAnalyticFilters()" placeholder="Plate, Model, SA..."
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition placeholder-gray-400 w-44">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
+                                <input type="date" id="filter-analytic-start-date" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
+                                <input type="date" id="filter-analytic-end-date" onchange="applyAnalyticFilters()"
+                                    class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-white">
+                                    <tr
+                                        class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                        <th class="px-6 py-4 bg-white">Date Recv</th>
+                                        <th class="px-6 py-4 bg-white">Claim Stub</th>
+                                        <th class="px-6 py-4 bg-white">Plate No.</th>
+                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
+                                        <th class="px-6 py-4 bg-white">Category</th>
+                                        <th class="px-6 py-4 bg-white">Branch</th>
+                                        <th class="px-6 py-4 bg-white">Source</th>
+                                        <th class="px-6 py-4 bg-white">Arrival</th>
+                                        <th class="px-6 py-4 bg-white">Departure</th>
+                                        <th class="px-6 py-4 bg-white">Goal Remarks</th>
+                                        <th class="px-6 py-4 bg-white">Handled By</th>
+                                        <th class="px-6 py-4 bg-white">Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-analytics-body"
+                                    class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <tr>
+                                        <td colspan="12" class="text-center py-12 text-gray-500 font-medium">
+                                            Select a range and filter to view period records.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
->
             </div>
             <!-- STAFF MANAGEMENT -->
             <div id="section-staff" class="section-content hidden fade-in space-y-6">
