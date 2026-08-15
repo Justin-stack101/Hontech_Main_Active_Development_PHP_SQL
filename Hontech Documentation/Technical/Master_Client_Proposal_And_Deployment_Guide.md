@@ -1,121 +1,200 @@
-# HonTech AutoCenter: Master Client Proposal & Deployment Strategy
+# 📄 HONTECH AUTOCENTER
+## HonTech Operations System — Client Proposal & Deployment Strategy
 
-## 0. Introduction & The Business Pitch
-*What the client needs to hear before we talk about numbers or hardware.*
-
-**The Problem:** Running a busy auto center relies on speed and communication. Currently, relying on physical paper claim stubs and verbal updates creates bottlenecks. The front desk doesn't know what the mechanics are doing, mechanics wait for approvals, and customers get anxious in the lounge because they have no visibility into the garage. 
-
-**Our Solution:** We have built the **HonTech Operations System**—a fully digital, real-time management dashboard. It connects the front desk, the service bays, and the customer waiting lounge together instantly without anyone having to leave their station.
-
-**The Ultimate Value to HonTech:**
-1.  **Speed & Organization:** Staff know exactly which cars are on which lifts at all times.
-2.  **Customer Trust:** The live TV monitor in the lounge keeps customers calm and informed.
-3.  **Cost Efficiency:** We specifically designed this system to run locally so you avoid paying thousands of pesos in monthly internet cloud fees.
-4.  **Absolute Privacy:** Your customer data stays locked inside your building.
+> **Prepared For:** HonTech AutoCenter — Management & Ownership  
+> **Prepared By:** HonTech Systems Development Team  
+> - **Justin Nolasco J.** *(Lead Developer)*  
+> - **Mary Dayne Villas T.** *(UI/UX Designer)*  
+> - **Catherine Ramos G.** *(Documentation Specialist)*  
+> - **Mr. Ar-Jay C. Agbayani** *(Capstone Project Adviser)*  
+> **Date:** July 9, 2026  
+> **Document Version:** 1.0 (Final Executive Proposal)
 
 ---
 
-## 1. Executive Summary & Architecture Strategy
-This section outlines the strategic decision to deploy the HonTech Operations System exclusively on a **Local Intranet Server** rather than relying on Cloud Hosting infrastructure. The primary drivers for this decision are the elimination of recurring cloud hosting fees, the reduction of required technical maintenance knowledge, and the immediate guarantee of absolute data privacy within the shop premises.
+## 📋 Table of Contents
+1. [Executive Summary](#1-executive-summary)
+2. [Architecture Strategy](#2-architecture-strategy)
+3. [Hardware Requirements](#3-hardware-requirements)
+4. [Financial Analysis: Local vs. Cloud](#4-financial-analysis-local-vs-cloud)
+5. [Investment & Support Structure](#5-investment--support-structure)
+6. [Security, Data Privacy & Maintenance](#6-security-data-privacy--maintenance)
+7. [Deployment Roadmap](#7-deployment-roadmap)
+8. [Project Deliverables](#8-project-deliverables)
+9. [Next Steps & Client Requirements](#9-next-steps--client-requirements)
+10. [Client Approval Sign-Off](#10-client-approval-sign-off)
 
 ---
 
-## 2. Hardware Specifications & Requirements
-To successfully run the local server architecture, HonTech must prepare the following physical hardware on-site:
+## 1. Executive Summary
 
-### A. The Primary Application Server (Local XAMPP Server)
-This machine acts as the brain of the operation. It must be powered on during all business hours.
-*   **Flexible Options:** You can purchase a brand new PC (estimated at ~₱16,500 - ₱22,000), or if the shop already has a spare, unused desktop computer sitting in an office, we can simply wipe it and repurpose it as the server to save costs!
-*   **Form Factor:** Desktop PC or Mini-PC (Do not use a laptop to avoid battery swelling issues from being plugged in 24/7).
-*   **Operating System:** Windows 10 or Windows 11 (64-bit).
-*   **Processor (CPU):** Intel Core i3 (10th Gen or newer) or AMD Ryzen 3.
-*   **Memory (RAM):** 8GB DDR4 (Minimum) / 16GB (Recommended).
-*   **Storage:** 256GB SSD (Solid State Drive is strictly required for fast database read/write speeds).
-*   **Networking:** Must be physically connected to the main shop router via an RJ45 Ethernet cable (Do not use Wi-Fi for the server).
+Running a busy auto center depends on speed and clear communication. Today, HonTech AutoCenter relies on physical paper claim stubs and verbal updates between the front desk, the service bays, and waiting customers. This creates avoidable operational bottlenecks:
+- The front desk cannot see what mechanics are doing in real time.
+- Mechanics wait on service advisor approvals that get lost in the shop shuffle.
+- Waiting lounge customers are left guessing about the progress of their vehicles.
 
-### B. Staff Terminals (Front Desk & Service Advisors)
-*   **Hardware:** Standard PCs, budget laptops, or tablets (e.g., iPads).
-*   **Requirements:** Any device capable of running a modern web browser (Google Chrome, Microsoft Edge, or Safari).
+The **HonTech Operations System** is a fully digital, real-time management dashboard that connects the front desk, service bays, and customer waiting lounge on one shared platform—without anyone needing to leave their station to stay informed.
 
-### C. Waiting Lounge Broadcast Monitor
-*   **Hardware:** 40-inch (or larger) Smart TV.
-*   **Requirements:** Must have a built-in web browser or an attached streaming stick (like a Chromecast or Amazon Fire Stick) to display the live dashboard.
+> [!IMPORTANT]
+> ### Why This Matters to HonTech
+> - ⚡ **Speed & Organization:** Staff always know exactly which vehicles are on which lifts and what stage each job is in.
+> - 🤝 **Customer Trust:** A live status monitor in the lounge keeps customers calm, informed, and confident in the shop.
+> - 💰 **Cost Efficiency:** Built to run on a local intranet network, eliminating recurring monthly cloud hosting fees.
+> - 🛡️ **Absolute Data Privacy:** Customer names, phone numbers, and repair logs stay physically inside the HonTech building at all times.
 
 ---
 
-## 3. Financial Cost Analysis: Local vs. Cloud
-Choosing a local server fundamentally shifts the financial burden from a recurring monthly penalty to a one-time upfront asset purchase.
+## 2. Architecture Strategy
 
-| Expense Category | Cloud Server Deployment (AWS / DigitalOcean) | Local Intranet Server (XAMPP) |
+We recommend deploying the HonTech Operations System on a **Local Intranet Server** rather than a third-party cloud hosting platform. This decision is grounded in three core priorities that matter most to HonTech AutoCenter:
+
+```mermaid
+flowchart LR
+    A[Local Server Architecture] --> B[Lower Cost: ₱0 Monthly Fees]
+    A --> C[Simplicity: Windows Interface]
+    A --> D[Data Privacy: 100% On-Premises]
+```
+
+| Priority | How Local Deployment Delivers It |
+| :--- | :--- |
+| **Lower Cost** | **₱0 monthly hosting or domain fees** — a one-time hardware purchase replaces years of recurring bills. |
+| **Simplicity** | Managed entirely through a familiar **Windows interface** — no command-line or Linux knowledge needed. |
+| **Data Privacy** | All records stay on-site on the shop's own server PC, never transmitted to third-party cloud servers. |
+
+---
+
+## 3. Hardware Requirements
+
+To run the local server architecture, HonTech will need to prepare the following on-site hardware:
+
+### 3.1 Primary Application Server (Local XAMPP Server)
+*This machine acts as the brain of the operation and must remain powered on during all business hours.*
+
+| Specification | Requirement Details |
+| :--- | :--- |
+| **Form Factor** | Desktop PC or Mini-PC *(Avoid laptops to prevent battery swelling from 24/7 plugged-in use)* |
+| **Operating System** | Windows 10 or Windows 11 (64-bit) |
+| **Processor (CPU)** | Intel Core i3 (10th Gen+) or AMD Ryzen 3 |
+| **Memory (RAM)** | 8GB DDR4 minimum (16GB recommended) |
+| **Storage** | 256GB SSD required for fast database read/write speeds |
+| **Networking** | Wired RJ45 Ethernet connection to shop router *(Wi-Fi not recommended for server)* |
+
+> [!TIP]
+> **Budget Option:** A new desktop meeting these specifications costs approximately **₱16,500 – ₱22,000**. If HonTech has an unused desktop on hand, it can be wiped and repurposed as the server to save costs!
+
+### 3.2 Staff Terminals (Front Desk & Service Advisors)
+- Standard PCs, budget laptops, or tablets (e.g., iPads).
+- Any device capable of running a modern web browser (Google Chrome, Microsoft Edge, or Safari).
+
+### 3.3 Waiting Lounge Broadcast Monitor
+- **40-inch or larger Smart TV**.
+- Built-in web browser or streaming stick (Chromecast / Amazon Fire Stick) to display the live dashboard.
+
+---
+
+## 4. Financial Analysis: Local vs. Cloud
+
+Choosing a local server shifts the cost structure from a recurring monthly expense to a single upfront asset purchase — delivering substantial savings over time.
+
+| Expense Category | Cloud Deployment (AWS / DigitalOcean) | Local Intranet Server (XAMPP) |
 | :--- | :--- | :--- |
-| **Server Hardware** | ₱0 (Rented off-site) | ~₱16,500 - ₱22,000 (One-Time Purchase) |
-| **Monthly Hosting Fee** | ₱1,300 - ₱2,700 / month | **₱0 / month** |
-| **Domain Name Fee** | ₱800 / year (`hontech.com`) | **₱0 / year** (Uses Local IP Address) |
-| **Database Storage Limits** | Pay-per-GB scaled pricing | Unlimited (Up to 256GB Local SSD) |
-| **Internet Bandwidth Costs** | Subject to cloud provider fees | **₱0** (Runs entirely on local network) |
-| **5-Year Total Cost Estimate** | **~₱80,000 to ₱165,000+** | **~₱22,000 Total** |
+| **Server Hardware** | ₱0 (Rented off-site) | **₱16,500 – ₱22,000** (One-Time Purchase) |
+| **Monthly Hosting Fee** | ₱1,300 – ₱2,700 / month | **₱0 / month** |
+| **Domain Name Fee** | ₱800 / year (`hontech.com`) | **₱0 / year** (Uses Local IP / Domain) |
+| **Database Storage Limits** | Pay-per-GB scaled pricing | **Unlimited** (Up to 256GB Local SSD) |
+| **Internet Bandwidth Costs** | Subject to provider data fees | **₱0** (Runs entirely on local network) |
+| **5-Year Total Estimate** | **₱80,000 – ₱165,000+** | **≈ ₱22,000 Total** |
+
+> [!SUCCESS]
+> **Bottom Line:** Over a 5-year horizon, the local intranet deployment saves HonTech an estimated **₱58,000 to ₱143,000** compared to an equivalent cloud-hosted solution.
 
 ---
 
-## 4. Financial Investment & Support Structure
+## 5. Investment & Support Structure
 
-### A. System Development (One-Time Cost)
-*To ensure a smooth transition, the software development fee is divided into two comfortable phases:*
-*   **Project Initiation:** A tentative initial deposit (e.g., 30%) to cover the final setup time and initiate the hardware preparations.
-*   **Final Turnover:** The remaining balance (e.g., 70%) is only fulfilled once you are completely satisfied with the "Dry Run" and the system is officially helping your shop.
+### 5.1 System Development (One-Time Cost)
+To keep the transition manageable, the software development fee is divided into two clear milestones:
+- **Project Initiation (30%):** Initial deposit to begin hardware preparation, server configuration, and environment setup.
+- **Final Turnover (70%):** Remaining balance due only once the client is fully satisfied with the Dry Run and the system is actively supporting shop operations.
 
-### B. Complimentary Support & Future Maintenance
-*   **1 to 2 Months Free Maintenance (Tentative):** Because the system is brand new, we want to ensure everything runs perfectly. The first 1-2 months after launch will include completely free maintenance and bug fixes while the staff adjusts.
-*   **Ongoing IT Retainer (Optional/Future):** After the free period, HonTech can opt into an ongoing maintenance contract. This covers routine database backups, password resets, and disaster recovery. *(Even with a small retainer, you still save over ₱165,000+ by avoiding cloud/domain fees!)*
-
----
-
-## 5. Security, Data Privacy & Maintenance Knowledge
-By utilizing a local XAMPP server instead of the cloud, we gain massive security benefits:
-
-1.  **Physical Security:** The customer database (containing names, phone numbers, and vehicle records) physically never leaves the HonTech building. 
-2.  **Air-Gapped Isolation:** Hackers cannot breach the server from the outside internet because the server is not broadcast to the public web. 
-3.  **Data Sovereignty:** HonTech owns 100% of its data without relying on third-party cloud data centers.
-4.  **Zero Command-Line Administration:** The shop owner does not need to learn Linux. The system is managed via a standard Windows interface.
-5.  **One-Click Boot:** Turning the server on is as simple as pressing the power button and double-clicking the XAMPP Control Panel to start Apache and MySQL.
-6.  **No Cloud Outages:** The system will remain 100% operational even if the shop's external internet connection goes down, allowing the business to continue functioning locally.
+### 5.2 Complimentary Support & Future Maintenance
+- **1–2 Months Free Maintenance (Tentative):** The first 1–2 months after launch include complimentary maintenance and bug fixes while staff adjust to the digital workflow.
+- **Ongoing IT Retainer (Optional):** After the free period, HonTech may opt into a maintenance contract covering routine database backups, password resets, and disaster recovery. Even with a modest retainer, total savings versus cloud hosting still exceed **₱165,000+** over 5 years.
 
 ---
 
-## 6. The Deployment Cycle (Phases to Launch)
+## 6. Security, Data Privacy & Maintenance
 
-### Phase 1: Procurement & Setup
-*   **Hardware Prep:** Procure a Server PC (or repurpose a spare) and study the capabilities of your current TV lounge setup.
-*   **Installation:** Physically install the hardware and wire the Server PC to the local router.
-*   **Network Testing:** Install XAMPP, migrate the HonTech database to the new server, and test the Wi-Fi connections from the Front Desk tablets to ensure fast loading times.
+Running on a local server brings meaningful security and operational advantages:
 
-### Phase 2: On-Site Client Testing & "Dry Run"
-*   **The "Shadow" Phase:** The shop continues to use the old paper stubs for safety, but the Front Desk and Service Advisors will *also* input the data into the new digital system.
-*   **Goal:** This allows the staff to test the software, attempt to break things, and get comfortable with the workflow in a real-world environment without risking actual business operations.
-
-### Phase 3: Staff Training & Go-Live Cutover
-*   Conduct final training sessions based on feedback and observations from the Dry Run.
-*   **The Cutover:** Officially retire the paper stubs. From this day forward, 100% of shop intake and status tracking is done digitally.
-
-### Phase 4: Post-Launch Observation (Free Maintenance Period)
-*   For the first 1-2 months, the developer monitors the system closely to ensure maximum stability, fix any immediate bugs, and help the staff transition smoothly.
+- 🔒 **Physical Security:** The customer database (names, phone numbers, vehicle records) physically never leaves the HonTech building.
+- 🛡️ **Air-Gapped Isolation:** The server is not exposed to the public internet, protecting it from remote cyber threats and bot attacks.
+- 📂 **Data Sovereignty:** HonTech owns 100% of its data with zero reliance on third-party cloud providers.
+- 🖥️ **Zero Command-Line Administration:** Managed through a standard Windows interface — no Linux knowledge required.
+- ⚡ **One-Click Boot:** Server startup is as simple as powering on the PC and starting XAMPP.
+- 📶 **No Cloud Outages:** The system stays 100% operational even if the shop's external internet connection goes down.
 
 ---
 
-## 7. Project Deliverables & Documents Handover
+## 7. Deployment Roadmap
 
-Upon final payment and the official Go-Live cutover, the client will physically receive the following items to ensure they have total ownership and understanding of the system:
-*   **The User Manuals:** Step-by-step PDF guides (with screenshots) for the Front Desk and Service Advisors on how to use the system.
-*   **The Administrator & Security Guide:** A guide for the Owner on how to reset passwords, view analytics, and lock out suspended employees.
-*   **The Emergency Protocol Document:** Exactly what to do if the server crashes, the power goes out, or the internet goes down (e.g., falling back to paper stubs temporarily).
-*   **Source Code License / Contract:** The legal document outlining who owns the software code and the terms of its use.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dev as Dev Team
+    participant Shop as HonTech Shop Floor
+    participant Staff as Shop Staff
+
+    Dev->>Shop: Phase 1 — Procurement & Server Wiring
+    Dev->>Shop: Phase 2 — On-Site Client "Dry Run" (Parallel Paper + Digital)
+    Dev->>Staff: Phase 3 — Staff Training & Digital Cutover
+    Dev->>Shop: Phase 4 — Post-Launch 1-2 Month Free Maintenance
+```
+
+### Phase 1 — Procurement & Setup
+- Procure server PC (or repurpose a spare unit); assess lounge TV setup.
+- Physically install and wire server PC to local router via RJ45 Ethernet.
+- Install XAMPP, migrate database, and verify terminal loading speeds.
+
+### Phase 2 — On-Site Client Testing ("Dry Run")
+- Staff continue using paper stubs for safety while simultaneously entering data into the digital system.
+- **Goal:** Stress-test software and familiarize staff with the workflow without risking live business operations.
+
+### Phase 3 — Staff Training & Go-Live Cutover
+- Conduct final staff training sessions based on Dry Run observations.
+- **Cutover:** Officially retire paper claim stubs. All intake and status tracking become 100% digital.
+
+### Phase 4 — Post-Launch Observation (Free Maintenance Period)
+- Developer monitors system for 1–2 months to ensure operational stability, fix bugs, and support staff adoption.
 
 ---
 
-## 8. ✅ Next Steps & Client Requirements
-*Action items to conclude the meeting.*
+## 8. Project Deliverables
 
-1.  **Approval & Sign-Off:** Client agrees to the hardware list and payment structure.
-2.  **Hardware Procurement:** Client purchases the required TV for the lounge and the Server PC.
-3.  **Payment:** Collection of the Milestone 1 deposit.
-4.  **Schedule the Dry Run:** Pick a slow day (e.g., a Tuesday) to begin Phase 2.
+Upon final payment and official Go-Live cutover, HonTech will receive:
+1. 📖 **User Manuals:** Step-by-step PDF guides with screenshots for front desk and service advisor staff.
+2. 🔑 **Administrator & Security Guide:** Instructions for the owner on password resets, analytics, and employee access control.
+3. 🚨 **Emergency Protocol Document:** Step-by-step procedures for power outages, server restarts, and temporary paper fallbacks.
+4. 📄 **Source Code License / Contract:** Legal document defining code ownership and terms of use.
+
+---
+
+## 9. Next Steps & Client Requirements
+
+The following action items will conclude the proposal meeting and set the project in motion:
+
+1. **Approval & Sign-Off:** Client agrees to the hardware list and payment structure.
+2. **Hardware Procurement:** Client purchases or prepares the lounge TV and server PC.
+3. **Payment:** Collection of the Phase 1 deposit (30%).
+4. **Schedule the Dry Run:** Pick a slow business day (e.g., a Tuesday) to begin Phase 2.
+
+---
+
+## 10. Client Approval Sign-Off
+
+**Approved By:**
+
+___________________________________________  
+**Client Signature — HonTech AutoCenter Management**  
+
+**Date:** ________________________

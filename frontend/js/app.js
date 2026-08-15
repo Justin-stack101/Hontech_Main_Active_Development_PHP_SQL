@@ -3438,8 +3438,8 @@ Report Generated Automatically by Developer Crash Reporter.
 
             closeReportExportModal();
 
-            if (selectedFormat === 'CSV') {
-                exportDataCSV(selectedReportType);
+            if (selectedFormat === 'Excel' || selectedFormat === 'CSV') {
+                exportDataExcel(selectedReportType);
             } else if (selectedReportType === 'monthly_sla') {
                 if (selectedFormat === 'PDF') exportAnalyticsPDF();
                 else if (selectedFormat === 'Word') exportAnalyticsWord();
@@ -3452,6 +3452,140 @@ Report Generated Automatically by Developer Crash Reporter.
         function exportData(format) {
             openReportExportModal(format);
         }
+
+        function exportDataExcel(selectedReportType) {
+            showSystemToast('Consolidating data for Excel spreadsheet export...', 'info', 'Management Module');
+            const todayStr = new Date().toISOString().split('T')[0];
+            const today = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString('en-US', { hour12: localStorage.getItem('timeFormat24h') === 'false', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let filename = `Hontech_${selectedReportType || 'report'}_${todayStr}.xls`;
+
+            let tableHeaders = [];
+            let tableRows = [];
+            let reportTitle = 'HONTECH AUTOCENTER INC. - OPERATIONS REPORT';
+
+            if (selectedReportType === 'carryover') {
+                reportTitle = 'HONTECH AUTOCENTER INC. - CARRY-OVER AUDIT REPORT';
+                tableHeaders = ['Plate No.', 'Vehicle Model', 'Date Received', 'Promised Date', 'Parts Available', 'Service Advisor', 'Evaluation', 'Remarks'];
+                const carryOverJobs = (typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs.filter(j => j.status === 'Carry Over') : [];
+                tableRows = carryOverJobs.map(job => [
+                    job.plate || '',
+                    job.vehicle || '',
+                    job.dateReceived || '',
+                    job.promisedDate || 'TBD',
+                    job.partsAvailable || '',
+                    job.saName || '-',
+                    job.evaluation || '-',
+                    job.remarks || ''
+                ]);
+            } else if (selectedReportType === 'monthly_sla' || selectedReportType === 'full_analytics') {
+                reportTitle = 'HONTECH AUTOCENTER INC. - PERFORMANCE & SLA REPORT';
+                tableHeaders = ['Claim Stub', 'Plate No.', 'Vehicle Model', 'Category', 'Source', 'Date Received', 'Arrival', 'Departure', 'Status', 'Service Advisor', 'Branch', 'Remarks'];
+                const dataset = (typeof analyticsJobs !== 'undefined' && Array.isArray(analyticsJobs) && analyticsJobs.length > 0) ? analyticsJobs : ((typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs : []);
+                tableRows = dataset.map(job => [
+                    job.claimStub || 'N/A',
+                    job.plate || '',
+                    job.vehicle || '',
+                    job.category || '',
+                    job.source || '',
+                    job.dateReceived || '',
+                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.arrival || '') : (job.arrival || ''),
+                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.departure || '') : (job.departure || ''),
+                    job.status || '',
+                    job.saName || '-',
+                    job.branch || 'Branch A',
+                    job.remarks || ''
+                ]);
+            } else if (selectedReportType === 'sa_efficiency') {
+                reportTitle = 'HONTECH AUTOCENTER INC. - SERVICE ADVISOR EFFICIENCY REPORT';
+                tableHeaders = ['Service Advisor', 'Total Jobs Handled', 'Completed / Released Jobs', 'Completion Rate (%)'];
+                const dataset = (typeof analyticsJobs !== 'undefined' && Array.isArray(analyticsJobs) && analyticsJobs.length > 0) ? analyticsJobs : ((typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs : []);
+                const saMap = {};
+                dataset.forEach(job => {
+                    const sa = job.saName || 'Unassigned';
+                    if (!saMap[sa]) saMap[sa] = { name: sa, total: 0, completed: 0 };
+                    saMap[sa].total++;
+                    if (job.status === 'Completed' || job.status === 'Released') saMap[sa].completed++;
+                });
+                tableRows = Object.values(saMap).map(sa => {
+                    const rate = sa.total > 0 ? Math.round((sa.completed / sa.total) * 100) : 0;
+                    return [sa.name, sa.total, sa.completed, `${rate}%`];
+                });
+            } else {
+                reportTitle = 'HONTECH AUTOCENTER INC. - DAILY INTAKE SUMMARY';
+                tableHeaders = ['Claim Stub', 'Plate No.', 'Vehicle Model', 'Category', 'Source', 'Arrival Time', 'Departure Time', 'Status', 'Service Advisor', 'Remarks'];
+                const todayJobs = (typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs.filter(j => j.dateReceived === todayStr) : [];
+                const dataset = todayJobs.length > 0 ? todayJobs : ((typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs : []);
+                tableRows = dataset.map(job => [
+                    job.claimStub || 'N/A',
+                    job.plate || '',
+                    job.vehicle || '',
+                    job.category || '',
+                    job.source || '',
+                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.arrival || '') : (job.arrival || ''),
+                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.departure || '') : (job.departure || ''),
+                    job.status || '',
+                    job.saName || '-',
+                    job.remarks || ''
+                ]);
+            }
+
+            const excelHtml = `
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+                <head>
+                    <meta charset="utf-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <x:ExcelWorkbook>
+                            <x:ExcelWorksheets>
+                                <x:ExcelWorksheet>
+                                    <x:Name>HonTech Report</x:Name>
+                                    <x:WorksheetOptions>
+                                        <x:DisplayGridlines/>
+                                    </x:WorksheetOptions>
+                                </x:ExcelWorksheet>
+                            </x:ExcelWorksheets>
+                        </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        body { font-family: Arial, sans-serif; font-size: 10pt; }
+                        .report-header { font-size: 16pt; font-weight: bold; color: #dc2626; padding-bottom: 5px; }
+                        .report-meta { font-size: 9pt; color: #4b5563; margin-bottom: 15px; }
+                        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+                        th { background-color: #dc2626; color: #ffffff; font-weight: bold; border: 1px solid #b91c1c; padding: 8px; text-align: left; }
+                        td { border: 1px solid #d1d5db; padding: 6px; }
+                        tr:nth-child(even) { background-color: #f9fafb; }
+                    </style>
+                </head>
+                <body>
+                    <div class="report-header">${reportTitle}</div>
+                    <div class="report-meta">Date Generated: ${today} at ${time} | Generated By: ${typeof currentUserName !== 'undefined' ? currentUserName : 'System Admin'}</div>
+                    <table>
+                        <thead>
+                            <tr>${tableHeaders.map(h => `<th>${h}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows.length > 0 
+                                ? tableRows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')
+                                : `<tr><td colspan="${tableHeaders.length}" style="text-align:center; color:#999;">No records found for this report.</td></tr>`}
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff' + excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+            downloadBlob(blob, filename);
+            showSystemToast(`${filename} successfully generated.`, 'success', 'Export Complete');
+        }
+
+        // Global window bindings for export actions
+        window.openReportExportModal = openReportExportModal;
+        window.closeReportExportModal = closeReportExportModal;
+        window.submitReportExport = submitReportExport;
+        window.exportData = exportData;
+        window.exportDataExcel = exportDataExcel;
 
         function downloadBlob(blob, filename) {
             try {

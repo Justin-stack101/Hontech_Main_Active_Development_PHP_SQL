@@ -703,7 +703,21 @@
                     </div>
                 </div>
 
-                <!-- Header Actions Removed as requested -->
+                <!-- Header Actions -->
+                <div id="header-actions" class="flex flex-wrap items-center gap-2.5">
+                    <button onclick="exportData('PDF')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to PDF">
+                        <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> PDF
+                    </button>
+                    <button onclick="exportData('Word')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to Word">
+                        <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600"></i> Word
+                    </button>
+                    <button onclick="exportData('Excel')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to Excel">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Excel
+                    </button>
+                    <button onclick="openReportExportModal()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-md shadow-red-600/20" title="More Export Options">
+                        <i data-lucide="download" class="w-4 h-4"></i> Export Report...
+                    </button>
+                </div>
             </div>
 
             <!-- ANALYTICS DASHBOARD -->
@@ -2583,56 +2597,56 @@
     </div>
 
     <!-- REPORT EXPORT SELECTION MODAL -->
-    <div id="report-export-modal" class="fixed inset-0 z-[500] hidden flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm fade-in">
-        <div class="bg-white rounded-2xl max-w-xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col">
+    <div id="report-export-modal" class="fixed inset-0 z-[500] hidden flex items-center justify-center p-4 md:p-6 bg-gray-950/80 backdrop-blur-sm fade-in">
+        <div class="bg-white rounded-2xl max-w-3xl w-full border border-gray-200 shadow-2xl overflow-hidden flex flex-col">
             <!-- Header -->
             <div class="bg-gray-900 text-white px-6 py-4 flex items-center justify-between border-b border-gray-800">
                 <div class="flex items-center gap-3">
-                    <div class="p-2 bg-red-600/20 text-red-500 rounded-xl border border-red-500/30">
+                    <div class="p-2.5 bg-red-600/20 text-red-500 rounded-xl border border-red-500/30 shrink-0">
                         <i data-lucide="file-spreadsheets" class="w-5 h-5"></i>
                     </div>
                     <div>
                         <h3 class="text-base font-black uppercase tracking-tight text-white">Generate Operations Report</h3>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Select report type & export options</p>
+                        <p class="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Select report type & export options</p>
                     </div>
                 </div>
-                <button onclick="closeReportExportModal()" class="text-gray-400 hover:text-white transition">
+                <button onclick="closeReportExportModal()" class="text-gray-400 hover:text-white transition p-1.5 rounded-lg hover:bg-gray-800">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Body -->
-            <div class="p-6 space-y-6 max-h-[75vh] overflow-y-auto custom-scroll">
+            <div class="p-6 md:p-8 space-y-6 max-h-[80vh] overflow-y-auto custom-scroll">
                 <!-- 1. Report Type Selection -->
                 <div>
-                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-2">1. Select Report Type</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <label class="report-type-card cursor-pointer border border-red-500 bg-red-50/40 p-3.5 rounded-xl flex items-start gap-3 transition hover:border-red-500">
-                            <input type="radio" name="export-report-type" value="daily_intake" checked class="mt-1 accent-red-600">
-                            <div>
-                                <div class="text-xs font-black text-gray-900 uppercase">Daily Intake Summary</div>
-                                <p class="text-[10px] text-gray-500 font-semibold mt-0.5">Walk-ins, online bookings, claim stubs & turnaround status.</p>
+                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-3">1. Select Report Type</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="report-type-card cursor-pointer border border-red-500 bg-red-50/40 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="daily_intake" checked class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Daily Intake Summary</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Walk-ins, online bookings, claim stubs & turnaround status.</p>
                             </div>
                         </label>
-                        <label class="report-type-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-start gap-3 transition hover:border-red-500">
-                            <input type="radio" name="export-report-type" value="monthly_sla" class="mt-1 accent-red-600">
-                            <div>
-                                <div class="text-xs font-black text-gray-900 uppercase">Monthly Performance & SLA</div>
-                                <p class="text-[10px] text-gray-500 font-semibold mt-0.5">Volume trends, PMS goal rates, completion metrics.</p>
+                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="monthly_sla" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Monthly Performance & SLA</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Volume trends, PMS goal rates, completion metrics.</p>
                             </div>
                         </label>
-                        <label class="report-type-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-start gap-3 transition hover:border-red-500">
-                            <input type="radio" name="export-report-type" value="carryover" class="mt-1 accent-red-600">
-                            <div>
-                                <div class="text-xs font-black text-gray-900 uppercase">Carry-Over Audit</div>
-                                <p class="text-[10px] text-gray-500 font-semibold mt-0.5">Extended stays, promised dates & parts availability.</p>
+                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="carryover" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Carry-Over Audit</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Extended stays, promised dates & parts availability.</p>
                             </div>
                         </label>
-                        <label class="report-type-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-start gap-3 transition hover:border-red-500">
-                            <input type="radio" name="export-report-type" value="sa_efficiency" class="mt-1 accent-red-600">
-                            <div>
-                                <div class="text-xs font-black text-gray-900 uppercase">Service Advisor Efficiency</div>
-                                <p class="text-[10px] text-gray-500 font-semibold mt-0.5">Jobs handled, average repair times per advisor.</p>
+                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="sa_efficiency" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Service Advisor Efficiency</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Jobs handled, average repair times per advisor.</p>
                             </div>
                         </label>
                     </div>
@@ -2640,32 +2654,32 @@
 
                 <!-- 2. Output Format Selection -->
                 <div>
-                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-2">2. Output Format</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <label class="format-card cursor-pointer border border-red-500 bg-red-50/40 p-3 rounded-xl flex items-center justify-center gap-2 transition text-xs font-black text-gray-900">
+                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-3">2. Output Format</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <label class="format-card cursor-pointer border border-red-500 bg-red-50/40 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:shadow-sm">
                             <input type="radio" name="export-format" value="PDF" checked class="accent-red-600">
-                            <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> PDF (.pdf)
+                            <i data-lucide="file-text" class="w-4 h-4 text-red-600 shrink-0"></i> PDF (.pdf)
                         </label>
-                        <label class="format-card cursor-pointer border border-gray-200 p-3 rounded-xl flex items-center justify-center gap-2 transition text-xs font-black text-gray-900 hover:border-blue-500">
+                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-blue-500 hover:shadow-sm">
                             <input type="radio" name="export-format" value="Word" class="accent-blue-600">
-                            <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600"></i> Word (.docx)
+                            <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600 shrink-0"></i> Word (.docx)
                         </label>
-                        <label class="format-card cursor-pointer border border-gray-200 p-3 rounded-xl flex items-center justify-center gap-2 transition text-xs font-black text-gray-900 hover:border-emerald-500">
-                            <input type="radio" name="export-format" value="CSV" class="accent-emerald-600">
-                            <i data-lucide="table" class="w-4 h-4 text-emerald-600"></i> CSV Data
+                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-emerald-500 hover:shadow-sm">
+                            <input type="radio" name="export-format" value="Excel" class="accent-emerald-600">
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600 shrink-0"></i> Excel (.xls)
                         </label>
                     </div>
                 </div>
 
                 <!-- 3. Range & Branch Parameters -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-gray-100 pt-5">
                     <div>
-                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Target Date / Start Date</label>
-                        <input type="date" id="export-start-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition">
+                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Target Date / Start Date</label>
+                        <input type="date" id="export-start-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Branch Scope</label>
-                        <select id="export-branch-scope" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Branch Scope</label>
+                        <select id="export-branch-scope" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
                             <option value="all">All Branches (Combined)</option>
                             <option value="Marikina">Marikina Branch</option>
                             <option value="Regalado">Regalado Branch</option>
@@ -2676,8 +2690,8 @@
 
             <!-- Footer -->
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
-                <button onclick="closeReportExportModal()" class="px-4 py-2.5 rounded-xl border border-gray-200 font-extrabold text-xs text-gray-700 hover:bg-gray-100 transition uppercase tracking-wider">Cancel</button>
-                <button onclick="submitReportExport()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition uppercase tracking-wider shadow-md shadow-red-600/20 flex items-center gap-2">
+                <button onclick="closeReportExportModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 font-extrabold text-xs text-gray-700 hover:bg-gray-100 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="submitReportExport()" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition uppercase tracking-wider shadow-md shadow-red-600/20 flex items-center gap-2">
                     <i data-lucide="download" class="w-4 h-4"></i> Download Report
                 </button>
             </div>
