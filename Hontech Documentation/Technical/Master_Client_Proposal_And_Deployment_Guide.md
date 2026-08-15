@@ -63,6 +63,18 @@ flowchart LR
 
 ---
 
+### 💡 Quick Primer: Domain Names & Why You Don't Need to Pay (100% FREE Options)
+
+#### **1. How Paid Domains Work (`.com` / `.ph`)**
+- Buying a domain (e.g., `hontech.com` or `hontech.ph`) registers your website's name in the global Internet directory so anyone around the world can access it. Registrars (Namecheap, GoDaddy) charge **~₱500–₱800/year** for this international listing.
+
+#### **2. The 3 100% FREE Alternatives (No Paid Domain Needed)**
+1. **Local Host (`http://127.0.0.1:8000`)** — **₱0 (FREE)**: Runs directly on your computer during development and testing.
+2. **Local Shop Wi-Fi Domain (`http://hontech.local` or `http://hontech.ph`)** — **₱0 (FREE)**: Configured on the shop's Wi-Fi router. Connects staff phones, tablets, and lounge TVs over the local network without internet fees or paperwork.
+3. **Free Temporary Remote Sharing (`ngrok` / `Cloudflare Tunnel`)** — **₱0 (FREE)**: Generates a temporary secure web link so you can present live demos to advisors or clients anywhere without paying for hosting.
+
+---
+
 ## 3. Hardware Requirements
 
 To run the local server architecture, HonTech will need to prepare the following on-site hardware:
