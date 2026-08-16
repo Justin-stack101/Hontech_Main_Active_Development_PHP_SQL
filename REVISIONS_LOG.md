@@ -120,3 +120,34 @@ When developing or revising features, developers and teammates must follow this 
    - **Assistant Staff (`staff@hontech.com`)**: Verify Online Booking form, Booking Module queue, and Confirm Active conversion.
 4. **Step 4: Commit & Checkpoint**: Commit to Git with a clear descriptive message (`feat(...)` or `fix(...)`) only after all 4 roles pass clean with zero console errors.
 
+---
+
+## 🏛️ Enterprise System Architecture Audit & Full-Stack Hardening Roadmap
+
+### 🌟 Active Commercial-Grade Industry Standards Implemented
+1. **Security & RBAC Layer**:
+   - HTTP-Only JWT Cookie Authentication with BCrypt password hashing (`cost = 10`).
+   - Server-side RBAC middleware enforcing strict 403 Forbidden on unauthorized endpoint access.
+   - Dynamic 30-second user presence heartbeat (`/api/auth/ping`) and configurable idle session timeouts.
+   - Dual-mode account recovery (4-digit security PIN verification + Developer Mailbox fallback).
+2. **Resilience & Developer Crash Diagnostics**:
+   - Global error interceptors (`window.onerror` and `window.onunhandledrejection`) with high-contrast diagnostic overlay.
+   - Stack trace clipboard capture, `.txt` crash log export, and one-click database re-seeding endpoint (`/api/auth/developer/reset-seed`).
+3. **Data Layer Defensive Engineering**:
+   - MySQL PDO prepared statements eliminating SQL injection vulnerabilities.
+   - Explicit snake_case / camelCase data normalization fallbacks (`id ?? _id`, `Number(is_active) === 1`).
+   - Systematic `Array.isArray()` guarding across all collection filters, maps, and Chart.js aggregations.
+4. **DevOps & QA Protocol**:
+   - **3-Tier Risk Architecture** (Tier 1: Visual/Cosmetic ~5s, Tier 2: Single-Role ~30s, Tier 3: Shared Core ~2m).
+   - Interactive standalone HTML test dashboard (`HONTECH_QA_MANUAL_TESTING_MATRIX.html`) with dynamic custom test generation, local storage persistence, and CSV export.
+
+---
+
+### 🔮 Future Enterprise Hardening Roadmap (Planned Enhancements)
+The following four items represent advanced enterprise optimizations documented for future release sprints:
+1. **🛡️ Client-Side XSS Escaping Helper**: Add a global `escapeHtml(string)` utility to sanitize all user-submitted text interpolations (`remarks`, `customer name`, `evaluation`) before DOM injection.
+2. **⏱️ Brute-Force Rate Limiting**: Implement Redis/session-based rate-limiting on `/api/auth/login` to lock login attempts for 60 seconds after 5 consecutive failures.
+3. **🌐 Offline Network State Detection**: Implement `window.addEventListener('offline' / 'online')` listeners to display a non-intrusive connectivity badge when working with intermittent local Wi-Fi.
+4. **🗄️ Uniform Soft-Deletion Architecture**: Standardize `is_deleted = 1` flag across all tables (`jobs`, `users`, `branches`) to guarantee full audit trail compliance for executive analytics.
+
+
