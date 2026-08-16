@@ -553,6 +553,29 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
+        async function loadBranches() {
+            try {
+                const branches = await apiRequest('/api/branches');
+                if (Array.isArray(branches) && branches.length > 0) {
+                    const branchSelects = document.querySelectorAll('#analytics-branch, #filter-branch, #user-branch');
+                    branchSelects.forEach(sel => {
+                        if (!sel) return;
+                        const currentVal = sel.value;
+                        const isAllAllowed = sel.id === 'analytics-branch' || sel.id === 'filter-branch';
+                        let opts = isAllAllowed ? '<option value="all">All Branches (Combined)</option>' : '';
+                        branches.forEach(b => {
+                            const bName = b.name || b.branch_name || b.code || b;
+                            opts += `<option value="${bName}">${bName}</option>`;
+                        });
+                        sel.innerHTML = opts;
+                        if (currentVal) sel.value = currentVal;
+                    });
+                }
+            } catch (e) {
+                console.warn('loadBranches notice:', e);
+            }
+        }
+
         async function handleLogin(role) {
             currentUserRole = role;
             document.getElementById('auth-view').classList.add('hidden');
@@ -565,7 +588,11 @@ Report Generated Automatically by Developer Crash Reporter.
             buildNavbar(role);
 
             // Pre-load all sections immediately so navigation is instantaneous
-            if (role === 'owner' || role === 'admin') renderReports();
+            if (role === 'owner' || role === 'admin') {
+                initAnalyticsPickers();
+                if (typeof renderReports === 'function') renderReports();
+                if (typeof loadAnalyticsData === 'function') loadAnalyticsData();
+            }
             // All roles need their specific tables rendered (the function internally handles role visibility)
             renderStaffTables();
             
