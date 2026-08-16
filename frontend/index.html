@@ -1381,7 +1381,7 @@
                                 <label
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Arrival
                                     Time &nbsp;<span class="text-red-500">*</span></label>
-                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
+                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-arrival-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                     <span class="text-gray-500 font-bold">:</span>
                                     <select id="intake-arrival-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
@@ -1390,21 +1390,23 @@
                             <div class="md:col-span-1">
                                 <label
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Type of Lane &nbsp;<span class="text-red-500">*</span></label>
-                                <div class="relative flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition">
+                                <div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-walkin-lane-type" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer pr-6 appearance-none">
                                         <option value="Flexible" selected>Flexible</option>
                                         <option value="Express">Express</option>
                                         <option value="Special">Special</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-3"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
                             </div>
                             <div class="md:col-span-1">
                                 <label
-                                    class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Auto-Generated
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Auto-Generated
                                     Claim Stub</label>
-                                <input type="text" id="intake-stub-preview" disabled
-                                    class="w-full bg-gray-100 border border-gray-200 rounded-xl px-3.5 py-2.5 font-mono font-bold text-gray-500 text-xs">
+                                <div class="flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 h-[38px]">
+                                    <input type="text" id="intake-stub-preview" disabled
+                                        class="w-full bg-transparent font-mono font-black text-gray-900 text-xs tracking-wider outline-none cursor-not-allowed">
+                                </div>
                             </div>
                         </div>
                         <!-- Booking Specific (Assistant Role) -->
@@ -1414,7 +1416,7 @@
                                 <label
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Appt
                                     Time &nbsp;<span class="text-red-500">*</span></label>
-                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-1.5 focus-within:border-red-600 focus-within:bg-white transition">
+                                <div class="flex items-center gap-1.5 w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-appt-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                     <span class="text-gray-500 font-bold">:</span>
                                     <select id="intake-appt-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
@@ -1423,18 +1425,18 @@
                             <div class="md:col-span-1">
                                 <label
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Type of Lane &nbsp;<span class="text-red-500">*</span></label>
-                                <div class="relative flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition">
+                                <div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-lane-type" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer pr-6 appearance-none">
                                         <option value="Flexible" selected>Flexible</option>
                                         <option value="Express">Express</option>
                                         <option value="Special">Special</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-3"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
                             </div>
                             <div class="md:col-span-1 flex items-center mt-5">
                                 <label
-                                    class="flex items-center gap-3 cursor-pointer py-2 px-3.5 border border-gray-200 rounded-xl w-full bg-gray-50 hover:bg-gray-100 transition">
+                                    class="flex items-center gap-3 cursor-pointer py-2 px-3.5 border border-gray-200 rounded-xl w-full bg-gray-50 hover:bg-gray-100 transition h-[38px]">
                                     <input type="checkbox" id="intake-confirmed"
                                         class="w-4 h-4 rounded accent-red-600 cursor-pointer">
                                     <span class="text-xs font-bold text-gray-700">Confirmed Booking</span>
@@ -2711,7 +2713,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.9"></script>
+    <script src="js/app.js?v=2.10"></script>
 </body>
 
 </html>
