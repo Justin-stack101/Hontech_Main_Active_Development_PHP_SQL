@@ -695,11 +695,6 @@
                     <div class="flex items-center gap-4 mt-1">
                         <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">System Time: <span
                                 id="sys-clock" class="text-red-600">00:00</span></p>
-                        <span class="text-gray-300">•</span>
-                        <div id="capacity-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-black uppercase tracking-wider">
-                            <i data-lucide="gauge" class="w-3.5 h-3.5 text-emerald-600"></i>
-                            <span>Daily Intake Load: <strong id="capacity-count" class="font-extrabold text-emerald-900">0</strong> / 21</span>
-                        </div>
                     </div>
                 </div>
 
@@ -1370,13 +1365,10 @@
                                 Category &nbsp;<span class="text-red-500">*</span></label>
                             <select id="intake-category" onchange="toggleCategoryOther()"
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition cursor-pointer">
-                                <option value="PMS">Preventive Maintenance (PMS)</option>
-                                <option value="GRS">General Repairs (GRS)</option>
-                                <option value="Body & Paint">Body & Paint</option>
-                                <option value="Car Wash">Car Wash</option>
-                                <option value="Complimentary Checkup">Complimentary Checkup</option>
-                                <option value="PMS AND GRS">PMS AND GRS</option>
-                                <option value="Others">Others (Custom)</option>
+                                <option value="PMS">PMS</option>
+                                <option value="GRS">GRS</option>
+                                <option value="PMS & GRS">PMS & GRS</option>
+                                <option value="Others">Others</option>
                             </select>
                             <input type="text" id="intake-category-other" placeholder="Specify category..."
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition mt-2 hidden">
