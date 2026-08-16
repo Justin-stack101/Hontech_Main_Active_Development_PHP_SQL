@@ -1944,11 +1944,16 @@ Report Generated Automatically by Developer Crash Reporter.
                             ${isOwnerOrAdmin ? `
                                 <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible'}</span>
                             ` : `
-                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 w-32">
-                                    <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
-                                    <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                    <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
-                                </select>
+                                <div class="relative inline-flex items-center">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-1 pl-2 pr-6 rounded-lg appearance-none shadow-2xs">
+                                        <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
+                                        <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
+                                        <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
+                                        <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS Lane</option>
+                                        <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS Lane</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-1.5"></i>
+                                </div>
                             `}
                         </td>
                         <td>
@@ -1961,6 +1966,9 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <input type="time" value="${job.apptTime || ''}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-24">
                                 </div>
                             `}
+                        </td>
+                        <td>
+                            <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-medium border border-gray-200 bg-white px-2 py-1 rounded-lg w-40 focus:border-red-600 outline-none shadow-2xs">
                         </td>
                         <td class="text-center">
                             <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isOwnerOrAdmin ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isOwnerOrAdmin ? 'cursor-not-allowed' : 'cursor-pointer'}">
@@ -1979,7 +1987,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="7" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
+                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
             }
 
             // DAILY INTAKES
@@ -2127,7 +2135,10 @@ Report Generated Automatically by Developer Crash Reporter.
                                                 <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS LANE</option>
                                                 <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL LANE</option>
+                                                <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS LANE</option>
+                                                <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS LANE</option>
                                             </select>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-red-500 shrink-0 pointer-events-none"></i>
                                         </div>
                                         ` : `
                                         <div class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50/50 border border-red-100 rounded-lg px-2 py-0.5"><i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i><span>LANE: ${job.laneType || 'FLEXIBLE'}</span></div>
