@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech AutoCenter — Comprehensive QA Manual Unit Testing Matrix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .card-print { border: 1px solid #e5e7eb !important; box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen pb-16">
+
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center text-white shadow-md shadow-red-500/20">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg font-extrabold tracking-tight text-slate-900">HonTech QA Manual Unit Testing Matrix</h1>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200">v2.0 Active</span>
+                    </div>
+                    <p class="text-xs text-slate-500 font-medium">Standard Operating QA Checklist for All 4 Roles & Operational Modules</p>
+                </div>
+            </div>
+
+            <!-- ACTION CONTROLS -->
+            <div class="flex items-center gap-2.5 no-print">
+                <button onclick="downloadCSV()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition cursor-pointer active:scale-95">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <span>Export to Excel (.csv)</span>
+                </button>
+                <button onclick="window.print()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md shadow-slate-800/20 transition cursor-pointer active:scale-95">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    <span>Print / Save PDF</span>
+                </button>
+                <button onclick="resetAllTests()" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs border border-slate-200 transition cursor-pointer">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
+
+        <!-- TEST EXECUTION PROGRESS CARD -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs card-print">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-sm font-black uppercase tracking-wider text-slate-500">Live QA Execution Progress</h2>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <span id="stat-progress-pct" class="text-3xl font-black text-slate-900">0%</span>
+                        <span class="text-xs text-slate-500 font-medium">Completed (<span id="stat-completed-count">0</span> of <span id="stat-total-count">0</span> Tests)</span>
+                    </div>
+                </div>
+
+                <!-- METRICS BADGES -->
+                <div class="flex items-center gap-3">
+                    <div class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+                        <div class="text-[10px] font-black uppercase tracking-wider text-emerald-700">Passed</div>
+                        <div id="stat-passed-count" class="text-lg font-black text-emerald-800">0</div>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-rose-50 border border-rose-200 text-center">
+                        <div class="text-[10px] font-black uppercase tracking-wider text-rose-700">Failed</div>
+                        <div id="stat-failed-count" class="text-lg font-black text-rose-800">0</div>
+                    </div>
+                    <div class="px-4 py-2 rounded-xl bg-slate-100 border border-slate-200 text-center">
+                        <div class="text-[10px] font-black uppercase tracking-wider text-slate-600">Pending</div>
+                        <div id="stat-pending-count" class="text-lg font-black text-slate-800">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+                <div id="bar-passed" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+                <div id="bar-failed" class="bg-rose-500 h-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- ROLE FILTER TABS & SEARCH -->
+        <div class="flex flex-wrap items-center justify-between gap-4 no-print">
+            <div class="flex flex-wrap items-center gap-1.5 bg-slate-200/80 p-1.5 rounded-2xl border border-slate-300">
+                <button onclick="filterByRole('all', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition">All Roles</button>
+                <button onclick="filterByRole('Owner', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👑 Owner</button>
+                <button onclick="filterByRole('Admin', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛡️ Admin</button>
+                <button onclick="filterByRole('Service Advisor', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛠️ Service Advisor</button>
+                <button onclick="filterByRole('Assistant Staff', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👥 Assistant Staff</button>
+                <button onclick="filterByRole('TV / Error', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">📺 TV & Diagnostics</button>
+            </div>
+
+            <!-- SEARCH INPUT -->
+            <div class="relative w-full sm:w-72">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search Test ID, Module, or Action..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-red-600 transition shadow-xs">
+            </div>
+        </div>
+
+        <!-- TESTING TABLE CARD -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden card-print">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[10px]">
+                        <tr>
+                            <th class="px-4 py-3.5 w-24">Test ID</th>
+                            <th class="px-4 py-3.5 w-32">Module</th>
+                            <th class="px-4 py-3.5 w-32">Target Role</th>
+                            <th class="px-4 py-3.5">Action Under Test</th>
+                            <th class="px-4 py-3.5">Expected Behavior</th>
+                            <th class="px-4 py-3.5 w-36 text-center">Status</th>
+                            <th class="px-4 py-3.5 w-64">Tester Notes / Result</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matrix-table-body" class="divide-y divide-slate-100 font-medium">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- EMBEDDED TESTING DATA & ENGINE -->
+    <script>
+        const testCases = [
+            // AUTHENTICATION
+            { id: 'AUTH-01', module: 'Authentication', role: 'All Roles', action: 'Login with Valid Credentials (owner@hontech.com / admin123)', expected: 'Authenticates and redirects to role dashboard without blank screen', status: 'Pending', notes: '' },
+            { id: 'AUTH-02', module: 'Authentication', role: 'All Roles', action: 'Login with Invalid Password', expected: 'Displays clear error toast "Invalid email or password"', status: 'Pending', notes: '' },
+            { id: 'AUTH-03', module: 'Authentication', role: 'All Roles', action: 'Forgot Password Flow with Email & Security PIN', expected: 'Validates PIN and allows updating password', status: 'Pending', notes: '' },
+            { id: 'AUTH-04', module: 'Authentication', role: 'All Roles', action: 'Quick-Copy Dev Credentials Badges', expected: 'Clicking credential badge auto-fills email and password inputs', status: 'Pending', notes: '' },
+
+            // OWNER & ADMIN ANALYTICS
+            { id: 'OWN-01', module: 'Owner Analytics', role: 'Owner', action: 'KPI Overview Metrics (Released Today, In Bays, Total)', expected: 'Cards calculate totals from MySQL data and show subtext badges', status: 'Pending', notes: '' },
+            { id: 'OWN-02', module: 'Owner Analytics', role: 'Owner', action: 'Chart Rendering (Volume Trends & Categories)', expected: 'Chart.js canvases render smoothly without console errors', status: 'Pending', notes: '' },
+            { id: 'OWN-03', module: 'Owner Analytics', role: 'Owner', action: 'Period Record Log Table Sub-Tab', expected: 'Displays paginated operational records table', status: 'Pending', notes: '' },
+            { id: 'OWN-04', module: 'Owner Analytics', role: 'Owner', action: 'Period Log Column Header Sorting (ASC/DESC)', expected: 'Clicking column headers toggles ascending/descending order with arrows', status: 'Pending', notes: '' },
+            { id: 'OWN-05', module: 'Owner Analytics', role: 'Owner', action: 'Period Log Filters (Date Range, Branch, SA)', expected: 'Filters table dynamically and updates matching record count', status: 'Pending', notes: '' },
+            { id: 'OWN-06', module: 'Owner Analytics', role: 'Owner', action: 'Export to CSV / Excel Button', expected: 'Downloads formatted .csv file matching currently filtered rows', status: 'Pending', notes: '' },
+
+            // STAFF & ACCESS MANAGEMENT
+            { id: 'STF-01', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Roster Table Rendering', expected: 'Displays personnel accounts with name, role, email, and branch', status: 'Pending', notes: '' },
+            { id: 'STF-02', module: 'Staff Access', role: 'Owner / Admin', action: 'Add Personnel Modal Submission', expected: 'Creates staff account in MySQL and immediately updates roster table', status: 'Pending', notes: '' },
+            { id: 'STF-03', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Role Dropdown Modification', expected: 'Updates role in database with actionable success toast', status: 'Pending', notes: '' },
+            { id: 'STF-04', module: 'Staff Access', role: 'Owner / Admin', action: 'Suspend / Activate Account Toggle', expected: 'Toggles active state (Active / Suspended) without reload delay', status: 'Pending', notes: '' },
+            { id: 'STF-05', module: 'Staff Access', role: 'Owner / Admin', action: 'Primary Administrator Security Shield', expected: 'Owner account is marked "Secured / Sys Owner" and cannot be suspended', status: 'Pending', notes: '' },
+            { id: 'STF-06', module: 'Staff Access', role: 'Owner / Admin', action: 'Branch Register Tab & Management', expected: 'Displays active branches and allows adding new branch code', status: 'Pending', notes: '' },
+
+            // SERVICE ADVISOR (SA)
+            { id: 'SA-01', module: 'Service Advisor', role: 'Service Advisor', action: 'Walk-In Intake Form Rendering', expected: 'Displays plate, name, contact, vehicle, category dropdowns', status: 'Pending', notes: '' },
+            { id: 'SA-02', module: 'Service Advisor', role: 'Service Advisor', action: 'Auto-Generated Claim Stub Preview', expected: 'Generates unique date-relative stub (e.g. MMDDYY-001) in real-time', status: 'Pending', notes: '' },
+            { id: 'SA-03', module: 'Service Advisor', role: 'Service Advisor', action: 'Submit Walk-In Paperwork', expected: 'Encodes job to database and routes vehicle to Daily Intakes queue', status: 'Pending', notes: '' },
+            { id: 'SA-04', module: 'Service Advisor', role: 'Service Advisor', action: 'Daily Intakes Table Status Switch', expected: 'Selecting "Ready to Release" updates row and turns badge green', status: 'Pending', notes: '' },
+            { id: 'SA-05', module: 'Service Advisor', role: 'Service Advisor', action: 'Workshop Bay Lift Allocation (Lift 1 to 4)', expected: 'Assigning Lift marks lift occupied for other cars with license plate', status: 'Pending', notes: '' },
+            { id: 'SA-06', module: 'Service Advisor', role: 'Service Advisor', action: 'Evaluation & Diagnosis In-Line Edit', expected: 'Editing diagnosis text updates MySQL record on blur/change', status: 'Pending', notes: '' },
+            { id: 'SA-07', module: 'Service Advisor', role: 'Service Advisor', action: 'Send Vehicle to Carry-Over Queue', expected: 'Selecting Carry-Over opens modal to capture promised date & reason', status: 'Pending', notes: '' },
+            { id: 'SA-08', module: 'Service Advisor', role: 'Service Advisor', action: 'Carry-Over Board Management', expected: 'Allows returning carry-over active or completing release', status: 'Pending', notes: '' },
+
+            // ASSISTANT STAFF
+            { id: 'AST-01', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Online Booking Form Submission', expected: 'Encodes online inquiry with appointment date/time to Booking Module', status: 'Pending', notes: '' },
+            { id: 'AST-02', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Booking Module Queue (Pending Express Table)', expected: 'Displays pending online inquiries with plate, name, and lane type', status: 'Pending', notes: '' },
+            { id: 'AST-03', module: 'Assistant Staff', role: 'Assistant Staff', action: 'In-Line Booking Lane Type Selection', expected: 'Allows modifying lane type (Flexible, Express, PMS, GRS, Special)', status: 'Pending', notes: '' },
+            { id: 'AST-04', module: 'Assistant Staff', role: 'Assistant Staff', action: '"Confirm Active" Action Flow', expected: 'Converts booking to active workshop intake with arrival timestamp', status: 'Pending', notes: '' },
+            { id: 'AST-05', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Delete Booking Inactive Modal', expected: 'Prompts clean confirmation dialog before removing online entry', status: 'Pending', notes: '' },
+
+            // TV DISPLAY & DIAGNOSTICS
+            { id: 'TV-01', module: 'TV Display', role: 'TV / Error', action: 'Live TV Display Carousel Rotation', expected: 'Rotates between Slide 1 (Active Lifts), Slide 2 (Ready), Slide 3 (Lanes)', status: 'Pending', notes: '' },
+            { id: 'TV-02', module: 'TV Display', role: 'TV / Error', action: '15-Second Slide Interval Rotation', expected: 'Slides transition smoothly without blocking browser memory or freezing', status: 'Pending', notes: '' },
+            { id: 'ERR-01', module: 'Diagnostics', role: 'TV / Error', action: 'Developer Exception Overlay', expected: 'Uncaught runtime errors trigger high-contrast diagnostics overlay', status: 'Pending', notes: '' },
+            { id: 'ERR-02', module: 'Diagnostics', role: 'TV / Error', action: 'Crash Log Export (.txt) & Seed DB Reset', expected: 'Export Log downloads error trace text; Seed DB resets database cleanly', status: 'Pending', notes: '' }
+        ];
+
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        // Load saved testing state from localStorage if available
+        const savedState = localStorage.getItem('hontech-qa-matrix-state');
+        if (savedState) {
+            try {
+                const parsed = JSON.parse(savedState);
+                parsed.forEach(savedItem => {
+                    const match = testCases.find(t => t.id === savedItem.id);
+                    if (match) {
+                        match.status = savedItem.status;
+                        match.notes = savedItem.notes;
+                    }
+                });
+            } catch(e) { console.error('Failed to load saved state:', e); }
+        }
+
+        function saveState() {
+            localStorage.setItem('hontech-qa-matrix-state', JSON.stringify(testCases));
+            updateStats();
+        }
+
+        function setStatus(id, newStatus) {
+            const item = testCases.find(t => t.id === id);
+            if (item) {
+                item.status = newStatus;
+                saveState();
+                renderTable();
+            }
+        }
+
+        function setNotes(id, newNotes) {
+            const item = testCases.find(t => t.id === id);
+            if (item) {
+                item.notes = newNotes;
+                saveState();
+            }
+        }
+
+        function filterByRole(role, btn) {
+            activeFilter = role;
+            document.querySelectorAll('.role-filter-btn').forEach(b => {
+                b.className = "role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition";
+            });
+            btn.className = "role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition";
+            renderTable();
+        }
+
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase();
+            renderTable();
+        }
+
+        function updateStats() {
+            const total = testCases.length;
+            const passed = testCases.filter(t => t.status === 'Pass').length;
+            const failed = testCases.filter(t => t.status === 'Fail').length;
+            const pending = testCases.filter(t => t.status === 'Pending').length;
+            const completed = passed + failed;
+            const pct = Math.round((passed / total) * 100);
+
+            document.getElementById('stat-total-count').innerText = total;
+            document.getElementById('stat-passed-count').innerText = passed;
+            document.getElementById('stat-failed-count').innerText = failed;
+            document.getElementById('stat-pending-count').innerText = pending;
+            document.getElementById('stat-completed-count').innerText = completed;
+            document.getElementById('stat-progress-pct').innerText = `${pct}%`;
+
+            document.getElementById('bar-passed').style.width = `${(passed / total) * 100}%`;
+            document.getElementById('bar-failed').style.width = `${(failed / total) * 100}%`;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('matrix-table-body');
+            let filtered = testCases;
+
+            if (activeFilter !== 'all') {
+                if (activeFilter === 'TV / Error') {
+                    filtered = filtered.filter(t => t.role === 'TV / Error' || t.module === 'TV Display' || t.module === 'Diagnostics');
+                } else {
+                    filtered = filtered.filter(t => t.role.includes(activeFilter) || t.role === 'All Roles');
+                }
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(t => 
+                    t.id.toLowerCase().includes(searchQuery) ||
+                    t.module.toLowerCase().includes(searchQuery) ||
+                    t.role.toLowerCase().includes(searchQuery) ||
+                    t.action.toLowerCase().includes(searchQuery) ||
+                    t.expected.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            tbody.innerHTML = filtered.map(item => `
+                <tr class="hover:bg-slate-50/80 transition ${item.status === 'Pass' ? 'bg-emerald-50/30' : item.status === 'Fail' ? 'bg-rose-50/40' : ''}">
+                    <td class="px-4 py-3 align-top font-mono font-bold text-slate-700">${item.id}</td>
+                    <td class="px-4 py-3 align-top">
+                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">${item.module}</span>
+                    </td>
+                    <td class="px-4 py-3 align-top">
+                        <span class="font-bold text-slate-800">${item.role}</span>
+                    </td>
+                    <td class="px-4 py-3 align-top text-slate-900 font-semibold">${item.action}</td>
+                    <td class="px-4 py-3 align-top text-slate-600 text-[11px] leading-relaxed">${item.expected}</td>
+                    <td class="px-4 py-3 align-top text-center">
+                        <div class="inline-flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200 gap-1">
+                            <button onclick="setStatus('${item.id}', 'Pass')" class="px-2.5 py-1 rounded-lg font-bold text-[10px] uppercase transition cursor-pointer ${item.status === 'Pass' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-500 hover:text-emerald-700'}">Pass</button>
+                            <button onclick="setStatus('${item.id}', 'Fail')" class="px-2.5 py-1 rounded-lg font-bold text-[10px] uppercase transition cursor-pointer ${item.status === 'Fail' ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-500 hover:text-rose-700'}">Fail</button>
+                            <button onclick="setStatus('${item.id}', 'Pending')" class="px-2.5 py-1 rounded-lg font-bold text-[10px] uppercase transition cursor-pointer ${item.status === 'Pending' ? 'bg-slate-400 text-white shadow-xs' : 'text-slate-400 hover:text-slate-700'}">Wait</button>
+                        </div>
+                    </td>
+                    <td class="px-4 py-3 align-top">
+                        <input type="text" value="${item.notes.replace(/"/g, '&quot;')}" onchange="setNotes('${item.id}', this.value)" placeholder="Enter QA notes / observations..." class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-800 outline-none focus:border-red-500 transition">
+                    </td>
+                </tr>
+            `).join('');
+
+            lucide.createIcons();
+            updateStats();
+        }
+
+        function downloadCSV() {
+            let csv = "Test ID,Module,Target Role,Action Under Test,Expected Behavior,Status,Tester Notes\n";
+            testCases.forEach(t => {
+                const cleanAction = `"${t.action.replace(/"/g, '""')}"`;
+                const cleanExpected = `"${t.expected.replace(/"/g, '""')}"`;
+                const cleanNotes = `"${t.notes.replace(/"/g, '""')}"`;
+                csv += `${t.id},${t.module},${t.role},${cleanAction},${cleanExpected},${t.status},${cleanNotes}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `HONTECH_QA_TEST_REPORT_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetAllTests() {
+            if (confirm("Are you sure you want to reset all test statuses and notes back to Pending?")) {
+                testCases.forEach(t => { t.status = 'Pending'; t.notes = ''; });
+                saveState();
+                renderTable();
+            }
+        }
+
+        // Initialize table
+        renderTable();
+    </script>
+</body>
+</html>
