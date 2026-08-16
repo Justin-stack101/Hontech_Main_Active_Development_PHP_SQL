@@ -95,3 +95,28 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **Auth Session Credentials**: Fixed a bug where credentials were not attached to same-origin fetch calls, preventing `/api/jobs/analytics` from verifying JWT tokens. Added `credentials: 'include'` to `apiRequest()`.
 * **Date Parsing & Range Query Fixes**: Fixed date conversions in `loadAnalyticsData` that caused timezone offsets. Enhanced `getAnalyticsData()` database query to check both `date_received` and `date_completed` to correctly capture vehicles within selected periods.
 
+---
+
+## 📅 August 16, 2026 (Architectural Review, Diagnostic Audit & QA Protocols)
+
+### 🔬 Root Cause & Architectural Audit
+* **SQL PDO Property Mapping**: Documented the critical schema boundary between backend MySQL PDO snake_case attributes (`id`, `is_active` [0/1], `is_online` [0/1]) and frontend JavaScript camelCase conventions. Enforced standard fallback normalization (`user.id ?? user._id`, `Number(user.is_active) === 1`).
+* **Defensive Array State Guarding**: Mandated `Array.isArray()` fallbacks (`const safeJobs = Array.isArray(allJobs) ? allJobs : [];`) across all table rendering and analytical filtering functions to prevent unhandled `TypeError` exceptions.
+* **Browser Cache Busting**: Established mandatory script version bumping (`<script src="js/app.js?v=X.Y"></script>`) in `frontend/index.html` to eliminate stale script execution during development.
+
+### 🧪 Standard 4-Step QA & Manual Testing Protocol
+When developing or revising features, developers and teammates must follow this verified cycle:
+
+```
+[1. Baseline Health Check] ➔ [2. Build Isolated Feature] ➔ [3. 4-Role Manual Unit Test] ➔ [4. Git Checkpoint Commit]
+```
+
+1. **Step 1: Baseline Health Check**: Verify existing core views (Login, Queues, Analytics) load without console errors before editing.
+2. **Step 2: Build Isolated Feature**: Implement only one specific requirement at a time without mixing concerns.
+3. **Step 3: 4-Role Manual Unit Test**: Test the change across all 4 operational roles:
+   - **Owner (`owner@hontech.com`)**: Verify Analytics KPIs, charts, period records, and staff roster.
+   - **Admin (`admin@hontech.com`)**: Verify administration capabilities and operational records.
+   - **Service Advisor (`sa@hontech.com`)**: Verify Walk-In Intake encoding, Claim Stub generation, and Daily Intakes lift board.
+   - **Assistant Staff (`staff@hontech.com`)**: Verify Online Booking form, Booking Module queue, and Confirm Active conversion.
+4. **Step 4: Commit & Checkpoint**: Commit to Git with a clear descriptive message (`feat(...)` or `fix(...)`) only after all 4 roles pass clean with zero console errors.
+
