@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HonTech AutoCenter — Comprehensive QA Manual Unit Testing Matrix</title>
+    <title>HonTech AutoCenter — 3-Tier QA Manual Unit Testing Matrix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -28,10 +28,10 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-lg font-extrabold tracking-tight text-slate-900">HonTech QA Manual Unit Testing Matrix</h1>
-                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200">50+ Comprehensive Tests</span>
+                        <h1 class="text-lg font-extrabold tracking-tight text-slate-900">HonTech 3-Tier QA Unit Testing Matrix</h1>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200">Tiered Risk Architecture</span>
                     </div>
-                    <p class="text-xs text-slate-500 font-medium">Complete Test Suite Covering All 4 Roles, Edge Cases, Data Layer & Workflows</p>
+                    <p class="text-xs text-slate-500 font-medium">Categorized by Tier 1 (Cosmetic), Tier 2 (Single-Role), and Tier 3 (Shared Core Logic)</p>
                 </div>
             </div>
 
@@ -58,7 +58,65 @@
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-6">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+        <!-- 3-TIER EXPLAINER ACCORDION CARD -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs card-print">
+            <div class="flex items-center justify-between cursor-pointer" onclick="toggleTierExplainer()">
+                <div class="flex items-center gap-2.5">
+                    <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="info" class="w-4 h-4"></i></div>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">Developer Testing Protocol: How to Test by Tier Level</h3>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                    <span id="explainer-toggle-text">Show Guide</span>
+                    <i id="explainer-toggle-icon" data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+                </div>
+            </div>
+
+            <div id="tier-explainer-content" class="hidden mt-4 pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- TIER 1 -->
+                <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200/80 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Tier 1: Visual / Cosmetic
+                        </span>
+                        <span class="text-[10px] font-mono font-bold text-emerald-700">~5-10 Sec</span>
+                    </div>
+                    <p class="text-xs text-emerald-950 font-medium leading-relaxed">Changes to text, labels, button styling, colors, padding, or zebra stripes.</p>
+                    <div class="text-[10px] text-emerald-800 font-bold bg-white/80 p-2 rounded-lg border border-emerald-200">
+                        ⚡ <strong>Action:</strong> Hard refresh (<kbd class="px-1 py-0.5 bg-emerald-100 rounded text-emerald-900 font-mono">Ctrl + F5</kbd>) & spot-check that exact element.
+                    </div>
+                </div>
+
+                <!-- TIER 2 -->
+                <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200/80 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span> Tier 2: Single-Role Feature
+                        </span>
+                        <span class="text-[10px] font-mono font-bold text-amber-700">~30-60 Sec</span>
+                    </div>
+                    <p class="text-xs text-amber-950 font-medium leading-relaxed">Changes isolated to 1 specific role (e.g. Analytics Period Log Table, Walk-In Input validation).</p>
+                    <div class="text-[10px] text-amber-800 font-bold bg-white/80 p-2 rounded-lg border border-amber-200">
+                        ⚡ <strong>Action:</strong> Log into that <strong>1 specific account</strong>, verify the action, check F12 console.
+                    </div>
+                </div>
+
+                <!-- TIER 3 -->
+                <div class="p-4 rounded-xl bg-rose-50/60 border border-rose-200/80 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span> Tier 3: Shared Core Logic
+                        </span>
+                        <span class="text-[10px] font-mono font-bold text-rose-700">~2-3 Min</span>
+                    </div>
+                    <p class="text-xs text-rose-950 font-medium leading-relaxed">Changes affecting <code class="font-mono font-bold">renderStaffTables()</code>, <code class="font-mono font-bold">loadData()</code>, Auth, or MySQL PDO APIs.</p>
+                    <div class="text-[10px] text-rose-800 font-bold bg-white/80 p-2 rounded-lg border border-rose-200">
+                        ⚡ <strong>Action:</strong> Perform a <strong>4-Role Smoke Test</strong> (Owner, Admin, SA, Assistant) before committing.
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- TEST EXECUTION PROGRESS CARD -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs card-print">
@@ -95,21 +153,33 @@
             </div>
         </div>
 
-        <!-- ROLE FILTER TABS & SEARCH -->
-        <div class="flex flex-wrap items-center justify-between gap-4 no-print">
-            <div class="flex flex-wrap items-center gap-1.5 bg-slate-200/80 p-1.5 rounded-2xl border border-slate-300">
-                <button onclick="filterByRole('all', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition">All Modules (<span id="count-all">0</span>)</button>
-                <button onclick="filterByRole('Owner', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👑 Owner (<span id="count-owner">0</span>)</button>
-                <button onclick="filterByRole('Admin', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛡️ Admin (<span id="count-admin">0</span>)</button>
-                <button onclick="filterByRole('Service Advisor', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛠️ Service Advisor (<span id="count-sa">0</span>)</button>
-                <button onclick="filterByRole('Assistant Staff', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👥 Assistant Staff (<span id="count-asst">0</span>)</button>
-                <button onclick="filterByRole('TV / Error', this)" class="role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">📺 TV & Diagnostics (<span id="count-tv">0</span>)</button>
+        <!-- CONTROLS: TIER FILTER + ROLE FILTER + SEARCH -->
+        <div class="space-y-3 no-print">
+            <!-- TIER LEVEL FILTERS -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-400 mr-1">Filter by Risk Tier:</span>
+                <button onclick="filterByTier('all', this)" class="tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-xs transition">All Tiers (<span id="count-tier-all">0</span>)</button>
+                <button onclick="filterByTier('Tier 3', this)" class="tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-white text-rose-700 border border-rose-200 hover:bg-rose-50 transition">🔴 Tier 3: Shared Core (<span id="count-tier-3">0</span>)</button>
+                <button onclick="filterByTier('Tier 2', this)" class="tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-white text-amber-700 border border-amber-200 hover:bg-amber-50 transition">🟡 Tier 2: Single-Role (<span id="count-tier-2">0</span>)</button>
+                <button onclick="filterByTier('Tier 1', this)" class="tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-white text-emerald-700 border border-emerald-200 hover:bg-emerald-50 transition">🟢 Tier 1: Visual (<span id="count-tier-1">0</span>)</button>
             </div>
 
-            <!-- SEARCH INPUT -->
-            <div class="relative w-full sm:w-80">
-                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
-                <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search ID, Module, Action, or Expected..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-red-600 transition shadow-xs">
+            <!-- ROLE FILTER TABS & SEARCH -->
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-1.5 bg-slate-200/80 p-1.5 rounded-2xl border border-slate-300">
+                    <button onclick="filterByRole('all', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition">All Roles (<span id="count-all">0</span>)</button>
+                    <button onclick="filterByRole('Owner', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👑 Owner (<span id="count-owner">0</span>)</button>
+                    <button onclick="filterByRole('Admin', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛡️ Admin (<span id="count-admin">0</span>)</button>
+                    <button onclick="filterByRole('Service Advisor', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">🛠️ Service Advisor (<span id="count-sa">0</span>)</button>
+                    <button onclick="filterByRole('Assistant Staff', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">👥 Assistant Staff (<span id="count-asst">0</span>)</button>
+                    <button onclick="filterByRole('TV / Error', this)" class="role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition">📺 TV & Diagnostics (<span id="count-tv">0</span>)</button>
+                </div>
+
+                <!-- SEARCH INPUT -->
+                <div class="relative w-full sm:w-80">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                    <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Search ID, Module, Action, Tier..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900 outline-none focus:border-red-600 transition shadow-xs">
+                </div>
             </div>
         </div>
 
@@ -120,7 +190,8 @@
                     <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-wider text-[10px]">
                         <tr>
                             <th class="px-4 py-3.5 w-24">Test ID</th>
-                            <th class="px-4 py-3.5 w-36">Module / Category</th>
+                            <th class="px-4 py-3.5 w-28">Risk Tier</th>
+                            <th class="px-4 py-3.5 w-32">Module</th>
                             <th class="px-4 py-3.5 w-32">Target Role</th>
                             <th class="px-4 py-3.5">Action Under Test</th>
                             <th class="px-4 py-3.5">Expected Behavior</th>
@@ -152,10 +223,18 @@
             </div>
 
             <div class="space-y-3">
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Test ID</label>
                         <input type="text" id="new-test-id" placeholder="e.g. CUST-01" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold outline-none focus:border-red-600">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Risk Tier</label>
+                        <select id="new-test-tier" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold outline-none focus:border-red-600 cursor-pointer">
+                            <option value="Tier 1">🟢 Tier 1 (Cosmetic)</option>
+                            <option value="Tier 2" selected>🟡 Tier 2 (Single-Role)</option>
+                            <option value="Tier 3">🔴 Tier 3 (Shared Core)</option>
+                        </select>
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-1">Target Role</label>
@@ -194,90 +273,92 @@
     <script>
         const initialTestCases = [
             // ==========================================
-            // 1. AUTHENTICATION, RBAC & SECURITY
+            // 1. AUTHENTICATION, RBAC & SECURITY (TIER 3 / TIER 1)
             // ==========================================
-            { id: 'AUTH-01', module: 'Authentication', role: 'All Roles', action: 'Login with Valid Credentials (owner@hontech.com / admin123)', expected: 'Authenticates and redirects to role dashboard without blank screen', status: 'Pending', notes: '' },
-            { id: 'AUTH-02', module: 'Authentication', role: 'All Roles', action: 'Login with Invalid Password', expected: 'Displays clear error toast "Invalid email or password" without crash', status: 'Pending', notes: '' },
-            { id: 'AUTH-03', module: 'Authentication', role: 'All Roles', action: 'Forgot Password PIN Verification', expected: 'Validates 4-digit security PIN and allows setting new password', status: 'Pending', notes: '' },
-            { id: 'AUTH-04', module: 'Authentication', role: 'All Roles', action: 'Quick-Copy Dev Credentials Badges', expected: 'Clicking credential badge auto-fills email and password inputs instantly', status: 'Pending', notes: '' },
-            { id: 'AUTH-05', module: 'Authentication', role: 'All Roles', action: 'Session Presence Ping (Heartbeat)', expected: 'Background ping sends every 30s to keep user status online in database', status: 'Pending', notes: '' },
-            { id: 'AUTH-06', module: 'Authentication', role: 'All Roles', action: 'Logout Flow', expected: 'Clears active JWT session and smoothly redirects back to login portal', status: 'Pending', notes: '' },
-            { id: 'AUTH-07', module: 'Authentication', role: 'Assistant Staff', action: 'RBAC Access Protection Check', expected: 'Attempting to query /api/auth/staff returns 403 Forbidden', status: 'Pending', notes: '' },
+            { id: 'AUTH-01', tier: 'Tier 3', module: 'Authentication', role: 'All Roles', action: 'Login with Valid Credentials (owner@hontech.com / admin123)', expected: 'Authenticates and redirects to role dashboard without blank screen', status: 'Pending', notes: '' },
+            { id: 'AUTH-02', tier: 'Tier 2', module: 'Authentication', role: 'All Roles', action: 'Login with Invalid Password', expected: 'Displays clear error toast "Invalid email or password" without crash', status: 'Pending', notes: '' },
+            { id: 'AUTH-03', tier: 'Tier 2', module: 'Authentication', role: 'All Roles', action: 'Forgot Password PIN Verification', expected: 'Validates 4-digit security PIN and allows setting new password', status: 'Pending', notes: '' },
+            { id: 'AUTH-04', tier: 'Tier 1', module: 'Authentication', role: 'All Roles', action: 'Quick-Copy Dev Credentials Badges', expected: 'Clicking credential badge auto-fills email and password inputs instantly', status: 'Pending', notes: '' },
+            { id: 'AUTH-05', tier: 'Tier 3', module: 'Authentication', role: 'All Roles', action: 'Session Presence Ping (Heartbeat)', expected: 'Background ping sends every 30s to keep user status online in database', status: 'Pending', notes: '' },
+            { id: 'AUTH-06', tier: 'Tier 3', module: 'Authentication', role: 'All Roles', action: 'Logout Flow', expected: 'Clears active JWT session and smoothly redirects back to login portal', status: 'Pending', notes: '' },
+            { id: 'AUTH-07', tier: 'Tier 3', module: 'Authentication', role: 'Assistant Staff', action: 'RBAC Route Protection Check', expected: 'Attempting to query /api/auth/staff returns 403 Forbidden', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 2. OWNER & ADMIN ANALYTICS & REPORTS
+            // 2. OWNER & ADMIN ANALYTICS & REPORTS (TIER 2)
             // ==========================================
-            { id: 'OWN-01', module: 'Analytics Overview', role: 'Owner', action: 'KPI Metrics Calculation (Released Today, In Bays, Total)', expected: 'Cards calculate real totals from MySQL data and show subtext badges', status: 'Pending', notes: '' },
-            { id: 'OWN-02', module: 'Analytics Overview', role: 'Owner', action: 'Volume Trends Line Chart Rendering', expected: 'Chart.js canvas renders daily vehicle throughput without script errors', status: 'Pending', notes: '' },
-            { id: 'OWN-03', module: 'Analytics Overview', role: 'Owner', action: 'Service Category Breakdown Doughnut Chart', expected: 'Renders PMS, GRS, PMS & GRS, Others proportions accurately', status: 'Pending', notes: '' },
-            { id: 'OWN-04', module: 'Analytics Overview', role: 'Owner', action: 'Period Record Log Table Sub-Tab Access', expected: 'Sub-tab 3 displays historical and active operational records table', status: 'Pending', notes: '' },
-            { id: 'OWN-05', module: 'Analytics Overview', role: 'Owner', action: 'Period Log Column Header Sorting (ASC/DESC)', expected: 'Clicking headers (Plate, Date, SLA) toggles sorting with arrow indicators', status: 'Pending', notes: '' },
-            { id: 'OWN-06', module: 'Analytics Overview', role: 'Owner', action: 'Period Log Filters (Date Range, Branch, SA, Status)', expected: 'Filters table records dynamically and updates matching record count badge', status: 'Pending', notes: '' },
-            { id: 'OWN-07', module: 'Analytics Overview', role: 'Owner', action: 'Export to CSV / Excel Button', expected: 'Downloads formatted .csv file matching currently filtered rows', status: 'Pending', notes: '' },
-            { id: 'OWN-08', module: 'Analytics Overview', role: 'Owner', action: 'Formal Report Download Modal (PDF, Word, Excel)', expected: 'Opens modal allowing report type, date range, and format selection', status: 'Pending', notes: '' },
+            { id: 'OWN-01', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'KPI Metrics Calculation (Released Today, In Bays, Total)', expected: 'Cards calculate real totals from MySQL data and show subtext badges', status: 'Pending', notes: '' },
+            { id: 'OWN-02', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Volume Trends Line Chart Rendering', expected: 'Chart.js canvas renders daily vehicle throughput without script errors', status: 'Pending', notes: '' },
+            { id: 'OWN-03', tier: 'Tier 1', module: 'Analytics Overview', role: 'Owner', action: 'Service Category Breakdown Doughnut Chart', expected: 'Renders PMS, GRS, PMS & GRS, Others proportions accurately', status: 'Pending', notes: '' },
+            { id: 'OWN-04', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Period Record Log Table Sub-Tab Access', expected: 'Sub-tab 3 displays historical and active operational records table', status: 'Pending', notes: '' },
+            { id: 'OWN-05', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Period Log Column Header Sorting (ASC/DESC)', expected: 'Clicking headers (Plate, Date, SLA) toggles sorting with arrow indicators', status: 'Pending', notes: '' },
+            { id: 'OWN-06', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Period Log Filters (Date Range, Branch, SA, Status)', expected: 'Filters table records dynamically and updates matching record count badge', status: 'Pending', notes: '' },
+            { id: 'OWN-07', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Export to CSV / Excel Button', expected: 'Downloads formatted .csv file matching currently filtered rows', status: 'Pending', notes: '' },
+            { id: 'OWN-08', tier: 'Tier 2', module: 'Analytics Overview', role: 'Owner', action: 'Formal Report Download Modal (PDF, Word, Excel)', expected: 'Opens modal allowing report type, date range, and format selection', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 3. STAFF & ACCESS MANAGEMENT (RBAC)
+            // 3. STAFF & ACCESS MANAGEMENT (TIER 2 / TIER 3)
             // ==========================================
-            { id: 'STF-01', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Roster Table Rendering', expected: 'Displays all staff with name, role, email, branch, and status badges', status: 'Pending', notes: '' },
-            { id: 'STF-02', module: 'Staff Access', role: 'Owner / Admin', action: 'Add Personnel Modal Submission', expected: 'Creates staff account in MySQL and immediately updates roster table', status: 'Pending', notes: '' },
-            { id: 'STF-03', module: 'Staff Access', role: 'Owner / Admin', action: 'Duplicate Email Validation Check', expected: 'Prevents creating duplicate email accounts with actionable toast warning', status: 'Pending', notes: '' },
-            { id: 'STF-04', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Role Dropdown Modification', expected: 'Updates role in database (e.g. Assistant -> SA) with success toast', status: 'Pending', notes: '' },
-            { id: 'STF-05', module: 'Staff Access', role: 'Owner / Admin', action: 'Suspend / Activate Account Toggle', expected: 'Toggles active state (Active / Suspended) without page reload', status: 'Pending', notes: '' },
-            { id: 'STF-06', module: 'Staff Access', role: 'Owner / Admin', action: 'Primary Administrator Security Shield', expected: 'Owner account is marked "Secured / Sys Owner" and cannot be suspended', status: 'Pending', notes: '' },
-            { id: 'STF-07', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Direct Password Reset Modal', expected: 'Allows Admin/Owner to manually reset forgotten password for any staff', status: 'Pending', notes: '' },
-            { id: 'STF-08', module: 'Staff Access', role: 'Owner / Admin', action: 'Branch Register Tab & List Management', expected: 'Displays branch codes and allows creating new workshop branch', status: 'Pending', notes: '' },
-            { id: 'STF-09', module: 'Staff Access', role: 'Owner / Admin', action: 'Branch Soft-Delete & Restore Flow', expected: 'Allows soft-deleting and restoring branches with confirmation', status: 'Pending', notes: '' },
+            { id: 'STF-01', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Roster Table Rendering', expected: 'Displays all staff with name, role, email, branch, and status badges', status: 'Pending', notes: '' },
+            { id: 'STF-02', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Add Personnel Modal Submission', expected: 'Creates staff account in MySQL and immediately updates roster table', status: 'Pending', notes: '' },
+            { id: 'STF-03', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Duplicate Email Validation Check', expected: 'Prevents creating duplicate email accounts with actionable toast warning', status: 'Pending', notes: '' },
+            { id: 'STF-04', tier: 'Tier 3', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Role Dropdown Modification', expected: 'Updates role in database (e.g. Assistant -> SA) with success toast', status: 'Pending', notes: '' },
+            { id: 'STF-05', tier: 'Tier 3', module: 'Staff Access', role: 'Owner / Admin', action: 'Suspend / Activate Account Toggle', expected: 'Toggles active state (Active / Suspended) without page reload', status: 'Pending', notes: '' },
+            { id: 'STF-06', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Primary Administrator Security Shield', expected: 'Owner account is marked "Secured / Sys Owner" and cannot be suspended', status: 'Pending', notes: '' },
+            { id: 'STF-07', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Staff Direct Password Reset Modal', expected: 'Allows Admin/Owner to manually reset forgotten password for any staff', status: 'Pending', notes: '' },
+            { id: 'STF-08', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Branch Register Tab & List Management', expected: 'Displays branch codes and allows creating new workshop branch', status: 'Pending', notes: '' },
+            { id: 'STF-09', tier: 'Tier 2', module: 'Staff Access', role: 'Owner / Admin', action: 'Branch Soft-Delete & Restore Flow', expected: 'Allows soft-deleting and restoring branches with confirmation', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 4. SERVICE ADVISOR (SA) OPERATIONS
+            // 4. SERVICE ADVISOR (SA) OPERATIONS (TIER 2 / TIER 3)
             // ==========================================
-            { id: 'SA-01', module: 'Service Advisor', role: 'Service Advisor', action: 'Walk-In Intake Form Rendering', expected: 'Displays customer name, plate, contact, vehicle, category dropdowns', status: 'Pending', notes: '' },
-            { id: 'SA-02', module: 'Service Advisor', role: 'Service Advisor', action: 'Auto-Generated Claim Stub Preview', expected: 'Generates unique date-relative stub (e.g. MMDDYY-001) in real-time', status: 'Pending', notes: '' },
-            { id: 'SA-03', module: 'Service Advisor', role: 'Service Advisor', action: 'Submit Walk-In Intake Paperwork', expected: 'Encodes job to database and routes vehicle to Daily Intakes queue', status: 'Pending', notes: '' },
-            { id: 'SA-04', module: 'Service Advisor', role: 'Service Advisor', action: 'Custom Category Specification ("Others")', expected: 'Selecting "Others" exposes text input to enter custom service category', status: 'Pending', notes: '' },
-            { id: 'SA-05', module: 'Service Advisor', role: 'Service Advisor', action: 'Daily Intakes Table Status Switch', expected: 'Selecting "Ready to Release" updates row and turns badge green', status: 'Pending', notes: '' },
-            { id: 'SA-06', module: 'Service Advisor', role: 'Service Advisor', action: 'Workshop Bay Lift Allocation (Lift 1 to 4)', expected: 'Assigning Lift marks lift occupied for other cars with license plate', status: 'Pending', notes: '' },
-            { id: 'SA-07', module: 'Service Advisor', role: 'Service Advisor', action: 'In-Line Service Category & Lane Adjustment', expected: 'SA can change category (PMS/GRS) and lane directly from the table row', status: 'Pending', notes: '' },
-            { id: 'SA-08', module: 'Service Advisor', role: 'Service Advisor', action: 'Evaluation & Diagnosis In-Line Edit', expected: 'Editing diagnosis text updates MySQL record on blur/change', status: 'Pending', notes: '' },
-            { id: 'SA-09', module: 'Service Advisor', role: 'Service Advisor', action: 'Send Vehicle to Carry-Over Queue', expected: 'Selecting Carry-Over opens modal to capture promised date & reason', status: 'Pending', notes: '' },
-            { id: 'SA-10', module: 'Service Advisor', role: 'Service Advisor', action: 'Carry-Over Board "Return Active" Action', expected: 'Returns carry-over car to active queue with updated arrival timestamp', status: 'Pending', notes: '' },
-            { id: 'SA-11', module: 'Service Advisor', role: 'Service Advisor', action: 'Carry-Over "Complete Release" Action', expected: 'Finalizes vehicle release and moves record to completed archive', status: 'Pending', notes: '' },
+            { id: 'SA-01', tier: 'Tier 2', module: 'Service Advisor', role: 'Service Advisor', action: 'Walk-In Intake Form Rendering', expected: 'Displays customer name, plate, contact, vehicle, category dropdowns', status: 'Pending', notes: '' },
+            { id: 'SA-02', tier: 'Tier 2', module: 'Service Advisor', role: 'Service Advisor', action: 'Auto-Generated Claim Stub Preview', expected: 'Generates unique date-relative stub (e.g. MMDDYY-001) in real-time', status: 'Pending', notes: '' },
+            { id: 'SA-03', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Submit Walk-In Intake Paperwork', expected: 'Encodes job to database and routes vehicle to Daily Intakes queue', status: 'Pending', notes: '' },
+            { id: 'SA-04', tier: 'Tier 1', module: 'Service Advisor', role: 'Service Advisor', action: 'Custom Category Specification ("Others")', expected: 'Selecting "Others" exposes text input to enter custom service category', status: 'Pending', notes: '' },
+            { id: 'SA-05', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Daily Intakes Table Status Switch', expected: 'Selecting "Ready to Release" updates row and turns badge green', status: 'Pending', notes: '' },
+            { id: 'SA-06', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Workshop Bay Lift Allocation (Lift 1 to 4)', expected: 'Assigning Lift marks lift occupied for other cars with license plate', status: 'Pending', notes: '' },
+            { id: 'SA-07', tier: 'Tier 2', module: 'Service Advisor', role: 'Service Advisor', action: 'In-Line Service Category & Lane Adjustment', expected: 'SA can change category (PMS/GRS) and lane directly from the table row', status: 'Pending', notes: '' },
+            { id: 'SA-08', tier: 'Tier 2', module: 'Service Advisor', role: 'Service Advisor', action: 'Evaluation & Diagnosis In-Line Edit', expected: 'Editing diagnosis text updates MySQL record on blur/change', status: 'Pending', notes: '' },
+            { id: 'SA-09', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Send Vehicle to Carry-Over Queue', expected: 'Selecting Carry-Over opens modal to capture promised date & reason', status: 'Pending', notes: '' },
+            { id: 'SA-10', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Carry-Over Board "Return Active" Action', expected: 'Returns carry-over car to active queue with updated arrival timestamp', status: 'Pending', notes: '' },
+            { id: 'SA-11', tier: 'Tier 3', module: 'Service Advisor', role: 'Service Advisor', action: 'Carry-Over "Complete Release" Action', expected: 'Finalizes vehicle release and moves record to completed archive', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 5. ASSISTANT STAFF OPERATIONS
+            // 5. ASSISTANT STAFF OPERATIONS (TIER 2 / TIER 3)
             // ==========================================
-            { id: 'AST-01', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Online Booking Form Submission', expected: 'Encodes online inquiry with appointment date/time to Booking Module', status: 'Pending', notes: '' },
-            { id: 'AST-02', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Booking Module Queue (Pending Express Table)', expected: 'Displays pending online inquiries with plate, name, and lane type', status: 'Pending', notes: '' },
-            { id: 'AST-03', module: 'Assistant Staff', role: 'Assistant Staff', action: 'In-Line Booking Lane Type Selection', expected: 'Allows modifying lane type (Flexible, Express, PMS, GRS, Special)', status: 'Pending', notes: '' },
-            { id: 'AST-04', module: 'Assistant Staff', role: 'Assistant Staff', action: 'In-Line Appointment Date & Time Edit', expected: 'Assistant can adjust customer appointment date/time directly in row', status: 'Pending', notes: '' },
-            { id: 'AST-05', module: 'Assistant Staff', role: 'Assistant Staff', action: '"Confirm Active" Action Flow', expected: 'Converts booking to active workshop intake with arrival timestamp', status: 'Pending', notes: '' },
-            { id: 'AST-06', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Delete Booking Inactive Modal', expected: 'Prompts clean confirmation dialog before removing online entry', status: 'Pending', notes: '' },
-            { id: 'AST-07', module: 'Assistant Staff', role: 'Assistant Staff', action: 'SLA Goal Indicator (2-Hour Benchmark)', expected: 'Shows Successful or Failed badge based on duration vs SLA target', status: 'Pending', notes: '' },
+            { id: 'AST-01', tier: 'Tier 2', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Online Booking Form Submission', expected: 'Encodes online inquiry with appointment date/time to Booking Module', status: 'Pending', notes: '' },
+            { id: 'AST-02', tier: 'Tier 3', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Booking Module Queue (Pending Express Table)', expected: 'Displays pending online inquiries with plate, name, and lane type', status: 'Pending', notes: '' },
+            { id: 'AST-03', tier: 'Tier 2', module: 'Assistant Staff', role: 'Assistant Staff', action: 'In-Line Booking Lane Type Selection', expected: 'Allows modifying lane type (Flexible, Express, PMS, GRS, Special)', status: 'Pending', notes: '' },
+            { id: 'AST-04', tier: 'Tier 2', module: 'Assistant Staff', role: 'Assistant Staff', action: 'In-Line Appointment Date & Time Edit', expected: 'Assistant can adjust customer appointment date/time directly in row', status: 'Pending', notes: '' },
+            { id: 'AST-05', tier: 'Tier 3', module: 'Assistant Staff', role: 'Assistant Staff', action: '"Confirm Active" Action Flow', expected: 'Converts booking to active workshop intake with arrival timestamp', status: 'Pending', notes: '' },
+            { id: 'AST-06', tier: 'Tier 2', module: 'Assistant Staff', role: 'Assistant Staff', action: 'Delete Booking Inactive Modal', expected: 'Prompts clean confirmation dialog before removing online entry', status: 'Pending', notes: '' },
+            { id: 'AST-07', tier: 'Tier 1', module: 'Assistant Staff', role: 'Assistant Staff', action: 'SLA Goal Indicator (2-Hour Benchmark)', expected: 'Shows Successful or Failed badge based on duration vs SLA target', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 6. LIVE TV DISPLAY MONITOR
+            // 6. LIVE TV DISPLAY MONITOR (TIER 2 / TIER 1)
             // ==========================================
-            { id: 'TV-01', module: 'TV Display', role: 'TV / Error', action: 'Live TV Display 3-Slide Carousel Rotation', expected: 'Rotates between Slide 1 (Active Lifts), Slide 2 (Ready), Slide 3 (Lanes)', status: 'Pending', notes: '' },
-            { id: 'TV-02', module: 'TV Display', role: 'TV / Error', action: '15-Second Slide Interval Rotation', expected: 'Slides transition smoothly without blocking browser memory or freezing', status: 'Pending', notes: '' },
-            { id: 'TV-03', module: 'TV Display', role: 'TV / Error', action: 'Manual Slide Indicator Navigation', expected: 'Clicking slide dots navigates directly to target slide and resets timer', status: 'Pending', notes: '' },
-            { id: 'TV-04', module: 'TV Display', role: 'TV / Error', action: 'Standalone TV Mode URL Launch (?mode=tv)', expected: 'Loads clean fullscreen display without sidebar or top navigation bars', status: 'Pending', notes: '' },
+            { id: 'TV-01', tier: 'Tier 2', module: 'TV Display', role: 'TV / Error', action: 'Live TV Display 3-Slide Carousel Rotation', expected: 'Rotates between Slide 1 (Active Lifts), Slide 2 (Ready), Slide 3 (Lanes)', status: 'Pending', notes: '' },
+            { id: 'TV-02', tier: 'Tier 1', module: 'TV Display', role: 'TV / Error', action: '15-Second Slide Interval Rotation', expected: 'Slides transition smoothly without blocking browser memory or freezing', status: 'Pending', notes: '' },
+            { id: 'TV-03', tier: 'Tier 1', module: 'TV Display', role: 'TV / Error', action: 'Manual Slide Indicator Navigation', expected: 'Clicking slide dots navigates directly to target slide and resets timer', status: 'Pending', notes: '' },
+            { id: 'TV-04', tier: 'Tier 2', module: 'TV Display', role: 'TV / Error', action: 'Standalone TV Mode URL Launch (?mode=tv)', expected: 'Loads clean fullscreen display without sidebar or top navigation bars', status: 'Pending', notes: '' },
 
             // ==========================================
-            // 7. DEVELOPER DIAGNOSTICS & SYSTEM RESILIENCE
+            // 7. DEVELOPER DIAGNOSTICS & SYSTEM RESILIENCE (TIER 3 / TIER 2)
             // ==========================================
-            { id: 'ERR-01', module: 'Diagnostics', role: 'TV / Error', action: 'Developer Exception Overlay (Crash Handler)', expected: 'Uncaught runtime errors trigger high-contrast diagnostics overlay', status: 'Pending', notes: '' },
-            { id: 'ERR-02', module: 'Diagnostics', role: 'TV / Error', action: 'Diagnostic Crash Log Export (.txt)', expected: 'Downloads detailed crash log containing stack trace and environment state', status: 'Pending', notes: '' },
-            { id: 'ERR-03', module: 'Diagnostics', role: 'TV / Error', action: 'One-Click Database Re-Seed Trigger', expected: 'Calls /api/auth/developer/reset-seed and prints live database reset log', status: 'Pending', notes: '' },
-            { id: 'ERR-04', module: 'Diagnostics', role: 'TV / Error', action: 'Copy Error Trace to Clipboard', expected: 'Copies clean stack trace to clipboard with success toast notification', status: 'Pending', notes: '' }
+            { id: 'ERR-01', tier: 'Tier 3', module: 'Diagnostics', role: 'TV / Error', action: 'Developer Exception Overlay (Crash Handler)', expected: 'Uncaught runtime errors trigger high-contrast diagnostics overlay', status: 'Pending', notes: '' },
+            { id: 'ERR-02', tier: 'Tier 2', module: 'Diagnostics', role: 'TV / Error', action: 'Diagnostic Crash Log Export (.txt)', expected: 'Downloads detailed crash log containing stack trace and environment state', status: 'Pending', notes: '' },
+            { id: 'ERR-03', tier: 'Tier 3', module: 'Diagnostics', role: 'TV / Error', action: 'One-Click Database Re-Seed Trigger', expected: 'Calls /api/auth/developer/reset-seed and prints live database reset log', status: 'Pending', notes: '' },
+            { id: 'ERR-04', tier: 'Tier 1', module: 'Diagnostics', role: 'TV / Error', action: 'Copy Error Trace to Clipboard', expected: 'Copies clean stack trace to clipboard with success toast notification', status: 'Pending', notes: '' }
         ];
 
         let testCases = [];
-        let activeFilter = 'all';
+        let activeRoleFilter = 'all';
+        let activeTierFilter = 'all';
         let searchQuery = '';
+        let isExplainerOpen = false;
 
         // Load saved state or default
-        const saved = localStorage.getItem('hontech-qa-full-matrix-v2');
+        const saved = localStorage.getItem('hontech-qa-3tier-matrix-v3');
         if (saved) {
             try {
                 testCases = JSON.parse(saved);
@@ -287,8 +368,25 @@
         }
 
         function saveState() {
-            localStorage.setItem('hontech-qa-full-matrix-v2', JSON.stringify(testCases));
+            localStorage.setItem('hontech-qa-3tier-matrix-v3', JSON.stringify(testCases));
             updateStats();
+        }
+
+        function toggleTierExplainer() {
+            isExplainerOpen = !isExplainerOpen;
+            const content = document.getElementById('tier-explainer-content');
+            const text = document.getElementById('explainer-toggle-text');
+            const icon = document.getElementById('explainer-toggle-icon');
+
+            if (isExplainerOpen) {
+                content.classList.remove('hidden');
+                text.innerText = 'Hide Guide';
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                text.innerText = 'Show Guide';
+                icon.classList.remove('rotate-180');
+            }
         }
 
         function setStatus(id, newStatus) {
@@ -308,12 +406,21 @@
             }
         }
 
-        function filterByRole(role, btn) {
-            activeFilter = role;
-            document.querySelectorAll('.role-filter-btn').forEach(b => {
-                b.className = "role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition";
+        function filterByTier(tier, btn) {
+            activeTierFilter = tier;
+            document.querySelectorAll('.tier-filter-btn').forEach(b => {
+                b.className = "tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition";
             });
-            btn.className = "role-filter-btn px-4 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition";
+            btn.className = "tier-filter-btn px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-xs transition";
+            renderTable();
+        }
+
+        function filterByRole(role, btn) {
+            activeRoleFilter = role;
+            document.querySelectorAll('.role-filter-btn').forEach(b => {
+                b.className = "role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs text-slate-600 hover:text-slate-900 transition";
+            });
+            btn.className = "role-filter-btn px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-slate-900 shadow-xs transition";
             renderTable();
         }
 
@@ -340,7 +447,13 @@
             document.getElementById('bar-passed').style.width = total > 0 ? `${(passed / total) * 100}%` : '0%';
             document.getElementById('bar-failed').style.width = total > 0 ? `${(failed / total) * 100}%` : '0%';
 
-            // Update role counts in filter tabs
+            // Update Tier counts
+            document.getElementById('count-tier-all').innerText = total;
+            document.getElementById('count-tier-3').innerText = testCases.filter(t => t.tier === 'Tier 3').length;
+            document.getElementById('count-tier-2').innerText = testCases.filter(t => t.tier === 'Tier 2').length;
+            document.getElementById('count-tier-1').innerText = testCases.filter(t => t.tier === 'Tier 1').length;
+
+            // Update role counts
             document.getElementById('count-all').innerText = total;
             document.getElementById('count-owner').innerText = testCases.filter(t => t.role === 'Owner' || t.role === 'Owner / Admin' || t.role === 'All Roles').length;
             document.getElementById('count-admin').innerText = testCases.filter(t => t.role === 'Admin' || t.role === 'Owner / Admin' || t.role === 'All Roles').length;
@@ -349,25 +462,43 @@
             document.getElementById('count-tv').innerText = testCases.filter(t => t.role === 'TV / Error' || t.module === 'TV Display' || t.module === 'Diagnostics').length;
         }
 
+        function getTierBadge(tier) {
+            if (tier === 'Tier 3') {
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>Tier 3 (Core)</span>`;
+            } else if (tier === 'Tier 2') {
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>Tier 2 (Role)</span>`;
+            } else {
+                return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>Tier 1 (Look)</span>`;
+            }
+        }
+
         function renderTable() {
             const tbody = document.getElementById('matrix-table-body');
             let filtered = testCases;
 
-            if (activeFilter !== 'all') {
-                if (activeFilter === 'TV / Error') {
+            // Tier filter
+            if (activeTierFilter !== 'all') {
+                filtered = filtered.filter(t => t.tier === activeTierFilter);
+            }
+
+            // Role filter
+            if (activeRoleFilter !== 'all') {
+                if (activeRoleFilter === 'TV / Error') {
                     filtered = filtered.filter(t => t.role === 'TV / Error' || t.module === 'TV Display' || t.module === 'Diagnostics');
-                } else if (activeFilter === 'Owner') {
+                } else if (activeRoleFilter === 'Owner') {
                     filtered = filtered.filter(t => t.role === 'Owner' || t.role === 'Owner / Admin' || t.role === 'All Roles');
-                } else if (activeFilter === 'Admin') {
+                } else if (activeRoleFilter === 'Admin') {
                     filtered = filtered.filter(t => t.role === 'Admin' || t.role === 'Owner / Admin' || t.role === 'All Roles');
                 } else {
-                    filtered = filtered.filter(t => t.role.includes(activeFilter) || t.role === 'All Roles');
+                    filtered = filtered.filter(t => t.role.includes(activeRoleFilter) || t.role === 'All Roles');
                 }
             }
 
+            // Search query
             if (searchQuery) {
                 filtered = filtered.filter(t => 
                     t.id.toLowerCase().includes(searchQuery) ||
+                    (t.tier && t.tier.toLowerCase().includes(searchQuery)) ||
                     t.module.toLowerCase().includes(searchQuery) ||
                     t.role.toLowerCase().includes(searchQuery) ||
                     t.action.toLowerCase().includes(searchQuery) ||
@@ -379,6 +510,7 @@
             tbody.innerHTML = filtered.map(item => `
                 <tr class="hover:bg-slate-50/80 transition ${item.status === 'Pass' ? 'bg-emerald-50/30' : item.status === 'Fail' ? 'bg-rose-50/40' : ''}">
                     <td class="px-4 py-3 align-top font-mono font-bold text-slate-700">${item.id}</td>
+                    <td class="px-4 py-3 align-top whitespace-nowrap">${getTierBadge(item.tier || 'Tier 2')}</td>
                     <td class="px-4 py-3 align-top">
                         <span class="inline-block px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">${item.module}</span>
                     </td>
@@ -405,19 +537,19 @@
         }
 
         function downloadCSV() {
-            let csv = "Test ID,Module,Target Role,Action Under Test,Expected Behavior,Status,Tester Notes\n";
+            let csv = "Test ID,Risk Tier,Module,Target Role,Action Under Test,Expected Behavior,Status,Tester Notes\n";
             testCases.forEach(t => {
                 const cleanAction = `"${t.action.replace(/"/g, '""')}"`;
                 const cleanExpected = `"${t.expected.replace(/"/g, '""')}"`;
                 const cleanNotes = `"${t.notes.replace(/"/g, '""')}"`;
-                csv += `${t.id},${t.module},${t.role},${cleanAction},${cleanExpected},${t.status},${cleanNotes}\n`;
+                csv += `${t.id},${t.tier || 'Tier 2'},${t.module},${t.role},${cleanAction},${cleanExpected},${t.status},${cleanNotes}\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", `HONTECH_QA_TEST_REPORT_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute("download", `HONTECH_3TIER_QA_REPORT_${new Date().toISOString().slice(0,10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -433,6 +565,7 @@
 
         function submitNewTestCase() {
             const id = document.getElementById('new-test-id').value.trim();
+            const tier = document.getElementById('new-test-tier').value;
             const role = document.getElementById('new-test-role').value;
             const module = document.getElementById('new-test-module').value.trim();
             const action = document.getElementById('new-test-action').value.trim();
@@ -443,7 +576,7 @@
                 return;
             }
 
-            testCases.push({ id, module, role, action, expected, status: 'Pending', notes: '' });
+            testCases.push({ id, tier, module, role, action, expected, status: 'Pending', notes: '' });
             saveState();
             closeAddTestModal();
             renderTable();
