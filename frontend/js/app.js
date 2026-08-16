@@ -2183,11 +2183,10 @@ Report Generated Automatically by Developer Crash Reporter.
                                             <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-1"></i>
                                             <span class="text-[10px]">LANE:</span>
                                             <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-red-700 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
-                                                <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>FLEXIBLE</option>
+                                                <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS LANE</option>
+                                                <option value="PMS & GRS Lane" ${job.laneType === 'PMS & GRS Lane' || job.laneType === 'PMS Lane' || job.laneType === 'GRS Lane' ? 'selected' : ''}>PMS & GRS LANE</option>
                                                 <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL LANE</option>
-                                                <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS LANE</option>
-                                                <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS LANE</option>
                                             </select>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-red-500 pointer-events-none absolute right-2"></i>
                                         </div>

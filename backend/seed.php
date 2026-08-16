@@ -73,7 +73,7 @@ $defaultJobs = [
         'contact' => '0912-345-6789', 'category' => 'PMS', 'vehicle' => 'Toyota Vios',
         'concern' => 'Change Oil and Filter', 'date_received' => $today,
         'appt_date' => $today, 'appt_time' => '08:00', 'confirmed' => 1,
-        'status' => 'Pending', 'parts_available' => 'Yes', 'lane_type' => 'PMS Lane', 'branch' => 'Branch A'
+        'status' => 'Pending', 'parts_available' => 'Yes', 'lane_type' => 'PMS & GRS Lane', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2002', 'source' => 'Walk-in', 'plate' => 'ABC 987', 'name' => 'Bob Jones',
@@ -82,7 +82,7 @@ $defaultJobs = [
         'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
         'parts_available' => 'Pending', 'evaluation' => 'Front Brake Pads Replacement',
         'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 1,
-        'lane_type' => 'GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
@@ -99,7 +99,7 @@ $defaultJobs = [
         'concern' => '40k KM PMS checkup', 'date_received' => $today,
         'arrival' => '08:30', 'departure' => '10:30',
         'claim_stub' => "{$todayCompact}-003", 'evaluation' => '40K Heavy PMS Service Done',
-        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS Lane',
+        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
         'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
@@ -108,7 +108,7 @@ $defaultJobs = [
         'concern' => 'Alternator replacement', 'date_received' => $today,
         'arrival' => '10:00', 'departure' => '12:15',
         'claim_stub' => "{$todayCompact}-004", 'evaluation' => 'New Denso Alternator Installed',
-        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'GRS Lane',
+        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
         'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
@@ -117,7 +117,7 @@ $defaultJobs = [
         'concern' => '10,000 KM Periodic Maintenance', 'date_received' => $today,
         'arrival' => '08:15', 'claim_stub' => "{$todayCompact}-005",
         'evaluation' => 'Fully Synthetic Oil Change & Filter',
-        'status' => 'Waiting', 'location' => 'None', 'lane_type' => 'PMS Lane',
+        'status' => 'Waiting', 'location' => 'None', 'lane_type' => 'PMS & GRS Lane',
         'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
@@ -127,7 +127,7 @@ $defaultJobs = [
         'arrival' => '09:30', 'claim_stub' => "{$todayCompact}-006",
         'evaluation' => 'Clutch Disc & Release Bearing Replace',
         'status' => 'In Progress', 'location' => 'Lift 2', 'bay_assigned' => 2,
-        'lane_type' => 'GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2021', 'source' => 'Walk-in', 'plate' => 'NDR 7741', 'name' => 'Maria Clara',
@@ -154,7 +154,7 @@ $defaultJobs = [
         'arrival' => '11:30', 'claim_stub' => "{$todayCompact}-009",
         'evaluation' => 'Engine Flush & Brake Pad Service',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'PMS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2024', 'source' => 'Walk-in', 'plate' => 'NXX 1234', 'name' => 'Andres Bonifacio',
