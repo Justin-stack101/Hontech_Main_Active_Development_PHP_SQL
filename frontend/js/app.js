@@ -1985,9 +1985,9 @@ Report Generated Automatically by Developer Crash Reporter.
                             ` : `
                                 <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 hover:border-red-600 rounded-xl px-3 py-1.5 shadow-2xs transition">
                                     <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none text-gray-900">
-                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' ? 'selected' : ''}>Flexible Lane</option>
-                                        <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                        <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
+                                        <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>Flexible</option>
+                                        <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>Express</option>
+                                        <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>Special</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-800 pointer-events-none absolute right-1.5"></i>
                                 </div>
@@ -2184,9 +2184,8 @@ Report Generated Automatically by Developer Crash Reporter.
                                             <span class="text-[10px]">LANE:</span>
                                             <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-red-700 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
-                                                <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS LANE</option>
-                                                <option value="PMS & GRS Lane" ${job.laneType === 'PMS & GRS Lane' || job.laneType === 'PMS Lane' || job.laneType === 'GRS Lane' ? 'selected' : ''}>PMS & GRS LANE</option>
-                                                <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL LANE</option>
+                                                <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
+                                                <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
                                             </select>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-red-500 pointer-events-none absolute right-2"></i>
                                         </div>
