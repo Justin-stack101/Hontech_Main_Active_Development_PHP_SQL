@@ -73,24 +73,24 @@ $defaultJobs = [
         'contact' => '0912-345-6789', 'category' => 'PMS', 'vehicle' => 'Toyota Vios',
         'concern' => 'Change Oil and Filter', 'date_received' => $today,
         'appt_date' => $today, 'appt_time' => '08:00', 'confirmed' => 1,
-        'status' => 'Pending', 'parts_available' => 'Yes', 'branch' => 'Branch A'
+        'status' => 'Pending', 'parts_available' => 'Yes', 'lane_type' => 'PMS Lane', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2002', 'source' => 'Walk-in', 'plate' => 'ABC 987', 'name' => 'Bob Jones',
-        'contact' => '0912-000-1111', 'category' => 'GR', 'vehicle' => 'Honda Civic',
+        'contact' => '0912-000-1111', 'category' => 'GRS', 'vehicle' => 'Honda Civic',
         'concern' => 'Brakes squeaking, check pads', 'date_received' => $today,
         'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
-        'parts_available' => 'Pending', 'evaluation' => 'Checking pads',
+        'parts_available' => 'Pending', 'evaluation' => 'Front Brake Pads Replacement',
         'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 1,
-        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
-        'contact' => '0912-555-5555', 'category' => 'Check-Up', 'vehicle' => 'Nissan Navara',
+        'contact' => '0912-555-5555', 'category' => 'Others', 'vehicle' => 'Nissan Navara',
         'concern' => 'Scratch on front bumper & alignment', 'date_received' => $today,
         'claim_stub' => "{$todayCompact}-002",
-        'parts_available' => 'Pending', 'evaluation' => 'Awaiting Paint',
-        'status' => 'Carry Over', 'promised_date' => $today,
+        'parts_available' => 'Pending', 'evaluation' => 'Front Bumper Painting & Curing',
+        'status' => 'Carry Over', 'promised_date' => $today, 'lane_type' => 'Flexible',
         'remarks' => 'Paint curing delay', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
@@ -98,18 +98,54 @@ $defaultJobs = [
         'contact' => '0917-111-2222', 'category' => 'PMS', 'vehicle' => 'Toyota Fortuner',
         'concern' => '40k KM PMS checkup', 'date_received' => $today,
         'arrival' => '08:30', 'departure' => '10:30',
-        'claim_stub' => "{$todayCompact}-003",
-        'status' => 'Completed', 'date_completed' => $today,
+        'claim_stub' => "{$todayCompact}-003", 'evaluation' => '40K Heavy PMS Service Done',
+        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS Lane',
         'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'ONL-1005', 'source' => 'Online', 'plate' => 'BBB 2222', 'name' => 'Elena Rostova',
-        'contact' => '0918-333-4444', 'category' => 'GR', 'vehicle' => 'Hyundai Accent',
+        'contact' => '0918-333-4444', 'category' => 'GRS', 'vehicle' => 'Hyundai Accent',
         'concern' => 'Alternator replacement', 'date_received' => $today,
         'arrival' => '10:00', 'departure' => '12:15',
-        'claim_stub' => "{$todayCompact}-004",
-        'status' => 'Completed', 'date_completed' => $today,
+        'claim_stub' => "{$todayCompact}-004", 'evaluation' => 'New Denso Alternator Installed',
+        'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'GRS Lane',
         'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2005', 'source' => 'Walk-in', 'plate' => 'NKO 4821', 'name' => 'Carlos Yulo',
+        'contact' => '0919-444-5555', 'category' => 'PMS', 'vehicle' => 'Toyota Innova 2.8',
+        'concern' => '10,000 KM Periodic Maintenance', 'date_received' => $today,
+        'arrival' => '08:15', 'claim_stub' => "{$todayCompact}-005",
+        'evaluation' => 'Fully Synthetic Oil Change & Filter',
+        'status' => 'Waiting', 'location' => 'None', 'lane_type' => 'PMS Lane',
+        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2020', 'source' => 'Walk-in', 'plate' => 'WXY 9012', 'name' => 'Ramon Santos',
+        'contact' => '0920-111-9999', 'category' => 'GRS', 'vehicle' => 'Isuzu D-Max',
+        'concern' => 'Clutch slipping, inspect assembly', 'date_received' => $today,
+        'arrival' => '09:30', 'claim_stub' => "{$todayCompact}-006",
+        'evaluation' => 'Clutch Disc & Release Bearing Replace',
+        'status' => 'In Progress', 'location' => 'Lift 2', 'bay_assigned' => 2,
+        'lane_type' => 'GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2021', 'source' => 'Walk-in', 'plate' => 'NDR 7741', 'name' => 'Maria Clara',
+        'contact' => '0921-777-8888', 'category' => 'PMS & GRS', 'vehicle' => 'Honda HR-V',
+        'concern' => 'Engine check light & CVT fluid change', 'date_received' => $today,
+        'arrival' => '10:15', 'claim_stub' => "{$todayCompact}-007",
+        'evaluation' => 'OBD Diagnostic Scan & HCF-2 Fluid Flush',
+        'status' => 'Monitoring', 'location' => 'Lift 3', 'bay_assigned' => 3,
+        'lane_type' => 'Express Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2022', 'source' => 'Walk-in', 'plate' => 'ZTB 3319', 'name' => 'Juan Dela Cruz',
+        'contact' => '0922-333-2222', 'category' => 'Others', 'vehicle' => 'Hyundai Creta',
+        'concern' => 'Aircon not cooling', 'date_received' => $today,
+        'arrival' => '11:00', 'claim_stub' => "{$todayCompact}-008",
+        'evaluation' => 'Aircon Leak Test & Freon Recharge Complete',
+        'status' => 'Ready to Release', 'location' => 'None',
+        'lane_type' => 'Flexible', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
 
     // BRANCH B — TODAY (Active & Completed)
