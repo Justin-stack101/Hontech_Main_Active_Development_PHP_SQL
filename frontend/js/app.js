@@ -1981,17 +1981,15 @@ Report Generated Automatically by Developer Crash Reporter.
                         <td class="text-gray-500 text-sm">${job.vehicle}</td>
                         <td>
                             ${isOwnerOrAdmin ? `
-                                <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible'}</span>
+                                <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible Lane'}</span>
                             ` : `
-                                <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs hover:border-red-500 transition">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900">
-                                        <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
+                                <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 hover:border-red-600 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none text-gray-900">
+                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' ? 'selected' : ''}>Flexible Lane</option>
                                         <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                         <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
-                                        <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS Lane</option>
-                                        <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-2"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-800 pointer-events-none absolute right-1.5"></i>
                                 </div>
                             `}
                         </td>

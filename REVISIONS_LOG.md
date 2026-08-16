@@ -149,5 +149,6 @@ The following four items represent advanced enterprise optimizations documented 
 2. **⏱️ Brute-Force Rate Limiting**: Implement Redis/session-based rate-limiting on `/api/auth/login` to lock login attempts for 60 seconds after 5 consecutive failures.
 3. **🌐 Offline Network State Detection**: Implement `window.addEventListener('offline' / 'online')` listeners to display a non-intrusive connectivity badge when working with intermittent local Wi-Fi.
 4. **🗄️ Uniform Soft-Deletion Architecture**: Standardize `is_deleted = 1` flag across all tables (`jobs`, `users`, `branches`) to guarantee full audit trail compliance for executive analytics.
+5. **🔔 Live TV Display Sound Chime System**: Integrate Web Audio API chime sounds (`playChime()`) triggered when vehicles transition to "Ready to Release" or upon carousel slide transition on the TV monitor.
 
 
