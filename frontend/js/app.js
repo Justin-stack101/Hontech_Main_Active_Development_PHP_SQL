@@ -2081,67 +2081,76 @@ Report Generated Automatically by Developer Crash Reporter.
                             </td>
                             
                             <!-- Model & Category -->
-                            <td class="px-2 py-3 align-middle">
-                                <div class="font-black text-gray-900 text-sm py-0.5 flex items-center gap-1.5">
+                            <td class="px-2.5 py-3 align-middle">
+                                <div class="font-black text-gray-900 text-sm flex items-center gap-1.5 mb-1.5">
                                     <i data-lucide="car" class="w-4 h-4 text-slate-400 shrink-0"></i>
                                     <span>${job.vehicle}</span>
                                 </div>
-                                <div class="text-[10px] text-gray-500 font-bold uppercase mt-1">
-                                    <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
-                                        <div class="flex items-center flex-nowrap gap-1.5">
-                                            ${isEditable ? `
-                                            <div class="flex items-center gap-1 shrink-0 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-lg">
-                                                <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0"></i>
-                                                <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-bold uppercase bg-transparent border-none cursor-pointer py-0 !w-[115px] outline-none">
-                                                    <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
-                                                    <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
-                                                    <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
-                                                    <option value="Others" ${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>Others</option>
-                                                </select>
-                                                <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
-                                                       placeholder="Specify..." 
-                                                       onchange="updateJobField('${job.id}', 'category', this.value)" 
-                                                       class="table-select text-[10px] font-bold border border-gray-200 bg-white px-1 py-0.5 !w-[115px] shrink-0 ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
-                                            </div>
-                                            ` : `<span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-lg text-[10px] font-bold uppercase text-gray-900 shrink-0"><i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i><span>${job.category || '-'}</span></span>`}
-                                            
-                                            <div class="flex items-center shrink-0 whitespace-nowrap">
-                                                ${job.saName ? `
-                                                    <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 border border-slate-200 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
-                                                        <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
-                                                        <span>SA: ${job.saName}</span>
-                                                    </span>
-                                                ` : ((isAsst || isOwnerOrAdmin) ? `
-                                                    <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/80 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg">
-                                                        <i data-lucide="user-minus" class="w-3 h-3 text-amber-500"></i>
-                                                        <span>Unassigned</span>
-                                                    </span>
-                                                ` : `
-                                                    <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 px-2 py-0.5 rounded-lg transition-all shadow-xs cursor-pointer active:scale-95">
-                                                        <i data-lucide="user-plus" class="w-3 h-3"></i>
-                                                        <span>Assign to Me</span>
-                                                    </button>
-                                                `)}
-                                            </div>
+                                
+                                <div class="flex flex-col gap-1.5 w-full">
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        ${isEditable ? `
+                                        <div class="relative inline-flex items-center bg-slate-50 border border-slate-250 rounded-lg px-2 py-0.5 shadow-2xs">
+                                            <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0 mr-1"></i>
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-extrabold uppercase bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none text-slate-800">
+                                                <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                                <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                                <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
+                                                <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
+                                            </select>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-500 pointer-events-none absolute right-1.5"></i>
+                                        </div>
+                                        
+                                        <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
+                                               placeholder="Specify category..." 
+                                               onchange="updateJobField('${job.id}', 'category', this.value)" 
+                                               class="table-select text-[10px] font-bold border border-red-200 bg-white px-2 py-0.5 rounded-lg w-28 text-gray-900 focus:border-red-600 outline-none shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                        ` : `
+                                        <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-lg text-[10px] font-black uppercase text-gray-900 shadow-2xs shrink-0">
+                                            <i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i>
+                                            <span>${job.category || '-'}</span>
+                                        </span>
+                                        `}
+                                        
+                                        <div class="inline-flex items-center shrink-0">
+                                            ${job.saName ? `
+                                                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
+                                                    <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
+                                                    <span>SA: ${job.saName}</span>
+                                                </span>
+                                            ` : ((isAsst || isOwnerOrAdmin) ? `
+                                                <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/80 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
+                                                    <i data-lucide="user-minus" class="w-3 h-3 text-amber-500"></i>
+                                                    <span>Unassigned</span>
+                                                </span>
+                                            ` : `
+                                                <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 px-2 py-0.5 rounded-lg transition-all shadow-xs cursor-pointer active:scale-95">
+                                                    <i data-lucide="user-plus" class="w-3 h-3"></i>
+                                                    <span>Assign to Me</span>
+                                                </button>
+                                            `)}
                                         </div>
                                     </div>
-                                    
-                                    <div class="w-full mt-1.5">
+
+                                    <div class="flex items-center mt-0.5">
                                         ${isEditable ? `
-                                        <div class="flex items-center gap-1.5 text-red-600 font-bold bg-red-50/50 border border-red-100 rounded-lg px-2 py-0.5 w-fit">
-                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0"></i>
-                                            <span>LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase text-red-600 bg-transparent border-none cursor-pointer p-0 outline-none">
+                                        <div class="relative inline-flex items-center gap-1 text-red-600 font-extrabold bg-red-50/70 border border-red-200 rounded-lg px-2.5 py-0.5 shadow-2xs">
+                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-1"></i>
+                                            <span class="text-[10px]">LANE:</span>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-red-700 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS LANE</option>
                                                 <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL LANE</option>
                                                 <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS LANE</option>
                                                 <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS LANE</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-red-500 shrink-0 pointer-events-none"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-red-500 pointer-events-none absolute right-2"></i>
                                         </div>
                                         ` : `
-                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50/50 border border-red-100 rounded-lg px-2 py-0.5"><i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i><span>LANE: ${job.laneType || 'FLEXIBLE'}</span></div>
+                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-red-600 bg-red-50/70 border border-red-200 rounded-lg px-2.5 py-0.5 shadow-2xs">
+                                            <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
+                                            <span>LANE: ${job.laneType || 'FLEXIBLE'}</span>
+                                        </div>
                                         `}
                                     </div>
                                 </div>
@@ -2420,6 +2429,23 @@ Report Generated Automatically by Developer Crash Reporter.
                 setJobStatus(jobId, newStatus);
             }
         }
+
+        window.handleTableCategoryChange = function(jobId, selectElement) {
+            const val = selectElement.value;
+            const inputEl = document.getElementById(`category-input-${jobId}`);
+            if (val === 'Others') {
+                if (inputEl) {
+                    inputEl.classList.remove('hidden');
+                    inputEl.focus();
+                }
+            } else {
+                if (inputEl) {
+                    inputEl.classList.add('hidden');
+                    inputEl.value = '';
+                }
+                updateJobField(jobId, 'category', val);
+            }
+        };
 
         function applyPeriodicFilters() {
             const query = document.getElementById('periodic-search-query') ? document.getElementById('periodic-search-query').value.toLowerCase().trim() : '';
