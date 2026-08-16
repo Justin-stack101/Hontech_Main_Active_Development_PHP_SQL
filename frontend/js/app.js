@@ -2101,10 +2101,13 @@ Report Generated Automatically by Developer Crash Reporter.
                                             <i data-lucide="chevron-down" class="w-3 h-3 text-slate-500 pointer-events-none absolute right-1.5"></i>
                                         </div>
                                         
-                                        <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
-                                               placeholder="Specify category..." 
-                                               onchange="updateJobField('${job.id}', 'category', this.value)" 
-                                               class="table-select text-[10px] font-bold border border-red-200 bg-white px-2 py-0.5 rounded-lg w-28 text-gray-900 focus:border-red-600 outline-none shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                        <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-red-200 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                            <i data-lucide="edit-3" class="w-3 h-3 text-red-500 shrink-0"></i>
+                                            <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
+                                                   placeholder="Specify custom..." 
+                                                   onchange="updateJobField('${job.id}', 'category', this.value)" 
+                                                   class="table-select text-[10px] font-extrabold text-gray-900 bg-transparent border-none outline-none w-28 p-0">
+                                        </div>
                                         ` : `
                                         <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-lg text-[10px] font-black uppercase text-gray-900 shadow-2xs shrink-0">
                                             <i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i>
@@ -2432,17 +2435,14 @@ Report Generated Automatically by Developer Crash Reporter.
 
         window.handleTableCategoryChange = function(jobId, selectElement) {
             const val = selectElement.value;
+            const wrapEl = document.getElementById(`category-input-wrap-${jobId}`);
             const inputEl = document.getElementById(`category-input-${jobId}`);
             if (val === 'Others') {
-                if (inputEl) {
-                    inputEl.classList.remove('hidden');
-                    inputEl.focus();
-                }
+                if (wrapEl) wrapEl.classList.remove('hidden');
+                if (inputEl) inputEl.focus();
             } else {
-                if (inputEl) {
-                    inputEl.classList.add('hidden');
-                    inputEl.value = '';
-                }
+                if (wrapEl) wrapEl.classList.add('hidden');
+                if (inputEl) inputEl.value = '';
                 updateJobField(jobId, 'category', val);
             }
         };
