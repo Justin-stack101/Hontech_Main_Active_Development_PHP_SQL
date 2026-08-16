@@ -2966,27 +2966,27 @@ Report Generated Automatically by Developer Crash Reporter.
             const tableBody = document.getElementById('table-analytics-body');
             if (tableBody) {
                 tableBody.innerHTML = filtered.map(job => `
-                    <tr class="${job.status === 'Completed' ? 'bg-green-50/20' : job.status === 'Carry Over' ? 'bg-orange-50/20' : ''}">
-                        <td class="px-6 py-4.5">${job.dateReceived}</td>
-                        <td class="px-6 py-4.5"><span class="font-mono text-[11px] bg-gray-100 px-2.5 py-1 rounded text-gray-600 font-bold">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-6 py-4.5"><span class="font-black italic text-gray-900 text-sm">${job.plate}</span></td>
-                        <td class="px-6 py-4.5">${job.vehicle}</td>
-                        <td class="px-6 py-4.5">
-                            <span class="px-2.5 py-1 rounded text-[10px] font-black ${job.category && job.category.toUpperCase().includes('PMS') ? 'bg-blue-50 text-blue-600 border border-blue-100' : job.category && job.category.toUpperCase().includes('GR') ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'}">
-                                ${job.category}
+                    <tr class="hover:bg-gray-50 transition border-b border-gray-100">
+                        <td class="px-6 py-3.5 text-xs text-gray-600 font-medium">${job.dateReceived}</td>
+                        <td class="px-6 py-3.5"><span class="inline-flex items-center justify-center font-mono font-bold text-xs bg-gray-100 text-gray-800 px-2.5 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-6 py-3.5"><span class="font-extrabold text-xs uppercase tracking-wide text-gray-900">${job.plate}</span></td>
+                        <td class="px-6 py-3.5 text-xs font-semibold text-gray-800">${job.vehicle}</td>
+                        <td class="px-6 py-3.5">
+                            <span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">
+                                ${job.category || '-'}
                             </span>
                         </td>
-                        <td class="px-6 py-4.5 text-xs text-gray-700 font-semibold">${job.branch || 'Branch A'}</td>
-                        <td class="px-6 py-4.5 text-xs text-gray-500 font-bold uppercase tracking-wider">${job.source}</td>
-                        <td class="px-6 py-4.5 font-mono text-xs text-gray-600">${formatTime12Hour(job.arrival)}</td>
-                        <td class="px-6 py-4.5 font-mono text-xs text-gray-600">${formatTime12Hour(job.departure)}</td>
-                        <td class="px-6 py-4.5">
-                            <span class="px-2.5 py-1 rounded text-[10px] font-black uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
+                        <td class="px-6 py-3.5 text-xs text-gray-700 font-semibold">${job.branch || 'Branch A'}</td>
+                        <td class="px-6 py-3.5 text-xs text-gray-600 font-bold uppercase tracking-wider">${job.source}</td>
+                        <td class="px-6 py-3.5 font-mono text-xs text-gray-600">${formatTime12Hour(job.arrival)}</td>
+                        <td class="px-6 py-3.5 font-mono text-xs text-gray-600">${formatTime12Hour(job.departure)}</td>
+                        <td class="px-6 py-3.5">
+                            <span class="inline-flex items-center justify-center font-bold text-xs uppercase bg-gray-100 text-gray-800 px-2.5 py-0.5 rounded border border-gray-250">
                                 ${job.goalStatus || 'N/A'}
                             </span>
                         </td>
-                        <td class="px-6 py-4.5 text-gray-700 font-bold text-xs">${job.saName || '-'}</td>
-                        <td class="px-6 py-4.5 text-gray-500 max-w-[200px] truncate" title="${job.remarks || ''}">${job.remarks || '-'}</td>
+                        <td class="px-6 py-3.5 text-gray-800 font-bold text-xs">${job.saName || '-'}</td>
+                        <td class="px-6 py-3.5 text-gray-500 text-xs max-w-[200px] truncate" title="${job.remarks || ''}">${job.remarks || '-'}</td>
                     </tr>
                 `).join('') || `<tr><td colspan="12" class="text-center py-12 text-gray-400 font-medium">No record entries match this period.</td></tr>`;
             }
