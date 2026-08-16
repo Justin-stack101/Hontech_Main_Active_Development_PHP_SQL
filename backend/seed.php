@@ -147,6 +147,24 @@ $defaultJobs = [
         'status' => 'Ready to Release', 'location' => 'None',
         'lane_type' => 'Flexible', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
+    [
+        'job_id' => 'WLK-2023', 'source' => 'Walk-in', 'plate' => 'KGB 8820', 'name' => 'Pedro Penduko',
+        'contact' => '0923-444-5555', 'category' => 'PMS', 'vehicle' => 'Montero Sport',
+        'concern' => '20,000 KM Maintenance & Brake Cleaning', 'date_received' => $today,
+        'arrival' => '11:30', 'claim_stub' => "{$todayCompact}-009",
+        'evaluation' => 'Engine Flush & Brake Pad Service',
+        'status' => 'Waiting', 'location' => 'None',
+        'lane_type' => 'PMS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2024', 'source' => 'Walk-in', 'plate' => 'NXX 1234', 'name' => 'Andres Bonifacio',
+        'contact' => '0924-555-6666', 'category' => 'GRS', 'vehicle' => 'Ford Ranger Wildtrak',
+        'concern' => 'Suspension noise & wheel alignment', 'date_received' => $today,
+        'arrival' => '12:00', 'claim_stub' => "{$todayCompact}-010",
+        'evaluation' => 'Front Shock Bushing Replace & Calibrate',
+        'status' => 'In Progress', 'location' => 'Lift 4', 'bay_assigned' => 4,
+        'lane_type' => 'Special Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+    ],
 
     // BRANCH B — TODAY (Active & Completed)
     [
