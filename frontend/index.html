@@ -1376,7 +1376,7 @@
 
                         <!-- Walk-in Specific (SA Role) -->
                         <div id="div-walkin-fields"
-                            class="md:col-span-12 grid grid-cols-1 md:grid-cols-2 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
+                            class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4 hidden border-t border-gray-100 pt-4 mt-1">
                             <div class="md:col-span-1">
                                 <label
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Arrival
@@ -1385,6 +1385,18 @@
                                     <select id="intake-arrival-hour" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                     <span class="text-gray-500 font-bold">:</span>
                                     <select id="intake-arrival-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
+                                </div>
+                            </div>
+                            <div class="md:col-span-1">
+                                <label
+                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Type of Lane &nbsp;<span class="text-red-500">*</span></label>
+                                <div class="relative flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition">
+                                    <select id="intake-walkin-lane-type" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer pr-6 appearance-none">
+                                        <option value="Flexible" selected>Flexible</option>
+                                        <option value="Express">Express</option>
+                                        <option value="Special">Special</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-3"></i>
                                 </div>
                             </div>
                             <div class="md:col-span-1">
@@ -2699,7 +2711,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.8"></script>
+    <script src="js/app.js?v=2.9"></script>
 </body>
 
 </html>

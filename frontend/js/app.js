@@ -1536,13 +1536,14 @@ Report Generated Automatically by Developer Crash Reporter.
                 const hour = document.getElementById('intake-arrival-hour').value;
                 const min = document.getElementById('intake-arrival-minute').value;
                 arrival = `${hour}:${min}`;
+                laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible';
             } else {
                 apptDate = date;
                 const hour = document.getElementById('intake-appt-hour').value;
                 const min = document.getElementById('intake-appt-minute').value;
                 apptTime = `${hour}:${min}`;
                 confirmed = document.getElementById('intake-confirmed').checked;
-                laneType = document.getElementById('intake-lane-type').value;
+                laneType = document.getElementById('intake-lane-type')?.value || 'Flexible';
             }
 
             try {
