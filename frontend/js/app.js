@@ -21,14 +21,26 @@
         let intakeSourceFilter = 'all';
         let intakeTimeFilter = 'all';
         let intakeSortBy = 'claimStub';
+        let intakeSortOrder = 'desc';
 
         function updateIntakeFilter(type, value) {
             if (type === 'search') intakeSearchQuery = value;
             if (type === 'source') intakeSourceFilter = value;
             if (type === 'time') intakeTimeFilter = value;
             if (type === 'sort') intakeSortBy = value;
+            if (type === 'sortOrder') intakeSortOrder = value;
             renderStaffTables();
         }
+
+        window.toggleClaimStubSort = function() {
+            if (intakeSortBy === 'claimStub') {
+                intakeSortOrder = (intakeSortOrder === 'asc') ? 'desc' : 'asc';
+            } else {
+                intakeSortBy = 'claimStub';
+                intakeSortOrder = 'desc';
+            }
+            renderStaffTables();
+        };
         let analyticsJobs = [];
         let idleLogoutTimer = null;
         let lastUserActivityTimestamp = Date.now();
@@ -1971,15 +1983,15 @@ Report Generated Automatically by Developer Crash Reporter.
                             ${isOwnerOrAdmin ? `
                                 <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible'}</span>
                             ` : `
-                                <div class="relative inline-flex items-center">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-1 pl-2 pr-6 rounded-lg appearance-none shadow-2xs">
+                                <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs hover:border-red-500 transition">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900">
                                         <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
                                         <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                         <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
                                         <option value="PMS Lane" ${job.laneType === 'PMS Lane' ? 'selected' : ''}>PMS Lane</option>
                                         <option value="GRS Lane" ${job.laneType === 'GRS Lane' ? 'selected' : ''}>GRS Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-1.5"></i>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-2"></i>
                                 </div>
                             `}
                         </td>
@@ -2039,19 +2051,19 @@ Report Generated Automatically by Developer Crash Reporter.
                     });
                 }
 
-                // Sort
+                // Sort (Default: claimStub descending)
                 if (intakeSortBy === 'arrival') {
                     activeJobs.sort((a, b) => {
                         const timeA = parseTimeToMinutes(convertTimeTo24Hour(a.arrival));
                         const timeB = parseTimeToMinutes(convertTimeTo24Hour(b.arrival));
-                        return timeA - timeB;
+                        return intakeSortOrder === 'desc' ? (timeB - timeA) : (timeA - timeB);
                     });
                 } else {
-                    // Default: claimStub
+                    // claimStub sorting (handles alphanumeric claim stubs like 0816-001, 0816-010)
                     activeJobs.sort((a, b) => {
-                        const stubA = a.claimStub || 'zzzzz';
-                        const stubB = b.claimStub || 'zzzzz';
-                        return stubA.localeCompare(stubB);
+                        const stubA = a.claimStub || '';
+                        const stubB = b.claimStub || '';
+                        return intakeSortOrder === 'desc' ? stubB.localeCompare(stubA) : stubA.localeCompare(stubB);
                     });
                 }
 
@@ -2061,7 +2073,12 @@ Report Generated Automatically by Developer Crash Reporter.
                     return `
                         <thead class="sticky top-0 z-10 bg-gray-50">
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                <th class="px-2 py-3 bg-gray-50">Claim Stub</th>
+                                <th onclick="toggleClaimStubSort()" class="px-2 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                                    <span class="inline-flex items-center gap-1">
+                                        Claim Stub
+                                        <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
+                                    </span>
+                                </th>
                                 <th class="px-2 py-3 bg-gray-50">Plate No.</th>
                                 <th class="px-2 py-3 bg-gray-50">Model & Category</th>
                                 <th class="px-2 py-3 bg-gray-50">Source</th>
