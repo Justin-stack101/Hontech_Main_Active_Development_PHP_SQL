@@ -2280,15 +2280,14 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="inline-flex items-center gap-1 bg-gray-50 border border-gray-300 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition shrink-0">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-0.5"></i>
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs font-mono font-bold text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer appearance-none text-center w-[22px]">
-                                        ${getHourOptions(convertTimeTo24Hour(job.departure).split(':')[0])}
-                                    </select>
-                                    <span class="text-gray-400 font-bold text-xs select-none">:</span>
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs font-mono font-bold text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer appearance-none text-center w-[22px]">
-                                        ${getMinuteOptions(convertTimeTo24Hour(job.departure).split(':')[1])}
-                                    </select>
+                                <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
+                                    <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
+                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${job.departure || '--:--'}</span>
+                                    <input type="time" 
+                                           value="${convertTimeTo24Hour(job.departure) || ''}" 
+                                           onchange="updateJobField('${job.id}', 'departure', this.value)" 
+                                           class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                           title="Click to set Departure Time">
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-medium text-gray-600">${formatTime12Hour(job.departure)}</span>`}
                             </td>
