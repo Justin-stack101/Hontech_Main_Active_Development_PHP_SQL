@@ -2845,6 +2845,13 @@ Report Generated Automatically by Developer Crash Reporter.
             const today = new Date().toISOString().split('T')[0];
             const month = today.slice(0, 7); // YYYY-MM
 
+            // Restore persisted scope from localStorage
+            const savedScope = localStorage.getItem('hontech_analytics_scope');
+            const scopeSelect = document.getElementById('analytics-scope');
+            if (savedScope && scopeSelect && ['daily', 'weekly', 'monthly'].includes(savedScope)) {
+                scopeSelect.value = savedScope;
+            }
+
             if (!document.getElementById('analytics-date').value) {
                 document.getElementById('analytics-date').value = today;
             }
@@ -2854,10 +2861,16 @@ Report Generated Automatically by Developer Crash Reporter.
             if (!document.getElementById('analytics-month').value) {
                 document.getElementById('analytics-month').value = month;
             }
+
+            const currentScope = scopeSelect ? scopeSelect.value : 'daily';
+            if (document.getElementById('picker-daily')) document.getElementById('picker-daily').classList.toggle('hidden', currentScope !== 'daily');
+            if (document.getElementById('picker-weekly')) document.getElementById('picker-weekly').classList.toggle('hidden', currentScope !== 'weekly');
+            if (document.getElementById('picker-monthly')) document.getElementById('picker-monthly').classList.toggle('hidden', currentScope !== 'monthly');
         }
 
         function handleScopeChange() {
             const scope = document.getElementById('analytics-scope').value;
+            localStorage.setItem('hontech_analytics_scope', scope);
             document.getElementById('picker-daily').classList.toggle('hidden', scope !== 'daily');
             document.getElementById('picker-weekly').classList.toggle('hidden', scope !== 'weekly');
             document.getElementById('picker-monthly').classList.toggle('hidden', scope !== 'monthly');
@@ -3089,7 +3102,7 @@ Report Generated Automatically by Developer Crash Reporter.
             document.getElementById('insight-pms-count').innerText = pms;
             document.getElementById('insight-gr-count').innerText = gr;
 
-            // Compute PMS Success & Failure
+            // Compute PMS Success & Failure (OS: Operational Success / OF: Operational Failure)
             const pmsJobs = jobs.filter(j => j.category && j.category.toUpperCase().includes('PMS'));
             const completedPmsJobs = pmsJobs.filter(j => j.goalStatus === 'Successful' || j.goalStatus === 'Failed');
             const successfulPms = pmsJobs.filter(j => j.goalStatus === 'Successful').length;
@@ -3099,8 +3112,14 @@ Report Generated Automatically by Developer Crash Reporter.
             if (document.getElementById('insight-pms-success-rate')) {
                 document.getElementById('insight-pms-success-rate').innerText = `${pmsSuccessRate}%`;
             }
+            if (document.getElementById('insight-pms-os-count')) {
+                document.getElementById('insight-pms-os-count').innerText = successfulPms;
+            }
+            if (document.getElementById('insight-pms-of-count')) {
+                document.getElementById('insight-pms-of-count').innerText = failedPms;
+            }
             if (document.getElementById('insight-pms-success-counts')) {
-                document.getElementById('insight-pms-success-counts').innerText = `${successfulPms} S / ${failedPms} F`;
+                document.getElementById('insight-pms-success-counts').innerText = `${successfulPms} OS / ${failedPms} OF`;
             }
 
             // Compute Peak Intake Hours

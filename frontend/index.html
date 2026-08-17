@@ -1000,9 +1000,20 @@
                                     <p class="text-[9px] text-gray-400 font-medium mt-1">Percentage of PMS jobs completed within 2 hours.</p>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PMS Success / Failure</p>
-                                    <p class="text-2xl font-black text-gray-900 mt-1" id="insight-pms-success-counts">0 S / 0 F</p>
-                                    <p class="text-[9px] text-gray-400 font-medium mt-1">Met the 2-hour goal (S) vs exceeded it (F).</p>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PMS SLA (OS / OF) Metric</p>
+                                    <div class="flex items-center gap-2 mt-2 flex-wrap">
+                                        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-xl text-xs font-black shadow-2xs">
+                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                            <span id="insight-pms-os-count">0</span>
+                                            <span class="text-[9px] font-bold text-emerald-700 uppercase">(OS: On-Time)</span>
+                                        </span>
+                                        <span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-800 border border-rose-200 px-2.5 py-1 rounded-xl text-xs font-black shadow-2xs">
+                                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
+                                            <span id="insight-pms-of-count">0</span>
+                                            <span class="text-[9px] font-bold text-rose-700 uppercase">(OF: Overdue)</span>
+                                        </span>
+                                    </div>
+                                    <p class="text-[9px] text-gray-400 font-medium mt-1.5">Met 2-hour goal (OS) vs exceeded target (OF).</p>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-xl flex flex-col justify-center">
                                     <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Peak Intake Hours</p>
@@ -2712,7 +2723,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.19"></script>
+    <script src="js/app.js?v=2.20"></script>
 </body>
 
 </html>
