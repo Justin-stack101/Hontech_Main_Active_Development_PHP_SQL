@@ -2428,12 +2428,12 @@ Report Generated Automatically by Developer Crash Reporter.
                         <td class="px-3.5 py-4 whitespace-nowrap">
                             <div class="flex flex-col gap-1.5 min-w-[170px]">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-400 w-14 shrink-0">Recv:</span>
-                                    <span class="bg-gray-100 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded border border-gray-200">${job.dateReceived || '--'}</span>
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-500 w-16 shrink-0">Recv:</span>
+                                    <span class="bg-gray-50 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.dateReceived || '--'}</span>
                                 </div>
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black uppercase tracking-wider text-orange-500 w-14 shrink-0">Promised:</span>
-                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-orange-50 border border-orange-200 text-orange-700 font-bold font-mono text-xs rounded px-2 py-1 outline-none focus:border-orange-500 transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-orange-50 text-orange-700 px-2.5 py-1 rounded border border-orange-200">${job.promisedDate || 'TBD'}</span>`}
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-500 w-16 shrink-0">Promised:</span>
+                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-gray-50 border border-gray-250 hover:border-red-500 focus:border-red-600 text-gray-900 font-bold font-mono text-xs rounded-lg px-2 py-1 outline-none shadow-2xs transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.promisedDate || 'TBD'}</span>`}
                                 </div>
                             </div>
                         </td>
@@ -2444,15 +2444,14 @@ Report Generated Automatically by Developer Crash Reporter.
                         <td class="px-3 py-4">
                             ${isEditable ? `
                             <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
-                                    class="table-select font-bold text-xs uppercase !w-44 border rounded-xl py-1.5 px-2 bg-white outline-none transition cursor-pointer" 
-                                    style="background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;">
-                                <option value="Awaiting Parts" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
-                                <option value="Extended Repair" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
-                                <option value="Technician Unavailable" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
-                                <option value="WCA" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
-                                <option value="Others" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
+                                    class="table-select font-extrabold text-xs uppercase !w-44 bg-gray-50 text-gray-800 border border-gray-250 hover:border-red-500 rounded-xl py-1.5 px-3 outline-none transition cursor-pointer shadow-2xs">
+                                <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
+                                <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
+                                <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
+                                <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
+                                <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                             </select>
-                            ` : `<span class="px-2.5 py-1 rounded-full bg-orange-50 text-xs font-bold uppercase text-orange-700 border border-orange-100">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
                         <td class="px-3 py-4 text-right">
                             ${actions}
