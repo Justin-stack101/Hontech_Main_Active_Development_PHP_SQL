@@ -2186,7 +2186,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <th class="px-2 py-3 bg-gray-50">Model & Category</th>
                                 <th class="px-2 py-3 bg-gray-50">Source</th>
                                 <th class="px-2 py-3 bg-gray-50">Arrival</th>
-                                <th class="px-2 py-3 bg-gray-50">Departure</th>
+                                <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Departure (24H)</th>
                                 <th class="px-2 py-3 bg-gray-50">Evaluation / Diagnosis</th>
                                 <th class="px-2 py-3 bg-gray-50">Promised Date</th>
                                 <th class="px-2 py-3 bg-gray-50">C.O. Status</th>
