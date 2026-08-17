@@ -2144,8 +2144,8 @@ Report Generated Automatically by Developer Crash Reporter.
                                             <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
                                         </div>
                                         
-                                        <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-red-200 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
-                                            <i data-lucide="edit-3" class="w-3 h-3 text-red-500 shrink-0"></i>
+                                        <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-gray-300 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                            <i data-lucide="edit-3" class="w-3 h-3 text-gray-500 shrink-0"></i>
                                             <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
                                                    placeholder="Specify custom..." 
                                                    onchange="updateJobField('${job.id}', 'category', this.value)" 
@@ -2214,13 +2214,13 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center gap-1.5 bg-gray-50 border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-500 shrink-0"></i>
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs font-black text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer text-center min-w-[20px]">
+                                <div class="inline-flex items-center gap-1 bg-gray-50 border border-gray-300 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition shrink-0">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-0.5"></i>
+                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs font-mono font-bold text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer appearance-none text-center w-[22px]">
                                         ${getHourOptions(convertTimeTo24Hour(job.departure).split(':')[0])}
                                     </select>
-                                    <span class="text-gray-400 font-black text-xs select-none">:</span>
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs font-black text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer text-center min-w-[20px]">
+                                    <span class="text-gray-400 font-bold text-xs select-none">:</span>
+                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs font-mono font-bold text-gray-900 bg-transparent border-none p-0 outline-none cursor-pointer appearance-none text-center w-[22px]">
                                         ${getMinuteOptions(convertTimeTo24Hour(job.departure).split(':')[1])}
                                     </select>
                                 </div>
