@@ -2156,6 +2156,25 @@ Report Generated Automatically by Developer Crash Reporter.
                         </thead>
                     `;
                 };
+                const get24HourDepartureOptions = (selectedTime) => {
+                    let norm = selectedTime ? convertTimeTo24Hour(selectedTime) : '08:00';
+                    if (!norm || norm === 'Invalid Date' || norm.length < 5) norm = '08:00';
+                    
+                    const times = [];
+                    for (let h = 6; h <= 22; h++) {
+                        const hh = String(h).padStart(2, '0');
+                        times.push(`${hh}:00`);
+                        times.push(`${hh}:30`);
+                    }
+                    
+                    if (!times.includes(norm)) {
+                        times.push(norm);
+                        times.sort();
+                    }
+                    
+                    return times.map(t => `<option value="${t}" ${t === norm ? 'selected' : ''}>${t}</option>`).join('');
+                };
+
                 const renderJobRows = (jobsList) => {
                     return jobsList.map(job => {
                         const isEditable = isSA;
@@ -2280,16 +2299,15 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
+                                <div class="relative inline-flex items-center gap-2 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
                                     <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
-                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${job.departure || '--:--'}</span>
-                                    <input type="time" 
-                                           value="${convertTimeTo24Hour(job.departure) || ''}" 
-                                           onchange="updateJobField('${job.id}', 'departure', this.value)" 
-                                           class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                           title="Click to set Departure Time">
+                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${convertTimeTo24Hour(job.departure) || '08:00'}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <select onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select Departure Time (24-Hour)">
+                                        ${get24HourDepartureOptions(job.departure)}
+                                    </select>
                                 </div>
-                                ` : `<span class="block py-0.5 text-xs font-medium text-gray-600">${formatTime12Hour(job.departure)}</span>`}
+                                ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
                             
 
