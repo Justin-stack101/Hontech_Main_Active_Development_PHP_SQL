@@ -2133,15 +2133,15 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <div class="flex flex-col gap-1.5 w-full">
                                     <div class="flex flex-wrap items-center gap-1.5">
                                         ${isEditable ? `
-                                        <div class="relative inline-flex items-center bg-slate-50 border border-slate-250 rounded-lg px-2 py-0.5 shadow-2xs">
-                                            <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0 mr-1"></i>
-                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-extrabold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-slate-800">
+                                        <div class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-250 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                            <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0"></i>
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-extrabold uppercase bg-transparent border-none cursor-pointer p-0 outline-none text-slate-800">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                                 <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                                 <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
                                                 <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-500 pointer-events-none absolute right-1.5"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
                                         </div>
                                         
                                         <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-red-200 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
@@ -2180,15 +2180,15 @@ Report Generated Automatically by Developer Crash Reporter.
 
                                     <div class="flex items-center mt-0.5">
                                         ${isEditable ? `
-                                        <div class="relative inline-flex items-center gap-1 text-gray-700 font-extrabold bg-gray-50 border border-gray-250 rounded-lg px-2.5 py-0.5 shadow-2xs">
-                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-1"></i>
-                                            <span class="text-[10px] text-gray-500">LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none">
+                                        <div class="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-250 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0"></i>
+                                            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">LANE:</span>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 outline-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
                                                 <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-2"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none"></i>
                                         </div>
                                         ` : `
                                         <div class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-gray-800 bg-gray-50 border border-gray-250 rounded-lg px-2.5 py-0.5 shadow-2xs">
