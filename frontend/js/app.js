@@ -1672,16 +1672,19 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function handleTableCategoryChange(jobId, selectElement) {
             const val = selectElement.value;
+            const inputWrap = document.getElementById(`category-input-wrap-${jobId}`);
             const inputEl = document.getElementById(`category-input-${jobId}`);
-            if (inputEl) {
-                if (val === 'Others') {
+            if (val === 'Others') {
+                if (inputWrap) inputWrap.classList.remove('hidden');
+                if (inputEl) {
                     inputEl.classList.remove('hidden');
                     inputEl.value = '';
                     inputEl.focus();
-                } else {
-                    inputEl.classList.add('hidden');
-                    updateJobField(jobId, 'category', val);
                 }
+            } else {
+                if (inputWrap) inputWrap.classList.add('hidden');
+                if (inputEl) inputEl.classList.add('hidden');
+                updateJobField(jobId, 'category', val);
             }
         }
 
@@ -2194,15 +2197,16 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <div class="flex flex-col gap-1.5 w-full">
                                     <div class="flex flex-wrap items-center gap-2">
                                         ${isEditable ? `
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <i data-lucide="wrench" class="w-4 h-4 text-red-600 shrink-0"></i>
-                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 outline-none text-slate-900">
+                                        <div class="relative inline-flex items-center gap-2 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer">
+                                            <i data-lucide="wrench" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
+                                            <span class="text-xs font-black uppercase text-slate-900 pointer-events-none">${job.category || 'PMS'}</span>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                                 <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                                 <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
                                                 <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                         
                                         <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
@@ -2241,15 +2245,16 @@ Report Generated Automatically by Developer Crash Reporter.
 
                                     <div class="flex items-center mt-1">
                                         ${isEditable ? `
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <i data-lucide="route" class="w-4 h-4 text-red-600 shrink-0"></i>
-                                            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider">LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 outline-none">
+                                        <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer">
+                                            <i data-lucide="route" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
+                                            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider pointer-events-none">LANE:</span>
+                                            <span class="text-xs font-black uppercase text-gray-900 pointer-events-none">${job.laneType || 'FLEXIBLE'}</span>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
                                                 <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                         ` : `
                                         <div class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-gray-800 bg-gray-50 border border-gray-250 rounded-xl px-3 py-1 shadow-2xs">
