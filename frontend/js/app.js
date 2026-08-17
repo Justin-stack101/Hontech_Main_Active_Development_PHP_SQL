@@ -3097,10 +3097,11 @@ Report Generated Automatically by Developer Crash Reporter.
             const pms = jobs.filter(j => j.category && j.category.toUpperCase().includes('PMS')).length;
             const gr = jobs.filter(j => j.category && j.category.toUpperCase().includes('GR')).length;
 
-            document.getElementById('insight-completion-rate').innerText = `${completionRate}%`;
-            document.getElementById('insight-checkups-count').innerText = checkups;
-            document.getElementById('insight-pms-count').innerText = pms;
-            document.getElementById('insight-gr-count').innerText = gr;
+            if (document.getElementById('insight-completion-rate')) document.getElementById('insight-completion-rate').innerText = `${completionRate}%`;
+            if (document.getElementById('insight-completion-bar')) document.getElementById('insight-completion-bar').style.width = `${completionRate}%`;
+            if (document.getElementById('insight-checkups-count')) document.getElementById('insight-checkups-count').innerText = checkups;
+            if (document.getElementById('insight-pms-count')) document.getElementById('insight-pms-count').innerText = pms;
+            if (document.getElementById('insight-gr-count')) document.getElementById('insight-gr-count').innerText = gr;
 
             // Compute PMS Success & Failure (OS: Operational Success / OF: Operational Failure)
             const pmsJobs = jobs.filter(j => j.category && j.category.toUpperCase().includes('PMS'));
@@ -3109,18 +3110,11 @@ Report Generated Automatically by Developer Crash Reporter.
             const failedPms = pmsJobs.filter(j => j.goalStatus === 'Failed').length;
             const pmsSuccessRate = completedPmsJobs.length > 0 ? Math.round((successfulPms / completedPmsJobs.length) * 100) : 0;
 
-            if (document.getElementById('insight-pms-success-rate')) {
-                document.getElementById('insight-pms-success-rate').innerText = `${pmsSuccessRate}%`;
-            }
-            if (document.getElementById('insight-pms-os-count')) {
-                document.getElementById('insight-pms-os-count').innerText = successfulPms;
-            }
-            if (document.getElementById('insight-pms-of-count')) {
-                document.getElementById('insight-pms-of-count').innerText = failedPms;
-            }
-            if (document.getElementById('insight-pms-success-counts')) {
-                document.getElementById('insight-pms-success-counts').innerText = `${successfulPms} OS / ${failedPms} OF`;
-            }
+            if (document.getElementById('insight-pms-success-rate')) document.getElementById('insight-pms-success-rate').innerText = `${pmsSuccessRate}%`;
+            if (document.getElementById('insight-pms-bar')) document.getElementById('insight-pms-bar').style.width = `${pmsSuccessRate}%`;
+            if (document.getElementById('insight-pms-os-count')) document.getElementById('insight-pms-os-count').innerText = successfulPms;
+            if (document.getElementById('insight-pms-of-count')) document.getElementById('insight-pms-of-count').innerText = failedPms;
+            if (document.getElementById('insight-pms-success-counts')) document.getElementById('insight-pms-success-counts').innerText = `${successfulPms} OS / ${failedPms} OF`;
 
             // Compute Peak Intake Hours
             const hourCounts = {};
@@ -3155,13 +3149,21 @@ Report Generated Automatically by Developer Crash Reporter.
             const walkinCount = jobs.filter(j => j.source === 'Walk-in').length;
             const onlineCount = jobs.filter(j => j.source === 'Online').length;
             let ratioText = '0% W / 0% O';
+            let walkinPct = 50;
+            let onlinePct = 50;
             if (total > 0) {
-                const walkinPct = Math.round((walkinCount / total) * 100);
-                const onlinePct = Math.round((onlineCount / total) * 100);
+                walkinPct = Math.round((walkinCount / total) * 100);
+                onlinePct = Math.round((onlineCount / total) * 100);
                 ratioText = `${walkinPct}% W / ${onlinePct}% O`;
             }
             if (document.getElementById('insight-booking-ratio')) {
                 document.getElementById('insight-booking-ratio').innerText = ratioText;
+            }
+            if (document.getElementById('insight-walkin-bar')) {
+                document.getElementById('insight-walkin-bar').style.width = `${walkinPct}%`;
+            }
+            if (document.getElementById('insight-online-bar')) {
+                document.getElementById('insight-online-bar').style.width = `${onlinePct}%`;
             }
 
             // Populate handled-by (SA) filter select list dynamically
