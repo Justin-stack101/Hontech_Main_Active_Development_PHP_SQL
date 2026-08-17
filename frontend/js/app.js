@@ -565,29 +565,6 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
-        async function loadBranches() {
-            try {
-                const branches = await apiRequest('/api/branches');
-                if (Array.isArray(branches) && branches.length > 0) {
-                    const branchSelects = document.querySelectorAll('#analytics-branch, #filter-branch, #user-branch');
-                    branchSelects.forEach(sel => {
-                        if (!sel) return;
-                        const currentVal = sel.value;
-                        const isAllAllowed = sel.id === 'analytics-branch' || sel.id === 'filter-branch';
-                        let opts = isAllAllowed ? '<option value="all">All Branches (Combined)</option>' : '';
-                        branches.forEach(b => {
-                            const bName = b.name || b.branch_name || b.code || b;
-                            opts += `<option value="${bName}">${bName}</option>`;
-                        });
-                        sel.innerHTML = opts;
-                        if (currentVal) sel.value = currentVal;
-                    });
-                }
-            } catch (e) {
-                console.warn('loadBranches notice:', e);
-            }
-        }
-
         async function handleLogin(role) {
             currentUserRole = role;
             document.getElementById('auth-view').classList.add('hidden');
@@ -1446,18 +1423,68 @@ Report Generated Automatically by Developer Crash Reporter.
             if (preview) preview.value = generateStubNumber();
         }
 
-        function toggleCategoryOther() {
+        function updateLaneTypeOptionsForCategory(category) {
+            const walkinLaneSelect = document.getElementById('intake-walkin-lane-type');
+            const bookingLaneSelect = document.getElementById('intake-lane-type');
+            
+            let options = [];
+            const catUpper = (category || '').trim().toUpperCase();
+            
+            if (catUpper === 'PMS') {
+                // PMS > Express or Flexible
+                options = [
+                    { value: 'Express', label: 'Express' },
+                    { value: 'Flexible', label: 'Flexible' }
+                ];
+            } else if (catUpper === 'GRS' || catUpper === 'PMS & GRS' || catUpper === 'PMS AND GRS') {
+                // GRS > Flexible lane only
+                options = [
+                    { value: 'Flexible', label: 'Flexible' }
+                ];
+            } else {
+                // Others / Custom services
+                options = [
+                    { value: 'Flexible', label: 'Flexible' },
+                    { value: 'Express', label: 'Express' },
+                    { value: 'Special', label: 'Special' }
+                ];
+            }
+
+            const html = options.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
+
+            [walkinLaneSelect, bookingLaneSelect].forEach(sel => {
+                if (sel) {
+                    const currentVal = sel.value;
+                    sel.innerHTML = html;
+                    const hasOption = options.some(opt => opt.value === currentVal);
+                    sel.value = hasOption ? currentVal : options[0].value;
+                }
+            });
+        }
+
+        function handleCategoryChange() {
             const selectEl = document.getElementById('intake-category');
             const otherEl = document.getElementById('intake-category-other');
-            if (selectEl && otherEl) {
-                if (selectEl.value === 'Others') {
-                    otherEl.classList.remove('hidden');
-                } else {
-                    otherEl.classList.add('hidden');
-                    otherEl.value = '';
+            if (selectEl) {
+                const val = selectEl.value;
+                if (otherEl) {
+                    if (val === 'Others') {
+                        otherEl.classList.remove('hidden');
+                    } else {
+                        otherEl.classList.add('hidden');
+                        otherEl.value = '';
+                    }
                 }
+                updateLaneTypeOptionsForCategory(val);
             }
         }
+
+        function toggleCategoryOther() {
+            handleCategoryChange();
+        }
+
+        window.handleCategoryChange = handleCategoryChange;
+        window.toggleCategoryOther = toggleCategoryOther;
 
         function setupIntakeForm(role) {
             const title = document.getElementById('intake-title');
@@ -1483,7 +1510,7 @@ Report Generated Automatically by Developer Crash Reporter.
             if (apptHour) apptHour.innerHTML = getHourOptions(currHour);
             if (apptMin) apptMin.innerHTML = getMinuteOptions(currMin);
 
-            // Reset Category Select and Specify Input
+            // Reset Category Select, Specify Input, and Lane options
             const catSelect = document.getElementById('intake-category');
             if (catSelect) catSelect.value = 'PMS';
             const catOther = document.getElementById('intake-category-other');
@@ -1491,6 +1518,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 catOther.classList.add('hidden');
                 catOther.value = '';
             }
+            updateLaneTypeOptionsForCategory('PMS');
 
             const concernField = document.getElementById('div-concern-field');
             if (concernField) concernField.classList.add('hidden');
@@ -1579,9 +1607,7 @@ Report Generated Automatically by Developer Crash Reporter.
                     catOther.value = '';
                     catOther.classList.add('hidden');
                 }
-
-                const laneTypeSelect = document.getElementById('intake-lane-type');
-                if (laneTypeSelect) laneTypeSelect.value = 'Flexible';
+                updateLaneTypeOptionsForCategory('PMS');
 
                 if (document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
 
