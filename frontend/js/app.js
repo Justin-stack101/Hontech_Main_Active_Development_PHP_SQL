@@ -2135,7 +2135,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         ${isEditable ? `
                                         <div class="relative inline-flex items-center bg-slate-50 border border-slate-250 rounded-lg px-2 py-0.5 shadow-2xs">
                                             <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0 mr-1"></i>
-                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-extrabold uppercase bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none text-slate-800">
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-extrabold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-slate-800">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                                 <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                                 <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
@@ -2183,7 +2183,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         <div class="relative inline-flex items-center gap-1 text-gray-700 font-extrabold bg-gray-50 border border-gray-250 rounded-lg px-2.5 py-0.5 shadow-2xs">
                                             <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-1"></i>
                                             <span class="text-[10px] text-gray-500">LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
                                                 <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
