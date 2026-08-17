@@ -58,41 +58,44 @@
             renderStaffTables();
         };
 
-        window.handleDepartureTimeInput = function(jobId, rawVal) {
-            if (!rawVal) return;
-            let val = rawVal.trim().toLowerCase();
-            const isPM = val.includes('pm');
-            const isAM = val.includes('am');
-            val = val.replace(/[ap]m/g, '').trim();
-
-            let clean = val.replace(/[^0-9:]/g, '');
-            let hr = 8;
-            let min = 0;
-
-            if (!clean.includes(':')) {
-                if (clean.length === 3) {
-                    hr = parseInt(clean[0]) || 0;
-                    min = parseInt(clean.slice(1)) || 0;
-                } else if (clean.length === 4) {
-                    hr = parseInt(clean.slice(0, 2)) || 0;
-                    min = parseInt(clean.slice(2)) || 0;
-                } else if (clean.length <= 2) {
-                    hr = parseInt(clean) || 0;
-                    min = 0;
-                }
-            } else {
-                const parts = clean.split(':');
-                hr = parseInt(parts[0]) || 0;
-                min = parseInt(parts[1] || '0') || 0;
+        window.handleDepartureLiveKey = function(el, jobId, e) {
+            if (['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key)) {
+                if (e.key === 'Enter') el.blur();
+                return;
             }
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        };
 
-            if (isPM && hr < 12) hr += 12;
-            if (isAM && hr === 12) hr = 0;
+        window.handleDepartureInputMask = function(el, jobId) {
+            let digits = el.value.replace(/[^0-9]/g, '');
+            if (digits.length > 4) digits = digits.slice(0, 4);
+            if (digits.length >= 3) {
+                el.value = `${digits.slice(0, 2)}:${digits.slice(2)}`;
+            } else {
+                el.value = digits;
+            }
+        };
 
-            hr = Math.min(23, Math.max(0, hr));
-            min = Math.min(59, Math.max(0, min));
-
+        window.handleDepartureBlur = function(el, jobId) {
+            let raw = el.value.replace(/[^0-9]/g, '');
+            let hr = 8, min = 0;
+            if (raw.length === 0) {
+                hr = 8; min = 0;
+            } else if (raw.length === 1) {
+                hr = parseInt(raw); min = 0;
+            } else if (raw.length === 2) {
+                hr = parseInt(raw); min = 0;
+            } else if (raw.length === 3) {
+                hr = parseInt(raw[0]); min = parseInt(raw.slice(1));
+            } else {
+                hr = parseInt(raw.slice(0, 2)); min = parseInt(raw.slice(2, 4));
+            }
+            hr = Math.min(23, Math.max(0, hr || 0));
+            min = Math.min(59, Math.max(0, min || 0));
             const finalTime = `${String(hr).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+            el.value = finalTime;
             updateJobField(jobId, 'departure', finalTime);
         };
         let analyticsJobs = [];
@@ -2337,17 +2340,18 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-500/10 rounded-xl px-2.5 py-1.5 shadow-2xs transition shrink-0">
-                                    <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0"></i>
+                                <div class="relative inline-flex items-center">
+                                    <i data-lucide="clock" class="absolute left-3 w-4 h-4 text-red-600 pointer-events-none z-10"></i>
                                     <input type="text" 
                                            value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
                                            placeholder="08:00"
                                            maxlength="5"
                                            onfocus="this.select()"
-                                           onkeydown="if (event.key === 'Enter') { this.blur(); }"
-                                           onchange="handleDepartureTimeInput('${job.id}', this.value)" 
-                                           class="table-select text-xs font-black font-mono text-gray-900 bg-transparent border-none outline-none w-14 text-center cursor-text hover:text-red-600 focus:text-gray-900 transition" 
-                                           title="Type Departure Time (e.g. 14:30 or 08:00)">
+                                           onkeydown="handleDepartureLiveKey(this, '${job.id}', event)"
+                                           oninput="handleDepartureInputMask(this, '${job.id}')"
+                                           onblur="handleDepartureBlur(this, '${job.id}')"
+                                           class="table-select bg-white border border-gray-300 hover:border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-500/10 rounded-xl pl-9 pr-3 py-1.5 shadow-2xs transition font-black font-mono text-xs text-gray-900 w-24 text-center cursor-text outline-none" 
+                                           title="Type numbers to change departure time (e.g. 1430, 0800)">
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
