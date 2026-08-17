@@ -2006,7 +2006,7 @@ Report Generated Automatically by Developer Crash Reporter.
                             `}
                         </td>
                         <td>
-                            <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-medium border border-gray-200 bg-white px-2 py-1 rounded-lg w-40 focus:border-red-600 outline-none shadow-2xs">
+                            <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
                         </td>
                         <td class="text-center">
                             <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isOwnerOrAdmin ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isOwnerOrAdmin ? 'cursor-not-allowed' : 'cursor-pointer'}">
@@ -2229,8 +2229,8 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs text-gray-900 border border-gray-200 !w-40 bg-white">
-                                ` : `<span class="block py-0.5 text-xs font-medium text-gray-600" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
+                                ` : `<span class="block py-0.5 text-xs font-medium text-gray-700 min-w-[200px]" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
                             <!-- Promised Date -->
@@ -2437,7 +2437,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         </td>
                         <td class="px-3 py-4"><span class="text-gray-750 text-sm font-semibold">${job.saName || '-'}</span></td>
                         <td class="px-3 py-4">
-                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.evaluation || '-'}</span>`}
+                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-sm min-w-[200px] block">${job.evaluation || '-'}</span>`}
                         </td>
                         <td class="px-3 py-4">
                             ${isEditable ? `
