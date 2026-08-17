@@ -2160,18 +2160,18 @@ Report Generated Automatically by Developer Crash Reporter.
                                         
                                         <div class="inline-flex items-center shrink-0">
                                             ${job.saName ? `
-                                                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
+                                                <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-800 border border-gray-250 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
                                                     <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
                                                     <span>SA: ${job.saName}</span>
                                                 </span>
                                             ` : ((isAsst || isOwnerOrAdmin) ? `
-                                                <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200/80 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
+                                                <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg shadow-2xs">
                                                     <i data-lucide="user-minus" class="w-3 h-3 text-amber-500"></i>
                                                     <span>Unassigned</span>
                                                 </span>
                                             ` : `
-                                                <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 px-2 py-0.5 rounded-lg transition-all shadow-xs cursor-pointer active:scale-95">
-                                                    <i data-lucide="user-plus" class="w-3 h-3"></i>
+                                                <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-gray-50 hover:bg-gray-900 text-gray-800 hover:text-white border border-gray-300 hover:border-gray-900 px-2 py-0.5 rounded-lg transition-all shadow-xs cursor-pointer active:scale-95">
+                                                    <i data-lucide="user-plus" class="w-3 h-3 text-blue-600"></i>
                                                     <span>Assign to Me</span>
                                                 </button>
                                             `)}
@@ -2180,20 +2180,21 @@ Report Generated Automatically by Developer Crash Reporter.
 
                                     <div class="flex items-center mt-0.5">
                                         ${isEditable ? `
-                                        <div class="relative inline-flex items-center gap-1 text-red-600 font-extrabold bg-red-50/70 border border-red-200 rounded-lg px-2.5 py-0.5 shadow-2xs">
+                                        <div class="relative inline-flex items-center gap-1 text-gray-700 font-extrabold bg-gray-50 border border-gray-250 rounded-lg px-2.5 py-0.5 shadow-2xs">
                                             <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0 mr-1"></i>
-                                            <span class="text-[10px]">LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-red-700 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
+                                            <span class="text-[10px] text-gray-500">LANE:</span>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 pr-4 outline-none appearance-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
                                                 <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-red-500 pointer-events-none absolute right-2"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 pointer-events-none absolute right-2"></i>
                                         </div>
                                         ` : `
-                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-red-600 bg-red-50/70 border border-red-200 rounded-lg px-2.5 py-0.5 shadow-2xs">
+                                        <div class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-gray-800 bg-gray-50 border border-gray-250 rounded-lg px-2.5 py-0.5 shadow-2xs">
                                             <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
-                                            <span>LANE: ${job.laneType || 'FLEXIBLE'}</span>
+                                            <span class="text-gray-500">LANE:</span>
+                                            <span class="text-gray-900">${job.laneType || 'FLEXIBLE'}</span>
                                         </div>
                                         `}
                                     </div>
@@ -2202,7 +2203,7 @@ Report Generated Automatically by Developer Crash Reporter.
                             
                             <!-- Source -->
                             <td class="px-2 py-3 align-middle">
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase ${job.source === 'Online' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}">${job.source || 'Walk-in'}</span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-800 border border-gray-250 shadow-2xs">${job.source || 'Walk-in'}</span>
                             </td>
 
                             <!-- Arrival -->
