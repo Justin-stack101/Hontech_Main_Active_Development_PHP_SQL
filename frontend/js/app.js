@@ -57,6 +57,27 @@
             carryOverSortOrder = (carryOverSortOrder === 'asc') ? 'desc' : 'asc';
             renderStaffTables();
         };
+
+        window.handleDepartureTimeInput = function(jobId, rawVal) {
+            if (!rawVal) return;
+            let clean = rawVal.trim().replace(/[^0-9:]/g, '');
+            if (!clean.includes(':')) {
+                if (clean.length === 3) {
+                    clean = `0${clean[0]}:${clean.slice(1)}`;
+                } else if (clean.length === 4) {
+                    clean = `${clean.slice(0, 2)}:${clean.slice(2)}`;
+                } else if (clean.length <= 2) {
+                    const hr = String(parseInt(clean) || 0).padStart(2, '0');
+                    clean = `${hr}:00`;
+                }
+            } else {
+                const parts = clean.split(':');
+                const hr = String(Math.min(23, Math.max(0, parseInt(parts[0]) || 0))).padStart(2, '0');
+                const min = String(Math.min(59, Math.max(0, parseInt(parts[1] || '0') || 0))).padStart(2, '0');
+                clean = `${hr}:${min}`;
+            }
+            updateJobField(jobId, 'departure', clean);
+        };
         let analyticsJobs = [];
         let idleLogoutTimer = null;
         let lastUserActivityTimestamp = Date.now();
@@ -2299,13 +2320,17 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center gap-2 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
+                                <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-500 rounded-xl px-2.5 py-1.5 shadow-2xs transition shrink-0">
                                     <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
-                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${convertTimeTo24Hour(job.departure) || '08:00'}</span>
+                                    <input type="text" 
+                                           list="departure-time-datalist" 
+                                           value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
+                                           placeholder="08:00"
+                                           maxlength="5"
+                                           onchange="handleDepartureTimeInput('${job.id}', this.value)" 
+                                           class="table-select text-xs font-black font-mono text-gray-900 bg-transparent border-none outline-none w-14 text-center cursor-pointer hover:text-red-600 focus:text-gray-900 transition" 
+                                           title="Type custom 24h time or choose from list">
                                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                    <select onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select Departure Time (24-Hour)">
-                                        ${get24HourDepartureOptions(job.departure)}
-                                    </select>
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
