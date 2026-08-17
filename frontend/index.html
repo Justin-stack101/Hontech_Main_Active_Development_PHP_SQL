@@ -1659,6 +1659,12 @@
                         <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-gray-50">
                                 <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                    <th onclick="toggleCarryOverStubSort()" class="px-3 py-3.5 bg-gray-55 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                                        <span class="inline-flex items-center gap-1">
+                                            Claim Stub
+                                            <i data-lucide="arrow-up-down" class="w-3 h-3 text-orange-600"></i>
+                                        </span>
+                                    </th>
                                     <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Model</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Date (Received, Promised)</th>
@@ -2843,7 +2849,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.31"></script>
+    <script src="js/app.js?v=2.32"></script>
 </body>
 
 </html>

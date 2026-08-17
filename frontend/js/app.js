@@ -17,17 +17,25 @@
         // Analytics dashboard globals
         let currentDashboardTab = 'monitor';
         let saIntakeFilter = 'All';
-        let intakeSearchQuery = '';
-        let intakeSourceFilter = 'all';
-        let intakeTimeFilter = 'all';
         let intakeSortBy = 'claimStub';
         let intakeSortOrder = 'desc';
+        let carryOverSortOrder = 'desc';
 
         function updateIntakeFilter(type, value) {
             if (type === 'search') intakeSearchQuery = value;
             if (type === 'source') intakeSourceFilter = value;
             if (type === 'time') intakeTimeFilter = value;
-            if (type === 'sort') intakeSortBy = value;
+            if (type === 'sort') {
+                if (value === 'claimStubDesc') {
+                    intakeSortBy = 'claimStub';
+                    intakeSortOrder = 'desc';
+                } else if (value === 'claimStubAsc') {
+                    intakeSortBy = 'claimStub';
+                    intakeSortOrder = 'asc';
+                } else {
+                    intakeSortBy = value;
+                }
+            }
             if (type === 'sortOrder') intakeSortOrder = value;
             renderStaffTables();
         }
@@ -39,6 +47,11 @@
                 intakeSortBy = 'claimStub';
                 intakeSortOrder = 'desc';
             }
+            renderStaffTables();
+        };
+
+        window.toggleCarryOverStubSort = function() {
+            carryOverSortOrder = (carryOverSortOrder === 'asc') ? 'desc' : 'asc';
             renderStaffTables();
         };
         let analyticsJobs = [];
@@ -1702,6 +1715,14 @@ Report Generated Automatically by Developer Crash Reporter.
                     }
                 }
 
+                if (newStatus === 'Waiting') {
+                    // Reset location back to Waiting Area when vehicle returns to Waiting
+                    await apiRequest(`/api/jobs/${jobId}/field`, {
+                        method: 'PATCH',
+                        body: { field: 'location', value: 'None' }
+                    });
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/status`, {
                     method: 'PATCH',
                     body: { status: newStatus }
@@ -1711,7 +1732,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 renderStaffTables();
                 renderTV();
             } catch (err) {
-                showSystemToast(err.message || 'Error updating lift status.', 'error');
+                showSystemToast(err.message || 'Error updating status.', 'error');
                 // Re-render to undo choice visually
                 renderStaffTables();
             }
@@ -2322,18 +2343,26 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Location -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-[140px] border rounded-xl py-1 px-1.5 bg-white outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer" style="${job.location !== 'None' ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' : 'color:#4b5563; background-color:#ffffff; border-color:#e5e7eb;'}">
-                                    <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
-                                    ${[1, 2, 3, 4].map(i => {
-                                        const bayName = `Bay ${i}`;
-                                        const occupiedBy = rowOccupiedBays[bayName];
-                                        const isSelected = job.location === bayName || job.location === `Lift ${i}`;
-                                        if (occupiedBy && !isSelected) {
-                                            return `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
-                                        }
-                                        return `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
-                                    }).join('')}
-                                </select>
+                                <div class="relative group inline-block">
+                                    <select onchange="updateJobField('${job.id}', 'location', this.value)" 
+                                        ${job.status === 'Waiting' ? 'disabled' : ''}
+                                        class="table-select font-bold text-xs uppercase !w-[140px] border rounded-xl py-1 px-1.5 ${job.status === 'Waiting' ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-75' : (job.location !== 'None' ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer' : 'bg-white text-gray-700 border-gray-200 cursor-pointer')} outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                                        <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
+                                        ${[1, 2, 3, 4].map(i => {
+                                            const bayName = `Bay ${i}`;
+                                            const occupiedBy = rowOccupiedBays[bayName];
+                                            const isSelected = job.location === bayName || job.location === `Lift ${i}`;
+                                            if (occupiedBy && !isSelected) {
+                                                return `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
+                                            }
+                                            return `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
+                                        }).join('')}
+                                    </select>
+                                    ${job.status === 'Waiting' ? `
+                                    <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-gray-900 text-white text-[9px] font-bold rounded whitespace-nowrap z-30 shadow-lg pointer-events-none">
+                                        Set status to 'Monitoring' to assign Bay
+                                    </div>` : ''}
+                                </div>
                                 ` : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) ? `<span class="px-2.5 py-1 rounded-full bg-blue-50 text-xs font-bold uppercase text-blue-700 border border-blue-100">${job.location.replace(/^Lift/, 'Bay')}</span>` : `<span class="px-2.5 py-1 rounded-full bg-gray-50 text-xs font-bold uppercase text-gray-500 border border-gray-150">Waiting Area</span>`}
                             </td>
                         </tr>
@@ -2403,7 +2432,8 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Sort By:</span>
                                         <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="bg-white border border-gray-200 rounded-xl px-3 py-1.5 outline-none text-xs focus:border-red-500 transition font-bold cursor-pointer">
-                                            <option value="claimStub" ${intakeSortBy === 'claimStub' ? 'selected' : ''}>Claim Stub (Asc)</option>
+                                            <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
+                                            <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
                                             <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
                                         </select>
                                     </div>
@@ -2442,6 +2472,12 @@ Report Generated Automatically by Developer Crash Reporter.
             // CARRY OVER BOARD
             if (document.getElementById('table-carry-over')) {
                 const carryOverJobs = allJobs.filter(j => j.status === 'Carry Over');
+                carryOverJobs.sort((a, b) => {
+                    const stubA = a.claimStub || '';
+                    const stubB = b.claimStub || '';
+                    return carryOverSortOrder === 'desc' ? stubB.localeCompare(stubA) : stubA.localeCompare(stubB);
+                });
+
                 document.getElementById('table-carry-over').innerHTML = carryOverJobs.map(job => {
                     const isEditable = isSA;
                     
@@ -2449,9 +2485,8 @@ Report Generated Automatically by Developer Crash Reporter.
                     if (isEditable) {
                         actions = `
                             <div class="flex gap-1.5 justify-end">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap">Return Active</button>
-                                <button onclick="setJobStatus('${job.id}', 'Ready')" class="bg-emerald-650 bg-emerald-600 text-white hover:bg-emerald-700 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-emerald-500/10">Ready (TV)</button>
-                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10">Remove</button>
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-2xs">Return Active</button>
+                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10">Remove</button>
                             </div>
                         `;
                     } else {
@@ -2460,6 +2495,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
                     return `
                     <tr>
+                        <td class="px-3 py-4"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
                         <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
                         <td class="px-3 py-4"><span class="text-gray-600 text-sm font-medium">${job.vehicle}</span></td>
                         <td class="px-3.5 py-4 whitespace-nowrap">
@@ -2495,7 +2531,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="7" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
             }
 
             lucide.createIcons();
