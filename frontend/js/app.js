@@ -2134,11 +2134,12 @@ Report Generated Automatically by Developer Crash Reporter.
                         const isEditable = isSA;
                         
 
-                        // Re-evaluate occupied lifts for this specific row excluding current job
-                        const rowOccupiedLifts = {};
+                        // Re-evaluate occupied bays for this specific row excluding current job
+                        const rowOccupiedBays = {};
                         allJobs.forEach(j => {
-                            if (j.id !== job.id && j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released') {
-                                rowOccupiedLifts[j.location] = j.plate;
+                            if (j.id !== job.id && j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released') {
+                                const normLoc = j.location.replace(/^Lift/, 'Bay');
+                                rowOccupiedBays[normLoc] = j.plate;
                             }
                         });
 
@@ -2324,16 +2325,16 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-[140px] border rounded-xl py-1 px-1.5 bg-white outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer" style="${job.location !== 'None' ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' : 'color:#4b5563; background-color:#ffffff; border-color:#e5e7eb;'}">
                                     <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
                                     ${[1, 2, 3, 4].map(i => {
-                                        const liftName = `Lift ${i}`;
-                                        const occupiedBy = rowOccupiedLifts[liftName];
-                                        const isSelected = job.location === liftName;
+                                        const bayName = `Bay ${i}`;
+                                        const occupiedBy = rowOccupiedBays[bayName];
+                                        const isSelected = job.location === bayName || job.location === `Lift ${i}`;
                                         if (occupiedBy && !isSelected) {
-                                            return `<option value="${liftName}" style="background-color: white; color: #9ca3af;" disabled>${liftName} (Occupied - ${occupiedBy})</option>`;
+                                            return `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
                                         }
-                                        return `<option value="${liftName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${liftName}</option>`;
+                                        return `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
                                     }).join('')}
                                 </select>
-                                ` : (job.location && job.location.startsWith('Lift')) ? `<span class="px-2.5 py-1 rounded-full bg-blue-50 text-xs font-bold uppercase text-blue-700 border border-blue-100">${job.location}</span>` : `<span class="px-2.5 py-1 rounded-full bg-gray-50 text-xs font-bold uppercase text-gray-500 border border-gray-150">Waiting Area</span>`}
+                                ` : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) ? `<span class="px-2.5 py-1 rounded-full bg-blue-50 text-xs font-bold uppercase text-blue-700 border border-blue-100">${job.location.replace(/^Lift/, 'Bay')}</span>` : `<span class="px-2.5 py-1 rounded-full bg-gray-50 text-xs font-bold uppercase text-gray-500 border border-gray-150">Waiting Area</span>`}
                             </td>
                         </tr>
                         `;
@@ -2737,7 +2738,7 @@ Report Generated Automatically by Developer Crash Reporter.
             const readyToReleaseCount = listForReports.filter(j => j.status === 'Ready to Release' || j.status === 'Ready').length;
             const carryoverCount = listForReports.filter(j => j.status === 'Carry Over').length;
             
-            const inBayCount = listForReports.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released').length;
+            const inBayCount = listForReports.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
             const monitoringCount = listForReports.filter(j => j.status === 'Monitoring').length;
 
             document.getElementById('metric-intake').innerText = todayJobs.length;
@@ -2755,8 +2756,8 @@ Report Generated Automatically by Developer Crash Reporter.
             const carryA = allJobs.filter(j => j.status === 'Carry Over' && j.branch === 'Branch A').length;
             const carryB = allJobs.filter(j => j.status === 'Carry Over' && j.branch === 'Branch B').length;
 
-            const inbayA = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch A').length;
-            const inbayB = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch B').length;
+            const inbayA = allJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch A').length;
+            const inbayB = allJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released' && j.branch === 'Branch B').length;
 
             if (document.getElementById('live-branch-a-intake')) document.getElementById('live-branch-a-intake').innerText = intakeA;
             if (document.getElementById('live-branch-b-intake')) document.getElementById('live-branch-b-intake').innerText = intakeB;
@@ -2791,7 +2792,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
             const inbaySub = document.getElementById('metric-inbay-subtext');
             if (inbaySub) {
-                inbaySub.innerHTML = `Currently on Lift <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] block mt-1">(${monitoringCount} Monitoring)</span>`;
+                inbaySub.innerHTML = `Currently in Bay <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] block mt-1">(${monitoringCount} Monitoring)</span>`;
             }
 
             // If we are currently looking at the analytics center or periodic tab, reload their data too
@@ -3868,7 +3869,7 @@ Report Generated Automatically by Developer Crash Reporter.
             const intakeCount = todayJobs.length;
             const releasedCount = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === todayStr).length;
             const carryoverCount = allJobs.filter(j => j.status === 'Carry Over').length;
-            const inbayCount = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
+            const inbayCount = allJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift'))).length;
 
             doc.setFontSize(11);
             doc.setTextColor(17, 24, 39);
@@ -3876,8 +3877,8 @@ Report Generated Automatically by Developer Crash Reporter.
 
             // Metric boxes represented as a plain table
             doc.autoTable({
-                startY: 55,
-                head: [['Total Daily Intakes', 'Released Today', 'Active on Lifts', 'Active Carry-Overs']],
+                startY: 58,
+                head: [['Total Daily Intakes', 'Released Today', 'Active in Bays', 'Active Carry-Overs']],
                 body: [[intakeCount, releasedCount, inbayCount, carryoverCount]],
                 theme: 'plain',
                 styles: { fontSize: 10, halign: 'center', cellPadding: 4, fontStyle: 'bold' },
@@ -4713,28 +4714,28 @@ Report Generated Automatically by Developer Crash Reporter.
                 `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
             }
 
-            // GRS Active Bays slide (tv-slide-1) rendering (Lifts 1-4)
+            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
             const tvGRS = document.getElementById('tv-grs-list');
             if (tvGRS) {
-                let liftsHTML = '';
+                let baysHTML = '';
                 for (let i = 1; i <= 4; i++) {
-                    const job = allJobs.find(j => j.location === `Lift ${i}`);
+                    const job = allJobs.find(j => j.location === `Bay ${i}` || j.location === `Lift ${i}`);
                     if (job) {
                         const theme = getServiceTheme(job.category);
-                        liftsHTML += `
+                        baysHTML += `
                             <div class="bg-white border-2 ${theme.border} rounded-2xl p-4 flex flex-col justify-between items-center h-40 relative shadow-md animate-fade-in">
                                 <div class="flex flex-col items-center gap-1 mt-1">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">LIFT-0${i}</span>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">BAY-0${i}</span>
                                     <span class="${theme.bgBadge} text-white font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">IN SERVICE</span>
                                 </div>
                                 <span class="text-3xl font-black uppercase italic text-gray-900 tracking-tighter text-center">${job.plate}</span>
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 text-center mb-1">${job.vehicle} | <span class="${theme.text}">${job.category}</span></span>
                             </div>`;
                     } else {
-                        liftsHTML += `
+                        baysHTML += `
                             <div class="bg-gray-50 border border-dashed border-gray-200 rounded-2xl p-4 flex flex-col justify-between items-center h-40 relative shadow-sm">
                                 <div class="flex flex-col items-center gap-1 mt-1">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">LIFT-0${i}</span>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">BAY-0${i}</span>
                                     <span class="bg-gray-200 text-gray-500 font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
                                 </div>
                                 <span class="text-2xl font-extrabold uppercase italic text-gray-400 tracking-wider text-center">EMPTY</span>
@@ -4742,15 +4743,15 @@ Report Generated Automatically by Developer Crash Reporter.
                             </div>`;
                     }
                 }
-                tvGRS.innerHTML = liftsHTML;
+                tvGRS.innerHTML = baysHTML;
             }
             // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
-            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && j.location.startsWith('Lift'))) && j.status !== 'Completed' && j.status !== 'Released');
+            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
                 const theme = getServiceTheme(job.category);
                 let statusBadge = '';
-                if (job.location && job.location.startsWith('Lift')) {
-                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location}</span>`;
+                if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
+                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-green-150 text-green-700 border border-green-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
                 } else if (job.status === 'Waiting') {
