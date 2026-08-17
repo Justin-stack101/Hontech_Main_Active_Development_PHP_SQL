@@ -1431,18 +1431,18 @@ Report Generated Automatically by Developer Crash Reporter.
             const catUpper = (category || '').trim().toUpperCase();
             
             if (catUpper === 'PMS') {
-                // PMS > Express or Flexible
+                // PMS > Express or Flexible (2 options)
                 options = [
                     { value: 'Express', label: 'Express' },
                     { value: 'Flexible', label: 'Flexible' }
                 ];
-            } else if (catUpper === 'GRS' || catUpper === 'PMS & GRS' || catUpper === 'PMS AND GRS') {
-                // GRS > Flexible lane only
+            } else if (catUpper === 'GRS') {
+                // GRS > Flexible lane only (1 option)
                 options = [
                     { value: 'Flexible', label: 'Flexible' }
                 ];
             } else {
-                // Others / Custom services
+                // PMS & GRS and Others / Custom services > All 3 lanes (Flexible, Express, Special)
                 options = [
                     { value: 'Flexible', label: 'Flexible' },
                     { value: 'Express', label: 'Express' },
