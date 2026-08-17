@@ -1074,51 +1074,60 @@ Report Generated Automatically by Developer Crash Reporter.
             const tbody = document.getElementById('table-staff-accounts');
             if (!tbody) return;
 
-            tbody.innerHTML = staffAccounts.map(user => `
-                <tr class="${!user.isActive ? 'opacity-65 bg-gray-50/50' : ''}">
-                    <td>
-                        <div class="font-bold text-gray-900 flex items-center gap-2">
-                            <i data-lucide="user-circle" class="w-4 h-4 text-gray-400"></i>
-                            <span>${user.name}</span>
-                            <span class="inline-block w-2 h-2 rounded-full ${user.isOnline ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.7)] animate-pulse' : 'bg-gray-400'}" title="${user.isOnline ? 'Online' : 'Offline'}"></span>
+            tbody.innerHTML = staffAccounts.map(user => {
+                const userId = user.id ?? user._id;
+                const isActive = user.is_active !== undefined ? Number(user.is_active) === 1 : (user.isActive !== false);
+                const isOnline = user.is_online !== undefined ? Number(user.is_online) === 1 : Boolean(user.isOnline);
+                const userRole = user.role || 'assistant';
+                const isSysOwner = (userRole === 'owner' && user.email === 'owner@hontech.com');
+
+                return `
+                <tr class="hover:bg-gray-50/80 transition-colors ${!isActive ? 'bg-gray-50/60' : 'bg-white'} border-b border-gray-100">
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-gray-900 flex items-center gap-2.5">
+                            <i data-lucide="user-circle" class="w-4 h-4 text-gray-500"></i>
+                            <span class="text-xs">${user.name}</span>
+                            <span class="inline-block w-2 h-2 rounded-full ${isOnline ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.7)] animate-pulse' : 'bg-gray-300'}" title="${isOnline ? 'Online' : 'Offline'}"></span>
                         </div>
                     </td>
-                    <td>
-                        ${user.role === 'owner' && user.email === 'owner@hontech.com'
-                    ? `<span class="px-2 py-1 rounded text-[10px] font-black uppercase tracking-widest bg-red-100 text-red-800">Primary Administrator</span>`
+                    <td class="px-6 py-4">
+                        ${isSysOwner
+                    ? `<span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shadow-2xs">Primary Administrator</span>`
                     : `
-                            <select onchange="updateStaffRole('${user._id}', this.value)" class="bg-gray-50 border border-gray-200 rounded-lg px-2 py-1 font-bold text-xs text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                                <option value="assistant" ${user.role === 'assistant' ? 'selected' : ''}>Assistant Staff</option>
-                                <option value="sa" ${user.role === 'sa' ? 'selected' : ''}>Service Advisor</option>
-                                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
-                                <option value="owner" ${user.role === 'owner' ? 'selected' : ''}>Owner</option>
+                            <select onchange="updateStaffRole('${userId}', this.value)" class="bg-gray-50 hover:bg-white border border-gray-200 focus:border-red-600 rounded-xl px-2.5 py-1.5 font-bold text-xs text-gray-900 outline-none transition cursor-pointer shadow-2xs">
+                                <option value="assistant" ${userRole === 'assistant' ? 'selected' : ''}>Assistant Staff</option>
+                                <option value="sa" ${userRole === 'sa' ? 'selected' : ''}>Service Advisor</option>
+                                <option value="admin" ${userRole === 'admin' ? 'selected' : ''}>Admin</option>
+                                <option value="owner" ${userRole === 'owner' ? 'selected' : ''}>Owner</option>
                             </select>
                             `
                 }
                     </td>
-                    <td class="text-gray-600 font-medium text-sm">${user.branch || 'Branch A'}</td>
-                    <td class="text-gray-600 font-medium text-sm">${user.email}</td>
-                    <td>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${user.isActive ? 'bg-green-50 text-green-600 border border-green-200' : 'bg-gray-100 text-gray-500 border border-gray-200'}">${user.isActive ? 'Active' : 'Suspended'}</span>
+                    <td class="px-6 py-4 text-gray-700 font-semibold text-xs">${user.branch || 'Branch A'}</td>
+                    <td class="px-6 py-4 text-gray-700 font-semibold text-xs font-mono">${user.email}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'} shadow-2xs">
+                            ${isActive ? 'Active' : 'Suspended'}
+                        </span>
                     </td>
-                    <td>
-                        ${user.role === 'owner' && user.email === 'owner@hontech.com'
-                    ? '<span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Secured</span>'
-                    : `<button onclick="openStaffPasswordReset('${user._id}', '${user.name}')" class="bg-white hover:bg-gray-50 text-gray-700 px-2 py-1 rounded-lg border border-gray-200 transition text-[9px] font-black uppercase tracking-widest flex items-center gap-1 shadow-sm"><i data-lucide="key-round" class="w-3 h-3 text-red-600"></i> Reset</button>`
+                    <td class="px-6 py-4">
+                        ${isSysOwner
+                    ? '<span class="text-[10px] text-gray-400 font-black uppercase tracking-wider">Secured</span>'
+                    : `<button onclick="openStaffPasswordReset('${userId}', '${(user.name || '').replace(/'/g, "\\'")}')" class="bg-white hover:bg-gray-50 text-gray-800 px-3 py-1.5 rounded-xl border border-gray-200 transition text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-2xs cursor-pointer"><i data-lucide="key-round" class="w-3.5 h-3.5 text-red-600"></i> Reset</button>`
                 }
                     </td>
-                    <td class="text-right">
+                    <td class="px-6 py-4 text-right">
                         <div class="flex gap-2 justify-end">
-                            ${user.role === 'owner' && user.email === 'owner@hontech.com'
+                            ${isSysOwner
                     ? '<span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Sys Owner</span>'
                     : `
-                                <button onclick="openStaffEditModal('${user._id}', '${user.name.replace(/'/g, "\\'")}', '${user.email}', '${user.role}', '${user.branch}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-blue-600 hover:bg-blue-50 transition" title="Edit Details">
+                                <button onclick="openStaffEditModal('${userId}', '${(user.name || '').replace(/'/g, "\\'")}', '${user.email}', '${userRole}', '${user.branch || ''}')" class="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs text-blue-600 hover:bg-blue-50 transition cursor-pointer" title="Edit Details">
                                     <i data-lucide="edit-3" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="toggleStaffActive('${user._id}', ${!user.isActive})" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm transition ${user.isActive ? 'text-amber-500 hover:bg-amber-50' : 'text-green-600 hover:bg-green-50'}" title="${user.isActive ? 'Suspend Access' : 'Restore Access'}">
-                                    <i data-lucide="${user.isActive ? 'user-minus' : 'user-check'}" class="w-4 h-4"></i>
+                                <button onclick="toggleStaffActive('${userId}', ${!isActive})" class="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs transition cursor-pointer ${isActive ? 'text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'}" title="${isActive ? 'Suspend Access' : 'Restore Access'}">
+                                    <i data-lucide="${isActive ? 'user-minus' : 'user-check'}" class="w-4 h-4"></i>
                                 </button>
-                                <button onclick="deleteStaffAccount('${user._id}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Delete Account">
+                                <button onclick="deleteStaffAccount('${userId}')" class="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs text-gray-400 hover:text-red-600 hover:bg-red-50 transition cursor-pointer" title="Delete Account">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                                 `
@@ -1126,7 +1135,8 @@ Report Generated Automatically by Developer Crash Reporter.
                         </div>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
             lucide.createIcons();
         }
 
