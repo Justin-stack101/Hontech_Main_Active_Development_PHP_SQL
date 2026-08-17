@@ -151,4 +151,32 @@ The following four items represent advanced enterprise optimizations documented 
 4. **🗄️ Uniform Soft-Deletion Architecture**: Standardize `is_deleted = 1` flag across all tables (`jobs`, `users`, `branches`) to guarantee full audit trail compliance for executive analytics.
 5. **🔔 Live TV Display Sound Chime System**: Integrate Web Audio API chime sounds (`playChime()`) triggered when vehicles transition to "Ready to Release" or upon carousel slide transition on the TV monitor.
 
+---
+
+## 🎯 Strategic Project Roadmap & Client Presentation Protocol
+
+### 🏆 The Executive Verdict & 3-Phase Execution Strategy
+* **🎯 Current Priority (Sprint 1)**: Polish, freeze, and verify all client-approved revisions using the **3-Tier QA Manual Testing Matrix**. Do not add unrequested complex features before client acceptance.
+* **👑 Tomorrow (Client Milestone)**: Deliver the **ArchiMate Socio-Technical Architecture Presentation** and 2-minute live system demonstration to the **Company President**.
+* **🚀 Post-Approval (Sprint 2 & 3)**:
+  1. **Phase 2 (Security Hardening)**: Google OAuth / API Security integration, 2-Factor Authentication (PIN / Email), and enhanced Account Recovery.
+  2. **Phase 3 (Deployment & Training)**: Configure workshop PC as on-premise local server, link waiting-area TV monitors via local network, and conduct hands-on staff training for Service Advisors and Assistant Staff.
+
+---
+
+### 🗺️ ArchiMate Poster Printing & Physical Assembly Guide
+To present the comprehensive system architecture map in high-resolution format to the President:
+1. **Export Resolution**: Export the ArchiMate model as **Vector PDF** or **High-Resolution PNG (300 DPI / 4K)** from the modeling tool.
+2. **Multi-Sheet Poster Tiling (2×2 Grid / 4 Pages)**:
+   - **Using Adobe Acrobat Reader**: Open PDF ➔ `Ctrl + P` ➔ Select **"Poster"** under *Page Sizing & Handling* ➔ Set Tile Scale to `150%-200%` with `0.1 in` overlap ➔ Print.
+   - **Using BlockPosters / Web Tool**: Upload image ➔ Select *2 pages wide (A4 / Letter)* ➔ Download sliced 4-page PDF ➔ Print.
+3. **Assembly**: Trim the overlapping margins on the inner edges, align the connector lines across sheets, and secure the back with clear tape to create a unified ~A2 executive table poster.
+
+---
+
+### 💡 Problem-Driven Feature Policy (YAGNI & Client Alignment)
+* **Principle**: Only implement new components (e.g., custom Activity Logs, Audit Trail tables) when explicitly requested by the client to solve an active business pain point.
+* **Benefit**: Eliminates wasted development hours, prevents user confusion, and ensures 100% stakeholder buy-in for every new database table and feature added.
+
+
 
