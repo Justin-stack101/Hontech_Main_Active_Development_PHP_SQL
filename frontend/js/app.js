@@ -17,6 +17,9 @@
         // Analytics dashboard globals
         let currentDashboardTab = 'monitor';
         let saIntakeFilter = 'All';
+        let intakeSearchQuery = '';
+        let intakeSourceFilter = 'all';
+        let intakeTimeFilter = 'all';
         let intakeSortBy = 'claimStub';
         let intakeSortOrder = 'desc';
         let carryOverSortOrder = 'desc';
