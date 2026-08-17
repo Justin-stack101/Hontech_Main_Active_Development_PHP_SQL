@@ -2194,15 +2194,15 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <div class="flex flex-col gap-1.5 w-full">
                                     <div class="flex flex-wrap items-center gap-2">
                                         ${isEditable ? `
-                                        <div class="relative inline-flex items-center bg-white border border-slate-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <i data-lucide="wrench" class="w-4 h-4 text-red-600 shrink-0 mr-2 pointer-events-none"></i>
-                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none text-slate-900">
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <i data-lucide="wrench" class="w-4 h-4 text-red-600 shrink-0"></i>
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 outline-none text-slate-900">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                                 <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                                 <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
                                                 <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-700 pointer-events-none absolute right-2.5 stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                         
                                         <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
@@ -2241,15 +2241,15 @@ Report Generated Automatically by Developer Crash Reporter.
 
                                     <div class="flex items-center mt-1">
                                         ${isEditable ? `
-                                        <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <i data-lucide="route" class="w-4 h-4 text-red-600 shrink-0 mr-1.5 pointer-events-none"></i>
-                                            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider mr-1 pointer-events-none">LANE:</span>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none">
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <i data-lucide="route" class="w-4 h-4 text-red-600 shrink-0"></i>
+                                            <span class="text-xs font-extrabold text-gray-500 uppercase tracking-wider">LANE:</span>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase text-gray-900 bg-transparent border-none cursor-pointer p-0 outline-none">
                                                 <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
                                                 <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
                                                 <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-2.5 stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                         ` : `
                                         <div class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-gray-800 bg-gray-50 border border-gray-250 rounded-xl px-3 py-1 shadow-2xs">
@@ -2416,37 +2416,37 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <div class="flex flex-wrap items-center gap-3">
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Source:</span>
-                                        <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer pr-6 appearance-none">
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
                                                 <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
                                                 <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
                                                 <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-2 stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                     </div>
                                     
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Time (Prototype):</span>
-                                        <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer pr-6 appearance-none">
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
                                                 <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
                                                 <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
                                                 <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-2 stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                     </div>
 
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Sort By:</span>
-                                        <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer pr-6 appearance-none">
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
                                                 <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
                                                 <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
                                                 <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 text-gray-700 pointer-events-none absolute right-2 stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         </div>
                                     </div>
                                 </div>
