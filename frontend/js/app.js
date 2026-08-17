@@ -2337,19 +2337,13 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/10 rounded-xl px-2.5 py-1.5 shadow-2xs transition shrink-0">
+                                <div class="relative inline-flex items-center gap-2 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
                                     <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
-                                    <input type="text" 
-                                           list="departure-time-datalist" 
-                                           value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
-                                           placeholder="08:00"
-                                           maxlength="8"
-                                           onfocus="this.select()"
-                                           onkeydown="if (event.key === 'Enter') { this.blur(); }"
-                                           onchange="handleDepartureTimeInput('${job.id}', this.value)" 
-                                           class="table-select text-xs font-black font-mono text-gray-900 bg-transparent border-none outline-none w-16 text-center cursor-text hover:text-red-600 focus:text-gray-900 transition" 
-                                           title="Type custom 24h/12h time (e.g. 14:30 or 2:30pm) or pick from list">
+                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${convertTimeTo24Hour(job.departure) || '08:00'}</span>
                                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <select onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select Departure Time (24-Hour)">
+                                        ${get24HourDepartureOptions(job.departure)}
+                                    </select>
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
@@ -2483,7 +2477,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Source:</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
+                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
                                                 <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
                                                 <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
@@ -2495,7 +2489,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Time (Prototype):</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
+                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
                                                 <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
                                                 <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
@@ -2507,7 +2501,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Sort By:</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0">
+                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
                                                 <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
                                                 <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
