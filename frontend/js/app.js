@@ -3493,6 +3493,93 @@ Report Generated Automatically by Developer Crash Reporter.
 
         }
 
+        let fullscreenChartInstance = null;
+
+        function expandChart(chartKey, title, iconName) {
+            const originalChart = chartInstances[chartKey];
+            if (!originalChart) {
+                showSystemToast('Graph data is currently loading.', 'info');
+                return;
+            }
+
+            const modal = document.getElementById('chart-fullscreen-modal');
+            if (!modal) return;
+
+            // Set modal title and icon
+            if (document.getElementById('fs-chart-title')) {
+                document.getElementById('fs-chart-title').innerText = title || 'Enlarged Graph View';
+            }
+            const iconEl = document.getElementById('fs-chart-icon');
+            if (iconEl && iconName) {
+                iconEl.setAttribute('data-lucide', iconName);
+            }
+
+            modal.classList.remove('hidden');
+
+            // Destroy existing fullscreen chart if any
+            if (fullscreenChartInstance) {
+                fullscreenChartInstance.destroy();
+                fullscreenChartInstance = null;
+            }
+
+            const canvas = document.getElementById('chart-fullscreen-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            // Clone data and options for high-res enlarged presentation
+            const clonedData = JSON.parse(JSON.stringify(originalChart.config.data));
+            const clonedOptions = JSON.parse(JSON.stringify(originalChart.config.options || {}));
+
+            clonedOptions.responsive = true;
+            clonedOptions.maintainAspectRatio = false;
+            
+            // Optimize fonts and padding for high-res presentation
+            if (clonedOptions.plugins && clonedOptions.plugins.legend) {
+                clonedOptions.plugins.legend.labels = clonedOptions.plugins.legend.labels || {};
+                clonedOptions.plugins.legend.labels.font = { weight: 'bold', size: 13 };
+                clonedOptions.plugins.legend.labels.padding = 16;
+            }
+            if (clonedOptions.scales && clonedOptions.scales.x) {
+                clonedOptions.scales.x.ticks = clonedOptions.scales.x.ticks || {};
+                clonedOptions.scales.x.ticks.font = { size: 12, weight: 'bold' };
+            }
+            if (clonedOptions.scales && clonedOptions.scales.y) {
+                clonedOptions.scales.y.ticks = clonedOptions.scales.y.ticks || {};
+                clonedOptions.scales.y.ticks.font = { size: 12, weight: 'bold' };
+            }
+
+            fullscreenChartInstance = new Chart(ctx, {
+                type: originalChart.config.type,
+                data: clonedData,
+                options: clonedOptions
+            });
+
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+
+        function closeFullscreenChart() {
+            const modal = document.getElementById('chart-fullscreen-modal');
+            if (modal) modal.classList.add('hidden');
+            if (fullscreenChartInstance) {
+                fullscreenChartInstance.destroy();
+                fullscreenChartInstance = null;
+            }
+        }
+
+        window.expandChart = expandChart;
+        window.closeFullscreenChart = closeFullscreenChart;
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('chart-fullscreen-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    closeFullscreenChart();
+                }
+            }
+        });
+
         function openReportExportModal(presetFormat) {
             const modal = document.getElementById('report-export-modal');
             if (!modal) return;

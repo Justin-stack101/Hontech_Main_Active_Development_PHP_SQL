@@ -926,22 +926,28 @@
                         <!-- Volume Trend Chart (takes 2 columns) -->
                         <div
                             class="lg:col-span-2 bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4
-                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="trending-up" class="w-4 h-4 text-red-600"></i> Period Intake &
-                                Completion Trends
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="trending-up" class="w-4 h-4 text-red-600"></i> Period Intake & Completion Trends
+                                </h4>
+                                <button onclick="expandChart('volTrend', 'Period Intake & Completion Trends', 'trending-up')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[260px] max-h-[300px] relative">
                                 <canvas id="chart-volume-trend"></canvas>
                             </div>
                         </div>
                         <!-- Service Category Breakdown Chart -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4
-                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Service Categories
-                                Breakdown
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Service Categories Breakdown
+                                </h4>
+                                <button onclick="expandChart('category', 'Service Categories Breakdown', 'pie-chart')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[260px] max-h-[300px] relative flex items-center justify-center">
                                 <canvas id="chart-category-breakdown"></canvas>
                             </div>
@@ -952,10 +958,14 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Intake Channel Share Chart -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4
-                                class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i> Booking Channels Share
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="share-2" class="w-4 h-4 text-red-600"></i> Booking Channels Share
+                                </h4>
+                                <button onclick="expandChart('channel', 'Booking Channels Share', 'share-2')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
                                 <canvas id="chart-channel-breakdown"></canvas>
                             </div>
@@ -1093,9 +1103,14 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Branch Share Chart -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="map" class="w-4 h-4 text-red-600"></i> Branch Volume Share
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="map" class="w-4 h-4 text-red-600"></i> Branch Volume Share
+                                </h4>
+                                <button onclick="expandChart('branchShare', 'Branch Volume Share', 'map')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
                                 <canvas id="chart-branch-share"></canvas>
                             </div>
@@ -1103,9 +1118,14 @@
                         
                         <!-- Lane Share Chart -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="route" class="w-4 h-4 text-red-600"></i> Lane Allocation Breakdown
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="route" class="w-4 h-4 text-red-600"></i> Lane Allocation Breakdown
+                                </h4>
+                                <button onclick="expandChart('laneShare', 'Lane Allocation Breakdown', 'route')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
                                 <canvas id="chart-lane-share"></canvas>
                             </div>
@@ -1113,9 +1133,14 @@
 
                         <!-- Parts Status Chart -->
                         <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm flex flex-col">
-                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 mb-4 flex items-center gap-2">
-                                <i data-lucide="settings-2" class="w-4 h-4 text-red-600"></i> Parts Status Breakdown
-                            </h4>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                    <i data-lucide="settings-2" class="w-4 h-4 text-red-600"></i> Parts Status Breakdown
+                                </h4>
+                                <button onclick="expandChart('partsStatus', 'Parts Status Breakdown', 'settings-2')" title="Fullscreen / Enlarge Graph" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-900 hover:bg-gray-100 transition">
+                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                             <div class="flex-1 min-h-[220px] max-h-[250px] relative flex items-center justify-center">
                                 <canvas id="chart-parts-status"></canvas>
                             </div>
@@ -2191,6 +2216,35 @@
     </div>
 </div>
 
+    <!-- Fullscreen / Enlarged Chart Modal -->
+    <div id="chart-fullscreen-modal"
+        class="fixed inset-0 z-[700] hidden flex flex-col bg-gray-950/85 backdrop-blur-md p-4 sm:p-8 justify-center items-center">
+        <div class="bg-white w-full max-w-6xl h-[85vh] rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-gray-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-red-50 text-red-600 rounded-xl" id="fs-chart-icon-box">
+                        <i data-lucide="trending-up" class="w-5 h-5" id="fs-chart-icon"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-tight text-gray-900" id="fs-chart-title">Enlarged Graph View</h3>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">High-Resolution Analytical Visualizer</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeFullscreenChart()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
+                        <i data-lucide="minimize-2" class="w-4 h-4"></i>
+                        <span>Exit Fullscreen (ESC)</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Enlarged Canvas Container -->
+            <div class="flex-1 p-6 relative flex items-center justify-center min-h-0 bg-white">
+                <canvas id="chart-fullscreen-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- Alert Toast Component -->
     <div id="toast"
         class="fixed bottom-10 right-10 bg-white border-l-4 border-red-600 text-gray-900 px-6 py-4 rounded-xl shadow-2xl transform translate-x-[150%] transition-transform duration-300 z-[1000] flex items-center gap-4">
@@ -2783,7 +2837,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.23"></script>
+    <script src="js/app.js?v=2.24"></script>
 </body>
 
 </html>
