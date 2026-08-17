@@ -2337,13 +2337,17 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center gap-2 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0">
-                                    <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0 pointer-events-none"></i>
-                                    <span class="text-xs font-black font-mono text-gray-900 pointer-events-none">${convertTimeTo24Hour(job.departure) || '08:00'}</span>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                    <select onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select Departure Time (24-Hour)">
-                                        ${get24HourDepartureOptions(job.departure)}
-                                    </select>
+                                <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-500/10 rounded-xl px-2.5 py-1.5 shadow-2xs transition shrink-0">
+                                    <i data-lucide="clock" class="w-4 h-4 text-red-600 shrink-0"></i>
+                                    <input type="text" 
+                                           value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
+                                           placeholder="08:00"
+                                           maxlength="5"
+                                           onfocus="this.select()"
+                                           onkeydown="if (event.key === 'Enter') { this.blur(); }"
+                                           onchange="handleDepartureTimeInput('${job.id}', this.value)" 
+                                           class="table-select text-xs font-black font-mono text-gray-900 bg-transparent border-none outline-none w-14 text-center cursor-text hover:text-red-600 focus:text-gray-900 transition" 
+                                           title="Type Departure Time (e.g. 14:30 or 08:00)">
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
