@@ -2353,7 +2353,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer" title="Change Category">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
@@ -2364,7 +2364,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     
                                     ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
                                     <div class="inline-flex items-center gap-1 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl px-2 py-0.5 shadow-2xs transition group" title="Specify custom service name">
-                                        <i data-lucide="edit-3" class="w-3 h-3 text-gray-400 group-hover:text-red-500 transition shrink-0 pointer-events-none"></i>
+                                        <i data-lucide="edit-3" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-500 transition shrink-0 pointer-events-none"></i>
                                         <input type="text" 
                                                value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
                                                placeholder="Specify custom..." 
@@ -2406,7 +2406,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide pointer-events-none">LANE:</span>
                                         <span class="text-xs font-bold uppercase text-gray-800 pointer-events-none">${job.laneType || 'FLEXIBLE'}</span>
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                         <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                             ${getAvailableLanesForJob(job.category).map(opt => `
                                                 <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
@@ -2498,7 +2498,7 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Status -->
                             <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[140px]" 
+                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[145px]" 
                                      style="${
                                          job.status === 'Ready to Release' || job.status === 'Ready' 
                                              ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
@@ -2509,7 +2509,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                                      : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
                                      }" title="Change Status">
                                     <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-70 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                     <select onchange="handleStatusChange('${job.id}', this.value, this)" 
                                             class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                                             title="Change Status">
@@ -2521,7 +2521,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     </select>
                                 </div>
                                 ` : `
-                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[140px]" 
+                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px]" 
                                       style="${
                                           job.status === 'Ready to Release' || job.status === 'Ready' 
                                               ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
@@ -2539,15 +2539,15 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Location -->
                             <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
-                                <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[140px] ${
+                                <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[145px] ${
                                     job.status === 'Waiting' 
-                                        ? 'bg-amber-50 text-amber-800 border-amber-200 cursor-not-allowed opacity-85' 
+                                        ? 'bg-gray-100/90 text-gray-700 border-gray-250 cursor-not-allowed opacity-85' 
                                         : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))
                                             ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
-                                            : 'bg-amber-50 text-amber-800 border-amber-200 cursor-pointer hover:border-amber-400')
+                                            : 'bg-gray-100/90 text-gray-800 border-gray-250 cursor-pointer hover:border-gray-400')
                                 }">
                                     <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-70 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                     <select onchange="updateJobField('${job.id}', 'location', this.value)" 
                                         ${job.status === 'Waiting' ? 'disabled' : ''}
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
@@ -2569,10 +2569,10 @@ Report Generated Automatically by Developer Crash Reporter.
                                     </div>` : ''}
                                 </div>
                                 ` : `
-                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[140px] ${
+                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px] ${
                                     (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
                                         ? 'bg-blue-50 text-blue-800 border border-blue-200' 
-                                        : 'bg-amber-50 text-amber-800 border border-amber-200'
+                                        : 'bg-gray-100/90 text-gray-800 border border-gray-250'
                                 }">
                                     ${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}
                                 </span>
