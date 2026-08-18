@@ -4978,30 +4978,125 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function launchTVMode() { window.open(window.location.href.split('?')[0] + '?mode=tv', '_blank'); }
 
+        let tvIsPaused = false;
+
+        function jumpToTVSlide(index) {
+            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
+            slides.forEach((sId, i) => {
+                const el = document.getElementById(sId);
+                if (el) {
+                    if (i === index) {
+                        el.classList.remove('hidden', 'fade-out');
+                        el.classList.add('fade-in');
+                    } else {
+                        el.classList.add('hidden');
+                        el.classList.remove('fade-in');
+                    }
+                }
+                const tabBtn = document.getElementById(`tv-nav-tab-${i}`);
+                if (tabBtn) {
+                    if (i === index) {
+                        tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs uppercase tracking-wider transition shadow-sm';
+                    } else {
+                        tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition';
+                    }
+                }
+                const dot = document.getElementById(`tv-dot-${i}`);
+                if (dot) {
+                    dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === index ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
+                }
+            });
+            tvSlideIndex = index;
+            if (tvInterval && !tvIsPaused) {
+                clearInterval(tvInterval);
+                tvInterval = setInterval(rotateTVSlides, 15000);
+            }
+        }
+        window.jumpToTVSlide = jumpToTVSlide;
+
+        function toggleTVRotation() {
+            tvIsPaused = !tvIsPaused;
+            const btn = document.getElementById('tv-play-pause-btn');
+            if (tvIsPaused) {
+                if (tvInterval) clearInterval(tvInterval);
+                if (btn) btn.innerHTML = `<i data-lucide="play" class="w-4 h-4 text-emerald-400"></i>`;
+                showSystemToast('TV auto-rotation paused.', 'info', 'TV Monitor');
+            } else {
+                tvInterval = setInterval(rotateTVSlides, 15000);
+                if (btn) btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4 text-gray-300"></i>`;
+                showSystemToast('TV auto-rotation resumed.', 'success', 'TV Monitor');
+            }
+            lucide.createIcons();
+        }
+        window.toggleTVRotation = toggleTVRotation;
+
+        function toggleTVFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.warn('Fullscreen request failed:', err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        window.toggleTVFullscreen = toggleTVFullscreen;
+
+        async function refreshTVDataNow() {
+            const btn = document.getElementById('tv-refresh-btn');
+            if (btn) btn.classList.add('animate-spin');
+            try {
+                await loadData();
+                renderTV();
+                updateClock();
+                updateWeather();
+                showSystemToast('TV display refreshed from server.', 'success', 'Live Sync');
+            } catch (err) {
+                showSystemToast('Failed to sync TV display.', 'error');
+            } finally {
+                setTimeout(() => {
+                    if (btn) btn.classList.remove('animate-spin');
+                    lucide.createIcons();
+                }, 500);
+            }
+        }
+        window.refreshTVDataNow = refreshTVDataNow;
+
         function setupTVMode() {
+            initTimeFormatSetting();
             document.getElementById('auth-view').classList.add('hidden');
             document.getElementById('app-shell').classList.remove('hidden');
-            document.querySelector('header').classList.add('hidden');
             
             const sidebar = document.getElementById('app-sidebar');
             if (sidebar) sidebar.classList.add('hidden');
 
             const mainContent = document.getElementById('main-content');
-            mainContent.classList.remove('p-4', 'md:p-6', 'p-6', 'md:p-10');
-            mainContent.classList.add('p-0');
+            if (mainContent) {
+                mainContent.classList.remove('p-4', 'md:p-6', 'p-6', 'md:p-10');
+                mainContent.classList.add('p-0');
+            }
             
             const header = document.querySelector('header');
-            if(header) header.classList.add('hidden');
+            if (header) header.classList.add('hidden');
             
             const appShell = document.getElementById('app-shell');
-            if(appShell) appShell.classList.remove('layout-sidebar');
+            if (appShell) appShell.classList.remove('layout-sidebar');
 
             const dashHeader = document.getElementById('dashboard-header');
-            if(dashHeader) dashHeader.classList.add('hidden');
+            if (dashHeader) dashHeader.classList.add('hidden');
             
             showSection('tv');
 
-            // TV synchronization via REST API polling
+            // Initialize clock and date immediately
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // Initial weather fetch, and poll weather every 15 minutes
+            updateWeather();
+            setInterval(updateWeather, 900000);
+
+            // TV synchronization via REST API polling every 2s
             setInterval(async () => {
                 try {
                     await loadData();
@@ -5013,22 +5108,13 @@ Report Generated Automatically by Developer Crash Reporter.
 
             // Set slide interval to 15 seconds (15000ms) for longer display time
             tvInterval = setInterval(rotateTVSlides, 15000);
-            setInterval(updateClock, 1000);
             
-            // Initial weather fetch, and poll weather every 15 minutes
-            updateWeather();
-            setInterval(updateWeather, 900000);
-            
-            // Developer shortcut: Click the TV screen to manually rotate slides instantly
-            document.getElementById('section-tv').addEventListener('click', (e) => {
-                // Prevent click triggers from inside buttons or input fields if any
-                if (e.target.closest('button, select, input, a')) return;
-                rotateTVSlides();
-                if (tvInterval) clearInterval(tvInterval);
-                tvInterval = setInterval(rotateTVSlides, 15000);
+            loadData().then(() => {
+                renderTV();
+                lucide.createIcons();
             });
-            
-            loadData().then(() => renderTV());
+
+            lucide.createIcons();
         }
 
         function rotateTVSlides() {
@@ -5050,7 +5136,15 @@ Report Generated Automatically by Developer Crash Reporter.
                 [0, 1, 2].forEach(i => {
                     const dot = document.getElementById(`tv-dot-${i}`);
                     if (dot) {
-                        dot.className = `w-3 h-3 rounded-full transition-all ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600'}`;
+                        dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
+                    }
+                    const tabBtn = document.getElementById(`tv-nav-tab-${i}`);
+                    if (tabBtn) {
+                        if (i === tvSlideIndex) {
+                            tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs uppercase tracking-wider transition shadow-sm';
+                        } else {
+                            tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition';
+                        }
                     }
                 });
             }, 300);
