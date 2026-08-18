@@ -1828,59 +1828,53 @@
                         </div>
                     </div>
 
-                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (3 EQUAL-HEIGHT COLUMNS) -->
+                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (Client-Aligned 2-Row Layout) -->
                     <div id="tv-slide-2"
-                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Service Queue & Status</h2>
-                            <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Workshop Monitoring — Marikina Branch</p>
-                        </div>
-
-                        <!-- 3 Equal-Height Balanced Columns -->
-                        <div class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-0 bg-slate-100/60 overflow-hidden">
-                            
-                            <!-- Column 1: Upcoming Service Queue (Waiting) -->
-                            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col min-h-0 shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 flex items-center justify-between shrink-0 border-b border-slate-800">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-blue-400"></div>
-                                        <h3 class="text-sm font-black uppercase tracking-wider text-white">Upcoming Queue</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700" id="tv-all-upcoming-count">0</span>
+                        class="absolute inset-0 tv-slide hidden flex flex-col gap-6 p-6 bg-slate-100/60 rounded-2xl overflow-hidden shadow-2xl">
+                        
+                        <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
+                        <div class="flex-1 grid grid-cols-2 gap-6 min-h-0">
+                            <!-- Service Queue (Waiting List) -->
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
+                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                        Service Queue
+                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700" id="tv-all-upcoming-count">0</span>
+                                    </h3>
+                                    <p class="text-slate-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
                                 </div>
-                                <div class="p-4 flex-1 overflow-y-auto custom-scroll">
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                     <div id="tv-all-upcoming-list" class="flex flex-col gap-2.5"></div>
                                 </div>
                             </div>
 
-                            <!-- Column 2: Ready for Release (Completed) -->
-                            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col min-h-0 shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 flex items-center justify-between shrink-0 border-b border-slate-800">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
-                                        <h3 class="text-sm font-black uppercase tracking-wider text-white">Ready for Release</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800" id="tv-all-released-count">0</span>
+                            <!-- Ready for Release -->
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
+                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                        Ready for Release
+                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800" id="tv-all-released-count">0</span>
+                                    </h3>
+                                    <p class="text-emerald-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
                                 </div>
-                                <div class="p-4 flex-1 overflow-y-auto custom-scroll">
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                     <div id="tv-all-released-list" class="flex flex-col gap-2.5"></div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Column 3: Carry-Over (Extended / Awaiting Parts) -->
-                            <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col min-h-0 shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 flex items-center justify-between shrink-0 border-b border-slate-800">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                                        <h3 class="text-sm font-black uppercase tracking-wider text-white">Carry-Over</h3>
-                                    </div>
+                        <!-- Bottom Row: Carry-Over (Full Width Grid) -->
+                        <div class="flex-1 flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+                            <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
+                                <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                                    Carry-Over
                                     <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800" id="tv-all-carryover-count">0</span>
-                                </div>
-                                <div class="p-4 flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-carryover-list" class="flex flex-col gap-2.5"></div>
-                                </div>
+                                </h3>
+                                <p class="text-amber-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
                             </div>
-
+                            <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
+                                <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
+                            </div>
                         </div>
                     </div>
                     
@@ -3143,7 +3137,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.88"></script>
+    <script src="js/app.js?v=2.89"></script>
 </body>
 
 </html>
