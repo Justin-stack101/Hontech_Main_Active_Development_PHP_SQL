@@ -509,8 +509,38 @@ Report Generated Automatically by Developer Crash Reporter.
                 preloader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
             }
         }
+
+        // Developer Tool: Interactive Demo of the Boot Preloader
+        function triggerDevLoadingDemo(customDuration = 3200) {
+            const messages = [
+                'Synchronizing workshop engine...',
+                'Checking active bays & lift allocations...',
+                'Loading staff rosters & live telemetry...',
+                'System initialization complete!'
+            ];
+
+            showAppPreloader(messages[0]);
+
+            let step = 0;
+            const stepInterval = Math.max(700, Math.floor(customDuration / messages.length));
+            const interval = setInterval(() => {
+                step++;
+                if (step < messages.length) {
+                    const textEl = document.getElementById('preloader-text');
+                    if (textEl) textEl.innerText = messages[step];
+                } else {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        hideAppPreloader();
+                        showSystemToast('Loading screen preview test completed!', 'success', 'Dev Tool Test');
+                    }, 400);
+                }
+            }, stepInterval);
+        }
+
         window.hideAppPreloader = hideAppPreloader;
         window.showAppPreloader = showAppPreloader;
+        window.triggerDevLoadingDemo = triggerDevLoadingDemo;
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
