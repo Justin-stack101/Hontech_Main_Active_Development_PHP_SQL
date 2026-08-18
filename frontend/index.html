@@ -258,17 +258,10 @@
     <div id="app-preloader" class="fixed inset-0 z-[999999] bg-gray-950 flex flex-col items-center justify-center select-none transition-opacity duration-500">
         <div class="relative flex flex-col items-center gap-6 p-8 max-w-sm w-full text-center">
             
-            <!-- THEME 1: DUAL INTERLOCKING SPINNING GEARS (Pure Gears Only) -->
-            <div id="loader-visual-gears" class="loader-visual relative flex items-center justify-center h-24 w-28 select-none">
-                <div class="relative w-24 h-20">
-                    <!-- Primary Drive Gear (Clockwise) -->
-                    <div class="absolute top-0 left-0 w-14 h-14 text-red-500 animate-[spin_3.5s_linear_infinite] drop-shadow-[0_0_16px_rgba(239,68,68,0.7)] flex items-center justify-center">
-                        <i data-lucide="cog" class="w-full h-full stroke-[1.8]"></i>
-                    </div>
-                    <!-- Intermeshed Pinion Gear (Tightly Meshed & Counter-Clockwise) -->
-                    <div class="absolute bottom-0 right-0 w-11 h-11 text-gray-200 animate-[spin_2.75s_linear_infinite_reverse] drop-shadow-[0_0_10px_rgba(255,255,255,0.35)] flex items-center justify-center">
-                        <i data-lucide="settings" class="w-full h-full stroke-[1.8]"></i>
-                    </div>
+            <!-- THEME 1: SINGLE BIG PRECISION MECHANICAL GEAR (Prominent) -->
+            <div id="loader-visual-gears" class="loader-visual relative flex items-center justify-center h-28 w-28 select-none">
+                <div class="w-24 h-24 text-red-500 animate-[spin_4s_linear_infinite] drop-shadow-[0_0_24px_rgba(239,68,68,0.75)] flex items-center justify-center">
+                    <i data-lucide="cog" class="w-full h-full stroke-[1.75]"></i>
                 </div>
             </div>
 
@@ -2788,16 +2781,16 @@
 
             <!-- Theme Choices Grid -->
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto">
-                <!-- Theme 1: Gears (New!) -->
+                <!-- Theme 1: Gears (Single Big) -->
                 <div onclick="selectAndPreviewLoaderTheme('gears')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <i data-lucide="cog" class="w-5 h-5 text-red-500 group-hover:rotate-90 transition-transform duration-500"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Dual Spinning Gears</span>
+                            <span class="text-xs font-black uppercase tracking-wider text-white">Single Big Gear</span>
                         </div>
                         <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30">Recommended</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Interlocking mechanical workshop gears spinning with glowing red teeth and center precision spark.</p>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">Single prominent mechanical precision gear spinning smoothly with a glowing red aura.</p>
                     <button class="w-full py-2 bg-red-600/20 group-hover:bg-red-600 text-red-400 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
                 </div>
 
@@ -3065,7 +3058,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.80"></script>
+    <script src="js/app.js?v=2.81"></script>
 </body>
 
 </html>
