@@ -1755,7 +1755,7 @@ Report Generated Automatically by Developer Crash Reporter.
             updateJobField(jobId, field, checked);
         }
 
-        function handleTableCategoryChange(jobId, selectElement) {
+        async function handleTableCategoryChange(jobId, selectElement) {
             const val = selectElement.value;
             const inputWrap = document.getElementById(`category-input-wrap-${jobId}`);
             const inputEl = document.getElementById(`category-input-${jobId}`);
@@ -1769,12 +1769,17 @@ Report Generated Automatically by Developer Crash Reporter.
                     inputEl.value = '';
                     inputEl.focus();
                 }
+                await updateJobField(jobId, 'category', 'Others');
             } else {
                 if (inputWrap) inputWrap.classList.add('hidden');
-                if (inputEl) inputEl.classList.add('hidden');
-                updateJobField(jobId, 'category', val);
+                if (inputEl) {
+                    inputEl.classList.add('hidden');
+                    inputEl.value = '';
+                }
+                await updateJobField(jobId, 'category', val);
             }
         }
+        window.handleTableCategoryChange = handleTableCategoryChange;
 
         function assignMeToJob(jobId) {
             document.getElementById('assign-job-id').value = jobId;
@@ -2310,7 +2315,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         ${isEditable ? `
                                         <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
                                             <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                            <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : (job.category ? 'OTHERS' : 'PMS')}</span>
+                                            <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                             <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
@@ -2322,9 +2327,12 @@ Report Generated Automatically by Developer Crash Reporter.
                                         
                                         <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
                                             <i data-lucide="edit-3" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
-                                            <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
+                                            <input type="text" 
+                                                   id="category-input-${job.id}" 
+                                                   value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS', 'Others', 'OTHERS'].includes(job.category) ? job.category : ''}" 
                                                    placeholder="Specify custom..." 
-                                                   onchange="updateJobField('${job.id}', 'category', this.value)" 
+                                                   onkeydown="if(event.key === 'Enter') this.blur();"
+                                                   onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'Others')" 
                                                    class="table-select text-xs font-semibold text-gray-900 bg-transparent border-none outline-none w-32 p-0">
                                         </div>
                                         ` : `
