@@ -2564,7 +2564,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         }).join('')}
                                     </select>
                                     ${job.status === 'Waiting' ? `
-                                    <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-gray-900 text-white text-[9px] font-bold rounded whitespace-nowrap z-30 shadow-lg pointer-events-none">
+                                    <div class="hidden group-hover:block absolute bottom-full right-0 mb-1.5 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap z-40 shadow-xl pointer-events-none border border-slate-700">
                                         Set status to 'Monitoring' to assign Bay
                                     </div>` : ''}
                                 </div>
