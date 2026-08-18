@@ -2719,7 +2719,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                         title="Assign Location">
                                         <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
-                                        ${[1, 2, 3, 4, 5, 6].map(i => {
+                                        ${[1, 2, 3, 4].map(i => {
                                             const bayName = `Bay ${i}`;
                                             const occupiedBy = rowOccupiedBays[bayName];
                                             const isSelected = job.location === bayName || job.location === `Lift ${i}`;
