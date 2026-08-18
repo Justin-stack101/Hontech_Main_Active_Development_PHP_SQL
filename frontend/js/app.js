@@ -510,8 +510,47 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
+        // Multi-Theme Preloader Switcher & Storage
+        function applyLoaderTheme(themeKey) {
+            const validThemes = ['gears', 'emblem', 'gauge', 'cyber', 'piston'];
+            const activeTheme = validThemes.includes(themeKey) ? themeKey : (localStorage.getItem('hontech-loader-theme') || 'gears');
+            localStorage.setItem('hontech-loader-theme', activeTheme);
+
+            validThemes.forEach(t => {
+                const el = document.getElementById(`loader-visual-${t}`);
+                if (el) {
+                    if (t === activeTheme) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function openLoaderThemeModal() {
+            const modal = document.getElementById('loader-theme-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                lucide.createIcons();
+            }
+        }
+
+        function closeLoaderThemeModal() {
+            const modal = document.getElementById('loader-theme-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function selectAndPreviewLoaderTheme(themeKey) {
+            applyLoaderTheme(themeKey);
+            closeLoaderThemeModal();
+            triggerDevLoadingDemo(3200);
+        }
+
         // Developer Tool: Interactive Demo of the Boot Preloader
         function triggerDevLoadingDemo(customDuration = 3200) {
+            applyLoaderTheme(localStorage.getItem('hontech-loader-theme') || 'gears');
             const messages = [
                 'Synchronizing workshop engine...',
                 'Checking active bays & lift allocations...',
@@ -540,10 +579,15 @@ Report Generated Automatically by Developer Crash Reporter.
 
         window.hideAppPreloader = hideAppPreloader;
         window.showAppPreloader = showAppPreloader;
+        window.applyLoaderTheme = applyLoaderTheme;
+        window.openLoaderThemeModal = openLoaderThemeModal;
+        window.closeLoaderThemeModal = closeLoaderThemeModal;
+        window.selectAndPreviewLoaderTheme = selectAndPreviewLoaderTheme;
         window.triggerDevLoadingDemo = triggerDevLoadingDemo;
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
+                applyLoaderTheme(localStorage.getItem('hontech-loader-theme') || 'gears');
                 initSystemSettings();
                 initLayout();
                 const urlParams = new URLSearchParams(window.location.search);
