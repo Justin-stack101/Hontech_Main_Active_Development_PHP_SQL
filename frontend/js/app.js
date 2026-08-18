@@ -1762,25 +1762,17 @@ Report Generated Automatically by Developer Crash Reporter.
 
         async function handleTableCategoryChange(jobId, selectElement) {
             const val = selectElement.value;
-            const inputWrap = document.getElementById(`category-input-wrap-${jobId}`);
-            const inputEl = document.getElementById(`category-input-${jobId}`);
-            const textSpan = selectElement.parentElement.querySelector('span');
-            if (textSpan) textSpan.innerText = val.toUpperCase();
-
             if (val === 'Others') {
-                if (inputWrap) inputWrap.classList.remove('hidden');
-                if (inputEl) {
-                    inputEl.classList.remove('hidden');
-                    inputEl.value = '';
-                    inputEl.focus();
+                const job = allJobs.find(j => j.id === jobId);
+                const currentCustom = (!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job?.category)) ? (job?.category || '') : '';
+                const customName = prompt('Enter custom category / service name (e.g. Brake Service, Underchassis):', currentCustom);
+                if (customName !== null) {
+                    const finalVal = customName.trim() || 'Others';
+                    await updateJobField(jobId, 'category', finalVal);
+                } else {
+                    renderStaffTables();
                 }
-                await updateJobField(jobId, 'category', 'Others');
             } else {
-                if (inputWrap) inputWrap.classList.add('hidden');
-                if (inputEl) {
-                    inputEl.classList.add('hidden');
-                    inputEl.value = '';
-                }
                 await updateJobField(jobId, 'category', val);
             }
         }
@@ -2370,32 +2362,21 @@ Report Generated Automatically by Developer Crash Reporter.
                                 
                                 <div class="flex flex-wrap items-center gap-1.5 w-full">
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer max-w-[170px]" title="Category: ${job.category || 'PMS'}">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
+                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none truncate">${job.category || 'PMS'}</span>
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                             <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
-                                            <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
+                                            <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `OTHERS: ${job.category}` : 'OTHERS (CUSTOM)...'}</option>
                                         </select>
                                     </div>
-                                    
-                                    <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-gray-300 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
-                                        <i data-lucide="edit-3" class="w-3 h-3 text-gray-400 shrink-0"></i>
-                                        <input type="text" 
-                                               id="category-input-${job.id}" 
-                                               value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS', 'Others', 'OTHERS'].includes(job.category) ? job.category : ''}" 
-                                               placeholder="Custom..." 
-                                               onkeydown="if(event.key === 'Enter') this.blur();"
-                                               onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'Others')" 
-                                               class="table-select text-[11px] font-semibold text-gray-900 bg-transparent border-none outline-none w-20 p-0">
-                                    </div>
                                     ` : `
-                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold uppercase text-gray-800 shadow-2xs shrink-0">
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold uppercase text-gray-800 shadow-2xs shrink-0 max-w-[170px]" title="${job.category || '-'}">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
-                                        <span>${job.category || '-'}</span>
+                                        <span class="truncate">${job.category || '-'}</span>
                                     </span>
                                     `}
                                     
