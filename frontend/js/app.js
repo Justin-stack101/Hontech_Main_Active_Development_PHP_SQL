@@ -602,6 +602,7 @@ Report Generated Automatically by Developer Crash Reporter.
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
 
+            showAppPreloader('Authenticating credentials & preparing workspace...');
             try {
                 const res = await apiRequest('/api/auth/login', {
                     method: 'POST',
@@ -609,6 +610,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 });
 
                 if (res.requiresMfa) {
+                    hideAppPreloader();
                     document.getElementById('login-form-container').classList.add('hidden');
                     document.getElementById('forgot-form-container').classList.add('hidden');
                     document.getElementById('mfa-form-container').classList.remove('hidden');
@@ -622,10 +624,12 @@ Report Generated Automatically by Developer Crash Reporter.
 
                 currentUserName = res.name;
                 currentUserEmail = res.email || 'user@hontech.com';
-                handleLogin(res.role);
+                await handleLogin(res.role);
                 showSystemToast('Logged in successfully.', 'success', 'Access Granted');
             } catch (err) {
                 showSystemToast(err.message || 'Invalid credentials.', 'error', 'Authentication Failed');
+            } finally {
+                setTimeout(hideAppPreloader, 350);
             }
         }
 
@@ -881,32 +885,39 @@ Report Generated Automatically by Developer Crash Reporter.
             }, 50);
         }
 
-        async function handleLogout() {
-            if (presencePingInterval) {
-                clearInterval(presencePingInterval);
-                presencePingInterval = null;
-            }
-            if (idleLogoutTimer) {
-                clearTimeout(idleLogoutTimer);
-                idleLogoutTimer = null;
-            }
+        async function logout() {
+            showAppPreloader('Securing session & signing out...');
             try {
-                await apiRequest('/api/auth/logout', { method: 'POST' });
-            } catch (e) { }
+                if (presencePingInterval) {
+                    clearInterval(presencePingInterval);
+                    presencePingInterval = null;
+                }
+                if (idleLogoutTimer) {
+                    clearTimeout(idleLogoutTimer);
+                    idleLogoutTimer = null;
+                }
+                try {
+                    await apiRequest('/api/auth/logout', { method: 'POST' });
+                } catch (e) { }
 
-            document.getElementById('app-shell').classList.add('hidden');
-            document.getElementById('auth-view').classList.remove('hidden');
-            currentUserRole = '';
-            currentUserName = '';
-            currentUserEmail = '';
-            document.getElementById('login-pass').value = '';
-            localStorage.removeItem('hontech-active-section');
+                document.getElementById('app-shell').classList.add('hidden');
+                document.getElementById('auth-view').classList.remove('hidden');
+                currentUserRole = '';
+                currentUserName = '';
+                currentUserEmail = '';
+                document.getElementById('login-pass').value = '';
+                localStorage.removeItem('hontech-active-section');
 
-            const dropdown = document.getElementById('user-dropdown');
-            if (dropdown) dropdown.classList.add('hidden');
-            const sDropdown = document.getElementById('sidebar-user-dropdown');
-            if (sDropdown) sDropdown.classList.add('hidden');
+                const dropdown = document.getElementById('user-dropdown');
+                if (dropdown) dropdown.classList.add('hidden');
+                const sDropdown = document.getElementById('sidebar-user-dropdown');
+                if (sDropdown) sDropdown.classList.add('hidden');
+            } finally {
+                setTimeout(hideAppPreloader, 350);
+            }
         }
+        window.handleLogout = logout;
+        window.logout = logout;
 
         function toggleUserDropdown() {
             const dropdown = document.getElementById('user-dropdown');
@@ -964,7 +975,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Session Expired</h3>
                         <p class="text-xs text-gray-500 font-semibold mt-1 leading-relaxed">${reason}</p>
                     </div>
-                    <button onclick="document.getElementById('session-expired-modal').remove(); handleLogout();" 
+                    <button onclick="document.getElementById('session-expired-modal').remove(); logout();" 
                             class="w-full bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs py-3 rounded-xl transition shadow-md shadow-red-600/20 tracking-wider">
                         Log In Again
                     </button>
@@ -988,7 +999,7 @@ Report Generated Automatically by Developer Crash Reporter.
             if (timeoutMinutes === 0) return; // Disabled
 
             idleLogoutTimer = setTimeout(() => {
-                handleLogout();
+                logout();
                 showSessionExpiredModal(`You have been logged out after ${timeoutMinutes} minutes of inactivity.`);
             }, timeoutMinutes * 60 * 1000);
         }
@@ -3272,6 +3283,7 @@ Report Generated Automatically by Developer Crash Reporter.
         async function loadAnalyticsData() {
             if (currentUserRole !== 'owner' && currentUserRole !== 'admin') return;
 
+            showAppPreloader('Compiling operational analytics & metrics...');
             const scope = document.getElementById('analytics-scope').value;
             let startDate = '';
             let endDate = '';
@@ -3279,7 +3291,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
             if (scope === 'daily') {
                 const val = document.getElementById('analytics-date').value;
-                if (!val) return;
+                if (!val) { hideAppPreloader(); return; }
                 startDate = val;
                 endDate = val;
                 const [y, m, d] = val.split('-').map(Number);
@@ -3287,7 +3299,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 labelText = `Period: ${dateObj.toLocaleDateString('en-US', { dateStyle: 'long' })}`;
             } else if (scope === 'weekly') {
                 const val = document.getElementById('analytics-week-date').value;
-                if (!val) return;
+                if (!val) { hideAppPreloader(); return; }
 
                 // Calculate Monday and Sunday of selected week
                 const [y, m, d] = val.split('-').map(Number);
@@ -3298,23 +3310,20 @@ Report Generated Automatically by Developer Crash Reporter.
                 const sunday = new Date(y, m - 1, diff + 6);
 
                 const formatDate = (date) => {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
+                    const yyyy = date.getFullYear();
+                    const mm = String(date.getMonth() + 1).padStart(2, '0');
+                    const dd = String(date.getDate()).padStart(2, '0');
+                    return `${yyyy}-${mm}-${dd}`;
                 };
 
                 startDate = formatDate(monday);
                 endDate = formatDate(sunday);
-                labelText = `Period: ${monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} – ${sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+
+                labelText = `Period: ${monday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${sunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
             } else if (scope === 'monthly') {
-                const val = document.getElementById('analytics-month').value; // YYYY-MM
-                if (!val) return;
-
-                const parts = val.split('-');
-                const year = parseInt(parts[0]);
-                const month = parseInt(parts[1]);
-
+                const val = document.getElementById('analytics-month').value;
+                if (!val) { hideAppPreloader(); return; }
+                const [year, month] = val.split('-').map(Number);
                 startDate = `${val}-01`;
                 const lastDay = new Date(year, month, 0).getDate();
                 endDate = `${val}-${String(lastDay).padStart(2, '0')}`;
@@ -3338,6 +3347,8 @@ Report Generated Automatically by Developer Crash Reporter.
             } catch (err) {
                 console.error(err);
                 showSystemToast('Failed to load analytics data.', 'error', 'API Error');
+            } finally {
+                setTimeout(hideAppPreloader, 400);
             }
         }
 
@@ -4016,16 +4027,23 @@ Report Generated Automatically by Developer Crash Reporter.
             const selectedFormat = modal.querySelector('input[name="export-format"]:checked')?.value || 'PDF';
 
             closeReportExportModal();
+            showAppPreloader(`Generating ${selectedFormat} report package...`);
 
-            if (selectedFormat === 'Excel' || selectedFormat === 'CSV') {
-                exportDataExcel(selectedReportType);
-            } else if (selectedReportType === 'monthly_sla') {
-                if (selectedFormat === 'PDF') exportAnalyticsPDF();
-                else if (selectedFormat === 'Word') exportAnalyticsWord();
-            } else {
-                if (selectedFormat === 'PDF') exportPDF();
-                else if (selectedFormat === 'Word') exportWord();
-            }
+            setTimeout(() => {
+                try {
+                    if (selectedFormat === 'Excel' || selectedFormat === 'CSV') {
+                        exportDataExcel(selectedReportType);
+                    } else if (selectedReportType === 'monthly_sla') {
+                        if (selectedFormat === 'PDF') exportAnalyticsPDF();
+                        else if (selectedFormat === 'Word') exportAnalyticsWord();
+                    } else {
+                        if (selectedFormat === 'PDF') exportPDF();
+                        else if (selectedFormat === 'Word') exportWord();
+                    }
+                } finally {
+                    setTimeout(hideAppPreloader, 600);
+                }
+            }, 120);
         }
 
         function exportData(format) {
