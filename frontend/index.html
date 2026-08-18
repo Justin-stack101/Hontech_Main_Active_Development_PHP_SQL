@@ -1786,13 +1786,7 @@
                         </h1>
                         <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
-                    <div class="flex items-center gap-4 text-right">
-                        <!-- TV UI Theme Switcher Button (Classic Vibrant vs Modern Slate) -->
-                        <button id="tv-theme-toggle-btn" onclick="toggleTVTheme()" title="Switch TV UI Style (Classic Vibrant vs Modern Slate)" class="flex items-center gap-1.5 bg-gray-800/60 hover:bg-gray-800 border border-gray-700 px-3 py-2 rounded-2xl text-xs font-bold text-gray-300 hover:text-white transition cursor-pointer">
-                            <i id="tv-theme-icon" data-lucide="palette" class="w-4 h-4 text-purple-400"></i>
-                            <span id="tv-theme-text" class="text-[10px] uppercase tracking-wider font-extrabold">Theme: Classic</span>
-                        </button>
-
+                    <div class="flex items-center gap-6 text-right">
                         <!-- Weather Widget -->
                         <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
                             <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
@@ -1815,68 +1809,59 @@
                     </div>
                 </div>
 
-                <!-- Live Vehicle Ready Alert Notification Banner -->
-                <div id="tv-ready-alert-banner" class="hidden absolute top-24 left-1/2 transform -translate-x-1/2 z-[100] bg-emerald-600 text-white px-8 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border-2 border-emerald-400 transition-all duration-300">
-                    <i data-lucide="bell-ring" class="w-6 h-6 text-white animate-pulse"></i>
-                    <span id="tv-ready-alert-text" class="text-sm font-black uppercase tracking-wider">🔔 Vehicle Ready: ABC-1234 — Ready to Claim!</span>
-                </div>
-
                 <div class="flex-1 relative min-h-0">
-                    <!-- SLIDE 1: ACTIVE BAY MONITORING (4 BAYS) -->
                     <div id="tv-slide-1"
                         class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Bay Monitoring</h2>
-                            <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays — Marikina Branch</p>
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">Bay Monitoring</h2>
+                            <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Active Bays — Marikina Branch</p>
                         </div>
-                        <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden">
-                            <div id="tv-grs-list" class="grid grid-cols-2 gap-5 h-full"></div>
+                        <div class="flex-1 p-8 overflow-y-auto custom-scroll bg-gray-50">
+                            <div id="tv-grs-list" class="grid grid-cols-2 lg:grid-cols-3 gap-6 h-full"></div>
                         </div>
                     </div>
-
-                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (Client-Aligned 2-Row Layout) -->
                     <div id="tv-slide-2"
-                        class="absolute inset-0 tv-slide hidden flex flex-col gap-6 p-6 bg-slate-100/60 rounded-2xl overflow-hidden shadow-2xl">
+                        class="absolute inset-0 tv-slide hidden flex flex-col gap-6 p-6 bg-gray-50 rounded-2xl overflow-hidden shadow-2xl">
                         
-                        <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
+                        <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Equal Size side-by-side) -->
                         <div class="flex-1 grid grid-cols-2 gap-6 min-h-0">
                             <!-- Service Queue (Waiting List) -->
-                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
-                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-md border border-blue-200">
+                                <div class="bg-blue-600 py-3 text-center shrink-0 border-b border-blue-700">
+                                    <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
                                         Service Queue
-                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700" id="tv-all-upcoming-count">0</span>
+                                        <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-blue-700 text-white border border-blue-500" id="tv-all-upcoming-count">0</span>
                                     </h3>
-                                    <p class="text-slate-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
+                                    <p class="text-blue-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
                                 </div>
                                 <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-upcoming-list" class="flex flex-col gap-2.5"></div>
+                                    <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
                                 </div>
                             </div>
 
                             <!-- Ready for Release -->
-                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
-                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-md border border-green-200">
+                                <div class="bg-green-600 py-3 text-center shrink-0 border-b border-green-700">
+                                    <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
                                         Ready for Release
-                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800" id="tv-all-released-count">0</span>
+                                        <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-green-700 text-white border border-green-500" id="tv-all-released-count">0</span>
                                     </h3>
-                                    <p class="text-emerald-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
+                                    <p class="text-green-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
                                 </div>
                                 <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-released-list" class="flex flex-col gap-2.5"></div>
+                                    <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Bottom Row: Carry-Over (Full Width Grid) -->
-                        <div class="flex-1 flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
-                            <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
+                        <!-- Bottom Row: Carry-Over (Full width / Bigger) -->
+                        <div class="flex-1 flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-md border border-orange-200">
+                            <div class="bg-orange-500 py-3 text-center shrink-0 border-b border-orange-600">
+                                <h3 class="text-2xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
                                     Carry-Over
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800" id="tv-all-carryover-count">0</span>
+                                    <span class="text-sm font-bold px-2.5 py-0.5 rounded-full bg-orange-600 text-white border border-orange-400" id="tv-all-carryover-count">0</span>
                                 </h3>
-                                <p class="text-amber-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
+                                <p class="text-orange-100 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
                             </div>
                             <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                 <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
@@ -1884,32 +1869,31 @@
                         </div>
                     </div>
                     
-                    <!-- SLIDE 3: WORKSHOP LANES MONITORING -->
                     <div id="tv-slide-3"
                         class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
-                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Lane Status — Marikina Branch</p>
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
+                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Live Lane Status — Marikina Branch</p>
                         </div>
-                        <div class="flex-1 p-6 overflow-hidden bg-slate-100/60 flex gap-6">
+                        <div class="flex-1 p-8 overflow-hidden bg-gray-50 flex gap-8">
                             <!-- Express Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 text-center border-b border-slate-800 shrink-0">
-                                    <h3 class="text-sm font-black uppercase tracking-widest text-white">Express Lane</h3>
+                            <div class="flex-1 bg-red-50/30 rounded-2xl border-2 border-red-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-red-600 py-3.5 text-center border-b border-red-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Express Lane</h3>
                                 </div>
                                 <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-express-lane-list"></div>
                             </div>
                             <!-- Flexible Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 text-center border-b border-slate-800 shrink-0">
-                                    <h3 class="text-sm font-black uppercase tracking-widest text-white">Flexible Lane</h3>
+                            <div class="flex-1 bg-blue-50/30 rounded-2xl border-2 border-blue-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-blue-600 py-3.5 text-center border-b border-blue-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Flexible Lane</h3>
                                 </div>
                                 <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-flexible-lane-list"></div>
                             </div>
                             <!-- Special Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col shadow-sm">
-                                <div class="bg-slate-900 px-5 py-3.5 text-center border-b border-slate-800 shrink-0">
-                                    <h3 class="text-sm font-black uppercase tracking-widest text-white">Special Lane</h3>
+                            <div class="flex-1 bg-purple-50/30 rounded-2xl border-2 border-purple-200 overflow-hidden flex flex-col shadow-md">
+                                <div class="bg-purple-600 py-3.5 text-center border-b border-purple-700 shrink-0 shadow-sm">
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Special Lane</h3>
                                 </div>
                                 <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-special-lane-list"></div>
                             </div>
@@ -3158,7 +3142,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.92"></script>
+    <script src="js/app.js?v=2.93"></script>
 </body>
 
 </html>
