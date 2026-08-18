@@ -258,20 +258,16 @@
     <div id="app-preloader" class="fixed inset-0 z-[999999] bg-gray-950 flex flex-col items-center justify-center select-none transition-opacity duration-500">
         <div class="relative flex flex-col items-center gap-6 p-8 max-w-sm w-full text-center">
             
-            <!-- THEME 1: DUAL SPINNING WORKSHOP GEARS (Default) -->
-            <div id="loader-visual-gears" class="loader-visual relative flex items-center justify-center h-24 w-28">
-                <!-- Main Drive Gear (Clockwise) -->
-                <div class="absolute -top-1 -left-1 w-16 h-16 text-red-500 animate-[spin_3.5s_linear_infinite] drop-shadow-[0_0_14px_rgba(239,68,68,0.6)]">
-                    <i data-lucide="cog" class="w-full h-full stroke-[1.8]"></i>
-                </div>
-                <!-- Interlocking Secondary Pinion Gear (Counter-Clockwise) -->
-                <div class="absolute -bottom-1 -right-1 w-12 h-12 text-gray-400 animate-[spin_2.2s_linear_infinite_reverse] drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-                    <i data-lucide="settings" class="w-full h-full stroke-[1.8]"></i>
-                </div>
-                <!-- Center Core Spark -->
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="w-6 h-6 rounded-full bg-gray-950/80 border border-red-500/50 flex items-center justify-center shadow-md">
-                        <i data-lucide="wrench" class="w-3 h-3 text-red-400"></i>
+            <!-- THEME 1: DUAL INTERLOCKING SPINNING GEARS (Pure Gears Only) -->
+            <div id="loader-visual-gears" class="loader-visual relative flex items-center justify-center h-24 w-28 select-none">
+                <div class="relative w-24 h-20">
+                    <!-- Primary Drive Gear (Clockwise) -->
+                    <div class="absolute top-0 left-0 w-14 h-14 text-red-500 animate-[spin_3.5s_linear_infinite] drop-shadow-[0_0_16px_rgba(239,68,68,0.7)] flex items-center justify-center">
+                        <i data-lucide="cog" class="w-full h-full stroke-[1.8]"></i>
+                    </div>
+                    <!-- Intermeshed Pinion Gear (Tightly Meshed & Counter-Clockwise) -->
+                    <div class="absolute bottom-0 right-0 w-11 h-11 text-gray-200 animate-[spin_2.75s_linear_infinite_reverse] drop-shadow-[0_0_10px_rgba(255,255,255,0.35)] flex items-center justify-center">
+                        <i data-lucide="settings" class="w-full h-full stroke-[1.8]"></i>
                     </div>
                 </div>
             </div>
@@ -3069,7 +3065,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.79"></script>
+    <script src="js/app.js?v=2.80"></script>
 </body>
 
 </html>
