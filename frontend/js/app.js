@@ -2566,7 +2566,7 @@ Report Generated Automatically by Developer Crash Reporter.
                     return carryOverSortOrder === 'desc' ? stubB.localeCompare(stubA) : stubA.localeCompare(stubB);
                 });
 
-                document.getElementById('table-carry-over').innerHTML = carryOverJobs.map(job => {
+                document.getElementById('table-carry-over').innerHTML = carryOverJobs.map((job, idx) => {
                     const isEditable = isSA;
                     
                     let actions = '';
@@ -2583,18 +2583,20 @@ Report Generated Automatically by Developer Crash Reporter.
 
                     return `
                     <tr>
+                        <!-- Row Number -->
+                        <td class="px-3 py-4 text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
                         <td class="px-3 py-4"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
                         <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
                         <td class="px-3 py-4"><span class="text-gray-600 text-sm font-medium">${job.vehicle}</span></td>
                         <td class="px-3.5 py-4 whitespace-nowrap">
-                            <div class="flex flex-col gap-1.5 min-w-[170px]">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-500 w-16 shrink-0">Recv:</span>
+                            <div class="flex flex-col gap-1.5 min-w-[200px]">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Recv:</span>
                                     <span class="bg-gray-50 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.dateReceived || '--'}</span>
                                 </div>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[9px] font-black uppercase tracking-wider text-gray-500 w-16 shrink-0">Promised:</span>
-                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-gray-50 border border-gray-250 hover:border-red-500 focus:border-red-600 text-gray-900 font-bold font-mono text-xs rounded-lg px-2 py-1 outline-none shadow-2xs transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.promisedDate || 'TBD'}</span>`}
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Promised:</span>
+                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-white border border-gray-300 hover:border-red-500 focus:border-red-600 text-gray-900 font-bold font-mono text-xs rounded-lg px-2 py-1 outline-none shadow-2xs transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.promisedDate || 'TBD'}</span>`}
                                 </div>
                             </div>
                         </td>
@@ -2619,7 +2621,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
             }
 
             lucide.createIcons();
