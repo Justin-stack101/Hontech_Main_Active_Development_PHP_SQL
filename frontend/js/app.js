@@ -1715,6 +1715,9 @@ Report Generated Automatically by Developer Crash Reporter.
             const val = selectElement.value;
             const inputWrap = document.getElementById(`category-input-wrap-${jobId}`);
             const inputEl = document.getElementById(`category-input-${jobId}`);
+            const textSpan = selectElement.parentElement.querySelector('span');
+            if (textSpan) textSpan.innerText = val.toUpperCase();
+
             if (val === 'Others') {
                 if (inputWrap) inputWrap.classList.remove('hidden');
                 if (inputEl) {
@@ -2259,7 +2262,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                         ${isEditable ? `
                                         <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
                                             <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                            <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${job.category || 'PMS'}</span>
+                                            <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : (job.category ? 'OTHERS' : 'PMS')}</span>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                             <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                                 <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
