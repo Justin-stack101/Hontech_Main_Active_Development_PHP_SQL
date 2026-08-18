@@ -491,41 +491,67 @@ Report Generated Automatically by Developer Crash Reporter.
             );
         });
 
+        function hideAppPreloader() {
+            const preloader = document.getElementById('app-preloader');
+            if (preloader) {
+                preloader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                }, 500);
+            }
+        }
+
+        function showAppPreloader(message = 'Synchronizing workshop engine...') {
+            const preloader = document.getElementById('app-preloader');
+            const text = document.getElementById('preloader-text');
+            if (text && message) text.innerText = message;
+            if (preloader) {
+                preloader.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+            }
+        }
+        window.hideAppPreloader = hideAppPreloader;
+        window.showAppPreloader = showAppPreloader;
+
         document.addEventListener('DOMContentLoaded', async () => {
-            initSystemSettings();
-            initLayout();
-            const urlParams = new URLSearchParams(window.location.search);
-            const isTVMode = urlParams.get('mode') === 'tv';
-
-            if (isTVMode) {
-                setupTVMode();
-                return;
-            }
-
-            // Attempt auto-login if token cookie is already present
             try {
-                const user = await apiRequest('/api/auth/me');
-                if (user) {
-                    currentUserName = user.name;
-                    currentUserEmail = user.email || 'user@hontech.com';
-                    handleLogin(user.role);
+                initSystemSettings();
+                initLayout();
+                const urlParams = new URLSearchParams(window.location.search);
+                const isTVMode = urlParams.get('mode') === 'tv';
+
+                if (isTVMode) {
+                    setupTVMode();
+                    return;
                 }
-            } catch (e) {
-                // Not logged in, stay on auth view
+
+                // Attempt auto-login if token cookie is already present
+                try {
+                    const user = await apiRequest('/api/auth/me');
+                    if (user) {
+                        currentUserName = user.name;
+                        currentUserEmail = user.email || 'user@hontech.com';
+                        await handleLogin(user.role);
+                    }
+                } catch (e) {
+                    // Not logged in, stay on auth view
+                }
+
+                // Initialize time format setting
+                initTimeFormatSetting();
+
+                setInterval(updateClock, 1000);
+                updateClock();
+                updateStubPreview();
+
+                // Start Dev Mailbox polling
+                fetchSimulatedEmails();
+                mailboxPollInterval = setInterval(fetchSimulatedEmails, 4000);
+
+                lucide.createIcons();
+            } finally {
+                // Smoothly dismiss preloader splash screen
+                setTimeout(hideAppPreloader, 350);
             }
-
-            // Initialize time format setting
-            initTimeFormatSetting();
-
-            setInterval(updateClock, 1000);
-            updateClock();
-            updateStubPreview();
-
-            // Start Dev Mailbox polling
-            fetchSimulatedEmails();
-            mailboxPollInterval = setInterval(fetchSimulatedEmails, 4000);
-
-            lucide.createIcons();
         });
 
         function toggleDevCredentials() {
