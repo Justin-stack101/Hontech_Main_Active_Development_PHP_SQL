@@ -2605,17 +2605,17 @@ Report Generated Automatically by Developer Crash Reporter.
                         <td class="px-3 py-3 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
                         <td class="px-3.5 py-3 align-middle whitespace-nowrap">
-                            <div class="flex flex-col gap-1.5 min-w-[210px]">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-16 shrink-0">Recv:</span>
-                                    <span class="inline-flex items-center justify-center bg-gray-50 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded-lg border border-gray-200 shadow-2xs w-32 text-center">${job.dateReceived || '--'}</span>
+                            <div class="flex flex-col gap-1.5 min-w-[200px]">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-20 shrink-0">Recv:</span>
+                                    <span class="inline-flex items-center justify-center bg-gray-50 text-gray-800 font-mono font-bold text-[11px] px-2 py-0.5 rounded-lg border border-gray-200 shadow-2xs w-28 text-center">${job.dateReceived || '--'}</span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-16 shrink-0">Promised:</span>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-20 shrink-0">Promised:</span>
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center justify-between w-32 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2.5 py-1 shadow-2xs transition cursor-pointer group" title="Click to choose promised date">
-                                        <span class="font-mono font-bold text-xs ${job.promisedDate ? 'text-gray-900' : 'text-gray-400'} flex-1 text-center pointer-events-none">${job.promisedDate || 'Set Date'}</span>
-                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 transition pointer-events-none shrink-0 stroke-[2]"></i>
+                                    <div class="relative inline-flex items-center justify-between w-28 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2 py-0.5 shadow-2xs transition cursor-pointer group" title="Click to choose promised date">
+                                        <span class="font-mono font-bold text-[11px] ${job.promisedDate ? 'text-gray-900' : 'text-gray-400'} flex-1 text-center pointer-events-none">${job.promisedDate || 'Set Date'}</span>
+                                        <i data-lucide="calendar" class="w-3 h-3 text-gray-400 group-hover:text-red-600 transition pointer-events-none shrink-0 stroke-[2]"></i>
                                         <input type="date" 
                                                value="${job.promisedDate || ''}" 
                                                onchange="updateJobField('${job.id}', 'promisedDate', this.value)" 
@@ -2623,7 +2623,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                                title="Click to select promised date">
                                     </div>
                                     ` : `
-                                    <span class="inline-flex items-center justify-center font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-200 shadow-2xs w-32 text-center">${job.promisedDate || 'TBD'}</span>
+                                    <span class="inline-flex items-center justify-center font-mono font-bold text-[11px] bg-gray-50 text-gray-800 px-2 py-0.5 rounded-lg border border-gray-200 shadow-2xs w-28 text-center">${job.promisedDate || 'TBD'}</span>
                                     `}
                                 </div>
                             </div>
