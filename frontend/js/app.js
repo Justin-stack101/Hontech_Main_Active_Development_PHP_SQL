@@ -1880,6 +1880,16 @@ Report Generated Automatically by Developer Crash Reporter.
                     if (normalized) value = normalized;
                 }
 
+                if (field === 'location' && value && value.startsWith('Bay')) {
+                    if (job && job.status === 'Waiting') {
+                        await apiRequest(`/api/jobs/${jobId}/status`, {
+                            method: 'PATCH',
+                            body: { status: 'Monitoring' }
+                        });
+                        job.status = 'Monitoring';
+                    }
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field, value }
@@ -2706,16 +2716,13 @@ Report Generated Automatically by Developer Crash Reporter.
                             <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
                                 <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[145px] ${
-                                    job.status === 'Waiting' 
-                                        ? 'bg-gray-100/90 text-gray-700 border-gray-250 cursor-not-allowed opacity-85' 
-                                        : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))
-                                            ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
-                                            : 'bg-gray-100/90 text-gray-800 border-gray-250 cursor-pointer hover:border-gray-400')
+                                    (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
+                                        ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
+                                        : 'bg-gray-100/90 text-gray-800 border-gray-250 cursor-pointer hover:border-gray-400'
                                 }">
                                     <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
                                     <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                     <select onchange="updateJobField('${job.id}', 'location', this.value)" 
-                                        ${job.status === 'Waiting' ? 'disabled' : ''}
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                         title="Assign Location">
                                         <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
@@ -2729,10 +2736,6 @@ Report Generated Automatically by Developer Crash Reporter.
                                             return `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
                                         }).join('')}
                                     </select>
-                                    ${job.status === 'Waiting' ? `
-                                    <div class="hidden group-hover:block absolute bottom-full right-0 mb-1.5 px-2.5 py-1 bg-slate-900 text-white text-[10px] font-bold rounded-lg whitespace-nowrap z-40 shadow-xl pointer-events-none border border-slate-700">
-                                        Set status to 'Monitoring' to assign Bay
-                                    </div>` : ''}
                                 </div>
                                 ` : `
                                 <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px] ${
