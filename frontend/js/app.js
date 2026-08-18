@@ -2573,8 +2573,8 @@ Report Generated Automatically by Developer Crash Reporter.
                     if (isEditable) {
                         actions = `
                             <div class="flex gap-1.5 justify-end">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-2xs">Return Active</button>
-                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10">Remove</button>
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer">Return Active</button>
+                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10 cursor-pointer">Remove</button>
                             </div>
                         `;
                     } else {
@@ -2584,39 +2584,39 @@ Report Generated Automatically by Developer Crash Reporter.
                     return `
                     <tr>
                         <!-- Row Number -->
-                        <td class="px-3 py-4 text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
-                        <td class="px-3 py-4"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
-                        <td class="px-3 py-4"><span class="text-gray-600 text-sm font-medium">${job.vehicle}</span></td>
-                        <td class="px-3.5 py-4 whitespace-nowrap">
-                            <div class="flex flex-col gap-1.5 min-w-[200px]">
+                        <td class="px-3 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                        <td class="px-3 py-3 align-middle"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-3 py-3 align-middle"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
+                        <td class="px-3 py-3 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
+                        <td class="px-3.5 py-3 align-middle whitespace-nowrap">
+                            <div class="flex flex-col gap-1.5 min-w-[190px]">
                                 <div class="flex items-center justify-between gap-2">
                                     <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Recv:</span>
-                                    <span class="bg-gray-50 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.dateReceived || '--'}</span>
+                                    <span class="bg-gray-50 text-gray-800 font-mono font-bold text-xs px-2.5 py-1 rounded-lg border border-gray-200 shadow-2xs">${job.dateReceived || '--'}</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-2">
                                     <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Promised:</span>
-                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-white border border-gray-300 hover:border-red-500 focus:border-red-600 text-gray-900 font-bold font-mono text-xs rounded-lg px-2 py-1 outline-none shadow-2xs transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 shadow-2xs">${job.promisedDate || 'TBD'}</span>`}
+                                    ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="bg-white border border-gray-300 hover:border-red-500 focus:border-red-600 text-gray-900 font-bold font-mono text-xs rounded-lg px-2 py-1 outline-none shadow-2xs transition cursor-pointer">` : `<span class="font-mono font-bold text-xs bg-gray-50 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-200 shadow-2xs">${job.promisedDate || 'TBD'}</span>`}
                                 </div>
                             </div>
                         </td>
-                        <td class="px-3 py-4"><span class="text-gray-750 text-sm font-semibold">${job.saName || '-'}</span></td>
-                        <td class="px-3 py-4">
-                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-sm min-w-[200px] block">${job.evaluation || '-'}</span>`}
+                        <td class="px-3 py-3 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
+                        <td class="px-3 py-3 align-middle">
+                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] block">${job.evaluation || '-'}</span>`}
                         </td>
-                        <td class="px-3 py-4">
+                        <td class="px-3 py-3 align-middle">
                             ${isEditable ? `
                             <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
-                                    class="table-select font-extrabold text-xs uppercase !w-44 bg-gray-50 text-gray-800 border border-gray-250 hover:border-red-500 rounded-xl py-1.5 px-3 outline-none transition cursor-pointer shadow-2xs">
+                                    class="table-select font-semibold text-xs uppercase !w-44 bg-white text-gray-800 border border-gray-300 hover:border-red-500 rounded-xl py-1.5 px-3 outline-none transition cursor-pointer shadow-2xs">
                                 <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
                                 <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
                                 <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
                                 <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
                                 <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                             </select>
-                            ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-bold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-semibold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
-                        <td class="px-3 py-4 text-right">
+                        <td class="px-3 py-3 align-middle text-right">
                             ${actions}
                         </td>
                     </tr>
