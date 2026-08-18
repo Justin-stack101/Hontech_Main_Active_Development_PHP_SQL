@@ -2310,80 +2310,76 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <span>${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex flex-col gap-1.5 w-full">
-                                    <div class="flex flex-wrap items-center gap-2">
-                                        ${isEditable ? `
-                                        <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
-                                            <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                            <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
-                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
-                                                <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
-                                                <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
-                                                <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
-                                                <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1.5 bg-white border border-gray-300 rounded-xl px-2.5 py-1 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
-                                            <i data-lucide="edit-3" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
-                                            <input type="text" 
-                                                   id="category-input-${job.id}" 
-                                                   value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS', 'Others', 'OTHERS'].includes(job.category) ? job.category : ''}" 
-                                                   placeholder="Specify custom..." 
-                                                   onkeydown="if(event.key === 'Enter') this.blur();"
-                                                   onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'Others')" 
-                                                   class="table-select text-xs font-semibold text-gray-900 bg-transparent border-none outline-none w-32 p-0">
-                                        </div>
+                                <div class="flex flex-wrap items-center gap-1.5 w-full">
+                                    ${isEditable ? `
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
+                                        <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
+                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
+                                            <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                            <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                            <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
+                                            <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="category-input-wrap-${job.id}" class="inline-flex items-center gap-1 bg-white border border-gray-300 rounded-lg px-2 py-0.5 shadow-2xs ${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                        <i data-lucide="edit-3" class="w-3 h-3 text-gray-400 shrink-0"></i>
+                                        <input type="text" 
+                                               id="category-input-${job.id}" 
+                                               value="${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS', 'Others', 'OTHERS'].includes(job.category) ? job.category : ''}" 
+                                               placeholder="Custom..." 
+                                               onkeydown="if(event.key === 'Enter') this.blur();"
+                                               onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'Others')" 
+                                               class="table-select text-[11px] font-semibold text-gray-900 bg-transparent border-none outline-none w-20 p-0">
+                                    </div>
+                                    ` : `
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold uppercase text-gray-800 shadow-2xs shrink-0">
+                                        <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
+                                        <span>${job.category || '-'}</span>
+                                    </span>
+                                    `}
+                                    
+                                    <div class="inline-flex items-center shrink-0">
+                                        ${job.saName ? `
+                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-800 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
+                                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                                <span class="text-gray-500 font-medium">SA:</span>
+                                                <span class="text-gray-800 font-bold">${job.saName}</span>
+                                            </span>
+                                        ` : ((isAsst || isOwnerOrAdmin) ? `
+                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
+                                                <i data-lucide="user-minus" class="w-3.5 h-3.5 text-amber-500"></i>
+                                                <span>Unassigned</span>
+                                            </span>
                                         ` : `
-                                        <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold uppercase text-gray-800 shadow-2xs shrink-0">
-                                            <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
-                                            <span>${job.category || '-'}</span>
-                                        </span>
-                                        `}
-                                        
-                                        <div class="inline-flex items-center shrink-0">
-                                            ${job.saName ? `
-                                                <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-800 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
-                                                    <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                                    <span class="text-gray-500 font-medium">SA:</span>
-                                                    <span class="text-gray-800 font-bold">${job.saName}</span>
-                                                </span>
-                                            ` : ((isAsst || isOwnerOrAdmin) ? `
-                                                <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
-                                                    <i data-lucide="user-minus" class="w-3.5 h-3.5 text-amber-500"></i>
-                                                    <span>Unassigned</span>
-                                                </span>
-                                            ` : `
-                                                <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-gray-50 hover:bg-gray-900 text-gray-800 hover:text-white border border-gray-300 hover:border-gray-900 px-2.5 py-1 rounded-xl transition-all shadow-xs cursor-pointer active:scale-95">
-                                                    <i data-lucide="user-plus" class="w-3.5 h-3.5 text-blue-600"></i>
-                                                    <span>Assign to Me</span>
-                                                </button>
-                                            `)}
-                                        </div>
+                                            <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-gray-50 hover:bg-gray-900 text-gray-800 hover:text-white border border-gray-300 hover:border-gray-900 px-2.5 py-1 rounded-xl transition-all shadow-xs cursor-pointer active:scale-95">
+                                                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-blue-600"></i>
+                                                <span>Assign to Me</span>
+                                            </button>
+                                        `)}
                                     </div>
 
-                                    <div class="flex items-center mt-1">
-                                        ${isEditable ? `
-                                        <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
-                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide pointer-events-none">LANE:</span>
-                                            <span class="text-xs font-bold uppercase text-gray-800 pointer-events-none">${job.laneType || 'FLEXIBLE'}</span>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
-                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
-                                                ${getAvailableLanesForJob(job.category).map(opt => `
-                                                    <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
-                                                `).join('')}
-                                            </select>
-                                        </div>
-                                        ` : `
-                                        <div class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-2.5 py-1 shadow-2xs">
-                                            <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
-                                            <span class="text-gray-500 font-medium">LANE:</span>
-                                            <span class="text-gray-800 font-bold">${job.laneType || 'FLEXIBLE'}</span>
-                                        </div>
-                                        `}
+                                    ${isEditable ? `
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer shrink-0">
+                                        <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
+                                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide pointer-events-none">LANE:</span>
+                                        <span class="text-xs font-bold uppercase text-gray-800 pointer-events-none">${job.laneType || 'FLEXIBLE'}</span>
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
+                                            ${getAvailableLanesForJob(job.category).map(opt => `
+                                                <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
+                                            `).join('')}
+                                        </select>
                                     </div>
+                                    ` : `
+                                    <div class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-2.5 py-1 shadow-2xs shrink-0">
+                                        <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
+                                        <span class="text-gray-500 font-medium">LANE:</span>
+                                        <span class="text-gray-800 font-bold">${job.laneType || 'FLEXIBLE'}</span>
+                                    </div>
+                                    `}
                                 </div>
                             </td>
                             
