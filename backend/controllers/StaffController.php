@@ -133,8 +133,13 @@ class StaffController
                 return;
             }
 
-            if ($targetUser['role'] === 'owner' || ($role === 'owner' && $currentUser['role'] !== 'owner')) {
-                if ($currentUser['role'] !== 'owner') {
+            if ($targetUser['email'] === 'owner@hontech.com') {
+                ApiResponse::forbidden('Access forbidden. Primary Administrator role is permanent and cannot be modified.');
+                return;
+            }
+
+            if ($currentUser['role'] !== 'owner') {
+                if ($targetUser['role'] === 'owner' || $role === 'owner') {
                     ApiResponse::forbidden('Access forbidden. Owner role is protected and cannot be modified by Administrators.');
                     return;
                 }

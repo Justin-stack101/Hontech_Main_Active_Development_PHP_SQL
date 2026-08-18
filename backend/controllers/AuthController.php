@@ -997,10 +997,19 @@ class AuthController
                 return;
             }
 
-            if ($user['role'] === 'owner' || ($role === 'owner' && $currentUser['role'] !== 'owner')) {
+            // Prevent changing primary system owner
+            if ($user['email'] === 'owner@hontech.com') {
                 http_response_code(403);
-                echo json_encode(['message' => 'Access forbidden. Owner role is protected and cannot be assigned or demoted by Administrators.']);
+                echo json_encode(['message' => 'Access forbidden. Primary Administrator role is permanent and cannot be modified.']);
                 return;
+            }
+
+            if ($currentUser['role'] !== 'owner') {
+                if ($user['role'] === 'owner' || $role === 'owner') {
+                    http_response_code(403);
+                    echo json_encode(['message' => 'Access forbidden. Owner role is protected and cannot be assigned or demoted by Administrators.']);
+                    return;
+                }
             }
 
             $stmt = $db->prepare('UPDATE users SET role = ? WHERE id = ?');

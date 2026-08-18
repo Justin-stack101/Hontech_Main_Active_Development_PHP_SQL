@@ -1128,12 +1128,52 @@ Report Generated Automatically by Developer Crash Reporter.
             const tbody = document.getElementById('table-staff-accounts');
             if (!tbody) return;
 
+            // Adjust new staff role options based on logged-in user permissions
+            const newRoleSelect = document.getElementById('new-staff-role');
+            if (newRoleSelect) {
+                const currentVal = newRoleSelect.value;
+                if (currentUserRole === 'admin') {
+                    newRoleSelect.innerHTML = `
+                        <option value="assistant">Assistant Staff</option>
+                        <option value="sa">Service Advisor</option>
+                        <option value="admin">Admin</option>
+                    `;
+                } else {
+                    newRoleSelect.innerHTML = `
+                        <option value="assistant">Assistant Staff</option>
+                        <option value="sa">Service Advisor</option>
+                        <option value="admin">Admin</option>
+                        <option value="owner">Owner</option>
+                    `;
+                }
+                if (currentVal && Array.from(newRoleSelect.options).some(o => o.value === currentVal)) {
+                    newRoleSelect.value = currentVal;
+                }
+            }
+
             tbody.innerHTML = staffAccounts.map(user => {
                 const userId = user.id ?? user._id;
                 const isActive = user.is_active !== undefined ? Number(user.is_active) === 1 : (user.isActive !== false);
                 const isOnline = user.is_online !== undefined ? Number(user.is_online) === 1 : Boolean(user.isOnline);
                 const userRole = user.role || 'assistant';
-                const isSysOwner = (userRole === 'owner' && user.email === 'owner@hontech.com');
+                const isSysOwner = (user.email === 'owner@hontech.com');
+                const isOwnerAccount = (userRole === 'owner');
+
+                let roleHtml = '';
+                if (isSysOwner) {
+                    roleHtml = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shadow-2xs">Primary Administrator</span>`;
+                } else if (currentUserRole === 'admin' && isOwnerAccount) {
+                    roleHtml = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs">Owner (Protected)</span>`;
+                } else {
+                    roleHtml = `
+                        <select onchange="updateStaffRole('${userId}', this.value)" class="bg-gray-50 hover:bg-white border border-gray-200 focus:border-red-600 rounded-xl px-2.5 py-1.5 font-bold text-xs text-gray-900 outline-none transition cursor-pointer shadow-2xs">
+                            <option value="assistant" ${userRole === 'assistant' ? 'selected' : ''}>Assistant Staff</option>
+                            <option value="sa" ${userRole === 'sa' ? 'selected' : ''}>Service Advisor</option>
+                            <option value="admin" ${userRole === 'admin' ? 'selected' : ''}>Admin</option>
+                            ${currentUserRole === 'owner' ? `<option value="owner" ${userRole === 'owner' ? 'selected' : ''}>Owner</option>` : ''}
+                        </select>
+                    `;
+                }
 
                 return `
                 <tr class="hover:bg-gray-50/80 transition-colors ${!isActive ? 'bg-gray-50/60' : 'bg-white'} border-b border-gray-100">
@@ -1145,17 +1185,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        ${isSysOwner
-                    ? `<span class="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-700 border border-red-200 shadow-2xs">Primary Administrator</span>`
-                    : `
-                            <select onchange="updateStaffRole('${userId}', this.value)" class="bg-gray-50 hover:bg-white border border-gray-200 focus:border-red-600 rounded-xl px-2.5 py-1.5 font-bold text-xs text-gray-900 outline-none transition cursor-pointer shadow-2xs">
-                                <option value="assistant" ${userRole === 'assistant' ? 'selected' : ''}>Assistant Staff</option>
-                                <option value="sa" ${userRole === 'sa' ? 'selected' : ''}>Service Advisor</option>
-                                <option value="admin" ${userRole === 'admin' ? 'selected' : ''}>Admin</option>
-                                <option value="owner" ${userRole === 'owner' ? 'selected' : ''}>Owner</option>
-                            </select>
-                            `
-                }
+                        ${roleHtml}
                     </td>
                     <td class="px-6 py-4 text-gray-700 font-semibold text-xs">${user.branch || 'Branch A'}</td>
                     <td class="px-6 py-4 text-gray-700 font-semibold text-xs font-mono">${user.email}</td>
@@ -1165,14 +1195,14 @@ Report Generated Automatically by Developer Crash Reporter.
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        ${isSysOwner
+                        ${isSysOwner || (currentUserRole === 'admin' && isOwnerAccount)
                     ? '<span class="text-[10px] text-gray-400 font-black uppercase tracking-wider">Secured</span>'
                     : `<button onclick="openStaffPasswordReset('${userId}', '${(user.name || '').replace(/'/g, "\\'")}')" class="bg-white hover:bg-gray-50 text-gray-800 px-3 py-1.5 rounded-xl border border-gray-200 transition text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-2xs cursor-pointer"><i data-lucide="key-round" class="w-3.5 h-3.5 text-red-600"></i> Reset</button>`
                 }
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex gap-2 justify-end">
-                            ${isSysOwner
+                            ${isSysOwner || (currentUserRole === 'admin' && isOwnerAccount)
                     ? '<span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Sys Owner</span>'
                     : `
                                 <button onclick="openStaffEditModal('${userId}', '${(user.name || '').replace(/'/g, "\\'")}', '${user.email}', '${userRole}', '${user.branch || ''}')" class="bg-white p-2 rounded-xl border border-gray-200 shadow-2xs text-blue-600 hover:bg-blue-50 transition cursor-pointer" title="Edit Details">
@@ -1205,6 +1235,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 renderStaffManagement();
             } catch (err) {
                 showSystemToast(err.message || 'Failed to update staff role.', 'error');
+                await loadData();
                 renderStaffManagement();
             }
         }
