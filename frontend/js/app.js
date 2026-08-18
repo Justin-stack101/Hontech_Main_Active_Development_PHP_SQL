@@ -5164,7 +5164,8 @@ Report Generated Automatically by Developer Crash Reporter.
         window.triggerTVSlideAlertBanner = triggerTVSlideAlertBanner;
 
         function renderTV() {
-            if (activeSection !== 'tv') return;
+            const tvSection = document.getElementById('section-tv');
+            if (tvSection && tvSection.classList.contains('hidden')) return;
 
             // Update TV Header Branch Labels dynamically based on active branch
             const activeBranch = localStorage.getItem('selectedBranch') || (currentUserRole === 'admin' ? currentUserBranch : 'Marikina Branch');
