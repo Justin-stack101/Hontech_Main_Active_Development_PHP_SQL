@@ -24,6 +24,11 @@
         let intakeSortOrder = 'desc';
         let carryOverSortOrder = 'desc';
 
+        // Auto-enforce 30 minutes default inactivity timeout across all roles
+        if (!localStorage.getItem('hontech-idle-timeout') || localStorage.getItem('hontech-idle-timeout') === '15') {
+            localStorage.setItem('hontech-idle-timeout', '30');
+        }
+
         function updateIntakeFilter(type, value) {
             if (type === 'search') intakeSearchQuery = value;
             if (type === 'source') intakeSourceFilter = value;
@@ -141,7 +146,11 @@
 
                 if (!response.ok) {
                     if (response.status === 401 && !url.includes('/login') && !url.includes('/auth/me')) {
-                        const timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '30', 10);
+                        let timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '30', 10);
+                        if (timeoutMinutes === 15 || isNaN(timeoutMinutes)) {
+                            timeoutMinutes = 30;
+                            localStorage.setItem('hontech-idle-timeout', '30');
+                        }
                         const isUserIdle = (Date.now() - lastUserActivityTimestamp) >= (timeoutMinutes * 60 * 1000);
 
                         console.warn("Session 401 received. User idle status:", isUserIdle);
@@ -910,7 +919,11 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             if (!currentUserRole) return; // Only run if user is logged in
             
-            const timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '30', 10);
+            let timeoutMinutes = parseInt(localStorage.getItem('hontech-idle-timeout') || '30', 10);
+            if (timeoutMinutes === 15 || isNaN(timeoutMinutes)) {
+                timeoutMinutes = 30;
+                localStorage.setItem('hontech-idle-timeout', '30');
+            }
             if (timeoutMinutes === 0) return; // Disabled
 
             idleLogoutTimer = setTimeout(() => {
