@@ -2178,7 +2178,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 const getTableHeaderHtml = () => {
                     return `
                         <thead class="sticky top-0 z-10 bg-gray-50">
-                            <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                            <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
                                 <th onclick="toggleClaimStubSort()" class="px-2 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
@@ -2487,38 +2487,38 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <!-- Dropdown Filters -->
                                 <div class="flex flex-wrap items-center gap-3">
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Source:</span>
+                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Source:</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
                                                 <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
                                                 <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
                                     
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Time (Prototype):</span>
+                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Time (Prototype):</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
                                                 <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
                                                 <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
 
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[10px] text-gray-500 font-extrabold uppercase tracking-wider">Sort By:</span>
+                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Sort By:</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-black uppercase text-gray-900 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
                                                 <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
                                                 <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
                                 </div>
