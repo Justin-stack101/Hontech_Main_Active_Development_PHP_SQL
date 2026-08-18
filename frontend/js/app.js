@@ -4987,12 +4987,17 @@ Report Generated Automatically by Developer Crash Reporter.
                 `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
             }
 
-            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
+            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-6)
             const tvGRS = document.getElementById('tv-grs-list');
             if (tvGRS) {
                 let baysHTML = '';
-                for (let i = 1; i <= 4; i++) {
-                    const job = allJobs.find(j => j.location === `Bay ${i}` || j.location === `Lift ${i}`);
+                for (let i = 1; i <= 6; i++) {
+                    const job = (allJobs || []).find(j => {
+                        if (!j.location || j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                        const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
+                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}`;
+                    });
+
                     if (job) {
                         const theme = getServiceTheme(job.category);
                         baysHTML += `
@@ -5002,7 +5007,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                     <span class="${theme.bgBadge} text-white font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">IN SERVICE</span>
                                 </div>
                                 <span class="text-3xl font-black uppercase italic text-gray-900 tracking-tighter text-center">${job.plate}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 text-center mb-1">${job.vehicle} | <span class="${theme.text}">${job.category}</span></span>
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 text-center mb-1 truncate max-w-[90%]">${job.vehicle} | <span class="${theme.text}">${job.category}</span></span>
                             </div>`;
                     } else {
                         baysHTML += `
@@ -5019,12 +5024,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 tvGRS.innerHTML = baysHTML;
             }
             // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
-            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
+            const activeLaneJobs = (allJobs || []).filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
                 const theme = getServiceTheme(job.category);
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/, 'Bay')}</span>`;
+                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-green-150 text-green-700 border border-green-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
                 } else if (job.status === 'Waiting') {
@@ -5052,13 +5057,13 @@ Report Generated Automatically by Developer Crash Reporter.
             const flexibleList = document.getElementById('tv-flexible-lane-list');
             const specialList = document.getElementById('tv-special-lane-list');
             if (expressList) {
-                expressList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Express Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                expressList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
             }
             if (flexibleList) {
-                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
             }
             if (specialList) {
-                specialList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Special Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                specialList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
             }
 
             lucide.createIcons();
