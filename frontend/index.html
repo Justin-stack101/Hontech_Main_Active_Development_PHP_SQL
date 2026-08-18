@@ -1786,7 +1786,13 @@
                         </h1>
                         <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
-                    <div class="flex items-center gap-6 text-right">
+                    <div class="flex items-center gap-4 text-right">
+                        <!-- TV UI Theme Switcher Button (Classic Vibrant vs Modern Slate) -->
+                        <button id="tv-theme-toggle-btn" onclick="toggleTVTheme()" title="Switch TV UI Style (Classic Vibrant vs Modern Slate)" class="flex items-center gap-1.5 bg-gray-800/60 hover:bg-gray-800 border border-gray-700 px-3 py-2 rounded-2xl text-xs font-bold text-gray-300 hover:text-white transition cursor-pointer">
+                            <i id="tv-theme-icon" data-lucide="palette" class="w-4 h-4 text-purple-400"></i>
+                            <span id="tv-theme-text" class="text-[10px] uppercase tracking-wider font-extrabold">Theme: Classic</span>
+                        </button>
+
                         <!-- Weather Widget -->
                         <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
                             <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
@@ -2824,6 +2830,21 @@
                     <p class="text-[10px] text-gray-500 font-medium truncate">Test vehicle completion chime</p>
                 </div>
             </button>
+
+            <!-- Action 6: Toggle TV UI Style (Classic Vibrant vs Modern Slate) -->
+            <button onclick="toggleTVTheme(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-indigo-950/40 text-left transition group cursor-pointer border border-transparent hover:border-indigo-900/50">
+                <div class="p-2 rounded-xl bg-indigo-600/20 text-indigo-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="tv" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>TV Display Theme</span>
+                        <span id="dev-tv-theme-badge" class="text-[9px] text-indigo-400 uppercase font-black">Toggle</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Switch Classic Vibrant / Modern Slate</p>
+                </div>
+            </button>
         </div>
 
         <!-- Master Floating Trigger Button -->
@@ -3137,7 +3158,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.91"></script>
+    <script src="js/app.js?v=2.92"></script>
 </body>
 
 </html>
