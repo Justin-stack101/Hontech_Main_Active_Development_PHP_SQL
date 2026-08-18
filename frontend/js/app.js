@@ -2352,31 +2352,16 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <span class="block py-0.5 text-xs font-medium text-gray-600">${formatTime12Hour(job.arrival)}</span>
                             </td>
                             
-                            <!-- Departure -->
+                            <!-- Departure (Option 1: Dropdown Selection Pill) -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-500/10 rounded-xl pl-2.5 pr-1.5 py-1 shadow-2xs transition">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none mr-1.5"></i>
-                                    <input type="text" 
-                                           id="departure-input-${job.id}"
-                                           value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
-                                           placeholder="08:00"
-                                           maxlength="5"
-                                           onfocus="this.select()"
-                                           onkeydown="handleDepartureLiveKey(this, '${job.id}', event)"
-                                           oninput="handleDepartureInputMask(this, '${job.id}')"
-                                           onblur="handleDepartureBlur(this, '${job.id}')"
-                                           class="table-select bg-transparent border-none font-bold font-mono text-xs text-gray-900 w-12 text-center cursor-text outline-none p-0" 
-                                           title="Type numbers (e.g. 1430, 0800) or pick default below">
-                                    
-                                    <!-- Quick Default Selection Trigger -->
-                                    <div class="relative inline-flex items-center ml-1 border-l border-gray-200 pl-1.5 py-0.5 cursor-pointer group" title="Choose default departure time">
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 transition stroke-[2] pointer-events-none"></i>
-                                        <select onchange="handleDeparturePresetSelect('${job.id}', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select default departure time">
-                                            <option value="" disabled>-- Default Hours --</option>
-                                            ${get24HourDepartureOptions(job.departure)}
-                                        </select>
-                                    </div>
+                                <div class="relative inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
+                                    <span class="text-xs font-bold font-mono text-gray-900 pointer-events-none">${convertTimeTo24Hour(job.departure) || '08:00'}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                    <select onchange="updateJobField('${job.id}', 'departure', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select Departure Time (24H)">
+                                        ${get24HourDepartureOptions(job.departure)}
+                                    </select>
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
