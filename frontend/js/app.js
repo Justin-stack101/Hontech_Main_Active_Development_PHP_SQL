@@ -98,6 +98,13 @@
             el.value = finalTime;
             updateJobField(jobId, 'departure', finalTime);
         };
+
+        window.handleDeparturePresetSelect = function(jobId, selectedTime) {
+            if (!selectedTime) return;
+            const el = document.getElementById(`departure-input-${jobId}`);
+            if (el) el.value = selectedTime;
+            updateJobField(jobId, 'departure', selectedTime);
+        };
         let analyticsJobs = [];
         let idleLogoutTimer = null;
         let lastUserActivityTimestamp = Date.now();
@@ -2348,9 +2355,10 @@ Report Generated Automatically by Developer Crash Reporter.
                             <!-- Departure -->
                             <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center">
-                                    <i data-lucide="clock" class="absolute left-3 w-4 h-4 text-red-600 pointer-events-none z-10"></i>
+                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-500/10 rounded-xl pl-2.5 pr-1.5 py-1 shadow-2xs transition">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none mr-1.5"></i>
                                     <input type="text" 
+                                           id="departure-input-${job.id}"
                                            value="${convertTimeTo24Hour(job.departure) || '08:00'}" 
                                            placeholder="08:00"
                                            maxlength="5"
@@ -2358,8 +2366,17 @@ Report Generated Automatically by Developer Crash Reporter.
                                            onkeydown="handleDepartureLiveKey(this, '${job.id}', event)"
                                            oninput="handleDepartureInputMask(this, '${job.id}')"
                                            onblur="handleDepartureBlur(this, '${job.id}')"
-                                           class="table-select bg-white border border-gray-300 hover:border-red-500 focus:border-red-600 focus:ring-2 focus:ring-red-500/10 rounded-xl pl-9 pr-3 py-1.5 shadow-2xs transition font-black font-mono text-xs text-gray-900 w-24 text-center cursor-text outline-none" 
-                                           title="Type numbers to change departure time (e.g. 1430, 0800)">
+                                           class="table-select bg-transparent border-none font-bold font-mono text-xs text-gray-900 w-12 text-center cursor-text outline-none p-0" 
+                                           title="Type numbers (e.g. 1430, 0800) or pick default below">
+                                    
+                                    <!-- Quick Default Selection Trigger -->
+                                    <div class="relative inline-flex items-center ml-1 border-l border-gray-200 pl-1.5 py-0.5 cursor-pointer group" title="Choose default departure time">
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 transition stroke-[2] pointer-events-none"></i>
+                                        <select onchange="handleDeparturePresetSelect('${job.id}', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Select default departure time">
+                                            <option value="" disabled>-- Default Hours --</option>
+                                            ${get24HourDepartureOptions(job.departure)}
+                                        </select>
+                                    </div>
                                 </div>
                                 ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
                             </td>
