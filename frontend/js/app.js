@@ -2179,6 +2179,7 @@ Report Generated Automatically by Developer Crash Reporter.
                     return `
                         <thead class="sticky top-0 z-10 bg-gray-50">
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
+                                <th class="px-2 py-3 bg-gray-50 text-center w-10 text-gray-400 font-bold">#</th>
                                 <th onclick="toggleClaimStubSort()" class="px-2 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
@@ -2220,7 +2221,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 };
 
                 const renderJobRows = (jobsList) => {
-                    return jobsList.map(job => {
+                    return jobsList.map((job, idx) => {
                         const isEditable = isSA;
                         
 
@@ -2235,6 +2236,9 @@ Report Generated Automatically by Developer Crash Reporter.
 
                                 return `
                         <tr class="${job.status === 'Ready' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
+                            <!-- Row Number -->
+                            <td class="px-2 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+
                             <!-- Claim Stub -->
                             <td class="px-2 py-3 align-middle"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
                             
@@ -2528,7 +2532,7 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 10 : 9}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
