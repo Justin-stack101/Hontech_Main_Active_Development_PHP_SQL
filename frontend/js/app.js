@@ -1500,33 +1500,35 @@ Report Generated Automatically by Developer Crash Reporter.
             if (preview) preview.value = generateStubNumber();
         }
 
+        function getAvailableLanesForJob(category) {
+            const catUpper = (category || '').trim().toUpperCase();
+            if (catUpper === 'PMS') {
+                // PMS > Express or Flexible (2 options, NO Special)
+                return [
+                    { value: 'Flexible', label: 'FLEXIBLE' },
+                    { value: 'Express', label: 'EXPRESS' }
+                ];
+            } else if (catUpper === 'GRS') {
+                // GRS > Flexible lane only (1 option, NO Express, NO Special)
+                return [
+                    { value: 'Flexible', label: 'FLEXIBLE' }
+                ];
+            } else {
+                // PMS & GRS and Others / Custom services > All 3 lanes (Flexible, Express, Special)
+                return [
+                    { value: 'Flexible', label: 'FLEXIBLE' },
+                    { value: 'Express', label: 'EXPRESS' },
+                    { value: 'Special', label: 'SPECIAL' }
+                ];
+            }
+        }
+        window.getAvailableLanesForJob = getAvailableLanesForJob;
+
         function updateLaneTypeOptionsForCategory(category) {
             const walkinLaneSelect = document.getElementById('intake-walkin-lane-type');
             const bookingLaneSelect = document.getElementById('intake-lane-type');
             
-            let options = [];
-            const catUpper = (category || '').trim().toUpperCase();
-            
-            if (catUpper === 'PMS') {
-                // PMS > Express or Flexible (2 options)
-                options = [
-                    { value: 'Express', label: 'Express' },
-                    { value: 'Flexible', label: 'Flexible' }
-                ];
-            } else if (catUpper === 'GRS') {
-                // GRS > Flexible lane only (1 option)
-                options = [
-                    { value: 'Flexible', label: 'Flexible' }
-                ];
-            } else {
-                // PMS & GRS and Others / Custom services > All 3 lanes (Flexible, Express, Special)
-                options = [
-                    { value: 'Flexible', label: 'Flexible' },
-                    { value: 'Express', label: 'Express' },
-                    { value: 'Special', label: 'Special' }
-                ];
-            }
-
+            const options = getAvailableLanesForJob(category);
             const html = options.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
 
             [walkinLaneSelect, bookingLaneSelect].forEach(sel => {
@@ -1697,14 +1699,36 @@ Report Generated Automatically by Developer Crash Reporter.
 
         async function updateJobField(jobId, field, value) {
             try {
+                const job = allJobs.find(j => j.id === jobId);
+                if (job && field === 'laneType') {
+                    const allowed = getAvailableLanesForJob(job.category).map(l => l.value);
+                    if (!allowed.includes(value)) {
+                        showSystemToast(`Lane "${value}" is not permitted for category "${job.category}". Allowed: ${allowed.join(', ')}`, 'error', 'Invalid Lane');
+                        renderStaffTables();
+                        return;
+                    }
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field, value }
                 });
 
-                const job = allJobs.find(j => j.id === jobId);
                 if (job) {
                     job[field] = value;
+
+                    // Automatically validate and clamp lane when category changes
+                    if (field === 'category') {
+                        const allowed = getAvailableLanesForJob(value).map(l => l.value);
+                        if (!allowed.includes(job.laneType)) {
+                            const clampedLane = allowed[0];
+                            await apiRequest(`/api/jobs/${jobId}/field`, {
+                                method: 'PATCH',
+                                body: { field: 'laneType', value: clampedLane }
+                            });
+                            job.laneType = clampedLane;
+                        }
+                    }
 
                     // Trigger auto-calculate of goal status if relevant fields change
                     if (field === 'arrival' || field === 'departure' || field === 'category') {
@@ -2339,9 +2363,9 @@ Report Generated Automatically by Developer Crash Reporter.
                                             <span class="text-xs font-bold uppercase text-gray-800 pointer-events-none">${job.laneType || 'FLEXIBLE'}</span>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                             <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
-                                                <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>FLEXIBLE</option>
-                                                <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS</option>
-                                                <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL</option>
+                                                ${getAvailableLanesForJob(job.category).map(opt => `
+                                                    <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
+                                                `).join('')}
                                             </select>
                                         </div>
                                         ` : `
