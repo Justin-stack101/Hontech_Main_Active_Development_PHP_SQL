@@ -2281,8 +2281,8 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <th class="px-2 py-3 bg-gray-50">Arrival</th>
                                 <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Departure (24H)</th>
                                 <th class="px-2 py-3 bg-gray-50">Evaluation / Diagnosis</th>
-                                <th class="px-2 py-3 bg-gray-50">Promised Date</th>
-                                <th class="px-2 py-3 bg-gray-50">C.O. Status</th>
+                                <th class="px-2 py-3 bg-gray-50 text-center">Promised Date</th>
+                                <th class="px-2 py-3 bg-gray-50 text-center">C.O. Status</th>
                                 ${showGoal ? '<th class="px-2 py-3 bg-gray-50">SLA Status (2h)</th>' : ''}
                                 <th class="px-2 py-3 bg-gray-50 text-center">Status</th>
                                 <th class="px-2 py-3 bg-gray-50 text-center">Location</th>
@@ -2472,14 +2472,14 @@ Report Generated Automatically by Developer Crash Reporter.
                             </td>
 
                             <!-- Promised Date -->
-                            <td class="px-2 py-3 align-middle">
-                                <span class="block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
+                            <td class="px-2 py-3 align-middle text-center">
+                                <span class="inline-block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
                             </td>
 
                             <!-- C.O. Status -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 ${job.carryOverStatus ? `
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
+                                <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
                                     ${job.carryOverStatus}
                                 </span>
                                 ` : '<span class="text-gray-400">-</span>'}
