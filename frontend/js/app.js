@@ -5254,11 +5254,11 @@ Report Generated Automatically by Developer Crash Reporter.
                 `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
             }
 
-            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-6)
+            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
             const tvGRS = document.getElementById('tv-grs-list');
             if (tvGRS) {
                 let baysHTML = '';
-                for (let i = 1; i <= 6; i++) {
+                for (let i = 1; i <= 4; i++) {
                     const job = (allJobs || []).find(j => {
                         if (!j.location || j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
                         const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
