@@ -278,23 +278,26 @@ class JobController
             ];
 
             if ($field === 'location') {
-                if (!empty($value) && str_starts_with($value, 'Lift')) {
-                    $liftNum = (int)explode(' ', $value)[1] - 1;
+                if (!empty($value) && (str_starts_with($value, 'Bay') || str_starts_with($value, 'Lift'))) {
+                    preg_match('/\d+/', $value, $matches);
+                    $bayNum = !empty($matches) ? (int)$matches[0] : 1;
+                    $normalizedLocation = "Bay {$bayNum}";
 
-                    // Collision check
-                    $stmt = $db->prepare("SELECT job_id, plate FROM jobs WHERE job_id != ? AND location = ? AND status NOT IN ('Completed', 'Released')");
-                    $stmt->execute([$jobId, $value]);
+                    // Collision check (check both 'Bay X' and 'Lift X')
+                    $stmt = $db->prepare("SELECT job_id, plate FROM jobs WHERE id != ? AND (location = ? OR location = ?) AND status NOT IN ('Completed', 'Released')");
+                    $stmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}"]);
                     $occupied = $stmt->fetch();
 
                     if ($occupied) {
                         http_response_code(400);
-                        $liftLabel = str_pad((string)($liftNum + 1), 2, '0', STR_PAD_LEFT);
-                        echo json_encode(['message' => "Lift {$liftLabel} is already occupied by vehicle {$occupied['plate']}!"]);
+                        $bayLabel = str_pad((string)$bayNum, 2, '0', STR_PAD_LEFT);
+                        echo json_encode(['message' => "Bay {$bayLabel} is already occupied by vehicle {$occupied['plate']}!"]);
                         return;
                     }
 
+                    $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'In Progress' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ? WHERE id = ?');
-                    $stmt->execute([$value, $liftNum, 'In Progress', $job['id']]);
+                    $stmt->execute([$normalizedLocation, $bayNum, $newStatus, $job['id']]);
                 } else {
                     $newStatus = ($job['status'] === 'In Progress') ? 'Waiting' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = NULL, status = ? WHERE id = ?');
