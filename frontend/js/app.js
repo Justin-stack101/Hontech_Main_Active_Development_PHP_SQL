@@ -1709,6 +1709,11 @@ Report Generated Automatically by Developer Crash Reporter.
                     }
                 }
 
+                if (field === 'departure') {
+                    const normalized = convertTimeTo24Hour(value);
+                    if (normalized) value = normalized;
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field, value }
@@ -2038,9 +2043,9 @@ Report Generated Automatically by Developer Crash Reporter.
         }
 
         function convertTimeTo24Hour(timeStr) {
-            if (!timeStr) return '08:00';
+            if (!timeStr) return '';
             const totalMins = parseTimeToMinutes(timeStr);
-            if (totalMins === null) return '08:00';
+            if (totalMins === null) return timeStr;
             const hrs = Math.floor(totalMins / 60) % 24;
             const mins = totalMins % 60;
             return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
@@ -2048,18 +2053,43 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function parseTimeToMinutes(timeStr) {
             if (!timeStr) return null;
-            const lower = timeStr.toLowerCase();
-            let isPm = lower.includes('pm');
-            let clean = timeStr.replace(/am|pm/gi, '').trim();
-            const parts = clean.split(':');
-            if (parts.length < 2) return null;
-            let hour = parseInt(parts[0], 10);
-            let minute = parseInt(parts[1], 10);
-            if (isNaN(hour) || isNaN(minute)) return null;
-            if (lower.includes('am') || lower.includes('pm')) {
-                if (isPm && hour < 12) hour += 12;
-                if (!isPm && hour === 12) hour = 0;
+            let s = String(timeStr).trim().toLowerCase();
+            const isPm = s.includes('pm');
+            const isAm = s.includes('am');
+            s = s.replace(/am|pm/gi, '').trim();
+            
+            // Normalize separators (; . - space) to colon :
+            s = s.replace(/[;.\-\s]+/g, ':');
+            
+            let hour = 0;
+            let minute = 0;
+            
+            if (s.includes(':')) {
+                const parts = s.split(':');
+                hour = parseInt(parts[0], 10);
+                minute = parseInt(parts[1] || '0', 10);
+            } else if (/^\d{3,4}$/.test(s)) {
+                // e.g. 1400 -> 14:00, 930 -> 09:30
+                if (s.length === 3) {
+                    hour = parseInt(s.slice(0, 1), 10);
+                    minute = parseInt(s.slice(1), 10);
+                } else {
+                    hour = parseInt(s.slice(0, 2), 10);
+                    minute = parseInt(s.slice(2), 10);
+                }
+            } else if (/^\d{1,2}$/.test(s)) {
+                // e.g. 14 -> 14:00
+                hour = parseInt(s, 10);
+                minute = 0;
+            } else {
+                return null;
             }
+            
+            if (isNaN(hour) || isNaN(minute)) return null;
+            if (isPm && hour < 12) hour += 12;
+            if (isAm && hour === 12) hour = 0;
+            if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+            
             return hour * 60 + minute;
         }
 
@@ -2251,17 +2281,15 @@ Report Generated Automatically by Developer Crash Reporter.
                     `;
                 };
                 const get24HourDepartureOptions = (selectedTime) => {
-                    let norm = selectedTime ? convertTimeTo24Hour(selectedTime) : '08:00';
-                    if (!norm || norm === 'Invalid Date' || norm.length < 5) norm = '08:00';
+                    let norm = selectedTime ? convertTimeTo24Hour(selectedTime) : '';
                     
-                    const times = [];
-                    for (let h = 6; h <= 22; h++) {
-                        const hh = String(h).padStart(2, '0');
-                        times.push(`${hh}:00`);
-                        times.push(`${hh}:30`);
-                    }
+                    const times = [
+                        '08:00', '09:00', '10:00', '11:00', '12:00', 
+                        '13:00', '14:00', '15:00', '16:00', '17:00', 
+                        '18:00', '19:00', '20:00'
+                    ];
                     
-                    if (!times.includes(norm)) {
+                    if (norm && !times.includes(norm)) {
                         times.push(norm);
                         times.sort();
                     }
