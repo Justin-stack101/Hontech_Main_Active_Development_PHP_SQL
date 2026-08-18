@@ -2058,40 +2058,70 @@ Report Generated Automatically by Developer Crash Reporter.
             const isAm = s.includes('am');
             s = s.replace(/am|pm/gi, '').trim();
             
-            // Normalize separators (; . - space) to colon :
-            s = s.replace(/[;.\-\s]+/g, ':');
-            
-            let hour = 0;
-            let minute = 0;
-            
-            if (s.includes(':')) {
-                const parts = s.split(':');
-                hour = parseInt(parts[0], 10);
-                minute = parseInt(parts[1] || '0', 10);
-            } else if (/^\d{3,4}$/.test(s)) {
-                // e.g. 1400 -> 14:00, 930 -> 09:30
-                if (s.length === 3) {
-                    hour = parseInt(s.slice(0, 1), 10);
-                    minute = parseInt(s.slice(1), 10);
-                } else {
-                    hour = parseInt(s.slice(0, 2), 10);
-                    minute = parseInt(s.slice(2), 10);
+            // 1. Check for time formatted with separators (e.g. "12;33", "12:33", "12.33", "14-00")
+            const matchColon = s.match(/(\d{1,2})[;:\.\-\s]+(\d{1,2})/);
+            if (matchColon) {
+                let hour = parseInt(matchColon[1], 10);
+                let minute = parseInt(matchColon[2], 10);
+                if (isPm && hour < 12) hour += 12;
+                if (isAm && hour === 12) hour = 0;
+                if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+                    return hour * 60 + minute;
                 }
-            } else if (/^\d{1,2}$/.test(s)) {
-                // e.g. 14 -> 14:00
-                hour = parseInt(s, 10);
-                minute = 0;
-            } else {
                 return null;
             }
             
-            if (isNaN(hour) || isNaN(minute)) return null;
-            if (isPm && hour < 12) hour += 12;
-            if (isAm && hour === 12) hour = 0;
-            if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return null;
+            // 2. Extract digit sequences ignoring surrounding text/symbols (e.g. ";1233;adasd" -> "1233", "1400" -> "1400")
+            const digitsMatch = s.match(/\d+/g);
+            if (digitsMatch) {
+                const digits = digitsMatch.join('');
+                let hour = 0;
+                let minute = 0;
+                
+                if (digits.length === 4) {
+                    hour = parseInt(digits.slice(0, 2), 10);
+                    minute = parseInt(digits.slice(2, 4), 10);
+                } else if (digits.length === 3) {
+                    hour = parseInt(digits.slice(0, 1), 10);
+                    minute = parseInt(digits.slice(1, 3), 10);
+                } else if (digits.length === 1 || digits.length === 2) {
+                    hour = parseInt(digits, 10);
+                    minute = 0;
+                } else {
+                    return null;
+                }
+                
+                if (isPm && hour < 12) hour += 12;
+                if (isAm && hour === 12) hour = 0;
+                if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+                    return hour * 60 + minute;
+                }
+                return null;
+            }
             
-            return hour * 60 + minute;
+            return null;
         }
+
+        function handleDepartureChange(jobId, inputEl) {
+            const rawVal = (inputEl.value || '').trim();
+            if (!rawVal) {
+                updateJobField(jobId, 'departure', '');
+                return;
+            }
+
+            const parsedMins = parseTimeToMinutes(rawVal);
+            if (parsedMins === null) {
+                showSystemToast(`Invalid time "${rawVal}". Please enter a valid 24H time (e.g. 12:00 or 1233).`, 'warning', 'Time Guide');
+                const job = allJobs.find(j => j.id === jobId);
+                inputEl.value = convertTimeTo24Hour(job?.departure) || '';
+                return;
+            }
+
+            const formatted = convertTimeTo24Hour(rawVal);
+            inputEl.value = formatted;
+            updateJobField(jobId, 'departure', formatted);
+        }
+        window.handleDepartureChange = handleDepartureChange;
 
         async function confirmActiveOnlineJob(jobId) {
             try {
@@ -2431,11 +2461,11 @@ Report Generated Automatically by Developer Crash Reporter.
                                            id="dep-input-${job.id}" 
                                            value="${convertTimeTo24Hour(job.departure) || ''}" 
                                            placeholder="08:00" 
-                                           maxlength="5"
+                                           maxlength="15"
                                            onkeydown="if(event.key === 'Enter') this.blur();"
-                                           onblur="updateJobField('${job.id}', 'departure', this.value.trim())" 
+                                           onblur="handleDepartureChange('${job.id}', this)" 
                                            class="table-select font-mono font-bold text-xs text-gray-900 bg-transparent border-none outline-none w-11 text-center p-0 cursor-text" 
-                                           title="Type departure time in 24H format (e.g. 14:30)">
+                                           title="Type departure time (e.g. 12:00 or 1233)">
                                     
                                     <!-- Preset Dropdown Selection -->
                                     <div class="relative inline-flex items-center ml-0.5 border-l border-gray-200 pl-1 cursor-pointer" title="Click to choose a preset time">
