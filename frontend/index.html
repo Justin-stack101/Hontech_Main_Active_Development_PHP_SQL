@@ -29,7 +29,12 @@
             }
         }
     </script>
+    <script>
+        // Defensive global stub to prevent crashes if CDN is lagging or offline
+        window.lucide = window.lucide || { createIcons: function () { } };
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -2848,7 +2853,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.74"></script>
+    <script src="js/app.js?v=2.75"></script>
 </body>
 
 </html>

@@ -1,3 +1,8 @@
+        // Defensive global stub for third-party icon library in offline/lagging CDN environments
+        if (typeof window.lucide === 'undefined' || typeof window.lucide.createIcons !== 'function') {
+            window.lucide = { createIcons: function () { } };
+        }
+
         let allJobs = [];
         let staffAccounts = [];
         let currentUserRole = '';
