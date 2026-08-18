@@ -1762,19 +1762,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
         async function handleTableCategoryChange(jobId, selectElement) {
             const val = selectElement.value;
-            if (val === 'Others') {
-                const job = allJobs.find(j => j.id === jobId);
-                const currentCustom = (!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job?.category)) ? (job?.category || '') : '';
-                const customName = prompt('Enter custom category / service name (e.g. Brake Service, Underchassis):', currentCustom);
-                if (customName !== null) {
-                    const finalVal = customName.trim() || 'Others';
-                    await updateJobField(jobId, 'category', finalVal);
-                } else {
-                    renderStaffTables();
-                }
-            } else {
-                await updateJobField(jobId, 'category', val);
-            }
+            await updateJobField(jobId, 'category', val);
         }
         window.handleTableCategoryChange = handleTableCategoryChange;
 
@@ -2362,15 +2350,15 @@ Report Generated Automatically by Developer Crash Reporter.
                                 
                                 <div class="flex flex-wrap items-center gap-1.5 w-full">
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer max-w-[170px]" title="Category: ${job.category || 'PMS'}">
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer" title="Change Category">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none truncate">${job.category || 'PMS'}</span>
+                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${job.category || 'PMS'}</span>
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                             <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
-                                            <option value="Others" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `OTHERS: ${job.category}` : 'OTHERS (CUSTOM)...'}</option>
+                                            <option value="OTHERS" ${job.category === 'OTHERS' || job.category === 'Others' || !['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                         </select>
                                     </div>
                                     ` : `
