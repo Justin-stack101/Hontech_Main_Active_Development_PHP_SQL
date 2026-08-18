@@ -5089,6 +5089,83 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
+        // --- TV AUDIO & VISUAL CHIME MODULE ---
+        let tvAudioEnabled = true;
+        let previousReadyJobKeys = new Set();
+        let tvAudioCtx = null;
+        let tvAlertBannerTimeout = null;
+
+        function toggleTVSound() {
+            tvAudioEnabled = !tvAudioEnabled;
+            const icon = document.getElementById('tv-sound-icon');
+            const text = document.getElementById('tv-sound-text');
+            if (tvAudioEnabled) {
+                if (icon) { icon.setAttribute('data-lucide', 'volume-2'); icon.className = 'w-4 h-4 text-emerald-400'; }
+                if (text) text.innerText = 'Chime ON';
+                playAutomotiveChime();
+            } else {
+                if (icon) { icon.setAttribute('data-lucide', 'volume-x'); icon.className = 'w-4 h-4 text-gray-500'; }
+                if (text) text.innerText = 'Chime OFF';
+            }
+            lucide.createIcons();
+        }
+        window.toggleTVSound = toggleTVSound;
+
+        function playAutomotiveChime() {
+            if (!tvAudioEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!tvAudioCtx) tvAudioCtx = new AudioContextClass();
+                if (tvAudioCtx.state === 'suspended') {
+                    tvAudioCtx.resume();
+                }
+
+                const now = tvAudioCtx.currentTime;
+                // Dual-tone harmonic chime (587.33Hz D5 -> 880Hz A5)
+                const osc1 = tvAudioCtx.createOscillator();
+                const gain1 = tvAudioCtx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, now);
+                gain1.gain.setValueAtTime(0.18, now);
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc1.connect(gain1);
+                gain1.connect(tvAudioCtx.destination);
+                osc1.start(now);
+                osc1.stop(now + 0.5);
+
+                const osc2 = tvAudioCtx.createOscillator();
+                const gain2 = tvAudioCtx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(880, now + 0.12);
+                gain2.gain.setValueAtTime(0.22, now + 0.12);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                osc2.connect(gain2);
+                gain2.connect(tvAudioCtx.destination);
+                osc2.start(now + 0.12);
+                osc2.stop(now + 0.95);
+            } catch (err) {
+                console.warn('Audio chime playback skipped:', err);
+            }
+        }
+        window.playAutomotiveChime = playAutomotiveChime;
+
+        function triggerTVSlideAlertBanner(plateNumber = 'Vehicle') {
+            const banner = document.getElementById('tv-ready-alert-banner');
+            const text = document.getElementById('tv-ready-alert-text');
+            if (!banner) return;
+
+            if (text) text.innerText = `🔔 Vehicle Ready: ${plateNumber} — Ready to Claim!`;
+            banner.classList.remove('hidden');
+
+            if (tvAlertBannerTimeout) clearTimeout(tvAlertBannerTimeout);
+            tvAlertBannerTimeout = setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 6000);
+            lucide.createIcons();
+        }
+        window.triggerTVSlideAlertBanner = triggerTVSlideAlertBanner;
+
         function renderTV() {
             const tvSection = document.getElementById('section-tv');
             if (tvSection && tvSection.classList.contains('hidden')) return;
@@ -5114,23 +5191,35 @@ Report Generated Automatically by Developer Crash Reporter.
             // Group 3: Carry Over (Carry Over)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over');
 
+            // Detect newly ready vehicles to trigger Audio Chime & Visual TV Banner
+            const currentReadyKeys = new Set(releasedAll.map(j => String(j.id || j.claimStub || j.plate)));
+            if (previousReadyJobKeys.size > 0) {
+                releasedAll.forEach(job => {
+                    const key = String(job.id || job.claimStub || job.plate);
+                    if (!previousReadyJobKeys.has(key)) {
+                        playAutomotiveChime();
+                        triggerTVSlideAlertBanner(job.plate || 'Vehicle');
+                    }
+                });
+            }
+            previousReadyJobKeys = currentReadyKeys;
+
             // Render Slide 2 Upcoming Queue List
             const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');
             const tvAllUpcomingCount = document.getElementById('tv-all-upcoming-count');
             if (tvAllUpcomingCount) tvAllUpcomingCount.innerText = waitingJobs.length;
             if (tvAllUpcoming) {
-                tvAllUpcoming.innerHTML = waitingJobs.map(job => {
-                    const theme = getServiceTheme(job.category);
-                    return `
-                        <div class="bg-white border-l-4 ${theme.border} rounded-xl px-4 py-2.5 flex items-center justify-between shadow-sm hover:scale-[1.01] transition-transform duration-200">
-                            <div class="flex items-center gap-3">
-                                <span class="text-lg font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">${job.vehicle}</span>
-                            </div>
-                            <span class="${theme.text} font-extrabold text-[10px] uppercase tracking-widest">${job.category}</span>
+                tvAllUpcoming.innerHTML = waitingJobs.map(job => `
+                    <div class="bg-white border border-slate-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:border-slate-400 transition-all">
+                        <div class="flex flex-col text-left">
+                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">${job.vehicle}</span>
                         </div>
-                    `;
-                }).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Upcoming Vehicles</div>`;
+                        <span class="bg-slate-100 text-slate-700 border border-slate-200 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                            ${job.category || 'General'}
+                        </span>
+                    </div>
+                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">No Upcoming Vehicles</div>`;
             }
 
             // Render Slide 2 Released List
@@ -5139,16 +5228,16 @@ Report Generated Automatically by Developer Crash Reporter.
             if (tvAllReleasedCount) tvAllReleasedCount.innerText = releasedAll.length;
             if (tvAllReleased) {
                 tvAllReleased.innerHTML = releasedAll.map(job => `
-                    <div class="bg-white border-l-4 border-green-500 rounded-xl px-4 py-2.5 flex items-center justify-between shadow-sm hover:scale-[1.01] transition-transform duration-200">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">${job.vehicle} | <span class="text-green-600 font-extrabold">${job.category}</span></span>
+                    <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
+                        <div class="flex flex-col text-left">
+                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">${job.vehicle}</span>
                         </div>
-                        <span class="bg-green-100 text-green-800 font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded">
+                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">
                             Ready
                         </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
             }
 
             // Render Slide 2 Carry Over List
@@ -5157,21 +5246,23 @@ Report Generated Automatically by Developer Crash Reporter.
             if (tvAllCarryCount) tvAllCarryCount.innerText = carryOverAll.length;
             if (tvAllCarry) {
                 tvAllCarry.innerHTML = carryOverAll.map(job => `
-                    <div class="bg-white border-l-4 border-orange-500 rounded-xl px-4 py-2.5 flex items-center justify-between shadow-sm hover:scale-[1.01] transition-transform duration-200">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">${job.vehicle} | <span class="text-orange-600 font-extrabold">${job.category}</span></span>
+                    <div class="bg-amber-50/50 border border-amber-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
+                        <div class="flex flex-col text-left">
+                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">${job.vehicle}</span>
                         </div>
-                        <span class="bg-orange-100 text-orange-800 font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded">Carry Over</span>
+                        <span class="bg-amber-100 text-amber-900 border border-amber-300 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                            Carry Over
+                        </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
             }
 
-            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-6)
+            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
             const tvGRS = document.getElementById('tv-grs-list');
             if (tvGRS) {
                 let baysHTML = '';
-                for (let i = 1; i <= 6; i++) {
+                for (let i = 1; i <= 4; i++) {
                     const job = (allJobs || []).find(j => {
                         if (!j.location || j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
                         const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -5179,24 +5270,32 @@ Report Generated Automatically by Developer Crash Reporter.
                     });
 
                     if (job) {
-                        const theme = getServiceTheme(job.category);
                         baysHTML += `
-                            <div class="bg-white border-2 ${theme.border} rounded-2xl p-4 flex flex-col justify-between items-center h-40 relative shadow-md animate-fade-in">
-                                <div class="flex flex-col items-center gap-1 mt-1">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">BAY-0${i}</span>
-                                    <span class="${theme.bgBadge} text-white font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">IN SERVICE</span>
+                            <div class="bg-white border-2 border-slate-900 rounded-2xl p-6 flex flex-col justify-between items-center h-full relative shadow-md">
+                                <div class="w-full flex items-center justify-between">
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">BAY-0${i}</span>
+                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-0.5 rounded-full shadow-xs">IN SERVICE</span>
                                 </div>
-                                <span class="text-3xl font-black uppercase italic text-gray-900 tracking-tighter text-center">${job.plate}</span>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 text-center mb-1 truncate max-w-[90%]">${job.vehicle} | <span class="${theme.text}">${job.category}</span></span>
+                                <div class="flex flex-col items-center my-auto text-center">
+                                    <span class="text-4xl lg:text-5xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mt-1">${job.vehicle}</span>
+                                </div>
+                                <div class="w-full pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase">
+                                    <span>${job.category || 'General Service'}</span>
+                                    <span class="text-slate-400 font-mono text-[10px]">${job.laneType || 'LANE'}</span>
+                                </div>
                             </div>`;
                     } else {
                         baysHTML += `
-                            <div class="bg-gray-50 border border-dashed border-gray-200 rounded-2xl p-4 flex flex-col justify-between items-center h-40 relative shadow-sm">
-                                <div class="flex flex-col items-center gap-1 mt-1">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">BAY-0${i}</span>
-                                    <span class="bg-gray-200 text-gray-500 font-extrabold text-[9px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
+                            <div class="bg-slate-50/70 border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col justify-between items-center h-full relative">
+                                <div class="w-full flex items-center justify-between">
+                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">BAY-0${i}</span>
+                                    <span class="bg-slate-200 text-slate-600 font-extrabold text-[10px] uppercase tracking-wider px-3 py-0.5 rounded-full">AVAILABLE</span>
                                 </div>
-                                <span class="text-2xl font-extrabold uppercase italic text-gray-400 tracking-wider text-center">EMPTY</span>
+                                <div class="my-auto flex flex-col items-center">
+                                    <span class="text-3xl font-black uppercase italic text-slate-300 tracking-wider">EMPTY</span>
+                                    <span class="text-[11px] font-bold uppercase text-slate-400 mt-1">Ready for Allocation</span>
+                                </div>
                                 <div class="h-4"></div>
                             </div>`;
                     }
@@ -5206,28 +5305,27 @@ Report Generated Automatically by Developer Crash Reporter.
             // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
             const activeLaneJobs = (allJobs || []).filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
-                const theme = getServiceTheme(job.category);
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
+                    statusBadge = `<span class="bg-slate-900 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
-                    statusBadge = `<span class="bg-green-150 text-green-700 border border-green-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
+                    statusBadge = `<span class="bg-emerald-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
                 } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-amber-50 text-amber-700 border border-amber-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
+                    statusBadge = `<span class="bg-slate-200 text-slate-700 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
                 } else if (job.status === 'In Progress') {
-                    statusBadge = `<span class="bg-purple-50 text-purple-700 border border-purple-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">IN PROGRESS</span>`;
+                    statusBadge = `<span class="bg-red-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">IN PROGRESS</span>`;
                 } else {
-                    statusBadge = `<span class="bg-blue-50 text-blue-700 border border-blue-100 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
+                    statusBadge = `<span class="bg-slate-100 text-slate-600 border border-slate-200 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
                 }
                 return `
-                    <div class="bg-white border-l-4 ${theme.border} rounded-xl p-3 flex flex-col gap-2 shadow-sm hover:scale-[1.01] transition-transform duration-200 text-left">
+                    <div class="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col gap-2 shadow-2xs text-left">
                         <div class="flex items-center justify-between">
-                            <span class="text-base font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
+                            <span class="text-base font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
                             ${statusBadge}
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                        <div class="flex items-center justify-between text-[11px] text-slate-500 font-bold uppercase tracking-wider">
                             <span>${job.vehicle}</span>
-                            <span class="${theme.text}">${job.category}</span>
+                            <span class="text-slate-700 font-black">${job.category || 'General'}</span>
                         </div>
                     </div>
                 `;
