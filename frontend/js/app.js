@@ -577,6 +577,34 @@ Report Generated Automatically by Developer Crash Reporter.
             }, stepInterval);
         }
 
+        function toggleDevToolbox(forceState) {
+            const menu = document.getElementById('dev-toolbox-menu');
+            const chevron = document.getElementById('dev-toolbox-chevron');
+            if (!menu) return;
+
+            const isHidden = menu.classList.contains('hidden');
+            const shouldShow = typeof forceState === 'boolean' ? forceState : isHidden;
+
+            if (shouldShow) {
+                menu.classList.remove('hidden');
+                if (chevron) chevron.style.transform = 'rotate(180deg)';
+            } else {
+                menu.classList.add('hidden');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+            }
+            lucide.createIcons();
+        }
+
+        // Close Dev Toolbox when clicking outside
+        window.addEventListener('click', function(e) {
+            const container = document.getElementById('dev-toolbox-container');
+            const modal = document.getElementById('loader-theme-modal');
+            const mailModal = document.getElementById('dev-mailbox-modal');
+            if (container && !container.contains(e.target) && (!modal || modal.classList.contains('hidden')) && (!mailModal || mailModal.classList.contains('hidden'))) {
+                toggleDevToolbox(false);
+            }
+        });
+
         window.hideAppPreloader = hideAppPreloader;
         window.showAppPreloader = showAppPreloader;
         window.applyLoaderTheme = applyLoaderTheme;
@@ -584,6 +612,7 @@ Report Generated Automatically by Developer Crash Reporter.
         window.closeLoaderThemeModal = closeLoaderThemeModal;
         window.selectAndPreviewLoaderTheme = selectAndPreviewLoaderTheme;
         window.triggerDevLoadingDemo = triggerDevLoadingDemo;
+        window.toggleDevToolbox = toggleDevToolbox;
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -5841,6 +5870,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
                 const badge = document.getElementById('dev-mailbox-badge');
                 const sidebarBadge = document.getElementById('sidebar-inbox-count');
+                const mailDot = document.getElementById('dev-toolbox-mail-dot');
 
                 if (unreadCount > 0) {
                     if (badge) {
@@ -5851,9 +5881,11 @@ Report Generated Automatically by Developer Crash Reporter.
                         sidebarBadge.innerText = unreadCount;
                         sidebarBadge.classList.remove('hidden');
                     }
+                    if (mailDot) mailDot.classList.remove('hidden');
                 } else {
                     if (badge) badge.classList.add('hidden');
                     if (sidebarBadge) sidebarBadge.classList.add('hidden');
+                    if (mailDot) mailDot.classList.add('hidden');
                 }
 
                 renderMailboxList();

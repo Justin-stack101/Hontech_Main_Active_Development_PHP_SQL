@@ -2725,35 +2725,92 @@
         </div>
     </div>
 
-    <!-- Floating Dev Sandbox Tools (Bottom-Right Dock) -->
-    <div id="dev-tools-dock" class="fixed bottom-6 right-6 z-[999] flex items-center gap-2.5">
-        <!-- Dev Loader Style Switcher -->
-        <button onclick="openLoaderThemeModal()"
-            title="Choose Loading Screen Visual UI & Theme"
-            class="bg-gray-900/90 hover:bg-black text-white px-3.5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-gray-700 hover:border-red-500 transition duration-300 transform hover:scale-105 active:scale-95 group font-extrabold tracking-wider text-[10px] uppercase backdrop-blur-md cursor-pointer">
-            <i data-lucide="palette" class="w-4 h-4 text-red-500 group-hover:rotate-12 transition-transform"></i>
-            <span>Loader UI</span>
-        </button>
+    <!-- UNIFIED DEVELOPER TOOLBOX HUB (Bottom-Right Floating Widget) -->
+    <div id="dev-toolbox-container" class="fixed bottom-6 right-6 z-[999] flex flex-col items-end select-none">
+        
+        <!-- Expandable Floating Menu Hub -->
+        <div id="dev-toolbox-menu" class="hidden mb-3 w-72 bg-gray-950/95 backdrop-blur-xl border border-gray-800 rounded-3xl p-3 shadow-2xl flex flex-col gap-1.5 transition-all duration-300 transform scale-95 origin-bottom-right">
+            <!-- Hub Header -->
+            <div class="px-3 py-2 border-b border-gray-800/80 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i>
+                    <span class="text-[11px] font-black uppercase tracking-wider text-white">Developer Sandbox</span>
+                </div>
+                <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest">v2.83</span>
+            </div>
 
-        <!-- Dev Preloader Test Trigger -->
-        <button onclick="triggerDevLoadingDemo()"
-            title="Preview / Test Current Loading Screen"
-            class="bg-gray-900/90 hover:bg-black text-white px-3.5 py-3 rounded-full shadow-2xl flex items-center gap-2 border border-gray-700 hover:border-red-500 transition duration-300 transform hover:scale-105 active:scale-95 group font-extrabold tracking-wider text-[10px] uppercase backdrop-blur-md cursor-pointer">
-            <i data-lucide="loader-2" class="w-4 h-4 text-red-500 group-hover:animate-spin"></i>
-            <span>Test</span>
-        </button>
+            <!-- Action 1: Test Loader Animation -->
+            <button onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-gray-900/90 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
+                <div class="p-2 rounded-xl bg-red-600/20 text-red-500 group-hover:scale-110 transition-transform">
+                    <i data-lucide="loader-2" class="w-4 h-4 group-hover:animate-spin"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Test Loader</span>
+                        <span class="text-[9px] text-red-400 uppercase font-black">Run</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Preview active loading animation</p>
+                </div>
+            </button>
 
-        <!-- Dev Mailbox Trigger -->
-        <button onclick="toggleDevMailbox()"
-            class="bg-gray-900 hover:bg-black text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 border border-red-600 transition duration-300 transform hover:scale-105 active:scale-95 group font-extrabold tracking-wider text-[10px] uppercase cursor-pointer">
-            <span class="relative flex h-2 w-2">
+            <!-- Action 2: Loader UI Theme Switcher -->
+            <button onclick="openLoaderThemeModal(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-gray-900/90 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
+                <div class="p-2 rounded-xl bg-purple-600/20 text-purple-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="palette" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Loader UI Themes</span>
+                        <span class="text-[9px] text-purple-400 uppercase font-black">5 Styles</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Switch gear, gauge, scanner styles</p>
+                </div>
+            </button>
+
+            <!-- Action 3: Dev Mailbox -->
+            <button onclick="toggleDevMailbox(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-gray-900/90 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
+                <div class="p-2 rounded-xl bg-blue-600/20 text-blue-400 group-hover:scale-110 transition-transform relative">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    <span id="dev-toolbox-mail-dot" class="hidden absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Dev Mailbox</span>
+                        <span id="dev-mailbox-badge" class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full hidden">0</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Simulated email sandbox & OTPs</p>
+                </div>
+            </button>
+
+            <!-- Action 4: Error Detection Diagnostic Trigger -->
+            <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-red-950/40 text-left transition group cursor-pointer border border-transparent hover:border-red-900/50">
+                <div class="p-2 rounded-xl bg-amber-600/20 text-amber-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Error Diagnostics</span>
+                        <span class="text-[9px] text-amber-400 uppercase font-black">Trigger</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Simulate crash overlay & stack trace</p>
+                </div>
+            </button>
+        </div>
+
+        <!-- Master Floating Trigger Button -->
+        <button id="dev-toolbox-trigger" onclick="toggleDevToolbox()"
+            class="bg-gray-950 hover:bg-black text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-red-600/80 transition duration-300 transform hover:scale-105 active:scale-95 group font-black tracking-wider text-[11px] uppercase cursor-pointer backdrop-blur-md">
+            <span class="relative flex h-2.5 w-2.5">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
             </span>
-            <i data-lucide="mail" class="w-4 h-4 text-red-500 group-hover:rotate-6 transition-transform"></i>
-            <span>Dev Mailbox</span>
-            <span id="dev-mailbox-badge"
-                class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full hidden">0</span>
+            <i data-lucide="wrench" class="w-4 h-4 text-red-500 group-hover:rotate-12 transition-transform"></i>
+            <span>Dev Toolbox</span>
+            <i id="dev-toolbox-chevron" data-lucide="chevron-up" class="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform"></i>
         </button>
     </div>
 
@@ -3055,7 +3112,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.82"></script>
+    <script src="js/app.js?v=2.83"></script>
 </body>
 
 </html>
