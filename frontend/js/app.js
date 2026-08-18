@@ -5181,6 +5181,9 @@ Report Generated Automatically by Developer Crash Reporter.
             const tvSlide1Sub = document.getElementById('tv-slide1-sub');
             if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays — ${branchDisplayName}`;
 
+            const tvSlide2Sub = document.getElementById('tv-slide2-sub');
+            if (tvSlide2Sub) tvSlide2Sub.innerText = `Live Queue & Turnaround — ${branchDisplayName}`;
+
             const tvSlide3Sub = document.getElementById('tv-slide3-sub');
             if (tvSlide3Sub) tvSlide3Sub.innerText = `Live Lane Status — ${branchDisplayName}`;
 
@@ -5204,58 +5207,58 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             previousReadyJobKeys = currentReadyKeys;
 
-            // Render Slide 2 Upcoming Queue List
+            // Render Slide 2 Upcoming Queue List (Black, Red, White High Contrast for TV Viewers)
             const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');
             const tvAllUpcomingCount = document.getElementById('tv-all-upcoming-count');
             if (tvAllUpcomingCount) tvAllUpcomingCount.innerText = waitingJobs.length;
             if (tvAllUpcoming) {
                 tvAllUpcoming.innerHTML = waitingJobs.map(job => `
-                    <div class="bg-white border border-slate-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:border-slate-400 transition-all">
-                        <div class="flex flex-col text-left">
-                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">${job.vehicle}</span>
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
+                        <div class="flex items-center gap-3.5">
+                            <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500">${job.vehicle}</span>
                         </div>
-                        <span class="bg-slate-100 text-slate-700 border border-slate-200 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                        <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
                             ${job.category || 'General'}
                         </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">No Upcoming Vehicles</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Queue</div>`;
             }
 
-            // Render Slide 2 Released List
+            // Render Slide 2 Released List (High Visibility Ready for Release)
             const tvAllReleased = document.getElementById('tv-all-released-list');
             const tvAllReleasedCount = document.getElementById('tv-all-released-count');
             if (tvAllReleasedCount) tvAllReleasedCount.innerText = releasedAll.length;
             if (tvAllReleased) {
                 tvAllReleased.innerHTML = releasedAll.map(job => `
-                    <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
-                        <div class="flex flex-col text-left">
-                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">${job.vehicle}</span>
+                    <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
+                        <div class="flex items-center gap-3.5">
+                            <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">${job.vehicle}</span>
                         </div>
-                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">
-                            Ready
+                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg shadow-sm">
+                            Ready to Claim
                         </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
             }
 
-            // Render Slide 2 Carry Over List
+            // Render Slide 2 Carry Over List (Clean 3-Column Grid)
             const tvAllCarry = document.getElementById('tv-all-carryover-list');
             const tvAllCarryCount = document.getElementById('tv-all-carryover-count');
             if (tvAllCarryCount) tvAllCarryCount.innerText = carryOverAll.length;
             if (tvAllCarry) {
                 tvAllCarry.innerHTML = carryOverAll.map(job => `
-                    <div class="bg-amber-50/50 border border-amber-200 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
+                    <div class="bg-white border-2 border-gray-200 rounded-xl px-3.5 py-2.5 flex items-center justify-between shadow-2xs">
                         <div class="flex flex-col text-left">
-                            <span class="text-lg font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">${job.vehicle}</span>
+                            <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 truncate max-w-[120px]">${job.vehicle}</span>
                         </div>
-                        <span class="bg-amber-100 text-amber-900 border border-amber-300 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">
+                        <span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md">
                             Carry Over
                         </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-slate-400 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
+                `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-400 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
             }
 
             // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
@@ -5307,25 +5310,25 @@ Report Generated Automatically by Developer Crash Reporter.
             const renderLaneJobCard = (job) => {
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="bg-slate-900 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
+                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-emerald-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
                 } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-slate-200 text-slate-700 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
+                    statusBadge = `<span class="bg-gray-200 text-gray-800 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
                 } else if (job.status === 'In Progress') {
                     statusBadge = `<span class="bg-red-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">IN PROGRESS</span>`;
                 } else {
-                    statusBadge = `<span class="bg-slate-100 text-slate-600 border border-slate-200 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
+                    statusBadge = `<span class="bg-gray-100 text-gray-700 border border-gray-200 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
                 }
                 return `
-                    <div class="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col gap-2 shadow-2xs text-left">
+                    <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-xl p-3.5 flex flex-col gap-2 shadow-2xs text-left transition-all duration-150">
                         <div class="flex items-center justify-between">
-                            <span class="text-base font-black uppercase italic text-slate-900 tracking-tight">${job.plate}</span>
+                            <span class="text-lg font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
                             ${statusBadge}
                         </div>
-                        <div class="flex items-center justify-between text-[11px] text-slate-500 font-bold uppercase tracking-wider">
+                        <div class="flex items-center justify-between text-[11px] text-gray-500 font-bold uppercase tracking-wider">
                             <span>${job.vehicle}</span>
-                            <span class="text-slate-700 font-black">${job.category || 'General'}</span>
+                            <span class="text-gray-900 font-black">${job.category || 'General'}</span>
                         </div>
                     </div>
                 `;

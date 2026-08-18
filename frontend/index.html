@@ -1828,52 +1828,59 @@
                         </div>
                     </div>
 
-                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (Client-Aligned 2-Row Layout) -->
+                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (Clean Black, Red & White TV Design) -->
                     <div id="tv-slide-2"
-                        class="absolute inset-0 tv-slide hidden flex flex-col gap-6 p-6 bg-slate-100/60 rounded-2xl overflow-hidden shadow-2xl">
-                        
-                        <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
-                        <div class="flex-1 grid grid-cols-2 gap-6 min-h-0">
-                            <!-- Service Queue (Waiting List) -->
-                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
-                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
-                                        Service Queue
-                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-slate-800 text-blue-300 border border-slate-700" id="tv-all-upcoming-count">0</span>
-                                    </h3>
-                                    <p class="text-slate-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
-                                </div>
-                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-upcoming-list" class="flex flex-col gap-2.5"></div>
-                                </div>
-                            </div>
-
-                            <!-- Ready for Release -->
-                            <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border border-slate-200">
-                                <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                    <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
-                                        Ready for Release
-                                        <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800" id="tv-all-released-count">0</span>
-                                    </h3>
-                                    <p class="text-emerald-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
-                                </div>
-                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-released-list" class="flex flex-col gap-2.5"></div>
-                                </div>
-                            </div>
+                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
+                            <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Queue & Turnaround — Marikina Branch</p>
                         </div>
+                        
+                        <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden flex flex-col gap-5 min-h-0">
+                            <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
+                            <div class="flex-1 grid grid-cols-2 gap-5 min-h-0">
+                                <!-- Service Queue (Waiting List) -->
+                                <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
+                                    <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue</h3>
+                                        </div>
+                                        <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
+                                    </div>
+                                    <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
+                                        <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
+                                    </div>
+                                </div>
 
-                        <!-- Bottom Row: Carry-Over (Full Width Grid) -->
-                        <div class="flex-1 flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
-                            <div class="bg-slate-900 py-3.5 px-5 text-center shrink-0 border-b border-slate-800">
-                                <h3 class="text-xl font-black uppercase tracking-widest text-white flex items-center justify-center gap-2">
-                                    Carry-Over
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-800" id="tv-all-carryover-count">0</span>
-                                </h3>
-                                <p class="text-amber-400 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
+                                <!-- Ready for Release -->
+                                <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
+                                    <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Ready for Release</h3>
+                                        </div>
+                                        <span class="text-xs font-black px-3 py-0.5 rounded-full bg-emerald-600 text-white" id="tv-all-released-count">0</span>
+                                    </div>
+                                    <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
+                                        <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
-                                <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
+
+                            <!-- Bottom Row: Carry-Over (Full Width Grid) -->
+                            <div class="h-44 flex flex-col shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-gray-900">
+                                <div class="bg-gray-950 py-2.5 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                        <h3 class="text-sm font-black uppercase tracking-widest text-white">Carry-Over Vehicles</h3>
+                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden sm:inline">(Awaiting Parts / Extended Stay)</span>
+                                    </div>
+                                    <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-all-carryover-count">0</span>
+                                </div>
+                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll">
+                                    <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-2.5"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3152,7 +3159,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.94"></script>
+    <script src="js/app.js?v=2.95"></script>
 </body>
 
 </html>
