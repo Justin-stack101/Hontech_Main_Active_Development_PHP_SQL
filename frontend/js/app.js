@@ -5086,9 +5086,89 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         }
 
+        // --- TV AUDIO & VISUAL CHIME MODULE ---
+        let tvAudioEnabled = true;
+        let previousReadyJobKeys = new Set();
+        let tvAudioCtx = null;
+        let tvAlertBannerTimeout = null;
+
+        function toggleTVSound() {
+            tvAudioEnabled = !tvAudioEnabled;
+            const icon = document.getElementById('tv-sound-icon');
+            const text = document.getElementById('tv-sound-text');
+            if (tvAudioEnabled) {
+                if (icon) { icon.setAttribute('data-lucide', 'volume-2'); icon.className = 'w-4 h-4 text-emerald-400'; }
+                if (text) text.innerText = 'Chime ON';
+                playAutomotiveChime();
+            } else {
+                if (icon) { icon.setAttribute('data-lucide', 'volume-x'); icon.className = 'w-4 h-4 text-gray-500'; }
+                if (text) text.innerText = 'Chime OFF';
+            }
+            lucide.createIcons();
+        }
+        window.toggleTVSound = toggleTVSound;
+
+        function playAutomotiveChime() {
+            if (!tvAudioEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!tvAudioCtx) tvAudioCtx = new AudioContextClass();
+                if (tvAudioCtx.state === 'suspended') {
+                    tvAudioCtx.resume();
+                }
+
+                const now = tvAudioCtx.currentTime;
+                // Dual-tone harmonic chime (587.33Hz D5 -> 880Hz A5)
+                const osc1 = tvAudioCtx.createOscillator();
+                const gain1 = tvAudioCtx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(587.33, now);
+                gain1.gain.setValueAtTime(0.18, now);
+                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc1.connect(gain1);
+                gain1.connect(tvAudioCtx.destination);
+                osc1.start(now);
+                osc1.stop(now + 0.5);
+
+                const osc2 = tvAudioCtx.createOscillator();
+                const gain2 = tvAudioCtx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(880, now + 0.12);
+                gain2.gain.setValueAtTime(0.22, now + 0.12);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                osc2.connect(gain2);
+                gain2.connect(tvAudioCtx.destination);
+                osc2.start(now + 0.12);
+                osc2.stop(now + 0.95);
+            } catch (err) {
+                console.warn('Audio chime playback skipped:', err);
+            }
+        }
+        window.playAutomotiveChime = playAutomotiveChime;
+
+        function triggerTVSlideAlertBanner(plateNumber = 'Vehicle') {
+            const banner = document.getElementById('tv-ready-alert-banner');
+            const text = document.getElementById('tv-ready-alert-text');
+            if (!banner) return;
+
+            if (text) text.innerText = `🔔 Vehicle Ready: ${plateNumber} — Ready to Claim!`;
+            banner.classList.remove('hidden');
+
+            if (tvAlertBannerTimeout) clearTimeout(tvAlertBannerTimeout);
+            tvAlertBannerTimeout = setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 6000);
+            lucide.createIcons();
+        }
+        window.triggerTVSlideAlertBanner = triggerTVSlideAlertBanner;
+
         function renderTV() {
+            if (activeSection !== 'tv') return;
+
             // Update TV Header Branch Labels dynamically based on active branch
             const activeBranch = localStorage.getItem('selectedBranch') || (currentUserRole === 'admin' ? currentUserBranch : 'Marikina Branch');
+
             const branchDisplayName = activeBranch === 'all' ? 'All Branches (Combined)' : (activeBranch.includes('Branch') ? activeBranch : `${activeBranch} Branch`);
 
             const tvHeaderLabel = document.getElementById('tv-branch-header-name');
@@ -5106,6 +5186,19 @@ Report Generated Automatically by Developer Crash Reporter.
             const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
             // Group 3: Carry Over (Carry Over)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over');
+
+            // Detect newly ready vehicles to trigger Audio Chime & Visual TV Banner
+            const currentReadyKeys = new Set(releasedAll.map(j => String(j.id || j.claimStub || j.plate)));
+            if (previousReadyJobKeys.size > 0) {
+                releasedAll.forEach(job => {
+                    const key = String(job.id || job.claimStub || job.plate);
+                    if (!previousReadyJobKeys.has(key)) {
+                        playAutomotiveChime();
+                        triggerTVSlideAlertBanner(job.plate || 'Vehicle');
+                    }
+                });
+            }
+            previousReadyJobKeys = currentReadyKeys;
 
             // Render Slide 2 Upcoming Queue List
             const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');
