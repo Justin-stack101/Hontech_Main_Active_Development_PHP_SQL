@@ -2284,8 +2284,8 @@ Report Generated Automatically by Developer Crash Reporter.
                                 <th class="px-2 py-3 bg-gray-50">Promised Date</th>
                                 <th class="px-2 py-3 bg-gray-50">C.O. Status</th>
                                 ${showGoal ? '<th class="px-2 py-3 bg-gray-50">SLA Status (2h)</th>' : ''}
-                                <th class="px-2 py-3 bg-gray-50">Status</th>
-                                <th class="px-2 py-3 bg-gray-50">Location</th>
+                                <th class="px-2 py-3 bg-gray-50 text-center">Status</th>
+                                <th class="px-2 py-3 bg-gray-50 text-center">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -2496,37 +2496,64 @@ Report Generated Automatically by Developer Crash Reporter.
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
-                                <select onchange="handleStatusChange('${job.id}', this.value, this)" 
-                                        class="table-select font-bold text-xs uppercase !w-[150px] border rounded-xl py-1 px-1.5 bg-white outline-none transition cursor-pointer" 
-                                        style="${
-                                            job.status === 'Ready to Release' || job.status === 'Ready' 
-                                                ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
-                                                : job.status === 'Carry Over' 
-                                                    ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
-                                                    : job.status === 'Monitoring' 
-                                                        ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
-                                                        : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
-                                        }">
-                                    <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
-                                    <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
-                                    <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
-                                    <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
-                                    <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
-                                </select>
-                                ` : `<span class="px-1.5 py-0.5 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>`}
+                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[140px]" 
+                                     style="${
+                                         job.status === 'Ready to Release' || job.status === 'Ready' 
+                                             ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
+                                             : job.status === 'Carry Over' 
+                                                 ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
+                                                 : job.status === 'Monitoring' 
+                                                     ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
+                                                     : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
+                                     }" title="Change Status">
+                                    <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-70 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <select onchange="handleStatusChange('${job.id}', this.value, this)" 
+                                            class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                            title="Change Status">
+                                        <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
+                                        <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
+                                        <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
+                                        <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
+                                        <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
+                                    </select>
+                                </div>
+                                ` : `
+                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[140px]" 
+                                      style="${
+                                          job.status === 'Ready to Release' || job.status === 'Ready' 
+                                              ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
+                                              : job.status === 'Carry Over' 
+                                                  ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
+                                                  : job.status === 'Monitoring' 
+                                                      ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
+                                                      : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
+                                      }">
+                                    ${job.status === 'Ready' ? 'Ready to Release' : job.status}
+                                </span>
+                                `}
                             </td>
 
                             <!-- Location -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
-                                <div class="relative group inline-block">
+                                <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[140px] ${
+                                    job.status === 'Waiting' 
+                                        ? 'bg-amber-50 text-amber-800 border-amber-200 cursor-not-allowed opacity-85' 
+                                        : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))
+                                            ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
+                                            : 'bg-amber-50 text-amber-800 border-amber-200 cursor-pointer hover:border-amber-400')
+                                }">
+                                    <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-70 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                     <select onchange="updateJobField('${job.id}', 'location', this.value)" 
                                         ${job.status === 'Waiting' ? 'disabled' : ''}
-                                        class="table-select font-bold text-xs uppercase !w-[140px] border rounded-xl py-1 px-1.5 ${job.status === 'Waiting' ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-75' : (job.location !== 'None' ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer' : 'bg-white text-gray-700 border-gray-200 cursor-pointer')} outline-none focus:ring-2 focus:ring-blue-500/20 transition">
-                                        <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
-                                        ${[1, 2, 3, 4].map(i => {
+                                        class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                        title="Assign Location">
+                                        <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
+                                        ${[1, 2, 3, 4, 5, 6].map(i => {
                                             const bayName = `Bay ${i}`;
                                             const occupiedBy = rowOccupiedBays[bayName];
                                             const isSelected = job.location === bayName || job.location === `Lift ${i}`;
@@ -2541,7 +2568,15 @@ Report Generated Automatically by Developer Crash Reporter.
                                         Set status to 'Monitoring' to assign Bay
                                     </div>` : ''}
                                 </div>
-                                ` : (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) ? `<span class="px-2.5 py-1 rounded-full bg-blue-50 text-xs font-bold uppercase text-blue-700 border border-blue-100">${job.location.replace(/^Lift/, 'Bay')}</span>` : `<span class="px-2.5 py-1 rounded-full bg-gray-50 text-xs font-bold uppercase text-gray-500 border border-gray-150">Waiting Area</span>`}
+                                ` : `
+                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[140px] ${
+                                    (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
+                                        ? 'bg-blue-50 text-blue-800 border border-blue-200' 
+                                        : 'bg-amber-50 text-amber-800 border border-amber-200'
+                                }">
+                                    ${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}
+                                </span>
+                                `}
                             </td>
                         </tr>
                         `;
