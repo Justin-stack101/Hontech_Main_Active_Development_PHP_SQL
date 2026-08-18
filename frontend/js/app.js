@@ -2352,15 +2352,28 @@ Report Generated Automatically by Developer Crash Reporter.
                                     ${isEditable ? `
                                     <div class="relative inline-flex items-center gap-1.5 bg-white border border-slate-300 hover:border-red-500 rounded-xl px-2.5 py-1 shadow-2xs transition cursor-pointer" title="Change Category">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${job.category || 'PMS'}</span>
+                                        <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500 shrink-0 pointer-events-none stroke-[2]"></i>
                                         <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                             <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
-                                            <option value="OTHERS" ${job.category === 'OTHERS' || job.category === 'Others' || !['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
+                                            <option value="OTHERS" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                         </select>
                                     </div>
+                                    
+                                    ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
+                                    <div class="inline-flex items-center gap-1 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl px-2 py-0.5 shadow-2xs transition group" title="Specify custom service name">
+                                        <i data-lucide="edit-3" class="w-3 h-3 text-gray-400 group-hover:text-red-500 transition shrink-0 pointer-events-none"></i>
+                                        <input type="text" 
+                                               value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
+                                               placeholder="Specify custom..." 
+                                               maxlength="30"
+                                               onkeydown="if(event.key === 'Enter') this.blur();"
+                                               onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'OTHERS')" 
+                                               class="table-select text-xs font-semibold text-gray-800 bg-transparent border-none outline-none w-24 p-0 cursor-text">
+                                    </div>
+                                    ` : ''}
                                     ` : `
                                     <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold uppercase text-gray-800 shadow-2xs shrink-0 max-w-[170px]" title="${job.category || '-'}">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
