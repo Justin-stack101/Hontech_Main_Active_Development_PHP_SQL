@@ -5312,23 +5312,23 @@ Report Generated Automatically by Developer Crash Reporter.
             const renderLaneJobCard = (job) => {
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
+                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
-                    statusBadge = `<span class="bg-emerald-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
-                } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-gray-200 text-gray-800 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
+                    statusBadge = `<span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Ready</span>`;
                 } else if (job.status === 'In Progress') {
-                    statusBadge = `<span class="bg-red-600 text-white font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">IN PROGRESS</span>`;
+                    statusBadge = `<span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">In Progress</span>`;
+                } else if (job.status === 'Waiting') {
+                    statusBadge = `<span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Waiting</span>`;
                 } else {
-                    statusBadge = `<span class="bg-gray-100 text-gray-700 border border-gray-200 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
+                    statusBadge = `<span class="bg-gray-100 text-gray-700 border border-gray-200 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Monitoring</span>`;
                 }
                 return `
-                    <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-xl p-3.5 flex flex-col gap-2 shadow-2xs text-left transition-all duration-150">
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
                         <div class="flex items-center justify-between">
-                            <span class="text-lg font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
                             ${statusBadge}
                         </div>
-                        <div class="flex items-center justify-between text-[11px] text-gray-500 font-bold uppercase tracking-wider">
+                        <div class="flex items-center justify-between text-xs text-gray-500 font-bold uppercase tracking-wider">
                             <span>${job.vehicle}</span>
                             <span class="text-gray-900 font-black">${job.category || 'General'}</span>
                         </div>
@@ -5336,17 +5336,28 @@ Report Generated Automatically by Developer Crash Reporter.
                 `;
             };
 
+            const expressLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
+            const flexibleLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType);
+            const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane');
+
+            const expressCount = document.getElementById('tv-express-lane-count');
+            if (expressCount) expressCount.innerText = expressLaneJobs.length;
+            const flexibleCount = document.getElementById('tv-flexible-lane-count');
+            if (flexibleCount) flexibleCount.innerText = flexibleLaneJobs.length;
+            const specialCount = document.getElementById('tv-special-lane-count');
+            if (specialCount) specialCount.innerText = specialLaneJobs.length;
+
             const expressList = document.getElementById('tv-express-lane-list');
             const flexibleList = document.getElementById('tv-flexible-lane-list');
             const specialList = document.getElementById('tv-special-lane-list');
             if (expressList) {
-                expressList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                expressList.innerHTML = expressLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
             if (flexibleList) {
-                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                flexibleList.innerHTML = flexibleLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
             if (specialList) {
-                specialList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                specialList.innerHTML = specialLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
 
             lucide.createIcons();
