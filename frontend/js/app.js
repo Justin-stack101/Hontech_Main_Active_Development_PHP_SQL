@@ -4968,6 +4968,11 @@ Report Generated Automatically by Developer Crash Reporter.
             setTimeout(() => { toast.style.transform = 'translateX(150%)'; }, 3000);
         }
 
+        function launchTVMode() {
+            window.open(window.location.href.split('?')[0] + '?mode=tv', '_blank');
+        }
+        window.launchTVMode = launchTVMode;
+
         function jumpToTVSlide(index) {
             const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
             tvSlideIndex = ((index % slides.length) + slides.length) % slides.length;
