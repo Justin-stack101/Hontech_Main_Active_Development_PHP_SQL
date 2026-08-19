@@ -56,7 +56,7 @@ class JobController
     /**
      * Normalize a job row from snake_case DB columns to camelCase for frontend
      */
-    private static function normalizeJob(array $job): array
+    public static function normalizeJob(array $job): array
     {
         return [
             '_id'                => $job['id'],
