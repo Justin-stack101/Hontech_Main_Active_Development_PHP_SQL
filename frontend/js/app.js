@@ -1880,16 +1880,6 @@ Report Generated Automatically by Developer Crash Reporter.
                     if (normalized) value = normalized;
                 }
 
-                if (field === 'location' && value && value.startsWith('Bay')) {
-                    if (job && job.status === 'Waiting') {
-                        await apiRequest(`/api/jobs/${jobId}/status`, {
-                            method: 'PATCH',
-                            body: { status: 'Monitoring' }
-                        });
-                        job.status = 'Monitoring';
-                    }
-                }
-
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field, value }
@@ -1924,11 +1914,13 @@ Report Generated Automatically by Developer Crash Reporter.
                     }
                 }
 
+                await loadData();
                 renderStaffTables();
                 if (typeof renderTV === 'function') renderTV();
                 if (typeof renderReports === 'function') renderReports();
             } catch (err) {
                 showSystemToast(err.message || 'Error updating job property.', 'error');
+                renderStaffTables();
             }
         }
 
