@@ -283,17 +283,9 @@ class JobController
                     $bayNum = !empty($matches) ? (int)$matches[0] : 1;
                     $normalizedLocation = "Bay {$bayNum}";
 
-                    // Collision check (check both 'Bay X' and 'Lift X')
-                    $stmt = $db->prepare("SELECT job_id, plate FROM jobs WHERE id != ? AND (location = ? OR location = ?) AND status NOT IN ('Completed', 'Released')");
-                    $stmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}"]);
-                    $occupied = $stmt->fetch();
-
-                    if ($occupied) {
-                        http_response_code(400);
-                        $bayLabel = str_pad((string)$bayNum, 2, '0', STR_PAD_LEFT);
-                        echo json_encode(['message' => "Bay {$bayLabel} is already occupied by vehicle {$occupied['plate']}!"]);
-                        return;
-                    }
+                    // Vacate any prior occupant in this bay so reassignment happens seamlessly
+                    $vacateStmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL WHERE id != ? AND (location = ? OR location = ? OR bay_assigned = ?) AND status NOT IN ('Completed', 'Released')");
+                    $vacateStmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}", $bayNum]);
 
                     $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'In Progress' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ? WHERE id = ?');

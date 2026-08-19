@@ -1779,70 +1779,31 @@
             <div id="section-tv"
                 class="section-content hidden fade-in h-full flex flex-col relative overflow-hidden bg-gray-900">
                 <div
-                    class="flex flex-wrap justify-between items-center mb-6 border-b border-gray-800 pt-3 pb-3 shrink-0 z-20 relative px-6 gap-4">
+                    class="flex justify-between items-end mb-6 border-b border-gray-800 pt-4 pb-4 shrink-0 z-20 relative px-6">
                     <div>
-                        <h1 class="text-2xl lg:text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
+                        <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
                             <i data-lucide="monitor" class="text-red-500"></i> Service Monitor — <span id="tv-branch-header-name" class="text-red-500 not-italic font-black">Marikina Branch</span>
                         </h1>
-                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-0.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
+                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
-
-                    <!-- Slide Jump Switcher Tabs -->
-                    <div class="flex items-center gap-1.5 bg-gray-950 border border-gray-800 p-1 rounded-2xl shadow-inner">
-                        <button onclick="jumpToTVSlide(0)" id="tv-nav-tab-0"
-                            class="px-3.5 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs uppercase tracking-wider transition shadow-sm">
-                            Bay Monitoring
-                        </button>
-                        <button onclick="jumpToTVSlide(1)" id="tv-nav-tab-1"
-                            class="px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition">
-                            Queue & Release
-                        </button>
-                        <button onclick="jumpToTVSlide(2)" id="tv-nav-tab-2"
-                            class="px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition">
-                            Workshop Lanes
-                        </button>
-                    </div>
-
-                    <!-- TV System Controls & Widgets -->
-                    <div class="flex items-center gap-4 text-right">
-                        <!-- Play/Pause, Sound, Refresh, Fullscreen Controls -->
-                        <div class="flex items-center gap-1 bg-gray-800/60 border border-gray-750 p-1 rounded-2xl">
-                            <button onclick="toggleTVRotation()" id="tv-play-pause-btn" title="Pause / Resume Rotation"
-                                class="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-700/60 transition">
-                                <i data-lucide="pause" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="toggleTVSound()" id="tv-sound-btn" title="Toggle Chime Sound"
-                                class="p-2 rounded-xl text-emerald-400 hover:text-emerald-300 hover:bg-gray-700/60 transition">
-                                <i data-lucide="volume-2" id="tv-sound-icon" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="refreshTVDataNow()" id="tv-refresh-btn" title="Sync Data Now"
-                                class="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-700/60 transition">
-                                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                            </button>
-                            <button onclick="toggleTVFullscreen()" id="tv-fullscreen-btn" title="Toggle Fullscreen"
-                                class="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-700/60 transition">
-                                <i data-lucide="maximize" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-
+                    <div class="flex items-center gap-6 text-right">
                         <!-- Weather Widget -->
-                        <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-3.5 py-1.5 rounded-2xl">
+                        <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
                             <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
-                                <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                                <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
                             </span>
                             <div class="text-left leading-none">
-                                <p id="tv-temp-display" class="text-base font-black text-white">32°C</p>
-                                <p id="tv-weather-text" class="text-[8px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
+                                <p id="tv-temp-display" class="text-lg font-black text-white">32°C</p>
+                                <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
                             </div>
                         </div>
                         
-                        <!-- Clock & Progress Dots -->
                         <div>
-                            <p id="tv-clock-display" class="text-3xl font-black text-gray-300 tabular-nums leading-none">00:00</p>
-                            <div class="flex gap-1.5 justify-end mt-1.5">
-                                <span onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 cursor-pointer transition-all"></span>
-                                <span onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all"></span>
-                                <span onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all"></span>
+                            <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none">00:00</p>
+                            <div class="flex gap-2 justify-end mt-2">
+                                <span id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 transition-all"></span>
+                                <span id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                                <span id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
                             </div>
                         </div>
                     </div>
@@ -3210,7 +3171,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=2.99"></script>
+    <script src="js/app.js?v=3.00"></script>
 </body>
 
 </html>

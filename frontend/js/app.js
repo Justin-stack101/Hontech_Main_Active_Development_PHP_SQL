@@ -4978,8 +4978,6 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function launchTVMode() { window.open(window.location.href.split('?')[0] + '?mode=tv', '_blank'); }
 
-        let tvIsPaused = false;
-
         function jumpToTVSlide(index) {
             const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
             slides.forEach((sId, i) => {
@@ -4993,75 +4991,18 @@ Report Generated Automatically by Developer Crash Reporter.
                         el.classList.remove('fade-in');
                     }
                 }
-                const tabBtn = document.getElementById(`tv-nav-tab-${i}`);
-                if (tabBtn) {
-                    if (i === index) {
-                        tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs uppercase tracking-wider transition shadow-sm';
-                    } else {
-                        tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition';
-                    }
-                }
                 const dot = document.getElementById(`tv-dot-${i}`);
                 if (dot) {
                     dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === index ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
                 }
             });
             tvSlideIndex = index;
-            if (tvInterval && !tvIsPaused) {
+            if (tvInterval) {
                 clearInterval(tvInterval);
                 tvInterval = setInterval(rotateTVSlides, 15000);
             }
         }
         window.jumpToTVSlide = jumpToTVSlide;
-
-        function toggleTVRotation() {
-            tvIsPaused = !tvIsPaused;
-            const btn = document.getElementById('tv-play-pause-btn');
-            if (tvIsPaused) {
-                if (tvInterval) clearInterval(tvInterval);
-                if (btn) btn.innerHTML = `<i data-lucide="play" class="w-4 h-4 text-emerald-400"></i>`;
-                showSystemToast('TV auto-rotation paused.', 'info', 'TV Monitor');
-            } else {
-                tvInterval = setInterval(rotateTVSlides, 15000);
-                if (btn) btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4 text-gray-300"></i>`;
-                showSystemToast('TV auto-rotation resumed.', 'success', 'TV Monitor');
-            }
-            lucide.createIcons();
-        }
-        window.toggleTVRotation = toggleTVRotation;
-
-        function toggleTVFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.warn('Fullscreen request failed:', err);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-        window.toggleTVFullscreen = toggleTVFullscreen;
-
-        async function refreshTVDataNow() {
-            const btn = document.getElementById('tv-refresh-btn');
-            if (btn) btn.classList.add('animate-spin');
-            try {
-                await loadData();
-                renderTV();
-                updateClock();
-                updateWeather();
-                showSystemToast('TV display refreshed from server.', 'success', 'Live Sync');
-            } catch (err) {
-                showSystemToast('Failed to sync TV display.', 'error');
-            } finally {
-                setTimeout(() => {
-                    if (btn) btn.classList.remove('animate-spin');
-                    lucide.createIcons();
-                }, 500);
-            }
-        }
-        window.refreshTVDataNow = refreshTVDataNow;
 
         function setupTVMode() {
             initTimeFormatSetting();
@@ -5137,14 +5078,6 @@ Report Generated Automatically by Developer Crash Reporter.
                     const dot = document.getElementById(`tv-dot-${i}`);
                     if (dot) {
                         dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
-                    }
-                    const tabBtn = document.getElementById(`tv-nav-tab-${i}`);
-                    if (tabBtn) {
-                        if (i === tvSlideIndex) {
-                            tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-red-600 text-white font-black text-xs uppercase tracking-wider transition shadow-sm';
-                        } else {
-                            tabBtn.className = 'px-3.5 py-1.5 rounded-xl bg-gray-800 text-gray-400 hover:text-white font-bold text-xs uppercase tracking-wider transition';
-                        }
                     }
                 });
             }, 300);
