@@ -1801,9 +1801,9 @@
                         <div>
                             <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none">00:00</p>
                             <div class="flex gap-2 justify-end mt-2">
-                                <span id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 transition-all"></span>
-                                <span id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
-                                <span id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                                <span onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 cursor-pointer transition-all" title="Slide 1: Bay Monitoring"></span>
+                                <span onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Queue & Release"></span>
+                                <span onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></span>
                             </div>
                         </div>
                     </div>
@@ -3171,7 +3171,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.02"></script>
+    <script src="js/app.js?v=3.03"></script>
 </body>
 
 </html>

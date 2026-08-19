@@ -4968,33 +4968,40 @@ Report Generated Automatically by Developer Crash Reporter.
             setTimeout(() => { toast.style.transform = 'translateX(150%)'; }, 3000);
         }
 
-        function launchTVMode() { window.open(window.location.href.split('?')[0] + '?mode=tv', '_blank'); }
-
         function jumpToTVSlide(index) {
             const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
+            tvSlideIndex = ((index % slides.length) + slides.length) % slides.length;
+
             slides.forEach((sId, i) => {
                 const el = document.getElementById(sId);
                 if (el) {
-                    if (i === index) {
+                    if (i === tvSlideIndex) {
                         el.classList.remove('hidden', 'fade-out');
                         el.classList.add('fade-in');
                     } else {
                         el.classList.add('hidden');
-                        el.classList.remove('fade-in');
+                        el.classList.remove('fade-in', 'fade-out');
                     }
                 }
                 const dot = document.getElementById(`tv-dot-${i}`);
                 if (dot) {
-                    dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === index ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
+                    dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
                 }
             });
-            tvSlideIndex = index;
+
             if (tvInterval) {
                 clearInterval(tvInterval);
-                tvInterval = setInterval(rotateTVSlides, 15000);
+                tvInterval = setInterval(rotateTVSlides, 12000);
             }
         }
         window.jumpToTVSlide = jumpToTVSlide;
+
+        function rotateTVSlides() {
+            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
+            const nextIndex = (tvSlideIndex + 1) % slides.length;
+            jumpToTVSlide(nextIndex);
+        }
+        window.rotateTVSlides = rotateTVSlides;
 
         function setupTVMode() {
             initTimeFormatSetting();
@@ -5029,6 +5036,9 @@ Report Generated Automatically by Developer Crash Reporter.
             updateWeather();
             setInterval(updateWeather, 900000);
 
+            // Initialize slide view at slide 0
+            jumpToTVSlide(0);
+
             // TV synchronization via REST API polling every 2s
             setInterval(async () => {
                 try {
@@ -5039,8 +5049,18 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
             }, 2000);
 
-            // Set slide interval to 15 seconds (15000ms) for longer display time
-            tvInterval = setInterval(rotateTVSlides, 15000);
+            // Set slide interval to 12 seconds
+            if (tvInterval) clearInterval(tvInterval);
+            tvInterval = setInterval(rotateTVSlides, 12000);
+
+            // Click anywhere on TV screen to manually jump to the next slide
+            const tvSection = document.getElementById('section-tv');
+            if (tvSection) {
+                tvSection.addEventListener('click', (e) => {
+                    if (e.target.closest('button, select, input, a, [onclick]')) return;
+                    rotateTVSlides();
+                });
+            }
             
             loadData().then(() => {
                 renderTV();
@@ -5048,31 +5068,6 @@ Report Generated Automatically by Developer Crash Reporter.
             });
 
             lucide.createIcons();
-        }
-
-        function rotateTVSlides() {
-            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
-            const currentEl = document.getElementById(slides[tvSlideIndex]);
-            if (!currentEl) return;
-            currentEl.classList.remove('fade-in');
-            currentEl.classList.add('fade-out');
-
-            setTimeout(() => {
-                currentEl.classList.add('hidden');
-                tvSlideIndex = (tvSlideIndex + 1) % slides.length;
-                const nextEl = document.getElementById(slides[tvSlideIndex]);
-                if (nextEl) {
-                    nextEl.classList.remove('hidden', 'fade-out');
-                    nextEl.classList.add('fade-in');
-                }
-
-                [0, 1, 2].forEach(i => {
-                    const dot = document.getElementById(`tv-dot-${i}`);
-                    if (dot) {
-                        dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
-                    }
-                });
-            }, 300);
         }
 
         function getServiceTheme(category) {
