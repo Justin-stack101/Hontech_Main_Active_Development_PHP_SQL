@@ -1967,6 +1967,10 @@ Report Generated Automatically by Developer Crash Reporter.
                     }
                 }
 
+                if (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed') {
+                    playAutomotiveChime();
+                }
+
                 if (newStatus === 'Waiting') {
                     // Reset location back to Waiting Area when vehicle returns to Waiting
                     await apiRequest(`/api/jobs/${jobId}/field`, {
@@ -1993,6 +1997,7 @@ Report Generated Automatically by Developer Crash Reporter.
         function completeRelease(jobId) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
+            playAutomotiveChime();
             document.getElementById('release-confirm-job-id').value = jobId;
             document.getElementById('release-confirm-message').innerText = `Are you sure you want to finalize the release for ${job.plate}? This will remove the vehicle from the active workshop view.`;
             document.getElementById('release-confirm-modal').classList.remove('hidden');
@@ -2011,6 +2016,9 @@ Report Generated Automatically by Developer Crash Reporter.
             if (!job) return;
 
             try {
+                // Play celebratory dual chime on vehicle release
+                playAutomotiveChime();
+
                 // Final auto-calculate before completing
                 const computed = calculateGoalStatusForJob(job);
                 if (computed !== 'N/A' && job.goalStatus !== computed) {
@@ -5141,33 +5149,51 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
 
                 const now = tvAudioCtx.currentTime;
-                // Dual-tone harmonic chime (587.33Hz D5 -> 880Hz A5)
+                // Rich Dual-Tone Harmonic Automotive Chime (587.33Hz D5 -> 880Hz A5)
                 const osc1 = tvAudioCtx.createOscillator();
                 const gain1 = tvAudioCtx.createGain();
                 osc1.type = 'sine';
                 osc1.frequency.setValueAtTime(587.33, now);
-                gain1.gain.setValueAtTime(0.18, now);
-                gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                gain1.gain.setValueAtTime(0.28, now);
+                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
                 osc1.connect(gain1);
                 gain1.connect(tvAudioCtx.destination);
                 osc1.start(now);
-                osc1.stop(now + 0.5);
+                osc1.stop(now + 0.6);
 
                 const osc2 = tvAudioCtx.createOscillator();
                 const gain2 = tvAudioCtx.createGain();
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(880, now + 0.12);
-                gain2.gain.setValueAtTime(0.22, now + 0.12);
-                gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(880, now + 0.14);
+                gain2.gain.setValueAtTime(0.35, now + 0.14);
+                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
                 osc2.connect(gain2);
                 gain2.connect(tvAudioCtx.destination);
-                osc2.start(now + 0.12);
-                osc2.stop(now + 0.95);
+                osc2.start(now + 0.14);
+                osc2.stop(now + 1.15);
+
+                const osc3 = tvAudioCtx.createOscillator();
+                const gain3 = tvAudioCtx.createGain();
+                osc3.type = 'triangle';
+                osc3.frequency.setValueAtTime(1174.66, now + 0.28);
+                gain3.gain.setValueAtTime(0.22, now + 0.28);
+                gain3.gain.exponentialRampToValueAtTime(0.0001, now + 1.3);
+                osc3.connect(gain3);
+                gain3.connect(tvAudioCtx.destination);
+                osc3.start(now + 0.28);
+                osc3.stop(now + 1.35);
             } catch (err) {
                 console.warn('Audio chime playback skipped:', err);
             }
         }
         window.playAutomotiveChime = playAutomotiveChime;
+
+        // Auto-resume audio context on user interaction
+        window.addEventListener('click', () => {
+            if (tvAudioCtx && tvAudioCtx.state === 'suspended') {
+                tvAudioCtx.resume();
+            }
+        }, { passive: true });
 
         function triggerTVSlideAlertBanner(plateNumber = 'Vehicle') {
             const banner = document.getElementById('tv-ready-alert-banner');
