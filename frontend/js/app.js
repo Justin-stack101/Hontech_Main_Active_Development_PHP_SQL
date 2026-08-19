@@ -5197,22 +5197,15 @@ Report Generated Automatically by Developer Crash Reporter.
             const tvSection = document.getElementById('section-tv');
             if (tvSection && tvSection.classList.contains('hidden')) return;
 
-            // Update TV Header Branch Labels dynamically based on active branch
-            const activeBranch = localStorage.getItem('selectedBranch') || (currentUserRole === 'admin' ? currentUserBranch : 'Marikina Branch');
-
-            const branchDisplayName = activeBranch === 'all' ? 'All Branches (Combined)' : (activeBranch.includes('Branch') ? activeBranch : `${activeBranch} Branch`);
-
-            const tvHeaderLabel = document.getElementById('tv-branch-header-name');
-            if (tvHeaderLabel) tvHeaderLabel.innerText = branchDisplayName;
-
+            // Slide Subtitles
             const tvSlide1Sub = document.getElementById('tv-slide1-sub');
-            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays — ${branchDisplayName}`;
+            if (tvSlide1Sub) tvSlide1Sub.innerText = 'Active Bays & Real-Time Allocations';
 
             const tvSlide2Sub = document.getElementById('tv-slide2-sub');
-            if (tvSlide2Sub) tvSlide2Sub.innerText = `Live Queue & Turnaround — ${branchDisplayName}`;
+            if (tvSlide2Sub) tvSlide2Sub.innerText = 'Live Queue & Turnaround Status';
 
             const tvSlide3Sub = document.getElementById('tv-slide3-sub');
-            if (tvSlide3Sub) tvSlide3Sub.innerText = `Live Lane Status — ${branchDisplayName}`;
+            if (tvSlide3Sub) tvSlide3Sub.innerText = 'Live Lane Status & Active Vehicles';
 
             // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
             const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');
