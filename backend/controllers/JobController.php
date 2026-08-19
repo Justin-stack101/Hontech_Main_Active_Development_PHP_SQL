@@ -284,16 +284,16 @@ class JobController
                     $normalizedLocation = "Bay {$bayNum}";
 
                     // Vacate any prior occupant in this bay so reassignment happens seamlessly
-                    $vacateStmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL WHERE id != ? AND (location = ? OR location = ? OR bay_assigned = ?) AND status NOT IN ('Completed', 'Released')");
+                    $vacateStmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id != ? AND (location = ? OR location = ? OR bay_assigned = ?) AND status NOT IN ('Completed', 'Released')");
                     $vacateStmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}", $bayNum]);
 
                     $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'In Progress' : $job['status'];
-                    $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ? WHERE id = ?');
+                    $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ?, updated_at = NOW() WHERE id = ?');
                     $stmt->execute([$normalizedLocation, $bayNum, $newStatus, $job['id']]);
                 } else {
                     $newStatus = ($job['status'] === 'In Progress') ? 'Waiting' : $job['status'];
-                    $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = NULL, status = ? WHERE id = ?');
-                    $stmt->execute(['None', $newStatus, $job['id']]);
+                    $stmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, status = ?, updated_at = NOW() WHERE id = ?");
+                    $stmt->execute([$newStatus, $job['id']]);
                 }
             } else {
                 $dbCol = $fieldMap[$field] ?? $field;

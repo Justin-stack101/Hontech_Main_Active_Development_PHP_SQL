@@ -5275,8 +5275,8 @@ Report Generated Automatically by Developer Crash Reporter.
                 for (let i = 1; i <= 4; i++) {
                     const job = (allJobs || []).find(j => {
                         if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                        if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
                         if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
-                        if (!j.location || j.location === 'None') return false;
                         const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
                         return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}`;
                     });
