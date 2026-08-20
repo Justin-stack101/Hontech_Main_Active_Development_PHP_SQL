@@ -1,29 +1,63 @@
-# HonTech AutoCenter Operations System - Documentation Hub
+# 📚 HonTech AutoCenter Operations System — Documentation Hub
+## Master Technical Architecture, Operational Playbooks & Quality Assurance Index
 
-Welcome to the documentation master hub for the **HonTech AutoCenter Operations System** Capstone Project. This directory contains the complete blueprint, data models, workflows, security audits, and developer roadmaps organized for solo development.
-
----
-
-## 🎯 Project Goals & Objectives
-
-1. **Streamline Workshop Operations:** Transition the auto-shop workflow from manual paper claim stubs to a real-time digital queue management dashboard.
-2. **Role-Based Workflows:** Enforce strict system roles (Owner, Front Desk Assistant, Service Advisor) to compartmentalize workshop duties and increase accountability.
-3. **Live Status Broadcasting:** Display active vehicle repair phases (lifts 1-4, General Repairs, carry-overs) on a live rotating TV monitor in the customer waiting lounge.
-4. **Data Security & Integrity:** Protect customer records, prevent unauthorized modifications, and implement professional backend authorization rules.
+Welcome to the central documentation hub for the **HonTech AutoCenter Operations System (Branch 2: Security & Account Recovery)**. All specifications, architecture models, deployment guides, QA matrices, and developer roadmaps are organized here into focused, authoritative categories.
 
 ---
 
-## 🗂️ Documentation Guide
+## 🗂️ Master Documentation Directory
 
-### 🧠 Learning & Educational Documentation (Guides, diagrams, and audits)
-* 📊 [**Data Flow Diagrams**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/hontech_data_flow_diagrams.md) - Visual Mermaid diagrams tracking user requests, job creations, and database states. *(Moved to Technical)*
-* 🚨 [**Security Vulnerabilities Explainer**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Personal_Learning/SecurityVulnerabilities.md) - Active vulnerability audit log (OTP leaks, mass assignments) with clear remediation steps.
-* 🌐 [**Local Network Sharing Guide**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Personal_Learning/NetworkingLocalSharingGuide.md) - A student-friendly tutorial on `localhost` loopbacks, network IP routing, socket bindings, and bypassing firewall blocks.
+### 1. 📘 Core Technical Architecture & Operational Playbooks
+* 📘 [**Enterprise Deployment & Operations Manual**](Technical/HONTECH_ENTERPRISE_DEPLOYMENT_AND_OPERATIONS_MANUAL.md)  
+  *The authoritative, step-by-step master playbook covering Local Wi-Fi Server setup (`192.168.x.x`), Google Cloud OAuth credentials, Live Gmail/SMTP OTP configuration, Google Calendar integration, Google Drive automated MySQL backups, and TV Display Kiosk installation.*
+* 🛡️ [**Security, Account Recovery & Google API Master Architecture**](Technical/HONTECH_SECURITY_AND_ACCOUNT_RECOVERY_MASTER.md)  
+  *Unified security blueprint covering JWT HTTP-Only cookies, 2-step OTP password resets (with sequence diagrams), TOTP Multi-Factor Authentication (Google Authenticator), and 15-minute inactivity auto-logout protection.*
+* 🗄️ [**Database Schema & Entity Relationship Model**](Technical/database_schema_and_erd.md)  
+  *Complete relational database dictionary for MySQL/MariaDB (`users`, `jobs`, `security_logs`, `simulated_emails`, `branches`), field constraints, and Mermaid ERD.*
+* 📊 [**System Data Flow & Request Lifecycle Diagrams**](Technical/hontech_data_flow_diagrams.md)  
+  *Visual Mermaid DFDs tracking client authentication, daily intake job creation, bay status transitions, and real-time TV telemetry.*
+* 📈 [**Analytics & Operational Calculation Logic**](Technical/Analytics_Calculation_Logic.md)  
+  *Formulaic breakdown of turn-around time (TAT), PMS vs. GRS completion rates, service advisor daily performance, and financial revenue aggregations.*
+* 🏛️ [**Codebase Architectural Audit & Directives**](Technical/HonTech_Codebase_Architectural_Audit.md)  
+  *Engineering standards, SQL PDO property normalization, defensive DOM handling, and cache-busting requirements.*
 
-### 🛠️ Technical Specifications & Roadmaps (Project setup, plans, and roadmap blueprints)
-* 🗺️ [**Master Development Blueprint**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/Master_Development_Blueprint.md) - **(START HERE)** The complete roadmap, Phase 1 to Phase 5, including the master to-do list.
-* ⚙️ [**Startup Operation Manual**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/StartupOperation.md) - Terminal commands to run the frontend and backend in local development.
-* 🗄️ [**Database Schema & ERD**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/database_schema_and_erd.md) - Model structures, fields, constraints, validation behaviors, and Mermaid ERD.
-* 📜 [**Client Presentation Script**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/SystemPresentationScript.md) - A structured script and presentation booklet to explain roles, permissions, and value to clients.
-* ⏱️ [**Launch Timeline & Emergency Manual**](file:///c:/Users/justi/Downloads/School%20Files/MainProjectCollection/ComprogStudies/ProjectsWebDev/Capstone%20Things/DeveloperVersion/Hontech%20Documentation/Technical/LaunchTimelineAndEmergencyManual.md) - Monthly milestone plans, budget/expense estimations, dry run procedures, and emergency crash steps.
-* 📁 **Archived Plans** - Located in `Technical/Archived_Plans/`. Contains early architecture blueprints and individual feature implementation plans.
+---
+
+### 2. 👔 Client Proposals, Pitch Scripts & Presentation Assets
+* 📄 [**Master Client Proposal & Deployment Guide**](Technical/Master_Client_Proposal_And_Deployment_Guide.md)  
+  *Formal executive proposal for HonTech management detailing on-site ₱0 local server hardware requirements, financial cost comparison (Local vs. Cloud), and project deliverables.*
+* 🖥️ [**Interactive Client Proposal & Deployment Strategy (HTML Presentation)**](Technical/HonTech_Client_Proposal_and_Deployment_Strategy.html)  
+  *Presentation-ready, interactive visual dashboard designed for client executive pitches and Capstone panel defenses.*
+* 🗣️ [**Client & Development Team Alignment Guide**](Technical/Client_and_Team_Deployment_Guide.md)  
+  *Talking points and pitch scripts for clients reassuring ₱0 monthly fees, alongside team alignment guidelines for dual-port local server hosting (`Port 8000` vs `Port 8001`).*
+* 🎯 [**Client Interview Cheatsheet & Talking Points**](Technical/CLIENT_INTERVIEW_CHEATSHEET_AND_TALKING_POINTS.md)  
+  *Quick reference interview sheet for presenting digital queue benefits, repair bay efficiency, and privacy compliance.*
+
+---
+
+### 3. 🧪 Quality Assurance, Testing & Launch Protocol
+* 🧪 [**Interactive Manual QA Testing Matrix (HTML Dashboard)**](HONTECH_QA_MANUAL_TESTING_MATRIX.html)  
+  *Comprehensive interactive QA dashboard covering 100% of test suites across all 4 roles (Owner, Admin, SA, Assistant).*
+* 📋 [**QA Testing Checklist (CSV Export)**](HONTECH_QA_TEST_CHECKLIST.csv)  
+  *Standardized test checklist formatted for spreadsheet verification and audit tracking.*
+* 🔬 [**Testing & QA Protocol**](Technical/Testing_and_QA_Protocol.md)  
+  *Step-by-step test execution procedure, regression testing rules, and automated unit test workflows.*
+* ⏱️ [**Launch Timeline & Emergency Response Manual**](Technical/LaunchTimelineAndEmergencyManual.md)  
+  *Deployment milestones, dry-run checklist, failover procedures, and emergency crash diagnostics.*
+
+---
+
+### 4. 🧠 Developer Learning & Educational Guides
+* 🌐 [**Local Network Sharing & Socket Binding Guide**](Personal_Learning/NetworkingLocalSharingGuide.md)  
+  *Student-friendly tutorial on `localhost` loopbacks, network IP routing, and bypassing firewall blocks.*
+* 🛡️ [**Security Vulnerabilities Explainer**](Personal_Learning/SecurityVulnerabilities.md)  
+  *Educational audit log explaining common web vulnerabilities (OTP leakage, CSRF, IDOR) and their code-level remediations.*
+* 🌿 [**Multi-Branch Implementation Learnings**](Personal_Learning/MultiBranch_Implementation_Learnings.md)  
+  *Reflections and architectural insights on implementing multi-tenant branch partitioning in PHP/SQL.*
+* 💻 [**Git and GitHub Team Workflow Guide**](Technical/Git_and_GitHub_Guide.md)  
+  *Guide to atomic feature delivery, commit hygiene, and branch protection strategies.*
+
+---
+
+### 5. 🗃️ Historical Archives
+* 📁 **Legacy Drafts & Feature Implementations**: Located in [`Technical/Archived_Plans/`](Technical/Archived_Plans/). Contains superseded individual feature drafts, early multi-branch sprint notes, and legacy drafts consolidated into the master documents.
