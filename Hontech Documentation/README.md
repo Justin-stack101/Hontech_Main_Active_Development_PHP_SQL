@@ -32,6 +32,8 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
   *Talking points and pitch scripts for clients reassuring ₱0 monthly fees, alongside team alignment guidelines for dual-port local server hosting (`Port 8000` vs `Port 8001`).*
 * 🎯 [**Client Interview Cheatsheet & Talking Points**](Technical/CLIENT_INTERVIEW_CHEATSHEET_AND_TALKING_POINTS.md)  
   *Quick reference interview sheet for presenting digital queue benefits, repair bay efficiency, and privacy compliance.*
+* 💼 [**Managed IT Department & Service Retainer Proposal**](Technical/HONTECH_MANAGED_IT_DEPARTMENT_PROPOSAL.md)  
+  *Commercial retainer proposal presenting your team as HonTech's dedicated external IT department, covering ongoing software maintenance, network uptime, cloud backups, and Phase 2/3 development.*
 
 ---
 
