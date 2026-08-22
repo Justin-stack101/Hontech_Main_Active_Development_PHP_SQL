@@ -2389,20 +2389,21 @@ Report Generated Automatically by Developer Crash Reporter.
             const isAsst = currentUserRole === 'assistant';
             const isSA = currentUserRole === 'sa';
             const isTech = currentUserRole === 'tech';
-            const isOwnerOrAdmin = isOwner || isAdmin;
+            const isReadOnlyOnline = isOwner || isAdmin || isSA;
+            const canViewOnline = isAsst || isOwner || isAdmin || isSA;
 
             const onlineQueueEl = document.getElementById('container-online-queue');
             const dailyIntakesEl = document.getElementById('container-daily-intakes');
             const techBoardEl = document.getElementById('container-tech-board');
             const periodicRecordsEl = document.getElementById('container-periodic-records');
 
-            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isOwner || isAdmin));
+            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
             if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 
-            // BOOKING MODULE (Assistant Staff Only Controls; Owner/Admin View-Only)
-            if ((isAsst || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
+            // BOOKING MODULE (Assistant Staff Operational Controls; Service Advisor, Owner, Admin View-Only)
+            if (canViewOnline && document.getElementById('table-pending-express')) {
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
                     return `
@@ -2414,7 +2415,7 @@ Report Generated Automatically by Developer Crash Reporter.
                         <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
                         <td class="text-gray-500 text-sm">${job.vehicle}</td>
                         <td>
-                            ${isOwnerOrAdmin ? `
+                            ${isReadOnlyOnline ? `
                                 <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible Lane'}</span>
                             ` : `
                                 <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 hover:border-red-600 rounded-xl px-3 py-1.5 shadow-2xs transition">
@@ -2429,7 +2430,7 @@ Report Generated Automatically by Developer Crash Reporter.
                             `}
                         </td>
                         <td>
-                            ${isOwnerOrAdmin ? `
+                            ${isReadOnlyOnline ? `
                                 <div class="text-xs text-gray-700 font-bold">${job.apptDate || 'N/A'}</div>
                                 <div class="text-xs text-gray-500 font-mono mt-0.5">${job.apptTime ? formatTime12Hour(job.apptTime) : 'N/A'}</div>
                             ` : `
@@ -2440,13 +2441,17 @@ Report Generated Automatically by Developer Crash Reporter.
                             `}
                         </td>
                         <td>
-                            <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
+                            ${isReadOnlyOnline ? `
+                                <div class="text-xs font-semibold text-gray-700 truncate max-w-[280px]" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</div>
+                            ` : `
+                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
+                            `}
                         </td>
                         <td class="text-center">
-                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isOwnerOrAdmin ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isOwnerOrAdmin ? 'cursor-not-allowed' : 'cursor-pointer'}">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}">
                         </td>
                         <td class="text-right flex items-center justify-end gap-2">
-                            ${isOwnerOrAdmin ? `
+                            ${isReadOnlyOnline ? `
                                 <span class="text-xs font-bold text-gray-400 italic">View Only</span>
                             ` : `
                                 <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
