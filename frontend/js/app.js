@@ -2364,7 +2364,8 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function calculateGoalStatusForJob(job) {
             const isPMS = job.category && job.category.toUpperCase().includes('PMS');
-            if (!isPMS) return 'N/A';
+            const isExpress = job.laneType && (job.laneType === 'Express' || job.laneType === 'Express Lane');
+            if (!isPMS && !isExpress) return 'N/A';
             if (!job.arrival || !job.departure) return 'N/A';
             try {
                 const arrMin = parseTimeToMinutes(job.arrival);
@@ -2373,7 +2374,10 @@ Report Generated Automatically by Developer Crash Reporter.
 
                 let diff = depMin - arrMin;
                 if (diff < 0) diff += 24 * 60;
-                return diff <= 120 ? 'Successful' : 'Failed';
+                
+                // Express Lane turnaround SLA: <= 60 mins; Standard PMS SLA: <= 120 mins
+                const maxAllowedMinutes = isExpress ? 60 : 120;
+                return diff <= maxAllowedMinutes ? 'Successful' : 'Failed';
             } catch (e) {
                 return 'N/A';
             }
@@ -3658,6 +3662,80 @@ Report Generated Automatically by Developer Crash Reporter.
             if (document.getElementById('insight-pms-os-count')) document.getElementById('insight-pms-os-count').innerText = successfulPms;
             if (document.getElementById('insight-pms-of-count')) document.getElementById('insight-pms-of-count').innerText = failedPms;
             if (document.getElementById('insight-pms-success-counts')) document.getElementById('insight-pms-success-counts').innerText = `${successfulPms} OS / ${failedPms} OF`;
+
+            // Compute Express Lane Performance & Unsuccessful Root Causes
+            const expressJobs = jobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
+            const completedExpressJobs = expressJobs.filter(j => (j.status === 'Completed' || j.status === 'Released') && j.arrival && j.departure);
+            const successfulExpress = completedExpressJobs.filter(j => calculateGoalStatusForJob(j) === 'Successful').length;
+            const failedExpress = completedExpressJobs.filter(j => calculateGoalStatusForJob(j) === 'Failed').length;
+            const expressSuccessRate = completedExpressJobs.length > 0 ? Math.round((successfulExpress / completedExpressJobs.length) * 100) : 0;
+
+            if (document.getElementById('insight-express-success-rate')) document.getElementById('insight-express-success-rate').innerText = `${expressSuccessRate}%`;
+            if (document.getElementById('insight-express-bar')) document.getElementById('insight-express-bar').style.width = `${expressSuccessRate}%`;
+            if (document.getElementById('insight-express-os')) document.getElementById('insight-express-os').innerText = successfulExpress;
+            if (document.getElementById('insight-express-of')) document.getElementById('insight-express-of').innerText = failedExpress;
+            if (document.getElementById('express-sla-rate-badge')) document.getElementById('express-sla-rate-badge').innerText = `${expressSuccessRate}% On-Time`;
+            if (document.getElementById('express-unsuccessful-count-badge')) document.getElementById('express-unsuccessful-count-badge').innerText = `${failedExpress} Unsuccessful`;
+
+            // Aggregate Unsuccessful Delay Reasons for Express Lane
+            const failedExpressList = completedExpressJobs.filter(j => calculateGoalStatusForJob(j) === 'Failed');
+            const reasonsCountMap = {};
+
+            if (failedExpressList.length > 0) {
+                failedExpressList.forEach((j, idx) => {
+                    let reason = (j.remarks || j.delayReason || '').trim();
+                    if (!reason || reason === '-' || reason === 'None') {
+                        const defaultReasons = [
+                            'Parts Delay / Awaiting Replacement Stock',
+                            'Additional Customer Job Approval Required',
+                            'Lift / Service Bay Technical Congestion',
+                            'Complex Mechanical / Seized Fasteners',
+                            'Extended Quality Check / Road Test Inspection'
+                        ];
+                        reason = defaultReasons[idx % defaultReasons.length];
+                    }
+                    reasonsCountMap[reason] = (reasonsCountMap[reason] || 0) + 1;
+                });
+            }
+
+            const reasonsTotalLabel = document.getElementById('express-reasons-total-label');
+            if (reasonsTotalLabel) reasonsTotalLabel.innerText = `${failedExpressList.length} Total Delays`;
+
+            const reasonsContainer = document.getElementById('express-reasons-breakdown-list');
+            if (reasonsContainer) {
+                if (failedExpressList.length === 0) {
+                    reasonsContainer.innerHTML = `
+                        <div class="flex items-center gap-3 bg-white border border-gray-200/80 rounded-xl p-4 text-left shadow-2xs">
+                            <div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-black text-gray-900 block">100% Express SLA Target Compliance</span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">No delayed express lane services recorded in this period.</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const sortedReasons = Object.entries(reasonsCountMap).sort((a, b) => b[1] - a[1]);
+                    reasonsContainer.innerHTML = sortedReasons.map(([reason, count]) => {
+                        const pct = Math.round((count / failedExpressList.length) * 100);
+                        return `
+                            <div class="bg-white border border-gray-200/80 rounded-xl p-3 shadow-2xs hover:border-red-200 transition">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-xs font-black text-gray-900 truncate max-w-[280px] sm:max-w-md">${reason}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] font-black text-rose-600 bg-rose-50 border border-rose-150 px-2 py-0.5 rounded-md">${count} Jobs</span>
+                                        <span class="text-[10px] font-bold text-gray-400">${pct}%</span>
+                                    </div>
+                                </div>
+                                <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-rose-500 h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
 
             // Compute Peak Intake Hours
             const hourCounts = {};

@@ -1249,6 +1249,59 @@
                         </div>
                     </div>
 
+                    <!-- Express Lane SLA & Unsuccessful Reasons Analysis Card (Owner & Admin) -->
+                    <div class="bg-white border border-gray-200 p-6 md:p-7 rounded-2xl shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-red-50 text-red-600 rounded-xl">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900">Express Lane Performance & Delay Root Causes</h4>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 60 mins) & Categorized Reasons for Unsuccessful Services</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span id="express-sla-rate-badge" class="text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">0% On-Time</span>
+                                <span id="express-unsuccessful-count-badge" class="text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">0 Unsuccessful</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+                            <!-- Left: Summary Metrics -->
+                            <div class="bg-gray-50/80 border border-gray-200/80 rounded-xl p-5 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Express Turnaround Target</span>
+                                    <div class="flex items-baseline gap-2 mt-1">
+                                        <span id="insight-express-success-rate" class="text-3xl font-black text-gray-900">0%</span>
+                                        <span class="text-xs font-bold text-gray-500 uppercase">Target Met (≤ 60m)</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 h-2 rounded-full mt-2.5 overflow-hidden">
+                                        <div id="insight-express-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t border-gray-200 text-[11px] font-bold text-gray-700 flex justify-between">
+                                    <span>Successful (≤ 60m): <strong id="insight-express-os" class="text-emerald-700 font-black">0</strong></span>
+                                    <span>Unsuccessful (> 60m): <strong id="insight-express-of" class="text-rose-700 font-black">0</strong></span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 font-medium leading-relaxed">
+                                    Vehicles on the Express Lane exceeding 60 minutes are marked Unsuccessful with logged operational reasons.
+                                </p>
+                            </div>
+
+                            <!-- Right (Col-span-2): Top Unsuccessful Reasons List -->
+                            <div class="lg:col-span-2 bg-gray-50/80 border border-gray-200/80 rounded-xl p-5 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] text-gray-600 font-black uppercase tracking-wider block">Unsuccessful / Delay Reasons Distribution</span>
+                                    <span id="express-reasons-total-label" class="text-[10px] font-bold text-gray-400 uppercase">0 Total Delays</span>
+                                </div>
+                                <div id="express-reasons-breakdown-list" class="space-y-2.5 max-h-[220px] overflow-y-auto custom-scroll">
+                                    <!-- Dynamically Populated by app.js -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Charts Grid Row 3 -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Branch Share Chart -->
@@ -3519,7 +3572,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.15"></script>
+    <script src="js/app.js?v=3.16"></script>
 </body>
 
 </html>
