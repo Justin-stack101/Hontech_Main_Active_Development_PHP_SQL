@@ -894,6 +894,9 @@ Report Generated Automatically by Developer Crash Reporter.
             if (document.getElementById('settings-security-container')) {
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
+            if (document.getElementById('settings-bay-config-container')) {
+                document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
 
             if (role === 'owner') {
                 if (document.getElementById('sidebar-user-role')) {
@@ -1291,6 +1294,9 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             if (id === 'profile') {
                 loadSystemSettingsIntoForm();
+            }
+            if (id === 'settings') {
+                initWorkshopBaySettings();
             }
             if (id === 'dashboard') {
                 switchDashboardTab(currentDashboardTab || 'monitor');
@@ -2756,15 +2762,21 @@ Report Generated Automatically by Developer Crash Reporter.
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                         title="Assign Location">
                                         <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
-                                        ${[1, 2, 3, 4].map(i => {
-                                            const bayName = `Bay ${i}`;
-                                            const occupiedBy = rowOccupiedBays[bayName];
-                                            const isSelected = job.location === bayName || job.location === `Lift ${i}`;
-                                            if (occupiedBy && !isSelected) {
-                                                return `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
+                                        ${(() => {
+                                            const totalBays = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+                                            let optionsHtml = '';
+                                            for (let i = 1; i <= totalBays; i++) {
+                                                const bayName = `Bay ${i}`;
+                                                const occupiedBy = rowOccupiedBays[bayName];
+                                                const isSelected = job.location === bayName || job.location === `Lift ${i}`;
+                                                if (occupiedBy && !isSelected) {
+                                                    optionsHtml += `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
+                                                } else {
+                                                    optionsHtml += `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
+                                                }
                                             }
-                                            return `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
-                                        }).join('')}
+                                            return optionsHtml;
+                                        })()}
                                     </select>
                                 </div>
                                 ` : `
@@ -5248,8 +5260,9 @@ Report Generated Automatically by Developer Crash Reporter.
             if (tvSection && tvSection.classList.contains('hidden')) return;
 
             // Slide Subtitles
+            const bayCount = getWorkshopBayCount();
             const tvSlide1Sub = document.getElementById('tv-slide1-sub');
-            if (tvSlide1Sub) tvSlide1Sub.innerText = 'Active Bays & Real-Time Allocations';
+            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays (1-${bayCount}) & Real-Time Allocations`;
 
             const tvSlide2Sub = document.getElementById('tv-slide2-sub');
             if (tvSlide2Sub) tvSlide2Sub.innerText = 'Live Queue & Turnaround Status';
@@ -5331,47 +5344,59 @@ Report Generated Automatically by Developer Crash Reporter.
                 `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-400 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
             }
 
-            // GRS Active Bays slide (tv-slide-1) rendering (Bays 1-4)
+            // GRS Active Bays slide (tv-slide-1) rendering (Dynamic 4-10 Bays)
             const tvGRS = document.getElementById('tv-grs-list');
             if (tvGRS) {
+                // Adaptive layout based on number of active bays
+                if (bayCount <= 4) {
+                    tvGRS.className = "grid grid-cols-2 gap-5 h-full";
+                } else if (bayCount <= 6) {
+                    tvGRS.className = "grid grid-cols-3 gap-4 h-full";
+                } else if (bayCount <= 8) {
+                    tvGRS.className = "grid grid-cols-4 gap-3.5 h-full";
+                } else {
+                    tvGRS.className = "grid grid-cols-5 gap-3 h-full";
+                }
+
                 let baysHTML = '';
-                for (let i = 1; i <= 4; i++) {
+                for (let i = 1; i <= bayCount; i++) {
+                    const padBay = String(i).padStart(2, '0');
                     const job = (allJobs || []).find(j => {
                         if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
                         if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
                         if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
                         const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
-                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}`;
+                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}` || cleanLoc === `bay${padBay}`;
                     });
 
                     if (job) {
                         baysHTML += `
-                            <div class="bg-white border-2 border-slate-900 rounded-2xl p-6 flex flex-col justify-between items-center h-full relative shadow-md">
+                            <div class="bg-white border-2 border-slate-900 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-md">
                                 <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">BAY-0${i}</span>
-                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-0.5 rounded-full shadow-xs">IN SERVICE</span>
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">BAY-${padBay}</span>
+                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">IN SERVICE</span>
                                 </div>
                                 <div class="flex flex-col items-center my-auto text-center">
-                                    <span class="text-4xl lg:text-5xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
-                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mt-1">${job.vehicle}</span>
+                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
+                                    <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500 mt-1">${job.vehicle}</span>
                                 </div>
-                                <div class="w-full pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase">
+                                <div class="w-full pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 uppercase">
                                     <span>${job.category || 'General Service'}</span>
-                                    <span class="text-slate-400 font-mono text-[10px]">${job.laneType || 'LANE'}</span>
+                                    <span class="text-slate-400 font-mono text-[9px]">${job.laneType || 'LANE'}</span>
                                 </div>
                             </div>`;
                     } else {
                         baysHTML += `
-                            <div class="bg-slate-50/70 border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col justify-between items-center h-full relative">
+                            <div class="bg-slate-50/70 border-2 border-dashed border-slate-200 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative">
                                 <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">BAY-0${i}</span>
-                                    <span class="bg-slate-200 text-slate-600 font-extrabold text-[10px] uppercase tracking-wider px-3 py-0.5 rounded-full">AVAILABLE</span>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">BAY-${padBay}</span>
+                                    <span class="bg-slate-200 text-slate-600 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
                                 </div>
                                 <div class="my-auto flex flex-col items-center">
-                                    <span class="text-3xl font-black uppercase italic text-slate-300 tracking-wider">EMPTY</span>
-                                    <span class="text-[11px] font-bold uppercase text-slate-400 mt-1">Ready for Allocation</span>
+                                    <span class="text-2xl lg:text-3xl font-black uppercase italic text-slate-300 tracking-wider">EMPTY</span>
+                                    <span class="text-[10px] font-bold uppercase text-slate-400 mt-1">Ready for Allocation</span>
                                 </div>
-                                <div class="h-4"></div>
+                                <div class="h-3"></div>
                             </div>`;
                     }
                 }
@@ -5434,6 +5459,63 @@ Report Generated Automatically by Developer Crash Reporter.
             startTVAutoScroll();
         }
 
+        function getWorkshopBayCount() {
+            const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
+            if (!isNaN(stored) && stored >= 4 && stored <= 10) {
+                return stored;
+            }
+            return 4; // Default 4 service bays
+        }
+        window.getWorkshopBayCount = getWorkshopBayCount;
+
+        function handleWorkshopBayCountChange(newCount) {
+            const num = Math.min(10, Math.max(4, parseInt(newCount, 10) || 4));
+            localStorage.setItem('hontech_workshop_bay_count', num.toString());
+            
+            const badge = document.getElementById('settings-bay-count-badge');
+            if (badge) badge.innerText = `${num} Bays Active`;
+            
+            renderStaffTables();
+            renderTV();
+            if (typeof renderReports === 'function') renderReports();
+            showSystemToast(`Workshop capacity configured to ${num} service bays.`, 'success', 'Bays Configured');
+        }
+        window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
+
+        function initWorkshopBaySettings() {
+            const bayCount = getWorkshopBayCount();
+            const select = document.getElementById('settings-workshop-bays');
+            if (select) select.value = bayCount.toString();
+            const badge = document.getElementById('settings-bay-count-badge');
+            if (badge) badge.innerText = `${bayCount} Bays Active`;
+        }
+        window.initWorkshopBaySettings = initWorkshopBaySettings;
+
+        function saveSystemSettings() {
+            const sidebarSelect = document.getElementById('settings-sidebar-style');
+            if (sidebarSelect) {
+                localStorage.setItem('hontech-sidebar-style', sidebarSelect.value);
+                const sidebar = document.getElementById('app-sidebar');
+                if (sidebar) {
+                    if (sidebarSelect.value === 'icons') sidebar.classList.add('sidebar-collapsed');
+                    else sidebar.classList.remove('sidebar-collapsed');
+                }
+            }
+
+            const timeSelect = document.getElementById('settings-time-format');
+            if (timeSelect) {
+                localStorage.setItem('timeFormat24h', timeSelect.value === '24h' ? 'true' : 'false');
+                updateClock();
+            }
+
+            const idleSelect = document.getElementById('settings-idle-timeout');
+            if (idleSelect) {
+                localStorage.setItem('hontech-idle-timeout', idleSelect.value);
+                resetIdleTimer();
+            }
+        }
+        window.saveSystemSettings = saveSystemSettings;
+
         function initTimeFormatSetting() {
             const saved = localStorage.getItem('timeFormat24h');
             if (saved === null) {
@@ -5443,6 +5525,7 @@ Report Generated Automatically by Developer Crash Reporter.
             if (settingsSelect) {
                 settingsSelect.value = localStorage.getItem('timeFormat24h') === 'true' ? '24h' : '12h';
             }
+            initWorkshopBaySettings();
         }
 
         function updateClock() {

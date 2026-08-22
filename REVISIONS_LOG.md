@@ -13,6 +13,7 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **Automated LAN Launcher**: Created `start_lan_server.bat` in the project root to automatically detect the host's active LAN IPv4 address and launch the server with one click.
 * **Online Booking Lane Types**: Updated Assistant Online Booking form and pending bookings table with all 4 lane selections: **Express Lane**, **Flexible Lane**, **Special Lane**, and **Priority Lane**, including dynamic Chart.js lane share visualization updates.
 * **Online Booking Module Visibility**: Extended the Online Booking Module (Pending Online Inquiries table) so it is seamlessly accessible to both **Assistant** and **Service Advisor (SA)** roles (as well as Owner and Admin).
+* **Workshop Bay Capacity Configuration (4–10 Bays)**: Empowered Administrators and Owners to configure the active workshop bay capacity dynamically (4 to 10 bays) via Account Settings, automatically scaling Service Advisor bay allocation dropdowns, occupancy validations, and the real-time TV Bay Monitor layout (with adaptive 2-to-5 column grid responsiveness).
 * **Intranet Architecture Documentation**: Documented local-only `.local` mDNS resolution (`hontech-marikina.local`), zero-cost on-premises resilience, and client presentation guides in `Hontech Documentation/Technical/LOCAL_INTRANET_DEPLOYMENT_GUIDE.md`.
 
 ---
