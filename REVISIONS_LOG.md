@@ -4,6 +4,19 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 August 22, 2026 (Local Intranet Deployment & Multi-Device Testing)
+
+### 🌐 Local Network Hosting & Multi-Device Synchronization
+* **All-Interfaces Server Binding**: Configured PHP 8.0 server to bind to `0.0.0.0:8000`, enabling cross-device communication across the shop's local Wi-Fi / mobile hotspot.
+* **1-Click Direct Role Logins**: Integrated instant role authentication triggers (`👑 Owner`, `👔 Admin`, `🛠️ SA`, `🔧 Tech`) on the login screen to streamline live multi-role testing without manual password typing.
+* **Mobile QR Code Pairing**: Added `openMobileConnectModal()` with on-screen dynamic QR code generation, allowing technicians and advisors to scan and open the system on smartphones in seconds.
+* **Automated LAN Launcher**: Created `start_lan_server.bat` in the project root to automatically detect the host's active LAN IPv4 address and launch the server with one click.
+* **Online Booking Lane Types**: Updated Assistant Online Booking form and pending bookings table with all 4 lane selections: **Express Lane**, **Flexible Lane**, **Special Lane**, and **Priority Lane**, including dynamic Chart.js lane share visualization updates.
+* **Online Booking Module Visibility**: Extended the Online Booking Module (Pending Online Inquiries table) so it is seamlessly accessible to both **Assistant** and **Service Advisor (SA)** roles (as well as Owner and Admin).
+* **Intranet Architecture Documentation**: Documented local-only `.local` mDNS resolution (`hontech-marikina.local`), zero-cost on-premises resilience, and client presentation guides in `Hontech Documentation/Technical/LOCAL_INTRANET_DEPLOYMENT_GUIDE.md`.
+
+---
+
 ## 📅 August 12, 2026 (Security & Account Recovery Branch Updates)
 
 ### 🛡️ Security, Exception Diagnostics & System Stability

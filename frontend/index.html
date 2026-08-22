@@ -355,6 +355,11 @@
             <div class="z-10 text-xs text-gray-500 font-semibold space-y-1">
                 <p>© 2026 HonTech AutoCenter Inc. All rights reserved.</p>
                 <p>STI College Marikina | Developed by BSIT Students.</p>
+                <div class="pt-2 flex items-center gap-3 text-[11px]">
+                    <button onclick="openTermsModal()" class="text-red-400 hover:text-red-300 underline underline-offset-2 transition cursor-pointer">Terms & Conditions</button>
+                    <span class="text-gray-600">•</span>
+                    <span class="text-gray-400">RA 10173 Compliant</span>
+                </div>
             </div>
 
         </div>
@@ -414,66 +419,103 @@
                             </div>
                         </div>
 
-                        <!-- System Credentials styled beautifully like Dev Test links -->
+                        <!-- System Credentials & Developer Tools (Collapsible / Hidden on load) -->
                         <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner">
                             <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none">
                                 <div class="flex items-center gap-2">
                                     <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
-                                    <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy Dev Credentials</span>
+                                    <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy Dev Credentials & Testing Tools</span>
                                 </div>
                                 <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-500 w-4.5 h-4.5 transition-transform duration-200"></i>
                             </div>
-                            <div id="dev-credentials-grid" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] font-bold text-gray-600 leading-normal mt-3">
-                                 <!-- Global Accounts -->
-                                 <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Owner (Global)</span>
-                                     <span class="text-gray-900">owner@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: owner123</span>
-                                 </div>
-                                 <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch A)</span>
-                                     <span class="text-gray-900">admin@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
-                                 </div>
+                            <div id="dev-credentials-grid" class="hidden space-y-3 mt-3">
+                                <!-- 1-Click Instant Access Card with Connect Phone (QR) -->
+                                <div class="bg-gradient-to-r from-red-950 via-slate-900 to-gray-900 border border-red-500/30 rounded-2xl p-3.5 shadow-md text-white">
+                                    <div class="flex items-center justify-between mb-2.5">
+                                        <div class="flex items-center gap-2">
+                                            <span class="flex h-2 w-2 relative">
+                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                            </span>
+                                            <span class="text-[10px] font-black uppercase tracking-wider text-red-400">⚡ 1-Click Instant Role Access</span>
+                                        </div>
+                                        <button onclick="openMobileConnectModal()" class="text-[9px] font-black uppercase bg-red-600/40 hover:bg-red-600/70 text-red-200 border border-red-500/40 px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="qr-code" class="w-3 h-3"></i> Connect Phone
+                                        </button>
+                                    </div>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                        <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
+                                            <span class="text-[8px] font-extrabold uppercase text-purple-400 block">👑 Owner</span>
+                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Global Admin</span>
+                                        </button>
+                                        <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
+                                            <span class="text-[8px] font-extrabold uppercase text-blue-400 block">👔 Admin</span>
+                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Branch Mgr</span>
+                                        </button>
+                                        <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
+                                            <span class="text-[8px] font-extrabold uppercase text-emerald-400 block">🛠️ SA</span>
+                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Intake & Lifts</span>
+                                        </button>
+                                        <button onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
+                                            <span class="text-[8px] font-extrabold uppercase text-amber-400 block">🔧 Technician</span>
+                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Bay Tasks</span>
+                                        </button>
+                                    </div>
+                                </div>
 
-                                 <!-- Branch A Accounts -->
-                                 <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch A)</span>
-                                     <span class="text-gray-900">staff@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
-                                 </div>
-                                 <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch A)</span>
-                                     <span class="text-gray-900">sa@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
-                                 </div>
+                                <!-- Dev Credential Quick Fill Cards -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-[10px] font-bold text-gray-600 leading-normal">
+                                     <!-- Global Accounts -->
+                                     <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Owner (Global)</span>
+                                         <span class="text-gray-900">owner@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: owner123</span>
+                                     </div>
+                                     <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch A)</span>
+                                         <span class="text-gray-900">admin@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                     </div>
 
-                                 <!-- Branch B Accounts -->
-                                 <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch B)</span>
-                                     <span class="text-gray-900">admin.east@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
-                                 </div>
-                                 <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                     <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch B)</span>
-                                     <span class="text-gray-900">staff.east@hontech.com</span>
-                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
-                                 </div>
-                                 <div onclick="document.getElementById('login-email').value='sa.east@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                      <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch B)</span>
-                                      <span class="text-gray-900">sa.east@hontech.com</span>
-                                      <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
-                                  </div>
+                                     <!-- Branch A Accounts -->
+                                     <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch A)</span>
+                                         <span class="text-gray-900">staff@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                     </div>
+                                     <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch A)</span>
+                                         <span class="text-gray-900">sa@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
+                                     </div>
 
-                                  <!-- Developer Test Trigger -->
-                                  <div onclick="window.triggerTestCrash()" class="col-span-1 md:col-span-2 bg-red-50 hover:bg-red-100 border border-red-200 p-3 rounded-xl shadow-xs cursor-pointer transition flex items-center justify-between mt-1">
-                                      <div class="flex items-center gap-2 text-red-700">
-                                          <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
-                                          <span class="text-[10px] font-black uppercase tracking-wider">Test Developer Crash Reporter UI</span>
+                                     <!-- Branch B Accounts -->
+                                     <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch B)</span>
+                                         <span class="text-gray-900">admin.east@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                     </div>
+                                     <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                         <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch B)</span>
+                                         <span class="text-gray-900">staff.east@hontech.com</span>
+                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                     </div>
+                                     <div onclick="document.getElementById('login-email').value='sa.east@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
+                                          <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch B)</span>
+                                          <span class="text-gray-900">sa.east@hontech.com</span>
+                                          <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
                                       </div>
-                                      <span class="text-[9px] font-extrabold uppercase bg-red-600 text-white px-2.5 py-1 rounded-lg shadow-2xs">Trigger Test UI</span>
-                                  </div>
-                             </div>
+
+                                      <!-- Developer Test Trigger -->
+                                      <div onclick="window.triggerTestCrash()" class="bg-red-50 hover:bg-red-100 border border-red-200 p-2.5 rounded-xl shadow-xs cursor-pointer transition flex items-center justify-between">
+                                          <div class="flex items-center gap-2 text-red-700">
+                                              <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
+                                              <span class="text-[9px] font-black uppercase tracking-wider">Test Crash UI</span>
+                                          </div>
+                                          <span class="text-[8px] font-extrabold uppercase bg-red-600 text-white px-2 py-0.5 rounded shadow-2xs">Trigger</span>
+                                      </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Access Portal Action Button -->
@@ -511,6 +553,16 @@
                             </svg>
                             Continue with Google
                         </button>
+
+                        <!-- Terms of Service & Privacy Notice on Login Form -->
+                        <div class="pt-3 text-center border-t border-gray-100">
+                            <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
+                                By signing in, you agree to HonTech's 
+                                <button onclick="openTermsModal()" class="font-bold text-red-600 hover:text-red-700 underline decoration-red-300 underline-offset-2 transition cursor-pointer">Terms & Conditions</button> 
+                                and <span class="font-bold text-gray-700">Data Privacy Standards (RA 10173)</span>.
+                            </p>
+                        </div>
+                    </div>
                     </div>
 
                     <!-- Two-Factor Authentication Verification View -->
@@ -1588,9 +1640,10 @@
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Type of Lane &nbsp;<span class="text-red-500">*</span></label>
                                 <div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-walkin-lane-type" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer pr-6 appearance-none">
-                                        <option value="Flexible" selected>Flexible</option>
-                                        <option value="Express">Express</option>
-                                        <option value="Special">Special</option>
+                                        <option value="Express Lane">Express Lane</option>
+                                        <option value="Flexible Lane" selected>Flexible Lane</option>
+                                        <option value="Special Lane">Special Lane</option>
+                                        <option value="Priority Lane">Priority Lane</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
@@ -1622,9 +1675,10 @@
                                     class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 flex items-center h-4 whitespace-nowrap">Type of Lane &nbsp;<span class="text-red-500">*</span></label>
                                 <div class="relative flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus-within:border-red-600 focus-within:bg-white transition h-[38px]">
                                     <select id="intake-lane-type" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer pr-6 appearance-none">
-                                        <option value="Flexible" selected>Flexible</option>
-                                        <option value="Express">Express</option>
-                                        <option value="Special">Special</option>
+                                        <option value="Express Lane">Express Lane</option>
+                                        <option value="Flexible Lane" selected>Flexible Lane</option>
+                                        <option value="Special Lane">Special Lane</option>
+                                        <option value="Priority Lane">Priority Lane</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
@@ -3170,8 +3224,144 @@
         </div>
     </div>
 
+    <!-- Mobile Connect QR Code Modal -->
+    <div id="mobile-connect-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[9999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border border-gray-100 overflow-hidden transform transition-all text-center">
+            <div class="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white text-center relative">
+                <button onclick="closeMobileConnectModal()" class="absolute right-4 top-4 text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                    <i data-lucide="smartphone" class="w-6 h-6 text-white"></i>
+                </div>
+                <h3 class="text-lg font-black uppercase tracking-wider text-white">Connect Mobile Device</h3>
+                <p class="text-xs text-red-100 mt-1 font-medium">Scan to open HonTech on your phone</p>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 inline-block shadow-inner">
+                    <img id="mobile-connect-qr" src="" alt="Mobile QR Code" class="w-48 h-48 mx-auto rounded-xl shadow-xs">
+                </div>
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-1">Direct LAN Address</span>
+                    <a id="mobile-connect-url" href="#" target="_blank" class="text-xs font-mono font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 break-all inline-block hover:underline">...</a>
+                </div>
+                <p class="text-[11px] text-gray-500 font-medium">
+                    Ensure your phone is connected to the same Wi-Fi network or Mobile Hotspot as this computer.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-center">
+                <button onclick="closeMobileConnectModal()" class="w-full py-2.5 bg-gray-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider rounded-xl transition">
+                    Done / Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Terms and Conditions Modal -->
+    <div id="terms-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-5 text-white flex items-center justify-between border-b border-gray-800 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-500">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-wider text-white">HonTech Terms & Conditions</h3>
+                        <p class="text-[11px] text-gray-400 font-medium">User Agreement & Operational Directives</p>
+                    </div>
+                </div>
+                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-xs text-gray-700 leading-relaxed custom-scroll">
+                
+                <!-- Notice Banner -->
+                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-xl">
+                    <h4 class="font-black text-red-900 uppercase text-[11px] tracking-wider mb-1 flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i> Authorized Use & Philippine Law Compliance
+                    </h4>
+                    <p class="text-[11px] text-red-800 font-medium leading-normal">
+                        This digital system is deployed solely for HonTech AutoCenter workshop management and vehicle queue monitoring. By logging in, all users agree to the terms outlined below in accordance with Republic Act No. 10173 (Data Privacy Act of 2012).
+                    </p>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">1</span>
+                        Role-Based Access Control (RBAC) & Credential Confidentiality
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Staff accounts are strictly personal and non-transferable. Sharing credentials or using another employee's session is grounds for administrative sanction. Sessions will automatically expire after 30 minutes of inactivity.
+                    </p>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">2</span>
+                        Customer Data Privacy & Record Integrity
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Customer contact numbers, vehicle plates, claim stubs, and PMS logs must not be disclosed or exported to unauthorized third parties. All recorded data is securely stored on local workshop infrastructure.
+                    </p>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">3</span>
+                        Queue Scheduling & Workshop Operations
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Service Advisors (SA) and Technicians are responsible for maintaining real-time accuracy of vehicle bay locations, status changes (Waiting, Inspection, In Bay, QC, Ready), and PMS 2-Hour Goal targets.
+                    </p>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">4</span>
+                        Billing & Payment Boundaries
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        This software operates as an operational intake, queue monitoring, and analytics tracker. Official billing, payment receipts, and cash transactions must be processed via HonTech's over-the-counter accounting registry.
+                    </p>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">5</span>
+                        Academic & Development Disclosure
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Developed in partnership with STI College Marikina BSIT Capstone Program. System logs and performance metrics may be audited for academic evaluation and maintenance purposes.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Footer Action -->
+            <div class="bg-gray-50 px-6 py-3.5 border-t border-gray-200 flex items-center justify-between shrink-0">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">HonTech • STI College Marikina</span>
+                <button onclick="closeTermsModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
+                    I Understand & Agree
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.07"></script>
+    <script src="js/app.js?v=3.12"></script>
 </body>
 
 </html>

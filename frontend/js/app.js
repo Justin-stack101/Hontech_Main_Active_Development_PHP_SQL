@@ -670,6 +670,49 @@ Report Generated Automatically by Developer Crash Reporter.
             lucide.createIcons();
         }
 
+        // Direct 1-Click Login Helper for quick role testing
+        window.quickDirectLogin = async function(email, password) {
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-pass');
+            if (emailInput) emailInput.value = email;
+            if (passInput) passInput.value = password;
+            await processLogin();
+        };
+
+        // Mobile Connection Modal Helpers
+        window.openMobileConnectModal = function() {
+            const modal = document.getElementById('mobile-connect-modal');
+            const currentUrl = window.location.href.split('#')[0];
+            const qrImg = document.getElementById('mobile-qr-img');
+            const urlText = document.getElementById('mobile-connect-url-text');
+            
+            if (urlText) urlText.innerText = currentUrl;
+            if (qrImg) {
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(currentUrl)}`;
+            }
+            if (modal) modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        window.closeMobileConnectModal = function() {
+            const modal = document.getElementById('mobile-connect-modal');
+            if (modal) modal.classList.add('hidden');
+        };
+
+        // Terms and Conditions Modal Helpers
+        window.openTermsModal = function() {
+            const modal = document.getElementById('terms-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        };
+
+        window.closeTermsModal = function() {
+            const modal = document.getElementById('terms-modal');
+            if (modal) modal.classList.add('hidden');
+        };
+
         // --- AUTH & ROLE LOGIC ---
         async function processLogin() {
             const email = document.getElementById('login-email').value;
@@ -1667,26 +1710,12 @@ Report Generated Automatically by Developer Crash Reporter.
         }
 
         function getAvailableLanesForJob(category) {
-            const catUpper = (category || '').trim().toUpperCase();
-            if (catUpper === 'PMS') {
-                // PMS > Express or Flexible (2 options, NO Special)
-                return [
-                    { value: 'Flexible', label: 'FLEXIBLE' },
-                    { value: 'Express', label: 'EXPRESS' }
-                ];
-            } else if (catUpper === 'GRS') {
-                // GRS > Flexible lane only (1 option, NO Express, NO Special)
-                return [
-                    { value: 'Flexible', label: 'FLEXIBLE' }
-                ];
-            } else {
-                // PMS & GRS and Others / Custom services > All 3 lanes (Flexible, Express, Special)
-                return [
-                    { value: 'Flexible', label: 'FLEXIBLE' },
-                    { value: 'Express', label: 'EXPRESS' },
-                    { value: 'Special', label: 'SPECIAL' }
-                ];
-            }
+            return [
+                { value: 'Express Lane', label: 'Express Lane' },
+                { value: 'Flexible Lane', label: 'Flexible Lane' },
+                { value: 'Special Lane', label: 'Special Lane' },
+                { value: 'Priority Lane', label: 'Priority Lane' }
+            ];
         }
         window.getAvailableLanesForJob = getAvailableLanesForJob;
 
@@ -1819,14 +1848,14 @@ Report Generated Automatically by Developer Crash Reporter.
                 const hour = document.getElementById('intake-arrival-hour').value;
                 const min = document.getElementById('intake-arrival-minute').value;
                 arrival = `${hour}:${min}`;
-                laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible';
+                laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible Lane';
             } else {
                 apptDate = date;
                 const hour = document.getElementById('intake-appt-hour').value;
                 const min = document.getElementById('intake-appt-minute').value;
                 apptTime = `${hour}:${min}`;
                 confirmed = document.getElementById('intake-confirmed').checked;
-                laneType = document.getElementById('intake-lane-type')?.value || 'Flexible';
+                laneType = document.getElementById('intake-lane-type')?.value || 'Flexible Lane';
             }
 
             try {
@@ -2335,13 +2364,13 @@ Report Generated Automatically by Developer Crash Reporter.
             const techBoardEl = document.getElementById('container-tech-board');
             const periodicRecordsEl = document.getElementById('container-periodic-records');
 
-            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isOwner || isAdmin));
+            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isSA || isOwner || isAdmin));
             if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 
             // BOOKING MODULE
-            if ((isAsst || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
+            if ((isAsst || isSA || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
                     return `
@@ -2358,9 +2387,10 @@ Report Generated Automatically by Developer Crash Reporter.
                             ` : `
                                 <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 hover:border-red-600 rounded-xl px-3 py-1.5 shadow-2xs transition">
                                     <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none text-gray-900">
-                                        <option value="Flexible" ${job.laneType === 'Flexible' || job.laneType === 'Flexible Lane' ? 'selected' : ''}>Flexible</option>
-                                        <option value="Express" ${job.laneType === 'Express' || job.laneType === 'Express Lane' ? 'selected' : ''}>Express</option>
-                                        <option value="Special" ${job.laneType === 'Special' || job.laneType === 'Special Lane' ? 'selected' : ''}>Special</option>
+                                        <option value="Express Lane" ${job.laneType === 'Express Lane' || job.laneType === 'Express' ? 'selected' : ''}>Express Lane</option>
+                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>Flexible Lane</option>
+                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>Special Lane</option>
+                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>Priority Lane</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-800 pointer-events-none absolute right-1.5"></i>
                                 </div>
@@ -3910,21 +3940,23 @@ Report Generated Automatically by Developer Crash Reporter.
             });
 
             // --- 5. LANE SHARE ---
-            const flexLane = jobs.filter(j => j.laneType === 'Flexible').length;
-            const expressLane = jobs.filter(j => j.laneType === 'Express Lane').length;
-            const specialLane = jobs.filter(j => j.laneType === 'Special Lane').length;
+            const flexLane = jobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType).length;
+            const expressLane = jobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').length;
+            const specialLane = jobs.filter(j => j.laneType === 'Special' || j.laneType === 'Special Lane').length;
+            const priorityLane = jobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane').length;
 
             const ctxLane = document.getElementById('chart-lane-share').getContext('2d');
             chartInstances.laneShare = new Chart(ctxLane, {
                 type: 'pie',
                 data: {
-                    labels: ['Flexible', 'Express Lane', 'Special Lane'],
+                    labels: ['Flexible Lane', 'Express Lane', 'Special Lane', 'Priority Lane'],
                     datasets: [{
-                        data: [flexLane, expressLane, specialLane],
+                        data: [flexLane, expressLane, specialLane, priorityLane],
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.85)',
                             'rgba(16, 185, 129, 0.85)',
-                            'rgba(249, 115, 22, 0.85)'
+                            'rgba(249, 115, 22, 0.85)',
+                            'rgba(168, 85, 247, 0.85)'
                         ],
                         borderColor: '#ffffff',
                         borderWidth: 2
