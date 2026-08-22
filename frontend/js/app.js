@@ -2392,13 +2392,13 @@ Report Generated Automatically by Developer Crash Reporter.
             const techBoardEl = document.getElementById('container-tech-board');
             const periodicRecordsEl = document.getElementById('container-periodic-records');
 
-            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isSA || isOwner || isAdmin));
+            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !(isAsst || isOwner || isAdmin));
             if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 
-            // BOOKING MODULE
-            if ((isAsst || isSA || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
+            // BOOKING MODULE (Assistant Staff Only Controls; Owner/Admin View-Only)
+            if ((isAsst || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
                     return `
