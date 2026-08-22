@@ -3317,54 +3317,56 @@ Report Generated Automatically by Developer Crash Reporter.
             currentDashboardTab = tab;
             const btnMonitor = document.getElementById('btn-db-tab-monitor');
             const btnAnalytics = document.getElementById('btn-db-tab-analytics');
+            const btnReports = document.getElementById('btn-db-tab-reports');
             const btnPeriodic = document.getElementById('btn-db-tab-periodic');
             const secMonitor = document.getElementById('db-tab-monitor');
             const secAnalytics = document.getElementById('db-tab-analytics');
+            const secReports = document.getElementById('db-tab-reports');
             const secPeriodic = document.getElementById('db-tab-periodic');
             const secSelectors = document.getElementById('db-analytics-selectors');
 
-            const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-650 text-red-650 transition flex items-center gap-1.5";
+            const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5";
             const inactiveClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5";
 
             // Hide all tabs
-            secMonitor.classList.add('hidden');
-            secAnalytics.classList.add('hidden');
+            if (secMonitor) secMonitor.classList.add('hidden');
+            if (secAnalytics) secAnalytics.classList.add('hidden');
+            if (secReports) secReports.classList.add('hidden');
             if (secPeriodic) secPeriodic.classList.add('hidden');
             
-            // Show/Hide selectors container
+            // Show/Hide selectors container (only for analytics tab)
             if (secSelectors) {
-                secSelectors.classList.remove('hidden');
-                const wrapScope = document.getElementById('wrapper-analytics-scope');
-                const wrapPeriod = document.getElementById('wrapper-analytics-period');
-                const pickerDaily = document.getElementById('picker-daily');
-                const pickerWeekly = document.getElementById('picker-weekly');
-                const pickerMonthly = document.getElementById('picker-monthly');
-
-                if (tab === 'monitor') {
-                    if (wrapScope) wrapScope.classList.add('hidden');
-                    if (wrapPeriod) wrapPeriod.classList.add('hidden');
-                    if (pickerDaily) pickerDaily.classList.add('hidden');
-                    if (pickerWeekly) pickerWeekly.classList.add('hidden');
-                    if (pickerMonthly) pickerMonthly.classList.add('hidden');
-                } else {
+                if (tab === 'analytics') {
+                    secSelectors.classList.remove('hidden');
+                    const wrapScope = document.getElementById('wrapper-analytics-scope');
+                    const wrapPeriod = document.getElementById('wrapper-analytics-period');
                     if (wrapScope) wrapScope.classList.remove('hidden');
                     if (wrapPeriod) wrapPeriod.classList.remove('hidden');
                     handleScopeChange();
+                } else {
+                    secSelectors.classList.add('hidden');
                 }
             }
 
-            btnMonitor.className = inactiveClass;
-            btnAnalytics.className = inactiveClass;
+            if (btnMonitor) btnMonitor.className = inactiveClass;
+            if (btnAnalytics) btnAnalytics.className = inactiveClass;
+            if (btnReports) btnReports.className = inactiveClass;
             if (btnPeriodic) btnPeriodic.className = inactiveClass;
 
             if (tab === 'monitor') {
-                secMonitor.classList.remove('hidden');
-                btnMonitor.className = activeClass;
+                if (secMonitor) secMonitor.classList.remove('hidden');
+                if (btnMonitor) btnMonitor.className = activeClass;
+                renderReports();
             } else if (tab === 'analytics') {
-                secAnalytics.classList.remove('hidden');
-                btnAnalytics.className = activeClass;
+                if (secAnalytics) secAnalytics.classList.remove('hidden');
+                if (btnAnalytics) btnAnalytics.className = activeClass;
                 initAnalyticsPickers();
                 loadAnalyticsData();
+            } else if (tab === 'reports') {
+                if (secReports) secReports.classList.remove('hidden');
+                if (btnReports) btnReports.className = activeClass;
+                initReportDatePickers();
+                renderReportDataModule();
             } else if (tab === 'periodic') {
                 if (secPeriodic) secPeriodic.classList.remove('hidden');
                 if (btnPeriodic) btnPeriodic.className = activeClass;
@@ -3377,6 +3379,378 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
             }
         }
+
+        function initReportDatePickers() {
+            const today = new Date().toISOString().split('T')[0];
+            const startInput = document.getElementById('report-filter-start-date');
+            const endInput = document.getElementById('report-filter-end-date');
+            
+            if (startInput && !startInput.value) {
+                const past7 = new Date();
+                past7.setDate(past7.getDate() - 6);
+                startInput.value = past7.toISOString().split('T')[0];
+            }
+            if (endInput && !endInput.value) {
+                endInput.value = today;
+            }
+        }
+        window.initReportDatePickers = initReportDatePickers;
+
+        function handleReportPresetChange(preset) {
+            const today = new Date().toISOString().split('T')[0];
+            const startInput = document.getElementById('report-filter-start-date');
+            const endInput = document.getElementById('report-filter-end-date');
+            if (!startInput || !endInput) return;
+
+            if (preset === 'today') {
+                startInput.value = today;
+                endInput.value = today;
+            } else if (preset === 'yesterday') {
+                const yest = new Date();
+                yest.setDate(yest.getDate() - 1);
+                const yestStr = yest.toISOString().split('T')[0];
+                startInput.value = yestStr;
+                endInput.value = yestStr;
+            } else if (preset === 'week') {
+                const past7 = new Date();
+                past7.setDate(past7.getDate() - 6);
+                startInput.value = past7.toISOString().split('T')[0];
+                endInput.value = today;
+            } else if (preset === 'month') {
+                const firstDay = new Date();
+                firstDay.setDate(1);
+                startInput.value = firstDay.toISOString().split('T')[0];
+                endInput.value = today;
+            } else if (preset === 'all') {
+                startInput.value = '';
+                endInput.value = '';
+            }
+            renderReportDataModule();
+        }
+        window.handleReportPresetChange = handleReportPresetChange;
+
+        function renderReportDataModule() {
+            if (currentUserRole !== 'owner' && currentUserRole !== 'admin') return;
+            const reportContainer = document.getElementById('db-tab-reports');
+            if (!reportContainer || reportContainer.classList.contains('hidden')) return;
+
+            const branchVal = document.getElementById('report-filter-branch') ? document.getElementById('report-filter-branch').value : 'all';
+            const startDateVal = document.getElementById('report-filter-start-date') ? document.getElementById('report-filter-start-date').value : '';
+            const endDateVal = document.getElementById('report-filter-end-date') ? document.getElementById('report-filter-end-date').value : '';
+            const searchVal = document.getElementById('report-filter-search') ? document.getElementById('report-filter-search').value.toLowerCase().trim() : '';
+
+            let filtered = [...(allJobs || [])];
+
+            if (branchVal !== 'all') {
+                filtered = filtered.filter(j => j.branch === branchVal);
+            }
+            if (startDateVal) {
+                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || '') >= startDateVal);
+            }
+            if (endDateVal) {
+                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || '') <= endDateVal);
+            }
+            if (searchVal) {
+                filtered = filtered.filter(j => 
+                    (j.plate && j.plate.toLowerCase().includes(searchVal)) ||
+                    (j.name && j.name.toLowerCase().includes(searchVal)) ||
+                    (j.vehicle && j.vehicle.toLowerCase().includes(searchVal)) ||
+                    (j.category && j.category.toLowerCase().includes(searchVal)) ||
+                    (j.saName && j.saName.toLowerCase().includes(searchVal))
+                );
+            }
+
+            // 1. INFLOW BREAKDOWN CALCULATIONS (Carry-Over, GRS, PMS, Express, Checkups)
+            const carryJobs = filtered.filter(j => j.status === 'Carry Over' || j.carryOverStatus);
+            const plannedCarry = Math.max(carryJobs.length, 4);
+            const pumasokCarry = carryJobs.length;
+            const inbayCarry = carryJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedCarry = carryJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const carryFulfillment = plannedCarry > 0 ? Math.round((pumasokCarry / plannedCarry) * 100) : 100;
+
+            const grsJobs = filtered.filter(j => j.category && j.category.toUpperCase().includes('GR'));
+            const plannedGRS = Math.max(grsJobs.length, 10);
+            const pumasokGRS = grsJobs.length;
+            const inbayGRS = grsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedGRS = grsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const grsFulfillment = plannedGRS > 0 ? Math.round((pumasokGRS / plannedGRS) * 100) : 0;
+
+            const pmsJobs = filtered.filter(j => j.category && j.category.toUpperCase().includes('PMS'));
+            const plannedPMS = Math.max(pmsJobs.length, 12);
+            const pumasokPMS = pmsJobs.length;
+            const inbayPMS = pmsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedPMS = pmsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const osPMS = pmsJobs.filter(j => (j.status === 'Completed' || j.status === 'Released') && calculateGoalStatusForJob(j) === 'Successful').length;
+            const ofPMS = pmsJobs.filter(j => (j.status === 'Completed' || j.status === 'Released') && calculateGoalStatusForJob(j) === 'Failed').length;
+            const pmsFulfillment = plannedPMS > 0 ? Math.round((pumasokPMS / plannedPMS) * 100) : 0;
+
+            const expressJobs = filtered.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
+            const plannedExpress = Math.max(expressJobs.length, 6);
+            const pumasokExpress = expressJobs.length;
+            const inbayExpress = expressJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedExpress = expressJobs.filter(j => (j.laneType === 'Express' || j.laneType === 'Express Lane') && (j.status === 'Completed' || j.status === 'Released')).length;
+            const expressFulfillment = plannedExpress > 0 ? Math.round((pumasokExpress / plannedExpress) * 100) : 0;
+
+            const checkupJobs = filtered.filter(j => j.category && (j.category.toLowerCase().includes('check') || j.category.toLowerCase().includes('complimentary') || j.category.toLowerCase().includes('diag')));
+            const plannedCheckup = Math.max(checkupJobs.length, 5);
+            const pumasokCheckup = checkupJobs.length;
+            const inbayCheckup = checkupJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedCheckup = checkupJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const checkupFulfillment = plannedCheckup > 0 ? Math.round((pumasokCheckup / plannedCheckup) * 100) : 0;
+
+            const totalPlanned = plannedCarry + plannedGRS + plannedPMS + plannedExpress + plannedCheckup;
+            const totalPumasok = filtered.length;
+            const totalInBay = filtered.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const totalReleased = filtered.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const totalWalkin = filtered.filter(j => j.source === 'Walk-in').length;
+            const totalOnline = filtered.filter(j => j.source === 'Online').length;
+            const totalFulfillment = totalPlanned > 0 ? Math.round((totalPumasok / totalPlanned) * 100) : 100;
+
+            // Update KPI Cards
+            if (document.getElementById('report-carry-pumasok')) document.getElementById('report-carry-pumasok').innerText = pumasokCarry;
+            if (document.getElementById('report-carry-inbay')) document.getElementById('report-carry-inbay').innerText = inbayCarry;
+            if (document.getElementById('report-carry-released')) document.getElementById('report-carry-released').innerText = releasedCarry;
+            if (document.getElementById('report-carry-fulfillment-badge')) document.getElementById('report-carry-fulfillment-badge').innerText = `${carryFulfillment}% Flow`;
+
+            if (document.getElementById('report-grs-pumasok')) document.getElementById('report-grs-pumasok').innerText = pumasokGRS;
+            if (document.getElementById('report-grs-inbay')) document.getElementById('report-grs-inbay').innerText = inbayGRS;
+            if (document.getElementById('report-grs-released')) document.getElementById('report-grs-released').innerText = releasedGRS;
+            if (document.getElementById('report-grs-bar')) document.getElementById('report-grs-bar').style.width = `${Math.min(100, grsFulfillment)}%`;
+            if (document.getElementById('report-grs-fulfillment-badge')) document.getElementById('report-grs-fulfillment-badge').innerText = `${grsFulfillment}% Target`;
+
+            if (document.getElementById('report-pms-pumasok')) document.getElementById('report-pms-pumasok').innerText = pumasokPMS;
+            if (document.getElementById('report-pms-os')) document.getElementById('report-pms-os').innerText = osPMS;
+            if (document.getElementById('report-pms-of')) document.getElementById('report-pms-of').innerText = ofPMS;
+            if (document.getElementById('report-pms-bar')) document.getElementById('report-pms-bar').style.width = `${Math.min(100, pmsFulfillment)}%`;
+            if (document.getElementById('report-pms-fulfillment-badge')) document.getElementById('report-pms-fulfillment-badge').innerText = `${pmsFulfillment}% Target`;
+
+            if (document.getElementById('report-total-pumasok')) document.getElementById('report-total-pumasok').innerText = totalPumasok;
+            if (document.getElementById('report-total-walkin')) document.getElementById('report-total-walkin').innerText = totalWalkin;
+            if (document.getElementById('report-total-online')) document.getElementById('report-total-online').innerText = totalOnline;
+            if (document.getElementById('report-total-bar')) document.getElementById('report-total-bar').style.width = `${Math.min(100, totalFulfillment)}%`;
+            if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Inflow Target`;
+
+            // 2. POPULATE TABLE 1: Category Inflow Matrix
+            const categoryRows = [
+                {
+                    name: '🔄 Carry-Over (Unfinished from Prev Day)',
+                    plan: plannedCarry,
+                    actual: pumasokCarry,
+                    inbay: inbayCarry,
+                    released: releasedCarry,
+                    variance: pumasokCarry - plannedCarry,
+                    fulfillment: carryFulfillment,
+                    statusBadge: `<span class="bg-orange-50 text-orange-700 border border-orange-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Active Carry-Over</span>`
+                },
+                {
+                    name: '🔧 GRS (General Repair Service)',
+                    plan: plannedGRS,
+                    actual: pumasokGRS,
+                    inbay: inbayGRS,
+                    released: releasedGRS,
+                    variance: pumasokGRS - plannedGRS,
+                    fulfillment: grsFulfillment,
+                    statusBadge: `<span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Heavy Service</span>`
+                },
+                {
+                    name: '🛠️ PMS (Preventive Maintenance Service)',
+                    plan: plannedPMS,
+                    actual: pumasokPMS,
+                    inbay: inbayPMS,
+                    released: releasedPMS,
+                    variance: pumasokPMS - plannedPMS,
+                    fulfillment: pmsFulfillment,
+                    statusBadge: `<span class="bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Standard Intake</span>`
+                },
+                {
+                    name: '⚡ Express Lane (Turnaround ≤ 60m)',
+                    plan: plannedExpress,
+                    actual: pumasokExpress,
+                    inbay: inbayExpress,
+                    released: releasedExpress,
+                    variance: pumasokExpress - plannedExpress,
+                    fulfillment: expressFulfillment,
+                    statusBadge: `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Express SLA</span>`
+                },
+                {
+                    name: '🔍 Complimentary Multi-Point Inspection',
+                    plan: plannedCheckup,
+                    actual: pumasokCheckup,
+                    inbay: inbayCheckup,
+                    released: releasedCheckup,
+                    variance: pumasokCheckup - plannedCheckup,
+                    fulfillment: checkupFulfillment,
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Complimentary</span>`
+                }
+            ];
+
+            const tableCatBody = document.getElementById('table-category-flow-body');
+            if (tableCatBody) {
+                let catHtml = categoryRows.map(row => {
+                    const varColor = row.variance >= 0 ? 'text-emerald-600' : 'text-rose-600';
+                    const varSign = row.variance > 0 ? `+${row.variance}` : `${row.variance}`;
+                    return `
+                        <tr class="hover:bg-gray-50/80 transition border-b border-gray-100">
+                            <td class="px-6 py-4 font-bold text-gray-900">${row.name}</td>
+                            <td class="px-6 py-4 text-center font-bold text-gray-500">${row.plan} cars</td>
+                            <td class="px-6 py-4 text-center font-black text-gray-900">${row.actual} cars</td>
+                            <td class="px-6 py-4 text-center font-bold text-blue-700 bg-blue-50/30">${row.inbay} in bay</td>
+                            <td class="px-6 py-4 text-center font-bold text-emerald-700 bg-emerald-50/30">${row.released} done</td>
+                            <td class="px-6 py-4 text-center font-black ${varColor}">${varSign} cars</td>
+                            <td class="px-6 py-4 text-center font-black text-gray-900">
+                                <div class="inline-flex items-center gap-2">
+                                    <div class="w-16 bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-red-600 h-full rounded-full" style="width: ${Math.min(100, row.fulfillment)}%"></div>
+                                    </div>
+                                    <span>${row.fulfillment}%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-right">${row.statusBadge}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                const totalVariance = totalPumasok - totalPlanned;
+                const totalVarSign = totalVariance > 0 ? `+${totalVariance}` : `${totalVariance}`;
+                const totalVarColor = totalVariance >= 0 ? 'text-emerald-600' : 'text-rose-600';
+
+                catHtml += `
+                    <tr class="bg-gray-900 text-white font-black">
+                        <td class="px-6 py-4 text-white uppercase tracking-wider">TOTAL INFLOW & PERFORMANCE</td>
+                        <td class="px-6 py-4 text-center text-gray-300 font-bold">${totalPlanned} cars</td>
+                        <td class="px-6 py-4 text-center text-white text-sm font-black">${totalPumasok} cars</td>
+                        <td class="px-6 py-4 text-center text-blue-300 font-bold">${totalInBay} in bay</td>
+                        <td class="px-6 py-4 text-center text-emerald-300 font-bold">${totalReleased} done</td>
+                        <td class="px-6 py-4 text-center ${totalVarColor}">${totalVarSign} cars</td>
+                        <td class="px-6 py-4 text-center text-red-400 font-black">${totalFulfillment}% Overall</td>
+                        <td class="px-6 py-4 text-right">
+                            <span class="bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] uppercase font-black tracking-wider">Active Shop</span>
+                        </td>
+                    </tr>
+                `;
+                tableCatBody.innerHTML = catHtml;
+            }
+
+            // 3. POPULATE TABLE 2: Day-by-Day Daily Intake Breakdown ("No. of Intake Per Day")
+            const dateGroups = {};
+            filtered.forEach(j => {
+                const dateKey = j.dateReceived || j.apptDate || 'Unspecified Date';
+                if (!dateGroups[dateKey]) {
+                    dateGroups[dateKey] = [];
+                }
+                dateGroups[dateKey].push(j);
+            });
+
+            const sortedDates = Object.keys(dateGroups).sort((a, b) => b.localeCompare(a));
+            const tableDailyBody = document.getElementById('table-daily-intakes-report-body');
+            const dailyCountLabel = document.getElementById('report-daily-records-count');
+            if (dailyCountLabel) dailyCountLabel.innerText = `${sortedDates.length} Days Logged`;
+
+            if (tableDailyBody) {
+                if (sortedDates.length === 0) {
+                    tableDailyBody.innerHTML = `<tr><td colspan="11" class="text-center py-12 text-gray-400 font-medium">No daily intake records match the selected date range.</td></tr>`;
+                } else {
+                    tableDailyBody.innerHTML = sortedDates.map(dateStr => {
+                        const dayJobs = dateGroups[dateStr];
+                        const dayObj = dateStr !== 'Unspecified Date' ? new Date(dateStr + 'T00:00:00') : null;
+                        const dayOfWeek = dayObj && !isNaN(dayObj) ? dayObj.toLocaleDateString('en-US', { weekday: 'long' }) : '--';
+
+                        const dayWalkin = dayJobs.filter(j => j.source === 'Walk-in').length;
+                        const dayOnline = dayJobs.filter(j => j.source === 'Online').length;
+                        const dayTotal = dayJobs.length;
+
+                        const dayPMS = dayJobs.filter(j => j.category && j.category.toUpperCase().includes('PMS')).length;
+                        const dayGRS = dayJobs.filter(j => j.category && j.category.toUpperCase().includes('GR')).length;
+                        const dayCarry = dayJobs.filter(j => j.status === 'Carry Over' || j.carryOverStatus).length;
+                        const dayExpress = dayJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').length;
+
+                        const bayCap = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+                        const capacityLoad = Math.min(100, Math.round((dayTotal / (bayCap * 3)) * 100));
+
+                        const hourCounts = {};
+                        dayJobs.forEach(j => {
+                            const time = j.arrival || j.apptTime;
+                            if (time && time.includes(':')) {
+                                const hr = parseInt(time.split(':')[0]);
+                                if (!isNaN(hr)) hourCounts[hr] = (hourCounts[hr] || 0) + 1;
+                            }
+                        });
+                        let dayPeakHour = -1;
+                        let maxPeak = 0;
+                        for (const h in hourCounts) {
+                            if (hourCounts[h] > maxPeak) {
+                                maxPeak = hourCounts[h];
+                                dayPeakHour = parseInt(h);
+                            }
+                        }
+                        let peakText = '--';
+                        if (dayPeakHour !== -1) {
+                            const ampm = dayPeakHour >= 12 ? 'PM' : 'AM';
+                            const displayHour = dayPeakHour % 12 === 0 ? 12 : dayPeakHour % 12;
+                            peakText = `${displayHour}:00 ${ampm} (${maxPeak} cars)`;
+                        }
+
+                        return `
+                            <tr class="hover:bg-gray-50 transition border-b border-gray-100">
+                                <td class="px-6 py-3.5 font-bold text-gray-900">${dateStr}</td>
+                                <td class="px-6 py-3.5 text-xs text-gray-500 font-semibold">${dayOfWeek}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-gray-800">${dayWalkin}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-gray-800">${dayOnline}</td>
+                                <td class="px-6 py-3.5 text-center font-black text-gray-900 bg-red-50/20">${dayTotal} cars</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-purple-700">${dayPMS}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-blue-700">${dayGRS}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-orange-700">${dayCarry}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-emerald-700">${dayExpress}</td>
+                                <td class="px-6 py-3.5 text-center">
+                                    <div class="inline-flex items-center gap-2">
+                                        <div class="w-12 bg-gray-200 h-1.5 rounded-full overflow-hidden">
+                                            <div class="bg-gray-900 h-full rounded-full" style="width: ${capacityLoad}%"></div>
+                                        </div>
+                                        <span class="text-xs font-bold text-gray-700">${capacityLoad}%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-3.5 text-right font-mono text-xs font-bold text-gray-700">${peakText}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            lucide.createIcons();
+        }
+        window.renderReportDataModule = renderReportDataModule;
+
+        function exportReportDataCSV() {
+            const table = document.getElementById('table-daily-intakes-report-body');
+            if (!table) return;
+            const rows = Array.from(table.querySelectorAll('tr'));
+            if (rows.length === 0) {
+                showSystemToast('No report records to export.', 'info');
+                return;
+            }
+            let csv = "Date,Day of Week,Walk-In,Online,Total Intakes,PMS,GRS,Carry-Over,Express Lane,Capacity Load,Peak Hour\n";
+            rows.forEach(tr => {
+                const cols = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""').trim()}"`);
+                if (cols.length >= 11) {
+                    csv += cols.join(',') + "\n";
+                }
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `HonTech_Daily_Intake_Report_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showSystemToast('Daily Intake Report CSV downloaded.', 'success', 'Export Complete');
+        }
+        window.exportReportDataCSV = exportReportDataCSV;
+
+        function printReportData() {
+            window.print();
+        }
+        window.printReportData = printReportData;
 
         function handleBranchChange() {
             if (currentDashboardTab === 'monitor') {
