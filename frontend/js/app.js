@@ -2389,6 +2389,7 @@ Report Generated Automatically by Developer Crash Reporter.
             const isAsst = currentUserRole === 'assistant';
             const isSA = currentUserRole === 'sa';
             const isTech = currentUserRole === 'tech';
+            const isOwnerOrAdmin = isOwner || isAdmin;
             const isReadOnlyOnline = isOwner || isAdmin || isSA;
             const canViewOnline = isAsst || isOwner || isAdmin || isSA;
 
