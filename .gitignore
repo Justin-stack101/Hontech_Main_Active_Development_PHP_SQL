@@ -40,3 +40,4 @@ storage/
 
 # PHP cache
 *.cache
+scratch/
