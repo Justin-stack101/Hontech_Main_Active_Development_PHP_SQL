@@ -24,6 +24,8 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
   *Complete deployment and networking manual covering ₱0 local server hosting (`0.0.0.0:8000`), zero-config `.local` mDNS resolution, and nationwide remote tunneling via Cloudflare and Localtunnel.*
 * 📘 [**Comprehensive Handover & Team Revisions Guide**](Technical/SESSION_HANDOVER_AND_TEAM_REVISIONS_GUIDE.md)  
   *All-in-one student, teammate, and defense review guide summarizing all recent features, role testing scripts, Report Data matrix, and automated batch scripts.*
+* 🛡️ [**Project Checkpoints & Disaster Recovery Log**](Technical/PROJECT_CHECKPOINTS_AND_CONVERSATION_HISTORY.md)  
+  *Permanent historical trajectory of all conversation checkpoints, user requirements, commit IDs, and 1-minute emergency disaster recovery instructions.*
 * 🏛️ [**Codebase Architectural Audit & Directives**](Technical/HonTech_Codebase_Architectural_Audit.md)  
   *Engineering standards, SQL PDO property normalization, defensive DOM handling, and cache-busting requirements.*
 
