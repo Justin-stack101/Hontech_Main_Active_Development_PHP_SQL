@@ -18,6 +18,8 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
   *Visual Mermaid DFDs tracking client authentication, daily intake job creation, bay status transitions, and real-time TV telemetry.*
 * 📈 [**Analytics & Operational Calculation Logic**](Technical/Analytics_Calculation_Logic.md)  
   *Formulaic breakdown of turn-around time (TAT), PMS vs. GRS completion rates, service advisor daily performance, and financial revenue aggregations.*
+* 🛠️ [**Workshop Capacity, Bay Management & RBAC Specification**](Technical/WORKSHOP_BAYS_AND_RBAC_SPECIFICATION.md)  
+  *Authoritative specification covering dynamic 4–10 bay floor scaling, the dedicated Workshop Bays module (`#section-bays`), strict Assistant-only online booking authority, 4 lane types, and LAN hosting architecture.*
 * 🏛️ [**Codebase Architectural Audit & Directives**](Technical/HonTech_Codebase_Architectural_Audit.md)  
   *Engineering standards, SQL PDO property normalization, defensive DOM handling, and cache-busting requirements.*
 
