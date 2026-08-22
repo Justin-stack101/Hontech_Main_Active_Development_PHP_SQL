@@ -20,6 +20,10 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
   *Formulaic breakdown of turn-around time (TAT), PMS vs. GRS completion rates, service advisor daily performance, and financial revenue aggregations.*
 * 🛠️ [**Workshop Capacity, Bay Management & RBAC Specification**](Technical/WORKSHOP_BAYS_AND_RBAC_SPECIFICATION.md)  
   *Authoritative specification covering dynamic 4–10 bay floor scaling, the dedicated Workshop Bays module (`#section-bays`), strict Assistant-only online booking authority, 4 lane types, and LAN hosting architecture.*
+* 🌐 [**Local Intranet, Server Hosting & Remote Access Manual**](Technical/LOCAL_INTRANET_DEPLOYMENT_GUIDE.md)  
+  *Complete deployment and networking manual covering ₱0 local server hosting (`0.0.0.0:8000`), zero-config `.local` mDNS resolution, and nationwide remote tunneling via Cloudflare and Localtunnel.*
+* 📘 [**Comprehensive Handover & Team Revisions Guide**](Technical/SESSION_HANDOVER_AND_TEAM_REVISIONS_GUIDE.md)  
+  *All-in-one student, teammate, and defense review guide summarizing all recent features, role testing scripts, Report Data matrix, and automated batch scripts.*
 * 🏛️ [**Codebase Architectural Audit & Directives**](Technical/HonTech_Codebase_Architectural_Audit.md)  
   *Engineering standards, SQL PDO property normalization, defensive DOM handling, and cache-busting requirements.*
 
