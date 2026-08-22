@@ -434,136 +434,87 @@
                             </p>
                         </div>
 
-                        <!-- System Credentials & Developer Tools (Collapsible / Hidden on load) -->
-                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner mt-4">
-                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none">
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
-                                    <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy Dev Credentials & Testing Tools</span>
-                                </div>
-                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-500 w-4.5 h-4.5 transition-transform duration-200"></i>
+                        <!-- Developer Credentials & Testing Tools (Collapsible / Minimalist & Professional) -->
+                        <div class="bg-gray-50/70 border border-gray-200 rounded-xl p-4 mt-4">
+                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-0.5">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Developer Credentials & Testing</span>
+                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-400 w-4 h-4 transition-transform duration-200"></i>
                             </div>
-                            <div id="dev-credentials-grid" class="hidden space-y-3 mt-3">
-                                <!-- 1-Click Instant Access Card with Connect Phone (QR) -->
-                                <div class="bg-gradient-to-r from-red-950 via-slate-900 to-gray-900 border border-red-500/30 rounded-2xl p-3.5 shadow-md text-white">
-                                    <div class="flex items-center justify-between mb-2.5">
-                                        <div class="flex items-center gap-2">
-                                            <span class="flex h-2 w-2 relative">
-                                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                                            </span>
-                                            <span class="text-[10px] font-black uppercase tracking-wider text-red-400">⚡ 1-Click Instant Role Access</span>
-                                        </div>
-                                        <button onclick="openMobileConnectModal()" class="text-[9px] font-black uppercase bg-red-600/40 hover:bg-red-600/70 text-red-200 border border-red-500/40 px-2 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer">
-                                            <i data-lucide="qr-code" class="w-3 h-3"></i> Connect Phone
+                            
+                            <div id="dev-credentials-grid" class="hidden space-y-3 mt-3 pt-3 border-t border-gray-200">
+                                <!-- 1-Click Role Direct Access -->
+                                <div class="bg-white border border-gray-200 rounded-xl p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Instant Role Login</span>
+                                        <button onclick="openMobileConnectModal()" class="text-[10px] font-bold uppercase text-gray-600 hover:text-gray-900 border border-gray-300 px-2 py-0.5 rounded transition cursor-pointer">
+                                            Mobile Connect
                                         </button>
                                     </div>
                                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                        <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
-                                            <span class="text-[8px] font-extrabold uppercase text-purple-400 block">👑 Owner</span>
-                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Global Admin</span>
+                                        <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
+                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Owner</span>
+                                            <span class="text-xs font-bold text-gray-900">Global Admin</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
-                                            <span class="text-[8px] font-extrabold uppercase text-blue-400 block">👔 Admin</span>
-                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Branch Mgr</span>
+                                        <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
+                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Admin</span>
+                                            <span class="text-xs font-bold text-gray-900">Branch A</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
-                                            <span class="text-[8px] font-extrabold uppercase text-emerald-400 block">🛠️ SA</span>
-                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Intake & Lifts</span>
+                                        <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
+                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Service Advisor</span>
+                                            <span class="text-xs font-bold text-gray-900">Branch A</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-slate-800/90 hover:bg-red-900/70 border border-slate-700 hover:border-red-500 rounded-xl transition text-left cursor-pointer group">
-                                            <span class="text-[8px] font-extrabold uppercase text-amber-400 block">🔧 Technician</span>
-                                            <span class="text-[10px] font-black text-white group-hover:text-red-200">Bay Tasks</span>
+                                        <button onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
+                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Technician</span>
+                                            <span class="text-xs font-bold text-gray-900">Workshop Bay</span>
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Dev Credential Quick Fill Cards -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-[10px] font-bold text-gray-600 leading-normal">
-                                     <!-- Global Accounts -->
-                                     <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Owner (Global)</span>
-                                         <span class="text-gray-900">owner@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: owner123</span>
+                                <!-- Pre-Configured Accounts (Quick Fill) -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] text-gray-600">
+                                     <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Owner (Global)</span>
+                                         <span class="text-gray-600">owner@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: owner123</span>
                                      </div>
-                                     <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-purple-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch A)</span>
-                                         <span class="text-gray-900">admin@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                     <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Branch A)</span>
+                                         <span class="text-gray-600">admin@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: admin123</span>
                                      </div>
-
-                                     <!-- Branch A Accounts -->
-                                     <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch A)</span>
-                                         <span class="text-gray-900">staff@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                     <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Front Desk Staff (Branch A)</span>
+                                         <span class="text-gray-600">staff@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: staff123</span>
                                      </div>
-                                     <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch A)</span>
-                                         <span class="text-gray-900">sa@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
+                                     <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Service Advisor (Branch A)</span>
+                                         <span class="text-gray-600">sa@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: sa123</span>
                                      </div>
-
-                                     <!-- Branch B Accounts -->
-                                     <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">System Admin (Branch B)</span>
-                                         <span class="text-gray-900">admin.east@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: admin123</span>
+                                     <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Branch B)</span>
+                                         <span class="text-gray-600">admin.east@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: admin123</span>
                                      </div>
-                                     <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                         <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Front Desk (Branch B)</span>
-                                         <span class="text-gray-900">staff.east@hontech.com</span>
-                                         <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: staff123</span>
+                                     <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Front Desk Staff (Branch B)</span>
+                                         <span class="text-gray-600">staff.east@hontech.com</span>
+                                         <span class="text-gray-400 block text-[9px]">Password: staff123</span>
                                      </div>
-                                     <div onclick="document.getElementById('login-email').value='sa.east@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-xs cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
-                                          <span class="text-indigo-600 font-extrabold uppercase text-[9px] block mb-0.5">Service Advisor (Branch B)</span>
-                                          <span class="text-gray-900">sa.east@hontech.com</span>
-                                          <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
-                                      </div>
-
-                                      <!-- Dev Mailbox & Test Triggers -->
-                                      <div onclick="toggleDevMailbox()" class="bg-blue-50 hover:bg-blue-100 border border-blue-200 p-2.5 rounded-xl shadow-xs cursor-pointer transition flex items-center justify-between">
-                                          <div class="flex items-center gap-2 text-blue-700">
-                                              <i data-lucide="mail-open" class="w-4 h-4 text-blue-600"></i>
-                                              <span class="text-[9px] font-black uppercase tracking-wider">Dev Mailbox</span>
-                                          </div>
-                                          <span class="text-[8px] font-extrabold uppercase bg-blue-600 text-white px-2 py-0.5 rounded shadow-2xs">Open</span>
-                                      </div>
                                 </div>
 
-                                <!-- Testing Triggers Row -->
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-gray-200">
-                                    <!-- Google Mock Login -->
-                                    <button onclick="triggerGoogleLogin()"
-                                        class="w-full bg-white hover:bg-gray-50 text-gray-700 font-bold border border-gray-300 py-2.5 rounded-xl shadow-2xs text-xs flex items-center justify-center gap-2 transition cursor-pointer">
-                                        <svg class="w-4 h-4" viewBox="0 0 24 24" width="24" height="24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <g transform="matrix(1, 0, 0, 1, 0, 0)">
-                                                <path
-                                                    d="M21.35,11.1H12v2.7h5.38c-0.24,1.28 -0.96,2.37 -2.04,3.1v2.57h3.3c1.93,-1.78 3.04,-4.4 3.04,-7.49C21.68,11.75 21.56,11.4 21.35,11.1z"
-                                                    fill="#4285F4" />
-                                                <path
-                                                    d="M12,21c2.43,0 4.47,-0.8 5.96,-2.18l-3.3,-2.57c-0.9,0.6 -2.07,0.98 -3.36,0.98 -2.35,0 -4.33,-1.58 -5.04,-3.7H2.92v2.66C4.4,18.06 8,21 12,21z"
-                                                    fill="#34A853" />
-                                                <path
-                                                    d="M6.96,13.53C6.78,13 6.69,12.42 6.69,11.82c0,-0.6 0.09,-1.18 0.27,-1.71V7.45H2.92C2.33,8.64 2,9.98 2,11.82c0,1.84 0.33,3.18 0.92,4.37L6.96,13.53z"
-                                                    fill="#FBBC05" />
-                                                <path
-                                                    d="M12,6.72c1.32,0 2.5,0.45 3.44,1.35l2.58,-2.58C16.46,4.09 14.43,3.3 12,3.3c-4,0 -7.6,2.94 -9.08,6.81l4.04,3.14C7.67,8.3 9.65,6.72 12,6.72z"
-                                                    fill="#EA4335" />
-                                            </g>
-                                        </svg>
-                                        <span class="text-[10px] font-black uppercase">Google Login / OAuth</span>
+                                <!-- Utility & Diagnostics Actions -->
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-gray-200">
+                                    <button onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
+                                        Google Auth
                                     </button>
-
-                                    <!-- Developer Test Crash Trigger -->
-                                    <div onclick="window.triggerTestCrash()" class="bg-red-50 hover:bg-red-100 border border-red-200 p-2.5 rounded-xl shadow-2xs cursor-pointer transition flex items-center justify-between">
-                                        <div class="flex items-center gap-2 text-red-700">
-                                            <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
-                                            <span class="text-[9px] font-black uppercase tracking-wider">Test Crash Diagnostics</span>
-                                        </div>
-                                        <span class="text-[8px] font-extrabold uppercase bg-red-600 text-white px-2 py-0.5 rounded shadow-2xs">Trigger</span>
-                                    </div>
+                                    <button onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
+                                        Dev Mailbox
+                                    </button>
+                                    <button onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
+                                        Test Diagnostics
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -3810,7 +3761,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.18"></script>
+    <script src="js/app.js?v=3.19"></script>
 </body>
 
 </html>
