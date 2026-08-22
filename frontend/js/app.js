@@ -897,6 +897,9 @@ Report Generated Automatically by Developer Crash Reporter.
             if (document.getElementById('settings-bay-config-container')) {
                 document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
+            if (document.getElementById('bays-control-card')) {
+                document.getElementById('bays-control-card').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
 
             if (role === 'owner') {
                 if (document.getElementById('sidebar-user-role')) {
@@ -907,10 +910,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Records</span></button>`;
 
@@ -925,10 +930,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Records</span></button>`;
 
@@ -943,10 +950,12 @@ Report Generated Automatically by Developer Crash Reporter.
                 }
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
@@ -963,10 +972,12 @@ Report Generated Automatically by Developer Crash Reporter.
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Walk-In Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Daily Intakes</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
                 setupIntakeForm('sa');
@@ -1264,6 +1275,7 @@ Report Generated Automatically by Developer Crash Reporter.
 
             const titles = {
                 'dashboard': 'Analytics Overview',
+                'bays': 'Workshop Capacity & Bay Management',
                 'staff': 'Staff & Access Management',
                 'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
@@ -1291,6 +1303,16 @@ Report Generated Automatically by Developer Crash Reporter.
                     clearInterval(tvInterval);
                     tvInterval = null;
                 }
+            }
+            if (id === 'bays') {
+                (async () => {
+                    try {
+                        await loadData();
+                        renderWorkshopBaysModule();
+                    } catch (e) {
+                        console.error('Error loading workshop bays module:', e);
+                    }
+                })();
             }
             if (id === 'profile') {
                 loadSystemSettingsIntoForm();
@@ -5472,11 +5494,19 @@ Report Generated Automatically by Developer Crash Reporter.
             const num = Math.min(10, Math.max(4, parseInt(newCount, 10) || 4));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             
-            const badge = document.getElementById('settings-bay-count-badge');
-            if (badge) badge.innerText = `${num} Bays Active`;
+            const badge1 = document.getElementById('settings-bay-count-badge');
+            if (badge1) badge1.innerText = `${num} Bays Active`;
+            const badge2 = document.getElementById('bays-module-count-badge');
+            if (badge2) badge2.innerText = `${num} Bays Active`;
+
+            const select1 = document.getElementById('settings-workshop-bays');
+            if (select1) select1.value = num.toString();
+            const select2 = document.getElementById('bays-module-select');
+            if (select2) select2.value = num.toString();
             
             renderStaffTables();
             renderTV();
+            renderWorkshopBaysModule();
             if (typeof renderReports === 'function') renderReports();
             showSystemToast(`Workshop capacity configured to ${num} service bays.`, 'success', 'Bays Configured');
         }
@@ -5484,12 +5514,188 @@ Report Generated Automatically by Developer Crash Reporter.
 
         function initWorkshopBaySettings() {
             const bayCount = getWorkshopBayCount();
-            const select = document.getElementById('settings-workshop-bays');
-            if (select) select.value = bayCount.toString();
-            const badge = document.getElementById('settings-bay-count-badge');
-            if (badge) badge.innerText = `${bayCount} Bays Active`;
+            const select1 = document.getElementById('settings-workshop-bays');
+            if (select1) select1.value = bayCount.toString();
+            const badge1 = document.getElementById('settings-bay-count-badge');
+            if (badge1) badge1.innerText = `${bayCount} Bays Active`;
+
+            const select2 = document.getElementById('bays-module-select');
+            if (select2) select2.value = bayCount.toString();
+            const badge2 = document.getElementById('bays-module-count-badge');
+            if (badge2) badge2.innerText = `${bayCount} Bays Active`;
         }
         window.initWorkshopBaySettings = initWorkshopBaySettings;
+
+        function renderWorkshopBaysModule() {
+            const baySection = document.getElementById('section-bays');
+            if (baySection && baySection.classList.contains('hidden')) return;
+
+            const bayCount = getWorkshopBayCount();
+            
+            // Sync capacity selectors and badges
+            const moduleSelect = document.getElementById('bays-module-select');
+            if (moduleSelect) moduleSelect.value = bayCount.toString();
+            const moduleBadge = document.getElementById('bays-module-count-badge');
+            if (moduleBadge) moduleBadge.innerText = `${bayCount} Bays Active`;
+
+            const activeInBayJobs = (allJobs || []).filter(j => {
+                if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
+                return j.location.startsWith('Bay') || j.location.startsWith('Lift') || (j.bayAssigned > 0) || (j.bay_assigned > 0);
+            });
+
+            const occupiedCount = activeInBayJobs.length;
+            const freeCount = Math.max(0, bayCount - occupiedCount);
+            const utilizationRate = Math.round((occupiedCount / bayCount) * 100);
+
+            if (document.getElementById('bays-stat-total')) document.getElementById('bays-stat-total').innerText = bayCount;
+            if (document.getElementById('bays-stat-occupied')) document.getElementById('bays-stat-occupied').innerText = occupiedCount;
+            if (document.getElementById('bays-stat-free')) document.getElementById('bays-stat-free').innerText = freeCount;
+            if (document.getElementById('bays-stat-utilization')) document.getElementById('bays-stat-utilization').innerText = `${utilizationRate}%`;
+
+            // Render Floor Grid
+            const gridEl = document.getElementById('bays-floor-grid');
+            if (gridEl) {
+                let gridHtml = '';
+                for (let i = 1; i <= bayCount; i++) {
+                    const padBay = String(i).padStart(2, '0');
+                    const job = (allJobs || []).find(j => {
+                        if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                        if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
+                        if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
+                        const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
+                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}` || cleanLoc === `bay${padBay}`;
+                    });
+
+                    if (job) {
+                        gridHtml += `
+                            <div class="bg-white border-2 border-gray-900 rounded-2xl p-5 shadow-md flex flex-col justify-between gap-4 transition hover:shadow-lg">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-3 h-3 rounded-full bg-red-600 animate-pulse"></span>
+                                        <span class="font-black text-xs uppercase tracking-widest text-gray-950">BAY-${padBay}</span>
+                                    </div>
+                                    <span class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">IN SERVICE</span>
+                                </div>
+
+                                <div class="space-y-1 text-left">
+                                    <span class="text-2xl lg:text-3xl font-black uppercase italic text-gray-950 tracking-tight block">${job.plate}</span>
+                                    <span class="text-xs font-bold uppercase text-gray-500 tracking-wider block">${job.vehicle || 'Vehicle'} · <span class="text-gray-900 font-extrabold">${job.customer || 'Customer'}</span></span>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100 text-[10px] font-bold text-gray-600">
+                                    <div>
+                                        <span class="text-gray-400 uppercase text-[9px] block">Category</span>
+                                        <span class="text-gray-900 font-extrabold truncate block">${job.category || 'General'}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-400 uppercase text-[9px] block">Lane</span>
+                                        <span class="text-gray-900 font-extrabold truncate block">${job.laneType || 'Flexible Lane'}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-400 uppercase text-[9px] block">Advisor</span>
+                                        <span class="text-gray-900 font-extrabold truncate block">${job.advisor || 'SA'}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-400 uppercase text-[9px] block">Status</span>
+                                        <span class="text-red-600 font-black truncate block">${job.status || 'In Progress'}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 pt-2">
+                                    <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="flex-1 py-2 px-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition border border-gray-200 cursor-pointer">
+                                        Unassign Bay
+                                    </button>
+                                    <button onclick="showSection('queue')" class="py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                        Record
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        gridHtml += `
+                            <div class="bg-slate-50/70 border-2 border-dashed border-gray-300 rounded-2xl p-5 shadow-2xs flex flex-col justify-between gap-4 text-center">
+                                <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
+                                    <span class="font-black text-xs uppercase tracking-widest text-gray-400">BAY-${padBay}</span>
+                                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
+                                </div>
+
+                                <div class="my-auto py-4">
+                                    <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2">
+                                        <i data-lucide="check" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-xl font-black uppercase italic text-gray-400 tracking-wider block">EMPTY</span>
+                                    <span class="text-[10px] font-bold uppercase text-gray-400 tracking-widest mt-0.5 block">Ready for Allocation</span>
+                                </div>
+
+                                <div class="pt-2 border-t border-gray-200/80">
+                                    <button onclick="document.getElementById('bays-waiting-list').scrollIntoView({ behavior: 'smooth' })" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                        + Assign From Queue
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                gridEl.innerHTML = gridHtml;
+            }
+
+            // Render Waiting Queue for fast allocation
+            const waitingListEl = document.getElementById('bays-waiting-list');
+            const waitingCountEl = document.getElementById('bays-waiting-count');
+            const waitingJobs = (allJobs || []).filter(j => {
+                if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                return (!j.location || j.location === 'None' || j.location === 'Waiting Area');
+            });
+
+            if (waitingCountEl) waitingCountEl.innerText = `${waitingJobs.length} Waiting`;
+
+            if (waitingListEl) {
+                if (waitingJobs.length === 0) {
+                    waitingListEl.innerHTML = `<div class="text-center py-8 text-gray-400 font-bold uppercase text-xs tracking-widest">No unassigned vehicles waiting in queue</div>`;
+                } else {
+                    waitingListEl.innerHTML = waitingJobs.map(job => {
+                        // Build options for free bays
+                        let bayOptions = `<option value="">Select Free Bay...</option>`;
+                        for (let i = 1; i <= bayCount; i++) {
+                            const bayName = `Bay ${i}`;
+                            const isOccupied = activeInBayJobs.some(j => {
+                                if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
+                                const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
+                                return cleanLoc === `bay${i}` || cleanLoc === `lift${i}`;
+                            });
+                            if (!isOccupied) {
+                                bayOptions += `<option value="${bayName}">Assign to ${bayName}</option>`;
+                            }
+                        }
+
+                        return `
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white transition">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-base font-black uppercase italic text-gray-900">${job.plate}</span>
+                                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-gray-200 text-gray-700">${job.laneType || 'Flexible Lane'}</span>
+                                        </div>
+                                        <span class="text-[11px] font-bold text-gray-500 uppercase">${job.vehicle} · ${job.customer} · SA: ${job.advisor || 'SA'}</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <select onchange="if(this.value){ updateJobField('${job.id}', 'location', this.value); setTimeout(renderWorkshopBaysModule, 120); }" class="bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-800 outline-none focus:border-red-600 cursor-pointer">
+                                        ${bayOptions}
+                                    </select>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+        window.renderWorkshopBaysModule = renderWorkshopBaysModule;
 
         function saveSystemSettings() {
             const sidebarSelect = document.getElementById('settings-sidebar-style');
