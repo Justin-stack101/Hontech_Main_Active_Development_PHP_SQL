@@ -419,8 +419,23 @@
                             </div>
                         </div>
 
+                        <!-- Access Portal Action Button -->
+                        <button onclick="processLogin()"
+                            class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2 cursor-pointer">
+                            Access Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+
+                        <!-- Terms of Service & Privacy Notice on Login Form -->
+                        <div class="pt-2 text-center">
+                            <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
+                                By signing in, you agree to HonTech's 
+                                <button onclick="openTermsModal()" class="font-bold text-red-600 hover:text-red-700 underline decoration-red-300 underline-offset-2 transition cursor-pointer">Terms & Conditions</button> 
+                                and <span class="font-bold text-gray-700">Data Privacy Standards (RA 10173)</span>.
+                            </p>
+                        </div>
+
                         <!-- System Credentials & Developer Tools (Collapsible / Hidden on load) -->
-                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner">
+                        <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner mt-4">
                             <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none">
                                 <div class="flex items-center gap-2">
                                     <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
@@ -506,63 +521,52 @@
                                           <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: sa123</span>
                                       </div>
 
-                                      <!-- Developer Test Trigger -->
-                                      <div onclick="window.triggerTestCrash()" class="bg-red-50 hover:bg-red-100 border border-red-200 p-2.5 rounded-xl shadow-xs cursor-pointer transition flex items-center justify-between">
-                                          <div class="flex items-center gap-2 text-red-700">
-                                              <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
-                                              <span class="text-[9px] font-black uppercase tracking-wider">Test Crash UI</span>
+                                      <!-- Dev Mailbox & Test Triggers -->
+                                      <div onclick="toggleDevMailbox()" class="bg-blue-50 hover:bg-blue-100 border border-blue-200 p-2.5 rounded-xl shadow-xs cursor-pointer transition flex items-center justify-between">
+                                          <div class="flex items-center gap-2 text-blue-700">
+                                              <i data-lucide="mail-open" class="w-4 h-4 text-blue-600"></i>
+                                              <span class="text-[9px] font-black uppercase tracking-wider">Dev Mailbox</span>
                                           </div>
-                                          <span class="text-[8px] font-extrabold uppercase bg-red-600 text-white px-2 py-0.5 rounded shadow-2xs">Trigger</span>
+                                          <span class="text-[8px] font-extrabold uppercase bg-blue-600 text-white px-2 py-0.5 rounded shadow-2xs">Open</span>
                                       </div>
+                                </div>
+
+                                <!-- Testing Triggers Row -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-gray-200">
+                                    <!-- Google Mock Login -->
+                                    <button onclick="triggerGoogleLogin()"
+                                        class="w-full bg-white hover:bg-gray-50 text-gray-700 font-bold border border-gray-300 py-2.5 rounded-xl shadow-2xs text-xs flex items-center justify-center gap-2 transition cursor-pointer">
+                                        <svg class="w-4 h-4" viewBox="0 0 24 24" width="24" height="24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g transform="matrix(1, 0, 0, 1, 0, 0)">
+                                                <path
+                                                    d="M21.35,11.1H12v2.7h5.38c-0.24,1.28 -0.96,2.37 -2.04,3.1v2.57h3.3c1.93,-1.78 3.04,-4.4 3.04,-7.49C21.68,11.75 21.56,11.4 21.35,11.1z"
+                                                    fill="#4285F4" />
+                                                <path
+                                                    d="M12,21c2.43,0 4.47,-0.8 5.96,-2.18l-3.3,-2.57c-0.9,0.6 -2.07,0.98 -3.36,0.98 -2.35,0 -4.33,-1.58 -5.04,-3.7H2.92v2.66C4.4,18.06 8,21 12,21z"
+                                                    fill="#34A853" />
+                                                <path
+                                                    d="M6.96,13.53C6.78,13 6.69,12.42 6.69,11.82c0,-0.6 0.09,-1.18 0.27,-1.71V7.45H2.92C2.33,8.64 2,9.98 2,11.82c0,1.84 0.33,3.18 0.92,4.37L6.96,13.53z"
+                                                    fill="#FBBC05" />
+                                                <path
+                                                    d="M12,6.72c1.32,0 2.5,0.45 3.44,1.35l2.58,-2.58C16.46,4.09 14.43,3.3 12,3.3c-4,0 -7.6,2.94 -9.08,6.81l4.04,3.14C7.67,8.3 9.65,6.72 12,6.72z"
+                                                    fill="#EA4335" />
+                                            </g>
+                                        </svg>
+                                        <span class="text-[10px] font-black uppercase">Google Login / OAuth</span>
+                                    </button>
+
+                                    <!-- Developer Test Crash Trigger -->
+                                    <div onclick="window.triggerTestCrash()" class="bg-red-50 hover:bg-red-100 border border-red-200 p-2.5 rounded-xl shadow-2xs cursor-pointer transition flex items-center justify-between">
+                                        <div class="flex items-center gap-2 text-red-700">
+                                            <i data-lucide="bug" class="w-4 h-4 text-red-600"></i>
+                                            <span class="text-[9px] font-black uppercase tracking-wider">Test Crash Diagnostics</span>
+                                        </div>
+                                        <span class="text-[8px] font-extrabold uppercase bg-red-600 text-white px-2 py-0.5 rounded shadow-2xs">Trigger</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Access Portal Action Button -->
-                        <button onclick="processLogin()"
-                            class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2">
-                            Access Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-
-                        <!-- Google Sign In -->
-                        <div class="relative flex py-2 items-center">
-                            <div class="flex-grow border-t border-gray-200"></div>
-                            <span
-                                class="flex-shrink mx-4 text-gray-400 text-[9px] font-black uppercase tracking-wider">or
-                                security recover</span>
-                            <div class="flex-grow border-t border-gray-200"></div>
-                        </div>
-                        <button onclick="triggerGoogleLogin()"
-                            class="w-full bg-white hover:bg-gray-50 text-gray-700 font-bold border border-gray-300 py-3.5 rounded-xl shadow-sm text-xs flex items-center justify-center gap-3 transition">
-                            <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" width="24" height="24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g transform="matrix(1, 0, 0, 1, 0, 0)">
-                                    <path
-                                        d="M21.35,11.1H12v2.7h5.38c-0.24,1.28 -0.96,2.37 -2.04,3.1v2.57h3.3c1.93,-1.78 3.04,-4.4 3.04,-7.49C21.68,11.75 21.56,11.4 21.35,11.1z"
-                                        fill="#4285F4" />
-                                    <path
-                                        d="M12,21c2.43,0 4.47,-0.8 5.96,-2.18l-3.3,-2.57c-0.9,0.6 -2.07,0.98 -3.36,0.98 -2.35,0 -4.33,-1.58 -5.04,-3.7H2.92v2.66C4.4,18.06 8,21 12,21z"
-                                        fill="#34A853" />
-                                    <path
-                                        d="M6.96,13.53C6.78,13 6.69,12.42 6.69,11.82c0,-0.6 0.09,-1.18 0.27,-1.71V7.45H2.92C2.33,8.64 2,9.98 2,11.82c0,1.84 0.33,3.18 0.92,4.37L6.96,13.53z"
-                                        fill="#FBBC05" />
-                                    <path
-                                        d="M12,6.72c1.32,0 2.5,0.45 3.44,1.35l2.58,-2.58C16.46,4.09 14.43,3.3 12,3.3c-4,0 -7.6,2.94 -9.08,6.81l4.04,3.14C7.67,8.3 9.65,6.72 12,6.72z"
-                                        fill="#EA4335" />
-                                </g>
-                            </svg>
-                            Continue with Google
-                        </button>
-
-                        <!-- Terms of Service & Privacy Notice on Login Form -->
-                        <div class="pt-3 text-center border-t border-gray-100">
-                            <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
-                                By signing in, you agree to HonTech's 
-                                <button onclick="openTermsModal()" class="font-bold text-red-600 hover:text-red-700 underline decoration-red-300 underline-offset-2 transition cursor-pointer">Terms & Conditions</button> 
-                                and <span class="font-bold text-gray-700">Data Privacy Standards (RA 10173)</span>.
-                            </p>
-                        </div>
-                    </div>
                     </div>
 
                     <!-- Two-Factor Authentication Verification View -->
@@ -3806,7 +3810,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.17"></script>
+    <script src="js/app.js?v=3.18"></script>
 </body>
 
 </html>
