@@ -1877,22 +1877,70 @@
                         </div>
                     </div>
 
-                    <!-- AUTOMATED EXECUTIVE DECISION MATRIX (President Actionable Insights) -->
-                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="p-2 bg-slate-900 text-white rounded-lg">
-                                    <i data-lucide="compass" class="w-4 h-4"></i>
-                                </div>
+                    <!-- FACTUAL ANALYTICS: EXPRESS CATEGORY SLA BREAKDOWN & ROOT CAUSE IMPACT RANKING -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Table 1: Category SLA Performance Breakdown -->
+                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
+                            <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                                 <div>
-                                    <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900">Executive Action Matrix</h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Automated operational recommendations based on workshop throughput data</p>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="layers" class="w-4 h-4 text-slate-700"></i> Express Category SLA Performance
+                                    </h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Turnaround compliance grouped by service category</p>
                                 </div>
+                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">SLA: ≤60m</span>
                             </div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 bg-slate-100 text-slate-700 rounded-md border border-slate-200">Operational Directives</span>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-5 py-3.5">Category</th>
+                                            <th class="px-4 py-3.5 text-center">Jobs</th>
+                                            <th class="px-4 py-3.5 text-center">Avg Time</th>
+                                            <th class="px-4 py-3.5 text-center">On-Time</th>
+                                            <th class="px-4 py-3.5 text-center">Delayed</th>
+                                            <th class="px-5 py-3.5 text-right">SLA %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-express-category-sla-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                        <!-- Populated dynamically by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3 bg-gray-50/70 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
+                                Compares quick PMS, GRS, and Express inspections against the standard 60-minute target.
+                            </div>
                         </div>
-                        <div id="express-decision-matrix-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Populated dynamically by app.js -->
+
+                        <!-- Table 2: Root Cause Delay Impact Breakdown -->
+                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
+                            <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="clock-alert" class="w-4 h-4 text-red-600"></i> Delay Root Cause Impact Summary
+                                    </h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Frequency count and average overrun duration by factor</p>
+                                </div>
+                                <span class="text-[10px] font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-md border border-rose-200">Failure Modes</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                            <th class="px-5 py-3.5">Logged Reason</th>
+                                            <th class="px-4 py-3.5 text-center">Incidents</th>
+                                            <th class="px-4 py-3.5 text-center">Share</th>
+                                            <th class="px-5 py-3.5 text-right">Avg Overrun</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-express-delay-summary-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                        <!-- Populated dynamically by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-3 bg-gray-50/70 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
+                                Direct quantitative breakdown of operational bottlenecks across the workshop.
+                            </div>
                         </div>
                     </div>
 
@@ -4306,7 +4354,7 @@
         </div>
     </div>
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.43"></script>
+    <script src="js/app.js?v=3.44"></script>
 </body>
 
 </html>

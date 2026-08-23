@@ -4526,68 +4526,93 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('express-pareto-total-badge').innerText = `${overrunCount} Total Overruns`;
             }
 
-            // 4. RENDER AUTOMATED EXECUTIVE DECISION MATRIX
-            const matrixContainer = document.getElementById('express-decision-matrix-container');
-            if (matrixContainer) {
-                const partsShare = delayRootCauses['Parts Stockout / Supplier Delay'] || 0;
-                const custShare = delayRootCauses['Customer Authorization / Scope Lag'] || 0;
-                const bayShare = delayRootCauses['Bay & Lift Congestion'] || 0;
+            // 4. RENDER FACTUAL TABLE 1: Category SLA Performance Breakdown
+            const catTableBody = document.getElementById('table-express-category-sla-body');
+            if (catTableBody) {
+                const catStats = {};
+                expressJobs.forEach(j => {
+                    const rawCat = j.category || j.service_type || j.serviceType || 'Express PMS';
+                    let catName = 'Express PMS';
+                    if (/grs|repair/i.test(rawCat)) catName = 'Express GRS';
+                    else if (/diag|inspect/i.test(rawCat)) catName = 'Quick Diagnostics';
+                    else if (/brake|under/i.test(rawCat)) catName = 'Brake & Chassis Quick';
+                    else if (/pms|maintenance/i.test(rawCat)) catName = 'Express PMS';
+                    else catName = rawCat;
 
-                matrixContainer.innerHTML = `
-                    <!-- Recommendation 1: Inventory & Supply Chain -->
-                    <div class="bg-gray-50/90 border border-gray-200/90 p-4 rounded-xl space-y-2.5 flex flex-col justify-between shadow-2xs">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-slate-900 text-white">Supply Chain</span>
-                            <span class="text-[10px] font-bold text-slate-500">${partsShare} Incident(s)</span>
-                        </div>
-                        <div>
-                            <h5 class="text-xs font-black text-gray-900">Fast-Moving Safety Stock Level</h5>
-                            <p class="text-[11px] text-gray-600 font-medium mt-1 leading-relaxed">
-                                ${partsShare > 0 ? `Parts stockouts drive ${topBottleneckPct}% of delays. Recommend increasing minimum re-order point for PMS oil & filter kits by +20 units.` : `Parts availability is currently healthy. Maintain vendor restocking cadence.`}
-                            </p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-200 text-[10px] font-bold text-slate-700 flex items-center justify-between">
-                            <span>Executive Priority: High</span>
-                            <span class="text-emerald-600 font-black">ROI: +18m Saved</span>
-                        </div>
-                    </div>
+                    if (!catStats[catName]) {
+                        catStats[catName] = { total: 0, sumDuration: 0, validCount: 0, onTime: 0, delayed: 0 };
+                    }
+                    catStats[catName].total++;
 
-                    <!-- Recommendation 2: Customer Authorization Flow -->
-                    <div class="bg-gray-50/90 border border-gray-200/90 p-4 rounded-xl space-y-2.5 flex flex-col justify-between shadow-2xs">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-slate-900 text-white">Client Comms</span>
-                            <span class="text-[10px] font-bold text-slate-500">${custShare} Incident(s)</span>
-                        </div>
-                        <div>
-                            <h5 class="text-xs font-black text-gray-900">SMS 1-Click Digital Approvals</h5>
-                            <p class="text-[11px] text-gray-600 font-medium mt-1 leading-relaxed">
-                                ${custShare > 0 ? `Phone authorization lag adds ~25 mins per quote. Recommend auto-dispatching SMS digital approval links upon inspection.` : `Customer authorization response time is currently within target tolerance.`}
-                            </p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-200 text-[10px] font-bold text-slate-700 flex items-center justify-between">
-                            <span>Executive Priority: Medium</span>
-                            <span class="text-emerald-600 font-black">ROI: +22m Saved</span>
-                        </div>
-                    </div>
+                    const dur = Number(j.duration || j.turnaroundTime || 0);
+                    if (dur > 0) {
+                        catStats[catName].sumDuration += dur;
+                        catStats[catName].validCount++;
+                        if (dur <= 60) catStats[catName].onTime++;
+                        else catStats[catName].delayed++;
+                    } else {
+                        catStats[catName].onTime++;
+                    }
+                });
 
-                    <!-- Recommendation 3: Workshop Bay Orchestration -->
-                    <div class="bg-gray-50/90 border border-gray-200/90 p-4 rounded-xl space-y-2.5 flex flex-col justify-between shadow-2xs">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-slate-900 text-white">Bay Capacity</span>
-                            <span class="text-[10px] font-bold text-slate-500">${bayShare} Incident(s)</span>
-                        </div>
-                        <div>
-                            <h5 class="text-xs font-black text-gray-900">Express Lift 1 Peak Reservation</h5>
-                            <p class="text-[11px] text-gray-600 font-medium mt-1 leading-relaxed">
-                                Morning rush hours generate 65% of bay queues. Recommend dedicating Lift 1 exclusively to Express PMS services from 8:00 AM to 11:30 AM.
-                            </p>
-                        </div>
-                        <div class="pt-2 border-t border-gray-200 text-[10px] font-bold text-slate-700 flex items-center justify-between">
-                            <span>Executive Priority: Immediate</span>
-                            <span class="text-emerald-600 font-black">ROI: +15% Throughput</span>
-                        </div>
-                    </div>
-                `;
+                if (Object.keys(catStats).length === 0) {
+                    catTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No category records in this timeframe.</td></tr>`;
+                } else {
+                    catTableBody.innerHTML = Object.entries(catStats).map(([cat, s]) => {
+                        const avg = s.validCount > 0 ? Math.round(s.sumDuration / s.validCount) : 0;
+                        const catSla = s.total > 0 ? Math.round((s.onTime / s.total) * 100) : 100;
+                        const slaColor = catSla >= 90 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : (catSla >= 75 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-rose-700 bg-rose-50 border-rose-200');
+                        return `
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="px-5 py-3 font-bold text-slate-900">${cat}</td>
+                                <td class="px-4 py-3 text-center font-bold text-slate-800">${s.total}</td>
+                                <td class="px-4 py-3 text-center font-bold text-slate-700">${avg}m</td>
+                                <td class="px-4 py-3 text-center font-bold text-emerald-600">${s.onTime}</td>
+                                <td class="px-4 py-3 text-center font-bold text-rose-600">${s.delayed}</td>
+                                <td class="px-5 py-3 text-right">
+                                    <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black border ${slaColor}">${catSla}%</span>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // 5. RENDER FACTUAL TABLE 2: Delay Root Cause Impact Summary
+            const delaySummaryBody = document.getElementById('table-express-delay-summary-body');
+            if (delaySummaryBody) {
+                const causeEntries = Object.entries(delayRootCauses);
+                if (causeEntries.length === 0 || overrunCount === 0) {
+                    delaySummaryBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center py-6 text-emerald-600 font-bold">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <i data-lucide="check" class="w-4 h-4"></i> No Overrun Incidents Logged
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    causeEntries.sort((a, b) => b[1] - a[1]);
+
+                    delaySummaryBody.innerHTML = causeEntries.map(([cause, count]) => {
+                        const sharePct = overrunCount > 0 ? Math.round((count / overrunCount) * 100) : 0;
+                        const matchedRecords = delayedRecords.filter(r => r.rootCause === cause);
+                        const avgOverrun = matchedRecords.length > 0 ? Math.round(matchedRecords.reduce((sum, r) => sum + r.overrun, 0) / matchedRecords.length) : 0;
+
+                        return `
+                            <tr class="hover:bg-slate-50/70 transition">
+                                <td class="px-5 py-3 font-bold text-slate-900 flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full ${count > 0 ? 'bg-rose-500' : 'bg-slate-300'}"></span>
+                                    ${cause}
+                                </td>
+                                <td class="px-4 py-3 text-center font-bold text-slate-800">${count}</td>
+                                <td class="px-4 py-3 text-center font-bold text-slate-600">${sharePct}%</td>
+                                <td class="px-5 py-3 text-right font-black text-rose-600">+${avgOverrun}m</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
             }
 
             // 5. RENDER DIAGNOSTIC AUDIT LOG TABLE

@@ -443,6 +443,20 @@
 
 ---
 
+### 🏁 Checkpoint 38: Factual Category SLA Breakdown & Delay Impact Summary Tables Implemented
+* **User Directive**: Replace the subjective Executive Action Matrix with an easy-to-defend, 100% factual mathematical breakdown suited for Capstone Defense.
+* **Key Deliverables**:
+  * Removed the rule-based Action Matrix entirely.
+  * Implemented **Express Category SLA Performance Table**:
+    * Breakdown by service category (PMS, GRS, Quick Diagnostics, Brake/Chassis).
+    * Factual columns: Total Jobs, Avg Turnaround Duration, On-Time Count ($\le 60$m), Delayed Count ($> 60$m), and On-Time SLA %.
+  * Implemented **Delay Root Cause Impact Summary Table**:
+    * Clean ranking of delay reasons with Incident Count, Share of Delays %, and Average Overrun Duration (+mins).
+  * Version bumped to `js/app.js?v=3.44`.
+* **Git Tag**: `checkpoint-38-factual-category-sla-summary-implemented`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
