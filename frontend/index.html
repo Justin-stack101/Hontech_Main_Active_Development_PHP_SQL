@@ -2077,10 +2077,16 @@
                 <div
                     class="flex justify-between items-end mb-6 border-b border-gray-800 pt-4 pb-4 shrink-0 z-20 relative px-6">
                     <div>
-                        <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
-                            <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
-                        </h1>
-                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">Sunday, June 21, 2026</p>
+                        <div class="flex items-center gap-3">
+                            <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
+                                <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
+                            </h1>
+                            <span class="text-[11px] not-italic font-black uppercase tracking-wider bg-red-600/30 text-red-300 border border-red-500/50 px-3 py-1 rounded-full shadow-inner flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                📍 Marikina Main Branch
+                            </span>
+                        </div>
+                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
                     <div class="flex items-center gap-6 text-right">
                         <!-- Weather Widget -->
@@ -2117,7 +2123,7 @@
                         class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
                             <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
-                            <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays & Real-Time Allocations</p>
+                            <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays & Real-Time Allocations — Marikina Main Floor</p>
                         </div>
                         <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden">
                             <div id="tv-grs-list" class="grid grid-cols-2 gap-5 h-full"></div>
@@ -2129,7 +2135,7 @@
                         class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
                             <h2 class="text-4xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
-                            <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Queue & Turnaround Status</p>
+                            <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Queue & Turnaround Status — Marikina Main Branch</p>
                         </div>
                         
                         <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden flex flex-col gap-5 min-h-0">
@@ -2185,7 +2191,7 @@
                         class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
                             <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
-                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification</p>
+                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification — Marikina Workshop</p>
                         </div>
                         <div class="flex-1 p-6 overflow-hidden bg-slate-100/60 flex gap-5 min-h-0">
                             <!-- Express Lane Column -->
@@ -3760,7 +3766,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.23"></script>
+    <script src="js/app.js?v=3.24"></script>
 </body>
 
 </html>

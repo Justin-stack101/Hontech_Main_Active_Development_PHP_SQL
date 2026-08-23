@@ -89,6 +89,54 @@
 
 ---
 
+### 🏁 Checkpoint 9: Auto-Launch Batch Script & Local LAN Network Deployment
+* **User Need**: Automate local PHP development server startup with automatic IP address detection for multi-device testing over Wi-Fi.
+* **Key Deliverables**:
+  * Created `start_lan_server.bat` in the project root.
+  * Auto-discovers active IPv4 Wi-Fi/Ethernet address and launches PHP built-in server bound to `0.0.0.0:8000`.
+* **Git Tag**: `checkpoint-9-auto-launch-batch-script`
+
+---
+
+### 🏁 Checkpoint 10: Defensive Bay Scaling & Navigation Guarding
+* **User Need**: Prevent runtime exception crashes when scaling workshop bays dynamically from 4 to 10 bays, ensuring other views do not disappear upon navigation.
+* **Key Deliverables**:
+  * Wrapped all render triggers in individual `try-catch` blocks inside `handleWorkshopBayCountChange(newCount)`.
+  * Replaced legacy `renderReports()` call with `renderReportDataModule()`.
+  * Added automated `loadData()` re-querying in `showSection('queue')` and `showSection('staff')`.
+* **Git Tag**: `checkpoint-10-defensive-bay-scaling-and-navigation-fix`
+
+---
+
+### 🏁 Checkpoint 11: Professional Public Domain Architecture & HTTPS Roadmap
+* **User Need**: Plan and document enterprise public domain naming (`portal.hontech-autocenter.com`, `booking.hontech-autocenter.com`), SSL/TLS encryption, and multi-tier public deployment roadmap.
+* **Key Deliverables**:
+  * Expanded Section 7, 8, and 9 of [`LOCAL_INTRANET_DEPLOYMENT_GUIDE.md`](LOCAL_INTRANET_DEPLOYMENT_GUIDE.md).
+  * Added Cloudflare Zero Trust tunnel architecture and Git contribution verification guide.
+* **Git Tag**: `checkpoint-11-domain-naming-and-public-deployment-guide`
+
+---
+
+### 🏁 Checkpoint 12: TV Service Monitor Slides 1–3 UI/UX Polish
+* **User Need**: Refine TV Slide 1, 2, and 3 titles, vehicle card details, and eliminate awkward text truncations on customer display.
+* **Key Deliverables**:
+  * Slide 1: Refined **Workshop Bay Monitoring** with high-contrast IN SERVICE and AVAILABLE cards.
+  * Slide 2: Updated titles to **Service Queue (Waiting List)** and **Ready for Release (Claiming)** with full customer and vehicle model details.
+  * Slide 3: Organized **Workshop Lanes Monitoring** by Express Lane (PMS ≤ 60m), Flexible Lane (GRS), and Specialty Lane (Heavy Work).
+* **Git Tag**: `checkpoint-12-enhanced-tv-monitor-slides-1-to-3`
+
+---
+
+### 🏁 Checkpoint 13: Marikina Main Branch Official Branding
+* **User Need**: Brand the system to **Marikina Main Branch** across the public TV Service Monitor, Workshop Bays, and database seeding without adding unnecessary selection dropdowns.
+* **Key Deliverables**:
+  * Added prominent `📍 Marikina Main Branch` badge to `#section-tv` header.
+  * Updated TV slide subheaders to reflect `Marikina Main Floor` and `Marikina Workshop`.
+  * Standardized all seed database accounts and vehicle intake records to `Marikina Branch`.
+* **Git Tag**: `checkpoint-13-marikina-main-branch-branding`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

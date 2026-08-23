@@ -8,7 +8,7 @@
         let currentUserRole = '';
         let currentUserName = '';
         let currentUserEmail = '';
-        let currentUserBranch = 'Branch A';
+        let currentUserBranch = 'Marikina Branch';
         let bays = [null, null, null, null];
 
         let tvSlideIndex = 0;
@@ -5762,13 +5762,13 @@ Report Generated Automatically by Developer Crash Reporter.
             // Slide Subtitles
             const bayCount = getWorkshopBayCount();
             const tvSlide1Sub = document.getElementById('tv-slide1-sub');
-            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays (1-${bayCount}) & Real-Time Allocations`;
+            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays (1-${bayCount}) & Real-Time Allocations — Marikina Main Floor`;
 
             const tvSlide2Sub = document.getElementById('tv-slide2-sub');
-            if (tvSlide2Sub) tvSlide2Sub.innerText = 'Live Queue & Turnaround Status';
+            if (tvSlide2Sub) tvSlide2Sub.innerText = 'Live Queue & Turnaround Status — Marikina Main Branch';
 
             const tvSlide3Sub = document.getElementById('tv-slide3-sub');
-            if (tvSlide3Sub) tvSlide3Sub.innerText = 'Live Lane Status & Active Vehicles';
+            if (tvSlide3Sub) tvSlide3Sub.innerText = 'Live Turnaround Status by Work Classification — Marikina Workshop';
 
             // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
             const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');

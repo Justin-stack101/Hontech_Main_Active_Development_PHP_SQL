@@ -22,17 +22,12 @@ echo "=== HonTech Database Seeder ===\n\n";
 // SEED USERS
 // =============================================
 $defaultUsers = [
-    ['name' => 'System Owner',           'role' => 'owner',     'email' => 'owner@hontech.com', 'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Branch A'],
-    ['name' => 'System Admin (Branch A)', 'role' => 'admin',     'email' => 'admin@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Branch A'],
-    ['name' => 'System Admin (Branch B)', 'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Branch B'],
+    ['name' => 'System Owner',           'role' => 'owner',     'email' => 'owner@hontech.com', 'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'System Admin (Marikina)', 'role' => 'admin',     'email' => 'admin@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
     
-    // Branch A (Branch 1) Test Users
-    ['name' => 'Jessica (Front Desk A)', 'role' => 'assistant', 'email' => 'staff@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Branch A'],
-    ['name' => 'Mark (Advisor A)',       'role' => 'sa',        'email' => 'sa@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'Branch A'],
-    
-    // Branch B (Branch 2) Test Users
-    ['name' => 'Jessica (Front Desk B)', 'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Branch B'],
-    ['name' => 'Dave (Advisor B)',       'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'Branch B'],
+    // Marikina Main Branch Test Users
+    ['name' => 'Jessica (Front Desk)',   'role' => 'assistant', 'email' => 'staff@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Mark (Advisor)',         'role' => 'sa',        'email' => 'sa@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'Marikina Branch'],
 ];
 
 foreach ($defaultUsers as $u) {
@@ -277,7 +272,8 @@ $defaultJobs = [
     );
 
     foreach ($defaultJobs as $i => $job) {
-        $branch   = ($i % 2 === 0) ? 'Branch A' : 'Branch B';
+        $branch   = !empty($job['branch']) ? $job['branch'] : 'Marikina Branch';
+        if ($branch === 'Branch A' || $branch === 'Branch B') $branch = 'Marikina Branch';
         $location = (!empty($job['location'])) ? $job['location'] : 'None';
 
         $insertStmt->execute([
