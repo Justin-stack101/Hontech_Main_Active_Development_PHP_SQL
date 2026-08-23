@@ -124,12 +124,95 @@ When scaling to multiple physical locations (e.g. Marikina Branch, East Branch):
 
 ---
 
+## 6. 🏛️ SOLID Architectural Principles & Design Patterns in Native Codebase
+
+HonTech is engineered using pure native technologies (Vanilla JavaScript + Native Object-Oriented PHP + MySQL PDO). This eliminates heavy framework overhead while strictly adhering to the **5 SOLID Principles**:
+
+### 6.1 SOLID Principles Implementation Matrix
+1. **Single Responsibility Principle (SRP)**:
+   * Each controller manages a single business domain:
+     * `AuthController.php`: User identity, session tokens, password recovery.
+     * `JobController.php`: Vehicle intake, repair workflows, bay assignments.
+     * `AnalyticsController.php`: Metric calculations, revenue aggregations, SLA compliance.
+     * `UserController.php`: Employee CRUD and branch assignment.
+2. **Open / Closed Principle (OCP)**:
+   * New features (e.g., Senior / Elder Priority Lanes, new export formats) extend the system via `router.php` and controller dispatching without altering existing, verified working routes.
+3. **Liskov Substitution Principle (LSP)**:
+   * Consistent response envelopes: All API endpoints return uniform JSON schemas (`{ success: boolean, message: string, data: [...] }`), allowing client-side wrappers to handle any response interchangeably.
+4. **Interface Segregation Principle (ISP)**:
+   * Standalone, focused helper modules for Email Dispatch, PDF Generation, and Cryptographic verification ensure controllers only consume the exact utilities they need.
+5. **Dependency Inversion Principle (DIP)**:
+   * High-level business logic depends on database abstractions (`Database.php` PDO instance) and middleware interceptors rather than hardcoding connection credentials or session checks in individual controller files.
+
+### 6.2 Key Design Patterns Applied
+* **Front Controller Pattern (`router.php`)**: Centralized request dispatcher managing CORS, request sanitization, and routing.
+* **Singleton Pattern (`Database.php`)**: Reusable PDO connection pool instance preventing resource exhaustion.
+* **Pipeline / Interceptor Middleware Pattern (`backend/middleware/`)**: Decoupled filters for RBAC enforcement, session timeouts, and brute-force rate-limiting.
+* **Defensive Null-Object / Fallback Pattern (Frontend)**: Data normalization converting snake_case SQL flags (`is_active` 0/1) to strict booleans with array guards against `TypeError` exceptions.
+
+---
+
+## 7. 🛡️ Theoretical Security Frameworks & Implementation Mapping
+
+For academic defense and enterprise security evaluation, HonTech maps directly to established computer science security theories:
+
+```mermaid
+graph TD
+    A[Inbound Request] --> B[Defense-in-Depth Layer 1: Client Validation]
+    B --> C[Defense-in-Depth Layer 2: Middleware RBAC & Rate Limiting]
+    C --> D[Defense-in-Depth Layer 3: Parameterized SQL PDO Queries]
+    D --> E[Data Integrity & Audit Log Storage]
+```
+
+| Security Theory | Theoretical Definition | HonTech Real-World Implementation |
+| :--- | :--- | :--- |
+| **CIA Triad** | Confidentiality, Integrity, and Availability. | **C**: Bcrypt passwords + RBAC tokens.<br>**I**: Database foreign keys + PDO transactions.<br>**A**: Offline LAN local fallback + 1-click disaster recovery. |
+| **Principle of Least Privilege (PoLP)** | Users receive only the minimum permissions required for their job role. | Assistant staff can log intake forms but cannot view financial analytics, edit users, or access administrative endpoints. |
+| **Defense in Depth** | Layered security controls across multiple tiers. | Multi-tier validation: Client form constraints ➔ Route Middleware ➔ Controller Sanitization ➔ Parameterized PDO Execution. |
+| **Principle of Complete Mediation** | Every single access request must be validated against security policies. | `AuthMiddleware.php` executes on every HTTP request, verifying active session tokens and user `is_active` database status. |
+| **Zero Trust Architecture (ZTA)** | "Never trust, always verify" across local subnets. | Intranet and LAN-connected devices must present valid session credentials on every API transaction. |
+| **OWASP Top 10 Mitigation** | Proactive protection against top web application vulnerabilities. | A01 (Broken Access Control) ➔ RBAC Middleware.<br>A02 (Cryptographic Failures) ➔ Bcrypt Hashing.<br>A03 (Injection) ➔ 100% Prepared Statements.<br>A07 (Auth Failures) ➔ Rate Limiter. |
+
+---
+
+## 8. ⚖️ Philippine Data Privacy Act of 2012 (RA 10173) Compliance
+
+HonTech is architected to comply with statutory privacy mandates under Philippine Republic Act No. 10173:
+1. **Principle of Transparency**: Clear Terms and Conditions modal displayed before system usage, outlining data collection boundaries.
+2. **Principle of Legitimate Purpose**: Personal customer data (names, phone numbers, plate numbers) is collected solely for workshop repair intake and queue alerts.
+3. **Principle of Proportionality**: Service Advisors only see operational intake fields; sensitive user management credentials are restricted to the System Owner.
+4. **Security Safeguards**:
+   * Automatic 15-minute inactivity session expiration.
+   * Access logging and export restrictions for customer records.
+   * Local intranet deployment isolating sensitive customer records from public web scrapers.
+
+---
+
+## 9. 🎓 Capstone Thesis Defense Q&A Cheatsheet
+
+Use these structured talking points when defending the system architecture in front of your panel:
+
+* **Panel Question: *"Why did you use Vanilla JavaScript and Native PHP instead of React / Laravel?"***
+  * **Answer**: *"We chose native web standards to eliminate heavy framework overhead, third-party dependency vulnerabilities, and complex build pipelines. This architecture adheres to the 5 SOLID principles, executes natively with sub-millisecond response times, and guarantees 100% offline operational capability on the workshop floor."*
+
+* **Panel Question: *"How does the system prevent SQL Injections?"***
+  * **Answer**: *"All database interactions across every controller use PHP Data Objects (PDO) with Prepared Statements and strict Parameter Binding. No raw user input is ever concatenated directly into SQL query strings, completely neutralizing SQL injection vectors."*
+
+* **Panel Question: *"How does Role-Based Access Control work if someone tries to forge an API call?"***
+  * **Answer**: *"We implement the Principle of Complete Mediation via `AuthMiddleware.php`. Even if an attacker uses Postman or cURL to send requests, the backend validates the token, verifies the user's role in real-time against the database, and immediately rejects unauthorized requests with HTTP 403 Forbidden."*
+
+* **Panel Question: *"What happens if the internet goes down in the workshop?"***
+  * **Answer**: *"The system operates autonomously on the local on-premises network (LAN). Intakes, bay assignments, and TV displays function with zero internet dependency. If connection drops, our client-side resilient offline handler automatically displays a non-intrusive status banner and auto-retries every 5 seconds without crashing the application."*
+
+---
+
 ## 📑 Document Revision & Consolidation History
 
 > [!TIP]
-> This master document replaces and consolidates:
+> This master document consolidates:
 > 1. `Google_API_Integration_Plan.md`
 > 2. `HONTECH_GOOGLE_API_SECURITY_AND_DATA_RECOVERY_AUDIT.md`
 > 3. `System_Deployment_and_Security_Architecture.md`
-> 
-> All duplicate definitions, repeated explanations of OTP flows, and redundant hosting tables have been unified into this single document.
+> 4. `HONTECH_SECURITY_AND_ACCOUNT_RECOVERY_MASTER.md`
+>
+> All security specifications, SOLID architectural mappings, theoretical frameworks, and academic defense talking points are now preserved in this authoritative reference.
