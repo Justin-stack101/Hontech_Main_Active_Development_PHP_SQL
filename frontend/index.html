@@ -1426,7 +1426,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Operational Report Data</h3>
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Target vs. Actual Inflow Tracking & Daily Intake Volume Analysis</p>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Target vs. Actual Intakes & Daily Intake Volume Analysis</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
@@ -1479,7 +1479,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Flow KPI Summary Cards (Plan vs Actual Inflow) - Clean Executive Monochrome Palette -->
+                    <!-- Flow KPI Summary Cards (Plan vs Actual Intakes) - Clean Executive Monochrome Palette -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                         <!-- 1. Carry-Over Flow Card -->
                         <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
@@ -1492,7 +1492,7 @@
                             <div>
                                 <div class="flex items-baseline gap-2">
                                     <h4 class="text-3xl font-black text-slate-900" id="report-carry-pumasok">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Active Inflow</span>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Active Intakes</span>
                                 </div>
                                 <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
                                     <div id="report-carry-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
@@ -1550,11 +1550,11 @@
                             </div>
                         </div>
 
-                        <!-- 4. Total Daily Intake Inflow Card -->
+                        <!-- 4. Total Daily Intake Card -->
                         <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="clipboard-check" class="w-3 h-3 text-slate-500"></i> Total Inflow
+                                    <i data-lucide="clipboard-check" class="w-3 h-3 text-slate-500"></i> Total Intakes
                                 </span>
                                 <span id="report-total-intakes-badge" class="text-[10px] font-bold uppercase text-slate-500">Period Total</span>
                             </div>
@@ -1574,12 +1574,12 @@
                         </div>
                     </div>
 
-                    <!-- SECTION: Category Inflow & Target Fulfillment Matrix (Target vs Actual Inflow + Chart.js) -->
+                    <!-- SECTION: Category Intakes & Target Fulfillment Matrix (Target vs Actual Intakes + Chart.js) -->
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
                             <div>
                                 <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Inflow & Target Fulfillment
+                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Intakes & Target Fulfillment
                                 </h4>
                                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Plan / Scheduled Target vs Actual Intakes across Workshop Service Categories</p>
                             </div>
@@ -1606,7 +1606,7 @@
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-300 border border-slate-400"></span>
                                     <span class="text-[11px] font-bold text-slate-600">Planned Target</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-slate-900 ml-3"></span>
-                                    <span class="text-[11px] font-bold text-slate-900">Actual Inflow</span>
+                                    <span class="text-[11px] font-bold text-slate-900">Actual Intakes</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ml-3"></span>
                                     <span class="text-[11px] font-bold text-emerald-700">Completed & Released</span>
                                 </div>
@@ -1623,7 +1623,7 @@
                                 <thead>
                                     <tr class="bg-gray-50/75 border-b border-gray-200 text-gray-400 text-[10px] font-black uppercase tracking-widest">
                                         <th class="px-6 py-3.5">Service Category</th>
-                                        <th class="px-6 py-3.5">Inflow vs Target (Fulfillment)</th>
+                                        <th class="px-6 py-3.5">Intake vs Target (Fulfillment)</th>
                                         <th class="px-6 py-3.5 text-center">Workflow Distribution</th>
                                         <th class="px-6 py-3.5 text-center">Variance</th>
                                         <th class="px-6 py-3.5 text-right">Service Type</th>
@@ -1656,7 +1656,7 @@
                                         <th class="px-6 py-4 bg-white">Day</th>
                                         <th class="px-6 py-4 bg-white text-center">Walk-In</th>
                                         <th class="px-6 py-4 bg-white text-center">Online</th>
-                                        <th class="px-6 py-4 bg-white text-center">Total Inflow</th>
+                                        <th class="px-6 py-4 bg-white text-center">Total Intakes</th>
                                         <th class="px-6 py-4 bg-white text-center">PMS</th>
                                         <th class="px-6 py-4 bg-white text-center">GRS</th>
                                         <th class="px-6 py-4 bg-white text-center">Carry-Over</th>
@@ -4047,7 +4047,7 @@
         </div>
     </div>
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.39"></script>
+    <script src="js/app.js?v=3.40"></script>
 </body>
 
 </html>

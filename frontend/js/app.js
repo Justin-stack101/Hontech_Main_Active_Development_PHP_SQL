@@ -3841,9 +3841,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('report-total-walkin')) document.getElementById('report-total-walkin').innerText = totalWalkin;
             if (document.getElementById('report-total-online')) document.getElementById('report-total-online').innerText = totalOnline;
             if (document.getElementById('report-total-bar')) document.getElementById('report-total-bar').style.width = `${Math.min(100, totalFulfillment)}%`;
-            if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Inflow Target`;
+            if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Intake Target`;
 
-            // 2. POPULATE TABLE 1: Category Inflow Matrix & Chart.js Graph (Clean Executive Architecture)
+            // 2. POPULATE TABLE 1: Category Intakes Matrix & Chart.js Graph (Clean Executive Architecture)
             const categoryRows = [
                 {
                     name: 'Carry-Over (Unfinished Prev Day)',
@@ -3920,7 +3920,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     categoryPercentage: 0.75
                                 },
                                 {
-                                    label: 'Actual Inflow',
+                                    label: 'Actual Intakes',
                                     data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
                                     backgroundColor: '#0f172a',
                                     borderColor: '#0f172a',
@@ -4014,7 +4014,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 catHtml += `
                     <tr class="bg-slate-900 text-white font-bold text-xs border-t-2 border-slate-700">
-                        <td class="px-6 py-4 text-white uppercase tracking-wider font-black">TOTAL WORKSHOP INFLOW</td>
+                        <td class="px-6 py-4 text-white uppercase tracking-wider font-black">TOTAL WORKSHOP INTAKES</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-20 bg-slate-800 h-2 rounded-full overflow-hidden shrink-0">

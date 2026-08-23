@@ -391,6 +391,21 @@
 
 ---
 
+### 🏁 Checkpoint 34: Exact Automotive "Intake / Intakes" Terminology Alignment
+* **User Need**: Retain original domain terminology and completely eliminate "Pasok / Pumasok" in favor of exact automotive industry terms ("Actual Intakes", "Target vs. Actual Intakes", "Total Intakes", "Active Intakes").
+* **Key Deliverables**:
+  * Replaced all occurrences with exact "Intakes":
+    * "Target vs. Actual Intakes & Daily Intake Volume Analysis"
+    * "Active Intakes" on Carry-Over Flow Card.
+    * "Total Intakes" on Period Intake Card and Table 2 column.
+    * "Actual Intakes" on Chart.js legend, dataset label, and tooltips.
+    * "Category Intakes & Target Fulfillment" on Table 1 header.
+    * "TOTAL WORKSHOP INTAKES" on Table 1 summary row.
+  * Version bumped to `js/app.js?v=3.40`.
+* **Git Tag**: `checkpoint-34-exact-intakes-terminology-alignment`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
