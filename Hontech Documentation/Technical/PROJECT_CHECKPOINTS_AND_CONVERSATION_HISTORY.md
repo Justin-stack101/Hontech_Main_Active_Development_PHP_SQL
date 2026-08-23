@@ -161,6 +161,20 @@
 
 ---
 
+### 🏁 Checkpoint 17: Lost Connection UI Architecture & Senior Citizen Priority Lane
+* **User Need**: 
+  1. Relabel **Priority Lane** across the TV monitor and intake forms to **Senior Citizens / Elders / PWD Priority**.
+  2. Implement an elegant, non-intrusive **Lost Connection / Offline UI Design** that intercepts network drops without triggering raw developer exception modals.
+* **Key Deliverables**:
+  * Updated TV Slide 3 column header to `Priority (Senior / Elders)` and refined intake options.
+  * Built high-contrast `#lost-connection-modal` with animated beacon, Wi-Fi off icon, and troubleshooting guidance.
+  * Implemented floating top status pill (`#lost-connection-pill`) with auto-reconnect countdown (5s) and manual 1-click retry.
+  * Guarded `window.addEventListener('error')`, `window.addEventListener('unhandledrejection')`, and `apiRequest()` with `isNetworkError()` to prevent developer crash overlay on connectivity drops.
+  * Added **Lost Conn** quick simulator in Developer Credentials card.
+* **Git Tag**: `checkpoint-17-lost-connection-ui-and-senior-priority-lane`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

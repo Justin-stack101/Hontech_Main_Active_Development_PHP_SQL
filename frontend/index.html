@@ -505,15 +505,18 @@
                                 </div>
 
                                 <!-- Utility & Diagnostics Actions -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-gray-200">
-                                    <button onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-gray-200">
+                                    <button onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
                                         Google Auth
                                     </button>
-                                    <button onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
+                                    <button onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
                                         Dev Mailbox
                                     </button>
-                                    <button onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-3 rounded-lg transition cursor-pointer text-center">
-                                        Test Diagnostics
+                                    <button onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
+                                        Test Crash
+                                    </button>
+                                    <button onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1">
+                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-600"></i> Lost Conn
                                     </button>
                                 </div>
                             </div>
@@ -1885,7 +1888,7 @@
                                         <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
                                         <option value="Special Lane">Special Lane</option>
-                                        <option value="Priority Lane">Priority Lane</option>
+                                        <option value="Priority Lane">Priority Lane (Senior / Elders)</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
@@ -1920,7 +1923,7 @@
                                         <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
                                         <option value="Special Lane">Special Lane</option>
-                                        <option value="Priority Lane">Priority Lane</option>
+                                        <option value="Priority Lane">Priority Lane (Senior / Elders)</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-3"></i>
                                 </div>
@@ -2232,7 +2235,7 @@
                                 <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                                     <div class="flex items-center gap-2 min-w-0">
                                         <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
-                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Priority (VIP / Urgent)</h3>
+                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Priority (Senior / Elders)</h3>
                                     </div>
                                     <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-gray-950 shrink-0 ml-1.5" id="tv-priority-lane-count">0</span>
                                 </div>
@@ -3777,7 +3780,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.26"></script>
+    <script src="js/app.js?v=3.28"></script>
 </body>
 
 </html>
