@@ -2244,6 +2244,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (normalized) value = normalized;
                 }
 
+                if (field === 'location' && typeof value === 'string' && value.toLowerCase().startsWith('bay')) {
+                    playBayDispatchSound();
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field, value }
@@ -2331,7 +2335,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
 
-                if (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed') {
+                if (newStatus === 'In Progress') {
+                    playBayDispatchSound();
+                } else if (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed') {
                     playAutomotiveChime();
                 }
 
@@ -2381,7 +2387,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             try {
                 // Play celebratory dual chime on vehicle release
-                playAutomotiveChime();
+                playReleaseConfirmSound();
 
                 // Final auto-calculate before completing
                 const computed = calculateGoalStatusForJob(job);
@@ -6765,6 +6771,98 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
         window.playAutomotiveChime = playAutomotiveChime;
+
+        function playBayDispatchSound() {
+            if (!tvAudioEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!tvAudioCtx) tvAudioCtx = new AudioContextClass();
+                if (tvAudioCtx.state === 'suspended') {
+                    tvAudioCtx.resume();
+                }
+
+                const now = tvAudioCtx.currentTime;
+                // Energetic Ascending Mechanical Cadence (330Hz E4 -> 495Hz B4 -> 660Hz E5)
+                const freqs = [330, 495, 660];
+                freqs.forEach((freq, idx) => {
+                    const osc = tvAudioCtx.createOscillator();
+                    const gain = tvAudioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+                    gain.gain.setValueAtTime(0.26, now + idx * 0.09);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(tvAudioCtx.destination);
+                    osc.start(now + idx * 0.09);
+                    osc.stop(now + idx * 0.09 + 0.4);
+                });
+            } catch (err) {
+                console.warn('Bay dispatch sound skipped:', err);
+            }
+        }
+        window.playBayDispatchSound = playBayDispatchSound;
+
+        function playReleaseConfirmSound() {
+            if (!tvAudioEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!tvAudioCtx) tvAudioCtx = new AudioContextClass();
+                if (tvAudioCtx.state === 'suspended') {
+                    tvAudioCtx.resume();
+                }
+
+                const now = tvAudioCtx.currentTime;
+                // Dual high-frequency celebratory confirmation chime (880Hz -> 1174.66Hz)
+                const freqs = [880, 1174.66];
+                freqs.forEach((freq, idx) => {
+                    const osc = tvAudioCtx.createOscillator();
+                    const gain = tvAudioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                    gain.gain.setValueAtTime(0.3, now + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.12 + 0.7);
+                    osc.connect(gain);
+                    gain.connect(tvAudioCtx.destination);
+                    osc.start(now + idx * 0.12);
+                    osc.stop(now + idx * 0.12 + 0.75);
+                });
+            } catch (err) {
+                console.warn('Release confirm sound skipped:', err);
+            }
+        }
+        window.playReleaseConfirmSound = playReleaseConfirmSound;
+
+        function playSlaWarningSound() {
+            if (!tvAudioEnabled) return;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!tvAudioCtx) tvAudioCtx = new AudioContextClass();
+                if (tvAudioCtx.state === 'suspended') {
+                    tvAudioCtx.resume();
+                }
+
+                const now = tvAudioCtx.currentTime;
+                // Double caution warning tone (520Hz x 2)
+                [0, 0.2].forEach(delay => {
+                    const osc = tvAudioCtx.createOscillator();
+                    const gain = tvAudioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(520, now + delay);
+                    gain.gain.setValueAtTime(0.18, now + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.14);
+                    osc.connect(gain);
+                    gain.connect(tvAudioCtx.destination);
+                    osc.start(now + delay);
+                    osc.stop(now + delay + 0.15);
+                });
+            } catch (err) {
+                console.warn('SLA warning sound skipped:', err);
+            }
+        }
+        window.playSlaWarningSound = playSlaWarningSound;
 
         // Auto-resume audio context on user interaction
         window.addEventListener('click', () => {
