@@ -175,6 +175,20 @@
 
 ---
 
+### 🏁 Checkpoint 18: Persistent Floating Developer Testing Suite & Interactive Simulator
+* **User Need**: Provide an interactive developer version widget accessible across all views (Login, TV monitor, Staff Portal, Workshop Bays, Intakes, Analytics) so developers can preview and test the Lost Connection Modal, Offline Pill, Crash Diagnostics, Database Re-Seeding, and Boot Preloader in real-time.
+* **Key Deliverables**:
+  * Added floating `#dev-toolbox-container` widget in the bottom-right corner of the screen with a responsive toggle button and chevron indicator.
+  * Integrated 5 real-time simulation triggers:
+    1. **Lost Conn (Modal)**: Previews the frosted amber connection lost modal with live countdown.
+    2. **Offline Status (Pill)**: Previews the top floating connection offline badge.
+    3. **Crash Diagnostics**: Triggers the high-contrast developer error overlay.
+    4. **Reset & Seed DB**: Executes complete MariaDB clean re-seeding with log reporting.
+    5. **Boot Preloader Demo**: Simulates 3-second application startup splash screen.
+* **Git Tag**: `checkpoint-18-floating-developer-testing-suite`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

@@ -3779,8 +3779,81 @@
         </div>
     </div>
 
+    <!-- FLOATING DEVELOPER TOOLBOX & SIMULATION SUITE (ACCESSIBLE ON ALL SCREENS) -->
+    <div id="dev-toolbox-container" class="fixed bottom-5 right-5 z-[9990] select-none">
+        <!-- Floating Dev Trigger Button -->
+        <button onclick="toggleDevToolbox()" 
+                id="dev-toolbox-btn" 
+                class="bg-gray-950/90 hover:bg-black text-white px-3.5 py-2.5 rounded-2xl border border-gray-800 shadow-2xl backdrop-blur-md flex items-center gap-2.5 transition hover:scale-105 active:scale-95 cursor-pointer group">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-black uppercase tracking-wider text-gray-200 group-hover:text-white">Dev Suite</span>
+            <i data-lucide="chevron-up" id="dev-toolbox-chevron" class="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform duration-200"></i>
+        </button>
+
+        <!-- Collapsible Dev Menu Panel -->
+        <div id="dev-toolbox-menu" class="hidden absolute bottom-14 right-0 w-72 bg-white rounded-2xl border border-gray-200 shadow-2xl p-4 space-y-3 fade-in">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-red-50 text-red-600 rounded-lg"><i data-lucide="terminal" class="w-4 h-4"></i></div>
+                    <div>
+                        <h4 class="text-xs font-black uppercase tracking-tight text-gray-900">Developer Suite</h4>
+                        <p class="text-[9px] text-gray-400 font-bold uppercase">Simulation & Diagnostics</p>
+                    </div>
+                </div>
+                <span class="text-[9px] font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100">Live Dev</span>
+            </div>
+
+            <div class="space-y-1.5">
+                <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" 
+                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 transition text-xs font-bold cursor-pointer group text-left">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                        <span>Lost Conn (Modal)</span>
+                    </span>
+                    <span class="text-[9px] uppercase font-black bg-white text-amber-800 px-1.5 py-0.5 rounded border border-amber-200 shrink-0">Preview</span>
+                </button>
+
+                <button onclick="window.showLostConnectionPill(); toggleDevToolbox(false);" 
+                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-800 transition text-xs font-bold cursor-pointer group text-left">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="bell-off" class="w-4 h-4 text-gray-600 shrink-0"></i>
+                        <span>Offline Status (Pill)</span>
+                    </span>
+                    <span class="text-[9px] uppercase font-black bg-white text-gray-600 px-1.5 py-0.5 rounded border border-gray-200 shrink-0">Banner</span>
+                </button>
+
+                <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" 
+                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 transition text-xs font-bold cursor-pointer group text-left">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-red-600 shrink-0"></i>
+                        <span>Crash Diagnostics</span>
+                    </span>
+                    <span class="text-[9px] uppercase font-black bg-white text-red-800 px-1.5 py-0.5 rounded border border-red-200 shrink-0">Overlay</span>
+                </button>
+
+                <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" 
+                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 transition text-xs font-bold cursor-pointer group text-left">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="database-backup" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                        <span>Reset & Seed DB</span>
+                    </span>
+                    <span class="text-[9px] uppercase font-black bg-white text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-200 shrink-0">MariaDB</span>
+                </button>
+
+                <button onclick="triggerDevLoadingDemo(3000); toggleDevToolbox(false);" 
+                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition text-xs font-bold cursor-pointer group text-left">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="loader-2" class="w-4 h-4 text-blue-600 shrink-0"></i>
+                        <span>Boot Preloader Demo</span>
+                    </span>
+                    <span class="text-[9px] uppercase font-black bg-white text-blue-800 px-1.5 py-0.5 rounded border border-blue-200 shrink-0">Splash</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.28"></script>
+    <script src="js/app.js?v=3.29"></script>
 </body>
 
 </html>
