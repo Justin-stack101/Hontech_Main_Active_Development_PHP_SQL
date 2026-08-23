@@ -224,38 +224,76 @@
             const cNo = colno || data.colno || 0;
             const stk = stack || data.stack || 'No stack trace available.';
 
-            const time = new Date().toISOString();
-            const logContent = `==================================================
-HONTECH SYSTEM EXCEPTION DIAGNOSTICS REPORT
-==================================================
-Timestamp: ${time}
-Error Message: ${eMsg}
-Location: ${src} (Line: ${lNo}, Col: ${cNo})
+            const now = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+            const timeStr = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+            const formattedTimestamp = `${dateStr} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+            const filename = `hontech_crash_report_${dateStr}_${timeStr}.log`;
+            const reportId = `HTR-CRASH-${dateStr.replace(/-/g, '')}-${timeStr}`;
 
-User Environment Diagnostics:
-- User Name: ${currentUserName || 'Guest User'}
-- User Email: ${currentUserEmail || 'N/A'}
-- User Role: ${currentUserRole || 'Guest / Guest Session'}
-- Active Branch: ${localStorage.getItem('selectedBranch') || 'Branch A'}
-- URL Path: ${window.location.href}
-- Browser / UserAgent: ${navigator.userAgent}
-- Viewport Size: ${window.innerWidth}x${window.innerHeight} px
-- Root Cause Category: ${eMsg.includes('ReferenceError') ? 'Scope / Global Variable Reference Error' : (eMsg.includes('TypeError') ? 'Type Mismatch / Method Invocation Error' : 'Unhandled Runtime Exception')}
-- Local Storage State: ${JSON.stringify(localStorage)}
+            const safeBranch = localStorage.getItem('selectedBranch') || 'Marikina Branch';
+            const safeUser = (typeof currentUserName !== 'undefined' && currentUserName) ? currentUserName : 'Guest User';
+            const safeEmail = (typeof currentUserEmail !== 'undefined' && currentUserEmail) ? currentUserEmail : 'N/A';
+            const safeRole = (typeof currentUserRole !== 'undefined' && currentUserRole) ? currentUserRole : 'Guest';
 
-==================================================
-STACK TRACE:
-==================================================
+            const rootCategory = eMsg.includes('ReferenceError') 
+                ? 'Scope / Undeclared Variable Reference Error' 
+                : (eMsg.includes('TypeError') 
+                    ? 'Type Mismatch / Null-Pointer Method Invocation' 
+                    : (eMsg.includes('SyntaxError') 
+                        ? 'Script Syntax / Parser Error' 
+                        : (eMsg.includes('Network') || eMsg.includes('fetch') 
+                            ? 'Asynchronous Network / API Timeout Error' 
+                            : 'Unhandled Runtime System Exception')));
+
+            const logContent = `======================================================================
+HONTECH AUTOCENTER — ENTERPRISE SYSTEM EXCEPTION DIAGNOSTICS REPORT
+======================================================================
+Report Identifier : ${reportId}
+Generated At      : ${formattedTimestamp}
+Environment       : Local Area Network (LAN Intranet) / Production-Staging
+Platform          : HonTech Workshop Management System (Branch 2: Security & Recovery)
+Technical Lead    : Justin Nolasco J. (HonTech Systems Group & STI College Marikina)
+======================================================================
+
+[1] EXCEPTION SUMMARY
+----------------------------------------------------------------------
+• Error Type      : Runtime Exception
+• Error Message   : ${eMsg}
+• Source Location : ${src} (Line: ${lNo}, Column: ${cNo})
+• Root Cause Cat. : ${rootCategory}
+
+[2] SESSION & ENVIRONMENT CONTEXT
+----------------------------------------------------------------------
+• Active User     : ${safeUser}
+• User Email      : ${safeEmail}
+• Assigned Role   : ${safeRole}
+• Active Branch   : ${safeBranch}
+• Active URL Path : ${window.location.href}
+• Browser Agent   : ${navigator.userAgent}
+• Viewport Size   : ${window.innerWidth} x ${window.innerHeight} px
+• System Status   : Active Client Session
+
+[3] COMPLETE STACK TRACE
+----------------------------------------------------------------------
 ${stk}
-==================================================
-Report Generated Automatically by Developer Crash Reporter.
+
+[4] CLIENT SESSION STATE SNAPSHOT
+----------------------------------------------------------------------
+${JSON.stringify(localStorage, null, 2)}
+
+======================================================================
+END OF DIAGNOSTIC REPORT — CONFIDENTIAL & PROPRIETARY
+Prepared for HonTech AutoCenter IT Operations & Academic Audit.
+======================================================================
 `;
             const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `hontech_crash_${new Date().getTime()}.txt`;
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
@@ -263,7 +301,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 window.URL.revokeObjectURL(url);
             }, 100);
             if (typeof showSystemToast === 'function') {
-                showSystemToast('Diagnostic log file downloaded.', 'success');
+                showSystemToast(`Saved: ${filename}`, 'success', 'Crash Report Exported');
             }
         };
 

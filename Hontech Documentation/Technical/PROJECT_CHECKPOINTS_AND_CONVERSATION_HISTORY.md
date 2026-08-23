@@ -294,6 +294,20 @@
 
 ---
 
+### 🏁 Checkpoint 27: Enterprise Crash Report Export Redesign & Timestamped Log File Naming
+* **User Need**: Redesign the crash log exporter to generate an enterprise-formatted log filename (`hontech_crash_report_YYYY-MM-DD_HHmmss.log`) with a structured, professional diagnostic layout.
+* **Key Deliverables**:
+  * Formatted output filename to `hontech_crash_report_YYYY-MM-DD_HHmmss.log` with unique `HTR-CRASH-` report identifier.
+  * Formatted internal report sections:
+    * `[1] EXCEPTION SUMMARY` (Error Type, Message, Location, Root Cause Category).
+    * `[2] SESSION & ENVIRONMENT CONTEXT` (User, Email, Role, Branch, URL, User Agent, Viewport).
+    * `[3] COMPLETE STACK TRACE` (Clean numbered code stack).
+    * `[4] CLIENT SESSION STATE SNAPSHOT` (Formatted local storage state).
+  * Version bumped to `js/app.js?v=3.35`.
+* **Git Tag**: `checkpoint-27-enterprise-crash-report-export-redesign`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
