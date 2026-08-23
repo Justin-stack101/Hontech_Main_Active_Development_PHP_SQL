@@ -1314,6 +1314,26 @@ Report Generated Automatically by Developer Crash Reporter.
                     }
                 })();
             }
+            if (id === 'queue') {
+                (async () => {
+                    try {
+                        await loadData();
+                        renderStaffTables();
+                    } catch (e) {
+                        console.error('Error loading queue records:', e);
+                    }
+                })();
+            }
+            if (id === 'staff') {
+                (async () => {
+                    try {
+                        await loadData();
+                        renderStaffManagement();
+                    } catch (e) {
+                        console.error('Error loading staff management:', e);
+                    }
+                })();
+            }
             if (id === 'profile') {
                 loadSystemSettingsIntoForm();
             }
@@ -5935,7 +5955,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 specialList.innerHTML = specialLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
 
-            lucide.createIcons();
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
             startTVAutoScroll();
         }
 
@@ -5962,10 +5982,22 @@ Report Generated Automatically by Developer Crash Reporter.
             const select2 = document.getElementById('bays-module-select');
             if (select2) select2.value = num.toString();
             
-            renderStaffTables();
-            renderTV();
-            renderWorkshopBaysModule();
-            if (typeof renderReports === 'function') renderReports();
+            try {
+                if (typeof renderStaffTables === 'function') renderStaffTables();
+            } catch (e) { console.warn('renderStaffTables skipped on bay change:', e); }
+
+            try {
+                if (typeof renderTV === 'function') renderTV();
+            } catch (e) { console.warn('renderTV skipped on bay change:', e); }
+
+            try {
+                if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+            } catch (e) { console.warn('renderWorkshopBaysModule skipped on bay change:', e); }
+
+            try {
+                if (typeof renderReportDataModule === 'function') renderReportDataModule();
+            } catch (e) { console.warn('renderReportDataModule skipped on bay change:', e); }
+
             showSystemToast(`Workshop capacity configured to ${num} service bays.`, 'success', 'Bays Configured');
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
