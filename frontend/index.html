@@ -2976,6 +2976,22 @@
                                     <option value="24h">24-Hour format (Military)</option>
                                 </select>
                             </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block">Ready Chime Audio Sound</label>
+                                    <button type="button" onclick="playAutomotiveChime(document.getElementById('settings-chime-theme').value); showSystemToast('Playing chime preview...', 'info', 'Audio Preview');" class="text-[10px] font-bold text-red-600 hover:text-red-700 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Test Sound
+                                    </button>
+                                </div>
+                                <select id="settings-chime-theme" onchange="setChimeTheme(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="harmonic">Harmonic Bell (Ascending Tri-Tone - Default)</option>
+                                    <option value="keyfob">Automotive Keyfob Chirp (Car Lock/Unlock)</option>
+                                    <option value="marimba">Executive Soft Marimba (4-Note Melodic)</option>
+                                    <option value="horn">Shop Floor Dual Horn (High-Resonance Brass)</option>
+                                    <option value="scanner">Sci-Fi Diagnostic Ping (High-Tech Sweep)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -4586,7 +4602,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.48"></script>
+    <script src="js/app.js?v=3.49"></script>
 </body>
 
 </html>

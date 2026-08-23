@@ -6636,7 +6636,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.toggleTVSound = toggleTVSound;
 
-        function playAutomotiveChime() {
+        function setChimeTheme(theme) {
+            if (!theme) return;
+            localStorage.setItem('hontech_chime_theme', theme);
+            playAutomotiveChime(theme);
+            showSystemToast(`Chime sound updated to ${theme.toUpperCase()}`, 'success', 'Audio Preferences');
+        }
+        window.setChimeTheme = setChimeTheme;
+
+        function playAutomotiveChime(themeOverride) {
             if (!tvAudioEnabled) return;
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -6646,40 +6654,112 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     tvAudioCtx.resume();
                 }
 
+                const theme = themeOverride || localStorage.getItem('hontech_chime_theme') || 'harmonic';
                 const now = tvAudioCtx.currentTime;
-                // Rich Dual-Tone Harmonic Automotive Chime (587.33Hz D5 -> 880Hz A5)
-                const osc1 = tvAudioCtx.createOscillator();
-                const gain1 = tvAudioCtx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(587.33, now);
-                gain1.gain.setValueAtTime(0.28, now);
-                gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
-                osc1.connect(gain1);
-                gain1.connect(tvAudioCtx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.6);
 
-                const osc2 = tvAudioCtx.createOscillator();
-                const gain2 = tvAudioCtx.createGain();
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(880, now + 0.14);
-                gain2.gain.setValueAtTime(0.35, now + 0.14);
-                gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
-                osc2.connect(gain2);
-                gain2.connect(tvAudioCtx.destination);
-                osc2.start(now + 0.14);
-                osc2.stop(now + 1.15);
+                if (theme === 'keyfob') {
+                    // Automotive Keyfob Chirp (2 quick crisp electronic chirps: 2200Hz -> 2600Hz)
+                    [0, 0.12].forEach(delay => {
+                        const osc = tvAudioCtx.createOscillator();
+                        const gain = tvAudioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(2200, now + delay);
+                        osc.frequency.exponentialRampToValueAtTime(2600, now + delay + 0.06);
+                        gain.gain.setValueAtTime(0.3, now + delay);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.07);
+                        osc.connect(gain);
+                        gain.connect(tvAudioCtx.destination);
+                        osc.start(now + delay);
+                        osc.stop(now + delay + 0.08);
+                    });
+                } else if (theme === 'marimba') {
+                    // Executive Soft Marimba (4 warm melodic acoustic notes: C5, E5, G5, C6)
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const osc = tvAudioCtx.createOscillator();
+                        const gain = tvAudioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+                        gain.gain.setValueAtTime(0.24, now + idx * 0.11);
+                        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.11 + 0.55);
+                        osc.connect(gain);
+                        gain.connect(tvAudioCtx.destination);
+                        osc.start(now + idx * 0.11);
+                        osc.stop(now + idx * 0.11 + 0.6);
+                    });
+                } else if (theme === 'horn') {
+                    // Shop Floor Resonant Brass Dual Chime (440Hz -> 659Hz dual tone)
+                    [440, 659.25].forEach((freq, idx) => {
+                        const osc = tvAudioCtx.createOscillator();
+                        const gain = tvAudioCtx.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+                        gain.gain.setValueAtTime(0.18, now + idx * 0.14);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.65);
+                        osc.connect(gain);
+                        gain.connect(tvAudioCtx.destination);
+                        osc.start(now + idx * 0.14);
+                        osc.stop(now + idx * 0.14 + 0.7);
+                    });
+                } else if (theme === 'scanner') {
+                    // Sci-Fi Diagnostic Scanner Sweep & Harmonic Ring
+                    const osc = tvAudioCtx.createOscillator();
+                    const gain = tvAudioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(750, now);
+                    osc.frequency.exponentialRampToValueAtTime(1750, now + 0.18);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.connect(gain);
+                    gain.connect(tvAudioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
 
-                const osc3 = tvAudioCtx.createOscillator();
-                const gain3 = tvAudioCtx.createGain();
-                osc3.type = 'triangle';
-                osc3.frequency.setValueAtTime(1174.66, now + 0.28);
-                gain3.gain.setValueAtTime(0.22, now + 0.28);
-                gain3.gain.exponentialRampToValueAtTime(0.0001, now + 1.3);
-                osc3.connect(gain3);
-                gain3.connect(tvAudioCtx.destination);
-                osc3.start(now + 0.28);
-                osc3.stop(now + 1.35);
+                    const osc2 = tvAudioCtx.createOscillator();
+                    const gain2 = tvAudioCtx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(1400, now + 0.14);
+                    gain2.gain.setValueAtTime(0.2, now + 0.14);
+                    gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+                    osc2.connect(gain2);
+                    gain2.connect(tvAudioCtx.destination);
+                    osc2.start(now + 0.14);
+                    osc2.stop(now + 0.85);
+                } else {
+                    // Default: Harmonic Bell (D5 -> A5 -> D6)
+                    const osc1 = tvAudioCtx.createOscillator();
+                    const gain1 = tvAudioCtx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(587.33, now);
+                    gain1.gain.setValueAtTime(0.28, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+                    osc1.connect(gain1);
+                    gain1.connect(tvAudioCtx.destination);
+                    osc1.start(now);
+                    osc1.stop(now + 0.6);
+
+                    const osc2 = tvAudioCtx.createOscillator();
+                    const gain2 = tvAudioCtx.createGain();
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(880, now + 0.14);
+                    gain2.gain.setValueAtTime(0.35, now + 0.14);
+                    gain2.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+                    osc2.connect(gain2);
+                    gain2.connect(tvAudioCtx.destination);
+                    osc2.start(now + 0.14);
+                    osc2.stop(now + 1.15);
+
+                    const osc3 = tvAudioCtx.createOscillator();
+                    const gain3 = tvAudioCtx.createGain();
+                    osc3.type = 'triangle';
+                    osc3.frequency.setValueAtTime(1174.66, now + 0.28);
+                    gain3.gain.setValueAtTime(0.22, now + 0.28);
+                    gain3.gain.exponentialRampToValueAtTime(0.0001, now + 1.3);
+                    osc3.connect(gain3);
+                    gain3.connect(tvAudioCtx.destination);
+                    osc3.start(now + 0.28);
+                    osc3.stop(now + 1.35);
+                }
             } catch (err) {
                 console.warn('Audio chime playback skipped:', err);
             }
@@ -7975,4 +8055,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 screen.classList.remove('hidden');
                 if (window.lucide) window.lucide.createIcons();
             }
+        }
+
+        // Initialize Chime Audio Theme selector from localStorage
+        const savedChimeTheme = localStorage.getItem('hontech_chime_theme') || 'harmonic';
+        const chimeSelect = document.getElementById('settings-chime-theme');
+        if (chimeSelect) {
+            chimeSelect.value = savedChimeTheme;
         }
