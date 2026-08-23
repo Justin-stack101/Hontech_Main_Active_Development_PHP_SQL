@@ -30,8 +30,13 @@ class JobRepository
 
         // Branch partitioning logic
         if ($user['role'] !== 'owner' && $user['role'] !== 'assistant') {
-            $conditions[] = "branch = ?";
-            $params[]     = $user['branch'] ?: 'Branch A';
+            $userBranch = $user['branch'] ?? 'Marikina Branch';
+            if (empty($userBranch) || $userBranch === 'Branch A' || $userBranch === 'Marikina' || $userBranch === 'Marikina Branch') {
+                $conditions[] = "(branch = 'Marikina Branch' OR branch = 'Branch A' OR branch = 'Marikina' OR branch IS NULL OR branch = '')";
+            } else {
+                $conditions[] = "branch = ?";
+                $params[]     = $userBranch;
+            }
         }
 
         $where = 'WHERE ' . implode(' AND ', $conditions);

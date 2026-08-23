@@ -40,9 +40,14 @@ foreach ($defaultUsers as $u) {
         $stmt->execute([$u['name'], $u['email'], $hashed, $u['role'], $u['branch']]);
         echo "[+] Seeded user: {$u['name']} ({$u['email']}) for {$u['branch']}\n";
     } else {
-        echo "[=] User already exists: {$u['email']}\n";
+        $stmt = $db->prepare('UPDATE users SET branch = ? WHERE email = ?');
+        $stmt->execute([$u['branch'], $u['email']]);
+        echo "[=] Updated user branch: {$u['email']} -> {$u['branch']}\n";
     }
 }
+
+// Ensure all existing active users have Marikina Branch
+$db->exec("UPDATE users SET branch = 'Marikina Branch' WHERE branch = 'Branch A' OR branch = 'Branch B' OR branch IS NULL;");
 
 // =============================================
 // SEED JOBS

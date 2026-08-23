@@ -132,8 +132,22 @@
 * **Key Deliverables**:
   * Added prominent `📍 Marikina Main Branch` badge to `#section-tv` header.
   * Updated TV slide subheaders to reflect `Marikina Main Floor` and `Marikina Workshop`.
-  * Standardized all seed database accounts and vehicle intake records to `Marikina Branch`.
-* **Git Tag**: `checkpoint-13-marikina-main-branch-branding`
+### 🏁 Checkpoint 14: GitHub Security & Environment Isolation Guide
+* **User Need**: Complete audit of repository secrecy, `.env` file isolation, and portfolio activity tracking on GitHub.
+* **Key Deliverables**:
+  * Authored comprehensive guide `GITHUB_SECURITY_AND_ENVIRONMENT_ISOLATION_GUIDE.md`.
+  * Sanitized `.env.example` templates and removed any temporary debug files.
+* **Git Tag**: `checkpoint-14-github-security-and-environment-isolation-guide`
+
+---
+
+### 🏁 Checkpoint 15: Service Advisor Table Data Visibility Fix
+* **User Need**: Fix data visibility when logged in with the Service Advisor account (`sa@hontech.com`) so Online Booking, Daily Intakes, and Carry Over tables display all active workshop data properly.
+* **Key Deliverables**:
+  * Resolved branch filter mismatch in `JobRepository.php` where legacy branch assignments filtered out `'Marikina Branch'` jobs.
+  * Enhanced `seed.php` to synchronize all existing user accounts to `'Marikina Branch'`.
+  * Verified table rendering for Service Advisor: **Online Booking Queue** (2 records), **Daily Intakes** (8 active records), and **Carry Over Data** (1 record).
+* **Git Tag**: `checkpoint-15-sa-table-data-visibility-fix`
 
 ---
 
