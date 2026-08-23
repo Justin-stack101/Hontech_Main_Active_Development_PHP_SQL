@@ -2112,11 +2112,11 @@
                 </div>
 
                 <div class="flex-1 relative min-h-0">
-                    <!-- SLIDE 1: ACTIVE BAY MONITORING (4 BAYS) -->
+                    <!-- SLIDE 1: ACTIVE BAY MONITORING (4-10 BAYS) -->
                     <div id="tv-slide-1"
                         class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Bay Monitoring</h2>
+                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
                             <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays & Real-Time Allocations</p>
                         </div>
                         <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden">
@@ -2124,7 +2124,7 @@
                         </div>
                     </div>
 
-                    <!-- SLIDE 2: SERVICE QUEUE, READY & CARRY-OVER (Clean Black, Red & White TV Design) -->
+                    <!-- SLIDE 2: SERVICE QUEUE (WAITING LIST), READY & CARRY-OVER (Clean Black, Red & White TV Design) -->
                     <div id="tv-slide-2"
                         class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
@@ -2140,7 +2140,7 @@
                                     <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue</h3>
+                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue (Waiting List)</h3>
                                         </div>
                                         <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
                                     </div>
@@ -2149,12 +2149,12 @@
                                     </div>
                                 </div>
 
-                                <!-- Ready for Release -->
+                                <!-- Ready for Release (Completed / For Claiming) -->
                                 <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
                                     <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                         <div class="flex items-center gap-2">
                                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Ready for Release</h3>
+                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Ready for Release (Claiming)</h3>
                                         </div>
                                         <span class="text-xs font-black px-3 py-0.5 rounded-full bg-emerald-600 text-white" id="tv-all-released-count">0</span>
                                     </div>
@@ -2169,8 +2169,7 @@
                                 <div class="bg-gray-950 py-2.5 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                                        <h3 class="text-sm font-black uppercase tracking-widest text-white">Carry-Over Vehicles</h3>
-                                        <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider hidden sm:inline">(Awaiting Parts / Extended Stay)</span>
+                                        <h3 class="text-sm font-black uppercase tracking-widest text-white">Carry-Over Vehicles (Awaiting Parts / Extended Stay)</h3>
                                     </div>
                                     <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-all-carryover-count">0</span>
                                 </div>
@@ -2186,7 +2185,7 @@
                         class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
                         <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
                             <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
-                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Lane Status & Active Vehicles</p>
+                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification</p>
                         </div>
                         <div class="flex-1 p-6 overflow-hidden bg-slate-100/60 flex gap-5 min-h-0">
                             <!-- Express Lane Column -->
@@ -2194,7 +2193,7 @@
                                 <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Express Lane</h3>
+                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Express Lane (PMS ≤ 60m)</h3>
                                     </div>
                                     <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-express-lane-count">0</span>
                                 </div>
@@ -2205,7 +2204,7 @@
                                 <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Flexible Lane</h3>
+                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Flexible Lane (GRS)</h3>
                                     </div>
                                     <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-flexible-lane-count">0</span>
                                 </div>
@@ -2216,7 +2215,7 @@
                                 <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Special Lane</h3>
+                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Specialty Lane (Heavy Work)</h3>
                                     </div>
                                     <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-special-lane-count">0</span>
                                 </div>
@@ -3761,7 +3760,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.22"></script>
+    <script src="js/app.js?v=3.23"></script>
 </body>
 
 </html>

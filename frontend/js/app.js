@@ -5797,13 +5797,19 @@ Report Generated Automatically by Developer Crash Reporter.
             if (tvAllUpcoming) {
                 tvAllUpcoming.innerHTML = waitingJobs.map(job => `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
-                        <div class="flex items-center gap-3.5">
-                            <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500">${job.vehicle}</span>
+                        <div class="flex flex-col text-left">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                                <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200">${job.laneType || 'Flexible Lane'}</span>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5">${job.vehicle} · <span class="text-gray-900 font-extrabold">${job.customer || job.name || 'Customer'}</span></span>
                         </div>
-                        <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
-                            ${job.category || 'General'}
-                        </span>
+                        <div class="flex flex-col items-end gap-1">
+                            <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
+                                ${job.category || 'General Service'}
+                            </span>
+                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">In Reception</span>
+                        </div>
                     </div>
                 `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Queue</div>`;
             }
@@ -5814,30 +5820,34 @@ Report Generated Automatically by Developer Crash Reporter.
             if (tvAllReleasedCount) tvAllReleasedCount.innerText = releasedAll.length;
             if (tvAllReleased) {
                 tvAllReleased.innerHTML = releasedAll.map(job => `
-                    <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs">
-                        <div class="flex items-center gap-3.5">
-                            <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800">${job.vehicle}</span>
+                    <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
+                        <div class="flex flex-col text-left">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-emerald-300">Stub: ${job.claimStub || 'N/A'}</span>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 mt-0.5">${job.vehicle} · <span class="font-extrabold text-emerald-950">${job.customer || job.name || 'Customer'}</span></span>
                         </div>
-                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg shadow-sm">
+                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm">
                             Ready to Claim
                         </span>
                     </div>
                 `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
             }
 
-            // Render Slide 2 Carry Over List (Clean 3-Column Grid)
+            // Render Slide 2 Carry Over List (Clean Grid with Full Vehicle Info)
             const tvAllCarry = document.getElementById('tv-all-carryover-list');
             const tvAllCarryCount = document.getElementById('tv-all-carryover-count');
             if (tvAllCarryCount) tvAllCarryCount.innerText = carryOverAll.length;
             if (tvAllCarry) {
                 tvAllCarry.innerHTML = carryOverAll.map(job => `
-                    <div class="bg-white border-2 border-gray-200 rounded-xl px-3.5 py-2.5 flex items-center justify-between shadow-2xs">
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
                         <div class="flex flex-col text-left">
                             <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 truncate max-w-[120px]">${job.vehicle}</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-600 truncate max-w-[180px]">${job.vehicle}</span>
+                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">${job.category || 'General Repair'} · SA: ${job.advisor || job.saName || job.sa_name || 'SA'}</span>
                         </div>
-                        <span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md">
+                        <span class="bg-amber-100 text-amber-900 border border-amber-300 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
                             Carry Over
                         </span>
                     </div>
@@ -5878,11 +5888,12 @@ Report Generated Automatically by Developer Crash Reporter.
                                 </div>
                                 <div class="flex flex-col items-center my-auto text-center">
                                     <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
-                                    <span class="text-[11px] font-bold uppercase tracking-widest text-slate-500 mt-1">${job.vehicle}</span>
+                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-600 mt-1">${job.vehicle}</span>
+                                    <span class="text-[10px] font-extrabold uppercase text-gray-400 mt-0.5">${job.customer || job.name || 'Customer'}</span>
                                 </div>
                                 <div class="w-full pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 uppercase">
                                     <span>${job.category || 'General Service'}</span>
-                                    <span class="text-slate-400 font-mono text-[9px]">${job.laneType || 'LANE'}</span>
+                                    <span class="text-slate-400 font-mono text-[9px]">${job.laneType || 'FLEXIBLE'}</span>
                                 </div>
                             </div>`;
                     } else {
@@ -5913,7 +5924,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 } else if (job.status === 'In Progress') {
                     statusBadge = `<span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">In Progress</span>`;
                 } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Waiting</span>`;
+                    statusBadge = `<span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
                 } else {
                     statusBadge = `<span class="bg-gray-100 text-gray-700 border border-gray-200 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Monitoring</span>`;
                 }
@@ -5924,8 +5935,12 @@ Report Generated Automatically by Developer Crash Reporter.
                             ${statusBadge}
                         </div>
                         <div class="flex items-center justify-between text-xs text-gray-500 font-bold uppercase tracking-wider">
-                            <span>${job.vehicle}</span>
+                            <span class="truncate max-w-[150px]">${job.vehicle}</span>
                             <span class="text-gray-900 font-black">${job.category || 'General'}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-gray-400 font-semibold border-t border-gray-100 pt-1.5">
+                            <span>SA: <strong class="text-gray-700 font-bold">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
+                            <span>${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
                         </div>
                     </div>
                 `;
