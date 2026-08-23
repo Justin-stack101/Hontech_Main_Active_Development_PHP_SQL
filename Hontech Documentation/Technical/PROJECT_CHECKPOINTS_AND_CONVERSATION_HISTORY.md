@@ -498,6 +498,19 @@
 
 ---
 
+### 🏁 Checkpoint 42: Restored Login Split-Screen Hero Banner & Responsive Layout Alignment
+* **User Directive**: Fix login screen appearance where the left hero banner was collapsed and the right login card was isolated in an empty white void.
+* **Root Cause**: Over-aggressive `.hidden` rule with `!important` was overriding Tailwind's responsive class `lg:flex` on `.auth-hero`.
+* **Key Deliverables**:
+  * Scoped defensive offline hiding rules strictly to modal/section IDs without interfering with layout classes.
+  * Added responsive CSS media queries directly to `.auth-hero` in `css/main.css` (`@media (min-width: 1024px) { display: flex; }`).
+  * Removed `hidden` class from `.auth-hero` container in `index.html`.
+  * Restored full split-screen branding hero layout with high-contrast automotive styling.
+  * Version bumped to `js/app.js?v=3.48`.
+* **Git Tag**: `checkpoint-42-login-hero-layout-restored`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

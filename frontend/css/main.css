@@ -1,10 +1,6 @@
 /* ==========================================================================
-   CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Even With Zero Internet)
+   CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Without Breaking Layouts)
    ========================================================================== */
-.hidden,
-[hidden],
-.section-content.hidden,
-.modal.hidden,
 #app-container.hidden,
 #section-dashboard.hidden,
 #section-staff.hidden,
@@ -15,9 +11,16 @@
 #modal-report-export.hidden,
 #modal-terms.hidden,
 #mobile-connect-modal.hidden,
-#dev-credentials-dropdown.hidden,
+#dev-credentials-grid.hidden,
 #dev-mailbox-modal.hidden,
-#loader-theme-modal.hidden {
+#loader-theme-modal.hidden,
+#offline-network-screen.hidden,
+#mfa-form-container.hidden,
+#forgot-form-container.hidden,
+#forgot-step-2.hidden,
+.tv-slide.hidden,
+.loader-visual.hidden,
+[hidden] {
   display: none !important;
 }
 
@@ -206,6 +209,16 @@ input[type=checkbox] {
   background-size: 24px 24px;
   position: relative;
   border-right: 4px solid #dc2626;
+}
+@media (max-width: 1023px) {
+  .auth-hero {
+    display: none !important;
+  }
+}
+@media (min-width: 1024px) {
+  .auth-hero {
+    display: flex !important;
+  }
 }
 .auth-hero::before {
   content: "";

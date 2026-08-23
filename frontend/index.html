@@ -40,11 +40,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <style>
-        /* CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Even With Zero Internet) */
-        .hidden,
-        [hidden],
-        .section-content.hidden,
-        .modal.hidden,
+        /* CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Without Breaking Layouts) */
         #app-container.hidden,
         #section-dashboard.hidden,
         #section-staff.hidden,
@@ -55,10 +51,16 @@
         #modal-report-export.hidden,
         #modal-terms.hidden,
         #mobile-connect-modal.hidden,
-        #dev-credentials-dropdown.hidden,
+        #dev-credentials-grid.hidden,
         #dev-mailbox-modal.hidden,
         #loader-theme-modal.hidden,
-        .tv-slide.hidden {
+        #offline-network-screen.hidden,
+        #mfa-form-container.hidden,
+        #forgot-form-container.hidden,
+        #forgot-step-2.hidden,
+        .tv-slide.hidden,
+        .loader-visual.hidden,
+        [hidden] {
             display: none !important;
         }
 
@@ -343,7 +345,7 @@
 
         <!-- Left Side: Branding / Hero Banner (visible on large screens) -->
         <div
-            class="lg:col-span-5 hidden lg:flex flex-col justify-between p-12 text-white relative auth-hero select-none">
+            class="lg:col-span-5 flex flex-col justify-between p-12 text-white relative auth-hero select-none">
 
             <!-- Logo & Brand Header -->
             <div class="flex items-center gap-3 z-10">
@@ -4584,7 +4586,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.47"></script>
+    <script src="js/app.js?v=3.48"></script>
 </body>
 
 </html>
