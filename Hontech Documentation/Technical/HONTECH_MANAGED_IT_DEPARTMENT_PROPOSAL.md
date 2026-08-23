@@ -87,7 +87,68 @@ HonTech does not need to hire full-time IT employees. Instead, **our technical t
 
 ---
 
-## 5. 🤝 Next Steps & Engagement Roadmap
+## 6. ⚖️ Legal & Regulatory Compliance Framework
+
+HonTech operates under strict alignment with Philippine national statutory laws, ensuring executive leadership is insulated against legal, financial, and regulatory liabilities:
+
+```
+                               ┌──────────────────────────────────────────────┐
+                               │  PHILIPPINE STATUTORY COMPLIANCE GOVERNANCE  │
+                               └──────────────────────┬───────────────────────┘
+                                                      │
+         ┌─────────────────────────┬──────────────────┴──────────────┬─────────────────────────┐
+         ▼                         ▼                                 ▼                         ▼
+┌──────────────────┐      ┌──────────────────┐              ┌──────────────────┐      ┌──────────────────┐
+│ RA 10173 PRIVACY │      │ RA 8792 E-COM    │              │ RA 9994 / 10754  │      │ RA 10175 CYBER   │
+├──────────────────┤      ├──────────────────┤              ├──────────────────┤      ├──────────────────┤
+│ Customer Data    │      │ Digital Orders,  │              │ Priority Express │      │ Brute-Force Rate │
+│ Minimization &   │      │ Claim Stubs &    │              │ Lane for Senior  │      │ Limiting & Audit │
+│ Bcrypt Passwords │      │ Legal Records    │              │ Citizens & PWDs  │      │ Log Traceability │
+└──────────────────┘      └──────────────────┘              └──────────────────┘      └──────────────────┘
+```
+
+1. **Republic Act No. 10173 (Data Privacy Act of 2012)**:
+   * Mandatory Terms & Conditions consent modal prior to system access.
+   * Role-Based Access Control (RBAC) preventing lower staff from exporting private customer phone numbers or revenue metrics.
+   * Automatic 15-minute inactivity session expiration and zero public web exposure on private shop LAN.
+2. **Republic Act No. 8792 (Electronic Commerce Act of 2000)**:
+   * Legal recognition and evidentiary validity of digital job orders, PDF claim receipts, and timestamped technician work logs.
+3. **Republic Act No. 9994 & RA 10754 (Expanded Senior Citizens & PWD Acts)**:
+   * Digital workflow integrates a dedicated **Priority Lane (Senior / Elders / PWD)** on TV Slide 3 and intake dropdowns to comply with express service mandates.
+4. **Republic Act No. 10175 (Cybercrime Prevention Act of 2012)**:
+   * Rate limiting and brute-force mitigation on authentication routes.
+   * Tamper-evident audit logging tracking every job order claim, bay assignment, and repair status change.
+5. **Republic Act No. 7394 (Consumer Act of the Philippines)**:
+   * PMS 2-Hour Goal telemetry and real-time bay tracking providing transparent repair estimates and quality check (QC) status to vehicle owners.
+
+---
+
+## 7. 🛠️ Operational Workflow Alignment Matrix
+
+The HonTech software is engineered to mirror the **exact 5-stage workshop floor operational reality**:
+
+| Operational Stage | Physical Shop Action | Digital System Execution |
+| :--- | :--- | :--- |
+| **1. Vehicle Intake** | Customer arrives at reception with vehicle. | Assistant enters plate, mileage, PMS tasks ➔ System generates digital work order & claim stub. |
+| **2. Diagnosis & Dispatch** | Service Advisor inspects vehicle condition. | SA claims job order ➔ Assigns target bay (Bays 1–4, QC, Wash, or Priority Senior Lane). |
+| **3. Workshop Execution** | Technicians perform maintenance in designated bay. | Real-time countdown tracks progress against **PMS 2-Hour SLA Goal** to prevent bottlenecks. |
+| **4. Customer Lounge Alerts** | Customer waits in waiting lounge. | Lounge TV Kiosk displays real-time bay telemetry with audible chime on vehicle completion. |
+| **5. QC & Release** | Final quality inspection and customer handover. | SA marks QC Passed ➔ Job converted to historical performance record for monthly SLA audits. |
+
+---
+
+## 8. 🛡️ IT Governance, Risk & Continuity Charter (GRC)
+
+As HonTech's technical leadership, the IT Department commits to the following Service Level Agreements (SLAs):
+
+* **System Availability SLA**: 99.9% uptime on the local workshop intranet.
+* **Disaster Recovery RTO (Recovery Time Objective)**: Full database restoration from encrypted cloud backups in **< 15 minutes** in the event of hardware failure.
+* **Bug & Incident Response SLA**: Critical operational blockers resolved in **< 4 hours**.
+* **Zero Dependency Risk**: Built using pure native standards (Vanilla JS + Object-Oriented PHP + MySQL PDO) ensuring zero reliance on fragile external build tools or third-party agency lock-in.
+
+---
+
+## 9. 🤝 Next Steps & Engagement Roadmap
 
 1. **Step 1: Capstone Launch & Baseline Handover**  
    Deploy the core HonTech Operations System (Intakes, Bays 1–4, 3-Slide TV Kiosk, 2FA Security) under ₱0 server setup.
@@ -102,3 +163,6 @@ HonTech does not need to hire full-time IT employees. Instead, **our technical t
 >
 > _______________________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _______________________  
 > **HonTech General Manager / Executive** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Date**
+>
+> _______________________________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _______________________  
+> **HonTech Lead Systems Developer** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Date**

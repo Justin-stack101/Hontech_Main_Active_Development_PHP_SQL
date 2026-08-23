@@ -267,6 +267,17 @@
 
 ---
 
+### 🏁 Checkpoint 25: IT Governance, Statutory Compliance & Operational Workflow Charter
+* **User Need**: Establish complete documentation for the IT Department Head proposal covering operational workflow alignment, statutory Philippine legal compliance (RA 10173, RA 8792, RA 10175, RA 9994, RA 7394), and IT GRC SLAs.
+* **Key Deliverables**:
+  * Updated [`HONTECH_MANAGED_IT_DEPARTMENT_PROPOSAL.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_MANAGED_IT_DEPARTMENT_PROPOSAL.md) with comprehensive sections:
+    * **Section 6**: Philippine Statutory Compliance Governance (RA 10173, RA 8792, RA 9994/10754, RA 10175, RA 7394).
+    * **Section 7**: 5-Stage Operational Workflow Alignment Matrix (Physical Shop ➔ Digital System).
+    * **Section 8**: IT Governance, Risk & Continuity Charter (99.9% Uptime SLA, <15min Cloud RTO, <4hr Incident SLA).
+* **Git Tag**: `checkpoint-25-it-governance-and-workflow-charter`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
