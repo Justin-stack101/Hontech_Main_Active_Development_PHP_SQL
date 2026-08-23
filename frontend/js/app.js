@@ -496,90 +496,54 @@ Report Generated Automatically by Developer Crash Reporter.
             const crashOverlay = document.getElementById('system-crash-overlay');
             if (crashOverlay) crashOverlay.remove();
 
-            const reason = customReason || (!navigator.onLine ? 'Your device is disconnected from the local network.' : 'Unable to connect to the HonTech Workshop Engine (PHP / MySQL).');
+            const reason = customReason || (!navigator.onLine ? 'Your device is disconnected from the local network.' : 'Unable to connect to the local workshop server.');
 
             // 1. Create or update the Lost Connection Modal
             let modal = document.getElementById('lost-connection-modal');
             if (!modal) {
                 modal = document.createElement('div');
                 modal.id = 'lost-connection-modal';
-                modal.className = 'fixed inset-0 z-[9998] flex items-center justify-center p-4 md:p-6 bg-gray-950/85 backdrop-blur-md fade-in select-none';
+                modal.className = 'fixed inset-0 z-[9998] flex items-center justify-center p-4 md:p-6 bg-gray-900/40 backdrop-blur-xs fade-in select-none';
                 document.body.appendChild(modal);
             }
 
             modal.classList.remove('hidden');
 
             modal.innerHTML = `
-                <div class="bg-white rounded-3xl max-w-lg w-full border border-amber-300 shadow-2xl overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-200">
-                    <!-- Amber / Red High-Contrast Header Bar -->
-                    <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-red-600 text-white px-6 py-5 flex items-center justify-between border-b border-amber-700 shrink-0 shadow-md">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/30 shadow-inner animate-pulse">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18M10.5 10.5a5 5 0 017.07 0M7.5 7.5a9 9 0 0112.73 0M4.5 4.5a13 13 0 0118.38 0M12 18.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-white">Connection Lost</h3>
-                                <p class="text-[10px] text-amber-100 font-extrabold uppercase tracking-widest mt-0.5">Workshop Network Interrupted</p>
-                            </div>
-                        </div>
-                        <span class="bg-white/20 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider border border-white/30 shrink-0">Offline</span>
+                <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-gray-100 p-7 text-center transform transition-all animate-in fade-in zoom-in-95 duration-200">
+                    <!-- Clean Minimalist Amber Badge -->
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18M10.5 10.5a5 5 0 017.07 0M7.5 7.5a9 9 0 0112.73 0M4.5 4.5a13 13 0 0118.38 0M12 18.75a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
+                        </svg>
                     </div>
 
-                    <!-- Modal Body -->
-                    <div class="p-6 space-y-5 bg-gray-50/50">
-                        <div class="bg-amber-50/90 border border-amber-200 rounded-2xl p-4 space-y-2 text-left">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-                                <span class="text-xs font-black text-amber-900 uppercase tracking-wider">Status Diagnostics</span>
-                            </div>
-                            <p class="text-xs font-semibold text-gray-800 leading-relaxed" id="lost-conn-reason">${reason}</p>
-                        </div>
+                    <!-- Clean Human Typography -->
+                    <h3 class="text-xl font-bold text-gray-900 tracking-tight">You are currently offline</h3>
+                    <p class="text-xs text-gray-600 font-medium mt-2 leading-relaxed">
+                        We are having trouble reaching the workshop server. Your active queue is saved and will synchronize automatically.
+                    </p>
 
-                        <!-- Technical Troubleshooting Tips -->
-                        <div class="bg-white rounded-2xl border border-gray-200 p-4 text-left space-y-2 text-[11px] text-gray-600">
-                            <span class="text-[10px] font-black uppercase text-gray-400 tracking-wider block">Recommended Steps</span>
-                            <div class="flex items-start gap-2">
-                                <span class="font-bold text-red-600">1.</span>
-                                <span>Check your local Wi-Fi or Ethernet cable connection.</span>
-                            </div>
-                            <div class="flex items-start gap-2">
-                                <span class="font-bold text-red-600">2.</span>
-                                <span>Ensure the local Apache / PHP server is active (<code>start_lan_server.bat</code>).</span>
-                            </div>
-                            <div class="flex items-start gap-2">
-                                <span class="font-bold text-red-600">3.</span>
-                                <span>The system will automatically sync once communication is restored.</span>
-                            </div>
-                        </div>
+                    <!-- Status Pill with Spinner -->
+                    <div class="my-5 inline-flex items-center gap-2 bg-gray-50 border border-gray-200/80 px-3.5 py-1.5 rounded-full text-[11px] font-semibold text-gray-600">
+                        <svg class="animate-spin w-3.5 h-3.5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span id="lost-conn-countdown">Retrying connection in 5s...</span>
+                    </div>
 
-                        <!-- Auto-retry live badge -->
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-bold px-1">
-                            <span class="flex items-center gap-1.5">
-                                <svg class="animate-spin w-3.5 h-3.5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                <span id="lost-conn-countdown">Auto-reconnecting in 5s...</span>
-                            </span>
-                            <span class="text-[10px] font-mono text-gray-400 uppercase">HonTech NetGuard</span>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                            <button onclick="dismissLostConnectionModalToPill()" 
-                                     class="w-full bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 font-extrabold text-xs py-3 rounded-xl uppercase tracking-wider transition cursor-pointer">
-                                Minimize to Banner
-                            </button>
-                            <button onclick="triggerNetworkReconnect(this)" 
-                                     id="lost-conn-retry-btn"
-                                     class="w-full bg-amber-600 hover:bg-amber-700 text-white font-black text-xs py-3 rounded-xl uppercase tracking-wider transition shadow-md shadow-amber-600/20 flex items-center justify-center gap-2 cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-white">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                </svg> Retry Connection
-                            </button>
-                        </div>
+                    <!-- Action Buttons -->
+                    <div class="space-y-2">
+                        <button onclick="triggerNetworkReconnect(this)" 
+                                 id="lost-conn-retry-btn"
+                                 class="w-full bg-gray-900 hover:bg-black text-white font-bold text-xs py-3 rounded-xl transition shadow-md shadow-gray-900/10 flex items-center justify-center gap-2 cursor-pointer">
+                            Try Reconnecting
+                        </button>
+                        <button onclick="dismissLostConnectionModalToPill()" 
+                                 class="w-full bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 font-bold text-xs py-3 rounded-xl transition cursor-pointer">
+                            Dismiss
+                        </button>
                     </div>
                 </div>
             `;
@@ -599,7 +563,7 @@ Report Generated Automatically by Developer Crash Reporter.
             if (!pill) {
                 pill = document.createElement('div');
                 pill.id = 'lost-connection-pill';
-                pill.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9990] bg-gray-950/90 text-white border-2 border-amber-500/80 px-4 py-2 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-3 cursor-pointer hover:scale-105 transition-all select-none fade-in';
+                pill.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-[9990] bg-amber-50/95 border border-amber-200/90 text-amber-950 px-4 py-2 rounded-full shadow-lg backdrop-blur-md flex items-center gap-3 select-none text-xs font-semibold hover:shadow-xl transition cursor-pointer fade-in';
                 pill.onclick = () => {
                     const modal = document.getElementById('lost-connection-modal');
                     if (modal) modal.classList.remove('hidden');
@@ -608,10 +572,14 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             pill.classList.remove('hidden');
             pill.innerHTML = `
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping shrink-0"></span>
-                <span class="text-xs font-black uppercase tracking-wider text-amber-200">Connection Offline</span>
-                <span class="text-[10px] text-gray-400 font-semibold">• Tap for Details</span>
-                <button onclick="event.stopPropagation(); triggerNetworkReconnect();" class="ml-1 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full transition">Retry</button>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    <span>Trying to connect to workshop server...</span>
+                    <span id="pill-countdown" class="text-[11px] text-amber-700/80 font-mono">(Retrying in 5s)</span>
+                </div>
+                <button onclick="event.stopPropagation(); triggerNetworkReconnect();" class="ml-1 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold px-3 py-1 rounded-full transition shadow-xs">
+                    Retry Now
+                </button>
             `;
         }
 
@@ -634,7 +602,11 @@ Report Generated Automatically by Developer Crash Reporter.
                 lostConnectionRetryCountdown--;
                 const countdownEl = document.getElementById('lost-conn-countdown');
                 if (countdownEl) {
-                    countdownEl.innerText = `Auto-reconnecting in ${lostConnectionRetryCountdown}s...`;
+                    countdownEl.innerText = `Retrying connection in ${lostConnectionRetryCountdown}s...`;
+                }
+                const pillCountdownEl = document.getElementById('pill-countdown');
+                if (pillCountdownEl) {
+                    pillCountdownEl.innerText = `(Retrying in ${lostConnectionRetryCountdown}s)`;
                 }
                 if (lostConnectionRetryCountdown <= 0) {
                     lostConnectionRetryCountdown = 5;
