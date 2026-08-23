@@ -3920,7 +3920,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     categoryPercentage: 0.75
                                 },
                                 {
-                                    label: 'Actual Pumasok',
+                                    label: 'Actual Inflow',
                                     data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
                                     backgroundColor: '#0f172a',
                                     borderColor: '#0f172a',

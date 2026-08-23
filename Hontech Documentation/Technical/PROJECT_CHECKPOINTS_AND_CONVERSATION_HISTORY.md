@@ -366,6 +366,19 @@
 
 ---
 
+### 🏁 Checkpoint 32: Formal English Terminology Standardization across Analytics & Reports
+* **User Need**: Replace informal/Tagalog phrasing ("Pumasok") across all dashboard cards, chart legends, table headers, and documentation with standard international English automotive operational terms ("Actual Inflow", "Target vs. Actual Inflow", "Total Inflow").
+* **Key Deliverables**:
+  * Replaced "Plan vs. Pumasok" ➔ "Target vs. Actual Inflow" across headers, subheaders, and tooltips.
+  * Replaced "Actual Pumasok" ➔ "Actual Inflow" on Chart.js legend and dataset.
+  * Replaced "Total Pumasok" ➔ "Total Inflow" in Table 2 header and summary cards.
+  * Replaced "Pumasok Active" ➔ "Active Inflow".
+  * Standardized all technical and executive documentation in [`HONTECH_EXECUTIVE_REPORTING_AND_DECISION_MAKING_PLAN.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_EXECUTIVE_REPORTING_AND_DECISION_MAKING_PLAN.md).
+  * Version bumped to `js/app.js?v=3.39`.
+* **Git Tag**: `checkpoint-32-english-terminology-standardization`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
