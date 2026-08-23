@@ -3843,11 +3843,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('report-total-bar')) document.getElementById('report-total-bar').style.width = `${Math.min(100, totalFulfillment)}%`;
             if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Inflow Target`;
 
-            // 2. POPULATE TABLE 1: Category Inflow Matrix & Chart.js Graph
+            // 2. POPULATE TABLE 1: Category Inflow Matrix & Chart.js Graph (Clean Executive Architecture)
             const categoryRows = [
                 {
                     name: 'Carry-Over (Unfinished Prev Day)',
-                    icon: '🔄',
                     plan: plannedCarry,
                     actual: pumasokCarry,
                     inbay: inbayCarry,
@@ -3858,7 +3857,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 },
                 {
                     name: 'GRS (General Repair Service)',
-                    icon: '🔧',
                     plan: plannedGRS,
                     actual: pumasokGRS,
                     inbay: inbayGRS,
@@ -3869,7 +3867,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 },
                 {
                     name: 'PMS (Preventive Maintenance)',
-                    icon: '🛠️',
                     plan: plannedPMS,
                     actual: pumasokPMS,
                     inbay: inbayPMS,
@@ -3880,7 +3877,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 },
                 {
                     name: 'Express Lane (Turnaround ≤ 60m)',
-                    icon: '⚡',
                     plan: plannedExpress,
                     actual: pumasokExpress,
                     inbay: inbayExpress,
@@ -3891,7 +3887,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 },
                 {
                     name: 'Complimentary Inspection',
-                    icon: '🔍',
                     plan: plannedCheckup,
                     actual: pumasokCheckup,
                     inbay: inbayCheckup,
@@ -3902,7 +3897,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             ];
 
-            // Render Chart.js Graph
+            // Render Chart.js Graph (Distinct, High-Contrast Executive Palettes)
             if (typeof Chart !== 'undefined') {
                 const chartCanvas = document.getElementById('chart-category-inflow');
                 if (chartCanvas) {
@@ -3917,7 +3912,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Planned Target',
                                     data: [plannedCarry, plannedGRS, plannedPMS, plannedExpress, plannedCheckup],
-                                    backgroundColor: '#94a3b8',
+                                    backgroundColor: '#cbd5e1',
+                                    borderColor: '#94a3b8',
+                                    borderWidth: 1,
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
@@ -3926,6 +3923,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     label: 'Actual Pumasok',
                                     data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
                                     backgroundColor: '#0f172a',
+                                    borderColor: '#0f172a',
+                                    borderWidth: 1,
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
@@ -3933,7 +3932,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Completed & Released',
                                     data: [releasedCarry, releasedGRS, releasedPMS, releasedExpress, releasedCheckup],
-                                    backgroundColor: '#475569',
+                                    backgroundColor: '#10b981',
+                                    borderColor: '#059669',
+                                    borderWidth: 1,
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
@@ -3981,9 +3982,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return `
                         <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
                             <td class="px-6 py-3.5">
-                                <div class="font-bold text-gray-900 text-xs flex items-center gap-1.5">
-                                    <span>${row.icon}</span> <span>${row.name}</span>
-                                </div>
+                                <div class="font-bold text-gray-900 text-xs">${row.name}</div>
                             </td>
                             <td class="px-6 py-3.5">
                                 <div class="flex items-center gap-3">
@@ -4014,29 +4013,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const totalIsDeficit = totalVariance < 0;
 
                 catHtml += `
-                    <tr class="bg-slate-900 text-white font-bold text-xs">
+                    <tr class="bg-slate-900 text-white font-bold text-xs border-t-2 border-slate-700">
                         <td class="px-6 py-4 text-white uppercase tracking-wider font-black">TOTAL WORKSHOP INFLOW</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-20 bg-slate-800 h-2 rounded-full overflow-hidden shrink-0">
                                     <div class="bg-red-500 h-full rounded-full" style="width: ${Math.min(100, totalFulfillment)}%"></div>
                                 </div>
-                                <span class="font-black text-white">${totalPumasok} <span class="text-slate-400 font-normal">/ ${totalPlanned} cars</span></span>
-                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-600/30 text-red-300 border border-red-500/40">${totalFulfillment}%</span>
+                                <span class="font-black text-white">${totalPumasok} <span class="text-slate-300 font-normal">/ ${totalPlanned} cars</span></span>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-600/40 text-red-200 border border-red-500/50">${totalFulfillment}%</span>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="text-slate-300 text-[11px]">
-                                <strong class="text-white">${totalInBay}</strong> in bay · <strong class="text-emerald-400">${totalReleased}</strong> released
+                            <span class="text-slate-200 text-[11px]">
+                                <strong class="text-white font-black">${totalInBay}</strong> in bay · <strong class="text-emerald-400 font-black">${totalReleased}</strong> released
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="px-2 py-0.5 rounded text-[11px] font-bold ${totalIsDeficit ? 'bg-rose-950/60 text-rose-300 border border-rose-800/40' : 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/40'}">
+                            <span class="px-2.5 py-1 rounded text-[11px] font-black ${totalIsDeficit ? 'bg-rose-900 text-rose-200 border border-rose-700' : 'bg-emerald-900 text-emerald-200 border border-emerald-700'}">
                                 ${totalIsDeficit ? '▼' : '▲'} ${totalVarSign} cars
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">All Lines</span>
+                            <span class="text-[10px] uppercase font-black tracking-wider text-slate-300 bg-slate-800 px-2 py-1 rounded border border-slate-700">All Lines</span>
                         </td>
                     </tr>
                 `;
@@ -4102,26 +4101,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             peakText = `${displayHour}:00 ${ampm} (${maxPeak} cars)`;
                         }
 
+                        // Clean neutral formatting for category columns:
+                        const pmsCell = dayPMS > 0 ? `<span class="font-bold text-slate-900">${dayPMS}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+                        const grsCell = dayGRS > 0 ? `<span class="font-bold text-slate-900">${dayGRS}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+                        const carryCell = dayCarry > 0 ? `<span class="font-bold text-slate-900">${dayCarry}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+                        const expressCell = dayExpress > 0 ? `<span class="font-bold text-slate-900">${dayExpress}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+
                         return `
-                            <tr class="hover:bg-gray-50 transition border-b border-gray-100">
-                                <td class="px-6 py-3.5 font-bold text-gray-900">${dateStr}</td>
-                                <td class="px-6 py-3.5 text-xs text-gray-500 font-semibold">${dayOfWeek}</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-gray-800">${dayWalkin}</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-gray-800">${dayOnline}</td>
-                                <td class="px-6 py-3.5 text-center font-black text-gray-900 bg-red-50/20">${dayTotal} cars</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-purple-700">${dayPMS}</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-blue-700">${dayGRS}</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-orange-700">${dayCarry}</td>
-                                <td class="px-6 py-3.5 text-center font-bold text-emerald-700">${dayExpress}</td>
+                            <tr class="hover:bg-slate-50/70 transition border-b border-slate-100">
+                                <td class="px-6 py-3.5 font-bold text-slate-900">${dateStr}</td>
+                                <td class="px-6 py-3.5 text-xs text-slate-500 font-medium">${dayOfWeek}</td>
+                                <td class="px-6 py-3.5 text-center font-semibold text-slate-700">${dayWalkin}</td>
+                                <td class="px-6 py-3.5 text-center font-semibold text-slate-700">${dayOnline}</td>
+                                <td class="px-6 py-3.5 text-center font-bold text-slate-900 bg-slate-50/80">${dayTotal} cars</td>
+                                <td class="px-6 py-3.5 text-center">${pmsCell}</td>
+                                <td class="px-6 py-3.5 text-center">${grsCell}</td>
+                                <td class="px-6 py-3.5 text-center">${carryCell}</td>
+                                <td class="px-6 py-3.5 text-center">${expressCell}</td>
                                 <td class="px-6 py-3.5 text-center">
                                     <div class="inline-flex items-center gap-2">
-                                        <div class="w-12 bg-gray-200 h-1.5 rounded-full overflow-hidden">
-                                            <div class="bg-gray-900 h-full rounded-full" style="width: ${capacityLoad}%"></div>
+                                        <div class="w-12 bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                            <div class="bg-slate-800 h-full rounded-full" style="width: ${capacityLoad}%"></div>
                                         </div>
-                                        <span class="text-xs font-bold text-gray-700">${capacityLoad}%</span>
+                                        <span class="text-xs font-bold text-slate-700">${capacityLoad}%</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-3.5 text-right font-mono text-xs font-bold text-gray-700">${peakText}</td>
+                                <td class="px-6 py-3.5 text-right font-mono text-xs font-semibold text-slate-600">${peakText}</td>
                             </tr>
                         `;
                     }).join('');
