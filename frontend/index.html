@@ -2193,39 +2193,50 @@
                             <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
                             <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification — Marikina Workshop</p>
                         </div>
-                        <div class="flex-1 p-6 overflow-hidden bg-slate-100/60 flex gap-5 min-h-0">
+                        <div class="flex-1 p-5 lg:p-6 overflow-hidden bg-slate-100/60 flex gap-4 min-h-0">
                             <!-- Express Lane Column -->
                             <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Express Lane (PMS ≤ 60m)</h3>
+                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0"></span>
+                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Express (PMS ≤ 60m)</h3>
                                     </div>
-                                    <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-express-lane-count">0</span>
+                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white shrink-0 ml-1.5" id="tv-express-lane-count">0</span>
                                 </div>
-                                <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-express-lane-list"></div>
+                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-express-lane-list"></div>
                             </div>
                             <!-- Flexible Lane Column -->
                             <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Flexible Lane (GRS)</h3>
+                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Flexible Lane (GRS)</h3>
                                     </div>
-                                    <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-flexible-lane-count">0</span>
+                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-flexible-lane-count">0</span>
                                 </div>
-                                <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-flexible-lane-list"></div>
+                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-flexible-lane-list"></div>
                             </div>
                             <!-- Special Lane Column -->
                             <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
-                                        <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Specialty Lane (Heavy Work)</h3>
+                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span>
+                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Specialty (Heavy Work)</h3>
                                     </div>
-                                    <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-special-lane-count">0</span>
+                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-special-lane-count">0</span>
                                 </div>
-                                <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-special-lane-list"></div>
+                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-special-lane-list"></div>
+                            </div>
+                            <!-- Priority Lane Column -->
+                            <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
+                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
+                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Priority (VIP / Urgent)</h3>
+                                    </div>
+                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-gray-950 shrink-0 ml-1.5" id="tv-priority-lane-count">0</span>
+                                </div>
+                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-priority-lane-list"></div>
                             </div>
                         </div>
                     </div>
@@ -3766,7 +3777,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.25"></script>
+    <script src="js/app.js?v=3.26"></script>
 </body>
 
 </html>

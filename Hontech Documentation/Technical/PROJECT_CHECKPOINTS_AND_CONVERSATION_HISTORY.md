@@ -151,6 +151,16 @@
 
 ---
 
+### 🏁 Checkpoint 16: TV Service Monitor 4-Lane Layout (Priority Lane Addition)
+* **User Need**: Add **Priority Lane** as a distinct 4th column on TV Slide 3 (Workshop Lanes Monitoring) matching the system's 4 lane selections (*Express*, *Flexible*, *Specialty*, and *Priority*).
+* **Key Deliverables**:
+  * Added **Priority (VIP / Urgent)** column with golden amber status indicators (`tv-priority-lane-count` and `tv-priority-lane-list`).
+  * Updated `renderTV()` in `frontend/js/app.js` to filter and render active Priority Lane jobs seamlessly with live vehicle cards.
+  * Balanced 4-column responsive grid layout in `frontend/index.html` for wide displays and TV screens.
+* **Git Tag**: `checkpoint-16-tv-priority-lane-addition`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

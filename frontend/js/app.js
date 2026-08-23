@@ -5947,8 +5947,9 @@ Report Generated Automatically by Developer Crash Reporter.
             };
 
             const expressLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
-            const flexibleLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType);
             const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane');
+            const priorityLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane');
+            const flexibleLaneJobs = activeLaneJobs.filter(j => !['Express', 'Express Lane', 'Special', 'Specialty', 'Special Lane', 'Priority', 'Priority Lane'].includes(j.laneType));
 
             const expressCount = document.getElementById('tv-express-lane-count');
             if (expressCount) expressCount.innerText = expressLaneJobs.length;
@@ -5956,10 +5957,14 @@ Report Generated Automatically by Developer Crash Reporter.
             if (flexibleCount) flexibleCount.innerText = flexibleLaneJobs.length;
             const specialCount = document.getElementById('tv-special-lane-count');
             if (specialCount) specialCount.innerText = specialLaneJobs.length;
+            const priorityCount = document.getElementById('tv-priority-lane-count');
+            if (priorityCount) priorityCount.innerText = priorityLaneJobs.length;
 
             const expressList = document.getElementById('tv-express-lane-list');
             const flexibleList = document.getElementById('tv-flexible-lane-list');
             const specialList = document.getElementById('tv-special-lane-list');
+            const priorityList = document.getElementById('tv-priority-lane-list');
+
             if (expressList) {
                 expressList.innerHTML = expressLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
@@ -5968,6 +5973,9 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             if (specialList) {
                 specialList.innerHTML = specialLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
+            }
+            if (priorityList) {
+                priorityList.innerHTML = priorityLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();

@@ -154,7 +154,7 @@ $defaultJobs = [
         'arrival' => '11:30', 'claim_stub' => "{$todayCompact}-009",
         'evaluation' => 'Engine Flush & Brake Pad Service',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'Priority Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2024', 'source' => 'Walk-in', 'plate' => 'NXX 1234', 'name' => 'Andres Bonifacio',
