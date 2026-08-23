@@ -3917,7 +3917,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Planned Target',
                                     data: [plannedCarry, plannedGRS, plannedPMS, plannedExpress, plannedCheckup],
-                                    backgroundColor: '#0f172a',
+                                    backgroundColor: '#94a3b8',
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
@@ -3925,7 +3925,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Actual Pumasok',
                                     data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
-                                    backgroundColor: '#dc2626',
+                                    backgroundColor: '#0f172a',
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
@@ -3933,7 +3933,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Completed & Released',
                                     data: [releasedCarry, releasedGRS, releasedPMS, releasedExpress, releasedCheckup],
-                                    backgroundColor: '#10b981',
+                                    backgroundColor: '#475569',
                                     borderRadius: 4,
                                     barPercentage: 0.65,
                                     categoryPercentage: 0.75
