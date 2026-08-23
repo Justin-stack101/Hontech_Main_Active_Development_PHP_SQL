@@ -1676,6 +1676,262 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- TAB 4: EXPRESS LANE SLA PERFORMANCE & DELAY ROOT CAUSES INTELLIGENCE CENTER -->
+                <div id="db-tab-express" class="hidden space-y-8">
+                    <!-- Executive Filter Bar -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Express Lane & Delay Root Cause Intelligence</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 60 mins) & Categorized Failure Mode Analytics for Executive Decision-Making</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="exportExpressDelaysCSV()" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-2xs cursor-pointer">
+                                    <i data-lucide="download" class="w-4 h-4 text-emerald-600"></i> Export Delay Log
+                                </button>
+                                <button onclick="printExpressIntelligence()" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-md cursor-pointer">
+                                    <i data-lucide="printer" class="w-4 h-4 text-slate-300"></i> Print Executive Brief
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filters Row -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Timeframe Preset</label>
+                                <select id="express-filter-preset" onchange="handleExpressPresetChange(this.value)"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="week" selected>Past 7 Days</option>
+                                    <option value="month">This Month</option>
+                                    <option value="all">All Time History</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Branch Scope</label>
+                                <select id="express-filter-branch" onchange="renderExpressIntelligenceModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="all">All Branches (Combined)</option>
+                                    <option value="Branch A">Branch A (Main Workshop)</option>
+                                    <option value="Branch B">Branch B (East Branch)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
+                                <input type="date" id="express-filter-start-date" onchange="renderExpressIntelligenceModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
+                                <input type="date" id="express-filter-end-date" onchange="renderExpressIntelligenceModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Quick Search</label>
+                                <input type="text" id="express-filter-search" oninput="renderExpressIntelligenceModule()" placeholder="Plate, Reason, SA..."
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition placeholder-gray-400">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 Executive Scorecard Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <!-- 1. Express SLA Compliance Rate -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="target" class="w-3 h-3 text-slate-500"></i> SLA Compliance (≤60m)
+                                </span>
+                                <span id="express-sla-rate-badge" class="text-[10px] font-bold uppercase text-slate-500">Target ≥90%</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="express-sla-rate">0%</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">On-Time Rate</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="express-sla-bar" class="bg-slate-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Successful (≤60m): <strong id="express-sla-successful" class="text-slate-900 font-bold">0</strong></span>
+                                <span>Delayed (>60m): <strong id="express-sla-breached" class="text-rose-600 font-bold">0</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 2. Average Express Turnaround Time -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="timer" class="w-3 h-3 text-slate-500"></i> Turnaround Velocity
+                                </span>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Standard: 60m</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="express-avg-turnaround">0m</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Average Duration</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="express-avg-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Fastest Job: <strong id="express-min-duration" class="text-slate-900 font-bold">--</strong></span>
+                                <span>Longest Overrun: <strong id="express-max-duration" class="text-rose-600 font-bold">--</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Unsuccessful / Delayed Overrun Count -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="alert-triangle" class="w-3 h-3 text-slate-500"></i> SLA Overrun Count
+                                </span>
+                                <span id="express-overrun-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">0% of Express</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="express-overrun-count">0</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Breached Vehicles</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="express-overrun-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Avg Overrun Time: <strong id="express-avg-overrun-time" class="text-slate-900 font-bold">+0m</strong></span>
+                                <span>Root Causes Logged: <strong id="express-logged-reasons-count" class="text-slate-700 font-bold">0</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Top Primary Bottleneck Factor -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="flame" class="w-3 h-3 text-slate-500"></i> Top Root Cause
+                                </span>
+                                <span id="express-bottleneck-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">Leading Factor</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2 truncate">
+                                    <h4 class="text-lg font-black text-slate-900 truncate" id="express-primary-bottleneck">None Logged</h4>
+                                </div>
+                                <p class="text-xs text-slate-400 font-semibold mt-1" id="express-primary-bottleneck-sub">0 incidents recorded</p>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Action Status: <strong id="express-action-status" class="text-slate-900 font-bold">Normal</strong></span>
+                                <span>Impact Share: <strong id="express-bottleneck-impact-share" class="text-slate-700 font-bold">0%</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2 Executive Interactive Visual Charts (Chart.js) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Chart A: Turnaround Time Distribution Histogram -->
+                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-500"></i> Turnaround Duration Distribution Curve
+                                    </h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Vehicles grouped by completed turnaround duration brackets</p>
+                                </div>
+                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">SLA: ≤60m</span>
+                            </div>
+                            <div class="relative w-full h-[240px]">
+                                <canvas id="chart-express-duration-hist"></canvas>
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-gray-500">
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-800"></span> Optimal (&le;45m)</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-400"></span> Warning (46-60m)</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-600"></span> Breached (>60m)</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart B: Categorized Delay Root Cause Pareto Breakdown -->
+                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Delay & Unmet SLA Root Cause Pareto Analysis
+                                    </h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Categorized breakdown of operational friction points</p>
+                                </div>
+                                <span id="express-pareto-total-badge" class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">0 Delays</span>
+                            </div>
+                            <div class="relative w-full h-[240px]">
+                                <canvas id="chart-express-delay-pareto"></canvas>
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
+                                Pareto categories rank workshop friction to guide high-ROI executive interventions.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AUTOMATED EXECUTIVE DECISION MATRIX (President Actionable Insights) -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="p-2 bg-slate-900 text-white rounded-lg">
+                                    <i data-lucide="compass" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900">Automated Executive Decision Matrix</h4>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Real-time operational interventions synthesized for executive management</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 bg-slate-100 text-slate-700 rounded-md border border-slate-200">AI / Algorithmic Advisor</span>
+                        </div>
+                        <div id="express-decision-matrix-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Populated dynamically by app.js -->
+                        </div>
+                    </div>
+
+                    <!-- DETAILED DELAYED SERVICES DIAGNOSTIC AUDIT LOG -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/50">
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                    <i data-lucide="clipboard-list" class="w-4 h-4 text-red-600"></i> Delayed & Unmet SLA Services Diagnostic Log
+                                </h4>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Audit log of all services exceeding the 60-minute turnaround benchmark</p>
+                            </div>
+                            <span id="express-delay-records-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200">0 Overruns Logged</span>
+                        </div>
+
+                        <div class="overflow-x-auto max-h-[420px] overflow-y-auto custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-white shadow-2xs">
+                                    <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                        <th class="px-6 py-4 bg-white">Date</th>
+                                        <th class="px-6 py-4 bg-white">Claim Stub</th>
+                                        <th class="px-6 py-4 bg-white">Plate No.</th>
+                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
+                                        <th class="px-6 py-4 bg-white">Category</th>
+                                        <th class="px-6 py-4 bg-white text-center">Arrival</th>
+                                        <th class="px-6 py-4 bg-white text-center">Departure</th>
+                                        <th class="px-6 py-4 bg-white text-center">Duration</th>
+                                        <th class="px-6 py-4 bg-white text-center">Overrun</th>
+                                        <th class="px-6 py-4 bg-white">Root Cause Category</th>
+                                        <th class="px-6 py-4 bg-white">Diagnostic Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-express-delays-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <!-- Populated dynamically by app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- STAFF MANAGEMENT -->
             <div id="section-staff" class="section-content hidden fade-in space-y-6">
@@ -3904,263 +4160,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: EXPRESS LANE SLA PERFORMANCE & DELAY ROOT CAUSES INTELLIGENCE CENTER -->
-                <div id="db-tab-express" class="hidden space-y-8">
-                    <!-- Executive Filter Bar -->
-                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-100 pb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
-                                    <i data-lucide="zap" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Express Lane & Delay Root Cause Intelligence</h3>
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 60 mins) & Categorized Failure Mode Analytics for Executive Decision-Making</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                <button onclick="exportExpressDelaysCSV()" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-2xs cursor-pointer">
-                                    <i data-lucide="download" class="w-4 h-4 text-emerald-600"></i> Export Delay Log
-                                </button>
-                                <button onclick="printExpressIntelligence()" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-md cursor-pointer">
-                                    <i data-lucide="printer" class="w-4 h-4 text-slate-300"></i> Print Executive Brief
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Filters Row -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
-                            <div>
-                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Timeframe Preset</label>
-                                <select id="express-filter-preset" onchange="handleExpressPresetChange(this.value)"
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
-                                    <option value="today">Today</option>
-                                    <option value="yesterday">Yesterday</option>
-                                    <option value="week" selected>Past 7 Days</option>
-                                    <option value="month">This Month</option>
-                                    <option value="all">All Time History</option>
-                                    <option value="custom">Custom Range</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Branch Scope</label>
-                                <select id="express-filter-branch" onchange="renderExpressIntelligenceModule()"
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
-                                    <option value="all">All Branches (Combined)</option>
-                                    <option value="Branch A">Branch A (Main Workshop)</option>
-                                    <option value="Branch B">Branch B (East Branch)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
-                                <input type="date" id="express-filter-start-date" onchange="renderExpressIntelligenceModule()"
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
-                                <input type="date" id="express-filter-end-date" onchange="renderExpressIntelligenceModule()"
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Quick Search</label>
-                                <input type="text" id="express-filter-search" oninput="renderExpressIntelligenceModule()" placeholder="Plate, Reason, SA..."
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition placeholder-gray-400">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4 Executive Scorecard Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <!-- 1. Express SLA Compliance Rate -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="target" class="w-3 h-3 text-slate-500"></i> SLA Compliance (≤60m)
-                                </span>
-                                <span id="express-sla-rate-badge" class="text-[10px] font-bold uppercase text-slate-500">Target ≥90%</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="express-sla-rate">0%</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">On-Time Rate</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-sla-bar" class="bg-slate-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Successful (≤60m): <strong id="express-sla-successful" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Delayed (>60m): <strong id="express-sla-breached" class="text-rose-600 font-bold">0</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 2. Average Express Turnaround Time -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="timer" class="w-3 h-3 text-slate-500"></i> Turnaround Velocity
-                                </span>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Standard: 60m</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="express-avg-turnaround">0m</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Average Duration</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-avg-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Fastest Job: <strong id="express-min-duration" class="text-slate-900 font-bold">--</strong></span>
-                                <span>Longest Overrun: <strong id="express-max-duration" class="text-rose-600 font-bold">--</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 3. Unsuccessful / Delayed Overrun Count -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="alert-triangle" class="w-3 h-3 text-slate-500"></i> SLA Overrun Count
-                                </span>
-                                <span id="express-overrun-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">0% of Express</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="express-overrun-count">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Breached Vehicles</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-overrun-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Avg Overrun Time: <strong id="express-avg-overrun-time" class="text-slate-900 font-bold">+0m</strong></span>
-                                <span>Root Causes Logged: <strong id="express-logged-reasons-count" class="text-slate-700 font-bold">0</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 4. Top Primary Bottleneck Factor -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="flame" class="w-3 h-3 text-slate-500"></i> Top Root Cause
-                                </span>
-                                <span id="express-bottleneck-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">Leading Factor</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2 truncate">
-                                    <h4 class="text-lg font-black text-slate-900 truncate" id="express-primary-bottleneck">None Logged</h4>
-                                </div>
-                                <p class="text-xs text-slate-400 font-semibold mt-1" id="express-primary-bottleneck-sub">0 incidents recorded</p>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Action Status: <strong id="express-action-status" class="text-slate-900 font-bold">Normal</strong></span>
-                                <span>Impact Share: <strong id="express-bottleneck-impact-share" class="text-slate-700 font-bold">0%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2 Executive Interactive Visual Charts (Chart.js) -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Chart A: Turnaround Time Distribution Histogram -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
-                                <div>
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-500"></i> Turnaround Duration Distribution Curve
-                                    </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Vehicles grouped by completed turnaround duration brackets</p>
-                                </div>
-                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">SLA: ≤60m</span>
-                            </div>
-                            <div class="relative w-full h-[240px]">
-                                <canvas id="chart-express-duration-hist"></canvas>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-gray-500">
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-800"></span> Optimal (&le;45m)</span>
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-400"></span> Warning (46-60m)</span>
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-600"></span> Breached (>60m)</span>
-                            </div>
-                        </div>
-
-                        <!-- Chart B: Categorized Delay Root Cause Pareto Breakdown -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
-                                <div>
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Delay & Unmet SLA Root Cause Pareto Analysis
-                                    </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Categorized breakdown of operational friction points</p>
-                                </div>
-                                <span id="express-pareto-total-badge" class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">0 Delays</span>
-                            </div>
-                            <div class="relative w-full h-[240px]">
-                                <canvas id="chart-express-delay-pareto"></canvas>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
-                                Pareto categories rank workshop friction to guide high-ROI executive interventions.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- AUTOMATED EXECUTIVE DECISION MATRIX (President Actionable Insights) -->
-                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4">
-                        <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="p-2 bg-slate-900 text-white rounded-lg">
-                                    <i data-lucide="compass" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900">Automated Executive Decision Matrix</h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Real-time operational interventions synthesized for executive management</p>
-                                </div>
-                            </div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 bg-slate-100 text-slate-700 rounded-md border border-slate-200">AI / Algorithmic Advisor</span>
-                        </div>
-                        <div id="express-decision-matrix-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Populated dynamically by app.js -->
-                        </div>
-                    </div>
-
-                    <!-- DETAILED DELAYED SERVICES DIAGNOSTIC AUDIT LOG -->
-                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/50">
-                            <div>
-                                <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                    <i data-lucide="clipboard-list" class="w-4 h-4 text-red-600"></i> Delayed & Unmet SLA Services Diagnostic Log
-                                </h4>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Audit log of all services exceeding the 60-minute turnaround benchmark</p>
-                            </div>
-                            <span id="express-delay-records-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200">0 Overruns Logged</span>
-                        </div>
-
-                        <div class="overflow-x-auto max-h-[420px] overflow-y-auto custom-scroll">
-                            <table class="w-full text-left border-collapse">
-                                <thead class="sticky top-0 z-10 bg-white shadow-2xs">
-                                    <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                        <th class="px-6 py-4 bg-white">Date</th>
-                                        <th class="px-6 py-4 bg-white">Claim Stub</th>
-                                        <th class="px-6 py-4 bg-white">Plate No.</th>
-                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
-                                        <th class="px-6 py-4 bg-white">Category</th>
-                                        <th class="px-6 py-4 bg-white text-center">Arrival</th>
-                                        <th class="px-6 py-4 bg-white text-center">Departure</th>
-                                        <th class="px-6 py-4 bg-white text-center">Duration</th>
-                                        <th class="px-6 py-4 bg-white text-center">Overrun</th>
-                                        <th class="px-6 py-4 bg-white">Root Cause Category</th>
-                                        <th class="px-6 py-4 bg-white">Diagnostic Remarks</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table-express-delays-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
-                                    <!-- Populated dynamically by app.js -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Footer -->
             <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
                 <button onclick="closeReportExportModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 font-extrabold text-xs text-gray-700 hover:bg-gray-100 transition uppercase tracking-wider">Cancel</button>
@@ -4307,7 +4306,7 @@
         </div>
     </div>
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.41"></script>
+    <script src="js/app.js?v=3.42"></script>
 </body>
 
 </html>

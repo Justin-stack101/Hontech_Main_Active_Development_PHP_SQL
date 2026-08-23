@@ -421,6 +421,17 @@
 
 ---
 
+### 🏁 Checkpoint 36: Express Intelligence DOM Structure Repositioning & Visibility Fix
+* **User Issue**: On clicking `Express Lane & Delay Intelligence`, the content container did not show because `#db-tab-express` was previously nested inside the export modal at the bottom of the document instead of within `#section-dashboard`.
+* **Key Deliverables**:
+  * Correctly positioned `#db-tab-express` inside `#section-dashboard` immediately following `#db-tab-reports`.
+  * Removed erroneous nested markup from `#modal-report-export`.
+  * Verified full reactive view switching between all 4 dashboard subtabs.
+  * Version bumped to `js/app.js?v=3.42`.
+* **Git Tag**: `checkpoint-36-express-tab-visibility-fix`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
