@@ -3290,19 +3290,64 @@
             <!-- Action 4: Error Detection Diagnostic Trigger -->
             <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" 
                 class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-red-950/40 text-left transition group cursor-pointer border border-transparent hover:border-red-900/50">
-                <div class="p-2 rounded-xl bg-amber-600/20 text-amber-400 group-hover:scale-110 transition-transform">
+                <div class="p-2 rounded-xl bg-red-600/20 text-red-400 group-hover:scale-110 transition-transform">
                     <i data-lucide="alert-triangle" class="w-4 h-4"></i>
                 </div>
                 <div class="min-w-0 flex-1">
                     <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
                         <span>Error Diagnostics</span>
-                        <span class="text-[9px] text-amber-400 uppercase font-black">Trigger</span>
+                        <span class="text-[9px] text-red-400 uppercase font-black">Trigger</span>
                     </div>
                     <p class="text-[10px] text-gray-500 font-medium truncate">Simulate crash overlay & stack trace</p>
                 </div>
             </button>
 
-            <!-- Action 5: Test TV Audio Chime -->
+            <!-- Action 5: Lost Connection Modal Simulation -->
+            <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-amber-950/40 text-left transition group cursor-pointer border border-transparent hover:border-amber-900/50">
+                <div class="p-2 rounded-xl bg-amber-600/20 text-amber-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="wifi-off" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Lost Connection</span>
+                        <span class="text-[9px] text-amber-400 uppercase font-black">Modal</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Preview offline modal & reconnect flow</p>
+                </div>
+            </button>
+
+            <!-- Action 6: Offline Status Pill Simulation -->
+            <button onclick="window.showLostConnectionPill(); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-amber-950/40 text-left transition group cursor-pointer border border-transparent hover:border-amber-900/50">
+                <div class="p-2 rounded-xl bg-amber-600/20 text-amber-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="bell-off" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Offline Banner</span>
+                        <span class="text-[9px] text-amber-400 uppercase font-black">Pill</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Preview floating top status pill</p>
+                </div>
+            </button>
+
+            <!-- Action 7: Reset & Re-Seed MariaDB Database -->
+            <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" 
+                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-emerald-950/40 text-left transition group cursor-pointer border border-transparent hover:border-emerald-900/50">
+                <div class="p-2 rounded-xl bg-emerald-600/20 text-emerald-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="database-backup" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
+                        <span>Reset & Seed DB</span>
+                        <span class="text-[9px] text-emerald-400 uppercase font-black">MariaDB</span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 font-medium truncate">Re-seed clean demo records & users</p>
+                </div>
+            </button>
+
+            <!-- Action 8: Test TV Audio Chime -->
             <button onclick="playAutomotiveChime(); showSystemToast('🔔 Automotive Chime Triggered (TV Alert Demo)', 'info', 'TV Chime Test'); toggleDevToolbox(false);" 
                 class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-emerald-950/40 text-left transition group cursor-pointer border border-transparent hover:border-emerald-900/50">
                 <div class="p-2 rounded-xl bg-emerald-600/20 text-emerald-400 group-hover:scale-110 transition-transform">
@@ -3317,7 +3362,7 @@
                 </div>
             </button>
 
-            <!-- Action 6: Toggle TV UI Style (Classic Vibrant vs Modern Slate) -->
+            <!-- Action 9: Toggle TV UI Style (Classic Vibrant vs Modern Slate) -->
             <button onclick="toggleTVTheme(); toggleDevToolbox(false);" 
                 class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-indigo-950/40 text-left transition group cursor-pointer border border-transparent hover:border-indigo-900/50">
                 <div class="p-2 rounded-xl bg-indigo-600/20 text-indigo-400 group-hover:scale-110 transition-transform">
@@ -3769,6 +3814,201 @@
             </div>
 
             <!-- Footer Action -->
+                            <input type="radio" name="export-report-type" value="monthly_sla" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Monthly Performance & SLA</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Volume trends, PMS goal rates, completion metrics.</p>
+                            </div>
+                        </label>
+                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="carryover" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Carry-Over Audit</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Extended stays, promised dates & parts availability.</p>
+                            </div>
+                        </label>
+                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
+                            <input type="radio" name="export-report-type" value="sa_efficiency" class="mt-1 accent-red-600 shrink-0">
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Service Advisor Efficiency</div>
+                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Jobs handled, average repair times per advisor.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 2. Output Format Selection -->
+                <div>
+                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-3">2. Output Format</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <label class="format-card cursor-pointer border border-red-500 bg-red-50/40 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:shadow-sm">
+                            <input type="radio" name="export-format" value="PDF" checked class="accent-red-600">
+                            <i data-lucide="file-text" class="w-4 h-4 text-red-600 shrink-0"></i> PDF (.pdf)
+                        </label>
+                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-blue-500 hover:shadow-sm">
+                            <input type="radio" name="export-format" value="Word" class="accent-blue-600">
+                            <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600 shrink-0"></i> Word (.docx)
+                        </label>
+                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-emerald-500 hover:shadow-sm">
+                            <input type="radio" name="export-format" value="Excel" class="accent-emerald-600">
+                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600 shrink-0"></i> Excel (.xls)
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. Range & Branch Parameters -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-gray-100 pt-5">
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Target Date / Start Date</label>
+                        <input type="date" id="export-start-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Branch Scope</label>
+                        <select id="export-branch-scope" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
+                            <option value="all">All Branches (Combined)</option>
+                            <option value="Marikina">Marikina Branch</option>
+                            <option value="Regalado">Regalado Branch</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
+                <button onclick="closeReportExportModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 font-extrabold text-xs text-gray-700 hover:bg-gray-100 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="submitReportExport()" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition uppercase tracking-wider shadow-md shadow-red-600/20 flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Connect QR Code Modal -->
+    <div id="mobile-connect-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[9999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border border-gray-100 overflow-hidden transform transition-all text-center">
+            <div class="bg-gradient-to-r from-red-600 to-red-700 p-6 text-white text-center relative">
+                <button onclick="closeMobileConnectModal()" class="absolute right-4 top-4 text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                    <i data-lucide="smartphone" class="w-6 h-6 text-white"></i>
+                </div>
+                <h3 class="text-lg font-black uppercase tracking-wider text-white">Connect Mobile Device</h3>
+                <p class="text-xs text-red-100 mt-1 font-medium">Scan to open HonTech on your phone</p>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 inline-block shadow-inner">
+                    <img id="mobile-connect-qr" src="" alt="Mobile QR Code" class="w-48 h-48 mx-auto rounded-xl shadow-xs">
+                </div>
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-1">Direct LAN Address</span>
+                    <a id="mobile-connect-url" href="#" target="_blank" class="text-xs font-mono font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 break-all inline-block hover:underline">...</a>
+                </div>
+                <p class="text-[11px] text-gray-500 font-medium">
+                    Ensure your phone is connected to the same Wi-Fi network or Mobile Hotspot as this computer.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-center">
+                <button onclick="closeMobileConnectModal()" class="w-full py-2.5 bg-gray-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider rounded-xl transition">
+                    Done / Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Terms and Conditions Modal -->
+    <div id="terms-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-5 text-white flex items-center justify-between border-b border-gray-800 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-500">
+                        <i data-lucide="scale" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-wider text-white">HonTech Terms & Conditions</h3>
+                        <p class="text-[11px] text-gray-400 font-medium">User Agreement & Operational Directives</p>
+                    </div>
+                </div>
+                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-xs text-gray-700 leading-relaxed custom-scroll">
+                
+                <!-- Notice Banner -->
+                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-xl">
+                    <h4 class="font-black text-red-900 uppercase text-[11px] tracking-wider mb-1 flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i> Authorized Use & Philippine Law Compliance
+                    </h4>
+                    <p class="text-[11px] text-red-800 font-medium leading-normal">
+                        This digital system is deployed solely for HonTech AutoCenter workshop management and vehicle queue monitoring. By logging in, all users agree to the terms outlined below in accordance with Republic Act No. 10173 (Data Privacy Act of 2012).
+                    </p>
+                </div>
+
+                <!-- Section 1 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">1</span>
+                        Role-Based Access Control (RBAC) & Credential Confidentiality
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Staff accounts are strictly personal and non-transferable. Sharing credentials or using another employee's session is grounds for administrative sanction. Sessions will automatically expire after 30 minutes of inactivity.
+                    </p>
+                </div>
+
+                <!-- Section 2 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">2</span>
+                        Customer Data Privacy & Record Integrity
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Customer contact numbers, vehicle plates, claim stubs, and PMS logs must not be disclosed or exported to unauthorized third parties. All recorded data is securely stored on local workshop infrastructure.
+                    </p>
+                </div>
+
+                <!-- Section 3 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">3</span>
+                        Queue Scheduling & Workshop Operations
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Service Advisors (SA) and Technicians are responsible for maintaining real-time accuracy of vehicle bay locations, status changes (Waiting, Inspection, In Bay, QC, Ready), and PMS 2-Hour Goal targets.
+                    </p>
+                </div>
+
+                <!-- Section 4 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">4</span>
+                        Billing & Payment Boundaries
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        This software operates as an operational intake, queue monitoring, and analytics tracker. Official billing, payment receipts, and cash transactions must be processed via HonTech's over-the-counter accounting registry.
+                    </p>
+                </div>
+
+                <!-- Section 5 -->
+                <div class="space-y-2">
+                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">5</span>
+                        Academic & Development Disclosure
+                    </h4>
+                    <p class="text-gray-600 pl-7">
+                        Developed in partnership with STI College Marikina BSIT Capstone Program. System logs and performance metrics may be audited for academic evaluation and maintenance purposes.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Footer Action -->
             <div class="bg-gray-50 px-6 py-3.5 border-t border-gray-200 flex items-center justify-between shrink-0">
                 <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">HonTech • STI College Marikina</span>
                 <button onclick="closeTermsModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
@@ -3778,82 +4018,8 @@
 
         </div>
     </div>
-
-    <!-- FLOATING DEVELOPER TOOLBOX & SIMULATION SUITE (ACCESSIBLE ON ALL SCREENS) -->
-    <div id="dev-toolbox-container" class="fixed bottom-5 right-5 z-[9990] select-none">
-        <!-- Floating Dev Trigger Button -->
-        <button onclick="toggleDevToolbox()" 
-                id="dev-toolbox-btn" 
-                class="bg-gray-950/90 hover:bg-black text-white px-3.5 py-2.5 rounded-2xl border border-gray-800 shadow-2xl backdrop-blur-md flex items-center gap-2.5 transition hover:scale-105 active:scale-95 cursor-pointer group">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span class="text-xs font-black uppercase tracking-wider text-gray-200 group-hover:text-white">Dev Suite</span>
-            <i data-lucide="chevron-up" id="dev-toolbox-chevron" class="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform duration-200"></i>
-        </button>
-
-        <!-- Collapsible Dev Menu Panel -->
-        <div id="dev-toolbox-menu" class="hidden absolute bottom-14 right-0 w-72 bg-white rounded-2xl border border-gray-200 shadow-2xl p-4 space-y-3 fade-in">
-            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
-                <div class="flex items-center gap-2">
-                    <div class="p-1.5 bg-red-50 text-red-600 rounded-lg"><i data-lucide="terminal" class="w-4 h-4"></i></div>
-                    <div>
-                        <h4 class="text-xs font-black uppercase tracking-tight text-gray-900">Developer Suite</h4>
-                        <p class="text-[9px] text-gray-400 font-bold uppercase">Simulation & Diagnostics</p>
-                    </div>
-                </div>
-                <span class="text-[9px] font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100">Live Dev</span>
-            </div>
-
-            <div class="space-y-1.5">
-                <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" 
-                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 transition text-xs font-bold cursor-pointer group text-left">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
-                        <span>Lost Conn (Modal)</span>
-                    </span>
-                    <span class="text-[9px] uppercase font-black bg-white text-amber-800 px-1.5 py-0.5 rounded border border-amber-200 shrink-0">Preview</span>
-                </button>
-
-                <button onclick="window.showLostConnectionPill(); toggleDevToolbox(false);" 
-                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-800 transition text-xs font-bold cursor-pointer group text-left">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="bell-off" class="w-4 h-4 text-gray-600 shrink-0"></i>
-                        <span>Offline Status (Pill)</span>
-                    </span>
-                    <span class="text-[9px] uppercase font-black bg-white text-gray-600 px-1.5 py-0.5 rounded border border-gray-200 shrink-0">Banner</span>
-                </button>
-
-                <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" 
-                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-900 transition text-xs font-bold cursor-pointer group text-left">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="alert-triangle" class="w-4 h-4 text-red-600 shrink-0"></i>
-                        <span>Crash Diagnostics</span>
-                    </span>
-                    <span class="text-[9px] uppercase font-black bg-white text-red-800 px-1.5 py-0.5 rounded border border-red-200 shrink-0">Overlay</span>
-                </button>
-
-                <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" 
-                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 transition text-xs font-bold cursor-pointer group text-left">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="database-backup" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-                        <span>Reset & Seed DB</span>
-                    </span>
-                    <span class="text-[9px] uppercase font-black bg-white text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-200 shrink-0">MariaDB</span>
-                </button>
-
-                <button onclick="triggerDevLoadingDemo(3000); toggleDevToolbox(false);" 
-                        class="w-full flex items-center justify-between p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-900 transition text-xs font-bold cursor-pointer group text-left">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="loader-2" class="w-4 h-4 text-blue-600 shrink-0"></i>
-                        <span>Boot Preloader Demo</span>
-                    </span>
-                    <span class="text-[9px] uppercase font-black bg-white text-blue-800 px-1.5 py-0.5 rounded border border-blue-200 shrink-0">Splash</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.30"></script>
+    <script src="js/app.js?v=3.31"></script>
 </body>
 
 </html>

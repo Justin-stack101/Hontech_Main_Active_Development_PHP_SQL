@@ -200,6 +200,25 @@
 
 ---
 
+### 🏁 Checkpoint 20: Unified Developer Toolbox Hub Organization & Duplicate Cleanup
+* **User Need**: Organize all developer diagnostics into the single master **Dev Toolbox Hub** and eliminate the duplicate button overlap in the bottom-right corner.
+* **Key Deliverables**:
+  * Removed duplicate floating trigger container from `frontend/index.html`.
+  * Cleanly consolidated all 9 developer actions inside the single master `#dev-toolbox-menu`:
+    1. **Test Loader Animation** (`triggerDevLoadingDemo`)
+    2. **Loader UI Themes** (`openLoaderThemeModal`)
+    3. **Dev Mailbox** (`toggleDevMailbox`)
+    4. **Error Diagnostics** (`window.triggerTestCrash`)
+    5. **Lost Connection Modal** (`window.triggerSimulateLostConnection`)
+    6. **Offline Banner** (`window.showLostConnectionPill`)
+    7. **Reset & Seed DB** (`window.triggerDeveloperResetSeed`)
+    8. **TV Audio Chime** (`playAutomotiveChime`)
+    9. **TV Display Theme** (`toggleTVTheme`)
+  * Version bumped to `js/app.js?v=3.31`.
+* **Git Tag**: `checkpoint-20-unified-developer-toolbox-organization`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
