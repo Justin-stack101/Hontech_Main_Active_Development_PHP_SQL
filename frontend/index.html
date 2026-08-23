@@ -1575,33 +1575,62 @@
                         </div>
                     </div>
 
-                    <!-- TABLE 1: Category Inflow & Target Fulfillment Matrix (Plan vs Pumasok) -->
+                    <!-- SECTION: Category Inflow & Target Fulfillment Matrix (Plan vs Pumasok + Chart.js) -->
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/50">
+                        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
                             <div>
                                 <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Inflow & Target Fulfillment Matrix
+                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Inflow & Target Fulfillment
                                 </h4>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Plan / Scheduled Target vs Pumasok (Actual Intakes) across Carry-Over, GRS, and PMS</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Plan / Scheduled Target vs Actual Intakes across Workshop Service Categories</p>
                             </div>
-                            <span id="report-category-matrix-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200">5 Categories Tracked</span>
+                            <div class="flex items-center gap-2 self-start md:self-auto">
+                                <div class="inline-flex bg-gray-100 p-1 rounded-xl border border-gray-200 text-[11px] font-bold">
+                                    <button type="button" id="btn-cat-view-split" onclick="setCategoryInflowView('split')" class="px-3 py-1 rounded-lg transition bg-white text-gray-900 shadow-2xs font-black flex items-center gap-1.5">
+                                        <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Split View
+                                    </button>
+                                    <button type="button" id="btn-cat-view-chart" onclick="setCategoryInflowView('chart')" class="px-3 py-1 rounded-lg transition text-gray-500 hover:text-gray-900 flex items-center gap-1.5">
+                                        <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Graph
+                                    </button>
+                                    <button type="button" id="btn-cat-view-table" onclick="setCategoryInflowView('table')" class="px-3 py-1 rounded-lg transition text-gray-500 hover:text-gray-900 flex items-center gap-1.5">
+                                        <i data-lucide="table" class="w-3.5 h-3.5"></i> Table
+                                    </button>
+                                </div>
+                                <span id="report-category-matrix-count" class="hidden sm:inline-block text-[10px] font-black uppercase tracking-wider px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full border border-gray-200">5 Categories Tracked</span>
+                            </div>
                         </div>
 
-                        <div class="overflow-x-auto custom-scroll">
+                        <!-- GRAPH CONTAINER (Plan vs Actual Comparison Bar Chart) -->
+                        <div id="category-inflow-chart-wrapper" class="p-6 border-b border-gray-100 bg-white">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-slate-900"></span>
+                                    <span class="text-[11px] font-bold text-gray-600">Planned Target</span>
+                                    <span class="w-2 h-2 rounded-full bg-red-600 ml-3"></span>
+                                    <span class="text-[11px] font-bold text-gray-600">Actual Pumasok</span>
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 ml-3"></span>
+                                    <span class="text-[11px] font-bold text-gray-600">Completed & Released</span>
+                                </div>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Volume (Vehicles)</span>
+                            </div>
+                            <div class="relative w-full h-[220px]">
+                                <canvas id="chart-category-inflow"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- MATRIX TABLE CONTAINER (Clean Professional Layout) -->
+                        <div id="category-inflow-table-wrapper" class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                        <th class="px-6 py-4 bg-white">Service Category</th>
-                                        <th class="px-6 py-4 bg-white text-center">Planned Target</th>
-                                        <th class="px-6 py-4 bg-white text-center">Pumasok (Actual)</th>
-                                        <th class="px-6 py-4 bg-white text-center">In Bay (Active)</th>
-                                        <th class="px-6 py-4 bg-white text-center">Completed & Released</th>
-                                        <th class="px-6 py-4 bg-white text-center">Variance (+/-)</th>
-                                        <th class="px-6 py-4 bg-white text-center">Fulfillment %</th>
-                                        <th class="px-6 py-4 bg-white text-right">Status</th>
+                                    <tr class="bg-gray-50/75 border-b border-gray-200 text-gray-400 text-[10px] font-black uppercase tracking-widest">
+                                        <th class="px-6 py-3.5">Service Category</th>
+                                        <th class="px-6 py-3.5">Inflow vs Target (Fulfillment)</th>
+                                        <th class="px-6 py-3.5 text-center">Workflow Distribution</th>
+                                        <th class="px-6 py-3.5 text-center">Variance</th>
+                                        <th class="px-6 py-3.5 text-right">Service Type</th>
                                     </tr>
                                 </thead>
-                                <tbody id="table-category-flow-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                <tbody id="table-category-flow-body" class="divide-y divide-gray-100 text-xs text-gray-700">
                                     <!-- Populated dynamically by app.js -->
                                 </tbody>
                             </table>
@@ -4019,7 +4048,7 @@
         </div>
     </div>
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.35"></script>
+    <script src="js/app.js?v=3.36"></script>
 </body>
 
 </html>

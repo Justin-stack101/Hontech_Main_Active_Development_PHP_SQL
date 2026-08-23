@@ -308,6 +308,23 @@
 
 ---
 
+### 🏁 Checkpoint 28: Category Inflow Matrix UI Redesign with Chart.js Graph & Clean SaaS Table
+* **User Need**: Replace the rainbow-colored, number-heavy matrix table with a professional, executive enterprise layout featuring an interactive comparison bar chart, view switcher (Split / Graph / Table), and clean consolidated columns without horizontal scroll.
+* **Key Deliverables**:
+  * Added Chart.js comparative bar graph (`#chart-category-inflow`) comparing Planned Target (Slate-900), Actual Pumasok (Crimson-600), and Completed/Released (Emerald-500).
+  * Added interactive 3-state View Switcher (`Split View`, `Graph Only`, `Table Only`).
+  * Redesigned Matrix Table with consolidated 5-column layout:
+    * `Service Category` with subtle icons.
+    * `Inflow vs Target` with sleek micro-progress bars and percentage fulfillment.
+    * `Workflow Distribution` (`X in bay · Y released`).
+    * `Variance` (`▼ -X` or `▲ +Y` soft delta badges).
+    * `Service Class` (neutral professional badges).
+  * Total Summary Footer in clean slate with overall fulfillment meter.
+  * Version bumped to `js/app.js?v=3.36`.
+* **Git Tag**: `checkpoint-28-category-inflow-graph-and-clean-table-redesign`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

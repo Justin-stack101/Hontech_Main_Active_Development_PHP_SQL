@@ -688,6 +688,48 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.hideLostConnectionUI = hideLostConnectionUI;
         window.showCrashOverlay = showCrashOverlay;
 
+        window.setCategoryInflowView = function(viewMode) {
+            const chartWrap = document.getElementById('category-inflow-chart-wrapper');
+            const tableWrap = document.getElementById('category-inflow-table-wrapper');
+            const btnSplit = document.getElementById('btn-cat-view-split');
+            const btnChart = document.getElementById('btn-cat-view-chart');
+            const btnTable = document.getElementById('btn-cat-view-table');
+
+            const activeClasses = ['bg-white', 'text-gray-900', 'shadow-2xs', 'font-black'];
+            const inactiveClasses = ['text-gray-500', 'hover:text-gray-900'];
+
+            const setBtnState = (btn, isActive) => {
+                if (!btn) return;
+                if (isActive) {
+                    btn.classList.add(...activeClasses);
+                    btn.classList.remove(...inactiveClasses);
+                } else {
+                    btn.classList.remove(...activeClasses);
+                    btn.classList.add(...inactiveClasses);
+                }
+            };
+
+            if (viewMode === 'chart') {
+                if (chartWrap) chartWrap.classList.remove('hidden');
+                if (tableWrap) tableWrap.classList.add('hidden');
+                setBtnState(btnChart, true);
+                setBtnState(btnSplit, false);
+                setBtnState(btnTable, false);
+            } else if (viewMode === 'table') {
+                if (chartWrap) chartWrap.classList.add('hidden');
+                if (tableWrap) tableWrap.classList.remove('hidden');
+                setBtnState(btnTable, true);
+                setBtnState(btnSplit, false);
+                setBtnState(btnChart, false);
+            } else { // 'split'
+                if (chartWrap) chartWrap.classList.remove('hidden');
+                if (tableWrap) tableWrap.classList.remove('hidden');
+                setBtnState(btnSplit, true);
+                setBtnState(btnChart, false);
+                setBtnState(btnTable, false);
+            }
+        };
+
         window.triggerTestCrash = function() {
             try {
                 throw new Error("Simulated Developer Exception: Unhandled Database Timeout during asynchronous job order dispatch.");
@@ -3801,101 +3843,200 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('report-total-bar')) document.getElementById('report-total-bar').style.width = `${Math.min(100, totalFulfillment)}%`;
             if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Inflow Target`;
 
-            // 2. POPULATE TABLE 1: Category Inflow Matrix
+            // 2. POPULATE TABLE 1: Category Inflow Matrix & Chart.js Graph
             const categoryRows = [
                 {
-                    name: '🔄 Carry-Over (Unfinished from Prev Day)',
+                    name: 'Carry-Over (Unfinished Prev Day)',
+                    icon: '🔄',
                     plan: plannedCarry,
                     actual: pumasokCarry,
                     inbay: inbayCarry,
                     released: releasedCarry,
                     variance: pumasokCarry - plannedCarry,
                     fulfillment: carryFulfillment,
-                    statusBadge: `<span class="bg-orange-50 text-orange-700 border border-orange-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Active Carry-Over</span>`
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Carry-Over</span>`
                 },
                 {
-                    name: '🔧 GRS (General Repair Service)',
+                    name: 'GRS (General Repair Service)',
+                    icon: '🔧',
                     plan: plannedGRS,
                     actual: pumasokGRS,
                     inbay: inbayGRS,
                     released: releasedGRS,
                     variance: pumasokGRS - plannedGRS,
                     fulfillment: grsFulfillment,
-                    statusBadge: `<span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Heavy Service</span>`
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">General Repair</span>`
                 },
                 {
-                    name: '🛠️ PMS (Preventive Maintenance Service)',
+                    name: 'PMS (Preventive Maintenance)',
+                    icon: '🛠️',
                     plan: plannedPMS,
                     actual: pumasokPMS,
                     inbay: inbayPMS,
                     released: releasedPMS,
                     variance: pumasokPMS - plannedPMS,
                     fulfillment: pmsFulfillment,
-                    statusBadge: `<span class="bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Standard Intake</span>`
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Periodic PMS</span>`
                 },
                 {
-                    name: '⚡ Express Lane (Turnaround ≤ 60m)',
+                    name: 'Express Lane (Turnaround ≤ 60m)',
+                    icon: '⚡',
                     plan: plannedExpress,
                     actual: pumasokExpress,
                     inbay: inbayExpress,
                     released: releasedExpress,
                     variance: pumasokExpress - plannedExpress,
                     fulfillment: expressFulfillment,
-                    statusBadge: `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Express SLA</span>`
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Express ≤60m</span>`
                 },
                 {
-                    name: '🔍 Complimentary Multi-Point Inspection',
+                    name: 'Complimentary Inspection',
+                    icon: '🔍',
                     plan: plannedCheckup,
                     actual: pumasokCheckup,
                     inbay: inbayCheckup,
                     released: releasedCheckup,
                     variance: pumasokCheckup - plannedCheckup,
                     fulfillment: checkupFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200 px-2 py-0.5 rounded-md font-bold text-[10px] uppercase">Complimentary</span>`
+                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Multi-Point</span>`
                 }
             ];
+
+            // Render Chart.js Graph
+            if (typeof Chart !== 'undefined') {
+                const chartCanvas = document.getElementById('chart-category-inflow');
+                if (chartCanvas) {
+                    if (window.categoryInflowChartInstance) {
+                        try { window.categoryInflowChartInstance.destroy(); } catch (e) {}
+                    }
+                    window.categoryInflowChartInstance = new Chart(chartCanvas, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Carry-Over', 'GRS Repair', 'PMS Service', 'Express Lane', 'Inspection'],
+                            datasets: [
+                                {
+                                    label: 'Planned Target',
+                                    data: [plannedCarry, plannedGRS, plannedPMS, plannedExpress, plannedCheckup],
+                                    backgroundColor: '#0f172a',
+                                    borderRadius: 4,
+                                    barPercentage: 0.65,
+                                    categoryPercentage: 0.75
+                                },
+                                {
+                                    label: 'Actual Pumasok',
+                                    data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
+                                    backgroundColor: '#dc2626',
+                                    borderRadius: 4,
+                                    barPercentage: 0.65,
+                                    categoryPercentage: 0.75
+                                },
+                                {
+                                    label: 'Completed & Released',
+                                    data: [releasedCarry, releasedGRS, releasedPMS, releasedExpress, releasedCheckup],
+                                    backgroundColor: '#10b981',
+                                    borderRadius: 4,
+                                    barPercentage: 0.65,
+                                    categoryPercentage: 0.75
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f172a',
+                                    padding: 10,
+                                    titleFont: { size: 12, weight: 'bold' },
+                                    bodyFont: { size: 11 },
+                                    cornerRadius: 8
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: '#f1f5f9' },
+                                    ticks: { precision: 0, font: { size: 10 }, color: '#94a3b8' }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
 
             const tableCatBody = document.getElementById('table-category-flow-body');
             if (tableCatBody) {
                 let catHtml = categoryRows.map(row => {
-                    const varColor = row.variance >= 0 ? 'text-emerald-600' : 'text-rose-600';
+                    const isDeficit = row.variance < 0;
                     const varSign = row.variance > 0 ? `+${row.variance}` : `${row.variance}`;
+                    const varBadge = row.variance === 0 
+                        ? `<span class="text-[11px] font-bold text-gray-400">On Target (0)</span>` 
+                        : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold ${isDeficit ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}">${isDeficit ? '▼' : '▲'} ${varSign} cars</span>`;
+
                     return `
-                        <tr class="hover:bg-gray-50/80 transition border-b border-gray-100">
-                            <td class="px-6 py-4 font-bold text-gray-900">${row.name}</td>
-                            <td class="px-6 py-4 text-center font-bold text-gray-500">${row.plan} cars</td>
-                            <td class="px-6 py-4 text-center font-black text-gray-900">${row.actual} cars</td>
-                            <td class="px-6 py-4 text-center font-bold text-blue-700 bg-blue-50/30">${row.inbay} in bay</td>
-                            <td class="px-6 py-4 text-center font-bold text-emerald-700 bg-emerald-50/30">${row.released} done</td>
-                            <td class="px-6 py-4 text-center font-black ${varColor}">${varSign} cars</td>
-                            <td class="px-6 py-4 text-center font-black text-gray-900">
-                                <div class="inline-flex items-center gap-2">
-                                    <div class="w-16 bg-gray-200 h-1.5 rounded-full overflow-hidden">
-                                        <div class="bg-red-600 h-full rounded-full" style="width: ${Math.min(100, row.fulfillment)}%"></div>
-                                    </div>
-                                    <span>${row.fulfillment}%</span>
+                        <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
+                            <td class="px-6 py-3.5">
+                                <div class="font-bold text-gray-900 text-xs flex items-center gap-1.5">
+                                    <span>${row.icon}</span> <span>${row.name}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-right">${row.statusBadge}</td>
+                            <td class="px-6 py-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-20 bg-gray-100 h-1.5 rounded-full overflow-hidden shrink-0">
+                                        <div class="bg-slate-900 h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, row.fulfillment)}%"></div>
+                                    </div>
+                                    <span class="font-bold text-gray-900 text-xs">${row.actual} <span class="text-gray-400 font-normal">/ ${row.plan} cars</span></span>
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">${row.fulfillment}%</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-3.5 text-center">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-200/60">
+                                    <span class="font-bold text-gray-900">${row.inbay}</span> in bay <span class="text-gray-300">·</span> <span class="font-bold text-emerald-600">${row.released}</span> released
+                                </span>
+                            </td>
+                            <td class="px-6 py-3.5 text-center">
+                                ${varBadge}
+                            </td>
+                            <td class="px-6 py-3.5 text-right">
+                                ${row.statusBadge}
+                            </td>
                         </tr>
                     `;
                 }).join('');
 
                 const totalVariance = totalPumasok - totalPlanned;
                 const totalVarSign = totalVariance > 0 ? `+${totalVariance}` : `${totalVariance}`;
-                const totalVarColor = totalVariance >= 0 ? 'text-emerald-600' : 'text-rose-600';
+                const totalIsDeficit = totalVariance < 0;
 
                 catHtml += `
-                    <tr class="bg-gray-900 text-white font-black">
-                        <td class="px-6 py-4 text-white uppercase tracking-wider">TOTAL INFLOW & PERFORMANCE</td>
-                        <td class="px-6 py-4 text-center text-gray-300 font-bold">${totalPlanned} cars</td>
-                        <td class="px-6 py-4 text-center text-white text-sm font-black">${totalPumasok} cars</td>
-                        <td class="px-6 py-4 text-center text-blue-300 font-bold">${totalInBay} in bay</td>
-                        <td class="px-6 py-4 text-center text-emerald-300 font-bold">${totalReleased} done</td>
-                        <td class="px-6 py-4 text-center ${totalVarColor}">${totalVarSign} cars</td>
-                        <td class="px-6 py-4 text-center text-red-400 font-black">${totalFulfillment}% Overall</td>
+                    <tr class="bg-slate-900 text-white font-bold text-xs">
+                        <td class="px-6 py-4 text-white uppercase tracking-wider font-black">TOTAL WORKSHOP INFLOW</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-20 bg-slate-800 h-2 rounded-full overflow-hidden shrink-0">
+                                    <div class="bg-red-500 h-full rounded-full" style="width: ${Math.min(100, totalFulfillment)}%"></div>
+                                </div>
+                                <span class="font-black text-white">${totalPumasok} <span class="text-slate-400 font-normal">/ ${totalPlanned} cars</span></span>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-600/30 text-red-300 border border-red-500/40">${totalFulfillment}%</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-slate-300 text-[11px]">
+                                <strong class="text-white">${totalInBay}</strong> in bay · <strong class="text-emerald-400">${totalReleased}</strong> released
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-bold ${totalIsDeficit ? 'bg-rose-950/60 text-rose-300 border border-rose-800/40' : 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/40'}">
+                                ${totalIsDeficit ? '▼' : '▲'} ${totalVarSign} cars
+                            </span>
+                        </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] uppercase font-black tracking-wider">Active Shop</span>
+                            <span class="text-[10px] uppercase font-black tracking-wider text-slate-400">All Lines</span>
                         </td>
                     </tr>
                 `;
