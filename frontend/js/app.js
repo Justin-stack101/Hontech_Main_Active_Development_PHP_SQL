@@ -7955,3 +7955,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('No 6-digit code found in this email.', 'error');
             }
         }
+
+        // Global Network Connection Listeners (Defensive Offline Handler)
+        window.addEventListener('offline', () => {
+            const screen = document.getElementById('offline-network-screen');
+            if (screen) {
+                screen.classList.remove('hidden');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        });
+        window.addEventListener('online', () => {
+            const screen = document.getElementById('offline-network-screen');
+            if (screen) screen.classList.add('hidden');
+        });
+        // Initial check on load
+        if (typeof navigator.onLine === 'boolean' && !navigator.onLine) {
+            const screen = document.getElementById('offline-network-screen');
+            if (screen) {
+                screen.classList.remove('hidden');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        }

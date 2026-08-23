@@ -1,3 +1,26 @@
+/* ==========================================================================
+   CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Even With Zero Internet)
+   ========================================================================== */
+.hidden,
+[hidden],
+.section-content.hidden,
+.modal.hidden,
+#app-container.hidden,
+#section-dashboard.hidden,
+#section-staff.hidden,
+#section-intake.hidden,
+#section-bays.hidden,
+#section-profile.hidden,
+#modal-system-tutorial.hidden,
+#modal-report-export.hidden,
+#modal-terms.hidden,
+#mobile-connect-modal.hidden,
+#dev-credentials-dropdown.hidden,
+#dev-mailbox-modal.hidden,
+#loader-theme-modal.hidden {
+  display: none !important;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap");
 html {
   font-size: 13.5px;

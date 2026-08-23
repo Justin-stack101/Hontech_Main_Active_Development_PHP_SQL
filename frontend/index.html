@@ -40,6 +40,28 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <style>
+        /* CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Even With Zero Internet) */
+        .hidden,
+        [hidden],
+        .section-content.hidden,
+        .modal.hidden,
+        #app-container.hidden,
+        #section-dashboard.hidden,
+        #section-staff.hidden,
+        #section-intake.hidden,
+        #section-bays.hidden,
+        #section-profile.hidden,
+        #modal-system-tutorial.hidden,
+        #modal-report-export.hidden,
+        #modal-terms.hidden,
+        #mobile-connect-modal.hidden,
+        #dev-credentials-dropdown.hidden,
+        #dev-mailbox-modal.hidden,
+        #loader-theme-modal.hidden,
+        .tv-slide.hidden {
+            display: none !important;
+        }
+
         :root {
             /* Default Red Theme */
             --color-red-50: #fef2f2;
@@ -470,38 +492,32 @@
                                     </div>
                                 </div>
 
-                                <!-- Pre-Configured Accounts (Quick Fill) -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px] text-gray-600">
-                                     <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Owner (Global)</span>
-                                         <span class="text-gray-600">owner@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: owner123</span>
-                                     </div>
-                                     <div onclick="document.getElementById('login-email').value='admin@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Branch A)</span>
-                                         <span class="text-gray-600">admin@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: admin123</span>
-                                     </div>
-                                     <div onclick="document.getElementById('login-email').value='staff@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Front Desk Staff (Branch A)</span>
-                                         <span class="text-gray-600">staff@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: staff123</span>
-                                     </div>
-                                     <div onclick="document.getElementById('login-email').value='sa@hontech.com'; document.getElementById('login-pass').value='sa123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Service Advisor (Branch A)</span>
-                                         <span class="text-gray-600">sa@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: sa123</span>
-                                     </div>
-                                     <div onclick="document.getElementById('login-email').value='admin.east@hontech.com'; document.getElementById('login-pass').value='admin123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Branch B)</span>
-                                         <span class="text-gray-600">admin.east@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: admin123</span>
-                                     </div>
-                                     <div onclick="document.getElementById('login-email').value='staff.east@hontech.com'; document.getElementById('login-pass').value='staff123';" class="bg-white p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Front Desk Staff (Branch B)</span>
-                                         <span class="text-gray-600">staff.east@hontech.com</span>
-                                         <span class="text-gray-400 block text-[9px]">Password: staff123</span>
-                                     </div>
+                                <!-- Role Quick-Select Accounts -->
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[10px]">
+                                     <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Owner</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">owner@hontech.com</span>
+                                     </button>
+                                     <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Main)</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">admin@hontech.com</span>
+                                     </button>
+                                     <button onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Staff (Main)</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">staff@hontech.com</span>
+                                     </button>
+                                     <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Advisor (Main)</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">sa@hontech.com</span>
+                                     </button>
+                                     <button onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (East)</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">admin.east@hontech.com</span>
+                                     </button>
+                                     <button onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                         <span class="font-bold text-gray-800 block text-[10px]">Staff (East)</span>
+                                         <span class="text-gray-500 text-[9px] truncate block">staff.east@hontech.com</span>
+                                     </button>
                                 </div>
 
                                 <!-- Utility & Diagnostics Actions -->
@@ -4545,8 +4561,30 @@
 
         </div>
     </div>
+
+    <!-- OFFLINE NETWORK STATUS SCREEN (Guaranteed Fallback Screen for Disconnections) -->
+    <div id="offline-network-screen" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center space-y-5 transform transition-all">
+            <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto border border-amber-200">
+                <i data-lucide="wifi-off" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-gray-900">Workshop Connection Lost</h3>
+                <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                    Your device is disconnected from the local network or Wi-Fi. Live synchronization with the HonTech database is paused.
+                </p>
+            </div>
+            <div class="pt-2">
+                <button onclick="window.location.reload()" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-red-600/20 transition cursor-pointer flex items-center justify-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Retry Connection
+                </button>
+            </div>
+            <p class="text-[10px] text-gray-400 font-medium">HonTech AutoCenter Management System</p>
+        </div>
+    </div>
+
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.46"></script>
+    <script src="js/app.js?v=3.47"></script>
 </body>
 
 </html>

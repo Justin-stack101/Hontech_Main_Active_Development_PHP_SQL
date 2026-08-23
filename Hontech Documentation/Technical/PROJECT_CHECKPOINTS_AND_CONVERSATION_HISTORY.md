@@ -486,6 +486,18 @@
 
 ---
 
+### 🏁 Checkpoint 41: Hardened Offline FOUC Prevention & Network Disconnection Fallback Screen
+* **User Directive**: Fix issue where turning off Wi-Fi and refreshing dumped raw unstyled text and templates on screen.
+* **Root Cause**: Reliance on external CDN Tailwind CSS meant `.hidden` was undefined offline, revealing all HTML templates without styling.
+* **Key Deliverables**:
+  * Added **Critical Baseline Defensive CSS** directly into `<head><style>` of `index.html` and `css/main.css` (`.hidden, [hidden] { display: none !important; }`), ensuring all hidden containers stay 100% hidden even with zero internet.
+  * Added branded **Offline Fallback Overlay Screen (`#offline-network-screen`)** with auto-detection on network disconnect.
+  * Cleaned static plaintext passwords from the login developer panel.
+  * Version bumped to `js/app.js?v=3.47`.
+* **Git Tag**: `checkpoint-41-hardened-offline-fouc-prevention`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
