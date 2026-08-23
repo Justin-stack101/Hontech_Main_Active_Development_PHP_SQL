@@ -306,9 +306,19 @@ Report Generated Automatically by Developer Crash Reporter.
             }
         };
 
+        function safeEscapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         // Global Crash / Error Handler Overlay (Option A: Chrome DevTools & macOS Developer Console)
         function showCrashOverlay(errorMsg, source, lineno, colno, errorObj) {
-            if (document.getElementById('system-crash-overlay')) return;
+            const existingOverlay = document.getElementById('system-crash-overlay');
+            if (existingOverlay) existingOverlay.remove();
 
             const overlay = document.createElement('div');
             overlay.id = 'system-crash-overlay';
@@ -317,8 +327,8 @@ Report Generated Automatically by Developer Crash Reporter.
             const file = source ? source.substring(source.lastIndexOf('/') + 1) : 'app.js';
             const stack = errorObj && errorObj.stack ? errorObj.stack : (errorMsg || 'No stack trace available.');
             const safeBranch = localStorage.getItem('selectedBranch') || 'Marikina Branch';
-            const safeUser = currentUserName || 'Guest';
-            const safeRole = currentUserRole || 'Guest';
+            const safeUser = (typeof currentUserName !== 'undefined' && currentUserName) ? currentUserName : 'Guest';
+            const safeRole = (typeof currentUserRole !== 'undefined' && currentUserRole) ? currentUserRole : 'Guest';
             
             window.currentCrashLogData = {
                 errorMsg: errorMsg || 'Unknown System Error',
@@ -334,7 +344,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 return `
                     <div class="flex items-start gap-2.5 py-0.5 px-2 rounded hover:bg-gray-100 transition-colors">
                         <span class="text-[11px] font-mono text-gray-400 select-none w-5 text-right shrink-0">${idx + 1}.</span>
-                        <span class="text-[11px] font-mono ${isErrorHeader ? 'text-red-700 font-bold' : 'text-gray-800'} break-all leading-relaxed">${escapeHtml(line.trim())}</span>
+                        <span class="text-[11px] font-mono ${isErrorHeader ? 'text-red-700 font-bold' : 'text-gray-800'} break-all leading-relaxed">${safeEscapeHtml(line.trim())}</span>
                     </div>
                 `;
             }).join('');
@@ -638,6 +648,7 @@ Report Generated Automatically by Developer Crash Reporter.
         window.triggerNetworkReconnect = triggerNetworkReconnect;
         window.dismissLostConnectionModalToPill = dismissLostConnectionModalToPill;
         window.hideLostConnectionUI = hideLostConnectionUI;
+        window.showCrashOverlay = showCrashOverlay;
 
         window.triggerTestCrash = function() {
             try {

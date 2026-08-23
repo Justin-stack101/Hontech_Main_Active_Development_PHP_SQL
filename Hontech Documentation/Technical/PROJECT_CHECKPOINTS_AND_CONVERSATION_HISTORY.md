@@ -244,6 +244,17 @@
 
 ---
 
+### 🏁 Checkpoint 23: Developer Error Diagnostics Overlay Reliability & HTML Escaper Fix
+* **User Need**: Fix the Developer Diagnostics tool trigger so the error overlay displays instantly and reliably upon pressing the button in the Dev Toolbox.
+* **Key Deliverables**:
+  * Added `safeEscapeHtml()` helper to prevent runtime exceptions when rendering stack traces.
+  * Explicitly bound `window.showCrashOverlay` and `window.triggerTestCrash` to global scope.
+  * Added auto-replacement of existing open overlays to prevent DOM collision locks.
+  * Version bumped to `js/app.js?v=3.34`.
+* **Git Tag**: `checkpoint-23-developer-diagnostics-fix`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
