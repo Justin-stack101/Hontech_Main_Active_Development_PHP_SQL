@@ -4695,6 +4695,43 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.printExpressIntelligence = printExpressIntelligence;
 
+        function openSystemTutorialModal() {
+            const modal = document.getElementById('modal-system-tutorial');
+            if (modal) {
+                modal.classList.remove('hidden');
+                switchTutorialTab('overview');
+                if (window.lucide) window.lucide.createIcons();
+            }
+        }
+        window.openSystemTutorialModal = openSystemTutorialModal;
+
+        function closeSystemTutorialModal() {
+            const modal = document.getElementById('modal-system-tutorial');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeSystemTutorialModal = closeSystemTutorialModal;
+
+        function switchTutorialTab(tab) {
+            const tabs = ['overview', 'modules', 'formulas', 'exports'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-tut-tab-${t}`);
+                const content = document.getElementById(`tut-content-${t}`);
+                if (btn) {
+                    if (t === tab) {
+                        btn.className = 'py-3.5 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+                    } else {
+                        btn.className = 'py-3.5 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+                    }
+                }
+                if (content) {
+                    if (t === tab) content.classList.remove('hidden');
+                    else content.classList.add('hidden');
+                }
+            });
+            if (window.lucide) window.lucide.createIcons();
+        }
+        window.switchTutorialTab = switchTutorialTab;
+
         function handleBranchChange() {
             if (currentDashboardTab === 'monitor') {
                 renderReports();
