@@ -58,6 +58,8 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
 ---
 
 ### 4. 🧠 Developer Learning & Educational Guides
+* 🛡️ [**GitHub Security, Secret Isolation & Public Repository Guide**](Personal_Learning/GITHUB_SECURITY_AND_ENVIRONMENT_ISOLATION_GUIDE.md)  
+  *Comprehensive student learning guide explaining how environment isolation (`.env` vs `.env.example`), MySQL binary storage, and `.gitignore` protect real client data while keeping your GitHub portfolio and green activity squares 100% visible.*
 * 🌐 [**Local Network Sharing & Socket Binding Guide**](Personal_Learning/NetworkingLocalSharingGuide.md)  
   *Student-friendly tutorial on `localhost` loopbacks, network IP routing, and bypassing firewall blocks.*
 * 🛡️ [**Security Vulnerabilities Explainer**](Personal_Learning/SecurityVulnerabilities.md)  
