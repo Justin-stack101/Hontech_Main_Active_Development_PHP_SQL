@@ -4718,9 +4718,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const content = document.getElementById(`tut-content-${t}`);
                 if (btn) {
                     if (t === tab) {
-                        btn.className = 'py-3.5 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+                        btn.className = 'py-3 text-xs font-bold border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer';
                     } else {
-                        btn.className = 'py-3.5 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap';
+                        btn.className = 'py-3 text-xs font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer';
                     }
                 }
                 if (content) {

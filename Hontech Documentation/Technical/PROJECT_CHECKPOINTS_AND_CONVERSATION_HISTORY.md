@@ -473,6 +473,19 @@
 
 ---
 
+### 🏁 Checkpoint 40: Clean, Minimalist UI Redesign of the System Guide Modal
+* **User Directive**: Remove AI-like styling, dark heavy banners, and cluttered scrollbars; make the guide clean, simple, and natural.
+* **Key Deliverables**:
+  * Replaced the dark heavy header with a clean white corporate header (`System Guide & Reference`).
+  * Simplified tab pills to clean, natural labels (*Overview*, *Dashboard Tabs*, *Formulas & Metrics*, *Reports & Export*).
+  * Removed defensive/robotic jargon banners.
+  * Replaced heavy monospace tables with clean, standard-padded data rows.
+  * Replaced clunky black pill button with a standard modern `Close` action button.
+  * Version bumped to `js/app.js?v=3.46`.
+* **Git Tag**: `checkpoint-40-clean-minimalist-system-guide-ui`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
