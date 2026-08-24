@@ -7285,63 +7285,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 gridEl.innerHTML = gridHtml;
             }
 
-            // Render Waiting Queue for fast allocation
-            const waitingListEl = document.getElementById('bays-waiting-list');
-            const waitingCountEl = document.getElementById('bays-waiting-count');
-            const waitingJobs = (allJobs || []).filter(j => {
-                if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
-                return (!j.location || j.location === 'None' || j.location === 'Waiting Area');
-            });
-
-            if (waitingCountEl) waitingCountEl.innerText = `${waitingJobs.length} Waiting`;
-
-            if (waitingListEl) {
-                if (waitingJobs.length === 0) {
-                    waitingListEl.innerHTML = `<div class="text-center py-8 text-gray-400 font-bold uppercase text-xs tracking-widest">No unassigned vehicles waiting in queue</div>`;
-                } else {
-                    waitingListEl.innerHTML = waitingJobs.map(job => {
-                        // Build options for free bays
-                        let bayOptions = `<option value="">Select Free Bay...</option>`;
-                        for (let i = 1; i <= bayCount; i++) {
-                            const bayName = `Bay ${i}`;
-                            const isOccupied = activeInBayJobs.some(j => {
-                                if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
-                                const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
-                                return cleanLoc === `bay${i}` || cleanLoc === `lift${i}`;
-                            });
-                            if (!isOccupied) {
-                                bayOptions += `<option value="${bayName}">Assign to ${bayName}</option>`;
-                            }
-                        }
-
-                        const customerName = job.customer || job.name || job.contact || 'Customer';
-                        const advisorName = job.advisor || job.saName || job.sa_name || 'SA';
-
-                        return `
-                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white transition shadow-2xs">
-                                <div class="flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
-                                    <div class="text-left">
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-base font-black uppercase italic text-gray-950">${job.plate}</span>
-                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-200 text-gray-800 border border-gray-300">${job.laneType || 'Flexible Lane'}</span>
-                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">${job.category || 'PMS'}</span>
-                                        </div>
-                                        <span class="text-xs font-bold text-gray-600 uppercase mt-0.5 block">${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${customerName}</strong> · SA: <strong class="text-gray-800">${advisorName}</strong></span>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center gap-2 shrink-0">
-                                    <select onchange="if(this.value){ updateJobField('${job.id}', 'location', this.value); setTimeout(renderWorkshopBaysModule, 120); }" class="bg-white border-2 border-gray-300 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 cursor-pointer shadow-2xs">
-                                        ${bayOptions}
-                                    </select>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-            }
-
             if (window.lucide) window.lucide.createIcons();
         }
         window.renderWorkshopBaysModule = renderWorkshopBaysModule;

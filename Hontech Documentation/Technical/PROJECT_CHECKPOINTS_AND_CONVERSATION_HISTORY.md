@@ -575,6 +575,16 @@
 
 ---
 
+### 🏁 Checkpoint 48: Removed Redundant Bottom Unassigned Waiting Section
+* **User Directive**: Remove the duplicate bottom "Unassigned Vehicles in Waiting Area" container from the Bay Status view to give clean, uncluttered visual focus to the Live Workshop Floor Plan.
+* **Key Deliverables**:
+  * Removed `#bays-waiting-list` container and cleaned up redundant rendering loops.
+  * Preserved full allocation capabilities via the dedicated interactive **Quick Bay Allocation Modal (`#modal-bay-allocation`)**.
+  * Version bumped to `js/app.js?v=3.53`.
+* **Git Tag**: `checkpoint-48-removed-redundant-bay-waiting-list`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
