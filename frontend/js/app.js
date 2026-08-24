@@ -7274,7 +7274,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
 
                                 <div class="pt-2 border-t border-gray-200">
-                                    <button onclick="document.getElementById('bays-waiting-list').scrollIntoView({ behavior: 'smooth' })" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                    <button onclick="openBayAllocationModal(${i})" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
                                         + Assign From Queue
                                     </button>
                                 </div>
@@ -7314,21 +7314,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             }
                         }
 
+                        const customerName = job.customer || job.name || job.contact || 'Customer';
+                        const advisorName = job.advisor || job.saName || job.sa_name || 'SA';
+
                         return `
-                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white transition">
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white transition shadow-2xs">
                                 <div class="flex items-center gap-3">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-                                    <div>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                                    <div class="text-left">
                                         <div class="flex items-center gap-2">
-                                            <span class="text-base font-black uppercase italic text-gray-900">${job.plate}</span>
-                                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-gray-200 text-gray-700">${job.laneType || 'Flexible Lane'}</span>
+                                            <span class="text-base font-black uppercase italic text-gray-950">${job.plate}</span>
+                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-200 text-gray-800 border border-gray-300">${job.laneType || 'Flexible Lane'}</span>
+                                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">${job.category || 'PMS'}</span>
                                         </div>
-                                        <span class="text-[11px] font-bold text-gray-500 uppercase">${job.vehicle} · ${job.customer} · SA: ${job.advisor || 'SA'}</span>
+                                        <span class="text-xs font-bold text-gray-600 uppercase mt-0.5 block">${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${customerName}</strong> · SA: <strong class="text-gray-800">${advisorName}</strong></span>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-2">
-                                    <select onchange="if(this.value){ updateJobField('${job.id}', 'location', this.value); setTimeout(renderWorkshopBaysModule, 120); }" class="bg-white border border-gray-300 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-800 outline-none focus:border-red-600 cursor-pointer">
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <select onchange="if(this.value){ updateJobField('${job.id}', 'location', this.value); setTimeout(renderWorkshopBaysModule, 120); }" class="bg-white border-2 border-gray-300 rounded-xl px-3 py-1.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 cursor-pointer shadow-2xs">
                                         ${bayOptions}
                                     </select>
                                 </div>
@@ -7341,6 +7345,80 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (window.lucide) window.lucide.createIcons();
         }
         window.renderWorkshopBaysModule = renderWorkshopBaysModule;
+
+        function openBayAllocationModal(bayNumber) {
+            const padBay = String(bayNumber).padStart(2, '0');
+            const targetBay = `Bay ${bayNumber}`;
+            const modal = document.getElementById('modal-bay-allocation');
+            const titleEl = document.getElementById('modal-bay-alloc-title');
+            const listEl = document.getElementById('modal-bay-alloc-list');
+            if (!modal || !listEl) return;
+
+            if (titleEl) titleEl.innerText = `Dispatch Vehicle to BAY-${padBay}`;
+
+            const waitingJobs = (allJobs || []).filter(j => {
+                if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                return (!j.location || j.location === 'None' || j.location === 'Waiting Area');
+            });
+
+            if (waitingJobs.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-8 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto">
+                            <i data-lucide="inbox" class="w-6 h-6"></i>
+                        </div>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">No vehicles currently waiting in queue</p>
+                        <button onclick="closeBayAllocationModal(); showSection('intake');" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition cursor-pointer">
+                            + Add New Intake
+                        </button>
+                    </div>
+                `;
+            } else {
+                listEl.innerHTML = waitingJobs.map(job => {
+                    const custName = job.customer || job.name || job.contact || 'Customer';
+                    const advName = job.advisor || job.saName || job.sa_name || 'SA';
+                    return `
+                        <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-4 flex items-center justify-between gap-4 transition shadow-2xs">
+                            <div class="flex flex-col text-left">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-black uppercase italic text-gray-950">${job.plate}</span>
+                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-800 border border-gray-300">${job.laneType || 'Flexible Lane'}</span>
+                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">${job.category || 'PMS'}</span>
+                                </div>
+                                <span class="text-xs font-bold text-gray-600 mt-1 uppercase">${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${custName}</strong></span>
+                                <span class="text-[10px] font-bold text-gray-400 mt-0.5 uppercase">Advisor: <strong class="text-gray-700">${advName}</strong></span>
+                            </div>
+                            <button onclick="dispatchVehicleToTargetBay('${job.id}', '${targetBay}', '${job.plate}')" class="py-2.5 px-4 bg-gray-950 hover:bg-red-600 text-white font-black text-xs uppercase tracking-wider rounded-xl transition shadow-sm cursor-pointer shrink-0 flex items-center gap-1.5">
+                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Dispatch to Bay ${bayNumber}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            modal.classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+        }
+        window.openBayAllocationModal = openBayAllocationModal;
+
+        function closeBayAllocationModal() {
+            const modal = document.getElementById('modal-bay-allocation');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeBayAllocationModal = closeBayAllocationModal;
+
+        async function dispatchVehicleToTargetBay(jobId, targetBay, plate) {
+            closeBayAllocationModal();
+            try {
+                await updateJobField(jobId, 'location', targetBay);
+                showSystemToast(`${plate} successfully dispatched to ${targetBay}!`, 'success', 'Bay Allocated');
+                if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+                if (typeof renderTV === 'function') renderTV();
+            } catch (err) {
+                showSystemToast(err.message || 'Error dispatching vehicle.', 'error');
+            }
+        }
+        window.dispatchVehicleToTargetBay = dispatchVehicleToTargetBay;
 
         function saveSystemSettings() {
             const sidebarSelect = document.getElementById('settings-sidebar-style');

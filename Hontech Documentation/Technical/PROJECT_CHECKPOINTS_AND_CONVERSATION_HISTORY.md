@@ -564,6 +564,17 @@
 
 ---
 
+### 🏁 Checkpoint 47: Quick Bay Allocation Modal & Fixed Customer Name Normalization
+* **User Directive**: Fix bug and bad design flow where clicking "Assign From Queue" scrolled away to an unaligned bottom list with `UNDEFINED` customer names.
+* **Key Deliverables**:
+  * Added dedicated interactive modal `#modal-bay-allocation` for 1-click vehicle dispatch directly to the selected empty bay without awkward page scrolling.
+  * Fixed customer name (`job.customer || job.name || 'Customer'`) and advisor name fallbacks across both the allocation modal and waiting lists, eliminating `UNDEFINED` labels.
+  * Added `openBayAllocationModal(bayNumber)` and `dispatchVehicleToTargetBay(jobId, targetBay, plate)` with automatic **Bay Dispatch Audio Pulse** and instant floor grid refresh.
+  * Version bumped to `js/app.js?v=3.52`.
+* **Git Tag**: `checkpoint-47-quick-bay-allocation-modal-fix`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
