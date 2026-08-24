@@ -541,6 +541,17 @@
 
 ---
 
+### 🏁 Checkpoint 45: High-Contrast Dark Typography on TV & Workshop Bay Cards
+* **User Directive**: Darken washed-out gray texts and fonts on the TV display and workshop bay monitoring cards for maximum legibility and visibility from afar.
+* **Key Deliverables**:
+  * Darkened all bay headers (`BAY-01` to `BAY-10`), plates, vehicles, customer names, and work classification tags from light gray (`text-slate-400`/`text-slate-600`) to deep high-contrast dark tones (`text-slate-900`/`text-slate-950`/`font-black`).
+  * Enhanced empty bay cards: darkened `EMPTY` and `Ready for Allocation` to crisp high-contrast slate tones with high-visibility emerald `AVAILABLE` badges.
+  * Darkened TV Slide 2 Carry Over and Slide 3 Lane Monitoring cards for sharp readability across 55"+ workshop lounge monitors.
+  * Version bumped to `js/app.js?v=3.51`.
+* **Git Tag**: `checkpoint-45-high-contrast-tv-bay-typography`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:

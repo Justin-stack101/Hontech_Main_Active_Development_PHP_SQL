@@ -6976,14 +6976,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
                         <div class="flex flex-col text-left">
                             <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-gray-600 truncate max-w-[180px]">${job.vehicle}</span>
-                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">${job.category || 'General Repair'} · SA: ${job.advisor || job.saName || job.sa_name || 'SA'}</span>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-gray-900 truncate max-w-[180px]">${job.vehicle}</span>
+                            <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${job.category || 'General Repair'} · SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
                         </div>
-                        <span class="bg-amber-100 text-amber-900 border border-amber-300 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
+                        <span class="bg-amber-100 text-amber-950 border-2 border-amber-400 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
                             Carry Over
                         </span>
                     </div>
-                `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-400 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
+                `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-500 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
             }
 
             // GRS Active Bays slide (tv-slide-1) rendering (Dynamic 4-10 Bays)
@@ -7015,29 +7015,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         baysHTML += `
                             <div class="bg-white border-2 border-slate-900 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-md">
                                 <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-widest text-slate-400">BAY-${padBay}</span>
-                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-xs">IN SERVICE</span>
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-900">BAY-${padBay}</span>
+                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">IN SERVICE</span>
                                 </div>
                                 <div class="flex flex-col items-center my-auto text-center">
                                     <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
-                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-600 mt-1">${job.vehicle}</span>
-                                    <span class="text-[10px] font-extrabold uppercase text-gray-400 mt-0.5">${job.customer || job.name || 'Customer'}</span>
+                                    <span class="text-sm font-black uppercase tracking-wider text-slate-900 mt-1">${job.vehicle}</span>
+                                    <span class="text-xs font-extrabold uppercase text-slate-700 mt-0.5">${job.customer || job.name || 'Customer'}</span>
                                 </div>
-                                <div class="w-full pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600 uppercase">
+                                <div class="w-full pt-2.5 border-t-2 border-slate-200 flex items-center justify-between text-xs font-black text-slate-900 uppercase">
                                     <span>${job.category || 'General Service'}</span>
-                                    <span class="text-slate-400 font-mono text-[9px]">${job.laneType || 'FLEXIBLE'}</span>
+                                    <span class="text-slate-800 font-mono text-[10px] font-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300">${job.laneType || 'FLEXIBLE'}</span>
                                 </div>
                             </div>`;
                     } else {
                         baysHTML += `
-                            <div class="bg-slate-50/70 border-2 border-dashed border-slate-200 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative">
+                            <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-2xs">
                                 <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-bold uppercase tracking-widest text-slate-400">BAY-${padBay}</span>
-                                    <span class="bg-slate-200 text-slate-600 font-extrabold text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-700">BAY-${padBay}</span>
+                                    <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">AVAILABLE</span>
                                 </div>
                                 <div class="my-auto flex flex-col items-center">
-                                    <span class="text-2xl lg:text-3xl font-black uppercase italic text-slate-300 tracking-wider">EMPTY</span>
-                                    <span class="text-[10px] font-bold uppercase text-slate-400 mt-1">Ready for Allocation</span>
+                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-700 tracking-wider">EMPTY</span>
+                                    <span class="text-xs font-black uppercase text-slate-600 mt-1 tracking-wide">Ready for Allocation</span>
                                 </div>
                                 <div class="h-3"></div>
                             </div>`;
@@ -7056,9 +7056,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 } else if (job.status === 'In Progress') {
                     statusBadge = `<span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">In Progress</span>`;
                 } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-gray-100 text-gray-800 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
+                    statusBadge = `<span class="bg-gray-100 text-gray-900 border-2 border-gray-400 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
                 } else {
-                    statusBadge = `<span class="bg-gray-100 text-gray-700 border border-gray-200 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Monitoring</span>`;
+                    statusBadge = `<span class="bg-gray-100 text-gray-900 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Monitoring</span>`;
                 }
                 return `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
@@ -7066,13 +7066,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
                             ${statusBadge}
                         </div>
-                        <div class="flex items-center justify-between text-xs text-gray-500 font-bold uppercase tracking-wider">
+                        <div class="flex items-center justify-between text-xs text-gray-900 font-black uppercase tracking-wider">
                             <span class="truncate max-w-[150px]">${job.vehicle}</span>
-                            <span class="text-gray-900 font-black">${job.category || 'General'}</span>
+                            <span class="text-gray-950 font-black">${job.category || 'General'}</span>
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-gray-400 font-semibold border-t border-gray-100 pt-1.5">
-                            <span>SA: <strong class="text-gray-700 font-bold">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
-                            <span>${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
+                        <div class="flex items-center justify-between text-[10px] text-gray-700 font-bold border-t border-gray-200 pt-1.5">
+                            <span>SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
+                            <span class="font-extrabold text-gray-900">${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
                         </div>
                     </div>
                 `;
@@ -7259,22 +7259,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         `;
                     } else {
                         gridHtml += `
-                            <div class="bg-slate-50/70 border-2 border-dashed border-gray-300 rounded-2xl p-5 shadow-2xs flex flex-col justify-between gap-4 text-center">
-                                <div class="flex items-center justify-between border-b border-gray-200/80 pb-3">
-                                    <span class="font-black text-xs uppercase tracking-widest text-gray-400">BAY-${padBay}</span>
-                                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
+                            <div class="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-5 shadow-2xs flex flex-col justify-between gap-4 text-center">
+                                <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+                                    <span class="font-black text-xs uppercase tracking-widest text-gray-800">BAY-${padBay}</span>
+                                    <span class="bg-emerald-100 text-emerald-950 border border-emerald-300 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">AVAILABLE</span>
                                 </div>
 
                                 <div class="my-auto py-4">
-                                    <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2">
+                                    <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mb-2 border border-emerald-200">
                                         <i data-lucide="check" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-xl font-black uppercase italic text-gray-400 tracking-wider block">EMPTY</span>
-                                    <span class="text-[10px] font-bold uppercase text-gray-400 tracking-widest mt-0.5 block">Ready for Allocation</span>
+                                    <span class="text-2xl font-black uppercase italic text-gray-800 tracking-wider block">EMPTY</span>
+                                    <span class="text-xs font-black uppercase text-gray-600 tracking-wider mt-0.5 block">Ready for Allocation</span>
                                 </div>
 
-                                <div class="pt-2 border-t border-gray-200/80">
-                                    <button onclick="document.getElementById('bays-waiting-list').scrollIntoView({ behavior: 'smooth' })" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                <div class="pt-2 border-t border-gray-200">
+                                    <button onclick="document.getElementById('bays-waiting-list').scrollIntoView({ behavior: 'smooth' })" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
                                         + Assign From Queue
                                     </button>
                                 </div>
