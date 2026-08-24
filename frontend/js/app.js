@@ -7247,17 +7247,49 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-2 pt-2">
-                                    <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="flex-1 py-2 px-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition border border-gray-200 cursor-pointer">
-                                        Unassign Bay
-                                    </button>
-                                    <button onclick="showSection('queue')" class="py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
-                                        Record
-                                    </button>
-                                </div>
+                                const isManager = (currentUserRole === 'owner' || currentUserRole === 'admin');
+
+                                if (isManager) {
+                                    gridHtml += `
+                                        <div class="pt-2 border-t border-gray-200">
+                                            <button onclick="showSection('queue')" class="w-full py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5">
+                                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> View Master Record
+                                            </button>
+                                        </div>
+                                    `;
+                                } else {
+                                    gridHtml += `
+                                        <div class="flex items-center gap-2 pt-2">
+                                            <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="flex-1 py-2 px-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition border border-gray-200 cursor-pointer">
+                                                Unassign Bay
+                                            </button>
+                                            <button onclick="showSection('queue')" class="py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                                Record
+                                            </button>
+                                        </div>
+                                    `;
+                                }
+                                gridHtml += `
                             </div>
                         `;
                     } else {
+                        const isManager = (currentUserRole === 'owner' || currentUserRole === 'admin');
+                        let actionHtml = '';
+
+                        if (isManager) {
+                            actionHtml = `
+                                <div class="w-full py-2 px-3 bg-slate-100 border border-slate-200 text-slate-700 font-bold text-[11px] uppercase tracking-wider rounded-xl text-center flex items-center justify-center gap-1.5">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-500"></i> TV Bay Ready
+                                </div>
+                            `;
+                        } else {
+                            actionHtml = `
+                                <button onclick="openBayAllocationModal(${i})" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-300"></i> Assign From Queue
+                                </button>
+                            `;
+                        }
+
                         gridHtml += `
                             <div class="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-5 shadow-2xs flex flex-col justify-between gap-4 text-center">
                                 <div class="flex items-center justify-between border-b border-gray-200 pb-3">
@@ -7274,9 +7306,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
 
                                 <div class="pt-2 border-t border-gray-200">
-                                    <button onclick="openBayAllocationModal(${i})" class="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
-                                        + Assign From Queue
-                                    </button>
+                                    ${actionHtml}
                                 </div>
                             </div>
                         `;
@@ -7306,7 +7336,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (waitingJobs.length === 0) {
                 listEl.innerHTML = `
-                    <div class="text-center py-8 space-y-3">
+                    <div class="text-center py-10 space-y-3 bg-white border border-gray-200 rounded-2xl p-6">
                         <div class="w-12 h-12 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto">
                             <i data-lucide="inbox" class="w-6 h-6"></i>
                         </div>
@@ -7321,19 +7351,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const custName = job.customer || job.name || job.contact || 'Customer';
                     const advName = job.advisor || job.saName || job.sa_name || 'SA';
                     return `
-                        <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-4 flex items-center justify-between gap-4 transition shadow-2xs">
-                            <div class="flex flex-col text-left">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-lg font-black uppercase italic text-gray-950">${job.plate}</span>
-                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-800 border border-gray-300">${job.laneType || 'Flexible Lane'}</span>
-                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">${job.category || 'PMS'}</span>
+                        <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-xs">
+                            <div class="flex-1 min-w-0 space-y-1.5 text-left">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-xl font-black uppercase italic tracking-wide text-gray-950 font-mono">${job.plate}</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-300 whitespace-nowrap">${job.laneType || 'Flexible Lane'}</span>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 whitespace-nowrap">${job.category || 'PMS'}</span>
                                 </div>
-                                <span class="text-xs font-bold text-gray-600 mt-1 uppercase">${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${custName}</strong></span>
-                                <span class="text-[10px] font-bold text-gray-400 mt-0.5 uppercase">Advisor: <strong class="text-gray-700">${advName}</strong></span>
+                                <p class="text-xs font-bold text-gray-700 truncate uppercase">
+                                    ${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${custName}</strong>
+                                </p>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase">
+                                    Service Advisor: <strong class="text-gray-700">${advName}</strong>
+                                </p>
                             </div>
-                            <button onclick="dispatchVehicleToTargetBay('${job.id}', '${targetBay}', '${job.plate}')" class="py-2.5 px-4 bg-gray-950 hover:bg-red-600 text-white font-black text-xs uppercase tracking-wider rounded-xl transition shadow-sm cursor-pointer shrink-0 flex items-center gap-1.5">
-                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Dispatch to Bay ${bayNumber}
-                            </button>
+                            <div class="shrink-0">
+                                <button onclick="dispatchVehicleToTargetBay('${job.id}', '${targetBay}', '${job.plate}')" class="w-full md:w-auto py-2.5 px-4 bg-gray-950 hover:bg-red-600 text-white font-black text-xs uppercase tracking-wider rounded-xl transition shadow-sm cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap">
+                                    <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Dispatch to Bay ${bayNumber}
+                                </button>
+                            </div>
                         </div>
                     `;
                 }).join('');

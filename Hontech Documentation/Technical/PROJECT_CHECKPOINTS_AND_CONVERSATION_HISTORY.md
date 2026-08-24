@@ -585,6 +585,18 @@
 
 ---
 
+### 🏁 Checkpoint 49: Wide Responsive Allocation Modal & Role-Scoped Bay Floor Permissions
+* **User Directive**: Improve the modal design to eliminate badge wrapping and horizontal scrollbars, and scope the workshop bay floor permissions so Admin/Owner focus on capacity scaling and monitoring while operational dispatching belongs to Service Advisors.
+* **Key Deliverables**:
+  * Widened `#modal-bay-allocation` to `max-w-3xl` with `overflow-x-hidden`, responsive flex rows, and `whitespace-nowrap` badges to prevent text wrapping glitches.
+  * Role-scoped bay floor actions:
+    * **Admin / Owner**: Configure TV bay capacity (`#bays-control-card`) at the top, and view-only status (`TV Bay Ready` and `View Master Record`) without operational dispatch clutter.
+    * **Service Advisor / Operational Staff**: Interactive dispatching (`+ Assign From Queue` and `Unassign Bay`).
+  * Version bumped to `js/app.js?v=3.54`.
+* **Git Tag**: `checkpoint-49-wide-allocation-modal-role-scoping`
+
+---
+
 ## 🆘 2. Complete Disaster Recovery & Rollback Playbook
 
 If your local code, database, or environment is accidentally damaged, corrupted, or deleted, follow these exact steps to restore the system to full working order in under 2 minutes:
