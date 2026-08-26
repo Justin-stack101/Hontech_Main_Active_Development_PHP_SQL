@@ -724,35 +724,22 @@
                     </button>
                 </div>
                 <!-- Expanded View footer -->
-                <div id="sidebar-footer-expanded" class="space-y-2.5">
-                    <!-- User Profile Card -->
-                    <div class="bg-gray-100/80 hover:bg-gray-200/70 border border-gray-200/80 p-3 rounded-2xl transition-all shadow-2xs">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shadow-xs shrink-0 relative">
-                                <i data-lucide="user" class="w-5 h-5 text-white"></i>
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+                <div id="sidebar-footer-expanded" class="w-full">
+                    <button onclick="toggleSidebarDropdown()" class="w-full flex items-center justify-between p-2 rounded-xl hover:bg-gray-200/70 transition group text-left cursor-pointer border border-transparent hover:border-gray-200">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-black shrink-0 relative shadow-2xs">
+                                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                                <span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full"></span>
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <p class="text-xs font-black text-gray-900 truncate leading-snug" id="sidebar-menu-user-name">User</p>
-                                <span class="inline-block text-[9px] font-black uppercase tracking-wider text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200/60 mt-0.5" id="sidebar-menu-user-role">Role</span>
-                            </div>
-                        </div>
-
-                        <!-- Action Bar inside Card -->
-                        <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-gray-200/70 text-xs">
-                            <span class="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Online
-                            </span>
-                            <div class="flex items-center gap-1">
-                                <button onclick="showSection('settings')" class="p-1.5 rounded-lg hover:bg-white text-gray-500 hover:text-gray-900 transition cursor-pointer" title="Account Settings">
-                                    <i data-lucide="settings" class="w-3.5 h-3.5"></i>
-                                </button>
-                                <button onclick="toggleSidebarDropdown()" class="p-1.5 rounded-lg hover:bg-white text-gray-500 hover:text-gray-900 transition cursor-pointer" title="More Options">
-                                    <i data-lucide="chevron-up" class="w-3.5 h-3.5"></i>
-                                </button>
+                            <div class="min-w-0 flex-1 overflow-hidden">
+                                <p class="text-xs font-black text-gray-900 truncate leading-tight" id="sidebar-menu-user-name">User</p>
+                                <p class="text-[10px] text-red-600 font-bold uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
                             </div>
                         </div>
-                    </div>
+                        <div class="p-1 text-gray-400 group-hover:text-gray-700 transition shrink-0">
+                            <i data-lucide="settings" class="w-4 h-4"></i>
+                        </div>
+                    </button>
                 </div>
             </div>
         </aside>
@@ -4943,7 +4930,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.70"></script>
+    <script src="js/app.js?v=3.71"></script>
 </body>
 
 </html>
