@@ -1,149 +1,164 @@
-# 🧪 HonTech QA & Unit Testing Guide: GitHub Collaboration Manual
-## Step-by-Step Quality Assurance (QA) & Testing Protocol for Capstone Groupmates
+# 🧪 HonTech All-in-One QA & Unit Testing Master Guide
+## The Single Official Testing, Roleplay & Verification Guide for Justin and His 2 Groupmates
 
 ```text
 ========================================================================================================
 PROJECT:               HonTech AutoCenter Management System
-ACTIVE BRANCH:         branch2-Security-Account-Recovery
-GITHUB REPO:           https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL.git
-TARGET AUDIENCE:       QA Testers, Groupmates, System Evaluators (No Coding Required!)
-PURPOSE:               Standardized QA Testing, GitHub Issue Tracking, & Role-Based Verification
+BRANCH:                branch2-Security-Account-Recovery
+GITHUB:                https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL.git
+TEAM SETUP:            Justin (Sole Developer) + 2 Groupmates (QA & Usability Testers)
+CLASSIFICATION:        Official Single Team Testing Document
 ========================================================================================================
 ```
 
 ---
 
-## 📌 1. Overview: What is Your Role as a QA Tester?
+## 👥 1. Sino ang Gagawa ng Ano? (Our 3-Person Team Roles)
 
-As a **Quality Assurance (QA) / Unit Tester** in our Capstone team, your responsibility is to **validate the system from a real user's perspective** before our live client presentation and thesis defense:
+*Huwag mag-alala kung wala kayong background sa coding—ang mahalagang role ninyo ay maging mga staff ng HonTech at mag-test!*
 
-1. **Pull the Latest Code:** Ensure your local copy has the newest updates from GitHub.
-2. **Execute Test Scenarios:** Follow the step-by-step role checklists below.
-3. **Identify Edge Cases:** Test weird inputs (e.g. blank fields, duplicate plate numbers, offline mode, fast double clicks).
-4. **Report Bugs on GitHub:** Document any crashes, misalignments, or calculation errors on GitHub Issues so the lead programmer can fix them immediately.
+| Member | Hardware na Gagamitin | Role sa System | Pang-araw-araw na Trabaho |
+| :--- | :--- | :--- | :--- |
+| **1. Justin (Lead Developer)** | Laptop #1 | **Owner / Admin** | Nagpapatakbo ng server via `start_lan_server.bat`, nag-aayos ng code sa Antigravity, at nag-uupload sa GitHub. |
+| **2. Classmate A (Laptop Tester)** | Active Laptop #2 | **Service Advisor 1 & 2** | Nagtetest ng Customer Lookup, Walk-in Intake, Back-Job Warranty, at Bay Allocation sa laptop. |
+| **3. Classmate B (Phone / Lab Tester)** | Smartphone o School Lab PC | **Assistant Staff & QA Logger** | Nagtetest gamit ang cellphone (Mobile View) o school lab PC, at naglilista ng mga nakitang mali sa GitHub. |
 
 ---
 
-## 🛠️ 2. Getting the Latest Code from GitHub (30 Seconds)
+## 📶 2. Paano Mag-Connect at Mag-Login (Step-by-Step)
 
-Every time testing starts, open **Command Prompt / PowerShell** in your project folder and run:
-
-```bash
-# 1. Pull latest updates from GitHub
-git pull origin branch2-Security-Account-Recovery
-
-# 2. If git gives an error because of local edits, run this clean reset:
-git reset --hard origin/branch2-Security-Account-Recovery
-git pull origin branch2-Security-Account-Recovery
+```
+                       LOCAL WI-FI / SCHOOL LAB TESTING SETUP
+                       
+      [ JUSTIN: Laptop 1 ]                        [ CLASSMATE A: Laptop 2 ]
+   • Runs `start_lan_server.bat`               • Opens Chrome ➔ http://192.168.x.x:8000
+   • IP lumalabas: 192.168.x.x:8000            • Login as Service Advisor (`sa123`)
+   • Login as Owner (`owner123`)               • Tests Intakes & Back-Jobs
+                 │                                           │
+                 └───────────────────┬───────────────────────┘
+                                     │ (Connected sa iisang Wi-Fi / Hotspot)
+                                     ▼
+                          [ CLASSMATE B: Phone / School PC ]
+                       • Opens Chrome / Safari ➔ http://192.168.x.x:8000
+                       • Login as Assistant (`assistant123`)
+                       • Tests Mobile Inquiries & Logs Bugs sa GitHub!
 ```
 
----
-
-## 🚀 3. Starting the Test Server
-
-1. Double-click [**`start_lan_server.bat`**](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/start_lan_server.bat).
-2. Open Google Chrome $\to$ **`http://localhost:8000`** (or your Wi-Fi LAN IP address).
-
-### 🔑 Test Accounts by Role:
-| Role | Email | Password | Primary Responsibility |
-| :--- | :--- | :--- | :--- |
-| **Owner** | `owner@hontech.com` | `owner123` | Master Analytics, Financial Audits, User Security |
-| **Administrator** | `admin.marikina@hontech.com` | `admin123` | Staff Management, Bay Config, Report Exports |
-| **Service Advisor 1** | `sa.marikina1@hontech.com` | `sa123` | Customer Intake, Back-Job Routing, Bay Dispatch |
-| **Service Advisor 2** | `sa.marikina2@hontech.com` | `sa123` | Multi-Advisor Queue Handling, Status Updates |
-| **Assistant Staff** | `assistant.marikina@hontech.com` | `assistant123` | Online Booking Inquiries, Customer Search Menu |
+### 🔑 Listahan ng Test Accounts:
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Owner** | `owner@hontech.com` | `owner123` |
+| **Administrator** | `admin.marikina@hontech.com` | `admin123` |
+| **Service Advisor 1** | `sa.marikina1@hontech.com` | `sa123` |
+| **Assistant Staff** | `assistant.marikina@hontech.com` | `assistant123` |
 
 ---
 
-## 🧪 4. Role-Based Unit Test Scenarios (Step-by-Step)
+## 📋 3. Ang 22-Step Master Verification & Checking List (Pass / Fail)
 
 ---
 
-### 📋 Scenario A: Service Advisor (SA) Testing
-**Goal:** Verify vehicle intake, customer history lookup, regular return visits, and warranty back-jobs.
-
-| Test ID | Action to Perform | Expected Output | Status |
-| :--- | :--- | :--- | :--- |
-| **SA-01** | Log in as `sa.marikina1@hontech.com`. Click **Vehicle Intake**. | Form loads with date, plate, name, phone, vehicle, category dropdown, and arrival time. | `[ ] PASS / FAIL` |
-| **SA-02** | Submit an intake with **blank plate or name**. | Red toast appears: *"Plate and Name are required."* (No crash). | `[ ] PASS / FAIL` |
-| **SA-03** | Submit a valid intake (`ABC 1234`, `Juan Dela Cruz`, `Honda Civic`, `PMS`). | Green toast appears: *"ABC 1234 added successfully."* Vehicle appears in Daily Intakes table. | `[ ] PASS / FAIL` |
-| **SA-04** | Try to submit the **exact same plate (`ABC 1234`) again immediately**. | System displays: *"⚠️ DUPLICATE INTAKE DETECTED!"* alert prompt. | `[ ] PASS / FAIL` |
-| **SA-05** | Open **Customer Lookup** tab. Type `Juan` or `ABC 1234`. | Customer record appears with `⭐ Returning Regular` badge, lifetime visits count, and historical timeline. | `[ ] PASS / FAIL` |
-| **SA-06** | Click **`[ 🚗 Regular Visit (PMS) ]`**. | Redirects to Intake Form with Name, Plate, Phone, and Model **pre-filled**. Category defaults to `PMS`. | `[ ] PASS / FAIL` |
-| **SA-07** | Click **`[ 🔁 Back-Job (Warranty) ]`**. | Redirects to Intake Form with data pre-filled, category set to `Back-Job / Warranty Return`, and previous Job ID attached. | `[ ] PASS / FAIL` |
+### 🔑 SUITE 1: Role-Based Authentication & Navigation (4 Roles)
+- [ ] **Step 1.1 (Owner):** Mag-login bilang `owner@hontech.com` $\to$ Lalabas ang Master Analytics at Security tabs.
+- [ ] **Step 1.2 (Admin):** Mag-login bilang `admin.marikina@hontech.com` $\to$ May access sa Staff Accounts at Bay Config.
+- [ ] **Step 1.3 (Service Advisor):** Mag-login bilang `sa.marikina1@hontech.com` $\to$ Nakatutok sa Intake, Customer Lookup, at Bays.
+- [ ] **Step 1.4 (Assistant):** Mag-login bilang `assistant.marikina@hontech.com` $\to$ Nakatutok sa Online Booking Queue at Search Menu.
 
 ---
 
-### 📋 Scenario B: Assistant Staff Testing
-**Goal:** Verify online booking queue and the fast popup search menu.
-
-| Test ID | Action to Perform | Expected Output | Status |
-| :--- | :--- | :--- | :--- |
-| **AS-01** | Log in as `assistant.marikina@hontech.com`. | Dashboard loads with **Pending Online Inquiries** table. | `[ ] PASS / FAIL` |
-| **AS-02** | On Daily Intakes header, click **`[ 🔍 Search Customer / Back-Job ]`**. | Popup search menu appears (`#modal-customer-search-menu`). | `[ ] PASS / FAIL` |
-| **AS-03** | Type a customer name. Select the customer from autocomplete. | Detail card appears with question: *"Back-Job (Warranty Return) ba ito?"*. | `[ ] PASS / FAIL` |
-| **AS-04** | Click **`[ ❌ NO (Stay Here) ]`**. | System remains on the search popup without altering records. | `[ ] PASS / FAIL` |
-| **AS-05** | Click **`[ ✅ YES (Daily Intakes) ]`**. | Modal closes and switches to Intake with Back-Job data pre-filled! | `[ ] PASS / FAIL` |
+### 👤 SUITE 2: Header at Sidebar Profile Badges
+- [ ] **Step 2.1 (Top Header):** Kitang-kita sa itaas ang Pangalan (`Justin`), Role Pill (`[ OWNER ]`), at umiilaw na berdeng online dot.
+- [ ] **Step 2.2 (Bottom Sidebar):** Maayos ang profile pill sa ibaba—walang lumalagpas o tabinging text, at may gear icon `[ ⚙️ ]`.
+- [ ] **Step 2.3 (Dropdown Menu):** Pag clinic ang profile pill, may lumalabas na **Account Settings** at **Sign Out** buttons.
 
 ---
 
-### 📋 Scenario C: Administrator & Owner Testing
-**Goal:** Verify multi-branch data isolation, financial report exports, and security controls.
-
-| Test ID | Action to Perform | Expected Output | Status |
-| :--- | :--- | :--- | :--- |
-| **ADM-01** | Log in as `admin.marikina@hontech.com`. Open **Analytics & Reports**. | Revenue charts, completed job logs, and SA breakdown render cleanly. | `[ ] PASS / FAIL` |
-| **ADM-02** | Click **`Export Official PDF Report`**. | PDF opens in print preview with HonTech logo, timestamp, and metadata. | `[ ] PASS / FAIL` |
-| **ADM-03** | Open **Staff Accounts Management**. Click **Add Staff**. | Creates new staff member and displays generated credentials. | `[ ] PASS / FAIL` |
-| **ADM-04** | Switch between branch filters (**Marikina** vs **Quezon City**). | Table updates to only show vehicles belonging to that specific branch site. | `[ ] PASS / FAIL` |
+### 🚗 SUITE 3: Vehicle Intake at Duplicate Prevention Guard
+- [ ] **Step 3.1 (Blank Validation):** Iwanang blangko ang Plate/Name at i-submit $\to$ May lalabas na pulang babala: *"Plate and Name are required."*
+- [ ] **Step 3.2 (Normal Intake):** Mag-input ng plate `ABC 1234`, name `Juan Dela Cruz`, at i-submit $\to$ Papasok sa Daily Intakes table.
+- [ ] **Step 3.3 (Duplicate Alert):** Subukang i-submit ulit ang parehong plate `ABC 1234` $\to$ Lalabas ang alert prompt: *"⚠️ DUPLICATE INTAKE DETECTED!"*
+- [ ] **Step 3.4 (Cancel Guard):** I-click ang **Cancel** $\to$ Mapipigilan ang duplicate entry.
 
 ---
 
-### 📋 Scenario D: Offline LAN Resilience Testing (Crucial!)
-**Goal:** Ensure the system never crashes when the internet drops.
-
-| Test ID | Action to Perform | Expected Output | Status |
-| :--- | :--- | :--- | :--- |
-| **OFF-01** | Disconnect your laptop from Wi-Fi/Internet completely (Airplane Mode). | Entire workshop continues running locally on `http://localhost:8000`. | `[ ] PASS / FAIL` |
-| **OFF-02** | Refresh the browser (`F5` or `Ctrl+R`) while disconnected. | Page reloads cleanly with all styling intact—**ZERO unstyled raw text leaks**! | `[ ] PASS / FAIL` |
+### ⭐ SUITE 4: Customer History Lookup at Loyalty Badges
+- [ ] **Step 4.1 (Search):** Pumunta sa **Customer Lookup** tab $\to$ I-type ang `Juan` o `ABC 1234`.
+- [ ] **Step 4.2 (Loyalty Badge):** Piliin ang customer $\to$ Lalabas ang berdeng **`⭐ Returning Regular (X Visits)`** badge at total spend.
+- [ ] **Step 4.3 (History Timeline):** May mga cards na nagpapakita ng dating repair orders, mekaniko, concern, at resolution.
 
 ---
 
-## 🐛 5. How to Report a Bug on GitHub (Step-by-Step)
+### 🔁 SUITE 5: 40-Day Regular Visit vs. Warranty Back-Jobs
+- [ ] **Step 5.1 (40-Day Regular Visit):** I-click ang **`[ 🚗 Regular Visit (PMS) ]`** $\to$ Kusang mapupunan ang Name, Plate, at Phone sa Intake form na may category na `PMS`.
+- [ ] **Step 5.2 (Warranty Back-Job):** I-click ang **`[ 🔁 Back-Job (Warranty) ]`** $\to$ Mapupunan ang form na may category na `Back-Job / Warranty Return` at nakadikit ang dating Job ID.
+- [ ] **Step 5.3 (Specific Order Back-Job):** Sa ilalim ng isang dating repair card, i-click ang **`[ Create Back-Job for This Order ]`** $\to$ Makakabit ang eksaktong reference number at date.
 
-If you find something broken or visual glitch during testing, log it on GitHub so the lead developer can fix it:
+---
 
-### Step 1: Open GitHub Issues
-Go to: [`https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues`](https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues)  
-Click **`New Issue`**.
+### 🔍 SUITE 6: Assistant Staff Fast Popup Search Menu
+- [ ] **Step 6.1 (Open Popup):** Sa Daily Intakes header, i-click ang **`[ 🔍 Search Customer / Back-Job ]`** $\to$ Bubukas ang popup search dialog.
+- [ ] **Step 6.2 (Select Customer):** Pumili ng customer $\to$ May lalabas na tanong: *"Back-Job (Warranty Return) ba ito?"*.
+- [ ] **Step 6.3 (NO Button):** I-click ang **`[ ❌ NO (Stay Here) ]`** $\to$ Mananatili sa popup para makita ang info.
+- [ ] **Step 6.4 (YES Button):** I-click ang **`[ ✅ YES (Daily Intakes) ]`** $\to$ Lilipat sa Intake form na may pre-filled back-job data!
 
-### Step 2: Fill out the Standard Bug Report Template:
+---
+
+### 🔧 SUITE 7: Bay Allocation at Workshop Board
+- [ ] **Step 7.1 (Dispatch Modal):** Pumunta sa **Workshop Bays** $\to$ I-click ang **Dispatch Vehicle** sa Bay 1.
+- [ ] **Step 7.2 (Assign Technician):** Piliin ang kotse `ABC 1234` at mekaniko $\to$ Magiging kulay asul ang Bay 1 na may status na **Occupied**.
+
+---
+
+### 📊 SUITE 8: Analytics at PDF Export
+- [ ] **Step 8.1 (Charts):** Mag-login bilang Admin $\to$ Makikita ang revenue charts at breakdown per Service Advisor.
+- [ ] **Step 8.2 (PDF Report):** I-click ang **Export Official PDF Report** $\to$ Magge-generate ng print-ready PDF na may HonTech logo at timestamp.
+
+---
+
+### ✈️ SUITE 9: 100% Offline Air-Gapped Resilience (Walang Internet)
+- [ ] **Step 9.1 (Airplane Mode):** I-off ang Wi-Fi o mag-Airplane Mode sa laptop.
+- [ ] **Step 9.2 (Hard Refresh):** Pindutin ang **`Ctrl + F5`** sa Chrome habang offline $\to$ **100% buo ang design, kulay, at icons—WALANG sirang layout o raw text leaks!**
+
+---
+
+## 🐛 4. Paano Mag-Report ng Nakitang Mali sa GitHub (1-Minutong Paraan)
+
+Kapag may nakita kayong mali habang nagte-test:
+1. Pumunta sa: [**https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues**](https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues).
+2. I-click ang **`New Issue`**.
+3. I-type lang ito:
 
 ```markdown
-### 🐛 Bug Summary
-[Short 1-sentence description of the issue]
+### 📌 Saan Nakita ang Mali (Verification Step #):
+- **Step ID:** [Halimbawa: Step 5.2 - Customer Lookup]
+- **Device na Gamit:** [Laptop / Cellphone]
 
-### 👤 Role & Screen
-- Role Tested: [Owner / Admin / Service Advisor / Assistant]
-- Screen / Module: [e.g. Customer Lookup / Daily Intakes / Bay Allocation]
+### ❌ Ano ang Nangyari (Ang Problema):
+[Halimbawa: "Hindi kusa napili ang Back-Job sa dropdown, nanatiling PMS."]
 
-### 🔁 Steps to Reproduce
-1. Log in as `sa.marikina1@hontech.com`.
-2. Click on "Customer Lookup".
-3. Search for "ABC 1234".
-4. Click on [Action Button].
-
-### ❌ What Happened (Actual Behavior)
-[Describe what went wrong or attach screenshot]
-
-### ✅ What Should Happen (Expected Behavior)
-[Describe what you expected to see]
+### 💡 Ano ang Inaasahan (Expected):
+[Halimbawa: "Dapat maging Back-Job / Warranty Return agad ang category."]
 ```
+
+4. I-click ang **`Submit new issue`** $\to$ Aayusin agad ni Justin sa loob ng 2 minuto!
 
 ---
 
-## 🛡️ 6. What to Do If a Developer Exception Appears
-If an unhandled JavaScript error occurs, HonTech displays the high-contrast **Developer Exception Diagnostic Overlay**:
-1. Click **`[ Copy Diagnostic Trace ]`** or **`[ Export Crash Log (.txt) ]`**.
-2. Paste the trace into your GitHub Issue report.
-3. The lead programmer will have the exact line number and variable name to fix it in minutes!
+## 🎭 5. Limang-Minutong Roleplay Script Bago ang Thesis Defense
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        5-MINUTE TEAM ROLEPLAY SIMULATION                               │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. CLASSMATE B (Phone/Assistant):                                                      │
+│    "Justin & Classmate A, may customer inquiry si Juan Dela Cruz (ABC 1234),           │
+│    nag-book ng PMS mamayang 2:00 PM." ➔ (I-submit sa Assistant Inquiries Form)         │
+│                                                                                        │
+│ 2. CLASSMATE A (Laptop/Service Advisor):                                               │
+│    "Nakita ko sa Daily Intakes! Dumating na si Juan Dela Cruz sa shop.                 │
+│    I-lookup ko ang history at i-dispatch ko sa Bay 1." ➔ (I-click Bay Dispatch)        │
+│                                                                                        │
+│ 3. JUSTIN (Lead Developer/Admin):                                                      │
+│    "Pumasok ang order sa master revenue chart at TV workshop monitor! 100% PASSED!"    │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
