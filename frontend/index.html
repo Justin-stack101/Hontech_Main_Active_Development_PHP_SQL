@@ -2254,19 +2254,27 @@
                                     </div>
                                 </div>
 
-                                <!-- 3 Quick Stats -->
-                                <div class="grid grid-cols-3 gap-4 pt-5">
+                                <!-- 4 Quick Automotive Intelligence Stats -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-5">
                                     <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
                                         <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Total Visits</span>
-                                        <h4 id="dossier-total-visits" class="text-2xl font-black text-gray-900 mt-0.5">1</h4>
+                                        <h4 id="dossier-total-visits" class="text-xl font-black text-gray-900 mt-0.5">1</h4>
+                                        <span id="dossier-loyalty-subtext" class="text-[9px] text-emerald-600 font-bold block mt-0.5">Lifetime Service</span>
                                     </div>
                                     <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
                                         <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Last Service</span>
-                                        <h4 id="dossier-last-date" class="text-xs font-black text-gray-900 mt-1.5 truncate">YYYY-MM-DD</h4>
+                                        <h4 id="dossier-last-date" class="text-xs font-black text-gray-900 mt-1 truncate">YYYY-MM-DD</h4>
+                                        <span id="dossier-last-category" class="text-[9px] text-red-600 font-bold block mt-0.5 truncate">PMS</span>
+                                    </div>
+                                    <div class="bg-amber-50/70 border border-amber-200 p-3.5 rounded-xl text-center">
+                                        <span class="text-[9px] font-black text-amber-800 uppercase tracking-widest block">Next PMS Due</span>
+                                        <h4 id="dossier-next-pms-date" class="text-xs font-black text-amber-900 mt-1 truncate">Approx. 40 Days</h4>
+                                        <span class="text-[9px] text-amber-700 font-semibold block mt-0.5">40-Day Interval</span>
                                     </div>
                                     <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
-                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Last Category</span>
-                                        <h4 id="dossier-last-category" class="text-xs font-black text-red-600 mt-1.5 truncate">PMS</h4>
+                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Primary Advisor</span>
+                                        <h4 id="dossier-preferred-sa" class="text-xs font-black text-slate-800 mt-1 truncate">Service Advisor</h4>
+                                        <span class="text-[9px] text-slate-500 font-semibold block mt-0.5">Assigned Specialist</span>
                                     </div>
                                 </div>
                             </div>
@@ -4925,7 +4933,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.78"></script>
+    <script src="js/app.js?v=3.79"></script>
 </body>
 
 </html>

@@ -5757,21 +5757,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return [sa.name, sa.total, sa.completed, `${rate}%`];
                 });
             } else {
-                reportTitle = 'HONTECH AUTOCENTER INC. - DAILY INTAKE SUMMARY';
-                tableHeaders = ['Claim Stub', 'Plate No.', 'Vehicle Model', 'Category', 'Source', 'Arrival Time', 'Departure Time', 'Status', 'Service Advisor', 'Remarks'];
+                reportTitle = 'HONTECH AUTOCENTER INC. - DAILY INTAKE & OPERATIONS SUMMARY';
+                tableHeaders = ['Claim Stub', 'Plate No.', 'Customer Name', 'Contact Number', 'Vehicle Model', 'Service Category', 'Intake Source', 'Assigned SA', 'Bay Location', 'Arrival Time', 'Promised / Departure', 'Status', 'Diagnosis & Remarks'];
                 const todayJobs = (typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs.filter(j => j.dateReceived === todayStr) : [];
                 const dataset = todayJobs.length > 0 ? todayJobs : ((typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs : []);
                 tableRows = dataset.map(job => [
                     job.claimStub || 'N/A',
                     job.plate || '',
+                    job.customerName || job.name || 'Walk-in Client',
+                    job.contactNumber || job.phone || job.contact || 'N/A',
                     job.vehicle || '',
                     job.category || '',
-                    job.source || '',
-                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.arrival || '') : (job.arrival || ''),
-                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.departure || '') : (job.departure || ''),
-                    job.status || '',
+                    job.source || 'Walk-in',
                     job.saName || '-',
-                    job.remarks || ''
+                    job.location || 'Bay 1',
+                    typeof formatTime12Hour === 'function' ? formatTime12Hour(job.arrival || '') : (job.arrival || ''),
+                    job.promisedDate || (typeof formatTime12Hour === 'function' ? formatTime12Hour(job.departure || '') : (job.departure || 'TBD')),
+                    job.status || '',
+                    job.concern || job.remarks || 'Standard Intake'
                 ]);
             }
 
@@ -5927,27 +5930,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             doc.autoTable({
                 startY: nextY + 3,
-                head: [['Claim Stub', 'Plate No.', 'Vehicle Model', 'Arrival', 'Departure', 'Status', 'Remarks']],
+                head: [['Claim Stub', 'Plate No.', 'Vehicle Model', 'Category', 'Advisor & Bay', 'Arrival / Promised', 'Status', 'Diagnosis & Remarks']],
                 body: activeJobs.map(job => [
                     job.claimStub || 'N/A',
                     job.plate || '',
                     job.vehicle || '',
-                    formatTime12Hour(job.arrival),
-                    formatTime12Hour(job.departure),
+                    job.category || 'PMS',
+                    `${job.saName || 'SA'}\n(${job.location || 'Bay 1'})`,
+                    `${formatTime12Hour(job.arrival)}\n${job.promisedDate ? 'Due: ' + job.promisedDate : formatTime12Hour(job.departure)}`,
                     job.status || '',
-                    job.remarks || ''
+                    job.concern || job.remarks || 'Standard Service'
                 ]),
                 theme: 'striped',
                 headStyles: { fillColor: [220, 38, 38], textColor: [255, 255, 255] },
-                styles: { fontSize: 8.5, cellPadding: 3 },
+                styles: { fontSize: 8, cellPadding: 2.5 },
                 columnStyles: {
-                    0: { cellWidth: 25 },
-                    1: { cellWidth: 20, fontStyle: 'bold' },
-                    2: { cellWidth: 35 },
-                    3: { cellWidth: 15 },
-                    4: { cellWidth: 15 },
-                    5: { cellWidth: 20 },
-                    6: { cellWidth: 50 }
+                    0: { cellWidth: 20 },
+                    1: { cellWidth: 18, fontStyle: 'bold' },
+                    2: { cellWidth: 28 },
+                    3: { cellWidth: 20 },
+                    4: { cellWidth: 26 },
+                    5: { cellWidth: 24 },
+                    6: { cellWidth: 18 },
+                    7: { cellWidth: 36 }
                 }
             });
 
@@ -8522,6 +8527,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             if (document.getElementById('dossier-history-count')) {
                 document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
+            }
+
+            // Calculate Next Predicted PMS Date (40-Day Casa standard interval)
+            const rawLastDate = latestJob.date || latestJob.created_at;
+            let nextPmsText = 'Approx. 40 Days';
+            if (rawLastDate) {
+                const d = new Date(rawLastDate);
+                if (!isNaN(d.getTime())) {
+                    d.setDate(d.getDate() + 40);
+                    nextPmsText = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+            }
+            if (document.getElementById('dossier-next-pms-date')) {
+                document.getElementById('dossier-next-pms-date').innerText = nextPmsText;
+            }
+
+            // Calculate Preferred Service Advisor
+            const saCounts = {};
+            cust.jobs.forEach(j => {
+                const sa = j.handled_by || j.sa;
+                if (sa && sa !== '-' && sa !== 'Front Desk SA') {
+                    saCounts[sa] = (saCounts[sa] || 0) + 1;
+                }
+            });
+            let preferredSA = 'Front Desk SA';
+            let maxCount = 0;
+            for (const [sa, count] of Object.entries(saCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    preferredSA = sa;
+                }
+            }
+            if (document.getElementById('dossier-preferred-sa')) {
+                document.getElementById('dossier-preferred-sa').innerText = preferredSA;
             }
 
             // Render Historical Orders Timeline with Rich Automotive Detail
