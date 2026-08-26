@@ -8445,57 +8445,126 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
             }
 
-            // Render Historical Orders Timeline
+            // Render Historical Orders Timeline with Rich Automotive Detail
             const timelineEl = document.getElementById('dossier-history-timeline');
             if (timelineEl) {
                 let historyHTML = '';
                 cust.jobs.forEach((job, idx) => {
                     const jobId = job.job_id || job.id || job._id || `JOB-${idx + 1}`;
                     const stub = job.claim_stub || job.stub || 'N/A';
-                    const category = job.category || 'Service';
-                    const date = job.date || job.created_at || 'Past Service';
-                    const status = job.status || 'Completed';
-                    const sa = job.handled_by || job.sa || 'Staff';
-                    const mechanic = job.mechanic || 'Assigned Bay Mechanic';
-                    const bay = job.bay_number || job.bay || 'General';
-                    const remarks = job.remarks || job.concern || 'Standard maintenance performed.';
-                    const goal = job.goal_remarks || 'Successful';
+                    const category = job.category || 'General Repair (GRS)';
+                    const date = job.date || job.created_at || 'Recent';
+                    const time = job.appt_time || job.arrival || '';
+                    const fullDateStr = time ? `${date} • ${time}` : date;
+                    const status = (job.status || 'Pending').toUpperCase();
+                    const sa = job.handled_by || job.sa || 'Front Desk SA';
+                    const mechanic = job.mechanic || 'Assigned Bay Technician';
+                    const bay = job.bay_number || job.bay || (job.status === 'Pending' ? 'Staging Area' : 'Bay 1');
+                    const concern = job.concern || job.evaluation || job.diagnosis || 'Standard periodic service maintenance';
+                    const remarks = job.remarks || job.goal_remarks || 'Inspection completed according to workshop checklist.';
+                    const source = job.source || 'Walk-in';
+                    const lane = job.lane_type || 'Flexible Lane';
 
-                    const goalColor = goal === 'Successful' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                                      (goal === 'Failed' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-gray-100 text-gray-700 border-gray-200');
+                    // Dynamic Status Styling
+                    let statusBadgeClass = 'bg-amber-50 text-amber-700 border-amber-300';
+                    let statusIcon = 'clock';
+                    if (status.includes('COMPLETED') || status.includes('RELEASED')) {
+                        statusBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-300';
+                        statusIcon = 'check-circle-2';
+                    } else if (status.includes('PROGRESS') || status.includes('BAY')) {
+                        statusBadgeClass = 'bg-blue-50 text-blue-700 border-blue-300';
+                        statusIcon = 'wrench';
+                    } else if (status.includes('CANCEL')) {
+                        statusBadgeClass = 'bg-rose-50 text-rose-700 border-rose-300';
+                        statusIcon = 'x-circle';
+                    }
+
+                    // Category Color
+                    const isBackJob = category.toLowerCase().includes('back-job') || category.toLowerCase().includes('warranty');
+                    const catBadgeClass = isBackJob 
+                        ? 'bg-amber-100 text-amber-900 border-amber-300 font-black' 
+                        : (category.includes('PMS') ? 'bg-blue-50 text-blue-800 border-blue-200' : 'bg-purple-50 text-purple-800 border-purple-200');
+
+                    const sourceBadgeClass = source.toLowerCase().includes('online') 
+                        ? 'bg-cyan-50 text-cyan-800 border-cyan-200' 
+                        : 'bg-orange-50 text-orange-800 border-orange-200';
 
                     historyHTML += `
-                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl space-y-3">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/70 pb-2.5">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 font-bold text-xs flex items-center justify-center">${cust.jobs.length - idx}</span>
-                                    <span class="font-bold text-xs text-gray-900 font-mono">${jobId}</span>
-                                    <span class="text-[9px] font-bold px-2 py-0.5 bg-gray-200 text-gray-800 rounded font-mono">Stub: ${stub}</span>
+                        <div class="bg-white hover:bg-slate-50/80 border border-gray-200 hover:border-gray-300 p-5 rounded-2xl shadow-xs transition-all space-y-4">
+                            <!-- Card Header -->
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-gray-150 pb-3">
+                                <div class="flex items-center gap-2.5 flex-wrap">
+                                    <span class="w-6 h-6 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                                        ${cust.jobs.length - idx}
+                                    </span>
+                                    <span class="font-black text-xs text-gray-900 font-mono tracking-tight bg-gray-100 px-2 py-0.5 rounded border border-gray-200">${jobId}</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-700 rounded font-mono border border-gray-200">
+                                        Stub: ${stub}
+                                    </span>
+                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${sourceBadgeClass}">
+                                        ${source}
+                                    </span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded border ${goalColor}">${goal}</span>
-                                    <span class="text-[10px] font-semibold text-gray-500">${date}</span>
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-                                <div>
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Category & Lane</span>
-                                    <p class="font-bold text-gray-800 text-[11px]">${category} <span class="text-gray-400 font-normal">(${job.lane_type || 'General Lane'})</span></p>
-                                </div>
-                                <div>
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Handled By</span>
-                                    <p class="font-bold text-gray-800 text-[11px]">${sa} <span class="text-gray-400 font-normal">• Bay ${bay}</span></p>
-                                </div>
-                                <div>
-                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Status</span>
-                                    <p class="font-bold text-red-600 text-[11px] uppercase">${status}</p>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${statusBadgeClass}">
+                                        <i data-lucide="${statusIcon}" class="w-3 h-3"></i> ${status}
+                                    </span>
+                                    <span class="text-[11px] font-semibold text-gray-500 flex items-center gap-1">
+                                        <i data-lucide="calendar" class="w-3 h-3 text-gray-400"></i> ${fullDateStr}
+                                    </span>
                                 </div>
                             </div>
 
-                            <div class="bg-white p-2.5 rounded-lg border border-gray-200 text-xs">
-                                <span class="text-[9px] text-gray-400 font-bold uppercase block mb-0.5">Work Description & Remarks</span>
-                                <p class="text-gray-700 font-medium text-[11px]">${remarks}</p>
+                            <!-- 3-Column Diagnostic Details -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-gray-50/70 p-3.5 rounded-xl border border-gray-150 text-xs">
+                                <div>
+                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Service Category & Lane</span>
+                                    <p class="font-bold text-gray-900 text-xs flex items-center gap-1.5 flex-wrap">
+                                        <span class="px-2 py-0.5 rounded border text-[10px] ${catBadgeClass}">${category}</span>
+                                        <span class="text-[10px] text-gray-500 font-normal">(${lane})</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Service Team & Location</span>
+                                    <p class="font-bold text-gray-800 text-[11px] flex items-center gap-1">
+                                        <i data-lucide="user-check" class="w-3 h-3 text-red-600"></i> SA: ${sa}
+                                    </p>
+                                    <p class="text-[10px] text-gray-500 font-semibold flex items-center gap-1 mt-0.5">
+                                        <i data-lucide="wrench" class="w-3 h-3 text-gray-400"></i> ${bay}
+                                    </p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Technician / Assigned Bay</span>
+                                    <p class="font-bold text-gray-800 text-[11px]">${mechanic}</p>
+                                    <p class="text-[10px] text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
+                                        <i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i> Quality Verified
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Customer Concern / Evaluation Diagnosis -->
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-amber-50/60 border border-amber-200/80 p-3 rounded-xl">
+                                    <span class="text-[9px] font-black text-amber-900 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                                        <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600"></i> Customer Concern / Intake Diagnosis
+                                    </span>
+                                    <p class="text-gray-800 font-semibold text-xs leading-relaxed">${concern}</p>
+                                </div>
+
+                                <div class="bg-gray-50 border border-gray-200 p-3 rounded-xl">
+                                    <span class="text-[9px] font-black text-gray-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                                        <i data-lucide="clipboard-check" class="w-3 h-3 text-gray-400"></i> Work Performed & Technical Remarks
+                                    </span>
+                                    <p class="text-gray-700 font-medium text-xs leading-relaxed">${remarks}</p>
+                                </div>
+                            </div>
+
+                            <!-- Quick 1-Click Action for this Specific Historical Order -->
+                            <div class="flex items-center justify-end gap-2 pt-2 border-t border-gray-150">
+                                <button onclick="confirmSpecificBackJob('${jobId}', '${category.replace(/'/g, "\\'")}', '${date}')" 
+                                    class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Create Back-Job for This Order
+                                </button>
                             </div>
                         </div>
                     `;
@@ -8552,6 +8621,48 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             showSystemToast(`Returning customer "${cust.name}" details pre-filled for fresh intake!`, 'success', 'Regular Intake Initialized');
+        }
+
+        function confirmSpecificBackJob(refJobId, prevCategory, prevDate) {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                showSystemToast('Please select a customer record first.', 'warning', 'Back-Job Intake');
+                return;
+            }
+
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+
+            // 1. Switch view to vehicle intake
+            showSection('intake');
+
+            // 2. Pre-fill customer and vehicle fields
+            const nameEl = document.getElementById('intake-name');
+            const plateEl = document.getElementById('intake-plate');
+            const contactEl = document.getElementById('intake-contact');
+            const vehicleEl = document.getElementById('intake-vehicle');
+            const catEl = document.getElementById('intake-category');
+            const catOtherEl = document.getElementById('intake-category-other');
+            const concernEl = document.getElementById('intake-concern');
+
+            if (nameEl) nameEl.value = cust.name;
+            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
+            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
+            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
+
+            // Set Category to Others -> Back-Job / Warranty Return
+            if (catEl) {
+                catEl.value = 'Others';
+                if (catOtherEl) {
+                    catOtherEl.value = 'Back-Job / Warranty Return';
+                    catOtherEl.classList.remove('hidden');
+                }
+            }
+
+            // Pre-fill concern with the specific order selected
+            if (concernEl) {
+                concernEl.value = `[BACK-JOB / WARRANTY RETURN] Previous Ref: ${refJobId} (${prevCategory} on ${prevDate}). Customer concern/issue: `;
+            }
+
+            showSystemToast(`Back-Job initialized referencing order ${refJobId}!`, 'success', 'Back-Job Created');
         }
 
         function confirmBackJobIntake() {
