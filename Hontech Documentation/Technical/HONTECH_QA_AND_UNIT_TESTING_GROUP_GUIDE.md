@@ -25,7 +25,49 @@ CLASSIFICATION:        Official Single Team Testing Document
 
 ---
 
-## 📶 2. Paano Mag-Connect at Mag-Login (Step-by-Step)
+## 🔄 2. Step-by-Step: Paano Tayo Magtutulungan Araw-Araw? (The Developer-to-Tester Cycle)
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                      ANG ARAW-ARAW NA TIKET NG ATING PAGTUTULUNGAN                     │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. 📢 ANNOUNCEMENT: Justin builds a feature ➔ pushes to GitHub ➔ notifies team.        │
+│ 2. 🧪 TESTING: Classmates open Chrome on Wi-Fi ➔ test assigned roles & checklist.      │
+│ 3. 📝 REPORTING: Classmates spot a bug ➔ log on GitHub Issues with Step #.             │
+│ 4. 🛠️ FIXING: Justin modifies code in Antigravity in 2 mins ➔ pushes update.          │
+│ 5. ✅ SIGN-OFF: Classmates refresh browser ➔ verify fix ➔ mark [PASS]!                │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 🔹 HAKBANG 1: Pag-anunsyo ng Bagong Feature (Kay Justin Ito)
+* Matapos mag-code ni Justin ng bagong feature (halimbawa: *Customer History at Back-Jobs*), i-pupush niya ito sa GitHub.
+* Sasabihin ni Justin sa GC:  
+  💬 *"Team, live na ang bagong update! Pakitest ang Customer Lookup at 40-Day Regulars gamit ang inyong laptop at phone."*
+
+### 🔹 HAKBANG 2: Pagsisimula ng Test Session (Kay Classmate A at B Ito)
+* Kokonekta ang lahat sa iisang Wi-Fi / Hotspot.
+* Bubuksan ni Classmate A ang kanyang laptop $\to$ mag-login bilang **Service Advisor**.
+* Bubuksan ni Classmate B ang kanyang phone o school PC $\to$ mag-login bilang **Assistant Staff**.
+* Susundan nila ang **22-Step Verification Checklist** sa ibaba.
+
+### 🔹 HAKBANG 3: Pag-Report ng Nakitang Mali o Bug (Kay Classmate A at B Ito)
+* Kapag may napansing tabingi, maling kulay, o button na hindi pumindot:
+* Bubuksan ni Classmate B o A ang GitHub Issues link sa phone/laptop at magpo-post ng simpleng report:  
+  *Halimbawa: "Step 5.2 - Hindi lumabas ang dating Job ID sa Back-Job form."*
+
+### 🔹 HAKBANG 4: Pag-aayos ng Code (Kay Justin Ito)
+* Babasahin ni Justin ang report sa GitHub.
+* Bubuksan ni Justin ang code sa Antigravity IDE, aayusin ang error sa loob ng 2 minuto, at magko-commit:  
+  `git commit -m "fix: resolved backjob ID binding" && git push`
+* Sasabihin ni Justin sa GC: 💬 *"Naayos na po! Paki-refresh (F5) ang inyong browser."*
+
+### 🔹 HAKBANG 5: Re-Testing at Final Sign-Off (Buong Grupo)
+* I-re-refresh nina Classmate A at B ang kanilang browser.
+* Kapag maayos na ang takbo, mamarkahan ang checklist ng **`[x] PASS`** at icloclose ang issue sa GitHub!
+
+---
+
+## 📶 3. Paano Mag-Connect at Mag-Login (Step-by-Step)
 
 ```
                        LOCAL WI-FI / SCHOOL LAB TESTING SETUP
@@ -54,7 +96,7 @@ CLASSIFICATION:        Official Single Team Testing Document
 
 ---
 
-## 📋 3. Ang 22-Step Master Verification & Checking List (Pass / Fail)
+## 📋 4. Ang 22-Step Master Verification & Checking List (Pass / Fail)
 
 ---
 
@@ -121,7 +163,7 @@ CLASSIFICATION:        Official Single Team Testing Document
 
 ---
 
-## 🐛 4. Paano Mag-Report ng Nakitang Mali sa GitHub (1-Minutong Paraan)
+## 🐛 5. Paano Mag-Report ng Nakitang Mali sa GitHub (1-Minutong Paraan)
 
 Kapag may nakita kayong mali habang nagte-test:
 1. Pumunta sa: [**https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues**](https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues).
@@ -144,7 +186,7 @@ Kapag may nakita kayong mali habang nagte-test:
 
 ---
 
-## 🎭 5. Limang-Minutong Roleplay Script Bago ang Thesis Defense
+## 🎭 6. Limang-Minutong Roleplay Script Bago ang Thesis Defense
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
