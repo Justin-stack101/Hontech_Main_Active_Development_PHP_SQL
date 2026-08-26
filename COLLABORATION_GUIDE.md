@@ -1,148 +1,106 @@
-# HonTech Capstone Collaboration Guide
+# 🤝 HonTech Team Collaboration Guide: GitHub & Antigravity IDE Workflow
+## Simple Step-by-Step Team Guide for Lead Programmer, QA & Groupmates
 
-This document outlines the step-by-step instructions for adding a Tester to the GitHub repository, setting up their environment, and working together using a simple Git workflow.
-
----
-
-## 🛠️ Step 1: Add the Tester to GitHub (For Repository Owner)
-
-1. Open your repository on **GitHub.com**.
-2. Click **Settings** (gear icon in the top tabs).
-3. Select **Collaborators** from the left sidebar.
-4. Click **Add people**.
-5. Enter the Tester's GitHub username or email, select them, and click **Add to this repository**.
-6. **Important:** The Tester must open their email (associated with GitHub) and click the **Accept Invitation** link.
+```text
+========================================================================================================
+PROJECT:               HonTech AutoCenter Operations & Management System
+ACTIVE BRANCH:         branch2-Security-Account-Recovery
+TOOLS:                 GitHub, Google Antigravity IDE / VS Code, XAMPP (PHP 8 + MySQL)
+TARGET AUDIENCE:       Lead Developer (Justin), QA Testers, Non-Coder Groupmates
+CLASSIFICATION:        Team Standard Operating Procedure (SOP)
+========================================================================================================
+```
 
 ---
 
-## 💻 Step 2: Tool Setup (For Tester)
-
-The Tester needs to install the following free software packages in order:
-
-1. **Git** (Version Control): [git-scm.com/downloads](https://git-scm.com/downloads)
-2. **Node.js** (LTS version): [nodejs.org](https://nodejs.org)
-3. **VS Code** (Text Editor): [code.visualstudio.com](https://code.visualstudio.com)
-4. **MongoDB Community Server** (Local Database): [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community) *(Also check the box to install MongoDB Compass during setup).*
+## 📌 Overview: How Our Team Works Together
+* **Lead Programmer (You):** Builds features, solves backend routing (`router.php`), writes SQL PDO queries, and pushes tested code to GitHub.
+* **QA / Groupmates:** Pulls the latest code, tests assigned user roles (**Admin, Service Advisor, Assistant, Cashier**), verifies multi-device local Wi-Fi pairing on phones/laptops, and reports bugs.
 
 ---
 
-## 📦 Step 3: Local Project Setup (For Tester)
+## 🛠️ Step 1: Initial Setup for Groupmates (One-Time Setup)
 
-After installing the tools, the Tester should follow these steps to download and run the project:
+Every groupmate needs only **2 free tools** on their laptop:
+1. **Git for Windows:** Download from [git-scm.com/downloads](https://git-scm.com/downloads) (Click Next $\to$ Next $\to$ Finish).
+2. **XAMPP (PHP 8.2 + MySQL):** Download from [apachefriends.org](https://www.apachefriends.org).
 
-### 1. Clone the Code
-1. Open **VS Code**.
-2. Open a new terminal inside VS Code: Press `` Ctrl + ` `` (control + backtick) or select **Terminal -> New Terminal** from the top menu.
-3. In the terminal, navigate to a folder where you want to save the project (e.g. your Documents folder), then run:
+### Groupmate Clone Step:
+Open **Command Prompt / PowerShell** and run:
+```bash
+# 1. Navigate to XAMPP htdocs folder
+cd C:\xampp\htdocs
+
+# 2. Clone the official active development branch
+git clone -b branch2-Security-Account-Recovery https://github.com/Justin-stack101/CapstoneOfficial2_Development.git
+```
+
+---
+
+## 🚀 Step 2: The Daily 3-Step Work Loop (Super Simple!)
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                             DAILY GITHUB & ANTIGRAVITY WORKFLOW                                  │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. 📥 MORNING: Groupmates pull latest updates (`git pull origin branch2-...`)                    │
+│ 2. 💻 DAYTIME: Programmer codes in Antigravity; Groupmates run & test roles on Wi-Fi             │
+│ 3. 📤 EVENING: Programmer commits & pushes (`git commit -m "..." && git push`)                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 👨‍💻 For the Lead Programmer (Using Antigravity IDE):
+1. Open your project folder in **Antigravity IDE**.
+2. Make your code improvements or revisions.
+3. When ready to share with the team, open the Antigravity Terminal and run:
    ```bash
-   git clone https://github.com/Justin-stack101/CapstoneOfficial2_Development.git
+   git add .
+   git commit -m "feat: completed service advisor bay allocation and claim stub printing"
+   git push origin branch2-Security-Account-Recovery
    ```
-4. In VS Code, go to **File -> Open Folder...** and open the cloned folder:
-   `CapstoneOfficial2_Development/DeveloperVersion`
 
-### 2. Install Packages
-In the VS Code terminal, run:
-```bash
-npm install
-```
-
-### 3. Setup Configuration
-1. In the file explorer on the left, locate `.env.example`.
-2. Duplicate this file and rename the new copy to `.env`.
-3. Open the new `.env` file and make sure the parameters are correct:
-   ```env
-   PORT=5000
-   MONGODB_URI=mongodb://127.0.0.1:27017/hontech
-   JWT_SECRET=supersecretjwtkey12345!
-   NODE_ENV=development
-
-   # Default User Passwords for Seeding
-   OWNER_PASSWORD=owner123
-   ADMIN_PASSWORD=admin123
-   STAFF_PASSWORD=staff123
-   SA_PASSWORD=sa123
-   TECH_PASSWORD=tech123
+### 👩‍💻 For QA / Groupmates (Testing on Their Laptops):
+1. Open Terminal / Command Prompt and run:
+   ```bash
+   git pull origin branch2-Security-Account-Recovery
    ```
-4. Save the file.
-
-### 4. Create Test Accounts & Start Server
-Run the database seed script to set up default roles and sample data:
-```bash
-npm run seed
-```
-Then, start the server:
-```bash
-npm run dev
-```
-Open your browser and visit: `http://localhost:5000`
+2. Double-click [`start_lan_server.bat`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/start_lan_server.bat).
+3. Open Google Chrome $\to$ `http://localhost:8000`.
+4. Log into your assigned test account:
+   * **Owner:** `owner@hontech.com` / `owner123`
+   * **Admin:** `admin.marikina@hontech.com` / `admin123`
+   * **Assistant:** `assistant.marikina@hontech.com` / `assistant123`
+   * **Service Advisor 1:** `sa.marikina1@hontech.com` / `sa123`
+   * **Service Advisor 2:** `sa.marikina2@hontech.com` / `sa123`
 
 ---
 
-## 🔄 Step 4: Simple Git Testing Workflow
-
-Because the Tester is only checking features and **not writing code**, this is a simple one-way download flow:
+## 🧪 Step 3: Multi-Device Wi-Fi Testing Procedure
 
 ```
-[ Developer Computer ] ──(git push)──> [ GitHub ] ──(git pull)──> [ Tester Computer ]
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                               MULTI-DEVICE WI-FI TESTING WORKFLOW                                │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ 1. Lead Programmer starts server: `start_lan_server.bat` (Displays IP, e.g., 192.168.1.100).     │
+│ 2. Groupmate 1 (Laptop): Opens `http://192.168.1.100:8000` as Service Advisor 1.                 │
+│ 3. Groupmate 2 (Laptop): Opens `http://192.168.1.100:8000` as Service Advisor 2.                 │
+│ 4. Groupmate 3 (Phone): Scans QR Code on screen $\to$ acts as Reception Assistant.              │
+│ 5. Groupmate 4 (TV Monitor / External Screen): Opens `http://192.168.1.100:8000` in F11 mode.   │
+│ 6. Action: SAs submit intakes simultaneously $\to$ Verify TV updates instantly!                 │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
-### 1. Developer pushes updates:
-Whenever you (the Developer) finish a feature and want the tester to verify it, run:
-```bash
-git add .
-git commit -m "feat: description of feature"
-git push origin Hontech_Main_Active_Development
-```
-
-### 2. Tester downloads updates:
-The Tester opens their VS Code terminal and runs:
-```bash
-git pull origin Hontech_Main_Active_Development
-```
-Then they restart the server (`npm run dev`) and test the updates.
-
-### ⚠️ What if the Tester accidentally modifies files and Git blocks the pull?
-If they get an error trying to pull, they can reset their local code to match yours perfectly by running:
-```bash
-git reset --hard origin/Hontech_Main_Active_Development
-```
-This cleans their environment and lets them download your latest version.
 
 ---
 
-## 📝 Git Command Quick Reference (Cheat Sheet)
+## 🛡️ Step 4: What if Someone Encounters a Git Conflict?
 
-### 1. The Gather Command
+If a groupmate accidentally modified a local file and `git pull` shows an error, run this 1-line reset:
 ```bash
-git add .
+git reset --hard origin/branch2-Security-Account-Recovery
+git pull origin branch2-Security-Account-Recovery
 ```
-**In summary:**  
-You are telling Git: *"Gather all my new files, deletions, and edits from my folder and prepare them to be part of my next save point."*
+*This instantly restores their computer to match the clean master version without breaking anything!*
 
 ---
 
-### 2. The Save Point Command
-```bash
-git commit -m "style: updated TV slide 3 colors"
-```
-**In summary:**  
-You are telling Git: *"Create a local Save Point on my computer, label it 'style: updated TV slide 3 colors', and save it in my project's history."*
-
----
-
-### 3. The Send Command
-```bash
-git push origin Hontech_Main_Active_Development
-```
-**In summary:**  
-You are telling Git: *"Upload all the local Save Points I have created on my computer up to the cloud on GitHub under the branch 'Hontech_Main_Active_Development'."*
-
----
-
-### 4. The Tester's Download Command
-```bash
-git pull origin Hontech_Main_Active_Development
-```
-**In summary:**  
-You are telling Git: *"Download and merge the latest Save Points from the cloud on GitHub directly into my local computer folder."*
-
+*Maintained by the HonTech Development Team*

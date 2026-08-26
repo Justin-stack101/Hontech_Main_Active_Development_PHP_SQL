@@ -20,12 +20,16 @@ Welcome to the central documentation hub for the **HonTech AutoCenter Operations
   *Formulaic breakdown of turn-around time (TAT), PMS vs. GRS completion rates, service advisor daily performance, and financial revenue aggregations.*
 * 🛠️ [**Workshop Capacity, Bay Management & RBAC Specification**](Technical/WORKSHOP_BAYS_AND_RBAC_SPECIFICATION.md)  
   *Authoritative specification covering dynamic 4–10 bay floor scaling, the dedicated Workshop Bays module (`#section-bays`), strict Assistant-only online booking authority, 4 lane types, and LAN hosting architecture.*
+* 🌐 [**Official Domain Architecture, Implementation, Testing & Maintenance Manual**](Technical/HONTECH_OFFICIAL_DOMAIN_IMPLEMENTATION_TESTING_AND_MAINTENANCE_MANUAL.md)  
+  *The complete, detailed master manual on Local Domain operations, mDNS zero-config, Router DNS mapping, Windows Firewall configuration, multi-device QA testing matrix, and step-by-step troubleshooting/incident response runbooks.*
 * 🌐 [**Local Intranet, Server Hosting & Remote Access Manual**](Technical/LOCAL_INTRANET_DEPLOYMENT_GUIDE.md)  
   *Complete deployment and networking manual covering ₱0 local server hosting (`0.0.0.0:8000`), zero-config `.local` mDNS resolution, and nationwide remote tunneling via Cloudflare and Localtunnel.*
 * 📘 [**Comprehensive Handover & Team Revisions Guide**](Technical/SESSION_HANDOVER_AND_TEAM_REVISIONS_GUIDE.md)  
   *All-in-one student, teammate, and defense review guide summarizing all recent features, role testing scripts, Report Data matrix, and automated batch scripts.*
 * 🛡️ [**Project Checkpoints & Disaster Recovery Log**](Technical/PROJECT_CHECKPOINTS_AND_CONVERSATION_HISTORY.md)  
   *Permanent historical trajectory of all conversation checkpoints, user requirements, commit IDs, and 1-minute emergency disaster recovery instructions.*
+* 🚀 [**Progressive Deployment Timeline & Next-Month Action Plan**](Technical/HONTECH_PROGRESSIVE_DEPLOYMENT_TIMELINE_AND_MILESTONES.md)  
+  *Official 6-stage pilot-to-production roadmap: Codebase revisions, classmate local hosting testing, Google API integration, client proposal/procurement, physical multi-branch setup, and staff dry-run pilot.*
 * 🏛️ [**Codebase Architectural Audit & Directives**](Technical/HonTech_Codebase_Architectural_Audit.md)  
   *Engineering standards, SQL PDO property normalization, defensive DOM handling, and cache-busting requirements.*
 
