@@ -8499,81 +8499,42 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         : 'bg-orange-50 text-orange-800 border-orange-200';
 
                     historyHTML += `
-                        <div class="bg-white hover:bg-slate-50/80 border border-gray-200 hover:border-gray-300 p-5 rounded-2xl shadow-xs transition-all space-y-4">
-                            <!-- Card Header -->
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-gray-150 pb-3">
-                                <div class="flex items-center gap-2.5 flex-wrap">
-                                    <span class="w-6 h-6 rounded-full bg-red-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
-                                        ${cust.jobs.length - idx}
+                        <div class="bg-white hover:bg-slate-50/70 border border-gray-200 hover:border-gray-300 p-4 rounded-xl shadow-2xs transition space-y-3">
+                            <!-- Top Row: Service Category & Date + Status & Action -->
+                            <div class="flex items-center justify-between gap-3 flex-wrap">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-lg bg-gray-100 text-gray-700 font-bold text-xs flex items-center justify-center">
+                                        #${cust.jobs.length - idx}
                                     </span>
-                                    <span class="font-black text-xs text-gray-900 font-mono tracking-tight bg-gray-100 px-2 py-0.5 rounded border border-gray-200">${jobId}</span>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-700 rounded font-mono border border-gray-200">
-                                        Stub: ${stub}
-                                    </span>
-                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${sourceBadgeClass}">
-                                        ${source}
-                                    </span>
+                                    <span class="text-xs font-black text-gray-900">${category}</span>
+                                    <span class="text-[11px] text-gray-400">• ${fullDateStr}</span>
                                 </div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${statusBadgeClass}">
-                                        <i data-lucide="${statusIcon}" class="w-3 h-3"></i> ${status}
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${statusBadgeClass}">
+                                        ${status}
                                     </span>
-                                    <span class="text-[11px] font-semibold text-gray-500 flex items-center gap-1">
-                                        <i data-lucide="calendar" class="w-3 h-3 text-gray-400"></i> ${fullDateStr}
-                                    </span>
+                                    <button onclick="confirmSpecificBackJob('${jobId}', '${category.replace(/'/g, "\\'")}', '${date}')" 
+                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer"
+                                        title="Create warranty back-job for this visit">
+                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Back-Job
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- 3-Column Diagnostic Details -->
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-gray-50/70 p-3.5 rounded-xl border border-gray-150 text-xs">
-                                <div>
-                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Service Category & Lane</span>
-                                    <p class="font-bold text-gray-900 text-xs flex items-center gap-1.5 flex-wrap">
-                                        <span class="px-2 py-0.5 rounded border text-[10px] ${catBadgeClass}">${category}</span>
-                                        <span class="text-[10px] text-gray-500 font-normal">(${lane})</span>
-                                    </p>
+                            <!-- Bottom Summary: Clean Key Details & Concern -->
+                            <div class="text-xs text-gray-600 bg-gray-50/80 p-3 rounded-lg border border-gray-150 flex flex-col gap-1.5">
+                                <div class="flex items-center gap-3 text-[11px] text-gray-500 font-medium flex-wrap">
+                                    <span><strong class="text-gray-700 font-bold">Job:</strong> ${jobId}</span>
+                                    <span>•</span>
+                                    <span><strong class="text-gray-700 font-bold">Advisor:</strong> ${sa}</span>
+                                    <span>•</span>
+                                    <span><strong class="text-gray-700 font-bold">Bay:</strong> ${bay}</span>
+                                    <span>•</span>
+                                    <span><strong class="text-gray-700 font-bold">Tech:</strong> ${mechanic}</span>
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Service Team & Location</span>
-                                    <p class="font-bold text-gray-800 text-[11px] flex items-center gap-1">
-                                        <i data-lucide="user-check" class="w-3 h-3 text-red-600"></i> SA: ${sa}
-                                    </p>
-                                    <p class="text-[10px] text-gray-500 font-semibold flex items-center gap-1 mt-0.5">
-                                        <i data-lucide="wrench" class="w-3 h-3 text-gray-400"></i> ${bay}
-                                    </p>
+                                <div class="text-xs text-gray-800 font-normal pt-1.5 border-t border-gray-200/60 leading-relaxed">
+                                    <span class="font-bold text-gray-900">Concern / Diagnosis:</span> ${concern}
                                 </div>
-                                <div>
-                                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block mb-0.5">Technician / Assigned Bay</span>
-                                    <p class="font-bold text-gray-800 text-[11px]">${mechanic}</p>
-                                    <p class="text-[10px] text-emerald-700 font-semibold mt-0.5 flex items-center gap-1">
-                                        <i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i> Quality Verified
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Customer Concern / Evaluation Diagnosis -->
-                            <div class="space-y-2 text-xs">
-                                <div class="bg-amber-50/60 border border-amber-200/80 p-3 rounded-xl">
-                                    <span class="text-[9px] font-black text-amber-900 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                                        <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600"></i> Customer Concern / Intake Diagnosis
-                                    </span>
-                                    <p class="text-gray-800 font-semibold text-xs leading-relaxed">${concern}</p>
-                                </div>
-
-                                <div class="bg-gray-50 border border-gray-200 p-3 rounded-xl">
-                                    <span class="text-[9px] font-black text-gray-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
-                                        <i data-lucide="clipboard-check" class="w-3 h-3 text-gray-400"></i> Work Performed & Technical Remarks
-                                    </span>
-                                    <p class="text-gray-700 font-medium text-xs leading-relaxed">${remarks}</p>
-                                </div>
-                            </div>
-
-                            <!-- Quick 1-Click Action for this Specific Historical Order -->
-                            <div class="flex items-center justify-end gap-2 pt-2 border-t border-gray-150">
-                                <button onclick="confirmSpecificBackJob('${jobId}', '${category.replace(/'/g, "\\'")}', '${date}')" 
-                                    class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-lg text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1.5 cursor-pointer">
-                                    <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Create Back-Job for This Order
-                                </button>
                             </div>
                         </div>
                     `;
