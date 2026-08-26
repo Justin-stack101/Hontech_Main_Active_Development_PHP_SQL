@@ -763,24 +763,25 @@
 
             <nav id="dynamic-nav" class="flex flex-1 items-center px-6 gap-2 md:gap-4 overflow-x-auto"></nav>
 
-            <div id="header-user-section" class="flex items-center gap-6 px-8 border-l border-gray-100 h-full">
+            <div id="header-user-section" class="flex items-center gap-4 px-6 border-l border-gray-150 h-full">
                 <div id="header-status"
-                    class="hidden md:flex items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-[10px] font-bold uppercase text-gray-600 tracking-widest">System Online</span>
+                    class="hidden lg:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider">System Online</span>
                 </div>
 
                 <!-- User Profile Dropdown Container -->
                 <div class="relative">
-                    <button onclick="toggleUserDropdown()" class="flex items-center gap-3 focus:outline-none hover:opacity-90 transition">
-                        <div class="text-right hidden md:block">
-                            <p class="text-sm font-bold text-gray-900 leading-tight" id="sidebar-user-name">User</p>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest" id="sidebar-user-role">Role</p>
+                    <button onclick="toggleUserDropdown()" class="flex items-center gap-3 p-1.5 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-200 transition focus:outline-none cursor-pointer">
+                        <div class="text-right flex flex-col items-end">
+                            <p class="text-xs font-black text-gray-900 leading-tight" id="header-user-name">User</p>
+                            <span class="mt-0.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-red-50 text-red-600 border border-red-200/80" id="header-user-role">Role</span>
                         </div>
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold relative">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold relative shadow-xs">
                             <i data-lucide="user" class="w-5 h-5"></i>
-                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
+                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
                         </div>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400"></i>
                     </button>
 
                     <!-- Dropdown Menu -->
@@ -4926,7 +4927,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.68"></script>
+    <script src="js/app.js?v=3.69"></script>
 </body>
 
 </html>

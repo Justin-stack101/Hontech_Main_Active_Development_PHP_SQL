@@ -1153,8 +1153,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const userDisplayName = currentUserName || 'System User';
             const userRoleLabel = getRoleLabel(role);
 
+            if (document.getElementById('header-user-name')) {
+                document.getElementById('header-user-name').innerText = userDisplayName;
+            }
+            if (document.getElementById('header-user-role')) {
+                document.getElementById('header-user-role').innerText = userRoleLabel;
+            }
             if (document.getElementById('sidebar-user-name')) {
                 document.getElementById('sidebar-user-name').innerText = userDisplayName;
+            }
+            if (document.getElementById('sidebar-user-role')) {
+                document.getElementById('sidebar-user-role').innerText = userRoleLabel;
             }
             if (document.getElementById('sidebar-menu-user-name')) {
                 document.getElementById('sidebar-menu-user-name').innerText = userDisplayName;
