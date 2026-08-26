@@ -1,26 +1,25 @@
 /* ==========================================================================
    CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Without Breaking Layouts)
    ========================================================================== */
-#app-container.hidden,
-#section-dashboard.hidden,
-#section-staff.hidden,
-#section-intake.hidden,
-#section-bays.hidden,
-#section-profile.hidden,
-#modal-system-tutorial.hidden,
-#modal-report-export.hidden,
-#modal-terms.hidden,
-#mobile-connect-modal.hidden,
-#dev-credentials-grid.hidden,
-#dev-mailbox-modal.hidden,
-#loader-theme-modal.hidden,
-#offline-network-screen.hidden,
-#mfa-form-container.hidden,
-#forgot-form-container.hidden,
-#forgot-step-2.hidden,
+.hidden,
+[hidden],
+div.hidden,
+section.hidden,
+aside.hidden,
+header.hidden,
+main.hidden,
+form.hidden,
+button.hidden,
+span.hidden,
+p.hidden,
+table.hidden,
+tbody.hidden,
+tr.hidden,
+td.hidden,
+.section-content.hidden,
+.modal.hidden,
 .tv-slide.hidden,
-.loader-visual.hidden,
-[hidden] {
+.loader-visual.hidden {
   display: none !important;
 }
 
