@@ -5871,15 +5871,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             doc.setTextColor(100, 116, 139);
             doc.text('OPERATIONS & QUEUE REPORT • MARIKINA BRANCH', 14, 25);
 
-            // Confidential Stamp & Audit Reference
-            doc.setFontSize(8);
+            // Confidential Stamp
             doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
             doc.setTextColor(220, 38, 38);
-            doc.text('🔒 [ CONFIDENTIAL & PROPRIETARY ]', 196, 18, { align: 'right' });
+            doc.text('CONFIDENTIAL', 196, 19, { align: 'right' });
             doc.setFont('helvetica', 'normal');
-            doc.setFontSize(7.5);
+            doc.setFontSize(8);
             doc.setTextColor(100, 116, 139);
-            doc.text(`Ref: HNT-OPS-${todayStr.replace(/-/g, '')} | ISO/IEC 27001 & RA 10173`, 196, 23, { align: 'right' });
+            doc.text('Internal Operations Report', 196, 25, { align: 'right' });
 
             // Meta Details
             doc.setFontSize(8.5);
@@ -6002,13 +6002,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             doc.text((currentUserName || 'Service Advisor') + ' (Staff Sign-Over-Printed Name)', 14, signY + 18);
             doc.text('Shop Owner / General Manager', 115, signY + 18);
 
-            // Footer info with legal DPA Notice
+            // Footer info
             const pageCount = doc.internal.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFontSize(7.5);
                 doc.setTextColor(148, 163, 184);
-                doc.text('CONFIDENTIAL • HonTech AutoCenter Operations System | Protected under RA 10173 (Data Privacy Act)', 14, 287);
+                doc.text('HonTech AutoCenter Operations System | Confidential', 14, 287);
                 doc.text(`Page ${i} of ${pageCount}`, 196, 287, { align: 'right' });
             }
 
@@ -6205,15 +6205,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             doc.setTextColor(100, 116, 139);
             doc.text(`${scope.toUpperCase()} ANALYTICS & REVENUE REPORT • MARIKINA BRANCH`, 14, 25);
 
-            // Confidential Stamp & Audit Reference
-            doc.setFontSize(8);
+            // Confidential Stamp
             doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
             doc.setTextColor(220, 38, 38);
-            doc.text('🔒 [ CONFIDENTIAL & PROPRIETARY ]', 196, 18, { align: 'right' });
+            doc.text('CONFIDENTIAL', 196, 19, { align: 'right' });
             doc.setFont('helvetica', 'normal');
-            doc.setFontSize(7.5);
+            doc.setFontSize(8);
             doc.setTextColor(100, 116, 139);
-            doc.text(`Ref: HNT-ANL-${new Date().toISOString().split('T')[0].replace(/-/g, '')} | ISO/IEC 27001 & RA 10173`, 196, 23, { align: 'right' });
+            doc.text('Internal Analytics Report', 196, 25, { align: 'right' });
 
             // Meta Details
             doc.setFontSize(8.5);
@@ -6379,13 +6379,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             doc.text((currentUserName || 'System Admin') + ' (Staff Sign-Over-Printed Name)', 14, signY + 18);
             doc.text('Shop Owner / General Manager', 115, signY + 18);
 
-            // Footer info with legal DPA Notice
+            // Footer info
             const pageCount = doc.internal.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFontSize(7.5);
                 doc.setTextColor(148, 163, 184);
-                doc.text('CONFIDENTIAL • HonTech AutoCenter Operations System | Protected under RA 10173 (Data Privacy Act)', 14, 287);
+                doc.text('HonTech AutoCenter Operations System | Confidential', 14, 287);
                 doc.text(`Page ${i} of ${pageCount}`, 196, 287, { align: 'right' });
             }
 
