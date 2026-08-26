@@ -8751,6 +8751,139 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSystemToast('Viewing customer historical repair records.', 'info', 'Customer History');
         }
 
+        function exportCustomerServicePassportPDF() {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                return showSystemToast('Please select a customer record first.', 'warning', 'Customer Passport');
+            }
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            showSystemToast(`Generating Vehicle Service Passport for ${cust.plate || cust.name}...`, 'info', 'Customer Passport');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+
+            const today = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString('en-US', { hour12: localStorage.getItem('timeFormat24h') === 'false', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            // Red top theme bar
+            doc.setFillColor(220, 38, 38);
+            doc.rect(0, 0, 210, 8, 'F');
+
+            // Header Title
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.setTextColor(17, 24, 39);
+            doc.text('HONTECH AUTOCENTER INC.', 14, 19);
+
+            doc.setFontSize(11);
+            doc.setTextColor(100, 116, 139);
+            doc.text('VEHICLE SERVICE PASSPORT & MAINTENANCE LOG', 14, 25);
+
+            // Clean Header Right
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(9);
+            doc.setTextColor(220, 38, 38);
+            doc.text('OFFICIAL RECORD', 196, 19, { align: 'right' });
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(100, 116, 139);
+            doc.text(`Ref: PASSPORT-${(cust.plate || 'CAR').replace(/ /g, '')}`, 196, 25, { align: 'right' });
+
+            // Divider Line
+            doc.setDrawColor(226, 232, 240);
+            doc.line(14, 31, 196, 31);
+
+            // Customer & Vehicle Dossier Card
+            doc.autoTable({
+                startY: 36,
+                head: [['VEHICLE OWNER PROFILE', 'VEHICLE SPECIFICATIONS & SERVICE SUMMARY']],
+                body: [
+                    [
+                        `Customer: ${cust.name || 'N/A'}\nContact Number: ${cust.phone || 'N/A'}\nRegistered Branch: ${cust.branch || 'Marikina Branch'}\nLoyalty Status: ${cust.jobs.length >= 2 ? 'Returning Regular' : 'Initial Visit Record'}`,
+                        `Plate Number: ${cust.plate || 'N/A'}\nVehicle Model: ${cust.vehicle || 'N/A'}\nTotal Recorded Visits: ${cust.jobs.length} Service Orders\nLatest Visit: ${cust.jobs[0]?.date || todayStr}`
+                    ]
+                ],
+                theme: 'plain',
+                styles: { fontSize: 9, cellPadding: 4, lineColor: [226, 232, 240], lineWidth: 0.3 },
+                headStyles: { fillColor: [248, 250, 252], textColor: [17, 24, 39], fontStyle: 'bold' }
+            });
+
+            let nextY = doc.autoTable.previous.finalY + 9;
+
+            // Section Title
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 24, 39);
+            doc.text('COMPLETE MAINTENANCE & SERVICE TIMELINE', 14, nextY);
+
+            const rows = cust.jobs.map((job, idx) => [
+                job.date || job.created_at || todayStr,
+                job.claim_stub || job.stub || `STUB-${idx + 1}`,
+                job.category || 'General Service',
+                job.handled_by || job.sa || 'Front Desk SA',
+                job.bay_number || job.bay || 'Bay 1',
+                (job.status || 'Completed').toUpperCase(),
+                job.concern || job.evaluation || job.remarks || 'Periodic Maintenance Inspection'
+            ]);
+
+            doc.autoTable({
+                startY: nextY + 3,
+                head: [['Date', 'Claim Stub', 'Category', 'Service Advisor', 'Bay Location', 'Status', 'Diagnosis & Work Done']],
+                body: rows,
+                theme: 'striped',
+                headStyles: { fillColor: [220, 38, 38], textColor: [255, 255, 255] },
+                styles: { fontSize: 8.5, cellPadding: 3 },
+                columnStyles: {
+                    0: { cellWidth: 20 },
+                    1: { cellWidth: 20, fontStyle: 'bold' },
+                    2: { cellWidth: 24 },
+                    3: { cellWidth: 28 },
+                    4: { cellWidth: 20 },
+                    5: { cellWidth: 20 },
+                    6: { cellWidth: 50 }
+                }
+            });
+
+            // Official Signature & Workshop Stamp
+            let signY = doc.autoTable.previous.finalY + 14;
+            if (signY > 240) {
+                doc.addPage();
+                signY = 30;
+            }
+
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(30, 41, 59);
+            doc.text('CERTIFIED WORKSHOP RECORD:', 14, signY);
+            doc.text('HONTECH OFFICIAL SEAL & SIGNATURE:', 115, signY);
+
+            doc.setDrawColor(148, 163, 184);
+            doc.line(14, signY + 14, 85, signY + 14);
+            doc.line(115, signY + 14, 186, signY + 14);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(7.5);
+            doc.setTextColor(100, 116, 139);
+            doc.text('HonTech AutoCenter Service Department', 14, signY + 18);
+            doc.text('Authorized Workshop Inspector / Manager', 115, signY + 18);
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(7.5);
+                doc.setTextColor(148, 163, 184);
+                doc.text('HonTech AutoCenter Vehicle Maintenance Passport | Customer Record Copy', 14, 287);
+                doc.text(`Page ${i} of ${pageCount}`, 196, 287, { align: 'right' });
+            }
+
+            const safePlate = (cust.plate || 'Customer').replace(/[^a-zA-Z0-9]/g, '_');
+            const pdfBlob = doc.output('blob');
+            downloadBlob(pdfBlob, `Hontech_Service_Passport_${safePlate}_${todayStr}.pdf`);
+            showSystemToast('Vehicle Service Passport PDF generated successfully.', 'success', 'Customer Passport');
+        }
+        window.exportCustomerServicePassportPDF = exportCustomerServicePassportPDF;
+
         // =========================================================================
         // QUICK CUSTOMER SEARCH & BACK-JOB POPUP MENU
         // =========================================================================
