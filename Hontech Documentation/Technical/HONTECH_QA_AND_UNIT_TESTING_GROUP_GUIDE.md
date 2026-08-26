@@ -25,49 +25,9 @@ CLASSIFICATION:        Official Single Team Testing Document
 
 ---
 
-## 🔄 2. Step-by-Step: Paano Tayo Magtutulungan Araw-Araw? (The Developer-to-Tester Cycle)
+# 📶 2. STEP-BY-STEP PARA SA CLOSE TESTING (Nasa School Lab, Bahay, o Coffee Shop)
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                      ANG ARAW-ARAW NA TIKET NG ATING PAGTUTULUNGAN                     │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│ 1. 📢 ANNOUNCEMENT: Justin builds a feature ➔ pushes to GitHub ➔ notifies team.        │
-│ 2. 🧪 TESTING: Classmates open Chrome on Wi-Fi ➔ test assigned roles & checklist.      │
-│ 3. 📝 REPORTING: Classmates spot a bug ➔ log on GitHub Issues with Step #.             │
-│ 4. 🛠️ FIXING: Justin modifies code in Antigravity in 2 mins ➔ pushes update.          │
-│ 5. ✅ SIGN-OFF: Classmates refresh browser ➔ verify fix ➔ mark [PASS]!                │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-### 🔹 HAKBANG 1: Pag-anunsyo ng Bagong Feature (Kay Justin Ito)
-* Matapos mag-code ni Justin ng bagong feature (halimbawa: *Customer History at Back-Jobs*), i-pupush niya ito sa GitHub.
-* Sasabihin ni Justin sa GC:  
-  💬 *"Team, live na ang bagong update! Pakitest ang Customer Lookup at 40-Day Regulars gamit ang inyong laptop at phone."*
-
-### 🔹 HAKBANG 2: Pagsisimula ng Test Session (Kay Classmate A at B Ito)
-* Kokonekta ang lahat sa iisang Wi-Fi / Hotspot.
-* Bubuksan ni Classmate A ang kanyang laptop $\to$ mag-login bilang **Service Advisor**.
-* Bubuksan ni Classmate B ang kanyang phone o school PC $\to$ mag-login bilang **Assistant Staff**.
-* Susundan nila ang **22-Step Verification Checklist** sa ibaba.
-
-### 🔹 HAKBANG 3: Pag-Report ng Nakitang Mali o Bug (Kay Classmate A at B Ito)
-* Kapag may napansing tabingi, maling kulay, o button na hindi pumindot:
-* Bubuksan ni Classmate B o A ang GitHub Issues link sa phone/laptop at magpo-post ng simpleng report:  
-  *Halimbawa: "Step 5.2 - Hindi lumabas ang dating Job ID sa Back-Job form."*
-
-### 🔹 HAKBANG 4: Pag-aayos ng Code (Kay Justin Ito)
-* Babasahin ni Justin ang report sa GitHub.
-* Bubuksan ni Justin ang code sa Antigravity IDE, aayusin ang error sa loob ng 2 minuto, at magko-commit:  
-  `git commit -m "fix: resolved backjob ID binding" && git push`
-* Sasabihin ni Justin sa GC: 💬 *"Naayos na po! Paki-refresh (F5) ang inyong browser."*
-
-### 🔹 HAKBANG 5: Re-Testing at Final Sign-Off (Buong Grupo)
-* I-re-refresh nina Classmate A at B ang kanilang browser.
-* Kapag maayos na ang takbo, mamarkahan ang checklist ng **`[x] PASS`** at icloclose ang issue sa GitHub!
-
----
-
-## 📶 3. Paano Mag-Connect at Mag-Login (Step-by-Step)
+*Kapag magkakasama kayo sa iisang kwarto o school lab, ZERO INSTALLATION ang kailangan para sa mga kagrupo!*
 
 ```
                        LOCAL WI-FI / SCHOOL LAB TESTING SETUP
@@ -86,25 +46,75 @@ CLASSIFICATION:        Official Single Team Testing Document
                        • Tests Mobile Inquiries & Logs Bugs sa GitHub!
 ```
 
-### 🔑 Listahan ng Test Accounts:
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Owner** | `owner@hontech.com` | `owner123` |
-| **Administrator** | `admin.marikina@hontech.com` | `admin123` |
-| **Service Advisor 1** | `sa.marikina1@hontech.com` | `sa123` |
-| **Assistant Staff** | `assistant.marikina@hontech.com` | `assistant123` |
+### 📋 Mga Hakbang Para sa Close Testing:
+1. **Hakbang 2.1 (Connect Wi-Fi):** Ikonekta ang Laptop ni Justin, Laptop ni Classmate A, at Phone/PC ni Classmate B sa **iisang Wi-Fi** o **Phone Hotspot**.
+2. **Hakbang 2.2 (Start Server):** I-double click ni Justin ang `start_lan_server.bat` sa kanyang laptop $\to$ Tignan ang lalabas na IP (halimbawa: `http://192.168.1.50:8000`).
+3. **Hakbang 2.3 (Classmate A Login):** Buksan ni Classmate A ang Chrome sa kanyang laptop $\to$ I-type ang `http://192.168.1.50:8000` $\to$ Mag-login bilang **Service Advisor** (`sa.marikina1@hontech.com` / `sa123`).
+4. **Hakbang 2.4 (Classmate B Login):** Buksan ni Classmate B ang Chrome sa kanyang Phone o School Lab PC $\to$ I-type ang `http://192.168.1.50:8000` $\to$ Mag-login bilang **Assistant Staff** (`assistant.marikina@hontech.com` / `assistant123`).
+5. **Hakbang 2.5 (Simultaneous Testing):** Mag-test nang sabay-sabay gamit ang **22-Step Verification Checklist** sa ibaba!
 
 ---
 
-## 📋 4. Ang 22-Step Master Verification & Checking List (Pass / Fail)
+# 🌐 3. STEP-BY-STEP PARA SA FAR AWAY TESTING (Nasa Kani-kaniyang Bahay / Remote)
+
+*Kapag nasa magkaibang bahay kayo, may DALAWANG simpleng paraan para makapag-test:*
+
+---
+
+### 🌟 PARAAN A: Instant Free Online Link (Easiest - Para sa Cellphone at Laptop!)
+1. **Hakbang 3A.1 (Justin):** I-run ni Justin ang `start_lan_server.bat` sa kanyang laptop.
+2. **Hakbang 3A.2 (Justin):** Sa terminal, i-type ni Justin ang:
+   ```bash
+   npx localtunnel --port 8000
+   ```
+   *Maglalabas ito ng live public link, halimbawa:* `https://hontech-demo.loca.lt`.
+3. **Hakbang 3A.3 (Send Link):** I-send ni Justin ang link sa group chat (Messenger/Discord).
+4. **Hakbang 3A.4 (Classmates Open & Login):** Bubuksan nina Classmate A at B ang link sa kanilang laptop o cellphone sa kani-kanilang bahay $\to$ Mag-login sa kanilang accounts at mag-test!
+5. **Hakbang 3A.5 (Log on GitHub):** Kapag may nakitang error, magpo-post sila agad sa **GitHub Issues** para makita at maayos ni Justin!
+
+---
+
+### 💻 PARAAN B: Independent Local Testing Gamit ang GitHub (Para kay Classmate A na may Laptop)
+1. **Hakbang 3B.1 (Justin Pushes Code):** Matapos mag-code ni Justin, mag-commit at push sa GitHub:
+   ```bash
+   git push origin branch2-Security-Account-Recovery
+   ```
+2. **Hakbang 3B.2 (Classmate A Pulls Code):** Sa bahay ni Classmate A, buksan ang terminal o GitHub Desktop sa kanyang laptop at i-type:
+   ```bash
+   git pull origin branch2-Security-Account-Recovery
+   ```
+3. **Hakbang 3B.3 (Classmate A Runs Locally):** Sisimulan ni Classmate A ang XAMPP MySQL at i-double click ang `start_lan_server.bat` sa kanyang sariling laptop.
+4. **Hakbang 3B.4 (Classmate A Tests):** Bubuksan niya ang `http://localhost:8000` sa kanyang sariling bahay.
+5. **Hakbang 3B.5 (Report on GitHub):** Mag-log ng issues sa GitHub $\to$ Aayusin ni Justin sa kanyang bahay $\to$ I-pupull ulit ni Classmate A ang update!
+
+---
+
+## 🔄 4. The 4-Step Developer-to-QA Testing Loop
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        THE PERFECT DEVELOPER-TO-QA TESTING LOOP                        │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                        │
+│  1. 🌐 JUSTIN SHARES SECURE LINK / COMMITS TO GITHUB                                   │
+│  2. 🧪 GROUPMATES TEST & LOG ON GITHUB ISSUES / EXCEL CHECKLIST                         │
+│  3. 🛠️ JUSTIN REVIEWS & APPLIES CODE FIXES IN ANTIGRAVITY                              │
+│  4. 🚀 GROUPMATES RE-TEST, MARK PASS, & MOVE TO NEXT FEATURE                           │
+│                                                                                        │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📋 5. Ang 22-Step Master Verification & Checking List (Pass / Fail)
 
 ---
 
 ### 🔑 SUITE 1: Role-Based Authentication & Navigation (4 Roles)
-- [ ] **Step 1.1 (Owner):** Mag-login bilang `owner@hontech.com` $\to$ Lalabas ang Master Analytics at Security tabs.
-- [ ] **Step 1.2 (Admin):** Mag-login bilang `admin.marikina@hontech.com` $\to$ May access sa Staff Accounts at Bay Config.
-- [ ] **Step 1.3 (Service Advisor):** Mag-login bilang `sa.marikina1@hontech.com` $\to$ Nakatutok sa Intake, Customer Lookup, at Bays.
-- [ ] **Step 1.4 (Assistant):** Mag-login bilang `assistant.marikina@hontech.com` $\to$ Nakatutok sa Online Booking Queue at Search Menu.
+- [ ] **Step 1.1 (Owner):** Mag-login bilang `owner@hontech.com` (`owner123`) $\to$ Lalabas ang Master Analytics at Security tabs.
+- [ ] **Step 1.2 (Admin):** Mag-login bilang `admin.marikina@hontech.com` (`admin123`) $\to$ May access sa Staff Accounts at Bay Config.
+- [ ] **Step 1.3 (Service Advisor):** Mag-login bilang `sa.marikina1@hontech.com` (`sa123`) $\to$ Nakatutok sa Intake, Customer Lookup, at Bays.
+- [ ] **Step 1.4 (Assistant):** Mag-login bilang `assistant.marikina@hontech.com` (`assistant123`) $\to$ Nakatutok sa Online Booking Queue at Search Menu.
 
 ---
 
@@ -163,12 +173,11 @@ CLASSIFICATION:        Official Single Team Testing Document
 
 ---
 
-## 🐛 5. Paano Mag-Report ng Nakitang Mali sa GitHub (1-Minutong Paraan)
+## 🐛 6. Paano Mag-Report ng Nakitang Mali sa GitHub (1-Minutong Paraan)
 
 Kapag may nakita kayong mali habang nagte-test:
 1. Pumunta sa: [**https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues**](https://github.com/Justin-stack101/Hontech_Main_Active_Development_PHP_SQL/issues).
-2. I-click ang **`New Issue`**.
-3. I-type lang ito:
+2. I-click ang **`New Issue`** $\to$ I-type lang ito:
 
 ```markdown
 ### 📌 Saan Nakita ang Mali (Verification Step #):
@@ -182,11 +191,11 @@ Kapag may nakita kayong mali habang nagte-test:
 [Halimbawa: "Dapat maging Back-Job / Warranty Return agad ang category."]
 ```
 
-4. I-click ang **`Submit new issue`** $\to$ Aayusin agad ni Justin sa loob ng 2 minuto!
+3. I-click ang **`Submit new issue`** $\to$ Aayusin agad ni Justin sa loob ng 2 minuto!
 
 ---
 
-## 🎭 6. Limang-Minutong Roleplay Script Bago ang Thesis Defense
+## 🎭 7. Limang-Minutong Roleplay Script Bago ang Thesis Defense
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
