@@ -1198,11 +1198,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
+                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Analytics</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Records</span></button>`;
 
@@ -1218,11 +1220,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
+                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Analytics</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Records</span></button>`;
 
@@ -1237,11 +1241,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
+                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
@@ -1258,11 +1264,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
+                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Walk-In Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Daily Intakes</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
@@ -1564,6 +1572,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'dashboard': 'Analytics Overview',
                 'bays': 'Workshop Capacity & Bay Management',
                 'staff': 'Staff & Access Management',
+                'lookup': 'Customer History & Back-Job Lookup',
                 'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
                 'tv': 'Live Display Monitor',
@@ -1590,6 +1599,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     clearInterval(tvInterval);
                     tvInterval = null;
                 }
+            }
+            if (id === 'lookup') {
+                (async () => {
+                    try {
+                        await loadData();
+                        renderCustomerLookupModule();
+                    } catch (e) {
+                        console.error('Error loading customer lookup module:', e);
+                    }
+                })();
             }
             if (id === 'bays') {
                 (async () => {
@@ -2175,6 +2194,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (!plate || !name) return showSystemToast("Plate and Name are required.", "error");
 
+            // ACTIVE DUPLICATE RECORD GUARD (Prevents Accidental Multiple Bookings for the Same Vehicle)
+            const normalizedPlate = plate.replace(/[\s-]/g, '').toUpperCase();
+            if (normalizedPlate !== 'NOPLATE' && normalizedPlate.length >= 3) {
+                const existingActiveJob = allJobs.find(j => {
+                    const jPlate = (j.plate || '').replace(/[\s-]/g, '').toUpperCase();
+                    const isSamePlate = jPlate === normalizedPlate;
+                    const isActive = j.status !== 'Released' && j.status !== 'Completed' && j.status !== 'Cancelled';
+                    return isSamePlate && isActive;
+                });
+
+                if (existingActiveJob) {
+                    const existingStatus = existingActiveJob.status || 'Pending';
+                    const existingSource = existingActiveJob.source || 'Inquiry';
+                    const existingTime = existingActiveJob.appt_time || existingActiveJob.arrival || 'Today';
+                    const confirmAdd = confirm(
+                        `⚠️ DUPLICATE INTAKE DETECTED!\n\nVehicle with Plate "${plate}" already has an active ${existingSource} record:\n• Status: ${existingStatus}\n• Time: ${existingTime}\n\nDo you want to create an additional entry for this vehicle anyway? Click CANCEL to stop duplicate submission.`
+                    );
+                    if (!confirmAdd) {
+                        return;
+                    }
+                }
+            }
+
             const isWalkin = source === 'Walk-in';
             let arrival = '';
             let apptDate = '', apptTime = '', confirmed = false, laneType = '';
@@ -2191,6 +2233,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 apptTime = `${hour}:${min}`;
                 confirmed = document.getElementById('intake-confirmed').checked;
                 laneType = document.getElementById('intake-lane-type')?.value || 'Flexible Lane';
+            }
+
+            // Button Debounce (Prevents Rapid Double Clicks)
+            const submitBtn = document.getElementById('btn-submit-intake');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'pointer-events-none');
             }
 
             try {
@@ -2224,6 +2273,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderStaffTables();
             } catch (err) {
                 showSystemToast(err.message || 'Failed to submit intake.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'pointer-events-none');
+                }
             }
         }
 
@@ -2520,6 +2574,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderTV();
             updateClock();
         }
+        window.saveSystemSettings = saveSystemSettings;
 
         function loadSystemSettingsIntoForm() {
             const timeFormat = localStorage.getItem('timeFormat24h') === 'true' ? '24h' : '12h';
@@ -7241,35 +7296,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <span class="text-gray-400 uppercase text-[9px] block">Advisor</span>
                                         <span class="text-gray-900 font-extrabold truncate block">${job.advisor || 'SA'}</span>
                                     </div>
-                                    <div>
-                                        <span class="text-gray-400 uppercase text-[9px] block">Status</span>
-                                        <span class="text-red-600 font-black truncate block">${job.status || 'In Progress'}</span>
-                                    </div>
                                 </div>
+                            `;
 
-                                const isManager = (currentUserRole === 'owner' || currentUserRole === 'admin');
+                            const isManager = (currentUserRole === 'owner' || currentUserRole === 'admin');
 
-                                if (isManager) {
-                                    gridHtml += `
-                                        <div class="pt-2 border-t border-gray-200">
-                                            <button onclick="showSection('queue')" class="w-full py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5">
-                                                <i data-lucide="file-text" class="w-3.5 h-3.5"></i> View Master Record
-                                            </button>
-                                        </div>
-                                    `;
-                                } else {
-                                    gridHtml += `
-                                        <div class="flex items-center gap-2 pt-2">
-                                            <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="flex-1 py-2 px-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition border border-gray-200 cursor-pointer">
-                                                Unassign Bay
-                                            </button>
-                                            <button onclick="showSection('queue')" class="py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
-                                                Record
-                                            </button>
-                                        </div>
-                                    `;
-                                }
+                            if (isManager) {
                                 gridHtml += `
+                                    <div class="pt-2 border-t border-gray-200">
+                                        <button onclick="showSection('queue')" class="w-full py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer flex items-center justify-center gap-1.5">
+                                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> View Master Record
+                                        </button>
+                                    </div>
+                                `;
+                            } else {
+                                gridHtml += `
+                                    <div class="flex items-center gap-2 pt-2">
+                                        <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="flex-1 py-2 px-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-700 font-bold text-[11px] uppercase tracking-wider rounded-xl transition border border-gray-200 cursor-pointer">
+                                            Unassign Bay
+                                        </button>
+                                        <button onclick="showSection('queue')" class="py-2 px-3 bg-gray-900 hover:bg-black text-white font-bold text-[11px] uppercase tracking-wider rounded-xl transition shadow-xs cursor-pointer">
+                                            Record
+                                        </button>
+                                    </div>
+                                `;
+                            }
+                            gridHtml += `
                             </div>
                         `;
                     } else {
@@ -7398,31 +7450,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
         window.dispatchVehicleToTargetBay = dispatchVehicleToTargetBay;
-
-        function saveSystemSettings() {
-            const sidebarSelect = document.getElementById('settings-sidebar-style');
-            if (sidebarSelect) {
-                localStorage.setItem('hontech-sidebar-style', sidebarSelect.value);
-                const sidebar = document.getElementById('app-sidebar');
-                if (sidebar) {
-                    if (sidebarSelect.value === 'icons') sidebar.classList.add('sidebar-collapsed');
-                    else sidebar.classList.remove('sidebar-collapsed');
-                }
-            }
-
-            const timeSelect = document.getElementById('settings-time-format');
-            if (timeSelect) {
-                localStorage.setItem('timeFormat24h', timeSelect.value === '24h' ? 'true' : 'false');
-                updateClock();
-            }
-
-            const idleSelect = document.getElementById('settings-idle-timeout');
-            if (idleSelect) {
-                localStorage.setItem('hontech-idle-timeout', idleSelect.value);
-                resetIdleTimer();
-            }
-        }
-        window.saveSystemSettings = saveSystemSettings;
 
         function initTimeFormatSetting() {
             const saved = localStorage.getItem('timeFormat24h');
@@ -8189,6 +8216,525 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             } else {
                 showSystemToast('No 6-digit code found in this email.', 'error');
             }
+        }
+
+        // =========================================================================
+        // CUSTOMER HISTORY & BACK-JOB LOOKUP MODULE
+        // =========================================================================
+        let selectedLookupCustomerKey = null;
+        let customerLookupRegistry = {};
+
+        function buildCustomerLookupRegistry() {
+            const safeJobs = Array.isArray(allJobs) ? allJobs : [];
+            const registry = {};
+
+            safeJobs.forEach(job => {
+                const name = (job.customer_name || job.name || 'Unknown Customer').trim();
+                const plate = (job.plate_number || job.plate || 'NO-PLATE').trim().toUpperCase();
+                const phone = (job.contact_number || job.contact || job.phone || 'N/A').trim();
+                const vehicle = (job.vehicle_model || job.vehicle || 'Unknown Model').trim();
+                const branch = (job.branch || 'Marikina Branch').trim();
+
+                // Unique key by plate (or name if no plate)
+                const key = plate !== 'NO-PLATE' ? plate : name.toLowerCase();
+
+                if (!registry[key]) {
+                    registry[key] = {
+                        key: key,
+                        name: name,
+                        plate: plate,
+                        phone: phone,
+                        vehicle: vehicle,
+                        branch: branch,
+                        jobs: []
+                    };
+                }
+
+                // Update phone or vehicle if current is more specific
+                if (registry[key].phone === 'N/A' && phone !== 'N/A') registry[key].phone = phone;
+                if (registry[key].vehicle === 'Unknown Model' && vehicle !== 'Unknown Model') registry[key].vehicle = vehicle;
+
+                registry[key].jobs.push(job);
+            });
+
+            // Sort jobs within each customer newest to oldest
+            Object.values(registry).forEach(cust => {
+                cust.jobs.sort((a, b) => {
+                    const dateA = new Date(a.date || a.created_at || 0);
+                    const dateB = new Date(b.date || b.created_at || 0);
+                    return dateB - dateA;
+                });
+            });
+
+            customerLookupRegistry = registry;
+            return registry;
+        }
+
+        function renderCustomerLookupModule() {
+            buildCustomerLookupRegistry();
+            const totalCustomers = Object.keys(customerLookupRegistry).length;
+            const safeJobs = Array.isArray(allJobs) ? allJobs : [];
+            
+            const totalCountEl = document.getElementById('lookup-total-count');
+            if (totalCountEl) {
+                totalCountEl.innerText = `${totalCustomers} Customers (${safeJobs.length} Orders)`;
+            }
+
+            filterCustomerLookup();
+        }
+
+        function filterCustomerLookup() {
+            const searchInput = document.getElementById('lookup-search-input');
+            const branchFilter = document.getElementById('lookup-branch-filter');
+            const listEl = document.getElementById('lookup-results-list');
+            const matchesBadge = document.getElementById('lookup-matches-badge');
+
+            if (!listEl) return;
+
+            const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+            const branch = branchFilter ? branchFilter.value : 'all';
+
+            const customers = Object.values(customerLookupRegistry);
+            const filtered = customers.filter(cust => {
+                // Branch filter
+                if (branch !== 'all') {
+                    const hasBranchJob = cust.jobs.some(j => (j.branch || '').toLowerCase() === branch.toLowerCase());
+                    if (!hasBranchJob && cust.branch.toLowerCase() !== branch.toLowerCase()) return false;
+                }
+
+                // Query search
+                if (!query) return true;
+
+                const matchName = cust.name.toLowerCase().includes(query);
+                const matchPlate = cust.plate.toLowerCase().includes(query);
+                const matchPhone = cust.phone.toLowerCase().includes(query);
+                const matchVehicle = cust.vehicle.toLowerCase().includes(query);
+                const matchJobId = cust.jobs.some(j => {
+                    const jId = String(j.id ?? j._id ?? j.job_id ?? '').toLowerCase();
+                    const stub = String(j.claim_stub || j.stub || '').toLowerCase();
+                    const cat = String(j.category || '').toLowerCase();
+                    return jId.includes(query) || stub.includes(query) || cat.includes(query);
+                });
+
+                return matchName || matchPlate || matchPhone || matchVehicle || matchJobId;
+            });
+
+            if (matchesBadge) {
+                matchesBadge.innerText = `${filtered.length} Found`;
+            }
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-12 px-4 border border-dashed border-gray-200 rounded-xl">
+                        <div class="w-10 h-10 mx-auto rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-2">
+                            <i data-lucide="user-x" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-xs font-bold text-gray-700">No matching customer records</p>
+                        <p class="text-[10px] text-gray-400 font-medium mt-0.5">Customer may be a first-time visitor.</p>
+                        <button onclick="showSection('intake')" class="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> New Customer Intake
+                        </button>
+                    </div>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(cust => {
+                const isSelected = cust.key === selectedLookupCustomerKey;
+                const latestJob = cust.jobs[0] || {};
+                const lastDate = latestJob.date || latestJob.created_at || 'Recent';
+                const lastCategory = latestJob.category || 'Service';
+
+                html += `
+                    <div onclick="selectCustomerForLookup('${cust.key.replace(/'/g, "\\'")}')" 
+                        class="p-3.5 rounded-xl border transition cursor-pointer select-none ${isSelected ? 'bg-red-50/80 border-red-500 shadow-sm' : 'bg-gray-50 hover:bg-gray-100 border-gray-200 hover:border-gray-300'}">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-xs font-black text-gray-900 truncate">${cust.name}</h4>
+                                    <span class="font-mono text-[9px] font-black px-1.5 py-0.5 bg-gray-200 text-gray-800 rounded tracking-wider shrink-0">${cust.plate}</span>
+                                </div>
+                                <p class="text-[10px] text-gray-500 font-semibold truncate mt-0.5">${cust.vehicle}</p>
+                            </div>
+                            <span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-700 shrink-0">
+                                ${cust.jobs.length} ${cust.jobs.length === 1 ? 'visit' : 'visits'}
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-200/60 text-[10px] text-gray-500 font-medium">
+                            <span class="flex items-center gap-1"><i data-lucide="wrench" class="w-3 h-3 text-red-500"></i> ${lastCategory}</span>
+                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-gray-400"></i> ${lastDate}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listEl.innerHTML = html;
+            if (window.lucide) window.lucide.createIcons();
+
+            // If a customer was already selected and is in the list, keep them displayed; otherwise display the first result
+            if (selectedLookupCustomerKey && customerLookupRegistry[selectedLookupCustomerKey]) {
+                selectCustomerForLookup(selectedLookupCustomerKey, false);
+            } else if (filtered.length > 0) {
+                selectCustomerForLookup(filtered[0].key, false);
+            }
+        }
+
+        function clearCustomerLookupSearch() {
+            const searchInput = document.getElementById('lookup-search-input');
+            const branchFilter = document.getElementById('lookup-branch-filter');
+            if (searchInput) searchInput.value = '';
+            if (branchFilter) branchFilter.value = 'all';
+            filterCustomerLookup();
+        }
+
+        function selectCustomerForLookup(customerKey, reFilterList = true) {
+            selectedLookupCustomerKey = customerKey;
+            const cust = customerLookupRegistry[customerKey];
+
+            const emptyState = document.getElementById('lookup-dossier-empty');
+            const cardState = document.getElementById('lookup-dossier-card');
+
+            if (!cust) {
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (cardState) cardState.classList.add('hidden');
+                return;
+            }
+
+            if (emptyState) emptyState.classList.add('hidden');
+            if (cardState) cardState.classList.remove('hidden');
+
+            const latestJob = cust.jobs[0] || {};
+
+            if (document.getElementById('dossier-customer-name')) {
+                document.getElementById('dossier-customer-name').innerText = cust.name;
+            }
+            if (document.getElementById('dossier-customer-phone')) {
+                document.getElementById('dossier-customer-phone').innerText = cust.phone;
+            }
+            if (document.getElementById('dossier-vehicle-plate')) {
+                document.getElementById('dossier-vehicle-plate').innerText = cust.plate;
+            }
+            if (document.getElementById('dossier-vehicle-model')) {
+                document.getElementById('dossier-vehicle-model').innerText = cust.vehicle;
+            }
+            if (document.getElementById('dossier-branch-badge')) {
+                document.getElementById('dossier-branch-badge').innerText = cust.branch || 'Marikina Branch';
+            }
+            if (document.getElementById('dossier-loyalty-badge')) {
+                const badge = document.getElementById('dossier-loyalty-badge');
+                if (cust.jobs.length >= 2) {
+                    badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1";
+                    badge.innerHTML = `<i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> ⭐ Returning Regular (${cust.jobs.length} Visits)`;
+                } else {
+                    badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1";
+                    badge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-blue-500"></i> 🆕 Initial Visit Record`;
+                }
+            }
+            if (document.getElementById('dossier-total-visits')) {
+                document.getElementById('dossier-total-visits').innerText = cust.jobs.length;
+            }
+            if (document.getElementById('dossier-last-date')) {
+                document.getElementById('dossier-last-date').innerText = latestJob.date || latestJob.created_at || 'Recent';
+            }
+            if (document.getElementById('dossier-last-category')) {
+                document.getElementById('dossier-last-category').innerText = latestJob.category || 'PMS';
+            }
+            if (document.getElementById('dossier-history-count')) {
+                document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
+            }
+
+            // Render Historical Orders Timeline
+            const timelineEl = document.getElementById('dossier-history-timeline');
+            if (timelineEl) {
+                let historyHTML = '';
+                cust.jobs.forEach((job, idx) => {
+                    const jobId = job.job_id || job.id || job._id || `JOB-${idx + 1}`;
+                    const stub = job.claim_stub || job.stub || 'N/A';
+                    const category = job.category || 'Service';
+                    const date = job.date || job.created_at || 'Past Service';
+                    const status = job.status || 'Completed';
+                    const sa = job.handled_by || job.sa || 'Staff';
+                    const mechanic = job.mechanic || 'Assigned Bay Mechanic';
+                    const bay = job.bay_number || job.bay || 'General';
+                    const remarks = job.remarks || job.concern || 'Standard maintenance performed.';
+                    const goal = job.goal_remarks || 'Successful';
+
+                    const goalColor = goal === 'Successful' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                                      (goal === 'Failed' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-gray-100 text-gray-700 border-gray-200');
+
+                    historyHTML += `
+                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/70 pb-2.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 font-bold text-xs flex items-center justify-center">${cust.jobs.length - idx}</span>
+                                    <span class="font-bold text-xs text-gray-900 font-mono">${jobId}</span>
+                                    <span class="text-[9px] font-bold px-2 py-0.5 bg-gray-200 text-gray-800 rounded font-mono">Stub: ${stub}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded border ${goalColor}">${goal}</span>
+                                    <span class="text-[10px] font-semibold text-gray-500">${date}</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                <div>
+                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Category & Lane</span>
+                                    <p class="font-bold text-gray-800 text-[11px]">${category} <span class="text-gray-400 font-normal">(${job.lane_type || 'General Lane'})</span></p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Handled By</span>
+                                    <p class="font-bold text-gray-800 text-[11px]">${sa} <span class="text-gray-400 font-normal">• Bay ${bay}</span></p>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Status</span>
+                                    <p class="font-bold text-red-600 text-[11px] uppercase">${status}</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-2.5 rounded-lg border border-gray-200 text-xs">
+                                <span class="text-[9px] text-gray-400 font-bold uppercase block mb-0.5">Work Description & Remarks</span>
+                                <p class="text-gray-700 font-medium text-[11px]">${remarks}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                timelineEl.innerHTML = historyHTML;
+            }
+
+            if (reFilterList) {
+                // Update selection highlight in list without full re-render
+                document.querySelectorAll('#lookup-results-list > div').forEach(div => {
+                    div.classList.remove('bg-red-50/80', 'border-red-500', 'shadow-sm');
+                    div.classList.add('bg-gray-50', 'border-gray-200');
+                });
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function confirmRegularIntake() {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                showSystemToast('Please select a customer record first.', 'warning', 'Regular Intake');
+                return;
+            }
+
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            const latestJob = cust.jobs[0] || {};
+
+            // 1. Switch view to vehicle intake
+            showSection('intake');
+
+            // 2. Pre-fill customer and vehicle fields
+            const nameEl = document.getElementById('intake-name');
+            const plateEl = document.getElementById('intake-plate');
+            const contactEl = document.getElementById('intake-contact');
+            const vehicleEl = document.getElementById('intake-vehicle');
+            const catEl = document.getElementById('intake-category');
+            const catOtherEl = document.getElementById('intake-category-other');
+            const concernEl = document.getElementById('intake-concern');
+
+            if (nameEl) nameEl.value = cust.name;
+            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
+            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
+            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
+
+            // Default to PMS (or previous standard category if not Back-Job)
+            if (catEl) {
+                const prevCategory = latestJob.category && latestJob.category !== 'Others' ? latestJob.category : 'PMS';
+                catEl.value = prevCategory;
+                if (catOtherEl) catOtherEl.classList.add('hidden');
+            }
+
+            if (concernEl) {
+                concernEl.value = '';
+            }
+
+            showSystemToast(`Returning customer "${cust.name}" details pre-filled for fresh intake!`, 'success', 'Regular Intake Initialized');
+        }
+
+        function confirmBackJobIntake() {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                showSystemToast('Please select a customer record first.', 'warning', 'Back-Job Intake');
+                return;
+            }
+
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            const latestJob = cust.jobs[0] || {};
+            const refJobId = latestJob.job_id || latestJob.id || latestJob._id || 'PREV-JOB';
+            const prevDate = latestJob.date || latestJob.created_at || 'past service';
+            const prevCat = latestJob.category || 'General Service';
+
+            // 1. Switch view to vehicle intake
+            showSection('intake');
+
+            // 2. Pre-fill customer and vehicle fields
+            const nameEl = document.getElementById('intake-name');
+            const plateEl = document.getElementById('intake-plate');
+            const contactEl = document.getElementById('intake-contact');
+            const vehicleEl = document.getElementById('intake-vehicle');
+            const catEl = document.getElementById('intake-category');
+            const catOtherEl = document.getElementById('intake-category-other');
+            const concernEl = document.getElementById('intake-concern');
+
+            if (nameEl) nameEl.value = cust.name;
+            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
+            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
+            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
+
+            // Set Category to Others -> Back-Job / Warranty Return
+            if (catEl) {
+                catEl.value = 'Others';
+                if (catOtherEl) {
+                    catOtherEl.value = 'Back-Job / Warranty Return';
+                    catOtherEl.classList.remove('hidden');
+                }
+            }
+
+            // Pre-fill concern / remarks with previous job reference
+            if (concernEl) {
+                concernEl.value = `[BACK-JOB / WARRANTY RETURN] Previous Ref: ${refJobId} (${prevCat} on ${prevDate}). Customer concern/issue: `;
+            }
+
+            showSystemToast(`Customer "${cust.name}" details pre-filled for Back-Job intake!`, 'success', 'Back-Job Initialized');
+        }
+
+        function stayOnHistory() {
+            showSystemToast('Viewing customer historical repair records.', 'info', 'Customer History');
+        }
+
+        // =========================================================================
+        // QUICK CUSTOMER SEARCH & BACK-JOB POPUP MENU
+        // =========================================================================
+        let selectedQuickMenuCustomer = null;
+
+        function openQuickCustomerSearchModal() {
+            buildCustomerLookupRegistry();
+            const modal = document.getElementById('modal-customer-search-menu');
+            const input = document.getElementById('quick-customer-search-input');
+            const list = document.getElementById('quick-search-results-list');
+            const detailMenu = document.getElementById('quick-customer-detail-menu');
+
+            if (modal) modal.classList.remove('hidden');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            if (list) list.classList.add('hidden');
+            if (detailMenu) detailMenu.classList.add('hidden');
+            selectedQuickMenuCustomer = null;
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function closeQuickCustomerSearchModal() {
+            const modal = document.getElementById('modal-customer-search-menu');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleQuickCustomerSearchInput() {
+            const input = document.getElementById('quick-customer-search-input');
+            const list = document.getElementById('quick-search-results-list');
+            const detailMenu = document.getElementById('quick-customer-detail-menu');
+
+            if (!input || !list) return;
+
+            const query = input.value.toLowerCase().trim();
+            if (!query) {
+                list.classList.add('hidden');
+                if (detailMenu) detailMenu.classList.add('hidden');
+                return;
+            }
+
+            const customers = Object.values(customerLookupRegistry);
+            const matches = customers.filter(c => {
+                return c.name.toLowerCase().includes(query) || 
+                       c.plate.toLowerCase().includes(query) ||
+                       c.phone.toLowerCase().includes(query) ||
+                       c.vehicle.toLowerCase().includes(query);
+            });
+
+            if (matches.length === 0) {
+                list.innerHTML = `
+                    <div class="text-center py-4 px-3 text-xs text-gray-500 font-semibold">
+                        No customer found matching "${input.value}"
+                    </div>
+                `;
+                list.classList.remove('hidden');
+                if (detailMenu) detailMenu.classList.add('hidden');
+                return;
+            }
+
+            let html = '';
+            matches.slice(0, 8).forEach(c => {
+                html += `
+                    <div onclick="selectQuickCustomerMenu('${c.key.replace(/'/g, "\\'")}')" 
+                        class="p-2.5 bg-white hover:bg-red-50 hover:border-red-300 border border-gray-200 rounded-xl flex items-center justify-between cursor-pointer transition">
+                        <div>
+                            <span class="text-xs font-black text-gray-900 block">${c.name}</span>
+                            <span class="text-[10px] text-gray-500 font-semibold">${c.vehicle}</span>
+                        </div>
+                        <span class="font-mono text-[9px] font-black px-2 py-0.5 bg-gray-100 rounded text-gray-800 border border-gray-200">${c.plate}</span>
+                    </div>
+                `;
+            });
+
+            list.innerHTML = html;
+            list.classList.remove('hidden');
+        }
+
+        function selectQuickCustomerMenu(customerKey) {
+            const cust = customerLookupRegistry[customerKey];
+            if (!cust) return;
+
+            selectedQuickMenuCustomer = cust;
+            const list = document.getElementById('quick-search-results-list');
+            const detailMenu = document.getElementById('quick-customer-detail-menu');
+
+            if (list) list.classList.add('hidden');
+            if (detailMenu) detailMenu.classList.remove('hidden');
+
+            if (document.getElementById('quick-menu-cust-name')) {
+                document.getElementById('quick-menu-cust-name').innerText = cust.name;
+            }
+            if (document.getElementById('quick-menu-cust-plate')) {
+                document.getElementById('quick-menu-cust-plate').innerText = cust.plate;
+            }
+            if (document.getElementById('quick-menu-cust-vehicle')) {
+                document.getElementById('quick-menu-cust-vehicle').innerText = cust.vehicle;
+            }
+            if (document.getElementById('quick-menu-cust-phone')) {
+                document.getElementById('quick-menu-cust-phone').innerText = cust.phone;
+            }
+            if (document.getElementById('quick-menu-visits-badge')) {
+                const visitsBadge = document.getElementById('quick-menu-visits-badge');
+                if (cust.jobs.length >= 2) {
+                    visitsBadge.className = "px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-[10px] font-black flex items-center gap-1 shrink-0";
+                    visitsBadge.innerHTML = `<i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> ⭐ Regular (${cust.jobs.length} visits)`;
+                } else {
+                    visitsBadge.className = "px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-[10px] font-black flex items-center gap-1 shrink-0";
+                    visitsBadge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-blue-500"></i> Initial Record (1 visit)`;
+                }
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function handleQuickMenuBackJobYes() {
+            if (!selectedQuickMenuCustomer) {
+                showSystemToast('Please select a customer record first.', 'warning');
+                return;
+            }
+
+            selectedLookupCustomerKey = selectedQuickMenuCustomer.key;
+            closeQuickCustomerSearchModal();
+            confirmBackJobIntake();
+        }
+
+        function handleQuickMenuBackJobNo() {
+            showSystemToast('No changes made. Staying on customer lookup view.', 'info', 'Customer Search');
+            // Stays right on the menu/search view
         }
 
         // Global Network Connection Listeners (Defensive Offline Handler)

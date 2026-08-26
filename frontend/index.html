@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> HonTech</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 100% SELF-CONTAINED LOCAL OFFLINE SCRIPTS (ZERO RELIANCE ON INTERNET) -->
+    <script src="js/tailwind.cdn.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -30,37 +31,35 @@
         }
     </script>
     <script>
-        // Defensive global stub to prevent crashes if CDN is lagging or offline
+        // Defensive global stub to prevent crashes
         window.lucide = window.lucide || { createIcons: function () { } };
     </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/vendor/lucide.min.js"></script>
+    <script src="js/vendor/jspdf.umd.min.js"></script>
+    <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
+    <script src="js/vendor/chart.min.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <style>
         /* CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Without Breaking Layouts) */
-        #app-container.hidden,
-        #section-dashboard.hidden,
-        #section-staff.hidden,
-        #section-intake.hidden,
-        #section-bays.hidden,
-        #section-profile.hidden,
-        #modal-system-tutorial.hidden,
-        #modal-report-export.hidden,
-        #modal-terms.hidden,
-        #mobile-connect-modal.hidden,
-        #dev-credentials-grid.hidden,
-        #dev-mailbox-modal.hidden,
-        #loader-theme-modal.hidden,
-        #offline-network-screen.hidden,
-        #mfa-form-container.hidden,
-        #forgot-form-container.hidden,
-        #forgot-step-2.hidden,
+        .hidden,
+        [hidden],
+        div.hidden,
+        section.hidden,
+        aside.hidden,
+        header.hidden,
+        main.hidden,
+        form.hidden,
+        button.hidden,
+        span.hidden,
+        p.hidden,
+        table.hidden,
+        tbody.hidden,
+        tr.hidden,
+        td.hidden,
+        .section-content.hidden,
+        .modal.hidden,
         .tv-slide.hidden,
-        .loader-visual.hidden,
-        [hidden] {
+        .loader-visual.hidden {
             display: none !important;
         }
 
@@ -2156,6 +2155,171 @@
                 </div>
             </div>
 
+            <!-- CUSTOMER HISTORY & BACK-JOB LOOKUP MODULE -->
+            <div id="section-lookup" class="section-content hidden fade-in space-y-6">
+                <!-- Header & Search Controls Bar -->
+                <div class="bg-white border border-gray-200 p-6 rounded-2xl shadow-sm space-y-4">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="history" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Customer History & Back-Job Lookup</h3>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Search customer repair logs, verify previous jobs, and process warranty return repairs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="lookup-total-count" class="text-xs font-black text-red-600 bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl uppercase tracking-wider">
+                                0 Records Available
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Search Bar with Live Filter Input -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 pt-1">
+                        <div class="md:col-span-8 relative">
+                            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-4 top-3.5 pointer-events-none"></i>
+                            <input type="text" id="lookup-search-input" oninput="filterCustomerLookup()" placeholder="Search by Customer Name, Plate Number, Phone Number, or Job ID..."
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-11 pr-4 py-3 font-semibold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition shadow-2xs">
+                        </div>
+                        <div class="md:col-span-4 flex gap-2">
+                            <select id="lookup-branch-filter" onchange="filterCustomerLookup()"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-3 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                <option value="all">All Branches</option>
+                                <option value="Marikina Branch">Marikina Branch</option>
+                                <option value="Makati Branch">Makati Branch</option>
+                            </select>
+                            <button onclick="clearCustomerLookupSearch()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shrink-0">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Two-Column Layout (Left: Search Results List | Right: Customer Dossier & Back-Job Prompt) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Customer Results List -->
+                    <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 md:p-5 flex flex-col min-h-[500px]">
+                        <div class="flex items-center justify-between border-b border-gray-150 pb-3 mb-3">
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-red-600"></i> Matching Customers
+                            </span>
+                            <span id="lookup-matches-badge" class="text-[10px] font-bold text-gray-500 uppercase">0 Found</span>
+                        </div>
+                        
+                        <div id="lookup-results-list" class="flex-1 overflow-y-auto space-y-2.5 max-h-[620px] custom-scroll pr-1">
+                            <!-- Dynamically populated customer list -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Customer Dossier & Back-Job Action Card -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div id="lookup-dossier-empty" class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[500px] shadow-sm">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
+                                <i data-lucide="search" class="w-8 h-8"></i>
+                            </div>
+                            <h4 class="text-base font-black uppercase tracking-tight text-gray-900">Select a Customer Record</h4>
+                            <p class="text-xs text-gray-500 font-semibold max-w-sm mt-1">Search and click any customer or vehicle from the list to inspect repair history and create a Back-Job warranty intake.</p>
+                        </div>
+
+                        <div id="lookup-dossier-card" class="hidden space-y-6">
+                            <!-- Customer Details Header Card -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm relative overflow-hidden">
+                                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 to-red-400"></div>
+                                
+                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-gray-150 pb-5">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-black text-lg">
+                                            <i data-lucide="user-check" class="w-6 h-6"></i>
+                                        </div>
+                                        <div>
+                                            <h3 id="dossier-customer-name" class="text-xl font-black text-gray-900">Customer Name</h3>
+                                            <div class="flex items-center gap-3 mt-1 text-xs text-gray-500 font-semibold flex-wrap">
+                                                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-gray-400"></i> <span id="dossier-customer-phone">09XX-XXX-XXXX</span></span>
+                                                <span class="text-gray-300">•</span>
+                                                <span class="flex items-center gap-1"><i data-lucide="car" class="w-3.5 h-3.5 text-gray-400"></i> <strong id="dossier-vehicle-plate" class="text-gray-900 font-black font-mono">ABC 1234</strong></span>
+                                                <span class="text-gray-300">•</span>
+                                                <span id="dossier-vehicle-model" class="text-gray-700 font-bold">Vehicle Model</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <span id="dossier-loyalty-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                                            <i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> ⭐ Returning Regular
+                                        </span>
+                                        <span id="dossier-branch-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200">
+                                            Marikina Branch
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- 3 Quick Stats -->
+                                <div class="grid grid-cols-3 gap-4 pt-5">
+                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
+                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Total Visits</span>
+                                        <h4 id="dossier-total-visits" class="text-2xl font-black text-gray-900 mt-0.5">1</h4>
+                                    </div>
+                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
+                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Last Service</span>
+                                        <h4 id="dossier-last-date" class="text-xs font-black text-gray-900 mt-1.5 truncate">YYYY-MM-DD</h4>
+                                    </div>
+                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
+                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Last Category</span>
+                                        <h4 id="dossier-last-category" class="text-xs font-black text-red-600 mt-1.5 truncate">PMS</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prominent Fast Intake & Back-Job Decision Actions Card -->
+                            <div class="bg-gradient-to-br from-slate-50 via-amber-50/50 to-orange-50/40 border-2 border-amber-300 p-6 rounded-2xl shadow-sm space-y-4">
+                                <div class="flex items-start gap-4">
+                                    <div class="p-3 bg-amber-500 text-white rounded-2xl shadow-md shrink-0">
+                                        <i data-lucide="sparkles" class="w-6 h-6"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="bg-amber-500 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider">Fast Intake Dispatch</span>
+                                            <h4 class="text-base font-black text-gray-900">Returning Customer Intake Actions</h4>
+                                        </div>
+                                        <p class="text-xs text-gray-700 font-medium mt-1 leading-relaxed">
+                                            Select whether this customer is returning for a <strong>Regular Scheduled Service</strong> (e.g. 40-day PMS / Oil Change) or a <strong>Back-Job Warranty Return</strong>.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-amber-200/80">
+                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="bg-slate-900 hover:bg-black text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-slate-900/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                        <i data-lucide="calendar-plus" class="w-4 h-4 text-emerald-400"></i> Regular Visit (PMS)
+                                    </button>
+                                    <button id="btn-backjob-yes" onclick="confirmBackJobIntake()" class="bg-amber-600 hover:bg-amber-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-amber-600/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Back-Job (Warranty)
+                                    </button>
+                                    <button onclick="stayOnHistory()" class="bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
+                                        <i data-lucide="file-text" class="w-4 h-4 text-gray-400"></i> Review History
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Historical Repair Orders Timeline -->
+                            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-150 pb-3">
+                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="clock" class="w-4 h-4 text-red-600"></i> Service & Repair History Logs
+                                    </h4>
+                                    <span id="dossier-history-count" class="text-[10px] font-bold text-gray-500 uppercase">0 Orders</span>
+                                </div>
+
+                                <div id="dossier-history-timeline" class="space-y-3 max-h-[400px] overflow-y-auto custom-scroll pr-1">
+                                    <!-- Dynamically populated historical job cards -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- VEHICLE INTAKE FORM -->
             <div id="section-intake" class="section-content hidden fade-in space-y-4">
                 <div class="max-w-4xl bg-white border border-gray-200 p-5 md:p-6 rounded-2xl shadow-md mx-auto">
@@ -2347,7 +2511,7 @@
                 <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
                 <div id="container-daily-intakes"
                     class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-4 md:p-5 rounded-2xl shadow-md flex flex-col hidden">
-                    <div class="flex items-center justify-between mb-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
                                     class="w-5 h-5"></i></div>
@@ -2356,6 +2520,11 @@
                                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active
                                     Vehicles in Workshop</p>
                             </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openQuickCustomerSearchModal()" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center gap-2 cursor-pointer">
+                                <i data-lucide="search" class="w-4 h-4"></i> Search Customer / Back-Job
+                            </button>
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
@@ -4555,6 +4724,85 @@
         </div>
     </div>
 
+    <!-- QUICK CUSTOMER SEARCH & BACK-JOB POPUP MENU MODAL -->
+    <div id="modal-customer-search-menu" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-gray-150 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-red-600 to-red-700 p-5 text-white flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-white/10 rounded-xl">
+                        <i data-lucide="user-search" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-tight">Customer Search & Back-Job Menu</h3>
+                        <p class="text-[10px] text-red-100 font-bold uppercase tracking-wider">Search customer record and dispatch intake</p>
+                    </div>
+                </div>
+                <button onclick="closeQuickCustomerSearchModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4 text-white"></i>
+                </button>
+            </div>
+
+            <!-- Search Input Bar -->
+            <div class="p-6 space-y-4">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-4 top-3.5 pointer-events-none"></i>
+                    <input type="text" id="quick-customer-search-input" oninput="handleQuickCustomerSearchInput()" placeholder="Type Customer Name or Plate Number..."
+                        class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-11 pr-4 py-3 text-xs font-bold text-gray-900 outline-none focus:border-red-600 focus:bg-white transition shadow-2xs">
+                </div>
+
+                <!-- Search Results Dropdown List -->
+                <div id="quick-search-results-list" class="max-h-48 overflow-y-auto space-y-2 custom-scroll hidden border border-gray-150 rounded-2xl p-2 bg-gray-50/50">
+                </div>
+
+                <!-- Customer Detail & Back-Job Question Card -->
+                <div id="quick-customer-detail-menu" class="hidden bg-gray-50 border border-gray-200 rounded-2xl p-5 space-y-4">
+                    <div class="flex items-start justify-between gap-3 border-b border-gray-200 pb-3">
+                        <div>
+                            <span class="text-[9px] font-black text-red-600 uppercase tracking-wider block">Customer Record Found</span>
+                            <h4 id="quick-menu-cust-name" class="text-base font-black text-gray-900">Customer Name</h4>
+                            <div class="flex items-center gap-2 mt-1 text-xs text-gray-600 font-semibold flex-wrap">
+                                <span id="quick-menu-cust-plate" class="font-mono font-bold bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-800">ABC 1234</span>
+                                <span id="quick-menu-cust-vehicle" class="text-gray-700">Vehicle Model</span>
+                                <span>•</span>
+                                <span id="quick-menu-cust-phone" class="text-gray-500">09XX-XXX-XXXX</span>
+                            </div>
+                        </div>
+                        <span id="quick-menu-visits-badge" class="px-2.5 py-1 bg-white border border-gray-200 rounded-full text-[10px] font-black text-gray-800 shrink-0">
+                            1 visit
+                        </span>
+                    </div>
+
+                    <!-- THE DIRECT BACK-JOB QUESTION -->
+                    <div class="bg-amber-50 border border-amber-300 rounded-xl p-4 space-y-3">
+                        <div class="flex items-center gap-2 text-amber-900 font-black text-xs uppercase tracking-wide">
+                            <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i> Back-Job (Warranty Return) ba ito?
+                        </div>
+                        <p class="text-[11px] text-amber-800 font-medium leading-relaxed">
+                            Kung <strong>YES</strong>, mapupunta ang sasakyan sa <strong>Daily Intakes</strong> na naka-tag bilang Back-Job kasama ang previous repair reference. Kung <strong>NO</strong>, mananatili lang dito sa menu para sa viewing.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button onclick="handleQuickMenuBackJobYes()" class="bg-amber-600 hover:bg-amber-700 text-white font-black py-2.5 px-3 rounded-xl text-xs uppercase tracking-wider shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i data-lucide="check" class="w-4 h-4"></i> YES (Daily Intakes)
+                            </button>
+                            <button onclick="handleQuickMenuBackJobNo()" class="bg-white hover:bg-gray-100 border border-amber-300 text-amber-900 font-black py-2.5 px-3 rounded-xl text-xs uppercase tracking-wider shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i data-lucide="x" class="w-4 h-4"></i> NO (Stay Here)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 px-6 py-3 border-t border-gray-150 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                <span>HonTech Quick Search Engine</span>
+                <button onclick="closeQuickCustomerSearchModal()" class="text-gray-600 hover:text-gray-900 font-black uppercase tracking-wider cursor-pointer">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Official Terms and Conditions Modal -->
     <div id="terms-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
         <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
@@ -4678,7 +4926,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.54"></script>
+    <script src="js/app.js?v=3.67"></script>
 </body>
 
 </html>
