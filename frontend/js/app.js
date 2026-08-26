@@ -2948,7 +2948,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <td class="px-2 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
                             <!-- Claim Stub -->
-                            <td class="px-2 py-3 align-middle"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
+                            <td class="px-2 py-3 align-middle">
+                                <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1 font-bold text-xs uppercase tracking-wide bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-gray-800 px-2 py-0.5 rounded border border-gray-250 transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
+                                    <i data-lucide="printer" class="w-3 h-3 text-red-600"></i> ${job.claimStub || 'N/A'}
+                                </button>
+                            </td>
                             
                             <!-- Plate -->
                             <td class="px-2 py-3 align-middle">
@@ -8579,8 +8583,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${statusBadgeClass}">
                                         ${status}
                                     </span>
+                                    <button onclick="printJobClaimStubPDF('${jobId}')" 
+                                        class="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-md text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95"
+                                        title="Print Customer Claim Stub & Gate Pass">
+                                        <i data-lucide="printer" class="w-3 h-3 text-slate-600"></i> Stub
+                                    </button>
                                     <button onclick="confirmSpecificBackJob('${jobId}', '${category.replace(/'/g, "\\'")}', '${date}')" 
-                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer"
+                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95"
                                         title="Create warranty back-job for this visit">
                                         <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Back-Job
                                     </button>
@@ -8883,6 +8892,163 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSystemToast('Vehicle Service Passport PDF generated successfully.', 'success', 'Customer Passport');
         }
         window.exportCustomerServicePassportPDF = exportCustomerServicePassportPDF;
+
+        function printJobClaimStubPDF(jobId) {
+            let job = (typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs.find(j => String(j.id) === String(jobId) || String(j.job_id) === String(jobId)) : null;
+            
+            // If not found in allJobs, search in customerLookupRegistry
+            if (!job && typeof customerLookupRegistry !== 'undefined') {
+                for (const k in customerLookupRegistry) {
+                    const found = customerLookupRegistry[k]?.jobs?.find(j => String(j.id) === String(jobId) || String(j.job_id) === String(jobId) || String(j._id) === String(jobId));
+                    if (found) {
+                        job = {
+                            id: found.id || found.job_id,
+                            claimStub: found.claim_stub || found.stub,
+                            plate: found.plate || customerLookupRegistry[k].plate,
+                            vehicle: found.vehicle || customerLookupRegistry[k].vehicle,
+                            category: found.category,
+                            saName: found.handled_by || found.sa,
+                            location: found.bay_number || found.bay,
+                            arrival: found.arrival || found.appt_time,
+                            departure: found.departure,
+                            dateReceived: found.date || found.created_at,
+                            concern: found.concern || found.evaluation || found.diagnosis,
+                            remarks: found.remarks
+                        };
+                        break;
+                    }
+                }
+            }
+
+            if (!job) {
+                return showSystemToast('Job record not found for Claim Stub generation.', 'error', 'Claim Stub');
+            }
+
+            showSystemToast(`Printing Claim Stub for ${job.plate || 'Vehicle'}...`, 'info', 'Claim Stub');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a5'); // 148mm x 210mm compact format
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const today = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString('en-US', { hour12: localStorage.getItem('timeFormat24h') === 'false', hour: '2-digit', minute: '2-digit' });
+
+            // Top Brand Bar (Red)
+            doc.setFillColor(220, 38, 38);
+            doc.rect(0, 0, 148, 6, 'F');
+
+            // Company Header
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(13);
+            doc.setTextColor(17, 24, 39);
+            doc.text('HONTECH AUTOCENTER INC.', 10, 15);
+
+            doc.setFontSize(8.5);
+            doc.setTextColor(100, 116, 139);
+            doc.text('CUSTOMER SERVICE CLAIM STUB & GATE PASS', 10, 20);
+
+            // Claim Stub Box
+            doc.setFillColor(248, 250, 252);
+            doc.setDrawColor(220, 38, 38);
+            doc.setLineWidth(0.4);
+            doc.roundedRect(95, 9, 43, 16, 2, 2, 'FD');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(7.5);
+            doc.setTextColor(220, 38, 38);
+            doc.text('CLAIM STUB NO.', 116.5, 14, { align: 'center' });
+
+            doc.setFontSize(11);
+            doc.setTextColor(17, 24, 39);
+            doc.text(job.claimStub || 'N/A', 116.5, 21, { align: 'center' });
+
+            // Divider Line
+            doc.setDrawColor(226, 232, 240);
+            doc.setLineWidth(0.2);
+            doc.line(10, 28, 138, 28);
+
+            // Vehicle & Service Details Table
+            doc.autoTable({
+                startY: 31,
+                head: [['CUSTOMER & VEHICLE INFORMATION', 'SERVICE INTAKE DETAILS']],
+                body: [
+                    [
+                        `Plate Number: ${job.plate || 'N/A'}\nVehicle Model: ${job.vehicle || 'N/A'}\nIntake Date: ${job.dateReceived || todayStr}\nArrival Time: ${formatTime12Hour(job.arrival)}`,
+                        `Service Category: ${job.category || 'General Service'}\nService Advisor: ${job.saName || 'Assigned SA'}\nAssigned Bay: ${job.location || 'Bay 1'}\nPromised Time: ${job.promisedDate || formatTime12Hour(job.departure) || 'To be advised'}`
+                    ]
+                ],
+                theme: 'plain',
+                styles: { fontSize: 8, cellPadding: 3, lineColor: [226, 232, 240], lineWidth: 0.2 },
+                headStyles: { fillColor: [248, 250, 252], textColor: [17, 24, 39], fontStyle: 'bold' }
+            });
+
+            let nextY = doc.autoTable.previous.finalY + 5;
+
+            // Customer Concern / Scope of Work Box
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 24, 39);
+            doc.text('WORK ORDER & DIAGNOSTIC CONCERN:', 10, nextY);
+
+            doc.autoTable({
+                startY: nextY + 2,
+                body: [
+                    [job.concern || job.remarks || 'Standard Periodic Maintenance Service (PMS) & Workshop Multi-Point Inspection.']
+                ],
+                theme: 'plain',
+                styles: { fontSize: 7.5, cellPadding: 2.5, fontStyle: 'italic', textColor: [51, 65, 85], lineColor: [226, 232, 240], lineWidth: 0.2 }
+            });
+
+            nextY = doc.autoTable.previous.finalY + 5;
+
+            // Terms & Conditions Notice
+            doc.setFillColor(254, 242, 242);
+            doc.roundedRect(10, nextY, 128, 24, 1.5, 1.5, 'F');
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(7);
+            doc.setTextColor(153, 27, 27);
+            doc.text('IMPORTANT CUSTOMER REMINDERS & GATE PASS POLICY:', 13, nextY + 4.5);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(6);
+            doc.setTextColor(127, 29, 29);
+            doc.text('1. Please present this official Claim Stub upon vehicle releasing & billing settlement.', 13, nextY + 9);
+            doc.text('2. Please remove all personal valuables from the vehicle before leaving the service bay.', 13, nextY + 13);
+            doc.text('3. Vehicles left unclaimed over 48 hours after notice may incur standard garage storage fees.', 13, nextY + 17);
+            doc.text('4. Official HonTech warranty covers specified labor and genuine replacement parts.', 13, nextY + 21);
+
+            nextY += 31;
+
+            // Signatures
+            doc.setFontSize(7);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(30, 41, 59);
+            doc.text('CUSTOMER SIGNATURE (Intake Acknowledged):', 10, nextY);
+            doc.text('AUTHORIZED SERVICE ADVISOR:', 78, nextY);
+
+            doc.setDrawColor(148, 163, 184);
+            doc.line(10, nextY + 10, 65, nextY + 10);
+            doc.line(78, nextY + 10, 135, nextY + 10);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(6);
+            doc.setTextColor(100, 116, 139);
+            doc.text('Customer / Vehicle Owner', 10, nextY + 14);
+            doc.text((job.saName || 'Service Advisor') + ' (HonTech AutoCenter)', 78, nextY + 14);
+
+            // Footer
+            doc.setFontSize(6);
+            doc.setTextColor(148, 163, 184);
+            doc.text(`Printed on ${today} at ${time} | HonTech AutoCenter Marikina`, 10, 202);
+            doc.text('Customer Copy', 138, 202, { align: 'right' });
+
+            const safePlate = (job.plate || 'Vehicle').replace(/[^a-zA-Z0-9]/g, '_');
+            const pdfBlob = doc.output('blob');
+            downloadBlob(pdfBlob, `Hontech_ClaimStub_${job.claimStub || safePlate}.pdf`);
+            showSystemToast('Customer Claim Stub PDF generated successfully!', 'success', 'Claim Stub');
+        }
+        window.printJobClaimStubPDF = printJobClaimStubPDF;
 
         // =========================================================================
         // QUICK CUSTOMER SEARCH & BACK-JOB POPUP MENU
