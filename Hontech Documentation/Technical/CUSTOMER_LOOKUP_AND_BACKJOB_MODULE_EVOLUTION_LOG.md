@@ -77,7 +77,29 @@ This document records the bit-by-bit development, architectural decisions, and c
 
 ---
 
+---
+
+## 📈 Stage 6: Top-Header & Bottom-Sidebar User Profile & UX Polish (v3.71)
+* **The Problem:** The top navigation user name and role text were hidden on compact viewports due to `hidden md:block`, and the bottom sidebar user badge had excessive padding causing horizontal overflow.
+* **Code Changes:**
+  1. Updated `frontend/index.html` top header `#header-user-section` to display `#header-user-name`, `#header-user-role` pill, and an emerald live online pulse indicator.
+  2. Redesigned bottom-left sidebar profile `#sidebar-footer-expanded` to use a sleek single-row Discord/Linear pattern with smooth text truncation and integrated gear icon `[ ⚙️ ]`.
+  3. Bound all user role labels in `buildNavbar()` in `frontend/js/app.js` and incremented cache version to `js/app.js?v=3.71`.
+
+---
+
+## 📈 Stage 7: All-in-One QA Manual, 3-Person Team Roles, & 22-Step Verification Matrix
+* **The Goal:** Provide a complete, non-technical testing manual and standard operating procedure for Justin (Lead Developer) and his 2 Capstone groupmates (Desktop QA & Mobile QA).
+* **Documentation Deliverables:**
+  1. Created [`Hontech Documentation/Technical/HONTECH_QA_AND_UNIT_TESTING_GROUP_GUIDE.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_QA_AND_UNIT_TESTING_GROUP_GUIDE.md) consolidating all team testing into a single master document.
+  2. Documented **Close Testing (Same Room/Wi-Fi)** with zero installation for classmates.
+  3. Documented **Far Away Testing (At Home Remote)** via `localtunnel` and GitHub `git pull`.
+  4. Embedded the full **9-Suite (22-Step) Master Verification & Checking List** and **5-minute Practical Roleplay Script**.
+
+---
+
 ## 🎯 Verification & Testing Compliance
 * Verified across all 4 RBAC Roles: **Owner**, **Admin**, **Service Advisor**, and **Assistant Staff**.
 * Tested in both **Online Connected** and **100% Offline Air-Gapped LAN** environments.
-* Cache-busting version incremented to `js/app.js?v=3.67`.
+* Cache-busting version incremented to `js/app.js?v=3.71`.
+* All commits synchronized on remote GitHub branch `branch2-Security-Account-Recovery`.
