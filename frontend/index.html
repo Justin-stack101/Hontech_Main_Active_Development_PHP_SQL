@@ -715,28 +715,29 @@
                 </div>
 
                 <!-- Collapsed View footer -->
-                <div id="sidebar-footer-collapsed" class="hidden flex flex-col items-center gap-4">
-                    <button onclick="toggleSidebarDropdown()" class="w-10 h-10 rounded-full bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold" title="Settings">
-                        <i data-lucide="user" class="w-5 h-5"></i>
+                <div id="sidebar-footer-collapsed" class="hidden flex flex-col items-center gap-3">
+                    <button onclick="toggleSidebarDropdown()" class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm" title="User Profile">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </button>
-                    <button onclick="toggleSidebarDropdown()" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600" title="Settings">
-                        <i data-lucide="settings" class="w-5 h-5"></i>
+                    <button onclick="toggleSidebarDropdown()" class="p-2 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition" title="Settings">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
                 </div>
                 <!-- Expanded View footer -->
                 <div id="sidebar-footer-expanded" class="w-full">
-                    <button onclick="toggleSidebarDropdown()" class="w-full flex items-center justify-between p-2 rounded-xl hover:bg-gray-200/70 transition group text-left cursor-pointer border border-transparent hover:border-gray-200">
+                    <button onclick="toggleSidebarDropdown()" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs">
                         <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-black shrink-0 relative shadow-2xs">
+                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
                                 <i data-lucide="user" class="w-4 h-4 text-white"></i>
-                                <span class="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full"></span>
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                             </div>
                             <div class="min-w-0 flex-1 overflow-hidden">
-                                <p class="text-xs font-black text-gray-900 truncate leading-tight" id="sidebar-menu-user-name">User</p>
-                                <p class="text-[10px] text-red-600 font-bold uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
+                                <p class="text-xs font-bold text-white truncate leading-tight tracking-tight" id="sidebar-menu-user-name">User</p>
+                                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-1" id="sidebar-menu-user-role">Role</p>
                             </div>
                         </div>
-                        <div class="p-1 text-gray-400 group-hover:text-gray-700 transition shrink-0">
+                        <div class="p-1 text-slate-400 group-hover:text-white transition shrink-0">
                             <i data-lucide="settings" class="w-4 h-4"></i>
                         </div>
                     </button>
@@ -4930,7 +4931,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.71"></script>
+    <script src="js/app.js?v=3.72"></script>
 </body>
 
 </html>
