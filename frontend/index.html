@@ -827,19 +827,10 @@
 
                 <!-- Header Actions -->
                 <div id="header-actions" class="flex flex-wrap items-center gap-2.5">
-                    <button onclick="openSystemTutorialModal()" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm cursor-pointer" title="Executive Guide & Module Tutorial">
+                    <button onclick="openSystemTutorialModal()" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-xs cursor-pointer" title="Executive Guide & Module Tutorial">
                         <i data-lucide="help-circle" class="w-4 h-4 text-slate-700"></i> Tutorial & Guide
                     </button>
-                    <button onclick="exportData('PDF')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to PDF">
-                        <i data-lucide="file-text" class="w-4 h-4 text-red-600"></i> PDF
-                    </button>
-                    <button onclick="exportData('Word')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to Word">
-                        <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600"></i> Word
-                    </button>
-                    <button onclick="exportData('Excel')" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-sm" title="Export to Excel">
-                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Excel
-                    </button>
-                    <button onclick="openReportExportModal()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-md shadow-red-600/20" title="More Export Options">
+                    <button onclick="openReportExportModal()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-[11px] font-black uppercase tracking-wider transition shadow-md shadow-red-600/20 cursor-pointer" title="Export Operations or Analytics Report">
                         <i data-lucide="download" class="w-4 h-4"></i> Export Report...
                     </button>
                 </div>
@@ -4931,7 +4922,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.74"></script>
+    <script src="js/app.js?v=3.75"></script>
 </body>
 
 </html>
