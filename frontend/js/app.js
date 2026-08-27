@@ -1184,7 +1184,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // --- RBAC for Security Settings & Bay Capacity ---
             const isOwnerOrAdmin = (role === 'owner' || role === 'admin');
-            const canManageBays = (role === 'owner' || role === 'admin' || role === 'sa' || role === 'advisor');
+            const isAdmin = (role === 'admin');
+            
             if (document.getElementById('profile-change-password-container')) {
                 document.getElementById('profile-change-password-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
@@ -1192,29 +1193,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('settings-bay-config-container')) {
-                document.getElementById('settings-bay-config-container').style.display = canManageBays ? 'block' : 'none';
+                // Only Administrator has master authority to configure facility capacity
+                document.getElementById('settings-bay-config-container').style.display = isAdmin ? 'block' : 'none';
             }
             if (document.getElementById('bays-control-card')) {
-                document.getElementById('bays-control-card').style.display = canManageBays ? 'block' : 'none';
+                // Only Administrator can adjust capacity controls directly on the bay screen
+                document.getElementById('bays-control-card').style.display = isAdmin ? 'block' : 'none';
             }
 
             if (role === 'owner') {
                 if (document.getElementById('sidebar-user-role')) {
-                    document.getElementById('sidebar-user-role').innerText = 'Owner';
+                    document.getElementById('sidebar-user-role').innerText = 'Owner (Executive)';
                 }
                 if (document.getElementById('header-actions')) {
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
+                // Owner: Analytics Only & High-Level Telemetry (Customer Lookup removed per specification)
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
-                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays (View-Only)</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Workshop Bays (View-Only)</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Records</span></button>`;
 
@@ -1250,16 +1252,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
+                // Assistant Order: 1. Online Booking Form, 2. Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
+                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
-                navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
                 setupIntakeForm('assistant');
@@ -1273,15 +1276,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
+                // Service Advisor Order: 1. Walk-In Form, 2. Daily Intakes / Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
-                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
+                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Walk-In Form</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Daily Intakes</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
@@ -3708,11 +3712,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const btnReports = document.getElementById('btn-db-tab-reports');
             const btnExpress = document.getElementById('btn-db-tab-express');
             const btnPeriodic = document.getElementById('btn-db-tab-periodic');
+            const btnBackjobs = document.getElementById('btn-db-tab-backjobs');
+
             const secMonitor = document.getElementById('db-tab-monitor');
             const secAnalytics = document.getElementById('db-tab-analytics');
             const secReports = document.getElementById('db-tab-reports');
             const secExpress = document.getElementById('db-tab-express');
             const secPeriodic = document.getElementById('db-tab-periodic');
+            const secBackjobs = document.getElementById('db-tab-backjobs');
             const secSelectors = document.getElementById('db-analytics-selectors');
 
             const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer";
@@ -3724,6 +3731,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (secReports) secReports.classList.add('hidden');
             if (secExpress) secExpress.classList.add('hidden');
             if (secPeriodic) secPeriodic.classList.add('hidden');
+            if (secBackjobs) secBackjobs.classList.add('hidden');
             
             // Show/Hide selectors container (only for analytics tab)
             if (secSelectors) {
@@ -3744,6 +3752,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (btnReports) btnReports.className = inactiveClass;
             if (btnExpress) btnExpress.className = inactiveClass;
             if (btnPeriodic) btnPeriodic.className = inactiveClass;
+            if (btnBackjobs) btnBackjobs.className = inactiveClass;
 
             if (tab === 'monitor') {
                 if (secMonitor) secMonitor.classList.remove('hidden');
@@ -3764,6 +3773,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (btnExpress) btnExpress.className = activeClass;
                 initExpressDatePickers();
                 renderExpressIntelligenceModule();
+            } else if (tab === 'backjobs') {
+                if (secBackjobs) secBackjobs.classList.remove('hidden');
+                if (btnBackjobs) btnBackjobs.className = activeClass;
+                renderBackJobIntelligenceModule();
             } else if (tab === 'periodic') {
                 if (secPeriodic) secPeriodic.classList.remove('hidden');
                 if (btnPeriodic) btnPeriodic.className = activeClass;
@@ -3776,6 +3789,79 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             }
         }
+
+        function renderBackJobIntelligenceModule() {
+            const allJobs = (typeof getAllJobs === 'function' ? getAllJobs() : []) || [];
+            const backJobs = allJobs.filter(j => {
+                const cat = (j.category || '').toLowerCase();
+                const evalNotes = (j.evaluation || '').toLowerCase();
+                const remarks = (j.remarks || '').toLowerCase();
+                return cat.includes('back-job') || cat.includes('backjob') || cat.includes('warranty') || cat.includes('return') ||
+                       evalNotes.includes('back-job') || evalNotes.includes('backjob') || evalNotes.includes('warranty return') ||
+                       remarks.includes('back-job') || remarks.includes('backjob') || remarks.includes('warranty return');
+            });
+
+            const totalInflow = allJobs.length || 1;
+            const backJobCount = backJobs.length;
+            const returnRate = ((backJobCount / totalInflow) * 100).toFixed(1);
+
+            const mTotal = document.getElementById('backjob-metric-total');
+            const mTotalBar = document.getElementById('backjob-metric-total-bar');
+            const mRate = document.getElementById('backjob-metric-rate');
+            const mRateBar = document.getElementById('backjob-metric-rate-bar');
+            const mInflow = document.getElementById('backjob-total-inflow-count');
+            const mRecords = document.getElementById('backjob-records-count');
+            const mResolved = document.getElementById('backjob-resolved-count');
+            const mPending = document.getElementById('backjob-pending-eval');
+            const mCompleted = document.getElementById('backjob-completed-eval');
+
+            if (mTotal) mTotal.innerText = backJobCount.toString();
+            if (mTotalBar) mTotalBar.style.width = `${Math.min(100, backJobCount * 10)}%`;
+            if (mRate) mRate.innerText = `${returnRate}%`;
+            if (mRateBar) mRateBar.style.width = `${Math.min(100, parseFloat(returnRate) * 10)}%`;
+            if (mInflow) mInflow.innerText = `${allJobs.length} cars`;
+            if (mRecords) mRecords.innerText = `${backJobCount} Back-Jobs Logged`;
+
+            const resolvedJobs = backJobs.filter(j => j.status === 'Released' || j.status === 'Completed').length;
+            const pendingJobs = backJobs.filter(j => j.status !== 'Released' && j.status !== 'Completed').length;
+            if (mResolved) mResolved.innerText = resolvedJobs.toString();
+            if (mPending) mPending.innerText = pendingJobs.toString();
+            if (mCompleted) mCompleted.innerText = resolvedJobs.toString();
+
+            const tableBody = document.getElementById('table-backjobs-analytics-body');
+            if (tableBody) {
+                if (backJobs.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-gray-400 font-medium">No back-job return repairs recorded in current system logs. Quality compliance at 100%.</td></tr>`;
+                } else {
+                    tableBody.innerHTML = backJobs.map(j => {
+                        const plate = j.plate || 'NO-PLATE';
+                        const vehicle = j.vehicle || 'Unknown Model';
+                        const name = j.customer || j.name || 'Customer';
+                        const date = j.dateReceived || j.apptDate || j.date || '--';
+                        const branch = j.branch || 'Marikina Branch';
+                        const sa = j.saName || j.sa || 'Assigned SA';
+                        const concern = j.remarks || j.evaluation || j.category || 'Return inspection';
+                        const statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10.5px] font-black uppercase tracking-wider ${j.status === 'Released' || j.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">${j.status || 'In Inspection'}</span>`;
+
+                        return `
+                            <tr class="hover:bg-amber-50/40 transition border-b border-gray-100">
+                                <td class="px-6 py-3.5 font-medium text-gray-600 text-xs">${date}</td>
+                                <td class="px-6 py-3.5"><span class="font-mono font-black text-xs text-gray-900 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">${plate}</span></td>
+                                <td class="px-6 py-3.5 font-bold text-gray-900 text-xs">${vehicle}</td>
+                                <td class="px-6 py-3.5 text-gray-800 font-bold text-xs">${name}</td>
+                                <td class="px-6 py-3.5 text-gray-700 text-xs font-medium max-w-[240px] truncate" title="${concern}">${concern}</td>
+                                <td class="px-6 py-3.5 text-gray-600 text-xs font-semibold">${branch}</td>
+                                <td class="px-6 py-3.5 text-gray-900 font-bold text-xs">${sa}</td>
+                                <td class="px-6 py-3.5 text-center">${statusBadge}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+        }
+        window.renderBackJobIntelligenceModule = renderBackJobIntelligenceModule;
 
         function initReportDatePickers() {
             const today = new Date().toISOString().split('T')[0];
@@ -7261,7 +7347,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function getWorkshopBayCount() {
             const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
-            if (!isNaN(stored) && stored >= 2 && stored <= 20) {
+            if (!isNaN(stored) && stored >= 2 && stored <= 50) {
                 return stored;
             }
             return 4; // Default 4 service bays
@@ -7270,13 +7356,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function stepWorkshopBayCount(delta) {
             const current = getWorkshopBayCount();
-            const next = Math.min(20, Math.max(2, current + Number(delta || 0)));
+            const next = Math.min(50, Math.max(2, current + Number(delta || 0)));
             handleWorkshopBayCountChange(next);
         }
         window.stepWorkshopBayCount = stepWorkshopBayCount;
 
+        function promptCustomBayCount() {
+            if (currentUserRole !== 'admin') {
+                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+                return;
+            }
+            const current = getWorkshopBayCount();
+            const input = prompt(`Enter custom number of workshop bays (2 to 50 bays):`, current.toString());
+            if (input === null) return;
+            const parsed = parseInt(input, 10);
+            if (isNaN(parsed) || parsed < 2 || parsed > 50) {
+                showSystemToast('Please enter a valid bay capacity between 2 and 50.', 'error', 'Invalid Capacity');
+                return;
+            }
+            handleWorkshopBayCountChange(parsed);
+        }
+        window.promptCustomBayCount = promptCustomBayCount;
+
         function handleWorkshopBayCountChange(newCount) {
-            const num = Math.min(20, Math.max(2, parseInt(newCount, 10) || 4));
+            const num = Math.min(50, Math.max(2, parseInt(newCount, 10) || 4));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             
             const badge1 = document.getElementById('settings-bay-count-badge');
@@ -7285,9 +7388,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (badge2) badge2.innerText = `${num} Bays Active`;
 
             const select1 = document.getElementById('settings-workshop-bays');
-            if (select1) select1.value = num.toString();
+            if (select1) {
+                if (!select1.querySelector(`option[value="${num}"]`)) {
+                    const opt = document.createElement('option');
+                    opt.value = num.toString();
+                    opt.innerText = `${num} Bays (Custom)`;
+                    select1.appendChild(opt);
+                }
+                select1.value = num.toString();
+            }
             const select2 = document.getElementById('bays-module-select');
-            if (select2) select2.value = num.toString();
+            if (select2) {
+                if (!select2.querySelector(`option[value="${num}"]`)) {
+                    const opt = document.createElement('option');
+                    opt.value = num.toString();
+                    opt.innerText = `${num} Bays (Custom)`;
+                    select2.appendChild(opt);
+                }
+                select2.value = num.toString();
+            }
             
             try {
                 if (typeof renderStaffTables === 'function') renderStaffTables();
@@ -8758,28 +8877,98 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Pre-fill concern with the specific order selected
             if (concernEl) {
-                concernEl.value = `[BACK-JOB / WARRANTY RETURN] Previous Ref: ${refJobId} (${prevCategory} on ${prevDate}). Customer concern/issue: `;
+                concernEl.value = `[BACK-JOB / RETURN REPAIR] Previous Ref: ${refJobId} (${prevCategory} on ${prevDate}). Customer concern/issue: `;
             }
 
             showSystemToast(`Back-Job initialized referencing order ${refJobId}!`, 'success', 'Back-Job Created');
         }
 
-        function confirmBackJobIntake() {
+        function openBackJobReasonModal(explicitJobId) {
             if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
                 showSystemToast('Please select a customer record first.', 'warning', 'Back-Job Intake');
                 return;
             }
 
             const cust = customerLookupRegistry[selectedLookupCustomerKey];
-            const latestJob = cust.jobs[0] || {};
-            const refJobId = latestJob.job_id || latestJob.id || latestJob._id || 'PREV-JOB';
-            const prevDate = latestJob.date || latestJob.created_at || 'past service';
-            const prevCat = latestJob.category || 'General Service';
+            let targetJob = (cust.jobs && cust.jobs[0]) || {};
+            if (explicitJobId && cust.jobs) {
+                const found = cust.jobs.find(j => (j.job_id || j.id || j._id) === explicitJobId);
+                if (found) targetJob = found;
+            }
 
-            // 1. Switch view to vehicle intake
+            const refJobId = targetJob.job_id || targetJob.id || targetJob._id || 'PREV-ORDER';
+            const prevDate = targetJob.date || targetJob.created_at || 'Previous Service';
+            const prevCat = targetJob.category || 'General Service';
+            const prevSA = targetJob.sa || targetJob.sa_name || 'Assigned SA';
+
+            const modal = document.getElementById('modal-backjob-reason');
+            if (!modal) {
+                confirmBackJobIntake();
+                return;
+            }
+
+            // Fill preview values in modal
+            const nameEl = document.getElementById('modal-bj-cust-name');
+            const plateEl = document.getElementById('modal-bj-plate-badge');
+            const vehEl = document.getElementById('modal-bj-vehicle');
+            const catEl = document.getElementById('modal-bj-prev-cat');
+            const refEl = document.getElementById('modal-bj-prev-ref');
+            const inputEl = document.getElementById('modal-bj-concern-input');
+
+            if (nameEl) nameEl.innerText = cust.name || 'Customer Name';
+            if (plateEl) plateEl.innerText = cust.plate !== 'NO-PLATE' ? cust.plate : 'NO PLATE';
+            if (vehEl) vehEl.innerText = cust.vehicle !== 'Unknown Model' ? cust.vehicle : 'Vehicle Model';
+            if (catEl) catEl.innerText = prevCat;
+            if (refEl) refEl.innerText = `${prevDate} (${refJobId})`;
+            if (inputEl) {
+                inputEl.value = '';
+                setTimeout(() => inputEl.focus(), 50);
+            }
+
+            modal.dataset.refJobId = refJobId;
+            modal.dataset.prevDate = prevDate;
+            modal.dataset.prevCat = prevCat;
+            modal.dataset.prevSa = prevSA;
+
+            modal.classList.remove('hidden');
+        }
+        window.openBackJobReasonModal = openBackJobReasonModal;
+
+        function closeBackJobReasonModal() {
+            const modal = document.getElementById('modal-backjob-reason');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeBackJobReasonModal = closeBackJobReasonModal;
+
+        function submitBackJobWithReason() {
+            const modal = document.getElementById('modal-backjob-reason');
+            const inputEl = document.getElementById('modal-bj-concern-input');
+            const reasonText = inputEl ? inputEl.value.trim() : '';
+
+            if (!reasonText) {
+                showSystemToast('Please describe the customer\'s return complaint / symptom.', 'warning', 'Reason Required');
+                if (inputEl) inputEl.focus();
+                return;
+            }
+
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                closeBackJobReasonModal();
+                showSystemToast('Customer record lost. Please reselect customer.', 'error');
+                return;
+            }
+
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            const refJobId = modal ? modal.dataset.refJobId || 'PREV-JOB' : 'PREV-JOB';
+            const prevDate = modal ? modal.dataset.prevDate || 'past service' : 'past service';
+            const prevCat = modal ? modal.dataset.prevCat || 'General Repair' : 'General Repair';
+            const selectedConcernCat = document.getElementById('modal-bj-category-select') ? document.getElementById('modal-bj-category-select').value : 'Back-Job Return';
+
+            closeBackJobReasonModal();
+
+            // 1. Switch view to intake
             showSection('intake');
 
-            // 2. Pre-fill customer and vehicle fields
+            // 2. Pre-fill customer fields
             const nameEl = document.getElementById('intake-name');
             const plateEl = document.getElementById('intake-plate');
             const contactEl = document.getElementById('intake-contact');
@@ -8793,21 +8982,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
             if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
 
-            // Set Category to Others -> Back-Job / Warranty Return
+            // Set category to Back-Job / Return Repair
             if (catEl) {
                 catEl.value = 'Others';
                 if (catOtherEl) {
-                    catOtherEl.value = 'Back-Job / Warranty Return';
+                    catOtherEl.value = `Back-Job / Return (${selectedConcernCat})`;
                     catOtherEl.classList.remove('hidden');
                 }
             }
 
-            // Pre-fill concern / remarks with previous job reference
+            // Pre-fill concern with clear recorded reason
             if (concernEl) {
-                concernEl.value = `[BACK-JOB / WARRANTY RETURN] Previous Ref: ${refJobId} (${prevCat} on ${prevDate}). Customer concern/issue: `;
+                concernEl.value = `[BACK-JOB / RETURN REPAIR] Previous Ref: ${refJobId} (${prevCat} on ${prevDate}). Return Complaint: ${reasonText}`;
             }
 
-            showSystemToast(`Customer "${cust.name}" details pre-filled for Back-Job intake!`, 'success', 'Back-Job Initialized');
+            showSystemToast(`Back-Job ticket prepared for "${cust.name}" with return complaint recorded!`, 'success', 'Back-Job Initialized');
+        }
+        window.submitBackJobWithReason = submitBackJobWithReason;
+
+        function confirmBackJobIntake() {
+            openBackJobReasonModal();
         }
 
         function stayOnHistory() {

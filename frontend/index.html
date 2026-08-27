@@ -858,6 +858,10 @@
                         class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
                         <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Express Lane & Delay Intelligence
                     </button>
+                    <button id="btn-db-tab-backjobs" onclick="switchDashboardTab('backjobs')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-amber-600"></i> Quality Control & Back-Jobs
+                    </button>
                 </div>
 
                 <!-- SHARED ANALYTICS & PERIODIC SELECTORS -->
@@ -1999,6 +2003,136 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- TAB 5: QUALITY CONTROL & BACK-JOB INTELLIGENCE -->
+                <div id="db-tab-backjobs" class="hidden space-y-8">
+                    <!-- Top 4 Back-Job Operational KPIs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Card 1: Total Back-Jobs -->
+                        <div class="bg-white border border-amber-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-amber-400 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-600"></i> Repeat Services
+                                </span>
+                                <span class="text-[10px] font-bold uppercase text-amber-600">Quality KPI</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="backjob-metric-total">0</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Back-Jobs</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="backjob-metric-total-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Recent Return Repairs</span>
+                                <span class="text-amber-700 font-bold">Follow-Up Intake</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Back-Job Return Rate -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="percent" class="w-3 h-3 text-slate-500"></i> Return Rate
+                                </span>
+                                <span class="text-[10px] font-bold uppercase text-emerald-600">Target: &lt;5%</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="backjob-metric-rate">0.0%</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">of Total Inflow</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div id="backjob-metric-rate-bar" class="bg-slate-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Total Inflow Benchmark:</span>
+                                <strong id="backjob-total-inflow-count" class="text-slate-900 font-bold">0 cars</strong>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Top Concern Category -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i> Primary Issue
+                                </span>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Highest Category</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-xl font-black text-slate-900 truncate" id="backjob-top-category">Brakes & PMS</h4>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div class="bg-red-500 h-full rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Quality Focus:</span>
+                                <span class="text-red-600 font-bold">Post-Repair Audit</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Evaluation Status -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="shield-check" class="w-3 h-3 text-slate-500"></i> Warranty Review
+                                </span>
+                                <span class="text-[10px] font-bold uppercase text-slate-500">Diagnosis State</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-emerald-600" id="backjob-resolved-count">0</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Resolved</span>
+                                </div>
+                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Under Evaluation: <strong id="backjob-pending-eval" class="text-amber-600 font-bold">0</strong></span>
+                                <span>Completed: <strong id="backjob-completed-eval" class="text-emerald-700 font-bold">0</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Back-Job Return Audit Log Table -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                            <div>
+                                <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                    <i data-lucide="history" class="w-4 h-4 text-amber-600"></i> Customer Back-Job & Repeat Repair Log
+                                </h4>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Track returning vehicle symptoms, customer complaints, and assigned Service Advisors</p>
+                            </div>
+                            <span id="backjob-records-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-amber-50 text-amber-700 rounded-full border border-amber-200">0 Back-Jobs Logged</span>
+                        </div>
+
+                        <div class="overflow-x-auto max-h-[440px] overflow-y-auto custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-white shadow-2xs">
+                                    <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
+                                        <th class="px-6 py-4 bg-white">Date Recv</th>
+                                        <th class="px-6 py-4 bg-white">Plate No.</th>
+                                        <th class="px-6 py-4 bg-white">Vehicle Model</th>
+                                        <th class="px-6 py-4 bg-white">Customer Name</th>
+                                        <th class="px-6 py-4 bg-white">Concern / Symptom</th>
+                                        <th class="px-6 py-4 bg-white">Branch</th>
+                                        <th class="px-6 py-4 bg-white">Assigned SA</th>
+                                        <th class="px-6 py-4 bg-white text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-backjobs-analytics-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <!-- Populated dynamically by app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- STAFF MANAGEMENT -->
             <div id="section-staff" class="section-content hidden fade-in space-y-6">
@@ -2187,10 +2321,10 @@
                                 class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-3 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
                                 <option value="all">All Branches</option>
                                 <option value="Marikina Branch">Marikina Branch</option>
-                                <option value="Makati Branch">Makati Branch</option>
+                                <option value="Regalado Branch">Regalado Branch</option>
                             </select>
-                            <button onclick="clearCustomerLookupSearch()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shrink-0">
-                                Clear
+                            <button type="button" onclick="clearCustomerLookupSearch()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shrink-0 flex items-center gap-1.5" title="Reset Search / Clear Filter">
+                                <i data-lucide="x-circle" class="w-3.5 h-3.5 text-gray-500"></i> Clear
                             </button>
                         </div>
                     </div>
@@ -2219,7 +2353,7 @@
                                 <i data-lucide="search" class="w-8 h-8"></i>
                             </div>
                             <h4 class="text-base font-black uppercase tracking-tight text-gray-900">Select a Customer Record</h4>
-                            <p class="text-xs text-gray-500 font-semibold max-w-sm mt-1">Search and click any customer or vehicle from the list to inspect repair history and create a Back-Job warranty intake.</p>
+                            <p class="text-xs text-gray-500 font-semibold max-w-sm mt-1">Search and click any customer or vehicle from the list to inspect repair history and create a Back-Job return intake.</p>
                         </div>
 
                         <div id="lookup-dossier-card" class="hidden space-y-6">
@@ -2294,7 +2428,7 @@
                                             <h4 class="text-base font-black text-gray-900">Returning Customer Intake Actions</h4>
                                         </div>
                                         <p class="text-xs text-gray-700 font-medium mt-1 leading-relaxed">
-                                            Select whether this customer is returning for a <strong>Regular Scheduled Service</strong> (e.g. 40-day PMS / Oil Change) or a <strong>Back-Job Warranty Return</strong>.
+                                            Select whether this customer is returning for a <strong>Regular Scheduled Service</strong> (e.g. 40-day PMS / Oil Change) or a <strong>Back-Job / Repeat Service</strong>.
                                         </p>
                                     </div>
                                 </div>
@@ -2303,8 +2437,8 @@
                                     <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="bg-slate-900 hover:bg-black text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-slate-900/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
                                         <i data-lucide="calendar-plus" class="w-4 h-4 text-emerald-400"></i> Regular Visit (PMS)
                                     </button>
-                                    <button id="btn-backjob-yes" onclick="confirmBackJobIntake()" class="bg-amber-600 hover:bg-amber-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-amber-600/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Back-Job (Warranty)
+                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="bg-amber-600 hover:bg-amber-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-amber-600/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Flag as Back-Job
                                     </button>
                                     <button onclick="stayOnHistory()" class="bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
                                         <i data-lucide="file-text" class="w-4 h-4 text-gray-400"></i> Review History
@@ -3100,7 +3234,10 @@
                             <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">10 Bays</button>
                             <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">12 Bays</button>
                             <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">16 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">20 Bays (Max)</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">20 Bays</button>
+                            <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-red-400"></i> Custom...
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -3242,6 +3379,9 @@
                                 <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">12</button>
                                 <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">16</button>
                                 <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">20</button>
+                                <button type="button" onclick="promptCustomBayCount()" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-black text-white border border-slate-800 font-bold text-[11px] transition cursor-pointer flex items-center gap-1 shadow-2xs">
+                                    <i data-lucide="plus-circle" class="w-3 h-3 text-red-400"></i> Custom...
+                                </button>
                             </div>
 
                             <!-- Direct Link to Live Workshop Floor Module -->
@@ -4968,6 +5108,97 @@
         </div>
     </div>
 
+    <!-- BACK-JOB RETURN REASON MODAL (Capture Customer Complaint First) -->
+    <div id="modal-backjob-reason" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-gray-150 overflow-hidden flex flex-col transform transition-all">
+            
+            <!-- Modal Header -->
+            <div class="bg-slate-900 px-6 py-4 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-amber-500 text-white rounded-xl shadow-xs">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-wider text-white">Flag as Back-Job / Repeat Service</h3>
+                        <p class="text-[10.5px] text-amber-400 font-bold uppercase tracking-wider">Record Return Complaint Before Intake</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeBackJobReasonModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 text-xs text-gray-700">
+                <!-- Vehicle Context Summary Card -->
+                <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-black uppercase tracking-widest text-amber-800">Customer & Vehicle Dossier</span>
+                        <span id="modal-bj-plate-badge" class="font-mono font-black text-xs px-2.5 py-0.5 rounded bg-slate-900 text-white">ABC 1234</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+                        <div>
+                            <span class="text-gray-500 font-semibold block text-[10px]">Customer Name</span>
+                            <strong id="modal-bj-cust-name" class="text-gray-900 font-bold">Juan Dela Cruz</strong>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 font-semibold block text-[10px]">Vehicle Model</span>
+                            <strong id="modal-bj-vehicle" class="text-gray-900 font-bold">Toyota Vios 1.3E</strong>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 font-semibold block text-[10px]">Previous Service</span>
+                            <span id="modal-bj-prev-cat" class="text-red-600 font-bold">Periodic Maintenance (PMS)</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-500 font-semibold block text-[10px]">Previous Date / Ref</span>
+                            <span id="modal-bj-prev-ref" class="text-gray-700 font-bold">2026-08-15 (#1042)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input: Return Reason / Symptom -->
+                <div>
+                    <label class="block text-[11px] text-gray-800 font-black uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span>Customer Return Complaint / Issue Symptom <span class="text-red-600">*</span></span>
+                        <span class="text-[10px] text-gray-400 font-medium lowercase">required</span>
+                    </label>
+                    <textarea id="modal-bj-concern-input" rows="3" placeholder="Describe the customer's return issue (e.g. Squeaking sound persists when braking, Check Engine light came back, Oil leak under vehicle, AC blowing warm air)..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold text-gray-900 outline-none focus:border-red-600 focus:bg-white transition shadow-2xs"></textarea>
+                </div>
+
+                <!-- Input: Category of Concern -->
+                <div>
+                    <label class="block text-[11px] text-gray-800 font-black uppercase tracking-wider mb-1.5">Primary Concern Category</label>
+                    <select id="modal-bj-category-select" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                        <option value="Brake System">Brake System / Suspension</option>
+                        <option value="Periodic Maintenance (PMS)">Periodic Maintenance (PMS)</option>
+                        <option value="Engine & Transmission">Engine & Transmission</option>
+                        <option value="Electrical / Battery">Electrical / Battery & Wiring</option>
+                        <option value="Air Conditioning">Air Conditioning & Climate</option>
+                        <option value="General Mechanical Repair">General Mechanical Repair</option>
+                        <option value="Other Return Concern">Other Return Concern</option>
+                    </select>
+                </div>
+
+                <!-- Policy Notice -->
+                <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-[11px] text-gray-600 flex items-start gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"></i>
+                    <span><strong>Warranty Notice:</strong> Official warranty coverage and labor fees are evaluated by Service Advisors and Management upon physical inspection.</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 shrink-0">
+                <button type="button" onclick="closeBackJobReasonModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="submitBackJobWithReason()" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-amber-600/20 transition flex items-center gap-2 cursor-pointer">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i> Proceed to Intake
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- OFFLINE NETWORK STATUS SCREEN (Guaranteed Fallback Screen for Disconnections) -->
     <div id="offline-network-screen" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center space-y-5 transform transition-all">
@@ -4990,7 +5221,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.82"></script>
+    <script src="js/app.js?v=3.85"></script>
 </body>
 
 </html>
