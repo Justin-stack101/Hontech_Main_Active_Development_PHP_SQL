@@ -3,8 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> HonTech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>HonTech AutoCenter</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <!-- 100% SELF-CONTAINED LOCAL OFFLINE SCRIPTS (ZERO RELIANCE ON INTERNET) -->
     <script src="js/tailwind.cdn.js"></script>
@@ -40,6 +43,18 @@
     <script src="js/vendor/chart.min.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <style>
+        /* Mobile Touch & Scroll Utilities */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .touch-scroll { -webkit-overflow-scrolling: touch; }
+        
+        /* Mobile Form Input Focus Guard: Prevent iOS auto-zoom */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+
         /* CRITICAL OFFLINE DEFENSIVE RULES (Guaranteed Hiding Without Breaking Layouts) */
         .hidden,
         [hidden],
@@ -2351,19 +2366,19 @@
                         </div>
                     </div>
 
-                    <!-- Quick Filter Tabs Pills -->
-                    <div class="flex items-center gap-2 pt-2 border-t border-gray-100 flex-wrap">
-                        <span class="text-[10px] font-black uppercase text-gray-400 mr-1">Quick Filters:</span>
-                        <button type="button" id="lookup-pill-all" onclick="setLookupFilterTab('all')" class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5">
+                    <!-- Quick Filter Tabs Pills (Smooth Horizontal Touch-Scroll on Mobile) -->
+                    <div class="flex items-center gap-2 pt-2 border-t border-gray-100 overflow-x-auto no-scrollbar pb-1.5 touch-scroll flex-nowrap md:flex-wrap">
+                        <span class="text-[10px] font-black uppercase text-gray-400 mr-1 shrink-0">Filters:</span>
+                        <button type="button" id="lookup-pill-all" onclick="setLookupFilterTab('all')" class="px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap">
                             <i data-lucide="layers" class="w-3.5 h-3.5"></i> All Customers
                         </button>
-                        <button type="button" id="lookup-pill-regulars" onclick="setLookupFilterTab('regulars')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 transition cursor-pointer flex items-center gap-1.5">
+                        <button type="button" id="lookup-pill-regulars" onclick="setLookupFilterTab('regulars')" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap">
                             <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i> Regulars (2+ Visits)
                         </button>
-                        <button type="button" id="lookup-pill-backjobs" onclick="setLookupFilterTab('backjobs')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition cursor-pointer flex items-center gap-1.5">
+                        <button type="button" id="lookup-pill-backjobs" onclick="setLookupFilterTab('backjobs')" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap">
                             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600"></i> Past Back-Jobs
                         </button>
-                        <button type="button" id="lookup-pill-duepms" onclick="setLookupFilterTab('duepms')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5">
+                        <button type="button" id="lookup-pill-duepms" onclick="setLookupFilterTab('duepms')" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap">
                             <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-500"></i> Due for PMS
                         </button>
                     </div>
@@ -2372,7 +2387,7 @@
                 <!-- Main Two-Column Layout (Left: Search Results List | Right: Customer Dossier & Back-Job Prompt) -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <!-- Left: Customer Results List -->
-                    <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 md:p-5 flex flex-col min-h-[500px]">
+                    <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl shadow-sm p-4 md:p-5 flex flex-col min-h-[420px]">
                         <div class="flex items-center justify-between border-b border-gray-150 pb-3 mb-3">
                             <span class="text-xs font-black uppercase tracking-wider text-gray-700 flex items-center gap-2">
                                 <i data-lucide="users" class="w-4 h-4 text-red-600"></i> Matching Customers
@@ -2380,14 +2395,14 @@
                             <span id="lookup-matches-badge" class="text-[10px] font-bold text-gray-500 uppercase">0 Found</span>
                         </div>
                         
-                        <div id="lookup-results-list" class="flex-1 overflow-y-auto space-y-2.5 max-h-[620px] custom-scroll pr-1">
+                        <div id="lookup-results-list" class="flex-1 overflow-y-auto space-y-2.5 max-h-[620px] custom-scroll touch-scroll pr-1">
                             <!-- Dynamically populated customer list -->
                         </div>
                     </div>
 
                     <!-- Right: Customer Dossier & Back-Job Action Card -->
                     <div class="lg:col-span-7 space-y-6">
-                        <div id="lookup-dossier-empty" class="bg-white border border-dashed border-gray-300 rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[500px] shadow-sm">
+                        <div id="lookup-dossier-empty" class="bg-white border border-dashed border-gray-300 rounded-2xl p-8 md:p-12 text-center flex flex-col items-center justify-center min-h-[420px] shadow-sm">
                             <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-4">
                                 <i data-lucide="search" class="w-8 h-8"></i>
                             </div>
@@ -2397,15 +2412,15 @@
 
                         <div id="lookup-dossier-card" class="hidden space-y-6">
                             <!-- Customer Details Header Card -->
-                            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-2xs">
                                 <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-150 pb-5">
                                     <div class="flex items-center gap-3.5">
                                         <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center font-black text-lg shrink-0">
                                             <i data-lucide="user" class="w-6 h-6"></i>
                                         </div>
                                         <div>
-                                            <h3 id="dossier-customer-name" class="text-lg font-black text-slate-900">Customer Name</h3>
-                                            <div class="flex items-center gap-2.5 mt-1 text-xs text-slate-500 font-medium flex-wrap">
+                                            <h3 id="dossier-customer-name" class="text-base sm:text-lg font-black text-slate-900">Customer Name</h3>
+                                            <div class="flex items-center gap-2 mt-1 text-xs text-slate-500 font-medium flex-wrap">
                                                 <button type="button" onclick="copyCustomerPhone()" class="hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded border border-slate-200" title="Click to copy contact number">
                                                     <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i> <span id="dossier-customer-phone" class="font-bold text-slate-800">09XX-XXX-XXXX</span> <i data-lucide="copy" class="w-3 h-3 text-slate-400"></i>
                                                 </button>
@@ -2431,23 +2446,23 @@
                                 </div>
 
                                 <!-- 4 Quick Automotive Intelligence Stats (Unified Professional Palette) -->
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5">
-                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-5">
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3 sm:p-3.5 rounded-xl text-center">
                                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Visits</span>
-                                        <h4 id="dossier-total-visits" class="text-xl font-black text-slate-900 mt-0.5">1</h4>
+                                        <h4 id="dossier-total-visits" class="text-lg sm:text-xl font-black text-slate-900 mt-0.5">1</h4>
                                         <span id="dossier-loyalty-subtext" class="text-[10px] text-slate-500 font-medium block mt-0.5">Completed Intakes</span>
                                     </div>
-                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3 sm:p-3.5 rounded-xl text-center">
                                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Last Service</span>
                                         <h4 id="dossier-last-date" class="text-xs font-black text-slate-900 mt-1 truncate">YYYY-MM-DD</h4>
                                         <span id="dossier-last-category" class="text-[10px] text-slate-600 font-bold block mt-0.5 truncate">PMS</span>
                                     </div>
-                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3 sm:p-3.5 rounded-xl text-center">
                                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Next PMS Due</span>
                                         <h4 id="dossier-next-pms-date" class="text-xs font-black text-slate-900 mt-1 truncate">Approx. 40 Days</h4>
                                         <span class="text-[10px] text-slate-500 font-medium block mt-0.5">40-Day Interval</span>
                                     </div>
-                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3 sm:p-3.5 rounded-xl text-center">
                                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Primary Advisor</span>
                                         <h4 id="dossier-preferred-sa" class="text-xs font-black text-slate-900 mt-1 truncate">Service Advisor</h4>
                                         <span class="text-[10px] text-slate-500 font-medium block mt-0.5">Assigned Specialist</span>
@@ -2456,7 +2471,7 @@
                             </div>
 
                             <!-- Fast Intake & Back-Job Decision Actions Card (Clean Corporate Theme) -->
-                            <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-2xs space-y-3.5">
+                            <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-2xs space-y-3.5">
                                 <div class="flex items-start gap-3.5">
                                     <div class="p-2.5 bg-slate-100 text-slate-800 rounded-xl border border-slate-200 shrink-0">
                                         <i data-lucide="layers" class="w-5 h-5"></i>
@@ -2473,20 +2488,20 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-slate-100">
-                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="bg-slate-900 hover:bg-black text-white py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="min-h-[46px] bg-slate-900 hover:bg-black text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
                                         <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-300"></i> Regular Visit (PMS)
                                     </button>
-                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="bg-red-600 hover:bg-red-700 text-white py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="min-h-[46px] bg-red-600 hover:bg-red-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
                                         <i data-lucide="rotate-ccw" class="w-4 h-4 text-white"></i> Flag as Back-Job
                                     </button>
-                                    <button onclick="stayOnHistory()" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
+                                    <button onclick="stayOnHistory()" class="min-h-[46px] bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
                                         <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i> Review History
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Historical Repair Orders Timeline -->
-                            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-4 sm:p-6 space-y-4">
                                 <div class="flex items-center justify-between border-b border-gray-150 pb-3">
                                     <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
                                         <i data-lucide="clock" class="w-4 h-4 text-red-600"></i> Service & Repair History Logs
@@ -5273,7 +5288,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.94"></script>
+    <script src="js/app.js?v=3.95"></script>
 </body>
 
 </html>
