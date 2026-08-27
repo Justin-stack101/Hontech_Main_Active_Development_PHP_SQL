@@ -3226,67 +3226,67 @@
             <!-- WORKSHOP CAPACITY & BAY MANAGEMENT MODULE -->
             <div id="section-bays" class="section-content hidden fade-in space-y-6">
                 <!-- Module Header & Key Metrics -->
-                <div class="bg-gradient-to-r from-gray-900 via-gray-900 to-slate-900 text-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-800">
-                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div class="flex items-center gap-4">
-                            <div class="p-3.5 bg-red-600 rounded-2xl text-white shadow-lg shadow-red-600/30 flex items-center justify-center">
-                                <i data-lucide="layout-grid" class="w-8 h-8"></i>
+                <div class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                <i data-lucide="layout-grid" class="w-6 h-6"></i>
                             </div>
                             <div>
-                                <div class="flex items-center gap-2.5">
-                                    <h2 class="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Workshop Bays</h2>
-                                    <span id="bays-header-status-badge" class="bg-red-500/20 text-red-300 border border-red-500/40 text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">Floor Management</span>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h2 class="text-xl md:text-2xl font-black uppercase tracking-tight text-slate-900">Workshop Bays</h2>
+                                    <span id="bays-header-status-badge" class="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">Floor Management</span>
                                 </div>
-                                <p class="text-xs text-gray-400 font-semibold mt-1">Live Bay Allocations, Capacity Scaling & Real-Time Floor Operations</p>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">Live Bay Allocations, Capacity Scaling & Real-Time Floor Operations</p>
                             </div>
                         </div>
 
-                        <!-- Quick Floor Metrics -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="bg-gray-800/80 border border-gray-700/60 rounded-xl p-3 text-center">
-                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Total Bays</span>
-                                <span id="bays-stat-total" class="text-2xl font-black text-white">4</span>
+                        <!-- 4 Clean Telemetry Metric Cards -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center min-w-[90px]">
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Total Bays</span>
+                                <span id="bays-stat-total" class="text-xl font-black text-slate-900">4</span>
                             </div>
-                            <div class="bg-gray-800/80 border border-gray-700/60 rounded-xl p-3 text-center">
-                                <span class="text-[10px] text-red-400 font-bold uppercase tracking-wider block">In Service</span>
-                                <span id="bays-stat-occupied" class="text-2xl font-black text-red-400">0</span>
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center min-w-[90px]">
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">In Service</span>
+                                <span id="bays-stat-occupied" class="text-xl font-black text-slate-900">0</span>
                             </div>
-                            <div class="bg-gray-800/80 border border-gray-700/60 rounded-xl p-3 text-center">
-                                <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider block">Available</span>
-                                <span id="bays-stat-free" class="text-2xl font-black text-emerald-400">4</span>
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center min-w-[90px]">
+                                <span class="text-[10px] text-emerald-700 font-bold uppercase tracking-wider block">Available</span>
+                                <span id="bays-stat-free" class="text-xl font-black text-emerald-600">4</span>
                             </div>
-                            <div class="bg-gray-800/80 border border-gray-700/60 rounded-xl p-3 text-center">
-                                <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider block">Utilization</span>
-                                <span id="bays-stat-utilization" class="text-2xl font-black text-blue-400">0%</span>
+                            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-center min-w-[90px]">
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">Utilization</span>
+                                <span id="bays-stat-utilization" class="text-xl font-black text-slate-900">0%</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Workshop Capacity Configuration Card (Owner, Admin & Service Advisor) -->
-                <div id="bays-control-card" class="bg-white border border-gray-200 p-6 md:p-7 rounded-2xl shadow-md space-y-5">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                <div id="bays-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
-                            <div class="p-2.5 bg-red-50 text-red-600 rounded-xl">
+                            <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl border border-slate-200">
                                 <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Capacity Configuration</h3>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Scale Floor Service Bays (2 to 20 Bays)</p>
+                                <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Capacity Configuration</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">Scale Floor Service Bays (2 to 20 Bays)</p>
                             </div>
                         </div>
-                        <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full">4 Bays Active</span>
+                        <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 px-3 py-1 rounded-full">4 Bays Active</span>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
                         <div class="lg:col-span-5 space-y-2">
-                            <label class="text-[11px] text-gray-700 font-bold uppercase tracking-wider block">Total Active Service Bays</label>
+                            <label class="text-[11px] text-slate-700 font-bold uppercase tracking-wider block">Total Active Service Bays</label>
                             <div class="flex items-center gap-2">
-                                <button type="button" onclick="stepWorkshopBayCount(-1)" title="Decrease Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                <button type="button" onclick="stepWorkshopBayCount(-1)" title="Decrease Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
                                     <i data-lucide="minus" class="w-4 h-4"></i>
                                 </button>
                                 <div class="relative flex-1">
-                                    <select id="bays-module-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
+                                    <select id="bays-module-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-slate-900 focus:border-slate-900 focus:bg-white transition cursor-pointer appearance-none">
                                         <option value="2">2 Bays (Express Pod)</option>
                                         <option value="3">3 Bays</option>
                                         <option value="4">4 Bays (Standard Default)</option>
@@ -3303,9 +3303,9 @@
                                         <option value="18">18 Bays</option>
                                         <option value="20">20 Bays (Master Hub Max)</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 pointer-events-none absolute right-4 top-3.5"></i>
                                 </div>
-                                <button type="button" onclick="stepWorkshopBayCount(1)" title="Increase Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                <button type="button" onclick="stepWorkshopBayCount(1)" title="Increase Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
                                     <i data-lucide="plus" class="w-4 h-4"></i>
                                 </button>
                             </div>
@@ -3313,16 +3313,16 @@
 
                         <!-- Quick Presets -->
                         <div class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
-                            <span class="text-[10px] text-gray-400 font-black uppercase tracking-wider mr-1">Quick Presets:</span>
-                            <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">4 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">6 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">8 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">10 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">12 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">16 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">20 Bays</button>
-                            <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
-                                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-red-400"></i> Custom...
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Quick Presets:</span>
+                            <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">4 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">6 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">8 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">10 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">12 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">16 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">20 Bays</button>
+                            <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-slate-300"></i> Custom...
                             </button>
                         </div>
                     </div>
@@ -5320,7 +5320,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.99"></script>
+    <script src="js/app.js?v=4.00"></script>
 </body>
 
 </html>
