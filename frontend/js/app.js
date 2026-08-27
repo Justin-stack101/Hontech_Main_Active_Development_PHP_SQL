@@ -8501,6 +8501,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             filterCustomerLookup();
         }
 
+        let currentLookupFilterTab = 'all';
+        function setLookupFilterTab(tab) {
+            currentLookupFilterTab = tab;
+            const pills = ['all', 'regulars', 'backjobs', 'duepms'];
+            pills.forEach(p => {
+                const el = document.getElementById(`lookup-pill-${p}`);
+                if (el) {
+                    if (p === tab) {
+                        el.className = "px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5";
+                    } else {
+                        el.className = "px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-gray-200 transition cursor-pointer flex items-center gap-1.5";
+                    }
+                }
+            });
+            filterCustomerLookup();
+        }
+        window.setLookupFilterTab = setLookupFilterTab;
+
         function filterCustomerLookup() {
             const searchInput = document.getElementById('lookup-search-input');
             const branchFilter = document.getElementById('lookup-branch-filter');
@@ -8518,6 +8536,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (branch !== 'all') {
                     const hasBranchJob = cust.jobs.some(j => (j.branch || '').toLowerCase() === branch.toLowerCase());
                     if (!hasBranchJob && cust.branch.toLowerCase() !== branch.toLowerCase()) return false;
+                }
+
+                // Smart Tab Filter
+                if (currentLookupFilterTab === 'regulars') {
+                    if (cust.jobs.length < 2) return false;
+                } else if (currentLookupFilterTab === 'backjobs') {
+                    const hasBackJob = cust.jobs.some(j => {
+                        const cat = (j.category || '').toLowerCase();
+                        const remarks = (j.remarks || '').toLowerCase();
+                        const evalNotes = (j.evaluation || '').toLowerCase();
+                        return cat.includes('back-job') || cat.includes('backjob') || cat.includes('warranty') || 
+                               remarks.includes('back-job') || evalNotes.includes('back-job');
+                    });
+                    if (!hasBackJob) return false;
+                } else if (currentLookupFilterTab === 'duepms') {
+                    const latestJob = cust.jobs[0];
+                    if (!latestJob) return false;
+                    const d = new Date(latestJob.date || latestJob.created_at);
+                    if (isNaN(d.getTime())) return false;
+                    const diffDays = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24);
+                    if (diffDays < 30) return false; // Due for PMS if >30 days since last service
                 }
 
                 // Query search
@@ -8543,14 +8582,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (filtered.length === 0) {
                 listEl.innerHTML = `
-                    <div class="text-center py-12 px-4 border border-dashed border-gray-200 rounded-xl">
-                        <div class="w-10 h-10 mx-auto rounded-full bg-gray-100 flex items-center justify-center text-gray-400 mb-2">
-                            <i data-lucide="user-x" class="w-5 h-5"></i>
+                    <div class="text-center py-12 px-4 border border-dashed border-gray-200 rounded-2xl bg-gray-50/50 space-y-2">
+                        <div class="w-12 h-12 mx-auto rounded-2xl bg-red-50 text-red-500 flex items-center justify-center border border-red-100">
+                            <i data-lucide="user-x" class="w-6 h-6"></i>
                         </div>
-                        <p class="text-xs font-bold text-gray-700">No matching customer records</p>
-                        <p class="text-[10px] text-gray-400 font-medium mt-0.5">Customer may be a first-time visitor.</p>
-                        <button onclick="showSection('intake')" class="mt-3.5 inline-flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-sm cursor-pointer">
-                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> New Customer Intake
+                        <h5 class="text-xs font-black uppercase tracking-wider text-gray-800">No matching customer records</h5>
+                        <p class="text-[11px] text-gray-500 font-medium max-w-xs mx-auto">Try adjusting your search terms or filter tabs. First-time visitors can be registered immediately.</p>
+                        <button onclick="showSection('intake')" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm cursor-pointer">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5 text-red-400"></i> New Customer Intake
                         </button>
                     </div>
                 `;
@@ -8564,25 +8603,43 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const latestJob = cust.jobs[0] || {};
                 const lastDate = latestJob.date || latestJob.created_at || 'Recent';
                 const lastCategory = latestJob.category || 'Service';
+                const hasBackJob = cust.jobs.some(j => (j.category || '').toLowerCase().includes('back-job') || (j.category || '').toLowerCase().includes('warranty'));
+                const isRegular = cust.jobs.length >= 2;
+
+                const initials = (cust.name || 'C').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
                 html += `
                     <div onclick="selectCustomerForLookup('${cust.key.replace(/'/g, "\\'")}')" 
-                        class="p-3.5 rounded-xl border transition cursor-pointer select-none ${isSelected ? 'bg-red-50/80 border-red-500 shadow-sm' : 'bg-gray-50 hover:bg-gray-100 border-gray-200 hover:border-gray-300'}">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="min-w-0 flex-1">
-                                <div class="flex items-center gap-2">
-                                    <h4 class="text-xs font-black text-gray-900 truncate">${cust.name}</h4>
-                                    <span class="font-mono text-[9px] font-black px-1.5 py-0.5 bg-gray-200 text-gray-800 rounded tracking-wider shrink-0">${cust.plate}</span>
+                        class="p-4 rounded-2xl border transition-all cursor-pointer select-none space-y-2.5 relative group ${isSelected ? 'bg-red-50/50 border-red-600 ring-2 ring-red-600/30 shadow-sm' : 'bg-white hover:bg-gray-50/80 border-gray-200 hover:border-gray-300'}">
+                        
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-10 h-10 rounded-xl ${isSelected ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 group-hover:bg-red-50 group-hover:text-red-600'} flex items-center justify-center font-black text-xs shrink-0 transition">
+                                    ${initials}
                                 </div>
-                                <p class="text-[10px] text-gray-500 font-semibold truncate mt-0.5">${cust.vehicle}</p>
+                                <div class="min-w-0">
+                                    <h4 class="text-xs font-black text-gray-900 truncate flex items-center gap-1.5">
+                                        ${cust.name}
+                                        ${isRegular ? '<span class="text-amber-500" title="Returning Regular">⭐</span>' : ''}
+                                    </h4>
+                                    <p class="text-[10.5px] text-gray-500 font-semibold truncate">${cust.vehicle}</p>
+                                </div>
                             </div>
-                            <span class="text-[9px] font-black px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-700 shrink-0">
-                                ${cust.jobs.length} ${cust.jobs.length === 1 ? 'visit' : 'visits'}
+                            <span class="font-mono font-black text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-900 text-white' : 'bg-gray-100 text-gray-800 border border-gray-200'} shrink-0">
+                                ${cust.plate !== 'NO-PLATE' ? cust.plate : 'NO-PLATE'}
                             </span>
                         </div>
-                        <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-200/60 text-[10px] text-gray-500 font-medium">
-                            <span class="flex items-center gap-1"><i data-lucide="wrench" class="w-3 h-3 text-red-500"></i> ${lastCategory}</span>
-                            <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3 text-gray-400"></i> ${lastDate}</span>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-[10px] text-gray-500 font-medium">
+                            <span class="flex items-center gap-1 font-semibold text-gray-700 truncate max-w-[170px]">
+                                <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0"></i> ${lastCategory}
+                            </span>
+                            <div class="flex items-center gap-2 shrink-0">
+                                ${hasBackJob ? '<span class="text-[9px] font-black uppercase text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">Back-Job</span>' : ''}
+                                <span class="px-2 py-0.5 rounded-full bg-gray-100 font-bold text-gray-700 text-[9.5px]">
+                                    ${cust.jobs.length} ${cust.jobs.length === 1 ? 'Visit' : 'Visits'}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -8591,7 +8648,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             listEl.innerHTML = html;
             if (window.lucide) window.lucide.createIcons();
 
-            // If a customer was already selected and is in the list, keep them displayed; otherwise display the first result
+            // Keep selected customer synchronized
             if (selectedLookupCustomerKey && customerLookupRegistry[selectedLookupCustomerKey]) {
                 selectCustomerForLookup(selectedLookupCustomerKey, false);
             } else if (filtered.length > 0) {
@@ -8604,6 +8661,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const branchFilter = document.getElementById('lookup-branch-filter');
             if (searchInput) searchInput.value = '';
             if (branchFilter) branchFilter.value = 'all';
+            currentLookupFilterTab = 'all';
+            const pills = ['all', 'regulars', 'backjobs', 'duepms'];
+            pills.forEach(p => {
+                const el = document.getElementById(`lookup-pill-${p}`);
+                if (el) {
+                    el.className = p === 'all' 
+                        ? "px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5"
+                        : "px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-gray-200 transition cursor-pointer flex items-center gap-1.5";
+                }
+            });
             filterCustomerLookup();
         }
 
@@ -8761,10 +8828,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         title="Print Customer Claim Stub & Gate Pass">
                                         <i data-lucide="printer" class="w-3 h-3 text-slate-600"></i> Stub
                                     </button>
-                                    <button onclick="confirmSpecificBackJob('${jobId}', '${category.replace(/'/g, "\\'")}', '${date}')" 
-                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95"
-                                        title="Create warranty back-job for this visit">
-                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Back-Job
+                                    <button onclick="openBackJobReasonModal('${jobId}')" 
+                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
+                                        title="Flag this specific service order as a Back-Job return">
+                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Flag Back-Job
                                     </button>
                                 </div>
                             </div>

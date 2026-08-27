@@ -2345,10 +2345,27 @@
                                 <option value="Marikina Branch">Marikina Branch</option>
                                 <option value="Regalado Branch">Regalado Branch</option>
                             </select>
-                            <button type="button" onclick="clearCustomerLookupSearch()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shrink-0 flex items-center gap-1.5" title="Reset Search / Clear Filter">
+                            <button type="button" onclick="clearCustomerLookupSearch()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shrink-0 flex items-center gap-1.5 shadow-2xs" title="Reset Search / Clear Filter">
                                 <i data-lucide="x-circle" class="w-3.5 h-3.5 text-gray-500"></i> Clear
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Quick Filter Tabs Pills -->
+                    <div class="flex items-center gap-2 pt-2 border-t border-gray-100 flex-wrap">
+                        <span class="text-[10px] font-black uppercase text-gray-400 mr-1">Quick Filters:</span>
+                        <button type="button" id="lookup-pill-all" onclick="setLookupFilterTab('all')" class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> All Customers
+                        </button>
+                        <button type="button" id="lookup-pill-regulars" onclick="setLookupFilterTab('regulars')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600 transition cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i> Regulars (2+ Visits)
+                        </button>
+                        <button type="button" id="lookup-pill-backjobs" onclick="setLookupFilterTab('backjobs')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600"></i> Past Back-Jobs
+                        </button>
+                        <button type="button" id="lookup-pill-duepms" onclick="setLookupFilterTab('duepms')" class="px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-500"></i> Due for PMS
+                        </button>
                     </div>
                 </div>
 
@@ -5243,7 +5260,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.87"></script>
+    <script src="js/app.js?v=3.88"></script>
 </body>
 
 </html>
