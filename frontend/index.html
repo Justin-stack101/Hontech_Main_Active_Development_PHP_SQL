@@ -458,85 +458,107 @@
                         </div>
 
                         <!-- Developer Credentials & Testing Tools (Collapsible / Minimalist & Professional) -->
-                        <div class="bg-gray-50/80 border border-gray-200 rounded-xl p-4 mt-4 select-none">
-                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-0.5">
-                                <div class="flex items-center gap-2">
-                                    <i data-lucide="terminal" class="w-3.5 h-3.5 text-red-600"></i>
-                                    <span class="text-[11px] font-black uppercase tracking-wider text-gray-700">Developer Credentials & Testing</span>
+                        <div class="bg-gray-50/90 border border-gray-200 rounded-2xl p-4 mt-4 select-none shadow-2xs">
+                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-1">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="p-1 bg-red-100 text-red-600 rounded-md">
+                                        <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                                    </div>
+                                    <span class="text-xs font-black uppercase tracking-wider text-gray-800">Developer Credentials & Testing</span>
                                 </div>
                                 <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-400 w-4 h-4 transition-transform duration-200"></i>
                             </div>
                             
-                            <div id="dev-credentials-grid" class="hidden space-y-3 mt-3 pt-3 border-t border-gray-200">
+                            <div id="dev-credentials-grid" class="hidden space-y-3.5 mt-3 pt-3.5 border-t border-gray-200">
                                 <!-- 1-Click Role Direct Access -->
-                                <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-2xs">
-                                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-gray-100">
-                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Instant Role Login</span>
-                                        <button type="button" onclick="openMobileConnectModal()" class="text-[9px] font-black uppercase text-gray-700 hover:text-red-600 border border-gray-300 hover:border-red-400 px-2 py-0.5 rounded-md transition cursor-pointer bg-gray-50 flex items-center gap-1">
-                                            <i data-lucide="qr-code" class="w-3 h-3"></i> Mobile Connect
+                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-2.5">
+                                    <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
+                                            <i data-lucide="zap" class="w-3 h-3 text-amber-500"></i> Instant Role Login
+                                        </span>
+                                        <button type="button" onclick="openMobileConnectModal()" class="text-[9.5px] font-black uppercase text-gray-700 hover:text-red-600 border border-gray-200 hover:border-red-300 px-2.5 py-1 rounded-lg transition cursor-pointer bg-gray-50 flex items-center gap-1 shadow-2xs">
+                                            <i data-lucide="qr-code" class="w-3 h-3 text-gray-500"></i> Mobile QR
                                         </button>
                                     </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
-                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">OWNER</span>
-                                            <span class="text-[11px] font-black text-gray-900 block truncate">Global Admin</span>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                            <div class="flex items-center justify-between mb-0.5">
+                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Global</span>
+                                            </div>
+                                            <strong class="text-xs font-black text-gray-900 block">Owner</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
-                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">ADMIN</span>
-                                            <span class="text-[11px] font-black text-gray-900 block truncate">Marikina</span>
+                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                            <div class="flex items-center justify-between mb-0.5">
+                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Marikina</span>
+                                            </div>
+                                            <strong class="text-xs font-black text-gray-900 block">Administrator</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
-                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">ADVISOR</span>
-                                            <span class="text-[11px] font-black text-gray-900 block truncate">Shop Floor</span>
+                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                            <div class="flex items-center justify-between mb-0.5">
+                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Floor</span>
+                                            </div>
+                                            <strong class="text-xs font-black text-gray-900 block">Service Advisor</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
-                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">TECHNICIAN</span>
-                                            <span class="text-[11px] font-black text-gray-900 block truncate">Bay Lead</span>
+                                        <button type="button" onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                            <div class="flex items-center justify-between mb-0.5">
+                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Lead</span>
+                                            </div>
+                                            <strong class="text-xs font-black text-gray-900 block">Technician</strong>
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- Role Quick-Select Accounts -->
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px]">
-                                     <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Owner</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">owner@hontech.com</span>
-                                     </button>
-                                     <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Admin (Main)</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">admin@hontech.com</span>
-                                     </button>
-                                     <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Staff (Main)</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">staff@hontech.com</span>
-                                     </button>
-                                     <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Advisor (Main)</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">sa@hontech.com</span>
-                                     </button>
-                                     <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Admin (East)</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">admin.east@hontech...</span>
-                                     </button>
-                                     <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
-                                         <span class="font-black text-gray-900 block text-[10px] truncate">Staff (East)</span>
-                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">staff.east@hontech...</span>
-                                     </button>
+                                <!-- Multi-Branch Test Accounts -->
+                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-2">
+                                    <div class="pb-1.5 border-b border-gray-100 flex items-center justify-between">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Multi-Branch Test Accounts</span>
+                                        <span class="text-[9px] font-bold text-gray-400">Marikina & East</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Owner (Global)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">owner@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Admin (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Staff (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Admin (East)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin.east@...</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                            <span class="font-black text-gray-900 block text-[11px]">Staff (East)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff.east@...</span>
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <!-- Utility & Diagnostics Actions -->
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-2 border-t border-gray-200">
-                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
-                                        Google Auth
+                                <div class="grid grid-cols-2 gap-2 pt-1">
+                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i> Google Auth
                                     </button>
-                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
-                                        Dev Mailbox
+                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-emerald-600"></i> Dev Mailbox
                                     </button>
-                                    <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
-                                        Test Crash
+                                    <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-red-50 border border-red-200 text-red-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-600"></i> Test Crash
                                     </button>
-                                    <button type="button" onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1">
-                                        <i data-lucide="wifi-off" class="w-3 h-3 text-amber-600"></i> Lost Conn
+                                    <button type="button" onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-600"></i> Lost Conn
                                     </button>
                                 </div>
                             </div>
@@ -5221,7 +5243,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.85"></script>
+    <script src="js/app.js?v=3.86"></script>
 </body>
 
 </html>
