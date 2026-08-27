@@ -8609,12 +8609,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const initials = (cust.name || 'C').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
                 html += `
-                    <div onclick="selectCustomerForLookup('${cust.key.replace(/'/g, "\\'")}')" 
-                        class="p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group ${isSelected ? 'bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300'}">
+                    <div onclick="selectCustomerForLookup('${encodeURIComponent(cust.key)}')" 
+                        data-cust-key="${encodeURIComponent(cust.key)}"
+                        class="lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group ${isSelected ? 'bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300'}">
                         
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex items-center gap-2.5 min-w-0">
-                                <div class="w-9 h-9 rounded-lg ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'} flex items-center justify-center font-black text-xs shrink-0 transition">
+                                <div class="lookup-avatar w-9 h-9 rounded-lg ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'} flex items-center justify-center font-black text-xs shrink-0 transition">
                                     ${initials}
                                 </div>
                                 <div class="min-w-0">
@@ -8625,7 +8626,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <p class="text-[10.5px] text-slate-500 font-medium truncate">${cust.vehicle}</p>
                                 </div>
                             </div>
-                            <span class="font-mono font-bold text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-800 border border-slate-200'} shrink-0">
+                            <span class="lookup-plate font-mono font-bold text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-800 border border-slate-200'} shrink-0">
                                 ${cust.plate !== 'NO-PLATE' ? cust.plate : 'NO-PLATE'}
                             </span>
                         </div>
@@ -8674,9 +8675,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             filterCustomerLookup();
         }
 
-        function selectCustomerForLookup(customerKey, reFilterList = true) {
-            selectedLookupCustomerKey = customerKey;
-            const cust = customerLookupRegistry[customerKey];
+        function selectCustomerForLookup(rawCustomerKey, reFilterList = true) {
+            if (!rawCustomerKey) return;
+            const decodedKey = decodeURIComponent(rawCustomerKey);
+            selectedLookupCustomerKey = decodedKey;
+            const cust = customerLookupRegistry[decodedKey] || customerLookupRegistry[rawCustomerKey];
 
             const emptyState = document.getElementById('lookup-dossier-empty');
             const cardState = document.getElementById('lookup-dossier-card');
@@ -8841,13 +8844,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 timelineEl.innerHTML = historyHTML;
             }
 
-            if (reFilterList) {
-                // Update selection highlight in list without full re-render
-                document.querySelectorAll('#lookup-results-list > div').forEach(div => {
-                    div.classList.remove('bg-red-50/80', 'border-red-500', 'shadow-sm');
-                    div.classList.add('bg-gray-50', 'border-gray-200');
-                });
-            }
+            // Dynamically update card selection highlights on the left list without wiping their styling
+            document.querySelectorAll('#lookup-results-list .lookup-item-card').forEach(card => {
+                const cardKey = decodeURIComponent(card.getAttribute('data-cust-key') || '');
+                const isCurrent = cardKey === decodedKey;
+                if (isCurrent) {
+                    card.className = "lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs";
+                    const avatar = card.querySelector('.lookup-avatar');
+                    if (avatar) avatar.className = "lookup-avatar w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-xs shrink-0 transition";
+                    const plate = card.querySelector('.lookup-plate');
+                    if (plate) plate.className = "lookup-plate font-mono font-bold text-[10px] px-2 py-0.5 rounded bg-slate-900 text-white shrink-0";
+                } else {
+                    card.className = "lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300";
+                    const avatar = card.querySelector('.lookup-avatar');
+                    if (avatar) avatar.className = "lookup-avatar w-9 h-9 rounded-lg bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center font-black text-xs shrink-0 transition";
+                    const plate = card.querySelector('.lookup-plate');
+                    if (plate) plate.className = "lookup-plate font-mono font-bold text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200 shrink-0";
+                }
+            });
 
             if (window.lucide) window.lucide.createIcons();
         }
