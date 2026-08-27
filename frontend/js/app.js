@@ -2208,28 +2208,93 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (!plate || !name) return showSystemToast("Plate and Name are required.", "error");
 
-            // ACTIVE DUPLICATE RECORD GUARD (Prevents Accidental Multiple Bookings for the Same Vehicle)
-            const normalizedPlate = plate.replace(/[\s-]/g, '').toUpperCase();
-            if (normalizedPlate !== 'NOPLATE' && normalizedPlate.length >= 3) {
-                const existingActiveJob = allJobs.find(j => {
-                    const jPlate = (j.plate || '').replace(/[\s-]/g, '').toUpperCase();
-                    const isSamePlate = jPlate === normalizedPlate;
-                    const isActive = j.status !== 'Released' && j.status !== 'Completed' && j.status !== 'Cancelled';
-                    return isSamePlate && isActive;
-                });
+            let pendingDuplicateIntakePayload = null;
 
-                if (existingActiveJob) {
-                    const existingStatus = existingActiveJob.status || 'Pending';
-                    const existingSource = existingActiveJob.source || 'Inquiry';
-                    const existingTime = existingActiveJob.appt_time || existingActiveJob.arrival || 'Today';
-                    const confirmAdd = confirm(
-                        `⚠️ DUPLICATE INTAKE DETECTED!\n\nVehicle with Plate "${plate}" already has an active ${existingSource} record:\n• Status: ${existingStatus}\n• Time: ${existingTime}\n\nDo you want to create an additional entry for this vehicle anyway? Click CANCEL to stop duplicate submission.`
-                    );
-                    if (!confirmAdd) {
-                        return;
+            async function executeIntakeSubmission(payload) {
+                const submitBtn = document.getElementById('btn-submit-intake');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'pointer-events-none');
+                }
+
+                try {
+                    await apiRequest('/api/jobs', {
+                        method: 'POST',
+                        body: payload
+                    });
+
+                    await loadData();
+                    showSystemToast(`${payload.plate} added successfully.`, 'success');
+
+                    ['plate', 'name', 'contact', 'vehicle', 'arrival', 'appt-time', 'concern'].forEach(id => {
+                        if (document.getElementById(`intake-${id}`)) document.getElementById(`intake-${id}`).value = '';
+                    });
+
+                    const catSelect = document.getElementById('intake-category');
+                    if (catSelect) catSelect.value = 'PMS';
+                    const catOther = document.getElementById('intake-category-other');
+                    if (catOther) {
+                        catOther.value = '';
+                        catOther.classList.add('hidden');
+                    }
+                    updateLaneTypeOptionsForCategory('PMS');
+
+                    if (document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
+
+                    if (payload.source === 'Walk-in') updateStubPreview();
+                    renderStaffTables();
+                } catch (err) {
+                    showSystemToast(err.message || 'Failed to submit intake.', 'error');
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-50', 'pointer-events-none');
                     }
                 }
             }
+
+            function showDuplicateIntakeWarningModal(existingJob, payload) {
+                window.pendingDuplicateIntakePayload = payload;
+                const modal = document.getElementById('modal-duplicate-intake-warning');
+                if (!modal) return;
+
+                if (document.getElementById('modal-dup-plate-badge')) {
+                    document.getElementById('modal-dup-plate-badge').innerText = payload.plate || 'NO-PLATE';
+                }
+                if (document.getElementById('modal-dup-status')) {
+                    document.getElementById('modal-dup-status').innerText = existingJob.status || 'Active';
+                }
+                if (document.getElementById('modal-dup-time')) {
+                    const src = existingJob.source || 'Inquiry';
+                    const time = existingJob.appt_time || existingJob.arrival || 'Today';
+                    document.getElementById('modal-dup-time').innerText = `${src} • ${time}`;
+                }
+                if (document.getElementById('modal-dup-sa')) {
+                    document.getElementById('modal-dup-sa').innerText = existingJob.saName || existingJob.handled_by || 'Front Desk SA';
+                }
+
+                modal.classList.remove('hidden');
+                if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+            }
+
+            function cancelDuplicateIntake() {
+                window.pendingDuplicateIntakePayload = null;
+                const modal = document.getElementById('modal-duplicate-intake-warning');
+                if (modal) modal.classList.add('hidden');
+                showSystemToast('Duplicate submission cancelled.', 'info', 'Intake Guard');
+            }
+            window.cancelDuplicateIntake = cancelDuplicateIntake;
+
+            async function proceedDuplicateIntake() {
+                const payload = window.pendingDuplicateIntakePayload;
+                window.pendingDuplicateIntakePayload = null;
+                const modal = document.getElementById('modal-duplicate-intake-warning');
+                if (modal) modal.classList.add('hidden');
+
+                if (!payload) return;
+                await executeIntakeSubmission(payload);
+            }
+            window.proceedDuplicateIntake = proceedDuplicateIntake;
 
             const isWalkin = source === 'Walk-in';
             let arrival = '';
@@ -2249,50 +2314,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 laneType = document.getElementById('intake-lane-type')?.value || 'Flexible Lane';
             }
 
-            // Button Debounce (Prevents Rapid Double Clicks)
-            const submitBtn = document.getElementById('btn-submit-intake');
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-50', 'pointer-events-none');
-            }
+            const intakePayload = {
+                source, dateReceived: date, plate, name, contact, category, vehicle, concern,
+                arrival, apptDate, apptTime, confirmed, laneType
+            };
 
-            try {
-                await apiRequest('/api/jobs', {
-                    method: 'POST',
-                    body: {
-                        source, dateReceived: date, plate, name, contact, category, vehicle, concern,
-                        arrival, apptDate, apptTime, confirmed, laneType
-                    }
+            // ACTIVE DUPLICATE RECORD GUARD (Custom Glassmorphic Modal)
+            const normalizedPlate = plate.replace(/[\s-]/g, '').toUpperCase();
+            if (normalizedPlate !== 'NOPLATE' && normalizedPlate.length >= 3) {
+                const existingActiveJob = allJobs.find(j => {
+                    const jPlate = (j.plate || '').replace(/[\s-]/g, '').toUpperCase();
+                    const isSamePlate = jPlate === normalizedPlate;
+                    const isActive = j.status !== 'Released' && j.status !== 'Completed' && j.status !== 'Cancelled';
+                    return isSamePlate && isActive;
                 });
 
-                await loadData();
-                showSystemToast(`${plate} added successfully.`, 'success');
-
-                ['plate', 'name', 'contact', 'vehicle', 'arrival', 'appt-time', 'concern'].forEach(id => {
-                    if (document.getElementById(`intake-${id}`)) document.getElementById(`intake-${id}`).value = '';
-                });
-
-                const catSelect = document.getElementById('intake-category');
-                if (catSelect) catSelect.value = 'PMS';
-                const catOther = document.getElementById('intake-category-other');
-                if (catOther) {
-                    catOther.value = '';
-                    catOther.classList.add('hidden');
-                }
-                updateLaneTypeOptionsForCategory('PMS');
-
-                if (document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
-
-                if (isWalkin) updateStubPreview();
-                renderStaffTables();
-            } catch (err) {
-                showSystemToast(err.message || 'Failed to submit intake.', 'error');
-            } finally {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.classList.remove('opacity-50', 'pointer-events-none');
+                if (existingActiveJob) {
+                    showDuplicateIntakeWarningModal(existingActiveJob, intakePayload);
+                    return;
                 }
             }
+
+            await executeIntakeSubmission(intakePayload);
         }
 
         async function updateJobField(jobId, field, value) {
@@ -7453,22 +7496,50 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.stepWorkshopBayCount = stepWorkshopBayCount;
 
-        function promptCustomBayCount() {
+        let tempCustomModalBayCount = 4;
+
+        function openCustomBayCapacityModal() {
             if (currentUserRole !== 'admin') {
                 showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
                 return;
             }
-            const current = getWorkshopBayCount();
-            const input = prompt(`Enter custom number of workshop bays (2 to 50 bays):`, current.toString());
-            if (input === null) return;
-            const parsed = parseInt(input, 10);
-            if (isNaN(parsed) || parsed < 2 || parsed > 50) {
-                showSystemToast('Please enter a valid bay capacity between 2 and 50.', 'error', 'Invalid Capacity');
-                return;
-            }
-            handleWorkshopBayCountChange(parsed);
+            tempCustomModalBayCount = getWorkshopBayCount();
+            const valEl = document.getElementById('modal-bay-stepper-value');
+            if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
+
+            const modal = document.getElementById('modal-custom-bay-capacity');
+            if (modal) modal.classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
         }
-        window.promptCustomBayCount = promptCustomBayCount;
+        window.openCustomBayCapacityModal = openCustomBayCapacityModal;
+        window.promptCustomBayCount = openCustomBayCapacityModal; // backward compatible alias
+
+        function closeCustomBayCapacityModal() {
+            const modal = document.getElementById('modal-custom-bay-capacity');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeCustomBayCapacityModal = closeCustomBayCapacityModal;
+
+        function adjustCustomModalBayCount(delta) {
+            tempCustomModalBayCount = Math.min(50, Math.max(2, tempCustomModalBayCount + Number(delta || 0)));
+            const valEl = document.getElementById('modal-bay-stepper-value');
+            if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
+        }
+        window.adjustCustomModalBayCount = adjustCustomModalBayCount;
+
+        function setCustomModalBayCount(count) {
+            tempCustomModalBayCount = Math.min(50, Math.max(2, parseInt(count, 10) || 4));
+            const valEl = document.getElementById('modal-bay-stepper-value');
+            if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
+        }
+        window.setCustomModalBayCount = setCustomModalBayCount;
+
+        function applyCustomModalBayCount() {
+            closeCustomBayCapacityModal();
+            handleWorkshopBayCountChange(tempCustomModalBayCount);
+            showSystemToast(`Workshop capacity successfully updated to ${tempCustomModalBayCount} active bays.`, 'success', 'Capacity Configured');
+        }
+        window.applyCustomModalBayCount = applyCustomModalBayCount;
 
         function handleWorkshopBayCountChange(newCount) {
             if (currentUserRole !== 'admin') {

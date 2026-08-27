@@ -5373,6 +5373,145 @@
                 <button type="button" onclick="submitBackJobWithReason()" class="px-8 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-xs md:text-sm uppercase tracking-wider shadow-2xs transition flex items-center gap-2 cursor-pointer">
                     <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i> Proceed to Intake
                 </button>
+    <!-- CUSTOM WORKSHOP BAY CAPACITY MODAL (Replaces native browser prompt) -->
+    <div id="modal-custom-bay-capacity" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 overflow-hidden flex flex-col transform transition-all my-auto">
+            
+            <!-- Modal Header -->
+            <div class="bg-white px-6 py-5 border-b border-slate-150 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
+                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Configure Bay Capacity</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-0.5">Administrator Facility Control</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeCustomBayCapacityModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-5 text-slate-700">
+                <!-- Large Stepper Display -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-between">
+                    <button type="button" onclick="adjustCustomModalBayCount(-1)" class="w-11 h-11 rounded-xl bg-white border border-slate-200 hover:border-slate-400 hover:bg-slate-100 text-slate-800 font-black text-lg flex items-center justify-center transition shadow-2xs cursor-pointer active:scale-95">
+                        <i data-lucide="minus" class="w-5 h-5"></i>
+                    </button>
+                    <div class="text-center">
+                        <div class="flex items-baseline justify-center gap-1.5">
+                            <span id="modal-bay-stepper-value" class="font-mono text-4xl font-black text-slate-900">4</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Bays</span>
+                        </div>
+                        <span class="text-[11px] font-semibold text-slate-500">Active Service Capacity</span>
+                    </div>
+                    <button type="button" onclick="adjustCustomModalBayCount(1)" class="w-11 h-11 rounded-xl bg-white border border-slate-200 hover:border-slate-400 hover:bg-slate-100 text-slate-800 font-black text-lg flex items-center justify-center transition shadow-2xs cursor-pointer active:scale-95">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Presets Grid -->
+                <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-wider text-slate-500 block">Quick Presets</label>
+                    <div class="grid grid-cols-5 gap-2">
+                        <button type="button" onclick="setCustomModalBayCount(4)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">4</button>
+                        <button type="button" onclick="setCustomModalBayCount(6)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">6</button>
+                        <button type="button" onclick="setCustomModalBayCount(8)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">8</button>
+                        <button type="button" onclick="setCustomModalBayCount(12)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">12</button>
+                        <button type="button" onclick="setCustomModalBayCount(16)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">16</button>
+                        <button type="button" onclick="setCustomModalBayCount(20)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">20</button>
+                        <button type="button" onclick="setCustomModalBayCount(24)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">24</button>
+                        <button type="button" onclick="setCustomModalBayCount(30)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">30</button>
+                        <button type="button" onclick="setCustomModalBayCount(40)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">40</button>
+                        <button type="button" onclick="setCustomModalBayCount(50)" class="py-2 rounded-xl border border-slate-200 hover:border-slate-900 bg-white hover:bg-slate-900 hover:text-white text-xs font-black transition cursor-pointer">50</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-500 flex items-center justify-between">
+                    <span>Allowed Capacity Range:</span>
+                    <strong class="font-bold text-slate-800">2 to 50 Bays</strong>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="closeCustomBayCapacityModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="applyCustomModalBayCount()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Apply Capacity
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- DUPLICATE INTAKE WARNING MODAL (Replaces native browser confirm) -->
+    <div id="modal-duplicate-intake-warning" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-amber-200 overflow-hidden flex flex-col transform transition-all my-auto">
+            
+            <!-- Modal Header -->
+            <div class="bg-amber-50/70 px-6 py-5 border-b border-amber-200/80 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-xs shrink-0">
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Duplicate Intake Detected</h3>
+                        <p class="text-xs text-amber-900/80 font-semibold mt-0.5">Vehicle Already Active in Workshop System</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cancelDuplicateIntake()" class="text-slate-400 hover:text-slate-700 hover:bg-amber-100/50 p-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-5 text-slate-700">
+                <p class="text-xs leading-relaxed text-slate-600">
+                    A vehicle with the matching plate number is currently in the active workshop queue. Please verify if this is an intentional repeat visit.
+                </p>
+
+                <!-- Active Record Summary Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                        <span class="text-[11px] font-black uppercase tracking-wider text-slate-400">Existing Active Ticket</span>
+                        <span id="modal-dup-plate-badge" class="font-mono font-bold text-xs bg-slate-900 text-white px-2.5 py-0.5 rounded-md">EAS 202</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-0.5 text-xs">
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Current Status</span>
+                            <span id="modal-dup-status" class="inline-flex items-center gap-1 font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded mt-0.5">
+                                Monitoring
+                            </span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Intake Source / Time</span>
+                            <strong id="modal-dup-time" class="text-slate-800 font-bold block mt-0.5">Online • 13:34</strong>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="text-slate-400 font-semibold block text-[11px]">Assigned Advisor</span>
+                            <span id="modal-dup-sa" class="text-slate-800 font-semibold block">Front Desk SA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900 flex items-start gap-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                    <span>To avoid duplicate repair orders, you may cancel this submission or proceed if this is an additional work order.</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="cancelDuplicateIntake()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel & Stop
+                </button>
+                <button type="button" onclick="proceedDuplicateIntake()" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase tracking-wider shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Create Additional Entry Anyway
+                </button>
             </div>
 
         </div>
@@ -5400,7 +5539,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.02"></script>
+    <script src="js/app.js?v=4.03"></script>
 </body>
 
 </html>
