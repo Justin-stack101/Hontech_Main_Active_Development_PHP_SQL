@@ -5146,66 +5146,66 @@
     </div>
 
     <!-- BACK-JOB RETURN REASON MODAL (Capture Customer Complaint First) -->
-    <div id="modal-backjob-reason" class="hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-gray-150 overflow-hidden flex flex-col transform transition-all">
+    <div id="modal-backjob-reason" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col transform transition-all">
             
             <!-- Modal Header -->
-            <div class="bg-slate-900 px-6 py-4 flex items-center justify-between shrink-0">
+            <div class="bg-white px-6 py-4 border-b border-slate-150 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="p-2 bg-amber-500 text-white rounded-xl shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 flex items-center justify-center shrink-0">
                         <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-black uppercase tracking-wider text-white">Flag as Back-Job / Repeat Service</h3>
-                        <p class="text-[10.5px] text-amber-400 font-bold uppercase tracking-wider">Record Return Complaint Before Intake</p>
+                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Flag as Back-Job Return</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Record customer return complaint before intake dispatch</p>
                     </div>
                 </div>
-                <button type="button" onclick="closeBackJobReasonModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                <button type="button" onclick="closeBackJobReasonModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-xl transition cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 space-y-4 text-xs text-gray-700">
+            <div class="p-6 space-y-4 text-xs text-slate-700">
                 <!-- Vehicle Context Summary Card -->
-                <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2">
+                <div class="bg-slate-50/70 border border-slate-200 rounded-xl p-4 space-y-2.5">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-amber-800">Customer & Vehicle Dossier</span>
-                        <span id="modal-bj-plate-badge" class="font-mono font-black text-xs px-2.5 py-0.5 rounded bg-slate-900 text-white">ABC 1234</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Customer & Vehicle Reference</span>
+                        <span id="modal-bj-plate-badge" class="font-mono font-bold text-xs px-2.5 py-0.5 rounded bg-slate-900 text-white">ABC 1234</span>
                     </div>
-                    <div class="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+                    <div class="grid grid-cols-2 gap-3 pt-1 text-[11px]">
                         <div>
-                            <span class="text-gray-500 font-semibold block text-[10px]">Customer Name</span>
-                            <strong id="modal-bj-cust-name" class="text-gray-900 font-bold">Juan Dela Cruz</strong>
+                            <span class="text-slate-500 font-medium block text-[10px]">Customer Name</span>
+                            <strong id="modal-bj-cust-name" class="text-slate-900 font-bold">Juan Dela Cruz</strong>
                         </div>
                         <div>
-                            <span class="text-gray-500 font-semibold block text-[10px]">Vehicle Model</span>
-                            <strong id="modal-bj-vehicle" class="text-gray-900 font-bold">Toyota Vios 1.3E</strong>
+                            <span class="text-slate-500 font-medium block text-[10px]">Vehicle Model</span>
+                            <strong id="modal-bj-vehicle" class="text-slate-900 font-bold">Toyota Vios 1.3E</strong>
                         </div>
                         <div>
-                            <span class="text-gray-500 font-semibold block text-[10px]">Previous Service</span>
-                            <span id="modal-bj-prev-cat" class="text-red-600 font-bold">Periodic Maintenance (PMS)</span>
+                            <span class="text-slate-500 font-medium block text-[10px]">Previous Service</span>
+                            <span id="modal-bj-prev-cat" class="text-slate-800 font-semibold">Periodic Maintenance (PMS)</span>
                         </div>
                         <div>
-                            <span class="text-gray-500 font-semibold block text-[10px]">Previous Date / Ref</span>
-                            <span id="modal-bj-prev-ref" class="text-gray-700 font-bold">2026-08-15 (#1042)</span>
+                            <span class="text-slate-500 font-medium block text-[10px]">Previous Date / Ref</span>
+                            <span id="modal-bj-prev-ref" class="text-slate-800 font-semibold">2026-08-15 (#1042)</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Input: Return Reason / Symptom -->
                 <div>
-                    <label class="block text-[11px] text-gray-800 font-black uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                    <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span>Customer Return Complaint / Issue Symptom <span class="text-red-600">*</span></span>
-                        <span class="text-[10px] text-gray-400 font-medium lowercase">required</span>
+                        <span class="text-[10px] text-slate-400 font-medium lowercase">required</span>
                     </label>
-                    <textarea id="modal-bj-concern-input" rows="3" placeholder="Describe the customer's return issue (e.g. Squeaking sound persists when braking, Check Engine light came back, Oil leak under vehicle, AC blowing warm air)..." class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold text-gray-900 outline-none focus:border-red-600 focus:bg-white transition shadow-2xs"></textarea>
+                    <textarea id="modal-bj-concern-input" rows="3" placeholder="Describe the customer's return issue (e.g. Squeaking sound persists when braking, Check Engine light came back, Oil leak under vehicle, AC blowing warm air)..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition shadow-2xs resize-none"></textarea>
                 </div>
 
                 <!-- Input: Category of Concern -->
                 <div>
-                    <label class="block text-[11px] text-gray-800 font-black uppercase tracking-wider mb-1.5">Primary Concern Category</label>
-                    <select id="modal-bj-category-select" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                    <label class="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">Primary Concern Category</label>
+                    <select id="modal-bj-category-select" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 font-semibold text-xs text-slate-900 outline-none focus:border-slate-900 focus:bg-white transition cursor-pointer">
                         <option value="Brake System">Brake System / Suspension</option>
                         <option value="Periodic Maintenance (PMS)">Periodic Maintenance (PMS)</option>
                         <option value="Engine & Transmission">Engine & Transmission</option>
@@ -5217,19 +5217,19 @@
                 </div>
 
                 <!-- Policy Notice -->
-                <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-[11px] text-gray-600 flex items-start gap-2">
-                    <i data-lucide="info" class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"></i>
-                    <span><strong>Warranty Notice:</strong> Official warranty coverage and labor fees are evaluated by Service Advisors and Management upon physical inspection.</span>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-[11px] text-slate-600 flex items-start gap-2.5">
+                    <i data-lucide="info" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
+                    <span><strong>Inspection Notice:</strong> Official warranty coverage, repair scope, and labor considerations are evaluated by Service Advisors and Management upon physical bay inspection.</span>
                 </div>
             </div>
 
             <!-- Modal Footer -->
-            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3 shrink-0">
-                <button type="button" onclick="closeBackJobReasonModal()" class="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-bold text-xs uppercase tracking-wider hover:bg-gray-100 transition cursor-pointer">
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="closeBackJobReasonModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer shadow-2xs">
                     Cancel
                 </button>
-                <button type="button" onclick="submitBackJobWithReason()" class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-amber-600/20 transition flex items-center gap-2 cursor-pointer">
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i> Proceed to Intake
+                <button type="button" onclick="submitBackJobWithReason()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i> Proceed to Intake
                 </button>
             </div>
 
@@ -5258,7 +5258,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.90"></script>
+    <script src="js/app.js?v=3.91"></script>
 </body>
 
 </html>
