@@ -2388,6 +2388,70 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             await updateJobField(jobId, 'saName', saNameValue);
         }
 
+        function openTicketTakeoverModal(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+
+            const modal = document.getElementById('modal-ticket-takeover');
+            if (!modal) return;
+
+            const idEl = document.getElementById('takeover-job-id');
+            if (idEl) idEl.value = jobId;
+            if (document.getElementById('takeover-plate-badge')) {
+                document.getElementById('takeover-plate-badge').innerText = job.plate || 'NO-PLATE';
+            }
+            if (document.getElementById('takeover-vehicle-model')) {
+                document.getElementById('takeover-vehicle-model').innerText = job.vehicle || 'Vehicle';
+            }
+            if (document.getElementById('takeover-current-sa')) {
+                document.getElementById('takeover-current-sa').innerText = job.saName || job.handled_by || 'Assigned SA';
+            }
+            if (document.getElementById('takeover-incoming-sa')) {
+                document.getElementById('takeover-incoming-sa').innerText = `${currentUserName || 'Service Advisor'} (You)`;
+            }
+
+            modal.classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+        }
+        window.openTicketTakeoverModal = openTicketTakeoverModal;
+
+        function closeTicketTakeoverModal() {
+            const modal = document.getElementById('modal-ticket-takeover');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeTicketTakeoverModal = closeTicketTakeoverModal;
+
+        async function confirmTicketTakeover() {
+            const idEl = document.getElementById('takeover-job-id');
+            const jobId = idEl ? idEl.value : '';
+            if (!jobId) return;
+
+            const selectedReasonEl = document.querySelector('input[name="takeover-reason"]:checked');
+            const reason = selectedReasonEl ? selectedReasonEl.value : 'Shift Handover';
+
+            closeTicketTakeoverModal();
+
+            let saNameValue = currentUserName;
+            if (!saNameValue.includes('(Advisor)')) {
+                saNameValue = `${currentUserName} (Advisor)`;
+            }
+
+            const targetJob = allJobs.find(j => j.id === jobId);
+            const prevSAName = targetJob ? (targetJob.saName || targetJob.handled_by || 'Previous SA') : 'Previous SA';
+
+            await updateJobField(jobId, 'saName', saNameValue);
+            
+            if (targetJob) {
+                targetJob.saName = saNameValue;
+                targetJob.handled_by = saNameValue;
+                showSystemToast(`Transferred vehicle (${targetJob.plate}) from ${prevSAName} to ${saNameValue} [${reason}].`, 'success', 'Ticket Handover');
+            }
+
+            if (typeof renderStaffTables === 'function') renderStaffTables();
+            if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+        }
+        window.confirmTicketTakeover = confirmTicketTakeover;
+
         async function setJobStatus(jobId, newStatus) {
             try {
                 // Auto-calculate goal status if moving to end states
@@ -2935,8 +2999,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const renderJobRows = (jobsList) => {
                     return jobsList.map((job, idx) => {
-                        const isEditable = isSA;
-                        
+                        const rawJobSA = job.saName || job.handled_by || job.sa || '';
+                        const cleanJobSA = rawJobSA.replace(/\s*\(Advisor\)\s*/i, '').trim();
+                        const cleanCurrentSA = (currentUserName || '').replace(/\s*\(Advisor\)\s*/i, '').trim();
+
+                        const isAssignedToMe = isSA && cleanJobSA !== '' && cleanJobSA !== '-' && cleanJobSA !== 'Front Desk SA' && cleanJobSA !== 'Unassigned' && (
+                            cleanJobSA.toLowerCase() === cleanCurrentSA.toLowerCase() ||
+                            rawJobSA.includes(currentUserName)
+                        );
+                        const isUnassigned = !rawJobSA || rawJobSA === '-' || rawJobSA === 'Front Desk SA' || rawJobSA === 'Unassigned';
+                        const isAssignedToOtherSA = isSA && !isUnassigned && !isAssignedToMe;
+
+                        // STRICT SINGLE-OWNER RULE: Only the assigned SA can edit this vehicle's operational fields
+                        const isEditable = isAssignedToMe;
 
                         // Re-evaluate occupied bays for this specific row excluding current job
                         const rowOccupiedBays = {};
@@ -3012,23 +3087,36 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     `}
                                     
                                     <div class="inline-flex items-center shrink-0">
-                                        ${job.saName ? `
-                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-800 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
+                                        ${isAssignedToMe ? `
+                                            <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-black uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
                                                 <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                                <span class="text-gray-500 font-medium">SA:</span>
-                                                <span class="text-gray-800 font-bold">${job.saName}</span>
+                                                <span class="text-emerald-700 font-bold">My Job:</span>
+                                                <span class="text-emerald-950 font-black">${job.saName || currentUserName}</span>
                                             </span>
-                                        ` : ((isAsst || isOwnerOrAdmin) ? `
-                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
-                                                <i data-lucide="user-minus" class="w-3.5 h-3.5 text-amber-500"></i>
-                                                <span>Unassigned</span>
-                                            </span>
-                                        ` : `
-                                            <button onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-gray-50 hover:bg-gray-900 text-gray-800 hover:text-white border border-gray-300 hover:border-gray-900 px-2.5 py-1 rounded-xl transition-all shadow-xs cursor-pointer active:scale-95">
-                                                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-blue-600"></i>
+                                        ` : isAssignedToOtherSA ? `
+                                            <div class="inline-flex items-center gap-1.5">
+                                                <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs" title="Locked: Assigned to another Service Advisor">
+                                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500"></i>
+                                                    <span class="text-slate-500 font-medium">SA:</span>
+                                                    <span class="text-slate-900 font-bold">${job.saName || job.handled_by}</span>
+                                                </span>
+                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider bg-white hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-300 hover:border-slate-900 px-2.5 py-1 rounded-xl transition cursor-pointer active:scale-95 shadow-2xs" title="Take over this vehicle if the assigned advisor is absent or on leave">
+                                                    <i data-lucide="refresh-cw" class="w-3 h-3 text-slate-500"></i>
+                                                    <span>Take Over</span>
+                                                </button>
+                                            </div>
+                                        ` : (isSA && isUnassigned) ? `
+                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider bg-slate-900 hover:bg-black text-white px-2.5 py-1 rounded-xl transition-all shadow-2xs cursor-pointer active:scale-95">
+                                                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-slate-300"></i>
                                                 <span>Assign to Me</span>
                                             </button>
-                                        `)}
+                                        ` : `
+                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-700 border border-gray-200 text-xs font-semibold uppercase tracking-wide px-2.5 py-1 rounded-xl shadow-2xs">
+                                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-slate-400"></i>
+                                                <span class="text-gray-500 font-medium">SA:</span>
+                                                <span class="text-gray-800 font-bold">${job.saName || job.handled_by || 'Unassigned'}</span>
+                                            </span>
+                                        `}
                                     </div>
 
                                     ${isEditable ? `
@@ -7355,6 +7443,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.getWorkshopBayCount = getWorkshopBayCount;
 
         function stepWorkshopBayCount(delta) {
+            if (currentUserRole !== 'admin') {
+                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+                return;
+            }
             const current = getWorkshopBayCount();
             const next = Math.min(50, Math.max(2, current + Number(delta || 0)));
             handleWorkshopBayCountChange(next);
@@ -7379,6 +7471,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.promptCustomBayCount = promptCustomBayCount;
 
         function handleWorkshopBayCountChange(newCount) {
+            if (currentUserRole !== 'admin') {
+                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+                return;
+            }
             const num = Math.min(50, Math.max(2, parseInt(newCount, 10) || 4));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             

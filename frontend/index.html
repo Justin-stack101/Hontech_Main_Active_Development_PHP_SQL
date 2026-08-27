@@ -2525,7 +2525,7 @@
                                         <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-300"></i> Regular Visit (PMS)
                                     </button>
                                     <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="min-h-[46px] bg-red-600 hover:bg-red-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-white"></i> Flag as Back-Job
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-white"></i> Back-Job Return Intake
                                     </button>
                                     <button onclick="stayOnHistory()" class="min-h-[46px] bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
                                         <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i> Review History
@@ -5067,14 +5067,14 @@
                     <!-- THE DIRECT BACK-JOB QUESTION -->
                     <div class="bg-amber-50 border border-amber-300 rounded-xl p-4 space-y-3">
                         <div class="flex items-center gap-2 text-amber-900 font-black text-xs uppercase tracking-wide">
-                            <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i> Back-Job (Warranty Return) ba ito?
+                            <i data-lucide="help-circle" class="w-4 h-4 text-amber-600"></i> Back-Job Return ba ito?
                         </div>
                         <p class="text-[11px] text-amber-800 font-medium leading-relaxed">
-                            Kung <strong>YES</strong>, mapupunta ang sasakyan sa <strong>Daily Intakes</strong> na naka-tag bilang Back-Job kasama ang previous repair reference. Kung <strong>NO</strong>, mananatili lang dito sa menu para sa viewing.
+                            Kung <strong>YES</strong>, bubuksan ang <strong>Reason & Complaint form</strong> para maitala ang concern bago pumasok sa Daily Intakes. Kung <strong>NO</strong>, mananatili lang dito sa menu para sa viewing.
                         </p>
                         <div class="grid grid-cols-2 gap-2 pt-1">
                             <button onclick="handleQuickMenuBackJobYes()" class="bg-amber-600 hover:bg-amber-700 text-white font-black py-2.5 px-3 rounded-xl text-xs uppercase tracking-wider shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
-                                <i data-lucide="check" class="w-4 h-4"></i> YES (Daily Intakes)
+                                <i data-lucide="check" class="w-4 h-4"></i> YES (Back-Job Intake)
                             </button>
                             <button onclick="handleQuickMenuBackJobNo()" class="bg-white hover:bg-gray-100 border border-amber-300 text-amber-900 font-black py-2.5 px-3 rounded-xl text-xs uppercase tracking-wider shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
                                 <i data-lucide="x" class="w-4 h-4"></i> NO (Stay Here)
@@ -5189,6 +5189,85 @@
                 <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">HonTech • STI College Marikina</span>
                 <button onclick="closeTermsModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
                     I Understand & Agree
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SERVICE ADVISOR TICKET TAKEOVER MODAL (Absence / Shift Handover) -->
+    <div id="modal-ticket-takeover" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-3 md:p-6">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden flex flex-col transform transition-all my-auto animate-in fade-in zoom-in-95 duration-150">
+            
+            <!-- Modal Header -->
+            <div class="bg-white px-6 py-5 border-b border-slate-150 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Service Ticket Takeover</h3>
+                        <p class="text-xs text-slate-500 font-medium mt-0.5">Transfer operational responsibility</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeTicketTakeoverModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 p-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 text-slate-700">
+                <input type="hidden" id="takeover-job-id">
+                
+                <!-- Vehicle Context Pill -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span id="takeover-plate-badge" class="font-mono font-black text-sm px-2.5 py-0.5 rounded-lg bg-slate-900 text-white">ABC 1234</span>
+                        <span id="takeover-vehicle-model" class="font-bold text-xs text-slate-800">Toyota Vios</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+                        <span class="text-slate-500">Current Assigned SA:</span>
+                        <strong id="takeover-current-sa" class="text-slate-900 font-black">Advisor A</strong>
+                    </div>
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Incoming SA:</span>
+                        <strong id="takeover-incoming-sa" class="text-emerald-700 font-black">Advisor B (You)</strong>
+                    </div>
+                </div>
+
+                <!-- Handover Reason Presets -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-black uppercase tracking-wider text-slate-900">Reason for Ticket Takeover</label>
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:border-slate-400 bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="takeover-reason" value="Advisor Absent / On Leave" checked class="text-slate-900 focus:ring-slate-900">
+                            <span class="text-xs font-bold text-slate-800">🏥 Assigned Advisor is Absent / On Leave</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:border-slate-400 bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="takeover-reason" value="Shift Handover" class="text-slate-900 focus:ring-slate-900">
+                            <span class="text-xs font-bold text-slate-800">⏰ Shift Handover / End of Shift</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 hover:border-slate-400 bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="takeover-reason" value="Emergency Customer Release" class="text-slate-900 focus:ring-slate-900">
+                            <span class="text-xs font-bold text-slate-800">🚨 Emergency / Expedited Customer Release</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Notice -->
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-800 flex items-start gap-2">
+                    <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                    <span>Once confirmed, this vehicle will be assigned to you with full operational controls, and an audit note will be logged.</span>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="closeTicketTakeoverModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmTicketTakeover()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-black text-xs uppercase tracking-wider shadow-2xs transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Transfer to Me
                 </button>
             </div>
 
@@ -5321,7 +5400,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.01"></script>
+    <script src="js/app.js?v=4.02"></script>
 </body>
 
 </html>
