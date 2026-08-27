@@ -8694,6 +8694,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (cardState) cardState.classList.remove('hidden');
 
             const latestJob = cust.jobs[0] || {};
+            const rawLastDate = latestJob.date || latestJob.created_at;
+
+            // Generate Initials Avatar
+            const initials = (cust.name || 'Customer').split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'CU';
+            if (document.getElementById('dossier-avatar-initials')) {
+                document.getElementById('dossier-avatar-initials').innerText = initials;
+            }
 
             if (document.getElementById('dossier-customer-name')) {
                 document.getElementById('dossier-customer-name').innerText = cust.name;
@@ -8707,34 +8714,46 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('dossier-vehicle-model')) {
                 document.getElementById('dossier-vehicle-model').innerText = cust.vehicle;
             }
-            if (document.getElementById('dossier-branch-badge')) {
-                document.getElementById('dossier-branch-badge').innerText = cust.branch || 'Marikina Branch';
+            if (document.getElementById('dossier-branch-text')) {
+                document.getElementById('dossier-branch-text').innerText = cust.branch || 'Marikina Branch';
             }
             if (document.getElementById('dossier-loyalty-badge')) {
                 const badge = document.getElementById('dossier-loyalty-badge');
                 if (cust.jobs.length >= 2) {
-                    badge.className = "px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 flex items-center gap-1.5";
-                    badge.innerHTML = `<i data-lucide="award" class="w-3.5 h-3.5 text-slate-700"></i> Regular (${cust.jobs.length} Visits)`;
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-900 text-white shadow-xs flex items-center gap-1";
+                    badge.innerHTML = `<i data-lucide="award" class="w-3 h-3 text-amber-400"></i> Regular (${cust.jobs.length} Visits)`;
                 } else {
-                    badge.className = "px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5";
-                    badge.innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5 text-slate-500"></i> Initial Visit Record`;
+                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1";
+                    badge.innerHTML = `<i data-lucide="user" class="w-3 h-3 text-slate-500"></i> Initial Visit Record`;
                 }
             }
             if (document.getElementById('dossier-total-visits')) {
                 document.getElementById('dossier-total-visits').innerText = cust.jobs.length;
             }
             if (document.getElementById('dossier-last-date')) {
-                document.getElementById('dossier-last-date').innerText = latestJob.date || latestJob.created_at || 'Recent';
+                document.getElementById('dossier-last-date').innerText = rawLastDate || 'Recent';
             }
             if (document.getElementById('dossier-last-category')) {
-                document.getElementById('dossier-last-category').innerText = latestJob.category || 'PMS';
+                document.getElementById('dossier-last-category').innerText = latestJob.category || 'General Service';
             }
             if (document.getElementById('dossier-history-count')) {
                 document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
             }
 
+            // Calculate Days Ago for Last Release
+            let daysAgoText = 'Recent';
+            if (rawLastDate) {
+                const lastD = new Date(rawLastDate);
+                if (!isNaN(lastD.getTime())) {
+                    const diff = Math.max(0, Math.floor((Date.now() - lastD.getTime()) / (1000 * 60 * 60 * 24)));
+                    daysAgoText = diff === 0 ? 'Today' : `${diff}d ago`;
+                }
+            }
+            if (document.getElementById('dossier-last-days-ago')) {
+                document.getElementById('dossier-last-days-ago').innerText = daysAgoText;
+            }
+
             // Calculate Next Predicted PMS Date (40-Day standard interval)
-            const rawLastDate = latestJob.date || latestJob.created_at;
             let nextPmsText = 'Approx. 40 Days';
             if (rawLastDate) {
                 const d = new Date(rawLastDate);
@@ -8745,6 +8764,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             if (document.getElementById('dossier-next-pms-date')) {
                 document.getElementById('dossier-next-pms-date').innerText = nextPmsText;
+            }
+            if (document.getElementById('dossier-pms-health')) {
+                const pmsHealthEl = document.getElementById('dossier-pms-health');
+                pmsHealthEl.className = "text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full";
+                pmsHealthEl.innerText = 'Good Standing';
+            }
+
+            // Calculate Warranty / Return Standing
+            const hasBackJob = cust.jobs.some(j => (j.category && j.category.toLowerCase().includes('back-job')) || (j.concern && j.concern.toLowerCase().includes('back-job')));
+            if (document.getElementById('dossier-warranty-badge')) {
+                const wBadge = document.getElementById('dossier-warranty-badge');
+                if (hasBackJob) {
+                    wBadge.className = "text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full";
+                    wBadge.innerText = 'Past Return';
+                } else {
+                    wBadge.className = "text-[10px] font-bold text-slate-800 bg-slate-200 px-2 py-0.5 rounded-full";
+                    wBadge.innerText = '0 Returns';
+                }
             }
 
             // Calculate Preferred Service Advisor
