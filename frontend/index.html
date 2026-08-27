@@ -458,82 +458,85 @@
                         </div>
 
                         <!-- Developer Credentials & Testing Tools (Collapsible / Minimalist & Professional) -->
-                        <div class="bg-gray-50/70 border border-gray-200 rounded-xl p-4 mt-4">
+                        <div class="bg-gray-50/80 border border-gray-200 rounded-xl p-4 mt-4 select-none">
                             <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-0.5">
-                                <span class="text-[11px] font-bold uppercase tracking-wider text-gray-600">Developer Credentials & Testing</span>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="terminal" class="w-3.5 h-3.5 text-red-600"></i>
+                                    <span class="text-[11px] font-black uppercase tracking-wider text-gray-700">Developer Credentials & Testing</span>
+                                </div>
                                 <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-400 w-4 h-4 transition-transform duration-200"></i>
                             </div>
                             
                             <div id="dev-credentials-grid" class="hidden space-y-3 mt-3 pt-3 border-t border-gray-200">
                                 <!-- 1-Click Role Direct Access -->
-                                <div class="bg-white border border-gray-200 rounded-xl p-3">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Instant Role Login</span>
-                                        <button onclick="openMobileConnectModal()" class="text-[10px] font-bold uppercase text-gray-600 hover:text-gray-900 border border-gray-300 px-2 py-0.5 rounded transition cursor-pointer">
-                                            Mobile Connect
+                                <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-2xs">
+                                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-gray-100">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Instant Role Login</span>
+                                        <button type="button" onclick="openMobileConnectModal()" class="text-[9px] font-black uppercase text-gray-700 hover:text-red-600 border border-gray-300 hover:border-red-400 px-2 py-0.5 rounded-md transition cursor-pointer bg-gray-50 flex items-center gap-1">
+                                            <i data-lucide="qr-code" class="w-3 h-3"></i> Mobile Connect
                                         </button>
                                     </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                        <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
-                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Owner</span>
-                                            <span class="text-xs font-bold text-gray-900">Global Admin</span>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
+                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">OWNER</span>
+                                            <span class="text-[11px] font-black text-gray-900 block truncate">Global Admin</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
-                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Admin</span>
-                                            <span class="text-xs font-bold text-gray-900">Branch A</span>
+                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
+                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">ADMIN</span>
+                                            <span class="text-[11px] font-black text-gray-900 block truncate">Marikina</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
-                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Service Advisor</span>
-                                            <span class="text-xs font-bold text-gray-900">Branch A</span>
+                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
+                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">ADVISOR</span>
+                                            <span class="text-[11px] font-black text-gray-900 block truncate">Shop Floor</span>
                                         </button>
-                                        <button onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg transition text-left cursor-pointer">
-                                            <span class="text-[9px] font-bold uppercase text-gray-500 block">Technician</span>
-                                            <span class="text-xs font-bold text-gray-900">Workshop Bay</span>
+                                        <button type="button" onclick="quickDirectLogin('tech@hontech.com', 'tech123')" class="p-2 bg-gray-50 hover:bg-red-50/60 border border-gray-200 hover:border-red-200 rounded-lg transition text-left cursor-pointer overflow-hidden group">
+                                            <span class="text-[8.5px] font-black uppercase text-gray-400 group-hover:text-red-500 tracking-wider block truncate">TECHNICIAN</span>
+                                            <span class="text-[11px] font-black text-gray-900 block truncate">Bay Lead</span>
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- Role Quick-Select Accounts -->
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[10px]">
-                                     <button onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Owner</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">owner@hontech.com</span>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[10px]">
+                                     <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Owner</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">owner@hontech.com</span>
                                      </button>
-                                     <button onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (Main)</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">admin@hontech.com</span>
+                                     <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Admin (Main)</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">admin@hontech.com</span>
                                      </button>
-                                     <button onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Staff (Main)</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">staff@hontech.com</span>
+                                     <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Staff (Main)</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">staff@hontech.com</span>
                                      </button>
-                                     <button onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Advisor (Main)</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">sa@hontech.com</span>
+                                     <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Advisor (Main)</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">sa@hontech.com</span>
                                      </button>
-                                     <button onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Admin (East)</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">admin.east@hontech.com</span>
+                                     <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Admin (East)</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">admin.east@hontech...</span>
                                      </button>
-                                     <button onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                         <span class="font-bold text-gray-800 block text-[10px]">Staff (East)</span>
-                                         <span class="text-gray-500 text-[9px] truncate block">staff.east@hontech.com</span>
+                                     <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-white hover:bg-gray-50 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer overflow-hidden">
+                                         <span class="font-black text-gray-900 block text-[10px] truncate">Staff (East)</span>
+                                         <span class="text-gray-400 text-[8.5px] font-mono truncate block">staff.east@hontech...</span>
                                      </button>
                                 </div>
 
                                 <!-- Utility & Diagnostics Actions -->
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-gray-200">
-                                    <button onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-2 border-t border-gray-200">
+                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
                                         Google Auth
                                     </button>
-                                    <button onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
+                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
                                         Dev Mailbox
                                     </button>
-                                    <button onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center">
+                                    <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center">
                                         Test Crash
                                     </button>
-                                    <button onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-xs font-semibold py-2 px-2 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1">
-                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-600"></i> Lost Conn
+                                    <button type="button" onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-[11px] font-bold py-1.5 px-2 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1">
+                                        <i data-lucide="wifi-off" class="w-3 h-3 text-amber-600"></i> Lost Conn
                                     </button>
                                 </div>
                             </div>
@@ -3040,7 +3043,7 @@
                     </div>
                 </div>
 
-                <!-- Admin & Owner Workshop Capacity Configuration Card -->
+                <!-- Workshop Capacity Configuration Card (Owner, Admin & Service Advisor) -->
                 <div id="bays-control-card" class="bg-white border border-gray-200 p-6 md:p-7 rounded-2xl shadow-md space-y-5">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
                         <div class="flex items-center gap-3">
@@ -3049,36 +3052,55 @@
                             </div>
                             <div>
                                 <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Capacity Configuration</h3>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Scale Floor Service Bays (4 to 10 Bays)</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Scale Floor Service Bays (2 to 20 Bays)</p>
                             </div>
                         </div>
                         <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full">4 Bays Active</span>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center">
-                        <div class="lg:col-span-1 space-y-2">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+                        <div class="lg:col-span-5 space-y-2">
                             <label class="text-[11px] text-gray-700 font-bold uppercase tracking-wider block">Total Active Service Bays</label>
-                            <div class="relative">
-                                <select id="bays-module-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
-                                    <option value="4">4 Bays (Standard Default)</option>
-                                    <option value="5">5 Bays</option>
-                                    <option value="6">6 Bays</option>
-                                    <option value="7">7 Bays</option>
-                                    <option value="8">8 Bays</option>
-                                    <option value="9">9 Bays</option>
-                                    <option value="10">10 Bays (Maximum Floor Capacity)</option>
-                                </select>
-                                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="stepWorkshopBayCount(-1)" title="Decrease Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                    <i data-lucide="minus" class="w-4 h-4"></i>
+                                </button>
+                                <div class="relative flex-1">
+                                    <select id="bays-module-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
+                                        <option value="2">2 Bays (Express Pod)</option>
+                                        <option value="3">3 Bays</option>
+                                        <option value="4">4 Bays (Standard Default)</option>
+                                        <option value="5">5 Bays</option>
+                                        <option value="6">6 Bays</option>
+                                        <option value="7">7 Bays</option>
+                                        <option value="8">8 Bays</option>
+                                        <option value="9">9 Bays</option>
+                                        <option value="10">10 Bays</option>
+                                        <option value="11">11 Bays</option>
+                                        <option value="12">12 Bays (Medium Branch)</option>
+                                        <option value="14">14 Bays</option>
+                                        <option value="16">16 Bays (Large Branch)</option>
+                                        <option value="18">18 Bays</option>
+                                        <option value="20">20 Bays (Master Hub Max)</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
+                                </div>
+                                <button type="button" onclick="stepWorkshopBayCount(1)" title="Increase Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
+                                </button>
                             </div>
                         </div>
 
                         <!-- Quick Presets -->
-                        <div class="lg:col-span-2 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
+                        <div class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
                             <span class="text-[10px] text-gray-400 font-black uppercase tracking-wider mr-1">Quick Presets:</span>
-                            <button onclick="handleWorkshopBayCountChange(4)" class="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">4 Bays (Standard)</button>
-                            <button onclick="handleWorkshopBayCountChange(6)" class="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">6 Bays</button>
-                            <button onclick="handleWorkshopBayCountChange(8)" class="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">8 Bays</button>
-                            <button onclick="handleWorkshopBayCountChange(10)" class="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">10 Bays (Max)</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">4 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">6 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">8 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">10 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">12 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">16 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-xs text-gray-700 transition cursor-pointer">20 Bays (Max)</button>
                         </div>
                     </div>
                 </div>
@@ -3170,7 +3192,7 @@
                             </div>
                             <div>
                                 <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Workshop Capacity</h3>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure active service bays (4 – 10 Bays)</p>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure active service bays (2 – 20 Bays)</p>
                             </div>
                         </div>
 
@@ -3182,13 +3204,21 @@
                                 </div>
                                 <div class="relative">
                                     <select id="settings-workshop-bays" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
+                                        <option value="2">2 Bays (Express Pod)</option>
+                                        <option value="3">3 Bays</option>
                                         <option value="4">4 Bays (Standard Default)</option>
                                         <option value="5">5 Bays</option>
                                         <option value="6">6 Bays</option>
                                         <option value="7">7 Bays</option>
                                         <option value="8">8 Bays</option>
                                         <option value="9">9 Bays</option>
-                                        <option value="10">10 Bays (Maximum Floor Capacity)</option>
+                                        <option value="10">10 Bays</option>
+                                        <option value="11">11 Bays</option>
+                                        <option value="12">12 Bays (Medium Branch)</option>
+                                        <option value="14">14 Bays</option>
+                                        <option value="16">16 Bays (Large Branch)</option>
+                                        <option value="18">18 Bays</option>
+                                        <option value="20">20 Bays (Master Hub Max)</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
                                 </div>
@@ -4933,7 +4963,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.79"></script>
+    <script src="js/app.js?v=3.80"></script>
 </body>
 
 </html>

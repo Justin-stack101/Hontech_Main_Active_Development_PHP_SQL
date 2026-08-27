@@ -1182,8 +1182,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dropdown-user-role').innerText = userRoleLabel;
             }
 
-            // --- RBAC for Security Settings ---
+            // --- RBAC for Security Settings & Bay Capacity ---
             const isOwnerOrAdmin = (role === 'owner' || role === 'admin');
+            const canManageBays = (role === 'owner' || role === 'admin' || role === 'sa' || role === 'advisor');
             if (document.getElementById('profile-change-password-container')) {
                 document.getElementById('profile-change-password-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
@@ -1191,10 +1192,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('settings-bay-config-container')) {
-                document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
+                document.getElementById('settings-bay-config-container').style.display = canManageBays ? 'block' : 'none';
             }
             if (document.getElementById('bays-control-card')) {
-                document.getElementById('bays-control-card').style.display = isOwnerOrAdmin ? 'block' : 'none';
+                document.getElementById('bays-control-card').style.display = canManageBays ? 'block' : 'none';
             }
 
             if (role === 'owner') {
@@ -7255,15 +7256,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function getWorkshopBayCount() {
             const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
-            if (!isNaN(stored) && stored >= 4 && stored <= 10) {
+            if (!isNaN(stored) && stored >= 2 && stored <= 20) {
                 return stored;
             }
             return 4; // Default 4 service bays
         }
         window.getWorkshopBayCount = getWorkshopBayCount;
 
+        function stepWorkshopBayCount(delta) {
+            const current = getWorkshopBayCount();
+            const next = Math.min(20, Math.max(2, current + Number(delta || 0)));
+            handleWorkshopBayCountChange(next);
+        }
+        window.stepWorkshopBayCount = stepWorkshopBayCount;
+
         function handleWorkshopBayCountChange(newCount) {
-            const num = Math.min(10, Math.max(4, parseInt(newCount, 10) || 4));
+            const num = Math.min(20, Math.max(2, parseInt(newCount, 10) || 4));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             
             const badge1 = document.getElementById('settings-bay-count-badge');
@@ -7291,6 +7299,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             try {
                 if (typeof renderReportDataModule === 'function') renderReportDataModule();
             } catch (e) { console.warn('renderReportDataModule skipped on bay change:', e); }
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
             showSystemToast(`Workshop capacity configured to ${num} service bays.`, 'success', 'Bays Configured');
         }
