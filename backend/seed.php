@@ -28,6 +28,11 @@ $defaultUsers = [
     // Marikina Main Branch Test Users
     ['name' => 'Jessica (Front Desk)',   'role' => 'assistant', 'email' => 'staff@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
     ['name' => 'Mark (Advisor)',         'role' => 'sa',        'email' => 'sa@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Juan (Technician)',      'role' => 'tech',      'email' => 'tech@hontech.com',  'password' => Env::get('TECH_PASSWORD', 'tech123'), 'branch' => 'Marikina Branch'],
+
+    // Secondary Branch Multi-Branch Test Users
+    ['name' => 'Admin (East Branch)',    'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
+    ['name' => 'Staff (East Branch)',    'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
 ];
 
 foreach ($defaultUsers as $u) {
@@ -40,9 +45,9 @@ foreach ($defaultUsers as $u) {
         $stmt->execute([$u['name'], $u['email'], $hashed, $u['role'], $u['branch']]);
         echo "[+] Seeded user: {$u['name']} ({$u['email']}) for {$u['branch']}\n";
     } else {
-        $stmt = $db->prepare('UPDATE users SET branch = ? WHERE email = ?');
-        $stmt->execute([$u['branch'], $u['email']]);
-        echo "[=] Updated user branch: {$u['email']} -> {$u['branch']}\n";
+        $stmt = $db->prepare('UPDATE users SET branch = ?, role = ? WHERE email = ?');
+        $stmt->execute([$u['branch'], $u['role'], $u['email']]);
+        echo "[=] Updated user branch/role: {$u['email']} -> {$u['branch']} ({$u['role']})\n";
     }
 }
 
