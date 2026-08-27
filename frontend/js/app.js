@@ -3722,8 +3722,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const secBackjobs = document.getElementById('db-tab-backjobs');
             const secSelectors = document.getElementById('db-analytics-selectors');
 
-            const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer";
-            const inactiveClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer";
+            const activeClass = "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-xs transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer";
+            const inactiveClass = "px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer";
 
             // Hide all tabs
             if (secMonitor) secMonitor.classList.add('hidden');

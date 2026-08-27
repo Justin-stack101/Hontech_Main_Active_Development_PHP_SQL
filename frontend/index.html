@@ -877,28 +877,30 @@
             </div>
 
             <!-- ANALYTICS DASHBOARD -->
-            <div id="section-dashboard" class="section-content hidden fade-in space-y-8">
-                <div class="flex border-b border-gray-200 mb-6 gap-6 flex-wrap">
-                    <button id="btn-db-tab-monitor" onclick="switchDashboardTab('monitor')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 cursor-pointer">
-                        <i data-lucide="activity" class="w-4 h-4"></i> Live Operations Monitor
-                    </button>
-                    <button id="btn-db-tab-analytics" onclick="switchDashboardTab('analytics')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics & Reports Center
-                    </button>
-                    <button id="btn-db-tab-reports" onclick="switchDashboardTab('reports')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
-                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Report Data (Intake & Flow)
-                    </button>
-                    <button id="btn-db-tab-express" onclick="switchDashboardTab('express')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
-                        <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i> Express Lane & Delay Intelligence
-                    </button>
-                    <button id="btn-db-tab-backjobs" onclick="switchDashboardTab('backjobs')"
-                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 cursor-pointer">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-amber-600"></i> Quality Control & Back-Jobs
-                    </button>
+                <!-- Executive Analytics Segmented Control Bar -->
+                <div class="mb-6 overflow-x-auto no-scrollbar touch-scroll">
+                    <div class="bg-slate-100/90 border border-slate-200/90 p-1.5 rounded-2xl inline-flex items-center gap-1.5 shadow-2xs">
+                        <button id="btn-db-tab-monitor" onclick="switchDashboardTab('monitor')"
+                            class="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-xs transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="activity" class="w-3.5 h-3.5"></i> Live Monitor
+                        </button>
+                        <button id="btn-db-tab-analytics" onclick="switchDashboardTab('analytics')"
+                            class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> Analytics & KPIs
+                        </button>
+                        <button id="btn-db-tab-reports" onclick="switchDashboardTab('reports')"
+                            class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Logs & Records
+                        </button>
+                        <button id="btn-db-tab-express" onclick="switchDashboardTab('express')"
+                            class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i> Express & Delays
+                        </button>
+                        <button id="btn-db-tab-backjobs" onclick="switchDashboardTab('backjobs')"
+                            class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600"></i> QC & Back-Jobs
+                        </button>
+                    </div>
                 </div>
 
                 <!-- SHARED ANALYTICS & PERIODIC SELECTORS -->
@@ -5318,7 +5320,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.98"></script>
+    <script src="js/app.js?v=3.99"></script>
 </body>
 
 </html>
