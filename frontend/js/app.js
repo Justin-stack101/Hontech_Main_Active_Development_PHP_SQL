@@ -8948,6 +8948,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSystemToast(`Back-Job initialized referencing order ${refJobId}!`, 'success', 'Back-Job Created');
         }
 
+        function copyCustomerPhone() {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) return;
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            const phone = cust.phone || '';
+            if (!phone || phone === 'N/A') {
+                showSystemToast('No phone number recorded for this customer.', 'warning', 'Copy Contact');
+                return;
+            }
+            navigator.clipboard.writeText(phone);
+            showSystemToast(`Phone number [${phone}] copied to clipboard!`, 'success', 'Contact Copied');
+        }
+        window.copyCustomerPhone = copyCustomerPhone;
+
         function openBackJobReasonModal(explicitJobId) {
             if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
                 showSystemToast('Please select a customer record first.', 'warning', 'Back-Job Intake');
@@ -8964,7 +8977,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const refJobId = targetJob.job_id || targetJob.id || targetJob._id || 'PREV-ORDER';
             const prevDate = targetJob.date || targetJob.created_at || 'Previous Service';
             const prevCat = targetJob.category || 'General Service';
-            const prevSA = targetJob.sa || targetJob.sa_name || 'Assigned SA';
+            const prevSA = targetJob.sa || targetJob.handled_by || 'Front Desk SA';
+            const origTech = targetJob.mechanic || targetJob.tech || 'Assigned Bay Technician';
+
+            // Calculate Days Elapsed and Warranty Status
+            const lastServiceDate = new Date(prevDate);
+            let daysElapsedText = 'Recent (Within 30-Day Window)';
+            let diffDays = 0;
+            if (!isNaN(lastServiceDate.getTime())) {
+                diffDays = Math.max(0, Math.floor((Date.now() - lastServiceDate.getTime()) / (1000 * 60 * 60 * 24)));
+                const warrantyTag = diffDays <= 30 ? 'Within 30-Day Standard Warranty' : 'Over 30 Days (Management Review)';
+                daysElapsedText = `${diffDays} Day${diffDays === 1 ? '' : 's'} Elapsed (${warrantyTag})`;
+            }
 
             const modal = document.getElementById('modal-backjob-reason');
             if (!modal) {
@@ -8978,22 +9002,42 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const vehEl = document.getElementById('modal-bj-vehicle');
             const catEl = document.getElementById('modal-bj-prev-cat');
             const refEl = document.getElementById('modal-bj-prev-ref');
+            const origTechEl = document.getElementById('modal-bj-orig-tech');
+            const prevSaEl = document.getElementById('modal-bj-prev-sa');
+            const daysElapsedEl = document.getElementById('modal-bj-days-elapsed');
             const inputEl = document.getElementById('modal-bj-concern-input');
+            const odoEl = document.getElementById('modal-bj-odometer-input');
 
             if (nameEl) nameEl.innerText = cust.name || 'Customer Name';
             if (plateEl) plateEl.innerText = cust.plate !== 'NO-PLATE' ? cust.plate : 'NO PLATE';
             if (vehEl) vehEl.innerText = cust.vehicle !== 'Unknown Model' ? cust.vehicle : 'Vehicle Model';
             if (catEl) catEl.innerText = prevCat;
-            if (refEl) refEl.innerText = `${prevDate} (${refJobId})`;
+            if (refEl) refEl.innerText = `${prevDate} (#${refJobId})`;
+            if (origTechEl) origTechEl.innerText = origTech;
+            if (prevSaEl) prevSaEl.innerText = `Advisor: ${prevSA}`;
+            if (daysElapsedEl) {
+                daysElapsedEl.innerText = daysElapsedText;
+                if (diffDays <= 30) {
+                    daysElapsedEl.className = "text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200";
+                } else {
+                    daysElapsedEl.className = "text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200";
+                }
+            }
+
             if (inputEl) {
                 inputEl.value = '';
                 setTimeout(() => inputEl.focus(), 50);
+            }
+            if (odoEl) {
+                odoEl.value = '';
             }
 
             modal.dataset.refJobId = refJobId;
             modal.dataset.prevDate = prevDate;
             modal.dataset.prevCat = prevCat;
             modal.dataset.prevSa = prevSA;
+            modal.dataset.origTech = origTech;
+            modal.dataset.daysElapsed = String(diffDays);
 
             modal.classList.remove('hidden');
         }
@@ -9026,7 +9070,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const refJobId = modal ? modal.dataset.refJobId || 'PREV-JOB' : 'PREV-JOB';
             const prevDate = modal ? modal.dataset.prevDate || 'past service' : 'past service';
             const prevCat = modal ? modal.dataset.prevCat || 'General Repair' : 'General Repair';
+            const origTech = modal ? modal.dataset.origTech || 'Assigned Bay Technician' : 'Assigned Bay Technician';
+            const diffDays = modal ? modal.dataset.daysElapsed || '0' : '0';
             const selectedConcernCat = document.getElementById('modal-bj-category-select') ? document.getElementById('modal-bj-category-select').value : 'Back-Job Return';
+            const currentOdometer = document.getElementById('modal-bj-odometer-input') ? document.getElementById('modal-bj-odometer-input').value.trim() : '';
 
             closeBackJobReasonModal();
 
@@ -9056,12 +9103,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             }
 
-            // Pre-fill concern with clear recorded reason
+            // Pre-fill concern with complete automotive traceability
             if (concernEl) {
-                concernEl.value = `[BACK-JOB / RETURN REPAIR] Previous Ref: ${refJobId} (${prevCat} on ${prevDate}). Return Complaint: ${reasonText}`;
+                const odoTag = currentOdometer ? ` | Current Odometer: ${currentOdometer} KM` : '';
+                concernEl.value = `[BACK-JOB / RETURN REPAIR - ${selectedConcernCat}] Prev Order: ${refJobId} (${prevCat} on ${prevDate} | Orig Tech: ${origTech} | Returned after ${diffDays} days${odoTag}). Customer Return Complaint: ${reasonText}`;
             }
 
-            showSystemToast(`Back-Job ticket prepared for "${cust.name}" with return complaint recorded!`, 'success', 'Back-Job Initialized');
+            showSystemToast(`Back-Job ticket prepared for "${cust.name}" (Original Tech: ${origTech})!`, 'success', 'Back-Job Initialized');
         }
         window.submitBackJobWithReason = submitBackJobWithReason;
 
