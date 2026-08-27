@@ -4097,29 +4097,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const totalIsDeficit = totalVariance < 0;
 
                 catHtml += `
-                    <tr class="bg-slate-900 text-white font-bold text-xs border-t-2 border-slate-700">
-                        <td class="px-6 py-4 text-white uppercase tracking-wider font-black">TOTAL WORKSHOP INTAKES</td>
+                    <tr class="bg-gray-100/90 text-gray-900 font-extrabold text-xs border-t-2 border-gray-300">
+                        <td class="px-6 py-4 text-gray-950 uppercase tracking-wider font-black">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                                <span>TOTAL WORKSHOP INTAKES</span>
+                            </div>
+                        </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-20 bg-slate-800 h-2 rounded-full overflow-hidden shrink-0">
-                                    <div class="bg-red-500 h-full rounded-full" style="width: ${Math.min(100, totalFulfillment)}%"></div>
+                                <div class="w-20 bg-gray-200 h-2 rounded-full overflow-hidden shrink-0">
+                                    <div class="bg-gray-900 h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, totalFulfillment)}%"></div>
                                 </div>
-                                <span class="font-black text-white">${totalPumasok} <span class="text-slate-300 font-normal">/ ${totalPlanned} cars</span></span>
-                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-600/40 text-red-200 border border-red-500/50">${totalFulfillment}%</span>
+                                <span class="font-black text-gray-950">${totalPumasok} <span class="text-gray-500 font-semibold">/ ${totalPlanned} cars</span></span>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-gray-200 text-gray-800 border border-gray-300">${totalFulfillment}%</span>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="text-slate-200 text-[11px]">
-                                <strong class="text-white font-black">${totalInBay}</strong> in bay · <strong class="text-emerald-400 font-black">${totalReleased}</strong> released
+                            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-gray-700 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
+                                <strong class="text-gray-950 font-black">${totalInBay}</strong> in bay <span class="text-gray-300">·</span> <strong class="text-emerald-600 font-black">${totalReleased}</strong> released
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="px-2.5 py-1 rounded text-[11px] font-black ${totalIsDeficit ? 'bg-rose-900 text-rose-200 border border-rose-700' : 'bg-emerald-900 text-emerald-200 border border-emerald-700'}">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-black ${totalIsDeficit ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
                                 ${totalIsDeficit ? '▼' : '▲'} ${totalVarSign} cars
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="text-[10px] uppercase font-black tracking-wider text-slate-300 bg-slate-800 px-2 py-1 rounded border border-slate-700">All Lines</span>
+                            <span class="text-[10px] uppercase font-black tracking-wider text-gray-700 bg-white px-2.5 py-1 rounded-md border border-gray-200 shadow-2xs">ALL LINES</span>
                         </td>
                     </tr>
                 `;
