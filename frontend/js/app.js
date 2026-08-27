@@ -8610,33 +8610,33 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 html += `
                     <div onclick="selectCustomerForLookup('${cust.key.replace(/'/g, "\\'")}')" 
-                        class="p-4 rounded-2xl border transition-all cursor-pointer select-none space-y-2.5 relative group ${isSelected ? 'bg-red-50/50 border-red-600 ring-2 ring-red-600/30 shadow-sm' : 'bg-white hover:bg-gray-50/80 border-gray-200 hover:border-gray-300'}">
+                        class="p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group ${isSelected ? 'bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300'}">
                         
                         <div class="flex items-start justify-between gap-3">
-                            <div class="flex items-center gap-3 min-w-0">
-                                <div class="w-10 h-10 rounded-xl ${isSelected ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700 group-hover:bg-red-50 group-hover:text-red-600'} flex items-center justify-center font-black text-xs shrink-0 transition">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-9 h-9 rounded-lg ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 border border-slate-200'} flex items-center justify-center font-black text-xs shrink-0 transition">
                                     ${initials}
                                 </div>
                                 <div class="min-w-0">
-                                    <h4 class="text-xs font-black text-gray-900 truncate flex items-center gap-1.5">
+                                    <h4 class="text-xs font-black text-slate-900 truncate flex items-center gap-1">
                                         ${cust.name}
-                                        ${isRegular ? '<span class="text-amber-500" title="Returning Regular">⭐</span>' : ''}
+                                        ${isRegular ? '<span class="text-[10px] text-slate-400 font-bold" title="Regular Customer">• 2+</span>' : ''}
                                     </h4>
-                                    <p class="text-[10.5px] text-gray-500 font-semibold truncate">${cust.vehicle}</p>
+                                    <p class="text-[10.5px] text-slate-500 font-medium truncate">${cust.vehicle}</p>
                                 </div>
                             </div>
-                            <span class="font-mono font-black text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-900 text-white' : 'bg-gray-100 text-gray-800 border border-gray-200'} shrink-0">
+                            <span class="font-mono font-bold text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-800 border border-slate-200'} shrink-0">
                                 ${cust.plate !== 'NO-PLATE' ? cust.plate : 'NO-PLATE'}
                             </span>
                         </div>
 
-                        <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-[10px] text-gray-500 font-medium">
-                            <span class="flex items-center gap-1 font-semibold text-gray-700 truncate max-w-[170px]">
-                                <i data-lucide="wrench" class="w-3 h-3 text-red-500 shrink-0"></i> ${lastCategory}
+                        <div class="flex items-center justify-between pt-1.5 border-t border-slate-100 text-[10px] text-slate-500 font-medium">
+                            <span class="flex items-center gap-1 text-slate-600 truncate max-w-[170px]">
+                                <i data-lucide="wrench" class="w-3 h-3 text-slate-400 shrink-0"></i> ${lastCategory}
                             </span>
-                            <div class="flex items-center gap-2 shrink-0">
-                                ${hasBackJob ? '<span class="text-[9px] font-black uppercase text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200">Back-Job</span>' : ''}
-                                <span class="px-2 py-0.5 rounded-full bg-gray-100 font-bold text-gray-700 text-[9.5px]">
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                ${hasBackJob ? '<span class="text-[9px] font-bold uppercase text-slate-700 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">Back-Job</span>' : ''}
+                                <span class="px-2 py-0.5 rounded bg-slate-100 font-medium text-slate-600 text-[9.5px]">
                                     ${cust.jobs.length} ${cust.jobs.length === 1 ? 'Visit' : 'Visits'}
                                 </span>
                             </div>
@@ -8710,11 +8710,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('dossier-loyalty-badge')) {
                 const badge = document.getElementById('dossier-loyalty-badge');
                 if (cust.jobs.length >= 2) {
-                    badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1";
-                    badge.innerHTML = `<i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> ⭐ Returning Regular (${cust.jobs.length} Visits)`;
+                    badge.className = "px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 flex items-center gap-1.5";
+                    badge.innerHTML = `<i data-lucide="award" class="w-3.5 h-3.5 text-slate-700"></i> Regular (${cust.jobs.length} Visits)`;
                 } else {
-                    badge.className = "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1";
-                    badge.innerHTML = `<i data-lucide="sparkles" class="w-3 h-3 text-blue-500"></i> 🆕 Initial Visit Record`;
+                    badge.className = "px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1.5";
+                    badge.innerHTML = `<i data-lucide="user" class="w-3.5 h-3.5 text-slate-500"></i> Initial Visit Record`;
                 }
             }
             if (document.getElementById('dossier-total-visits')) {
@@ -8730,7 +8730,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
             }
 
-            // Calculate Next Predicted PMS Date (40-Day Casa standard interval)
+            // Calculate Next Predicted PMS Date (40-Day standard interval)
             const rawLastDate = latestJob.date || latestJob.created_at;
             let nextPmsText = 'Approx. 40 Days';
             if (rawLastDate) {
@@ -8764,7 +8764,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-preferred-sa').innerText = preferredSA;
             }
 
-            // Render Historical Orders Timeline with Rich Automotive Detail
+            // Render Historical Orders Timeline with Clean Corporate Automotive Detail
             const timelineEl = document.getElementById('dossier-history-timeline');
             if (timelineEl) {
                 let historyHTML = '';
@@ -8777,78 +8777,62 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const fullDateStr = time ? `${date} • ${time}` : date;
                     const status = (job.status || 'Pending').toUpperCase();
                     const sa = job.handled_by || job.sa || 'Front Desk SA';
-                    const mechanic = job.mechanic || 'Assigned Bay Technician';
+                    const mechanic = job.mechanic || 'Assigned Technician';
                     const bay = job.bay_number || job.bay || (job.status === 'Pending' ? 'Staging Area' : 'Bay 1');
                     const concern = job.concern || job.evaluation || job.diagnosis || 'Standard periodic service maintenance';
                     const remarks = job.remarks || job.goal_remarks || 'Inspection completed according to workshop checklist.';
-                    const source = job.source || 'Walk-in';
-                    const lane = job.lane_type || 'Flexible Lane';
 
-                    // Dynamic Status Styling
-                    let statusBadgeClass = 'bg-amber-50 text-amber-700 border-amber-300';
-                    let statusIcon = 'clock';
+                    // Clean Status Badge
+                    let statusBadgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
                     if (status.includes('COMPLETED') || status.includes('RELEASED')) {
-                        statusBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-300';
-                        statusIcon = 'check-circle-2';
+                        statusBadgeClass = 'bg-slate-100 text-emerald-800 border-slate-200 font-bold';
                     } else if (status.includes('PROGRESS') || status.includes('BAY')) {
-                        statusBadgeClass = 'bg-blue-50 text-blue-700 border-blue-300';
-                        statusIcon = 'wrench';
+                        statusBadgeClass = 'bg-slate-900 text-white border-slate-900 font-bold';
                     } else if (status.includes('CANCEL')) {
-                        statusBadgeClass = 'bg-rose-50 text-rose-700 border-rose-300';
-                        statusIcon = 'x-circle';
+                        statusBadgeClass = 'bg-slate-100 text-rose-700 border-slate-200 font-bold';
                     }
 
-                    // Category Color
-                    const isBackJob = category.toLowerCase().includes('back-job') || category.toLowerCase().includes('warranty');
-                    const catBadgeClass = isBackJob 
-                        ? 'bg-amber-100 text-amber-900 border-amber-300 font-black' 
-                        : (category.includes('PMS') ? 'bg-blue-50 text-blue-800 border-blue-200' : 'bg-purple-50 text-purple-800 border-purple-200');
-
-                    const sourceBadgeClass = source.toLowerCase().includes('online') 
-                        ? 'bg-cyan-50 text-cyan-800 border-cyan-200' 
-                        : 'bg-orange-50 text-orange-800 border-orange-200';
-
                     historyHTML += `
-                        <div class="bg-white hover:bg-slate-50/70 border border-gray-200 hover:border-gray-300 p-4 rounded-xl shadow-2xs transition space-y-3">
+                        <div class="bg-white border border-slate-200 hover:border-slate-300 p-4 rounded-xl shadow-2xs transition space-y-3">
                             <!-- Top Row: Service Category & Date + Status & Action -->
                             <div class="flex items-center justify-between gap-3 flex-wrap">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-lg bg-gray-100 text-gray-700 font-bold text-xs flex items-center justify-center">
+                                    <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200">
                                         #${cust.jobs.length - idx}
                                     </span>
-                                    <span class="text-xs font-black text-gray-900">${category}</span>
-                                    <span class="text-[11px] text-gray-400">• ${fullDateStr}</span>
+                                    <span class="text-xs font-black text-slate-900">${category}</span>
+                                    <span class="text-[11px] text-slate-400 font-medium">• ${fullDateStr}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md border ${statusBadgeClass}">
+                                    <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-lg border ${statusBadgeClass}">
                                         ${status}
                                     </span>
                                     <button onclick="printJobClaimStubPDF('${jobId}')" 
-                                        class="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-300 text-slate-700 rounded-md text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95"
+                                        class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
                                         title="Print Customer Claim Stub & Gate Pass">
-                                        <i data-lucide="printer" class="w-3 h-3 text-slate-600"></i> Stub
+                                        <i data-lucide="printer" class="w-3 h-3 text-slate-500"></i> Stub
                                     </button>
                                     <button onclick="openBackJobReasonModal('${jobId}')" 
-                                        class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-900 rounded-md text-[10px] font-black uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
+                                        class="px-2.5 py-1 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 text-slate-700 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
                                         title="Flag this specific service order as a Back-Job return">
-                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-700"></i> Flag Back-Job
+                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-slate-500"></i> Flag Back-Job
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Bottom Summary: Clean Key Details & Concern -->
-                            <div class="text-xs text-gray-600 bg-gray-50/80 p-3 rounded-lg border border-gray-150 flex flex-col gap-1.5">
-                                <div class="flex items-center gap-3 text-[11px] text-gray-500 font-medium flex-wrap">
-                                    <span><strong class="text-gray-700 font-bold">Job:</strong> ${jobId}</span>
+                            <div class="text-xs text-slate-600 bg-slate-50/70 p-3 rounded-lg border border-slate-150 flex flex-col gap-1.5">
+                                <div class="flex items-center gap-3 text-[11px] text-slate-500 font-medium flex-wrap">
+                                    <span><strong class="text-slate-700 font-bold">Job:</strong> ${jobId}</span>
                                     <span>•</span>
-                                    <span><strong class="text-gray-700 font-bold">Advisor:</strong> ${sa}</span>
+                                    <span><strong class="text-slate-700 font-bold">Advisor:</strong> ${sa}</span>
                                     <span>•</span>
-                                    <span><strong class="text-gray-700 font-bold">Bay:</strong> ${bay}</span>
+                                    <span><strong class="text-slate-700 font-bold">Bay:</strong> ${bay}</span>
                                     <span>•</span>
-                                    <span><strong class="text-gray-700 font-bold">Tech:</strong> ${mechanic}</span>
+                                    <span><strong class="text-slate-700 font-bold">Tech:</strong> ${mechanic}</span>
                                 </div>
-                                <div class="text-xs text-gray-800 font-normal pt-1.5 border-t border-gray-200/60 leading-relaxed">
-                                    <span class="font-bold text-gray-900">Concern / Diagnosis:</span> ${concern}
+                                <div class="text-xs text-slate-800 font-normal pt-1.5 border-t border-slate-200/60 leading-relaxed">
+                                    <span class="font-bold text-slate-900">Concern / Diagnosis:</span> ${concern}
                                 </div>
                             </div>
                         </div>

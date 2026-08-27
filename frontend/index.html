@@ -2397,90 +2397,88 @@
 
                         <div id="lookup-dossier-card" class="hidden space-y-6">
                             <!-- Customer Details Header Card -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm relative overflow-hidden">
-                                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 to-red-400"></div>
-                                
-                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-gray-150 pb-5">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-2xs">
+                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-150 pb-5">
                                     <div class="flex items-center gap-3.5">
-                                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 border border-red-200 flex items-center justify-center font-black text-lg">
-                                            <i data-lucide="user-check" class="w-6 h-6"></i>
+                                        <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center font-black text-lg shrink-0">
+                                            <i data-lucide="user" class="w-6 h-6"></i>
                                         </div>
                                         <div>
-                                            <h3 id="dossier-customer-name" class="text-xl font-black text-gray-900">Customer Name</h3>
-                                            <div class="flex items-center gap-3 mt-1 text-xs text-gray-500 font-semibold flex-wrap">
-                                                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-gray-400"></i> <span id="dossier-customer-phone">09XX-XXX-XXXX</span></span>
-                                                <span class="text-gray-300">•</span>
-                                                <span class="flex items-center gap-1"><i data-lucide="car" class="w-3.5 h-3.5 text-gray-400"></i> <strong id="dossier-vehicle-plate" class="text-gray-900 font-black font-mono">ABC 1234</strong></span>
-                                                <span class="text-gray-300">•</span>
-                                                <span id="dossier-vehicle-model" class="text-gray-700 font-bold">Vehicle Model</span>
+                                            <h3 id="dossier-customer-name" class="text-lg font-black text-slate-900">Customer Name</h3>
+                                            <div class="flex items-center gap-2.5 mt-1 text-xs text-slate-500 font-medium flex-wrap">
+                                                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400"></i> <span id="dossier-customer-phone">09XX-XXX-XXXX</span></span>
+                                                <span class="text-slate-300">•</span>
+                                                <span class="flex items-center gap-1 font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded border border-slate-200" id="dossier-vehicle-plate">ABC 1234</span>
+                                                <span class="text-slate-300">•</span>
+                                                <span id="dossier-vehicle-model" class="text-slate-700 font-semibold">Vehicle Model</span>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-wrap items-center gap-2">
-                                        <button onclick="exportCustomerServicePassportPDF()" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Export Certified Vehicle Maintenance Passport PDF">
-                                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Export Passport PDF
+                                        <button onclick="exportCustomerServicePassportPDF()" class="bg-slate-900 hover:bg-black text-white px-3.5 py-1.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition shadow-2xs flex items-center gap-1.5 cursor-pointer" title="Export Certified Vehicle Maintenance Passport PDF">
+                                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-300"></i> Export Passport PDF
                                         </button>
-                                        <span id="dossier-loyalty-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                                            <i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> ⭐ Returning Regular
+                                        <span id="dossier-loyalty-badge" class="px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1">
+                                            <i data-lucide="award" class="w-3.5 h-3.5 text-slate-600"></i> Lifetime Record
                                         </span>
-                                        <span id="dossier-branch-badge" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200">
+                                        <span id="dossier-branch-badge" class="px-3 py-1 rounded-lg text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200">
                                             Marikina Branch
                                         </span>
                                     </div>
                                 </div>
 
-                                <!-- 4 Quick Automotive Intelligence Stats -->
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-5">
-                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
-                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Total Visits</span>
-                                        <h4 id="dossier-total-visits" class="text-xl font-black text-gray-900 mt-0.5">1</h4>
-                                        <span id="dossier-loyalty-subtext" class="text-[9px] text-emerald-600 font-bold block mt-0.5">Lifetime Service</span>
+                                <!-- 4 Quick Automotive Intelligence Stats (Unified Professional Palette) -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5">
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Visits</span>
+                                        <h4 id="dossier-total-visits" class="text-xl font-black text-slate-900 mt-0.5">1</h4>
+                                        <span id="dossier-loyalty-subtext" class="text-[10px] text-slate-500 font-medium block mt-0.5">Completed Intakes</span>
                                     </div>
-                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
-                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Last Service</span>
-                                        <h4 id="dossier-last-date" class="text-xs font-black text-gray-900 mt-1 truncate">YYYY-MM-DD</h4>
-                                        <span id="dossier-last-category" class="text-[9px] text-red-600 font-bold block mt-0.5 truncate">PMS</span>
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Last Service</span>
+                                        <h4 id="dossier-last-date" class="text-xs font-black text-slate-900 mt-1 truncate">YYYY-MM-DD</h4>
+                                        <span id="dossier-last-category" class="text-[10px] text-slate-600 font-bold block mt-0.5 truncate">PMS</span>
                                     </div>
-                                    <div class="bg-amber-50/70 border border-amber-200 p-3.5 rounded-xl text-center">
-                                        <span class="text-[9px] font-black text-amber-800 uppercase tracking-widest block">Next PMS Due</span>
-                                        <h4 id="dossier-next-pms-date" class="text-xs font-black text-amber-900 mt-1 truncate">Approx. 40 Days</h4>
-                                        <span class="text-[9px] text-amber-700 font-semibold block mt-0.5">40-Day Interval</span>
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Next PMS Due</span>
+                                        <h4 id="dossier-next-pms-date" class="text-xs font-black text-slate-900 mt-1 truncate">Approx. 40 Days</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium block mt-0.5">40-Day Interval</span>
                                     </div>
-                                    <div class="bg-gray-50 border border-gray-150 p-3.5 rounded-xl text-center">
-                                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest block">Primary Advisor</span>
-                                        <h4 id="dossier-preferred-sa" class="text-xs font-black text-slate-800 mt-1 truncate">Service Advisor</h4>
-                                        <span class="text-[9px] text-slate-500 font-semibold block mt-0.5">Assigned Specialist</span>
+                                    <div class="bg-slate-50/70 border border-slate-200/80 p-3.5 rounded-xl text-center">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Primary Advisor</span>
+                                        <h4 id="dossier-preferred-sa" class="text-xs font-black text-slate-900 mt-1 truncate">Service Advisor</h4>
+                                        <span class="text-[10px] text-slate-500 font-medium block mt-0.5">Assigned Specialist</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Prominent Fast Intake & Back-Job Decision Actions Card -->
-                            <div class="bg-gradient-to-br from-slate-50 via-amber-50/50 to-orange-50/40 border-2 border-amber-300 p-6 rounded-2xl shadow-sm space-y-4">
-                                <div class="flex items-start gap-4">
-                                    <div class="p-3 bg-amber-500 text-white rounded-2xl shadow-md shrink-0">
-                                        <i data-lucide="sparkles" class="w-6 h-6"></i>
+                            <!-- Fast Intake & Back-Job Decision Actions Card (Clean Corporate Theme) -->
+                            <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-2xs space-y-3.5">
+                                <div class="flex items-start gap-3.5">
+                                    <div class="p-2.5 bg-slate-100 text-slate-800 rounded-xl border border-slate-200 shrink-0">
+                                        <i data-lucide="layers" class="w-5 h-5"></i>
                                     </div>
                                     <div class="flex-1">
-                                        <div class="flex items-center gap-2 flex-wrap">
-                                            <span class="bg-amber-500 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider">Fast Intake Dispatch</span>
-                                            <h4 class="text-base font-black text-gray-900">Returning Customer Intake Actions</h4>
+                                        <div class="flex items-center gap-2">
+                                            <span class="bg-slate-900 text-white text-[9.5px] font-bold uppercase px-2 py-0.5 rounded tracking-wider">Fast Intake</span>
+                                            <h4 class="text-sm font-black text-slate-900">Returning Customer Intake Dispatch</h4>
                                         </div>
-                                        <p class="text-xs text-gray-700 font-medium mt-1 leading-relaxed">
-                                            Select whether this customer is returning for a <strong>Regular Scheduled Service</strong> (e.g. 40-day PMS / Oil Change) or a <strong>Back-Job / Repeat Service</strong>.
+                                        <p class="text-xs text-slate-600 font-normal mt-0.5 leading-relaxed">
+                                            Initiate a fresh service ticket for this customer. Choose whether they are returning for regular maintenance or a repeat repair.
                                         </p>
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-amber-200/80">
-                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="bg-slate-900 hover:bg-black text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-slate-900/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="calendar-plus" class="w-4 h-4 text-emerald-400"></i> Regular Visit (PMS)
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-slate-100">
+                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="bg-slate-900 hover:bg-black text-white py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                        <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-300"></i> Regular Visit (PMS)
                                     </button>
-                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="bg-amber-600 hover:bg-amber-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-amber-600/20 flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Flag as Back-Job
+                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="bg-red-600 hover:bg-red-700 text-white py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-white"></i> Flag as Back-Job
                                     </button>
-                                    <button onclick="stayOnHistory()" class="bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
-                                        <i data-lucide="file-text" class="w-4 h-4 text-gray-400"></i> Review History
+                                    <button onclick="stayOnHistory()" class="bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
+                                        <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i> Review History
                                     </button>
                                 </div>
                             </div>
@@ -5260,7 +5258,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.88"></script>
+    <script src="js/app.js?v=3.89"></script>
 </body>
 
 </html>
