@@ -8750,7 +8750,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             }
             if (document.getElementById('dossier-last-days-ago')) {
-                document.getElementById('dossier-last-days-ago').innerText = daysAgoText;
+                const daEl = document.getElementById('dossier-last-days-ago');
+                daEl.innerText = daysAgoText;
+                daEl.className = "text-[9.5px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.2 rounded shrink-0";
             }
 
             // Calculate Next Predicted PMS Date (40-Day standard interval)
@@ -8767,8 +8769,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             if (document.getElementById('dossier-pms-health')) {
                 const pmsHealthEl = document.getElementById('dossier-pms-health');
-                pmsHealthEl.className = "text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full";
-                pmsHealthEl.innerText = 'Good Standing';
+                pmsHealthEl.className = "text-[9.5px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded shrink-0";
+                pmsHealthEl.innerText = 'Good';
             }
 
             // Calculate Warranty / Return Standing
@@ -8776,10 +8778,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('dossier-warranty-badge')) {
                 const wBadge = document.getElementById('dossier-warranty-badge');
                 if (hasBackJob) {
-                    wBadge.className = "text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full";
+                    wBadge.className = "text-[9.5px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.2 rounded shrink-0";
                     wBadge.innerText = 'Past Return';
                 } else {
-                    wBadge.className = "text-[10px] font-bold text-slate-800 bg-slate-200 px-2 py-0.5 rounded-full";
+                    wBadge.className = "text-[9.5px] font-bold text-slate-700 bg-slate-200 px-1.5 py-0.2 rounded shrink-0";
                     wBadge.innerText = '0 Returns';
                 }
             }

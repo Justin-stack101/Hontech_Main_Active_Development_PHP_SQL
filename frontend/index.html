@@ -2412,89 +2412,90 @@
 
                         <div id="lookup-dossier-card" class="hidden space-y-6">
                             <!-- Customer Details Header Card (Executive Automotive Dossier) -->
-                            <div class="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
-                                <!-- Top Identity & Actions Row -->
-                                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                                    <!-- Customer Avatar & Details -->
-                                    <div class="flex items-center gap-4">
-                                        <div id="dossier-avatar-initials" class="w-14 h-14 rounded-2xl bg-slate-900 text-white font-black text-xl flex items-center justify-center shrink-0 shadow-md ring-2 ring-slate-100">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-2xs space-y-5">
+                                <!-- Top Identity & Quick Export Row -->
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-150 pb-5">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div id="dossier-avatar-initials" class="w-12 h-12 rounded-xl bg-slate-900 text-white font-black text-base flex items-center justify-center shrink-0 shadow-xs">
                                             SL
                                         </div>
-                                        <div>
+                                        <div class="min-w-0 space-y-1">
                                             <div class="flex items-center gap-2.5 flex-wrap">
-                                                <h3 id="dossier-customer-name" class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Customer Name</h3>
-                                                <span id="dossier-loyalty-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 flex items-center gap-1">
-                                                    <i data-lucide="award" class="w-3.5 h-3.5 text-amber-500"></i> Lifetime Record
+                                                <h3 id="dossier-customer-name" class="text-lg md:text-xl font-black text-slate-900 tracking-tight truncate">Sophia Loren</h3>
+                                                <span id="dossier-loyalty-badge" class="px-2 py-0.5 rounded-md text-[10.5px] font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200">
+                                                    Initial Visit Record
                                                 </span>
                                             </div>
-                                            
-                                            <div class="flex items-center gap-2.5 mt-1.5 text-xs text-slate-600 font-medium flex-wrap">
-                                                <span id="dossier-vehicle-plate" class="font-mono font-bold text-xs text-white bg-slate-900 px-2.5 py-0.5 rounded-md shadow-xs">
-                                                    ABC 1234
+                                            <div class="flex items-center gap-2 text-xs text-slate-600 flex-wrap">
+                                                <span id="dossier-vehicle-plate" class="font-mono font-bold text-xs text-white bg-slate-900 px-2 py-0.5 rounded shadow-xs">
+                                                    EAS 202
                                                 </span>
                                                 <span class="text-slate-300">•</span>
-                                                <span class="flex items-center gap-1 font-bold text-slate-800" id="dossier-vehicle-model">
-                                                    <i data-lucide="car" class="w-3.5 h-3.5 text-slate-400"></i> Vehicle Model
+                                                <span id="dossier-vehicle-model" class="font-bold text-slate-800">
+                                                    Ford Ranger
                                                 </span>
                                                 <span class="text-slate-300">•</span>
-                                                <button type="button" onclick="copyCustomerPhone()" class="hover:text-slate-900 transition cursor-pointer flex items-center gap-1 text-slate-600 bg-slate-100 hover:bg-slate-200 px-2 py-0.5 rounded border border-slate-200" title="Click to copy contact number">
-                                                    <i data-lucide="phone" class="w-3 h-3 text-slate-400"></i> <span id="dossier-customer-phone" class="font-bold text-slate-800">09XX-XXX-XXXX</span> <i data-lucide="copy" class="w-3 h-3 text-slate-400"></i>
+                                                <button type="button" onclick="copyCustomerPhone()" class="hover:text-slate-900 transition cursor-pointer flex items-center gap-1.5 text-slate-700 bg-slate-50 hover:bg-slate-100 px-2 py-0.5 rounded border border-slate-200" title="Click to copy contact number">
+                                                    <i data-lucide="phone" class="w-3 h-3 text-slate-400"></i> <span id="dossier-customer-phone" class="font-bold">0920-555-7777</span> <i data-lucide="copy" class="w-3 h-3 text-slate-400"></i>
                                                 </button>
+                                                <span class="text-slate-300">•</span>
+                                                <span id="dossier-branch-text" class="text-slate-500 font-medium text-xs">Marikina Branch</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Right Action & Branch Pill -->
-                                    <div class="flex items-center gap-2.5 flex-wrap lg:justify-end">
-                                        <button onclick="exportCustomerServicePassportPDF()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer" title="Export Certified Vehicle Maintenance Passport PDF">
-                                            <i data-lucide="file-text" class="w-4 h-4 text-slate-300"></i> Export Passport PDF
+                                    <div class="shrink-0 flex items-center gap-2">
+                                        <button onclick="exportCustomerServicePassportPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer" title="Export Certified Vehicle Maintenance Passport PDF">
+                                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-300"></i> Export Passport PDF
                                         </button>
-                                        <span id="dossier-branch-badge" class="px-3.5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1.5">
-                                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i> <span id="dossier-branch-text">Marikina Branch</span>
-                                        </span>
                                     </div>
                                 </div>
 
-                                <!-- 4 High-Contrast Executive Telemetry Metric Cards -->
-                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-5">
-                                    <!-- Metric 1: Total Intakes & Spend Level -->
-                                    <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl space-y-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total History</span>
-                                            <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
+                                <!-- 4 Structured Telemetry Columns (Unified Card Grid) -->
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                                    <!-- Metric 1: Total Visits -->
+                                    <div class="bg-slate-50/80 border border-slate-200/80 p-3.5 rounded-xl flex flex-col justify-between min-h-[90px]">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Visits</span>
+                                        <div>
+                                            <h4 id="dossier-total-visits" class="text-xl font-black text-slate-900">1</h4>
+                                            <span id="dossier-loyalty-subtext" class="text-[10.5px] text-slate-500 font-medium block mt-0.5">Completed Intakes</span>
                                         </div>
-                                        <h4 id="dossier-total-visits" class="text-2xl font-black text-slate-900">1</h4>
-                                        <span id="dossier-loyalty-subtext" class="text-xs text-slate-500 font-medium block">Completed Intakes</span>
                                     </div>
 
-                                    <!-- Metric 2: Last Service Date & Category -->
-                                    <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl space-y-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Last Release</span>
-                                            <span id="dossier-last-days-ago" class="text-[10px] font-bold text-slate-700 bg-slate-200 px-2 py-0.5 rounded-full">Recent</span>
+                                    <!-- Metric 2: Last Service -->
+                                    <div class="bg-slate-50/80 border border-slate-200/80 p-3.5 rounded-xl flex flex-col justify-between min-h-[90px]">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Last Service</span>
+                                        <div>
+                                            <h4 id="dossier-last-date" class="text-xs font-black text-slate-900 truncate">Recent</h4>
+                                            <div class="flex items-center gap-1.5 mt-0.5">
+                                                <span id="dossier-last-category" class="text-[10.5px] text-slate-700 font-bold truncate">Check-Up</span>
+                                                <span id="dossier-last-days-ago" class="text-[9px] font-bold text-slate-600 bg-slate-200 px-1.5 py-0.2 rounded shrink-0">Recent</span>
+                                            </div>
                                         </div>
-                                        <h4 id="dossier-last-date" class="text-sm font-black text-slate-900 truncate">YYYY-MM-DD</h4>
-                                        <span id="dossier-last-category" class="text-xs text-slate-700 font-bold block truncate">PMS</span>
                                     </div>
 
-                                    <!-- Metric 3: Next PMS Interval & Health -->
-                                    <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl space-y-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Next PMS Due</span>
-                                            <span id="dossier-pms-health" class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">Active</span>
+                                    <!-- Metric 3: Next PMS -->
+                                    <div class="bg-slate-50/80 border border-slate-200/80 p-3.5 rounded-xl flex flex-col justify-between min-h-[90px]">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Next PMS Due</span>
+                                        <div>
+                                            <h4 id="dossier-next-pms-date" class="text-xs font-black text-slate-900 truncate">Approx. 40 Days</h4>
+                                            <div class="flex items-center gap-1.5 mt-0.5">
+                                                <span class="text-[10.5px] text-slate-500 font-medium truncate">40-Day Interval</span>
+                                                <span id="dossier-pms-health" class="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded shrink-0">Good</span>
+                                            </div>
                                         </div>
-                                        <h4 id="dossier-next-pms-date" class="text-sm font-black text-slate-900 truncate">Approx. 40 Days</h4>
-                                        <span class="text-xs text-slate-500 font-medium block">40-Day Casa Schedule</span>
                                     </div>
 
-                                    <!-- Metric 4: Assigned Advisor & Warranty Standing -->
-                                    <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl space-y-1">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Primary Advisor</span>
-                                            <span id="dossier-warranty-badge" class="text-[10px] font-bold text-slate-800 bg-slate-200 px-2 py-0.5 rounded-full">0 Returns</span>
+                                    <!-- Metric 4: Primary Advisor -->
+                                    <div class="bg-slate-50/80 border border-slate-200/80 p-3.5 rounded-xl flex flex-col justify-between min-h-[90px]">
+                                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Primary Advisor</span>
+                                        <div>
+                                            <h4 id="dossier-preferred-sa" class="text-xs font-black text-slate-900 truncate">Front Desk SA</h4>
+                                            <div class="flex items-center gap-1.5 mt-0.5">
+                                                <span class="text-[10.5px] text-slate-500 font-medium truncate">Assigned SA</span>
+                                                <span id="dossier-warranty-badge" class="text-[9px] font-bold text-slate-700 bg-slate-200 px-1.5 py-0.2 rounded shrink-0">0 Returns</span>
+                                            </div>
                                         </div>
-                                        <h4 id="dossier-preferred-sa" class="text-sm font-black text-slate-900 truncate">Service Advisor</h4>
-                                        <span class="text-xs text-slate-500 font-medium block">Assigned Lead SA</span>
                                     </div>
                                 </div>
                             </div>
@@ -5317,7 +5318,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=3.96"></script>
+    <script src="js/app.js?v=3.97"></script>
 </body>
 
 </html>
