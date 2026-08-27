@@ -8997,46 +8997,66 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
 
                     historyHTML += `
-                        <div class="bg-white border border-slate-200 hover:border-slate-300 p-4 rounded-xl shadow-2xs transition space-y-3">
-                            <!-- Top Row: Service Category & Date + Status & Action -->
+                        <div class="bg-white border border-slate-200 hover:border-slate-400 p-4 md:p-4.5 rounded-2xl shadow-xs hover:shadow-md transition-all space-y-3">
+                            <!-- Top Row: Service Category & Date + Status & Action Buttons -->
                             <div class="flex items-center justify-between gap-3 flex-wrap">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="w-6 h-6 rounded-lg bg-slate-900 text-white font-black text-xs flex items-center justify-center shadow-2xs">
                                         #${cust.jobs.length - idx}
                                     </span>
-                                    <span class="text-xs font-black text-slate-900">${category}</span>
-                                    <span class="text-[11px] text-slate-400 font-medium">• ${fullDateStr}</span>
+                                    <span class="text-xs font-black text-slate-900 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-lg">${category}</span>
+                                    <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                                        <i data-lucide="clock" class="w-3 h-3 text-slate-300"></i> ${fullDateStr}
+                                    </span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-lg border ${statusBadgeClass}">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded-lg border ${statusBadgeClass}">
                                         ${status}
                                     </span>
-                                    <button onclick="printJobClaimStubPDF('${jobId}')" 
-                                        class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
-                                        title="Print Customer Claim Stub & Gate Pass">
-                                        <i data-lucide="printer" class="w-3 h-3 text-slate-500"></i> Stub
+                                    <!-- Print Claim Stub PDF Button with Red PDF Indicator -->
+                                    <button type="button" onclick="printJobClaimStubPDF('${jobId}')" 
+                                        class="group px-3 py-1.5 bg-white hover:bg-red-50 text-slate-700 hover:text-red-700 border border-slate-300 hover:border-red-300 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs"
+                                        title="Export & Print Official Customer Claim Stub (PDF)">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform"></i>
+                                        <span>Stub</span>
+                                        <span class="bg-red-600 text-white text-[9px] font-black px-1.5 py-0.2 rounded tracking-tighter">PDF</span>
                                     </button>
-                                    <button onclick="openBackJobReasonModal('${jobId}')" 
-                                        class="px-2.5 py-1 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-slate-200 text-slate-700 rounded-lg text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer active:scale-95 shadow-2xs"
-                                        title="Flag this specific service order as a Back-Job return">
-                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-slate-500"></i> Flag Back-Job
+                                    <!-- Flag Back-Job Button with Distinct Down Arrow Action Indicator -->
+                                    <button type="button" onclick="openBackJobReasonModal('${jobId}')" 
+                                        class="group px-3 py-1.5 bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-900 border border-slate-300 hover:border-amber-400 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs"
+                                        title="Initiate Back-Job Return Intake and record customer complaints">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600 group-hover:-rotate-45 transition-transform"></i>
+                                        <span>Flag Back-Job</span>
+                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-700 group-hover:translate-y-0.5 transition-all"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Bottom Summary: Clean Key Details & Concern -->
-                            <div class="text-xs text-slate-600 bg-slate-50/70 p-3 rounded-lg border border-slate-150 flex flex-col gap-1.5">
-                                <div class="flex items-center gap-3 text-[11px] text-slate-500 font-medium flex-wrap">
-                                    <span><strong class="text-slate-700 font-bold">Job:</strong> ${jobId}</span>
-                                    <span>•</span>
-                                    <span><strong class="text-slate-700 font-bold">Advisor:</strong> ${sa}</span>
-                                    <span>•</span>
-                                    <span><strong class="text-slate-700 font-bold">Bay:</strong> ${bay}</span>
-                                    <span>•</span>
-                                    <span><strong class="text-slate-700 font-bold">Tech:</strong> ${mechanic}</span>
+                            <!-- Bottom Summary: Clean Key Details & Concern Box -->
+                            <div class="text-xs text-slate-600 bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80 flex flex-col gap-2">
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-600 font-medium">
+                                    <div class="flex items-center gap-1.5 truncate">
+                                        <i data-lucide="hash" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                                        <span class="truncate"><strong class="text-slate-800 font-bold">Job:</strong> ${jobId}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 truncate">
+                                        <i data-lucide="user" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                                        <span class="truncate"><strong class="text-slate-800 font-bold">Advisor:</strong> ${sa}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 truncate">
+                                        <i data-lucide="layout-grid" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                                        <span class="truncate"><strong class="text-slate-800 font-bold">Bay:</strong> ${bay}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 truncate">
+                                        <i data-lucide="wrench" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                                        <span class="truncate"><strong class="text-slate-800 font-bold">Tech:</strong> ${mechanic}</span>
+                                    </div>
                                 </div>
-                                <div class="text-xs text-slate-800 font-normal pt-1.5 border-t border-slate-200/60 leading-relaxed">
-                                    <span class="font-bold text-slate-900">Concern / Diagnosis:</span> ${concern}
+                                <div class="text-xs text-slate-800 pt-2 border-t border-slate-200/70 leading-relaxed bg-white/70 p-2.5 rounded-lg border border-slate-150">
+                                    <span class="font-bold text-slate-900 flex items-center gap-1.5 mb-0.5">
+                                        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-slate-500"></i> Customer Concern / Diagnosis:
+                                    </span>
+                                    <p class="text-slate-700 font-normal pl-5">${concern}</p>
                                 </div>
                             </div>
                         </div>

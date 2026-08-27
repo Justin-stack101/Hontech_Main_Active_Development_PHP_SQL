@@ -2446,12 +2446,13 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="shrink-0 flex items-center gap-2">
-                                        <button onclick="exportCustomerServicePassportPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center gap-2 cursor-pointer" title="Export Certified Vehicle Maintenance Passport PDF">
-                                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-300"></i> Export Passport PDF
-                                        </button>
-                                    </div>
+                                         <button onclick="exportCustomerServicePassportPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs hover:shadow-xs flex items-center gap-2 cursor-pointer active:scale-95 group" title="Export Certified Vehicle Maintenance Passport (PDF)">
+                                             <i data-lucide="file-text" class="w-4 h-4 text-red-400 group-hover:scale-110 transition-transform"></i>
+                                             <span>Export Passport</span>
+                                             <span class="bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider shadow-2xs">PDF</span>
+                                         </button>
+                                     </div>
                                 </div>
 
                                 <!-- 4 Structured Telemetry Columns (Unified Card Grid) -->
@@ -2521,15 +2522,19 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-3 border-t border-slate-100">
-                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="min-h-[46px] bg-slate-900 hover:bg-black text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-300"></i> Regular Visit (PMS)
-                                    </button>
-                                    <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="min-h-[46px] bg-red-600 hover:bg-red-700 text-white py-3 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer text-center">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4 text-white"></i> Back-Job Return Intake
-                                    </button>
-                                    <button onclick="stayOnHistory()" class="min-h-[46px] bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-3 px-3 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center">
-                                        <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i> Review History
-                                    </button>
+                                    <button id="btn-regular-visit" onclick="confirmRegularIntake()" class="min-h-[46px] bg-slate-900 hover:bg-black text-white py-3 px-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs hover:shadow-xs flex items-center justify-center gap-2 cursor-pointer text-center group active:scale-95">
+                                         <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-300 group-hover:scale-110 transition-transform"></i>
+                                         <span>Regular Visit (PMS)</span>
+                                         <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-all"></i>
+                                     </button>
+                                     <button id="btn-backjob-yes" onclick="openBackJobReasonModal()" class="min-h-[46px] bg-red-600 hover:bg-red-700 text-white py-3 px-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-2xs hover:shadow-xs flex items-center justify-center gap-2 cursor-pointer text-center group active:scale-95">
+                                         <i data-lucide="rotate-ccw" class="w-4 h-4 text-white group-hover:-rotate-45 transition-transform"></i>
+                                         <span>Back-Job Return Intake</span>
+                                         <i data-lucide="chevron-down" class="w-4 h-4 text-red-200 group-hover:text-white group-hover:translate-y-0.5 transition-all"></i>
+                                     </button>
+                                     <button onclick="stayOnHistory()" class="min-h-[46px] bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 py-3 px-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition cursor-pointer flex items-center justify-center gap-1.5 text-center active:scale-95">
+                                         <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i> Review History
+                                     </button>
                                 </div>
                             </div>
 
@@ -5539,7 +5544,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.03"></script>
+    <script src="js/app.js?v=4.04"></script>
 </body>
 
 </html>
