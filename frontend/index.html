@@ -3415,65 +3415,50 @@
 
                     <!-- Workshop Capacity & Bay Allocation (Admin / Owner / SA) -->
                     <div id="settings-bay-config-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
-                        <div class="flex items-center justify-between border-b border-gray-100 pb-4">
-                            <div class="flex items-center gap-4">
+                        <div class="flex items-center justify-between border-b border-gray-150 pb-4">
+                            <div class="flex items-center gap-3">
                                 <div class="p-3 bg-red-50 text-red-600 rounded-xl">
-                                    <i data-lucide="warehouse" class="w-6 h-6"></i>
+                                    <i data-lucide="shield-check" class="w-6 h-6"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Workshop Capacity</h3>
-                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Scale Branch Floor Bays (2 – 20 Bays)</p>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Facility Max Bay Limit</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Admin Facility Ceiling (Max Bays Allowed for SA)</p>
                                 </div>
                             </div>
-                            <span id="settings-bay-count-badge" class="text-xs font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full">4 Bays Active</span>
+                            <span id="settings-bay-count-badge" class="text-xs font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full">20 Bays Max Ceiling</span>
                         </div>
 
                         <div class="space-y-4">
                             <div>
-                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block mb-2">Total Active Service Bays</label>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block mb-2">Configure Facility Maximum Bay Ceiling</label>
                                 <div class="flex items-center gap-2">
-                                    <button type="button" onclick="stepWorkshopBayCount(-1)" title="Decrease Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
-                                        <i data-lucide="minus" class="w-4 h-4"></i>
-                                    </button>
                                     <div class="relative flex-1">
-                                        <select id="settings-workshop-bays" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
-                                            <option value="2">2 Bays (Express Pod)</option>
-                                            <option value="3">3 Bays</option>
-                                            <option value="4">4 Bays (Standard Default)</option>
-                                            <option value="5">5 Bays</option>
-                                            <option value="6">6 Bays</option>
-                                            <option value="7">7 Bays</option>
-                                            <option value="8">8 Bays</option>
-                                            <option value="9">9 Bays</option>
-                                            <option value="10">10 Bays</option>
-                                            <option value="11">11 Bays</option>
-                                            <option value="12">12 Bays (Medium Branch)</option>
-                                            <option value="14">14 Bays</option>
-                                            <option value="16">16 Bays (Large Branch)</option>
-                                            <option value="18">18 Bays</option>
-                                            <option value="20">20 Bays (Master Hub Max)</option>
+                                        <select id="settings-facility-max-bays" onchange="setFacilityMaxBayLimit(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
+                                            <option value="10">10 Bays (Small Workshop Facility Limit)</option>
+                                            <option value="12">12 Bays (Medium Branch Facility Limit)</option>
+                                            <option value="16">16 Bays (Large Branch Facility Limit)</option>
+                                            <option value="20" selected>20 Bays (Standard Full Hub Ceiling)</option>
+                                            <option value="30">30 Bays (Expanded Mega Facility)</option>
+                                            <option value="40">40 Bays (Regional Service Center)</option>
+                                            <option value="50">50 Bays (Maximum Enterprise Hub Limit)</option>
                                         </select>
                                         <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
                                     </div>
-                                    <button type="button" onclick="stepWorkshopBayCount(1)" title="Increase Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 text-gray-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
-                                        <i data-lucide="plus" class="w-4 h-4"></i>
-                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Quick Presets in Settings -->
+                            <!-- Quick Ceiling Presets -->
                             <div class="flex flex-wrap items-center gap-1.5 pt-1">
-                                <span class="text-[9.5px] text-gray-400 font-bold uppercase tracking-wider mr-1">Presets:</span>
-                                <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">4</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">6</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">8</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">10</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">12</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">16</button>
-                                <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">20</button>
-                                <button type="button" onclick="promptCustomBayCount()" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-black text-white border border-slate-800 font-bold text-[11px] transition cursor-pointer flex items-center gap-1 shadow-2xs">
-                                    <i data-lucide="plus-circle" class="w-3 h-3 text-red-400"></i> Custom...
-                                </button>
+                                <span class="text-[9.5px] text-gray-400 font-bold uppercase tracking-wider mr-1">Ceiling Presets:</span>
+                                <button type="button" onclick="setFacilityMaxBayLimit(10)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">10 Max</button>
+                                <button type="button" onclick="setFacilityMaxBayLimit(20)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">20 Max</button>
+                                <button type="button" onclick="setFacilityMaxBayLimit(30)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">30 Max</button>
+                                <button type="button" onclick="setFacilityMaxBayLimit(50)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">50 Max</button>
+                            </div>
+
+                            <p class="text-xs text-slate-500 leading-relaxed pt-1">
+                                Service Advisors on the workshop floor can dynamically adjust active operational bays up to this maximum facility limit.
+                            </p>
                             </div>
 
                             <!-- Direct Link to Live Workshop Floor Module -->
@@ -5544,7 +5529,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.06"></script>
+    <script src="js/app.js?v=4.07"></script>
 </body>
 
 </html>

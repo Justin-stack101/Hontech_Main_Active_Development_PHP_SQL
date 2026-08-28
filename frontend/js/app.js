@@ -1193,12 +1193,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('settings-bay-config-container')) {
-                // Only Administrator has master authority to configure facility capacity
+                // Only Administrator has master authority to configure facility max capacity limit
                 document.getElementById('settings-bay-config-container').style.display = isAdmin ? 'block' : 'none';
             }
             if (document.getElementById('bays-control-card')) {
-                // Only Administrator can adjust capacity controls directly on the bay screen
-                document.getElementById('bays-control-card').style.display = isAdmin ? 'block' : 'none';
+                // SA and Admin can scale active floor bays; Owner is view-only
+                document.getElementById('bays-control-card').style.display = (role !== 'owner') ? 'block' : 'none';
             }
 
             if (role === 'owner') {
@@ -7505,22 +7505,58 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             startTVAutoScroll();
         }
 
-        function getWorkshopBayCount() {
-            const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
+        function getFacilityMaxBayLimit() {
+            const stored = parseInt(localStorage.getItem('hontech_max_bay_limit'), 10);
             if (!isNaN(stored) && stored >= 2 && stored <= 50) {
                 return stored;
             }
-            return 4; // Default 4 service bays
+            return 20; // Default facility maximum ceiling
+        }
+        window.getFacilityMaxBayLimit = getFacilityMaxBayLimit;
+
+        function setFacilityMaxBayLimit(val) {
+            if (currentUserRole !== 'admin') {
+                showSystemToast('Only Administrator can configure facility maximum capacity limit.', 'warning', 'Admin Authority');
+                return;
+            }
+            const maxVal = Math.min(50, Math.max(2, parseInt(val, 10) || 20));
+            localStorage.setItem('hontech_max_bay_limit', maxVal.toString());
+            
+            // If current active bays exceed new max limit, clamp it down
+            const currentActive = getWorkshopBayCount();
+            if (currentActive > maxVal) {
+                localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
+            }
+
+            initWorkshopBaySettings();
+            if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+            if (typeof renderStaffTables === 'function') renderStaffTables();
+            showSystemToast(`Facility maximum capacity ceiling set to ${maxVal} bays.`, 'success', 'Ceiling Configured');
+        }
+        window.setFacilityMaxBayLimit = setFacilityMaxBayLimit;
+
+        function getWorkshopBayCount() {
+            const maxLimit = getFacilityMaxBayLimit();
+            const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
+            if (!isNaN(stored) && stored >= 2) {
+                return Math.min(maxLimit, stored);
+            }
+            return Math.min(maxLimit, 4); // Default 4 service bays
         }
         window.getWorkshopBayCount = getWorkshopBayCount;
 
         function stepWorkshopBayCount(delta) {
-            if (currentUserRole !== 'admin') {
-                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+            if (currentUserRole === 'owner') {
+                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
                 return;
             }
             const current = getWorkshopBayCount();
-            const next = Math.min(50, Math.max(2, current + Number(delta || 0)));
+            const maxLimit = getFacilityMaxBayLimit();
+            const next = Math.min(maxLimit, Math.max(2, current + Number(delta || 0)));
+            if (next === current && delta > 0 && current >= maxLimit) {
+                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Admin.`, 'warning', 'Limit Reached');
+                return;
+            }
             handleWorkshopBayCountChange(next);
         }
         window.stepWorkshopBayCount = stepWorkshopBayCount;
@@ -7528,10 +7564,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         let tempCustomModalBayCount = 4;
 
         function openCustomBayCapacityModal() {
-            if (currentUserRole !== 'admin') {
-                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+            if (currentUserRole === 'owner') {
+                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
                 return;
             }
+            const maxLimit = getFacilityMaxBayLimit();
             tempCustomModalBayCount = getWorkshopBayCount();
             const valEl = document.getElementById('modal-bay-stepper-value');
             if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
@@ -7550,14 +7587,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.closeCustomBayCapacityModal = closeCustomBayCapacityModal;
 
         function adjustCustomModalBayCount(delta) {
-            tempCustomModalBayCount = Math.min(50, Math.max(2, tempCustomModalBayCount + Number(delta || 0)));
+            const maxLimit = getFacilityMaxBayLimit();
+            tempCustomModalBayCount = Math.min(maxLimit, Math.max(2, tempCustomModalBayCount + Number(delta || 0)));
             const valEl = document.getElementById('modal-bay-stepper-value');
             if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
         }
         window.adjustCustomModalBayCount = adjustCustomModalBayCount;
 
         function setCustomModalBayCount(count) {
-            tempCustomModalBayCount = Math.min(50, Math.max(2, parseInt(count, 10) || 4));
+            const maxLimit = getFacilityMaxBayLimit();
+            tempCustomModalBayCount = Math.min(maxLimit, Math.max(2, parseInt(count, 10) || 4));
             const valEl = document.getElementById('modal-bay-stepper-value');
             if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
         }
@@ -7566,39 +7605,33 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function applyCustomModalBayCount() {
             closeCustomBayCapacityModal();
             handleWorkshopBayCountChange(tempCustomModalBayCount);
-            showSystemToast(`Workshop capacity successfully updated to ${tempCustomModalBayCount} active bays.`, 'success', 'Capacity Configured');
         }
         window.applyCustomModalBayCount = applyCustomModalBayCount;
 
         function handleWorkshopBayCountChange(newCount) {
-            if (currentUserRole !== 'admin') {
-                showSystemToast('Only Administrator can configure facility bay capacity.', 'warning', 'Admin Authority');
+            if (currentUserRole === 'owner') {
+                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
                 return;
             }
-            const num = Math.min(50, Math.max(2, parseInt(newCount, 10) || 4));
+            const maxLimit = getFacilityMaxBayLimit();
+            const requested = parseInt(newCount, 10) || 4;
+            if (requested > maxLimit) {
+                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Admin.`, 'warning', 'Limit Reached');
+            }
+            const num = Math.min(maxLimit, Math.max(2, requested));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             
             const badge1 = document.getElementById('settings-bay-count-badge');
-            if (badge1) badge1.innerText = `${num} Bays Active`;
+            if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
             const badge2 = document.getElementById('bays-module-count-badge');
-            if (badge2) badge2.innerText = `${num} Bays Active`;
+            if (badge2) badge2.innerText = `${num} / ${maxLimit} Bays Active`;
 
-            const select1 = document.getElementById('settings-workshop-bays');
-            if (select1) {
-                if (!select1.querySelector(`option[value="${num}"]`)) {
-                    const opt = document.createElement('option');
-                    opt.value = num.toString();
-                    opt.innerText = `${num} Bays (Custom)`;
-                    select1.appendChild(opt);
-                }
-                select1.value = num.toString();
-            }
             const select2 = document.getElementById('bays-module-select');
             if (select2) {
                 if (!select2.querySelector(`option[value="${num}"]`)) {
                     const opt = document.createElement('option');
                     opt.value = num.toString();
-                    opt.innerText = `${num} Bays (Custom)`;
+                    opt.innerText = `${num} Bays (Active)`;
                     select2.appendChild(opt);
                 }
                 select2.value = num.toString();
@@ -7622,21 +7655,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
-            showSystemToast(`Workshop capacity configured to ${num} service bays.`, 'success', 'Bays Configured');
+            showSystemToast(`Floor active capacity scaled to ${num} service bays (Facility Max: ${maxLimit}).`, 'success', 'Bays Scaled');
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
 
         function initWorkshopBaySettings() {
+            const maxLimit = getFacilityMaxBayLimit();
             const bayCount = getWorkshopBayCount();
-            const select1 = document.getElementById('settings-workshop-bays');
-            if (select1) select1.value = bayCount.toString();
+
+            const settingMaxSelect = document.getElementById('settings-facility-max-bays');
+            if (settingMaxSelect) settingMaxSelect.value = maxLimit.toString();
+
             const badge1 = document.getElementById('settings-bay-count-badge');
-            if (badge1) badge1.innerText = `${bayCount} Bays Active`;
+            if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
 
             const select2 = document.getElementById('bays-module-select');
             if (select2) select2.value = bayCount.toString();
             const badge2 = document.getElementById('bays-module-count-badge');
-            if (badge2) badge2.innerText = `${bayCount} Bays Active`;
+            if (badge2) badge2.innerText = `${bayCount} / ${maxLimit} Bays Active`;
         }
         window.initWorkshopBaySettings = initWorkshopBaySettings;
 
