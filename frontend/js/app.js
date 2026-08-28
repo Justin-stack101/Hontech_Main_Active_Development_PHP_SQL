@@ -1367,10 +1367,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const isHidden = dropdown.classList.contains('hidden');
                 dropdown.classList.toggle('hidden');
                 
-                // Populate user email badge in dropdown
-                const emailEl = document.getElementById('header-dropdown-user-email');
-                if (emailEl && currentUser && currentUser.email) {
-                    emailEl.innerText = currentUser.email;
+                // Populate user email badge in dropdown defensively
+                const emailEl = document.getElementById('header-dropdown-user-email') || document.getElementById('dropdown-user-email');
+                if (emailEl) {
+                    emailEl.innerText = (typeof currentUserEmail !== 'undefined' && currentUserEmail) ? currentUserEmail : 'user@hontech.com';
                 }
 
                 // Close sidebar dropdown if open
@@ -1393,10 +1393,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const isHidden = dropdown.classList.contains('hidden');
                 dropdown.classList.toggle('hidden');
 
-                // Populate user email badge in dropdown
-                const emailEl = document.getElementById('sidebar-dropdown-user-email');
-                if (emailEl && currentUser && currentUser.email) {
-                    emailEl.innerText = currentUser.email;
+                // Populate user email badge in dropdown defensively
+                const emailEl = document.getElementById('sidebar-dropdown-user-email') || document.getElementById('dropdown-user-email');
+                if (emailEl) {
+                    emailEl.innerText = (typeof currentUserEmail !== 'undefined' && currentUserEmail) ? currentUserEmail : 'user@hontech.com';
                 }
 
                 // Close header dropdown if open
