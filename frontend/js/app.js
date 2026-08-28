@@ -2350,6 +2350,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
 
+                if (job && field === 'location' && value && value !== 'None') {
+                    const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
+                    if (!isMonitoringOrActive) {
+                        showSystemToast(`Vehicle must be set to 'Monitoring' before allocating a workshop bay.`, 'warning', 'Status Locked');
+                        renderStaffTables();
+                        return;
+                    }
+                }
+
                 if (field === 'departure') {
                     const normalized = convertTimeTo24Hour(value);
                     if (normalized) value = normalized;
@@ -2522,12 +2531,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         method: 'PATCH',
                         body: { field: 'location', value: 'None' }
                     });
+                    if (job) job.location = 'None';
                 }
 
                 await apiRequest(`/api/jobs/${jobId}/status`, {
                     method: 'PATCH',
                     body: { status: newStatus }
                 });
+
+                if (newStatus === 'Monitoring') {
+                    showSystemToast(`Vehicle moved to Monitoring. You can now assign a workshop bay.`, 'info', 'Status: Monitoring');
+                }
 
                 await loadData();
                 renderStaffTables();
@@ -3299,44 +3313,59 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                             <!-- Location -->
                             <td class="px-2 py-3 align-middle text-center">
-                                ${isEditable ? `
-                                <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[145px] ${
-                                    (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
-                                        ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
-                                        : 'bg-gray-100/90 text-gray-800 border-gray-250 cursor-pointer hover:border-gray-400'
-                                }">
-                                    <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                    <select onchange="updateJobField('${job.id}', 'location', this.value)" 
-                                        class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                        title="Assign Location">
-                                        <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
-                                        ${(() => {
-                                            const totalBays = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
-                                            let optionsHtml = '';
-                                            for (let i = 1; i <= totalBays; i++) {
-                                                const bayName = `Bay ${i}`;
-                                                const occupiedBy = rowOccupiedBays[bayName];
-                                                const isSelected = job.location === bayName || job.location === `Lift ${i}`;
-                                                if (occupiedBy && !isSelected) {
-                                                    optionsHtml += `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
-                                                } else {
-                                                    optionsHtml += `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
-                                                }
-                                            }
-                                            return optionsHtml;
-                                        })()}
-                                    </select>
-                                </div>
-                                ` : `
-                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px] ${
-                                    (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
-                                        ? 'bg-blue-50 text-blue-800 border border-blue-200' 
-                                        : 'bg-gray-100/90 text-gray-800 border border-gray-250'
-                                }">
-                                    ${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}
-                                </span>
-                                `}
+                                ${(() => {
+                                    const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
+                                    if (isEditable && isMonitoringOrActive) {
+                                        return `
+                                        <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[145px] ${
+                                            (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
+                                                ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
+                                                : 'bg-amber-50/80 text-amber-900 border-amber-300 cursor-pointer hover:border-amber-400'
+                                        }" title="Assign / Change Workshop Bay">
+                                            <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Select Bay...' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                            <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <select onchange="updateJobField('${job.id}', 'location', this.value)" 
+                                                class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                title="Assign Location">
+                                                <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
+                                                ${(() => {
+                                                    const totalBays = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+                                                    let optionsHtml = '';
+                                                    for (let i = 1; i <= totalBays; i++) {
+                                                        const bayName = `Bay ${i}`;
+                                                        const occupiedBy = rowOccupiedBays[bayName];
+                                                        const isSelected = job.location === bayName || job.location === `Lift ${i}`;
+                                                        if (occupiedBy && !isSelected) {
+                                                            optionsHtml += `<option value="${bayName}" style="background-color: white; color: #9ca3af;" disabled>${bayName} (Occupied - ${occupiedBy})</option>`;
+                                                        } else {
+                                                            optionsHtml += `<option value="${bayName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${bayName}</option>`;
+                                                        }
+                                                    }
+                                                    return optionsHtml;
+                                                })()}
+                                            </select>
+                                        </div>
+                                        `;
+                                    } else if (isEditable && !isMonitoringOrActive) {
+                                        return `
+                                        <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-2.5 py-1.5 shadow-2xs w-[145px] cursor-not-allowed select-none opacity-85" 
+                                             title="Vehicle is in '${job.status}'. Set Status to 'Monitoring' to assign a workshop bay.">
+                                            <span class="font-bold text-xs uppercase flex-1 text-center truncate">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 shrink-0 stroke-[2.2]"></i>
+                                        </div>
+                                        `;
+                                    } else {
+                                        return `
+                                        <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px] ${
+                                            (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
+                                                ? 'bg-blue-50 text-blue-800 border border-blue-200' 
+                                                : 'bg-gray-100/90 text-gray-800 border border-gray-250'
+                                        }">
+                                            ${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}
+                                        </span>
+                                        `;
+                                    }
+                                })()}
                             </td>
                         </tr>
                         `;
@@ -7821,9 +7850,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         async function dispatchVehicleToTargetBay(jobId, targetBay, plate) {
             closeBayAllocationModal();
             try {
+                const job = (allJobs || []).find(j => j.id === jobId);
+                if (job && (job.status === 'Waiting' || !job.status)) {
+                    await setJobStatus(jobId, 'Monitoring');
+                }
                 await updateJobField(jobId, 'location', targetBay);
-                showSystemToast(`${plate} successfully dispatched to ${targetBay}!`, 'success', 'Bay Allocated');
+                showSystemToast(`${plate} set to Monitoring and dispatched to ${targetBay}!`, 'success', 'Bay Allocated');
                 if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+                if (typeof renderStaffTables === 'function') renderStaffTables();
                 if (typeof renderTV === 'function') renderTV();
             } catch (err) {
                 showSystemToast(err.message || 'Error dispatching vehicle.', 'error');
