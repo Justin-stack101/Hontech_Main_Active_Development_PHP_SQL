@@ -7640,6 +7640,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.initWorkshopBaySettings = initWorkshopBaySettings;
 
+        window.jumpToJobRecord = function(plate) {
+            showSection('queue');
+            if (typeof updateIntakeFilter === 'function') {
+                updateIntakeFilter('search', plate || '');
+                const searchInput = document.getElementById('intake-search-input');
+                if (searchInput) {
+                    searchInput.value = plate || '';
+                }
+            }
+        };
+
+        window.unassignBay = async function(jobId, bayName) {
+            try {
+                await updateJobField(jobId, 'location', 'None');
+                showSystemToast(`Vehicle unassigned from ${bayName} and returned to Waiting Area.`, 'info', 'Bay Freed');
+                if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
+                if (typeof renderStaffTables === 'function') renderStaffTables();
+                if (typeof renderTV === 'function') renderTV();
+            } catch (err) {
+                showSystemToast(err.message || 'Error unassigning bay.', 'error');
+            }
+        };
+
         function renderWorkshopBaysModule() {
             const baySection = document.getElementById('section-bays');
             if (baySection && baySection.classList.contains('hidden')) return;
@@ -7679,7 +7702,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const gridEl = document.getElementById('bays-floor-grid');
             if (gridEl) {
                 let gridHtml = '';
-                const isManager = (currentUserRole === 'owner' || currentUserRole === 'admin');
+                const isOwner = (currentUserRole === 'owner');
 
                 for (let i = 1; i <= bayCount; i++) {
                     const padBay = String(i).padStart(2, '0');
@@ -7696,15 +7719,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         const category = job.category || 'General Service';
                         const lane = job.laneType || job.lane || 'Standard Lane';
                         const advisor = job.advisor || job.handled_by || job.sa || 'Front Desk SA';
+                        const status = job.status || 'Monitoring';
+
+                        let statusBadgeHtml = '';
+                        let dotColor = 'bg-slate-900';
+                        if (status === 'Monitoring') {
+                            dotColor = 'bg-blue-600';
+                            statusBadgeHtml = `<span class="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> MONITORING</span>`;
+                        } else if (status === 'In Progress') {
+                            dotColor = 'bg-indigo-600';
+                            statusBadgeHtml = `<span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span> IN PROGRESS</span>`;
+                        } else if (status === 'Ready to Release' || status === 'Ready') {
+                            dotColor = 'bg-emerald-600';
+                            statusBadgeHtml = `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> READY TO RELEASE</span>`;
+                        } else if (status === 'Carry Over') {
+                            dotColor = 'bg-amber-600';
+                            statusBadgeHtml = `<span class="bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> CARRY OVER</span>`;
+                        } else {
+                            statusBadgeHtml = `<span class="bg-slate-100 text-slate-800 border border-slate-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">${status.toUpperCase()}</span>`;
+                        }
 
                         gridHtml += `
                             <div class="bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-4 sm:p-5 shadow-2xs hover:shadow-sm flex flex-col justify-between gap-3.5 transition">
                                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                                     <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-slate-900 animate-pulse"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full ${dotColor} animate-pulse"></span>
                                         <span class="font-black text-xs uppercase tracking-wider text-slate-900">BAY-${padBay}</span>
                                     </div>
-                                    <span class="bg-slate-100 text-slate-800 border border-slate-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">IN SERVICE</span>
+                                    ${statusBadgeHtml}
                                 </div>
 
                                 <div class="space-y-1.5">
@@ -7729,11 +7771,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
 
                                 <div class="pt-2 border-t border-slate-100 flex items-center gap-2">
-                                    <button onclick="showSection('queue')" class="flex-1 py-2 px-3 bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-2xs cursor-pointer flex items-center justify-center gap-1.5">
+                                    <button onclick="jumpToJobRecord('${job.plate || ''}')" class="flex-1 py-2 px-3 bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-2xs cursor-pointer flex items-center justify-center gap-1.5">
                                         <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-300"></i> View Record
                                     </button>
-                                    ${!isManager ? `
-                                        <button onclick="updateJobField('${job.id}', 'location', 'None'); setTimeout(renderWorkshopBaysModule, 120);" class="py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wider rounded-xl transition border border-slate-200 cursor-pointer" title="Unassign Bay">
+                                    ${!isOwner ? `
+                                        <button onclick="unassignBay('${job.id}', 'BAY-${padBay}')" class="py-2 px-3 bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 text-slate-700 font-bold text-xs uppercase tracking-wider rounded-xl transition border border-slate-200 cursor-pointer" title="Unassign Bay">
                                             Unassign
                                         </button>
                                     ` : ''}
@@ -7760,7 +7802,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
 
                                 <div class="pt-2 border-t border-slate-200/60">
-                                    ${isManager ? `
+                                    ${isOwner ? `
                                         <div class="w-full py-2 px-3 bg-white border border-slate-200 text-slate-600 font-bold text-[11px] uppercase tracking-wider rounded-xl text-center flex items-center justify-center gap-1.5">
                                             <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400"></i> Bay Ready
                                         </div>
@@ -7811,6 +7853,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 listEl.innerHTML = waitingJobs.map(job => {
                     const custName = job.customer || job.name || job.contact || 'Customer';
                     const advName = job.advisor || job.saName || job.sa_name || 'SA';
+                    const curStatus = job.status || 'Waiting';
                     return `
                         <div class="bg-white border-2 border-gray-200 hover:border-gray-900 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 transition shadow-xs">
                             <div class="flex-1 min-w-0 space-y-1.5 text-left">
@@ -7818,6 +7861,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <span class="text-xl font-black uppercase italic tracking-wide text-gray-950 font-mono">${job.plate}</span>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-300 whitespace-nowrap">${job.laneType || 'Flexible Lane'}</span>
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 whitespace-nowrap">${job.category || 'PMS'}</span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">Status: ${curStatus} ➔ Promotes to Monitoring</span>
                                 </div>
                                 <p class="text-xs font-bold text-gray-700 truncate uppercase">
                                     ${job.vehicle || 'Vehicle'} · <strong class="text-gray-950 font-black">${custName}</strong>
