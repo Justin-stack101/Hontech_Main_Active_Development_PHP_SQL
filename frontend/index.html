@@ -732,41 +732,46 @@
             </div>
 
             <!-- Sidebar Footer (User info & Settings) -->
-            <div class="p-4 border-t border-gray-200 bg-gray-100/30 shrink-0 relative">
+            <div class="p-4 border-t border-slate-700/60 bg-slate-900/60 shrink-0 relative">
                 <!-- Sidebar Dropdown Menu (Pops up) -->
-                <div id="sidebar-user-dropdown" class="hidden absolute left-4 bottom-[100%] mb-2 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
-
+                <div id="sidebar-user-dropdown" class="hidden absolute left-4 bottom-[100%] mb-2 w-60 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
+                    <!-- User Bio -->
+                    <div class="px-4 py-3 bg-slate-50/80 rounded-t-2xl">
+                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Account</p>
+                        <p class="text-xs font-black text-slate-900 truncate mt-0.5" id="sidebar-dropdown-user-email">user@hontech.com</p>
+                    </div>
 
                     <!-- Account Settings Link -->
-                    <div class="px-3 py-2">
-                        <button onclick="showSection('settings'); toggleSidebarDropdown()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition">
-                            <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
-                            Account Settings
+                    <div class="p-2">
+                        <button type="button" onclick="showSection('settings'); toggleSidebarDropdown(event)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer">
+                            <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
+                                <i data-lucide="settings" class="w-4 h-4"></i>
+                            </div>
+                            <span>Account Settings</span>
                         </button>
                     </div>
 
                     <!-- Sign Out Action -->
-                    <div class="px-3 py-2">
-                        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition">
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                            Sign Out
+                    <div class="p-2">
+                        <button type="button" onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700 transition cursor-pointer">
+                            <div class="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                            </div>
+                            <span>Sign Out</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Collapsed View footer -->
                 <div id="sidebar-footer-collapsed" class="hidden flex flex-col items-center gap-3">
-                    <button onclick="toggleSidebarDropdown()" class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm" title="User Profile">
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition" title="User Profile">
                         <i data-lucide="user" class="w-4 h-4"></i>
                         <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
-                    </button>
-                    <button onclick="toggleSidebarDropdown()" class="p-2 rounded-xl hover:bg-slate-800 text-slate-400 hover:text-white transition" title="Settings">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
                     </button>
                 </div>
                 <!-- Expanded View footer -->
                 <div id="sidebar-footer-expanded" class="w-full">
-                    <button onclick="toggleSidebarDropdown()" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs">
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
                         <div class="flex items-center gap-2.5 min-w-0 flex-1">
                             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
                                 <i data-lucide="user" class="w-4 h-4 text-white"></i>
@@ -778,7 +783,7 @@
                             </div>
                         </div>
                         <div class="p-1 text-slate-400 group-hover:text-white transition shrink-0">
-                            <i data-lucide="settings" class="w-4 h-4"></i>
+                            <i data-lucide="more-vertical" class="w-4 h-4"></i>
                         </div>
                     </button>
                 </div>
@@ -816,35 +821,43 @@
 
                 <!-- User Profile Dropdown Container -->
                 <div class="relative">
-                    <button onclick="toggleUserDropdown()" class="flex items-center gap-3 p-1.5 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-200 transition focus:outline-none cursor-pointer">
-                        <div class="text-right flex flex-col items-end">
-                            <p class="text-xs font-black text-gray-900 leading-tight" id="header-user-name">User</p>
+                    <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-slate-100/80 active:scale-95 border border-slate-200/60 hover:border-slate-300 transition-all focus:outline-none cursor-pointer shadow-2xs group">
+                        <div class="text-right flex flex-col items-end min-w-[70px]">
+                            <p class="text-xs font-black text-slate-900 leading-tight group-hover:text-red-600 transition-colors" id="header-user-name">User</p>
                             <span class="mt-0.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-red-50 text-red-600 border border-red-200/80" id="header-user-role">Role</span>
                         </div>
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 text-red-600 border border-red-200 flex items-center justify-center font-bold relative shadow-xs">
-                            <i data-lucide="user" class="w-5 h-5"></i>
-                            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm group-hover:shadow-md transition-shadow">
+                            <i data-lucide="user" class="w-5 h-5 text-white"></i>
+                            <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
                         </div>
-                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400"></i>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-transform"></i>
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="user-dropdown" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
-
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2.5 w-64 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
+                        <!-- User Quick Bio -->
+                        <div class="px-4 py-3 bg-slate-50/80 rounded-t-2xl">
+                            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Signed In As</p>
+                            <p class="text-xs font-black text-slate-900 truncate mt-0.5" id="header-dropdown-user-email">user@hontech.com</p>
+                        </div>
 
                         <!-- Account Settings Link -->
-                        <div class="px-3 py-2">
-                            <button onclick="showSection('settings'); toggleUserDropdown()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-50 transition">
-                                <i data-lucide="settings" class="w-4 h-4 text-gray-400"></i>
-                                Account Settings
+                        <div class="p-2">
+                            <button type="button" onclick="showSection('settings'); toggleUserDropdown(event)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer">
+                                <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
+                                    <i data-lucide="settings" class="w-4 h-4"></i>
+                                </div>
+                                <span>Account Settings</span>
                             </button>
                         </div>
 
                         <!-- Sign Out Action -->
-                        <div class="px-3 py-2">
-                            <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 transition">
-                                <i data-lucide="log-out" class="w-4 h-4"></i>
-                                Sign Out
+                        <div class="p-2">
+                            <button type="button" onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700 transition cursor-pointer">
+                                <div class="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+                                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                                </div>
+                                <span>Sign Out</span>
                             </button>
                         </div>
                     </div>
@@ -5529,7 +5542,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.07"></script>
+    <script src="js/app.js?v=4.08"></script>
 </body>
 
 </html>

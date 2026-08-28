@@ -1358,24 +1358,71 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.handleLogout = logout;
         window.logout = logout;
 
-        function toggleUserDropdown() {
+        function toggleUserDropdown(e) {
+            if (e && typeof e.stopPropagation === 'function') {
+                e.stopPropagation();
+            }
             const dropdown = document.getElementById('user-dropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
+            if (dropdown) {
+                const isHidden = dropdown.classList.contains('hidden');
+                dropdown.classList.toggle('hidden');
+                
+                // Populate user email badge in dropdown
+                const emailEl = document.getElementById('header-dropdown-user-email');
+                if (emailEl && currentUser && currentUser.email) {
+                    emailEl.innerText = currentUser.email;
+                }
+
+                // Close sidebar dropdown if open
+                const sDropdown = document.getElementById('sidebar-user-dropdown');
+                if (sDropdown) sDropdown.classList.add('hidden');
+
+                if (isHidden && window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            }
         }
+        window.toggleUserDropdown = toggleUserDropdown;
+
+        function toggleSidebarDropdown(e) {
+            if (e && typeof e.stopPropagation === 'function') {
+                e.stopPropagation();
+            }
+            const dropdown = document.getElementById('sidebar-user-dropdown');
+            if (dropdown) {
+                const isHidden = dropdown.classList.contains('hidden');
+                dropdown.classList.toggle('hidden');
+
+                // Populate user email badge in dropdown
+                const emailEl = document.getElementById('sidebar-dropdown-user-email');
+                if (emailEl && currentUser && currentUser.email) {
+                    emailEl.innerText = currentUser.email;
+                }
+
+                // Close header dropdown if open
+                const uDropdown = document.getElementById('user-dropdown');
+                if (uDropdown) uDropdown.classList.add('hidden');
+
+                if (isHidden && window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            }
+        }
+        window.toggleSidebarDropdown = toggleSidebarDropdown;
 
         // Close dropdown when clicking outside
         window.addEventListener('click', function(e) {
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown && !dropdown.classList.contains('hidden')) {
-                const btn = dropdown.previousElementSibling;
-                if (btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+                const trigger = document.getElementById('header-user-dropdown-btn') || dropdown.previousElementSibling;
+                if ((!trigger || !trigger.contains(e.target)) && !dropdown.contains(e.target)) {
                     dropdown.classList.add('hidden');
                 }
             }
             const sDropdown = document.getElementById('sidebar-user-dropdown');
             if (sDropdown && !sDropdown.classList.contains('hidden')) {
-                const parent = sDropdown.parentElement;
-                if (parent && !parent.contains(e.target)) {
+                const sTrigger = document.getElementById('sidebar-footer-expanded') || sDropdown.parentElement;
+                if ((!sTrigger || !sTrigger.contains(e.target)) && !sDropdown.contains(e.target)) {
                     sDropdown.classList.add('hidden');
                 }
             }
@@ -1539,10 +1586,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             window.dispatchEvent(new Event('resize'));
         }
 
-        function toggleSidebarDropdown() {
-            const dropdown = document.getElementById('sidebar-user-dropdown');
-            if (dropdown) dropdown.classList.toggle('hidden');
-        }
+        // (toggleSidebarDropdown defined above with event stopPropagation)
 
         function initLayout() {
             const savedLayout = localStorage.getItem('hontech-layout') || 'sidebar';
