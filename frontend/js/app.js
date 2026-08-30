@@ -865,29 +865,42 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function toggleDevToolbox(forceState) {
-            const menu = document.getElementById('dev-toolbox-menu');
-            const chevron = document.getElementById('dev-toolbox-chevron');
-            if (!menu) return;
+            const modal = document.getElementById('dev-toolbox-modal');
+            if (!modal) return;
 
-            const isHidden = menu.classList.contains('hidden');
+            const isHidden = modal.classList.contains('hidden');
             const shouldShow = typeof forceState === 'boolean' ? forceState : isHidden;
 
             if (shouldShow) {
-                menu.classList.remove('hidden');
-                if (chevron) chevron.style.transform = 'rotate(180deg)';
+                modal.classList.remove('hidden');
+                showSystemToast('🛠️ Developer Toolbox active (Press Ctrl + D to toggle)', 'info', 'Developer Sandbox');
             } else {
-                menu.classList.add('hidden');
-                if (chevron) chevron.style.transform = 'rotate(0deg)';
+                modal.classList.add('hidden');
             }
-            lucide.createIcons();
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
         }
 
-        // Close Dev Toolbox when clicking outside
+        // Global Developer Shortcut: Press Ctrl + D or Cmd + D anywhere to open/close Developer Toolbox
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+                e.preventDefault();
+                toggleDevToolbox();
+                return;
+            }
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('dev-toolbox-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    modal.classList.add('hidden');
+                }
+            }
+        });
+
+        // Close Dev Toolbox when clicking outside modal dialog
         window.addEventListener('click', function(e) {
-            const container = document.getElementById('dev-toolbox-container');
-            const modal = document.getElementById('loader-theme-modal');
-            const mailModal = document.getElementById('dev-mailbox-modal');
-            if (container && !container.contains(e.target) && (!modal || modal.classList.contains('hidden')) && (!mailModal || mailModal.classList.contains('hidden'))) {
+            const modal = document.getElementById('dev-toolbox-modal');
+            if (modal && !modal.classList.contains('hidden') && e.target === modal) {
                 toggleDevToolbox(false);
             }
         });
@@ -7126,41 +7139,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.toggleTVVoice = toggleTVVoice;
 
-        function toggleTVDevToolbox(forceState) {
-            const modal = document.getElementById('tv-dev-toolbox-modal');
-            if (!modal) return;
-            
-            if (typeof forceState === 'boolean') {
-                if (forceState) modal.classList.remove('hidden');
-                else modal.classList.add('hidden');
-            } else {
-                modal.classList.toggle('hidden');
-            }
-
-            const isOpen = !modal.classList.contains('hidden');
-            if (isOpen) {
-                showSystemToast('🛠️ TV Developer Toolbox active (Press Ctrl + D to toggle)', 'info', 'Dev Toolbox');
-            }
-            if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                window.lucide.createIcons();
-            }
-        }
-        window.toggleTVDevToolbox = toggleTVDevToolbox;
-
-        // Global Developer Shortcut: Press Ctrl + D or Cmd + D to open/close TV Developer Toolbox
-        window.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
-                e.preventDefault();
-                toggleTVDevToolbox();
-                return;
-            }
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('tv-dev-toolbox-modal');
-                if (modal && !modal.classList.contains('hidden')) {
-                    modal.classList.add('hidden');
-                }
-            }
-        });
+        window.toggleTVDevToolbox = toggleDevToolbox;
 
         function simulateVehicleMonitoringEvent() {
             const sampleJob = {

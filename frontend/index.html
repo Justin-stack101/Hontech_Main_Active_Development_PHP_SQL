@@ -2895,101 +2895,6 @@
                     <span id="tv-ready-alert-text" class="text-sm font-black uppercase tracking-wider">🔔 Vehicle Ready: ABC-1234 — Ready to Claim!</span>
                 </div>
 
-                <!-- TV DEVELOPER TOOLBOX MODAL / SIMULATION DECK (Triggered via Ctrl + D) -->
-                <div id="tv-dev-toolbox-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-                    <div class="bg-gray-900 border-2 border-gray-700 rounded-3xl max-w-xl w-full p-6 shadow-2xl text-white space-y-5 animate-in fade-in zoom-in-95 duration-200">
-                        <!-- Header -->
-                        <div class="flex items-center justify-between border-b border-gray-800 pb-3.5">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2.5 bg-red-600/20 text-red-500 rounded-xl border border-red-500/30">
-                                    <i data-lucide="cpu" class="w-5 h-5"></i>
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <h3 class="text-base font-black uppercase tracking-tight text-white">
-                                            TV Developer Toolbox
-                                        </h3>
-                                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 border border-red-500/30">Ctrl + D</span>
-                                    </div>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Simulate vehicle status announcements & audio triggers</p>
-                                </div>
-                            </div>
-                            <button type="button" onclick="toggleTVDevToolbox()" class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-xl transition cursor-pointer" title="Close (Esc)">
-                                <i data-lucide="x" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-
-                        <!-- Voice Engine Control -->
-                        <div class="bg-gray-950 border border-gray-800 p-4 rounded-2xl flex items-center justify-between">
-                            <div>
-                                <span class="text-xs font-black uppercase tracking-wider text-white block">Automated TV Voice Announcements</span>
-                                <span class="text-[10px] text-gray-400 font-medium block mt-0.5">Browser SpeechSynthesis engine for Monitoring & Ready vehicles</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="toggleTVVoice()" id="tv-dev-toggle-voice-btn" class="px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5">
-                                    <i data-lucide="mic" class="w-3.5 h-3.5"></i> Voice: ON
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Quick Simulation Triggers -->
-                        <div class="space-y-2">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 block">Quick Event Simulations</span>
-                            <div class="grid grid-cols-2 gap-2.5">
-                                <button type="button" onclick="simulateVehicleMonitoringEvent()" class="bg-gray-800/80 hover:bg-gray-800 border border-gray-700 hover:border-amber-500/50 p-3 rounded-xl text-left transition cursor-pointer group">
-                                    <div class="flex items-center gap-2 text-xs font-black uppercase text-amber-400 group-hover:text-amber-300">
-                                        <i data-lucide="radio" class="w-3.5 h-3.5"></i> Simulate: Monitoring
-                                    </div>
-                                    <span class="text-[9.5px] text-gray-400 font-medium block mt-1 leading-tight">Announces vehicle sent to Service Bay</span>
-                                </button>
-                                <button type="button" onclick="simulateVehicleReadyEvent()" class="bg-gray-800/80 hover:bg-gray-800 border border-gray-700 hover:border-emerald-500/50 p-3 rounded-xl text-left transition cursor-pointer group">
-                                    <div class="flex items-center gap-2 text-xs font-black uppercase text-emerald-400 group-hover:text-emerald-300">
-                                        <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i> Simulate: Ready
-                                    </div>
-                                    <span class="text-[9.5px] text-gray-400 font-medium block mt-1 leading-tight">Announces vehicle ready for release</span>
-                                </button>
-                                <button type="button" onclick="playBayDispatchSound(); showSystemToast('🚗 Bay Dispatch sound triggered', 'info', 'Dev Simulator');" class="bg-gray-800/80 hover:bg-gray-800 border border-gray-700 p-3 rounded-xl text-left transition cursor-pointer">
-                                    <div class="flex items-center gap-2 text-xs font-black uppercase text-blue-400">
-                                        <i data-lucide="play" class="w-3.5 h-3.5"></i> Test Bay Dispatch Sound
-                                    </div>
-                                    <span class="text-[9.5px] text-gray-400 font-medium block mt-1 leading-tight">Ascending 3-tone mechanical cadence</span>
-                                </button>
-                                <button type="button" onclick="playAutomotiveChime(); showSystemToast('🔔 Automotive Chime triggered', 'info', 'Dev Simulator');" class="bg-gray-800/80 hover:bg-gray-800 border border-gray-700 p-3 rounded-xl text-left transition cursor-pointer">
-                                    <div class="flex items-center gap-2 text-xs font-black uppercase text-purple-400">
-                                        <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Test Chime Audio
-                                    </div>
-                                    <span class="text-[9.5px] text-gray-400 font-medium block mt-1 leading-tight">Plays configured ready chime theme</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Custom Voice Announcement Dispatcher -->
-                        <div class="bg-gray-950/80 border border-gray-800 p-4 rounded-2xl space-y-3">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 block">Custom Speech Broadcast Simulator</span>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div>
-                                    <label class="text-[9px] text-gray-400 font-bold uppercase block mb-1">Plate Number</label>
-                                    <input type="text" id="tv-dev-sim-plate" value="NDO 8492" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-xs font-mono font-bold text-white outline-none focus:border-red-500 uppercase">
-                                </div>
-                                <div>
-                                    <label class="text-[9px] text-gray-400 font-bold uppercase block mb-1">Customer Name</label>
-                                    <input type="text" id="tv-dev-sim-customer" value="Sophia Loren" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white outline-none focus:border-red-500">
-                                </div>
-                                <div>
-                                    <label class="text-[9px] text-gray-400 font-bold uppercase block mb-1">Status / Bay</label>
-                                    <select id="tv-dev-sim-status" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2 py-1.5 text-xs font-bold text-white outline-none focus:border-red-500 cursor-pointer">
-                                        <option value="Monitoring">Monitoring (Service Bay 1)</option>
-                                        <option value="Ready">Ready for Release</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button type="button" onclick="dispatchCustomTVSimulation()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-black uppercase text-xs tracking-wider rounded-xl transition cursor-pointer flex items-center justify-center gap-2 shadow-md">
-                                <i data-lucide="megaphone" class="w-3.5 h-3.5"></i> Broadcast Custom Voice Announcement
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="flex-1 relative min-h-0">
                     <!-- SLIDE 1: ACTIVE BAY MONITORING (4-10 BAYS) -->
                     <div id="tv-slide-1"
@@ -4164,219 +4069,126 @@
         </div>
     </div>
 
-    <!-- UNIFIED DEVELOPER TOOLBOX HUB (Bottom-Right Floating Widget) -->
-    <div id="dev-toolbox-container" class="fixed bottom-6 right-6 z-[999] flex flex-col items-end select-none">
-        
-        <!-- Expandable Floating Menu Hub -->
-        <div id="dev-toolbox-menu" class="hidden mb-3 w-72 bg-gray-950/95 backdrop-blur-xl border border-gray-800 rounded-3xl p-3 shadow-2xl flex flex-col gap-1.5 transition-all duration-300 transform scale-95 origin-bottom-right">
-            <!-- Hub Header -->
-            <div class="px-3 py-2 border-b border-gray-800/80 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i>
-                    <span class="text-[11px] font-black uppercase tracking-wider text-white">Developer Sandbox</span>
+    <!-- UNIFIED DEVELOPER TOOLBOX MODAL (Triggered exclusively via Ctrl + D) -->
+    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
+                        <i data-lucide="terminal" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-base font-black uppercase tracking-wider text-white">Developer Toolbox & Sandbox</h3>
+                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 border border-red-500/30">Ctrl + D</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 font-semibold">Diagnostic tools, audio tests, themes & database reset</p>
+                    </div>
                 </div>
-                <span class="text-[9px] font-black text-gray-500 uppercase tracking-widest">v2.83</span>
+                <button onclick="toggleDevToolbox(false)" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
 
-            <!-- Action 1: Test Loader Animation -->
-            <button onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2.5 rounded-2xl hover:bg-gray-900/90 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-red-600/20 text-red-500 group-hover:scale-110 transition-transform">
-                    <i data-lucide="loader-2" class="w-4 h-4 group-hover:animate-spin"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Test Loader</span>
-                        <span class="text-[9px] text-red-400 uppercase font-black">Run</span>
+            <!-- Scrollable Content Grid -->
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto custom-scroll">
+                <!-- CATEGORY 1: WORKSHOP AUDIO & VOICE (TTS) -->
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
+                        <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-500"></i> Workshop Voice & Audio Simulation
+                    </span>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button onclick="simulateVehicleMonitoringEvent(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-amber-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
+                                <i data-lucide="radio" class="w-3.5 h-3.5"></i> Sim: Monitoring Voice
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">"Vehicle [Plate] now in Bay 1"</p>
+                        </button>
+                        <button onclick="simulateVehicleReadyEvent(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-emerald-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-emerald-400 flex items-center gap-1.5">
+                                <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i> Sim: Ready for Release
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">"Vehicle [Plate] ready to claim"</p>
+                        </button>
+                        <button onclick="playBayDispatchSound(); showSystemToast('🚗 Bay Dispatch Sound Triggered', 'info', 'Audio Trigger'); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-blue-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-blue-400 flex items-center gap-1.5">
+                                <i data-lucide="play" class="w-3.5 h-3.5"></i> Bay Dispatch Sound
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Ascending 3-tone mechanic sound</p>
+                        </button>
+                        <button onclick="playAutomotiveChime(); showSystemToast('🔔 Ready Chime Triggered', 'info', 'Audio Trigger'); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-purple-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
+                                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Ready Pickup Chime
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Plays active harmonic theme</p>
+                        </button>
                     </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Preview active loading animation</p>
                 </div>
-            </button>
 
-            <!-- CATEGORY 1: AUDIO & SOUND TRIGGERS -->
-            <div class="px-2 pt-1 pb-1">
-                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
-                    <i data-lucide="volume-2" class="w-3 h-3 text-red-500"></i> Workshop Audio Triggers
-                </span>
+                <!-- CATEGORY 2: THEMES & WORKSHOP -->
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
+                        <i data-lucide="palette" class="w-3.5 h-3.5 text-purple-400"></i> Themes & Animations
+                    </span>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button onclick="openLoaderThemeModal(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
+                            <div class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Loader UI Themes
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Switch 5 loading styles</p>
+                        </button>
+                        <button onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
+                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
+                                <i data-lucide="loader-2" class="w-3.5 h-3.5"></i> Test Loader Screen
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Preview active animation</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CATEGORY 3: SECURITY, NETWORK & DATABASE -->
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-blue-400"></i> Security & Diagnostics
+                    </span>
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <button onclick="toggleDevMailbox(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
+                            <div class="text-xs font-black uppercase text-blue-400 flex items-center gap-1.5">
+                                <i data-lucide="mail" class="w-3.5 h-3.5"></i> Dev Mailbox
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">OTP sandboxes</p>
+                        </button>
+                        <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
+                            <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
+                                <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i> Offline Modal
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Simulate outage</p>
+                        </button>
+                        <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
+                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
+                                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Crash Test
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Error overlay</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action: MariaDB Seed Reset -->
+                <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3.5 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-900/60 rounded-2xl text-left transition cursor-pointer flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 rounded-xl bg-emerald-600/20 text-emerald-400">
+                            <i data-lucide="database-backup" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-black uppercase text-emerald-400 block">Reset & Seed MariaDB Database</span>
+                            <span class="text-[10px] text-gray-400">Re-seeds clean demo records and users</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 bg-emerald-600/30 text-emerald-300 text-[9px] font-black uppercase rounded-lg border border-emerald-500/30">MariaDB</span>
+                </button>
             </div>
-
-            <!-- Action 1: Bay Dispatch Sound -->
-            <button onclick="playBayDispatchSound(); showSystemToast('🚗 Bay Dispatch Sound Triggered (Work Pulse)', 'info', 'Audio Trigger'); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="play" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Bay Dispatch</span>
-                        <span class="text-[9px] text-amber-400 uppercase font-black">Work Pulse</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Plays when vehicle sent to bay</p>
-                </div>
-            </button>
-
-            <!-- Action 2: Ready for Pickup Chime -->
-            <button onclick="playAutomotiveChime(); showSystemToast('🔔 Ready for Pickup Chime Triggered', 'info', 'TV Chime Test'); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="bell-ring" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Ready Chime</span>
-                        <span class="text-[9px] text-emerald-400 uppercase font-black">Ready</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Customer & TV completion chime</p>
-                </div>
-            </button>
-
-            <!-- Action 3: Release Confirmation Stamp -->
-            <button onclick="playReleaseConfirmSound(); showSystemToast('🎉 Vehicle Release Finalized Sound', 'success', 'Release Audio'); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="check-circle" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Finalize Release</span>
-                        <span class="text-[9px] text-blue-400 uppercase font-black">Complete</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Celebratory key handover chime</p>
-                </div>
-            </button>
-
-            <!-- Action 4: Express SLA Warning -->
-            <button onclick="playSlaWarningSound(); showSystemToast('⚠️ Express SLA Overrun Warning Alert', 'warning', 'SLA Alert'); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-red-500/20 text-red-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>SLA Warning</span>
-                        <span class="text-[9px] text-red-400 uppercase font-black">>60m Overrun</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Double caution tone on delay</p>
-                </div>
-            </button>
-
-            <!-- CATEGORY 2: THEMES & WORKSHOP -->
-            <div class="px-2 pt-2 pb-1 border-t border-gray-850">
-                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
-                    <i data-lucide="layers" class="w-3 h-3 text-purple-500"></i> Workshop & UI Themes
-                </span>
-            </div>
-
-            <!-- Action 5: Loader UI Theme Switcher -->
-            <button onclick="openLoaderThemeModal(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-purple-600/20 text-purple-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="palette" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Loader UI Themes</span>
-                        <span class="text-[9px] text-purple-400 uppercase font-black">5 Styles</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Switch gear, gauge, scanner styles</p>
-                </div>
-            </button>
-
-            <!-- Action 6: Toggle TV UI Style -->
-            <button onclick="toggleTVTheme(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-indigo-600/20 text-indigo-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="tv" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>TV Display Theme</span>
-                        <span id="dev-tv-theme-badge" class="text-[9px] text-indigo-400 uppercase font-black">Toggle</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Switch Classic Vibrant / Modern Slate</p>
-                </div>
-            </button>
-
-            <!-- Action 7: Reset & Re-Seed MariaDB Database -->
-            <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-emerald-950/40 text-left transition group cursor-pointer border border-transparent hover:border-emerald-900/50">
-                <div class="p-2 rounded-xl bg-emerald-600/20 text-emerald-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="database-backup" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Reset & Seed DB</span>
-                        <span class="text-[9px] text-emerald-400 uppercase font-black">MariaDB</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Re-seed clean demo records & users</p>
-                </div>
-            </button>
-
-            <!-- CATEGORY 3: NETWORK & SECURITY DIAGNOSTICS -->
-            <div class="px-2 pt-2 pb-1 border-t border-gray-850">
-                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
-                    <i data-lucide="shield-alert" class="w-3 h-3 text-blue-500"></i> Security & Diagnostics
-                </span>
-            </div>
-
-            <!-- Action 8: Dev Mailbox -->
-            <button onclick="toggleDevMailbox(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-gray-900 text-left transition group cursor-pointer border border-transparent hover:border-gray-800">
-                <div class="p-2 rounded-xl bg-blue-600/20 text-blue-400 group-hover:scale-110 transition-transform relative">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                    <span id="dev-toolbox-mail-dot" class="hidden absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Dev Mailbox</span>
-                        <span id="dev-mailbox-badge" class="bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full hidden">0</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Simulated email sandbox & OTPs</p>
-                </div>
-            </button>
-
-            <!-- Action 9: Lost Connection Modal Simulation -->
-            <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-amber-950/40 text-left transition group cursor-pointer border border-transparent hover:border-amber-900/50">
-                <div class="p-2 rounded-xl bg-amber-600/20 text-amber-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="wifi-off" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Lost Connection</span>
-                        <span class="text-[9px] text-amber-400 uppercase font-black">Modal</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Preview offline modal & reconnect</p>
-                </div>
-            </button>
-
-            <!-- Action 10: Error Detection Diagnostic Trigger -->
-            <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" 
-                class="w-full flex items-center gap-3 p-2 rounded-2xl hover:bg-red-950/40 text-left transition group cursor-pointer border border-transparent hover:border-red-900/50">
-                <div class="p-2 rounded-xl bg-red-600/20 text-red-400 group-hover:scale-110 transition-transform">
-                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="text-xs font-bold text-gray-200 group-hover:text-white flex items-center justify-between">
-                        <span>Error Diagnostics</span>
-                        <span class="text-[9px] text-red-400 uppercase font-black">Trigger</span>
-                    </div>
-                    <p class="text-[10px] text-gray-500 font-medium truncate">Simulate crash overlay & trace</p>
-                </div>
-            </button>
         </div>
-
-        <!-- Master Floating Trigger Button -->
-        <button id="dev-toolbox-trigger" onclick="toggleDevToolbox()"
-            class="bg-gray-950 hover:bg-black text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-red-600/80 transition duration-300 transform hover:scale-105 active:scale-95 group font-black tracking-wider text-[11px] uppercase cursor-pointer backdrop-blur-md">
-            <span class="relative flex h-2.5 w-2.5">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-            </span>
-            <i data-lucide="wrench" class="w-4 h-4 text-red-500 group-hover:rotate-12 transition-transform"></i>
-            <span>Dev Toolbox</span>
-            <i id="dev-toolbox-chevron" data-lucide="chevron-up" class="w-3.5 h-3.5 text-gray-400 group-hover:text-white transition-transform"></i>
-        </button>
     </div>
 
     <!-- Dev Loader UI Theme Selector Modal -->
@@ -5652,7 +5464,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.12"></script>
+    <script src="js/app.js?v=4.13"></script>
 </body>
 
 </html>
