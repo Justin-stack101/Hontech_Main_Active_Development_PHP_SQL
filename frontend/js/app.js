@@ -3600,14 +3600,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td class="px-3 py-3 align-middle">
                             ${isEditable ? `
-                            <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
-                                    class="table-select font-semibold text-xs uppercase !w-44 bg-white text-gray-800 border border-gray-300 hover:border-red-500 rounded-xl py-1.5 px-3 outline-none transition cursor-pointer shadow-2xs">
-                                <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
-                                <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
-                                <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
-                                <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
-                                <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
-                            </select>
+                            <div class="relative inline-flex items-center justify-between gap-1.5 border border-orange-200 bg-orange-50/80 hover:bg-orange-100/80 hover:border-orange-400 text-orange-900 rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[165px]" title="Click to Change Carry-Over Status">
+                                <span class="font-extrabold text-xs uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
+                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-orange-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
+                                        class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                        title="Change Carry-Over Status">
+                                    <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
+                                    <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
+                                    <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
+                                    <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
+                                    <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
+                                </select>
+                            </div>
                             ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-semibold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
                         <td class="px-3 py-3 align-middle text-right">
