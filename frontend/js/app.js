@@ -2410,6 +2410,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (field === 'location' && typeof value === 'string' && value.toLowerCase().startsWith('bay')) {
                     playBayDispatchSound();
+                    if (job) announceVehicleMonitoring(job, value);
                 }
 
                 await apiRequest(`/api/jobs/${jobId}/field`, {
@@ -2565,8 +2566,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (newStatus === 'In Progress') {
                     playBayDispatchSound();
-                } else if (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed') {
-                    playAutomotiveChime();
+                } else if (newStatus === 'Ready' || newStatus === 'Ready to Release') {
+                    if (job) announceVehicleReady(job);
+                    else playAutomotiveChime();
                 }
 
                 if (newStatus === 'Waiting') {
@@ -2585,6 +2587,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (newStatus === 'Monitoring') {
                     showSystemToast(`Vehicle moved to Monitoring. You can now assign a workshop bay.`, 'info', 'Status: Monitoring');
+                    if (job) announceVehicleMonitoring(job, job.location || 'Monitoring Area');
                 }
 
                 await loadData();
@@ -7057,7 +7060,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         // --- TV AUDIO & VISUAL CHIME MODULE ---
         let tvAudioEnabled = true;
+        let tvVoiceEnabled = localStorage.getItem('hontech_tv_voice_enabled') !== 'false';
         let previousReadyJobKeys = new Set();
+        let previousMonitoringJobKeys = new Set();
         let tvAudioCtx = null;
         let tvAlertBannerTimeout = null;
 
@@ -7076,6 +7081,121 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             lucide.createIcons();
         }
         window.toggleTVSound = toggleTVSound;
+
+        function toggleTVVoice() {
+            tvVoiceEnabled = !tvVoiceEnabled;
+            localStorage.setItem('hontech_tv_voice_enabled', tvVoiceEnabled ? 'true' : 'false');
+            
+            // Update TV Header badge if present
+            const icon = document.getElementById('tv-voice-icon');
+            const text = document.getElementById('tv-voice-text');
+            if (icon) {
+                icon.className = tvVoiceEnabled ? 'w-4 h-4 text-emerald-400' : 'w-4 h-4 text-gray-500';
+            }
+            if (text) {
+                text.className = tvVoiceEnabled ? 'text-[10px] font-black uppercase tracking-wider text-emerald-400 block leading-none' : 'text-[10px] font-black uppercase tracking-wider text-gray-400 block leading-none';
+                text.innerText = tvVoiceEnabled ? 'Voice ON' : 'Voice OFF';
+            }
+
+            // Update Settings button if present
+            const settingsBtn = document.getElementById('settings-btn-tv-voice');
+            if (settingsBtn) {
+                settingsBtn.className = tvVoiceEnabled ? 'px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer' : 'px-3 py-1.5 bg-gray-100 border border-gray-200 text-gray-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer';
+                settingsBtn.innerHTML = tvVoiceEnabled ? '<i data-lucide="mic" class="w-3.5 h-3.5 text-emerald-600"></i> Voice: Enabled' : '<i data-lucide="mic-off" class="w-3.5 h-3.5 text-gray-500"></i> Voice: Muted';
+            }
+
+            if (tvVoiceEnabled) {
+                showSystemToast('Automated TV Voice Announcements Enabled', 'success', 'Voice Engine');
+                speakTVAnnouncement('Automated voice announcement system is now active.');
+            } else {
+                showSystemToast('Automated TV Voice Announcements Muted', 'info', 'Voice Engine');
+                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            }
+            lucide.createIcons();
+        }
+        window.toggleTVVoice = toggleTVVoice;
+
+        function formatPlateForSpeech(rawPlate) {
+            if (!rawPlate) return 'vehicle';
+            const clean = String(rawPlate).replace(/[^a-zA-Z0-9]/g, ' ').trim();
+            // Spell out characters clearly with spaces
+            return clean.split('').join(' ');
+        }
+        window.formatPlateForSpeech = formatPlateForSpeech;
+
+        function speakTVAnnouncement(text, options = {}) {
+            if (!tvVoiceEnabled) return;
+            if (!('speechSynthesis' in window)) {
+                console.warn('Speech synthesis not supported in this browser.');
+                return;
+            }
+
+            try {
+                // Cancel pending speech to prevent overlapping queue build-up
+                window.speechSynthesis.cancel();
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = options.rate || 0.90; // Natural, clear broadcast pacing
+                utterance.pitch = options.pitch || 1.0;
+                utterance.volume = options.volume !== undefined ? options.volume : 1.0;
+
+                // Pick clean natural-sounding voice if available
+                const voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    const bestVoice = voices.find(v => 
+                        (v.lang.startsWith('en') || v.lang.startsWith('fil') || v.lang.startsWith('tl')) && 
+                        (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Jenny') || v.name.includes('Zira') || v.name.includes('David') || v.name.includes('English'))
+                    ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+
+                    if (bestVoice) utterance.voice = bestVoice;
+                }
+
+                // Play pre-announcement chime first, then broadcast speech
+                playAutomotiveChime();
+                setTimeout(() => {
+                    window.speechSynthesis.speak(utterance);
+                }, 400);
+            } catch (err) {
+                console.warn('TV voice announcement error:', err);
+            }
+        }
+        window.speakTVAnnouncement = speakTVAnnouncement;
+
+        function announceVehicleMonitoring(job, locationName) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const loc = locationName || job.location || 'the workshop bay';
+            
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now being monitored in ${loc}.`;
+            speakTVAnnouncement(message);
+            triggerTVSlideAlertBanner(`${job.plate || 'Vehicle'} — In ${loc}`);
+        }
+        window.announceVehicleMonitoring = announceVehicleMonitoring;
+
+        function announceVehicleReady(job) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const stubText = job.claimStub ? `Claim stub ${job.claimStub}.` : '';
+
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now ready for release. ${stubText} Please proceed to the service counter.`;
+            speakTVAnnouncement(message);
+            triggerTVSlideAlertBanner(`${job.plate || 'Vehicle'} — Ready to Claim!`);
+        }
+        window.announceVehicleReady = announceVehicleReady;
+
+        function testTVVoiceAnnouncement() {
+            const sampleJob = {
+                plate: 'NDO 8492',
+                customer: 'Sophia Loren',
+                location: 'Service Bay 1',
+                claimStub: 'CS-104'
+            };
+            showSystemToast('Broadcasting live TV voice announcement sample...', 'info', 'TV Voice System');
+            announceVehicleMonitoring(sampleJob, 'Service Bay 1');
+        }
+        window.testTVVoiceAnnouncement = testTVVoiceAnnouncement;
 
         function setChimeTheme(theme) {
             if (!theme) return;
@@ -7344,18 +7464,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Group 3: Carry Over (Carry Over)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over');
 
-            // Detect newly ready vehicles to trigger Audio Chime & Visual TV Banner
+            // Detect newly ready vehicles to trigger Audio Chime, Voice Announcement & Visual TV Banner
             const currentReadyKeys = new Set(releasedAll.map(j => String(j.id || j.claimStub || j.plate)));
             if (previousReadyJobKeys.size > 0) {
                 releasedAll.forEach(job => {
                     const key = String(job.id || job.claimStub || job.plate);
                     if (!previousReadyJobKeys.has(key)) {
-                        playAutomotiveChime();
-                        triggerTVSlideAlertBanner(job.plate || 'Vehicle');
+                        announceVehicleReady(job);
                     }
                 });
             }
             previousReadyJobKeys = currentReadyKeys;
+
+            // Detect newly monitoring vehicles to trigger Speech Announcement
+            const currentMonitoringKeys = new Set(waitingJobs.filter(j => j.status === 'Monitoring').map(j => String(j.id || j.claimStub || j.plate)));
+            if (previousMonitoringJobKeys.size > 0) {
+                waitingJobs.filter(j => j.status === 'Monitoring').forEach(job => {
+                    const key = String(job.id || job.claimStub || job.plate);
+                    if (!previousMonitoringJobKeys.has(key)) {
+                        announceVehicleMonitoring(job, job.location || 'Monitoring Area');
+                    }
+                });
+            }
+            previousMonitoringJobKeys = currentMonitoringKeys;
 
             // Render Slide 2 Upcoming Queue List (Black, Red, White High Contrast for TV Viewers)
             const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');

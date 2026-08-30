@@ -3,7 +3,7 @@ import localtunnel from 'localtunnel';
 async function startTunnel() {
     try {
         console.log('[Tunnel] Creating tunnel on port 8000...');
-        const tunnel = await localtunnel({ port: 8000 });
+        const tunnel = await localtunnel({ port: 8000, subdomain: 'hontech-capstone-active' });
         
         console.log(`========================================`);
         console.log(`ACTIVE_URL: ${tunnel.url}`);

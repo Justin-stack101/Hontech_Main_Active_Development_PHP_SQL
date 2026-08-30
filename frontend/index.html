@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>HonTech AutoCenter</title>
+    <title>Hontech.ph   </title>
     <link rel="icon" type="image/png" href="favicon.png">
     <!-- 100% SELF-CONTAINED LOCAL OFFLINE SCRIPTS (ZERO RELIANCE ON INTERNET) -->
     <script src="js/tailwind.cdn.js"></script>
@@ -2866,7 +2866,21 @@
                         </div>
                         <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
-                    <div class="flex items-center gap-6 text-right">
+                    <div class="flex items-center gap-4 sm:gap-6 text-right">
+                        <!-- TV Automated Voice & Audio Controls -->
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="toggleTVVoice()" class="flex items-center gap-2 bg-gray-800/80 hover:bg-gray-750 border border-gray-700 px-3.5 py-2 rounded-2xl transition cursor-pointer text-left shadow-inner group" title="Toggle Automated Voice Announcements (TTS)">
+                                <i data-lucide="mic" id="tv-voice-icon" class="w-4 h-4 text-emerald-400"></i>
+                                <div>
+                                    <span id="tv-voice-text" class="text-[10px] font-black uppercase tracking-wider text-emerald-400 block leading-none">Voice ON</span>
+                                    <span class="text-[8px] font-bold text-gray-400 uppercase tracking-widest block mt-0.5">Automated TTS</span>
+                                </div>
+                            </button>
+                            <button type="button" onclick="testTVVoiceAnnouncement()" class="bg-red-600/30 hover:bg-red-600/60 border border-red-500/50 text-red-300 hover:text-white px-3 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-sm" title="Test Automated Voice Announcement Broadcast">
+                                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Test Voice
+                            </button>
+                        </div>
+
                         <!-- Weather Widget -->
                         <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
                             <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
@@ -3422,6 +3436,21 @@
                                 <button type="button" onclick="playBayDispatchSound(); showSystemToast('🚗 Bay Dispatch Sound Triggered', 'info', 'Bay Audio Trigger');" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="play" class="w-3.5 h-3.5 text-red-600"></i> Test Bay Sound
                                 </button>
+                            </div>
+
+                            <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[11px] font-bold text-gray-900 block">Automated TV Voice Announcements (TTS)</span>
+                                    <span class="text-[10px] text-gray-500 block">Speaks customer name and bay when vehicle is moved to Monitoring or Ready</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="toggleTVVoice()" id="settings-btn-tv-voice" class="px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="mic" class="w-3.5 h-3.5 text-emerald-600"></i> Voice: Enabled
+                                    </button>
+                                    <button type="button" onclick="testTVVoiceAnnouncement()" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-600"></i> Test Voice
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -5542,7 +5571,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.09"></script>
+    <script src="js/app.js?v=4.10"></script>
 </body>
 
 </html>
