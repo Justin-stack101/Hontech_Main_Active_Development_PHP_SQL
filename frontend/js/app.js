@@ -7505,19 +7505,31 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }, { passive: true });
 
-        function triggerTVSlideAlertBanner(plateNumber = 'Vehicle') {
+        function triggerTVSlideAlertBanner(textOrPlate = 'Vehicle') {
             const banner = document.getElementById('tv-ready-alert-banner');
             const text = document.getElementById('tv-ready-alert-text');
             if (!banner) return;
 
-            if (text) text.innerText = `🔔 Vehicle Ready: ${plateNumber} — Ready to Claim!`;
+            let msg = String(textOrPlate || 'Vehicle');
+            if (!msg.includes('Ready') && !msg.includes('—') && !msg.includes('Vehicle')) {
+                msg = `Vehicle Ready: ${msg} — Ready to Claim!`;
+            } else if (!msg.startsWith('Vehicle')) {
+                msg = `Vehicle: ${msg}`;
+            }
+
+            // Remove bell emoji 🔔 to keep typography bold, clean, and crisp
+            msg = msg.replace(/🔔\s*/g, '').trim();
+
+            if (text) text.innerText = msg;
             banner.classList.remove('hidden');
 
             if (tvAlertBannerTimeout) clearTimeout(tvAlertBannerTimeout);
             tvAlertBannerTimeout = setTimeout(() => {
                 banner.classList.add('hidden');
-            }, 6000);
-            lucide.createIcons();
+            }, 7000);
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
         }
         window.triggerTVSlideAlertBanner = triggerTVSlideAlertBanner;
 
