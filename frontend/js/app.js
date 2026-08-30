@@ -7097,6 +7097,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 text.innerText = tvVoiceEnabled ? 'Voice ON' : 'Voice OFF';
             }
 
+            // Update TV Developer Toolbox button & status dot if present
+            const devToggleBtn = document.getElementById('tv-dev-toggle-voice-btn');
+            const devStatusDot = document.getElementById('tv-dev-voice-status-dot');
+            if (devToggleBtn) {
+                devToggleBtn.className = tvVoiceEnabled ? 'px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5' : 'px-3 py-1.5 bg-gray-800 border border-gray-700 text-gray-400 hover:bg-gray-750 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5';
+                devToggleBtn.innerHTML = tvVoiceEnabled ? '<i data-lucide="mic" class="w-3.5 h-3.5"></i> Voice: ON' : '<i data-lucide="mic-off" class="w-3.5 h-3.5"></i> Voice: MUTED';
+            }
+            if (devStatusDot) {
+                devStatusDot.className = tvVoiceEnabled ? 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse' : 'w-2 h-2 rounded-full bg-gray-500';
+            }
+
             // Update Settings button if present
             const settingsBtn = document.getElementById('settings-btn-tv-voice');
             if (settingsBtn) {
@@ -7114,6 +7125,66 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             lucide.createIcons();
         }
         window.toggleTVVoice = toggleTVVoice;
+
+        function toggleTVDevToolbox() {
+            const modal = document.getElementById('tv-dev-toolbox-modal');
+            if (!modal) return;
+            modal.classList.toggle('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+        window.toggleTVDevToolbox = toggleTVDevToolbox;
+
+        function simulateVehicleMonitoringEvent() {
+            const sampleJob = {
+                plate: 'NDO 8492',
+                customer: 'Sophia Loren',
+                location: 'Service Bay 1',
+                claimStub: 'CS-104'
+            };
+            showSystemToast('Simulating: Vehicle Sent to Bay 1', 'info', 'TV Dev Simulator');
+            announceVehicleMonitoring(sampleJob, 'Service Bay 1');
+        }
+        window.simulateVehicleMonitoringEvent = simulateVehicleMonitoringEvent;
+
+        function simulateVehicleReadyEvent() {
+            const sampleJob = {
+                plate: 'NDO 8492',
+                customer: 'Sophia Loren',
+                location: 'Claim Lounge',
+                claimStub: 'CS-104'
+            };
+            showSystemToast('Simulating: Vehicle Ready for Release', 'success', 'TV Dev Simulator');
+            announceVehicleReady(sampleJob);
+        }
+        window.simulateVehicleReadyEvent = simulateVehicleReadyEvent;
+
+        function dispatchCustomTVSimulation() {
+            const plateInput = document.getElementById('tv-dev-sim-plate');
+            const customerInput = document.getElementById('tv-dev-sim-customer');
+            const statusSelect = document.getElementById('tv-dev-sim-status');
+
+            const plate = (plateInput && plateInput.value.trim()) || 'NDO 8492';
+            const customer = (customerInput && customerInput.value.trim()) || 'Valued Customer';
+            const statusType = (statusSelect && statusSelect.value) || 'Monitoring';
+
+            const customJob = {
+                plate: plate,
+                customer: customer,
+                location: statusType === 'Monitoring' ? 'Service Bay 1' : 'Service Counter',
+                claimStub: 'CS-' + Math.floor(100 + Math.random() * 900)
+            };
+
+            if (statusType === 'Ready') {
+                showSystemToast(`Broadcasting Custom Ready Announcement for ${plate}...`, 'success', 'TV Voice Broadcast');
+                announceVehicleReady(customJob);
+            } else {
+                showSystemToast(`Broadcasting Custom Monitoring Announcement for ${plate}...`, 'info', 'TV Voice Broadcast');
+                announceVehicleMonitoring(customJob, 'Service Bay 1');
+            }
+        }
+        window.dispatchCustomTVSimulation = dispatchCustomTVSimulation;
 
         function formatPlateForSpeech(rawPlate) {
             if (!rawPlate) return 'vehicle';
