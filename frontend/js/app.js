@@ -7126,15 +7126,41 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.toggleTVVoice = toggleTVVoice;
 
-        function toggleTVDevToolbox() {
+        function toggleTVDevToolbox(forceState) {
             const modal = document.getElementById('tv-dev-toolbox-modal');
             if (!modal) return;
-            modal.classList.toggle('hidden');
+            
+            if (typeof forceState === 'boolean') {
+                if (forceState) modal.classList.remove('hidden');
+                else modal.classList.add('hidden');
+            } else {
+                modal.classList.toggle('hidden');
+            }
+
+            const isOpen = !modal.classList.contains('hidden');
+            if (isOpen) {
+                showSystemToast('🛠️ TV Developer Toolbox active (Press Ctrl + D to toggle)', 'info', 'Dev Toolbox');
+            }
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
                 window.lucide.createIcons();
             }
         }
         window.toggleTVDevToolbox = toggleTVDevToolbox;
+
+        // Global Developer Shortcut: Press Ctrl + D or Cmd + D to open/close TV Developer Toolbox
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'd' || e.key === 'D')) {
+                e.preventDefault();
+                toggleTVDevToolbox();
+                return;
+            }
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('tv-dev-toolbox-modal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    modal.classList.add('hidden');
+                }
+            }
+        });
 
         function simulateVehicleMonitoringEvent() {
             const sampleJob = {
