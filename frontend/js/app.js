@@ -2310,38 +2310,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (concernField) concernField.classList.add('hidden');
 
             if (role === 'assistant') {
-                if (title) title.innerText = 'Online Booking & Appointments';
-                if (subtitle) subtitle.innerText = 'Log online customer reservations and verify appointment slots';
-                if (iconWrap) iconWrap.className = 'w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25';
-                if (roleBadge) {
-                    roleBadge.innerText = 'Assistant Booking Desk';
-                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200';
-                }
-                if (card3Title) card3Title.innerText = 'Appointment Schedule & Verification';
+                if (title) title.innerText = 'Online Booking Form';
+                if (subtitle) subtitle.innerText = 'LOG ONLINE INQUIRIES TO BOOKING MODULE.';
+                if (iconWrap) iconWrap.className = 'w-11 h-11 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0';
                 if (source) source.value = 'Online';
                 if (walkinFields) walkinFields.classList.add('hidden');
                 if (bookingFields) bookingFields.classList.remove('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.add('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.remove('hidden');
-                if (submitBtn) submitBtn.className = 'w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 active:scale-[0.99] transition py-3 text-white font-black uppercase rounded-xl shadow-md shadow-emerald-600/25 text-xs tracking-wider flex items-center justify-center gap-2 cursor-pointer';
-                if (submitText) submitText.innerText = 'Register & Queue Online Booking';
+                if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
+                if (submitText) submitText.innerText = 'Register to System';
                 selectQuickApptSlot('09:30');
             } else if (role === 'sa') {
-                if (title) title.innerText = 'Vehicle Walk-In Reception';
-                if (subtitle) subtitle.innerText = 'Encode physical walk-in paperwork and allocate workshop bay';
-                if (iconWrap) iconWrap.className = 'w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25';
-                if (roleBadge) {
-                    roleBadge.innerText = 'Service Advisor Reception';
-                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200';
-                }
-                if (card3Title) card3Title.innerText = 'Arrival Timing & Claim Stub';
+                if (title) title.innerText = 'Vehicle Intake Form';
+                if (subtitle) subtitle.innerText = 'LOG PHYSICAL VEHICLE RECEPTION TO WORKSHOP QUEUE.';
+                if (iconWrap) iconWrap.className = 'w-11 h-11 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0';
                 if (source) source.value = 'Walk-in';
                 if (walkinFields) walkinFields.classList.remove('hidden');
                 if (bookingFields) bookingFields.classList.add('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.remove('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.add('hidden');
-                if (submitBtn) submitBtn.className = 'w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 active:scale-[0.99] transition py-3 text-white font-black uppercase rounded-xl shadow-md shadow-blue-600/25 text-xs tracking-wider flex items-center justify-center gap-2 cursor-pointer';
-                if (submitText) submitText.innerText = 'Dispatch Ticket & Register Vehicle';
+                if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
+                if (submitText) submitText.innerText = 'Register to System';
                 updateStubPreview();
             }
 
