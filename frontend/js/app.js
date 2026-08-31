@@ -1049,18 +1049,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
-        function togglePasswordVisibility(inputId, btnElement) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-            const isPassword = input.type === 'password';
-            input.type = isPassword ? 'text' : 'password';
-            if (btnElement) {
-                btnElement.innerHTML = `<i data-lucide="${isPassword ? 'eye-off' : 'eye'}" class="w-4 h-4 text-slate-600"></i>`;
-                if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
-            }
-        }
-        window.togglePasswordVisibility = togglePasswordVisibility;
-
         function toggleForgotForm(show) {
             const loginForm = document.getElementById('login-form-container');
             const forgotForm = document.getElementById('forgot-form-container');
