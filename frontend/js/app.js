@@ -2229,9 +2229,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Highlight active appointment button
             document.querySelectorAll('.appt-slot-btn').forEach(btn => {
                 if (btn.getAttribute('onclick')?.includes(timeStr)) {
-                    btn.className = "appt-slot-btn px-3 py-1.5 text-xs font-black rounded-xl bg-slate-950 text-white border border-slate-950 shadow-xs transition cursor-pointer active:scale-95";
+                    btn.className = "appt-slot-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-900 text-white border border-slate-900 transition cursor-pointer active:scale-95";
                 } else {
-                    btn.className = "appt-slot-btn px-3 py-1.5 text-xs font-black rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-950 hover:text-white border border-slate-200 transition cursor-pointer active:scale-95";
+                    btn.className = "appt-slot-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition cursor-pointer active:scale-95";
                 }
             });
             showSystemToast(`Appointment slot set to ${timeStr}.`, 'info', 'Slot Selected');
@@ -2309,10 +2309,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (role === 'assistant') {
                 if (title) title.innerText = 'Online Booking & Appointments';
-                if (subtitle) subtitle.innerText = 'Log online customer reservations & verify appointment slots.';
+                if (subtitle) subtitle.innerText = 'Log online customer reservations and verify appointment slots';
                 if (roleBadge) {
                     roleBadge.innerText = 'Assistant Booking Desk';
-                    roleBadge.className = 'text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-indigo-600/30 text-indigo-300 border border-indigo-500/40';
+                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200';
                 }
                 if (card3Title) card3Title.innerText = 'Appointment Schedule & Slot Verification';
                 if (source) source.value = 'Online';
@@ -2324,10 +2324,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 selectQuickApptSlot('09:30');
             } else if (role === 'sa') {
                 if (title) title.innerText = 'Vehicle Walk-In Reception';
-                if (subtitle) subtitle.innerText = 'Encode physical walk-in customer paperwork & dispatch workshop floor ticket.';
+                if (subtitle) subtitle.innerText = 'Encode physical walk-in paperwork and allocate workshop bay';
                 if (roleBadge) {
                     roleBadge.innerText = 'Service Advisor Reception';
-                    roleBadge.className = 'text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-red-600/30 text-red-300 border border-red-500/40';
+                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200';
                 }
                 if (card3Title) card3Title.innerText = 'Arrival Timing & Official Claim Stub';
                 if (source) source.value = 'Walk-in';
