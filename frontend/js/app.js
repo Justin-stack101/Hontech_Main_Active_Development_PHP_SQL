@@ -3209,7 +3209,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <th class="px-2 py-3 bg-gray-50">Source</th>
                                 <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Arrival (24H)</th>
                                 <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Departure (24H)</th>
-                                <th class="px-2 py-3 bg-gray-50">Evaluation / Diagnosis</th>
+                                <th class="px-3 py-3 bg-gray-50 min-w-[320px]">Evaluation / Diagnosis</th>
                                 <th class="px-2 py-3 bg-gray-50 text-center">Promised Date</th>
                                 <th class="px-2 py-3 bg-gray-50 text-center">C.O. Status</th>
                                 ${showGoal ? '<th class="px-2 py-3 bg-gray-50">SLA Status (2h)</th>' : ''}
@@ -3420,10 +3420,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             
 
                             <!-- Evaluation / Diagnosis -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-3 py-3 align-middle min-w-[320px]">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
-                                ` : `<span class="block py-0.5 text-xs font-medium text-gray-700 min-w-[200px]" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
+                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[260px]" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
                             <!-- Promised Date -->
