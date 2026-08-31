@@ -2682,6 +2682,14 @@
                                         <input type="time" id="intake-arrival-time" onchange="syncArrivalTimeToHiddenSelects()"
                                             class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none cursor-pointer">
                                     </div>
+                                    <!-- Quick Arrival 24H Preset Chips -->
+                                    <div class="flex items-center gap-1 pt-0.5 overflow-x-auto">
+                                        <button type="button" onclick="setQuickArrivalSlot('08:00')" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">08:00</button>
+                                        <button type="button" onclick="setQuickArrivalSlot('09:00')" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">09:00</button>
+                                        <button type="button" onclick="setQuickArrivalSlot('10:30')" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">10:30</button>
+                                        <button type="button" onclick="setQuickArrivalSlot('13:00')" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">13:00</button>
+                                        <button type="button" onclick="setQuickArrivalSlot('14:30')" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">14:30</button>
+                                    </div>
                                     <!-- Hidden backward compatibility select elements -->
                                     <div class="hidden">
                                         <select id="intake-arrival-hour"></select>
@@ -2698,13 +2706,14 @@
                                         <input type="time" id="intake-appt-time" onchange="syncApptTimeToHiddenSelects()"
                                             class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none cursor-pointer">
                                     </div>
-                                    <!-- Quick Slot Chips (Clean Compact Row) -->
+                                    <!-- Quick Slot Chips (24-Hour Format) -->
                                     <div class="flex items-center gap-1 pt-0.5 overflow-x-auto">
                                         <button type="button" onclick="selectQuickApptSlot('08:00')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">08:00</button>
                                         <button type="button" onclick="selectQuickApptSlot('09:30')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-900 text-white border border-gray-900 transition cursor-pointer">09:30</button>
                                         <button type="button" onclick="selectQuickApptSlot('11:00')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">11:00</button>
-                                        <button type="button" onclick="selectQuickApptSlot('13:30')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">01:30</button>
-                                        <button type="button" onclick="selectQuickApptSlot('15:00')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">03:00</button>
+                                        <button type="button" onclick="selectQuickApptSlot('13:30')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">13:30</button>
+                                        <button type="button" onclick="selectQuickApptSlot('15:00')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">15:00</button>
+                                        <button type="button" onclick="selectQuickApptSlot('16:30')" class="appt-slot-btn px-2 py-0.5 text-[10px] font-bold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200 transition cursor-pointer">16:30</button>
                                     </div>
                                     <!-- Hidden backward compatibility select elements -->
                                     <div class="hidden">
@@ -5393,7 +5402,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.28"></script>
+    <script src="js/app.js?v=4.29"></script>
 </body>
 
 </html>
