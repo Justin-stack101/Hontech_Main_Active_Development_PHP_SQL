@@ -5104,7 +5104,7 @@
 
     <!-- SERVICE ADVISOR TICKET TAKEOVER MODAL (Clean, Spacious, Professional) -->
     <div id="modal-ticket-takeover" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
-        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-gray-200 overflow-hidden flex flex-col transform transition-all my-auto animate-in fade-in zoom-in-95 duration-150">
+        <div class="bg-white rounded-2xl w-full max-w-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col transform transition-all my-auto animate-in fade-in zoom-in-95 duration-150">
             
             <!-- Modal Header -->
             <div class="bg-white px-6 py-4.5 border-b border-gray-150 flex items-center justify-between shrink-0">
@@ -5128,32 +5128,32 @@
                 
                 <!-- Vehicle Context & Handover Visual Card -->
                 <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 space-y-3">
-                    <!-- Vehicle Title Header -->
-                    <div class="flex items-center justify-between gap-2 border-b border-gray-200/80 pb-2.5">
-                        <div class="flex items-center gap-2">
-                            <span id="takeover-plate-badge" class="font-mono font-black text-xs px-2.5 py-1 rounded-lg bg-gray-900 text-white tracking-wider">ABC 1234</span>
-                            <span id="takeover-vehicle-model" class="font-bold text-xs text-gray-800 truncate max-w-[220px]">Toyota Vios</span>
+                    <!-- Vehicle Title Header (No Truncation - Full Vehicle Name) -->
+                    <div class="flex items-center justify-between gap-3 border-b border-gray-200/80 pb-2.5">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            <span id="takeover-plate-badge" class="font-mono font-black text-xs px-2.5 py-1 rounded-lg bg-gray-900 text-white tracking-wider shrink-0 shadow-xs">ABC 1234</span>
+                            <span id="takeover-vehicle-model" class="font-bold text-xs text-gray-900 break-words">Toyota Vios</span>
                         </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-200 text-gray-700">Reassignment</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-gray-200 text-gray-700 shrink-0">Reassignment</span>
                     </div>
 
                     <!-- Handover Flow Visualization -->
                     <div class="grid grid-cols-[1fr,auto,1fr] items-center gap-3 pt-1">
                         <!-- Current SA -->
-                        <div class="bg-white border border-gray-200 rounded-xl p-2.5 text-center">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">Current SA</span>
-                            <strong id="takeover-current-sa" class="text-xs font-bold text-gray-800 block truncate">Advisor A</strong>
+                        <div class="bg-white border border-gray-200 rounded-xl p-3 text-center shadow-xs">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block mb-1">Current SA</span>
+                            <strong id="takeover-current-sa" class="text-xs font-bold text-gray-800 block break-words">Advisor A</strong>
                         </div>
 
                         <!-- Transfer Arrow -->
-                        <div class="flex flex-col items-center justify-center text-red-600 px-1">
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <div class="flex flex-col items-center justify-center text-red-600 px-1 shrink-0">
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </div>
 
                         <!-- Incoming SA (You) -->
-                        <div class="bg-white border border-red-200 rounded-xl p-2.5 text-center">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-red-600 block mb-0.5">New Assignee (You)</span>
-                            <strong id="takeover-incoming-sa" class="text-xs font-bold text-gray-900 block truncate">Advisor B</strong>
+                        <div class="bg-white border border-red-200 rounded-xl p-3 text-center shadow-xs">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-red-600 block mb-1">New Assignee (You)</span>
+                            <strong id="takeover-incoming-sa" class="text-xs font-bold text-gray-900 block break-words">Advisor B</strong>
                         </div>
                     </div>
                 </div>
@@ -5466,7 +5466,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.33"></script>
+    <script src="js/app.js?v=4.34"></script>
 </body>
 
 </html>

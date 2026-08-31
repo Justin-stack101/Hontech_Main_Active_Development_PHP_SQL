@@ -2639,7 +2639,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('takeover-current-sa').innerText = job.saName || job.handled_by || 'Assigned SA';
             }
             if (document.getElementById('takeover-incoming-sa')) {
-                document.getElementById('takeover-incoming-sa').innerText = `${currentUserName || 'Service Advisor'} (You)`;
+                const rawName = currentUserName || 'Service Advisor';
+                const cleanName = rawName.replace(/\s*\(You\)$/i, '');
+                document.getElementById('takeover-incoming-sa').innerText = `${cleanName} (You)`;
             }
 
             modal.classList.remove('hidden');
