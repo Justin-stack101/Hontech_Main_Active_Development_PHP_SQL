@@ -2226,12 +2226,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (apptInput) apptInput.value = timeStr;
             syncApptTimeToHiddenSelects();
 
-            // Highlight active appointment button
+            // Highlight active appointment button with rich indigo styling
             document.querySelectorAll('.appt-slot-btn').forEach(btn => {
                 if (btn.getAttribute('onclick')?.includes(timeStr)) {
-                    btn.className = "appt-slot-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-900 text-white border border-slate-900 transition cursor-pointer active:scale-95";
+                    btn.className = "appt-slot-btn py-1.5 text-center text-xs font-black rounded-lg bg-indigo-600 text-white border border-indigo-600 shadow-sm transition cursor-pointer active:scale-95";
                 } else {
-                    btn.className = "appt-slot-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition cursor-pointer active:scale-95";
+                    btn.className = "appt-slot-btn py-1.5 text-center text-xs font-bold rounded-lg bg-slate-50 text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 hover:border-indigo-200 border border-slate-200 transition cursor-pointer active:scale-95";
                 }
             });
             showSystemToast(`Appointment slot set to ${timeStr}.`, 'info', 'Slot Selected');
@@ -2256,12 +2256,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const title = document.getElementById('intake-title');
             const subtitle = document.getElementById('intake-subtitle');
             const roleBadge = document.getElementById('intake-role-badge');
+            const iconWrap = document.getElementById('intake-icon-wrap');
             const card3Title = document.getElementById('intake-card3-title');
             const source = document.getElementById('intake-source');
             const walkinFields = document.getElementById('div-walkin-fields');
             const bookingFields = document.getElementById('div-booking-fields');
             const walkinLaneWrap = document.getElementById('div-walkin-lane-wrap');
             const bookingLaneWrap = document.getElementById('div-booking-lane-wrap');
+            const submitBtn = document.getElementById('intake-submit-btn');
             const submitText = document.getElementById('intake-submit-text');
 
             const today = new Date().toISOString().split('T')[0];
@@ -2310,31 +2312,35 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (role === 'assistant') {
                 if (title) title.innerText = 'Online Booking & Appointments';
                 if (subtitle) subtitle.innerText = 'Log online customer reservations and verify appointment slots';
+                if (iconWrap) iconWrap.className = 'w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25';
                 if (roleBadge) {
                     roleBadge.innerText = 'Assistant Booking Desk';
-                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200';
+                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200';
                 }
-                if (card3Title) card3Title.innerText = 'Appointment Schedule & Slot Verification';
+                if (card3Title) card3Title.innerText = 'Appointment Schedule & Verification';
                 if (source) source.value = 'Online';
                 if (walkinFields) walkinFields.classList.add('hidden');
                 if (bookingFields) bookingFields.classList.remove('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.add('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.remove('hidden');
+                if (submitBtn) submitBtn.className = 'w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 active:scale-[0.99] transition py-3 text-white font-black uppercase rounded-xl shadow-md shadow-emerald-600/25 text-xs tracking-wider flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Register & Queue Online Booking';
                 selectQuickApptSlot('09:30');
             } else if (role === 'sa') {
                 if (title) title.innerText = 'Vehicle Walk-In Reception';
                 if (subtitle) subtitle.innerText = 'Encode physical walk-in paperwork and allocate workshop bay';
+                if (iconWrap) iconWrap.className = 'w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-500/25';
                 if (roleBadge) {
                     roleBadge.innerText = 'Service Advisor Reception';
-                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200';
+                    roleBadge.className = 'text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200';
                 }
-                if (card3Title) card3Title.innerText = 'Arrival Timing & Official Claim Stub';
+                if (card3Title) card3Title.innerText = 'Arrival Timing & Claim Stub';
                 if (source) source.value = 'Walk-in';
                 if (walkinFields) walkinFields.classList.remove('hidden');
                 if (bookingFields) bookingFields.classList.add('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.remove('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.add('hidden');
+                if (submitBtn) submitBtn.className = 'w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800 active:scale-[0.99] transition py-3 text-white font-black uppercase rounded-xl shadow-md shadow-blue-600/25 text-xs tracking-wider flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Dispatch Ticket & Register Vehicle';
                 updateStubPreview();
             }

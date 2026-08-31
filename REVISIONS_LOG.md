@@ -4,6 +4,27 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 August 31, 2026 (UI Ergonomics Upgrade & Cloud Infrastructure Strategy)
+
+### 🎨 Vehicle Intake & Online Booking Form Modernization (v4.26)
+* **Wide 2-Column Executive Dashboard Layout**: Replaced the tall, single-column vertical form with a balanced, space-efficient 2-column layout (`max-w-6xl`) that eliminates vertical page scrolling.
+  - **Left Card**: Customer & Vehicle Dossier (Date, Plate Number, Vehicle Model, Customer Full Name, Mobile Number) + Service Scope & Workshop Lane Allocation with zero label line-wrapping.
+  - **Right Card**: Timing & Queue Dispatch Center + Integrated Submission Action Button.
+* **Modern Time Pickers & Quick Slot Grid**:
+  - Replaced outdated dropdown selects with native `<input type="time">` digital pickers for both Service Advisor and Assistant Desk.
+  - Added a 2×3 interactive slot chip grid (`08:00 AM`, `09:30 AM`, `11:00 AM`, `01:30 PM`, `03:00 PM`, `04:30 PM`) for 1-click booking assignment.
+  - Added a **"⚡ Set to Current Time"** button for Service Advisor walk-in reception.
+* **Executive Monochrome Styling**: Stripped distracting vibrant gradient badges and converted all form borders, input fills, and buttons into executive slate/neutral tones.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=4.26`.
+
+### ☁️ Cloud Hosting, Sandbox PoC & Architecture Documentation
+* **Master Hosting Infrastructure Guide**: Authored [`HONTECH_HOSTING_INFRASTRUCTURE_AND_CLOUD_STRATEGY_GUIDE.md`](Hontech%20Documentation/Technical/HONTECH_HOSTING_INFRASTRUCTURE_AND_CLOUD_STRATEGY_GUIDE.md) providing an architectural and financial breakdown of **Local XAMPP/LAN**, **AWS (EC2/Lightsail)**, **Vercel**, and **Supabase**.
+* **Free-Tier Gotchas & Risk Analysis**: Documented real-world operational constraints including Supabase's **7-day inactivity database pausing rule**, **500MB DB cap vs photo uploads**, **Row-Level Security (RLS) enforcement**, and **Vercel serverless function execution limits**.
+* **Isolated Sandbox PoC Playbook**: Authored [`HONTECH_SANDBOX_POC_VERCEL_SUPABASE_SETUP_GUIDE.md`](Hontech%20Documentation/Technical/HONTECH_SANDBOX_POC_VERCEL_SUPABASE_SETUP_GUIDE.md) featuring a complete 1-file working demo with live Supabase Realtime WebSockets for client demonstrations.
+* **Adaptive Client-Driven Strategy**: Formalized the dual-path decision tree (Local-first deployment vs. Cloud migration refactoring).
+
+---
+
 ## 📅 August 22, 2026 (Local Intranet Deployment & Multi-Device Testing)
 
 ### 🌐 Local Network Hosting & Multi-Device Synchronization
