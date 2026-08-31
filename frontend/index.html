@@ -2666,21 +2666,23 @@
                             </div>
 
                             <!-- ROW 3 (Timing, Workshop Lane & Verification) -->
-                            <!-- Column 1: Time (Walk-In Arrival or Booking Appt) -->
+                            <!-- Column 1: Time (Walk-In Arrival or Booking Appt - 24-Hour Base) -->
                             <div class="space-y-1.5">
                                 <!-- Walk-In Timing (SA Role) -->
                                 <div id="div-walkin-fields" class="space-y-1.5">
                                     <div class="flex items-center justify-between">
                                         <label class="text-[11px] text-gray-700 font-bold uppercase tracking-wider block">
-                                            Arrival Time <span class="text-red-500">*</span>
+                                            Arrival Time (24H) <span class="text-red-500">*</span>
                                         </label>
                                         <button type="button" onclick="setCurrentTimeToArrival()" class="text-[10px] font-bold text-red-600 hover:text-red-700 hover:underline cursor-pointer">
                                             Set Current
                                         </button>
                                     </div>
                                     <div class="relative flex items-center bg-white border border-gray-200 focus-within:border-red-600 focus-within:ring-1 focus-within:ring-red-500 rounded-xl px-3 py-2 transition">
-                                        <input type="time" id="intake-arrival-time" onchange="syncArrivalTimeToHiddenSelects()"
-                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none cursor-pointer">
+                                        <i data-lucide="clock" class="w-4 h-4 text-gray-400 mr-2 shrink-0"></i>
+                                        <input type="text" id="intake-arrival-time" onchange="syncArrivalTimeToHiddenSelects()"
+                                            placeholder="14:30" maxlength="5"
+                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none">
                                     </div>
                                     <!-- Quick Arrival 24H Preset Chips -->
                                     <div class="flex items-center gap-1 pt-0.5 overflow-x-auto">
@@ -2700,11 +2702,13 @@
                                 <!-- Booking Timing (Assistant Role) -->
                                 <div id="div-booking-fields" class="space-y-1.5 hidden">
                                     <label class="text-[11px] text-gray-700 font-bold uppercase tracking-wider block">
-                                        Appt Time <span class="text-red-500">*</span>
+                                        Appt Time (24H) <span class="text-red-500">*</span>
                                     </label>
                                     <div class="relative flex items-center bg-white border border-gray-200 focus-within:border-red-600 focus-within:ring-1 focus-within:ring-red-500 rounded-xl px-3 py-2 transition">
-                                        <input type="time" id="intake-appt-time" onchange="syncApptTimeToHiddenSelects()"
-                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none cursor-pointer">
+                                        <i data-lucide="calendar-clock" class="w-4 h-4 text-gray-400 mr-2 shrink-0"></i>
+                                        <input type="text" id="intake-appt-time" onchange="syncApptTimeToHiddenSelects()"
+                                            placeholder="09:30" maxlength="5"
+                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none">
                                     </div>
                                     <!-- Quick Slot Chips (24-Hour Format) -->
                                     <div class="flex items-center gap-1 pt-0.5 overflow-x-auto">
@@ -2752,18 +2756,28 @@
                                 </div>
                             </div>
 
-                            <!-- Column 3: Verification / Ticket -->
+                            <!-- Column 3: Verification / Ticket Stub -->
                             <div class="space-y-1.5 flex flex-col justify-end">
-                                <!-- Assistant Checkbox -->
-                                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition cursor-pointer select-none">
-                                    <input type="checkbox" id="intake-confirmed"
-                                        class="w-4 h-4 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer">
-                                    <span class="text-xs font-bold text-gray-800">Confirmed Booking</span>
-                                </label>
-                                <!-- SA Ticket Preview (Hidden or inline) -->
-                                <div class="hidden">
-                                    <input type="text" id="intake-stub-preview">
-                                    <span id="intake-card3-title"></span>
+                                <!-- Assistant Checkbox Card -->
+                                <div id="div-booking-confirm-wrap" class="hidden">
+                                    <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition cursor-pointer select-none">
+                                        <input type="checkbox" id="intake-confirmed"
+                                            class="w-4 h-4 rounded text-red-600 focus:ring-red-500 accent-red-600 cursor-pointer">
+                                        <span class="text-xs font-bold text-gray-800">Confirmed Booking</span>
+                                    </label>
+                                </div>
+                                
+                                <!-- Service Advisor Automated Claim Stub Card -->
+                                <div id="div-walkin-stub-wrap" class="space-y-1.5">
+                                    <label class="text-[11px] text-gray-700 font-bold uppercase tracking-wider block">
+                                        Automated Claim Stub <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2">
+                                        <i data-lucide="ticket" class="w-4 h-4 text-red-600 shrink-0"></i>
+                                        <input type="text" id="intake-stub-preview" readonly placeholder="Generating..."
+                                            class="w-full bg-transparent font-mono font-black text-xs text-gray-900 tracking-wider outline-none cursor-default">
+                                    </div>
+                                    <span id="intake-card3-title" class="hidden"></span>
                                 </div>
                             </div>
 
@@ -5402,7 +5416,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.29"></script>
+    <script src="js/app.js?v=4.30"></script>
 </body>
 
 </html>

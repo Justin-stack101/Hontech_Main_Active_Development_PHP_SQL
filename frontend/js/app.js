@@ -2318,6 +2318,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (bookingFields) bookingFields.classList.remove('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.add('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.remove('hidden');
+                const walkinStubWrap = document.getElementById('div-walkin-stub-wrap');
+                const bookingConfirmWrap = document.getElementById('div-booking-confirm-wrap');
+                if (walkinStubWrap) walkinStubWrap.classList.add('hidden');
+                if (bookingConfirmWrap) bookingConfirmWrap.classList.remove('hidden');
                 if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Register to System';
                 selectQuickApptSlot('09:30');
@@ -2330,6 +2334,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (bookingFields) bookingFields.classList.add('hidden');
                 if (walkinLaneWrap) walkinLaneWrap.classList.remove('hidden');
                 if (bookingLaneWrap) bookingLaneWrap.classList.add('hidden');
+                const walkinStubWrap = document.getElementById('div-walkin-stub-wrap');
+                const bookingConfirmWrap = document.getElementById('div-booking-confirm-wrap');
+                if (walkinStubWrap) walkinStubWrap.classList.remove('hidden');
+                if (bookingConfirmWrap) bookingConfirmWrap.classList.add('hidden');
                 if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Register to System';
                 updateStubPreview();
@@ -2458,6 +2466,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const isWalkin = source === 'Walk-in';
             let arrival = '';
             let apptDate = '', apptTime = '', confirmed = false, laneType = '';
+            let claimStub = '';
 
             if (isWalkin) {
                 const arrivalInput = document.getElementById('intake-arrival-time');
@@ -2469,6 +2478,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     arrival = `${hour}:${min}`;
                 }
                 laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible Lane';
+                claimStub = document.getElementById('intake-stub-preview')?.value || generateStubNumber();
             } else {
                 apptDate = date;
                 const apptInput = document.getElementById('intake-appt-time');
@@ -2485,7 +2495,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const intakePayload = {
                 source, dateReceived: date, plate, name, contact, category, vehicle, concern,
-                arrival, apptDate, apptTime, confirmed, laneType
+                arrival, apptDate, apptTime, confirmed, laneType, claimStub
             };
 
             // ACTIVE DUPLICATE RECORD GUARD (Custom Glassmorphic Modal)
