@@ -2185,15 +2185,88 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.handleCategoryChange = handleCategoryChange;
         window.toggleCategoryOther = toggleCategoryOther;
 
+        function setCurrentTimeToArrival() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const timeVal = `${hh}:${mm}`;
+            
+            const arrivalInput = document.getElementById('intake-arrival-time');
+            if (arrivalInput) arrivalInput.value = timeVal;
+            
+            syncArrivalTimeToHiddenSelects();
+            showSystemToast(`Arrival time set to current reception time (${timeVal}).`, 'info', 'Time Captured');
+        }
+        window.setCurrentTimeToArrival = setCurrentTimeToArrival;
+
+        function setQuickArrivalSlot(timeStr) {
+            const arrivalInput = document.getElementById('intake-arrival-time');
+            if (arrivalInput) arrivalInput.value = timeStr;
+            syncArrivalTimeToHiddenSelects();
+            showSystemToast(`Arrival time set to ${timeStr}.`, 'info', 'Arrival Time');
+        }
+        window.setQuickArrivalSlot = setQuickArrivalSlot;
+
+        function syncArrivalTimeToHiddenSelects() {
+            const arrivalInput = document.getElementById('intake-arrival-time');
+            if (!arrivalInput) return;
+            const parts = (arrivalInput.value || '08:00').split(':');
+            const hh = parts[0] || '08';
+            const mm = parts[1] || '00';
+
+            const arrHour = document.getElementById('intake-arrival-hour');
+            const arrMin = document.getElementById('intake-arrival-minute');
+            if (arrHour) arrHour.value = hh;
+            if (arrMin) arrMin.value = mm;
+        }
+        window.syncArrivalTimeToHiddenSelects = syncArrivalTimeToHiddenSelects;
+
+        function selectQuickApptSlot(timeStr) {
+            const apptInput = document.getElementById('intake-appt-time');
+            if (apptInput) apptInput.value = timeStr;
+            syncApptTimeToHiddenSelects();
+
+            // Highlight active appointment button
+            document.querySelectorAll('.appt-slot-btn').forEach(btn => {
+                if (btn.getAttribute('onclick')?.includes(timeStr)) {
+                    btn.className = "appt-slot-btn px-3 py-1.5 text-xs font-black rounded-xl bg-slate-950 text-white border border-slate-950 shadow-xs transition cursor-pointer active:scale-95";
+                } else {
+                    btn.className = "appt-slot-btn px-3 py-1.5 text-xs font-black rounded-xl bg-slate-100 text-slate-800 hover:bg-slate-950 hover:text-white border border-slate-200 transition cursor-pointer active:scale-95";
+                }
+            });
+            showSystemToast(`Appointment slot set to ${timeStr}.`, 'info', 'Slot Selected');
+        }
+        window.selectQuickApptSlot = selectQuickApptSlot;
+
+        function syncApptTimeToHiddenSelects() {
+            const apptInput = document.getElementById('intake-appt-time');
+            if (!apptInput) return;
+            const parts = (apptInput.value || '09:00').split(':');
+            const hh = parts[0] || '09';
+            const mm = parts[1] || '00';
+
+            const apptHour = document.getElementById('intake-appt-hour');
+            const apptMin = document.getElementById('intake-appt-minute');
+            if (apptHour) apptHour.value = hh;
+            if (apptMin) apptMin.value = mm;
+        }
+        window.syncApptTimeToHiddenSelects = syncApptTimeToHiddenSelects;
+
         function setupIntakeForm(role) {
             const title = document.getElementById('intake-title');
             const subtitle = document.getElementById('intake-subtitle');
+            const roleBadge = document.getElementById('intake-role-badge');
+            const card3Title = document.getElementById('intake-card3-title');
             const source = document.getElementById('intake-source');
             const walkinFields = document.getElementById('div-walkin-fields');
             const bookingFields = document.getElementById('div-booking-fields');
+            const walkinLaneWrap = document.getElementById('div-walkin-lane-wrap');
+            const bookingLaneWrap = document.getElementById('div-booking-lane-wrap');
+            const submitText = document.getElementById('intake-submit-text');
 
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('intake-date').value = today;
+            const dateEl = document.getElementById('intake-date');
+            if (dateEl) dateEl.value = today;
 
             const arrHour = document.getElementById('intake-arrival-hour');
             const arrMin = document.getElementById('intake-arrival-minute');
@@ -2203,11 +2276,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const now = new Date();
             const currHour = String(now.getHours()).padStart(2, '0');
             const currMin = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currHour}:${currMin}`;
+
+            // Initialize Modern Time Pickers
+            const arrivalInput = document.getElementById('intake-arrival-time');
+            if (arrivalInput) arrivalInput.value = currentTimeStr;
+
+            const apptInput = document.getElementById('intake-appt-time');
+            if (apptInput) apptInput.value = '09:00';
+
+            // Sync live clock badge
+            const liveClockBadge = document.getElementById('intake-live-clock-badge');
+            if (liveClockBadge) liveClockBadge.innerText = currentTimeStr;
 
             if (arrHour) arrHour.innerHTML = getHourOptions(currHour);
             if (arrMin) arrMin.innerHTML = getMinuteOptions(currMin);
-            if (apptHour) apptHour.innerHTML = getHourOptions(currHour);
-            if (apptMin) apptMin.innerHTML = getMinuteOptions(currMin);
+            if (apptHour) apptHour.innerHTML = getHourOptions('09');
+            if (apptMin) apptMin.innerHTML = getMinuteOptions('00');
 
             // Reset Category Select, Specify Input, and Lane options
             const catSelect = document.getElementById('intake-category');
@@ -2223,30 +2308,50 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (concernField) concernField.classList.add('hidden');
 
             if (role === 'assistant') {
-                title.innerText = 'Online Booking Form';
-                subtitle.innerText = 'Log online inquiries to Booking Module.';
-                source.value = 'Online';
-                walkinFields.classList.add('hidden');
-                bookingFields.classList.remove('hidden');
-                if (concernField) concernField.classList.add('hidden');
+                if (title) title.innerText = 'Online Booking & Appointments';
+                if (subtitle) subtitle.innerText = 'Log online customer reservations & verify appointment slots.';
+                if (roleBadge) {
+                    roleBadge.innerText = 'Assistant Booking Desk';
+                    roleBadge.className = 'text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-indigo-600/30 text-indigo-300 border border-indigo-500/40';
+                }
+                if (card3Title) card3Title.innerText = 'Appointment Schedule & Slot Verification';
+                if (source) source.value = 'Online';
+                if (walkinFields) walkinFields.classList.add('hidden');
+                if (bookingFields) bookingFields.classList.remove('hidden');
+                if (walkinLaneWrap) walkinLaneWrap.classList.add('hidden');
+                if (bookingLaneWrap) bookingLaneWrap.classList.remove('hidden');
+                if (submitText) submitText.innerText = 'Register & Queue Online Booking';
+                selectQuickApptSlot('09:30');
             } else if (role === 'sa') {
-                title.innerText = 'Walk-In Form';
-                subtitle.innerText = 'Encode physical walk-in paperwork & assign Stub.';
-                source.value = 'Walk-in';
-                walkinFields.classList.remove('hidden');
-                bookingFields.classList.add('hidden');
-                if (concernField) concernField.classList.add('hidden');
+                if (title) title.innerText = 'Vehicle Walk-In Reception';
+                if (subtitle) subtitle.innerText = 'Encode physical walk-in customer paperwork & dispatch workshop floor ticket.';
+                if (roleBadge) {
+                    roleBadge.innerText = 'Service Advisor Reception';
+                    roleBadge.className = 'text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-red-600/30 text-red-300 border border-red-500/40';
+                }
+                if (card3Title) card3Title.innerText = 'Arrival Timing & Official Claim Stub';
+                if (source) source.value = 'Walk-in';
+                if (walkinFields) walkinFields.classList.remove('hidden');
+                if (bookingFields) bookingFields.classList.add('hidden');
+                if (walkinLaneWrap) walkinLaneWrap.classList.remove('hidden');
+                if (bookingLaneWrap) bookingLaneWrap.classList.add('hidden');
+                if (submitText) submitText.innerText = 'Dispatch Ticket & Register Vehicle';
                 updateStubPreview();
             }
+
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
         }
+        window.setupIntakeForm = setupIntakeForm;
 
         async function processIntake() {
-            const source = document.getElementById('intake-source').value;
-            const date = document.getElementById('intake-date').value;
-            const plate = document.getElementById('intake-plate').value.toUpperCase();
-            const name = document.getElementById('intake-name').value;
-            const contact = document.getElementById('intake-contact').value;
-            const vehicle = document.getElementById('intake-vehicle').value;
+            const source = document.getElementById('intake-source')?.value || 'Walk-in';
+            const date = document.getElementById('intake-date')?.value || new Date().toISOString().split('T')[0];
+            const plate = (document.getElementById('intake-plate')?.value || '').toUpperCase().trim();
+            const name = (document.getElementById('intake-name')?.value || '').trim();
+            const contact = (document.getElementById('intake-contact')?.value || '').trim();
+            const vehicle = (document.getElementById('intake-vehicle')?.value || '').trim();
             
             let concern = '';
             const concernEl = document.getElementById('intake-concern');
@@ -2254,21 +2359,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 concern = concernEl.value;
             }
 
-            let category = document.getElementById('intake-category').value;
+            let category = document.getElementById('intake-category')?.value || 'PMS';
             if (category === 'Others') {
-                const categoryOther = document.getElementById('intake-category-other').value.trim();
+                const categoryOther = (document.getElementById('intake-category-other')?.value || '').trim();
                 if (!categoryOther) {
                     return showSystemToast("Please specify the custom service category.", "error");
                 }
                 category = categoryOther;
             }
 
-            if (!plate || !name) return showSystemToast("Plate and Name are required.", "error");
+            if (!plate || !name) return showSystemToast("Plate and Customer Name are required.", "error");
 
             let pendingDuplicateIntakePayload = null;
 
             async function executeIntakeSubmission(payload) {
-                const submitBtn = document.getElementById('btn-submit-intake');
+                const submitBtn = document.getElementById('intake-submit-btn');
                 if (submitBtn) {
                     submitBtn.disabled = true;
                     submitBtn.classList.add('opacity-50', 'pointer-events-none');
@@ -2281,10 +2386,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     });
 
                     await loadData();
-                    showSystemToast(`${payload.plate} added successfully.`, 'success');
+                    showSystemToast(`Vehicle ${payload.plate} registered successfully.`, 'success', 'Intake Completed');
 
-                    ['plate', 'name', 'contact', 'vehicle', 'arrival', 'appt-time', 'concern'].forEach(id => {
-                        if (document.getElementById(`intake-${id}`)) document.getElementById(`intake-${id}`).value = '';
+                    ['plate', 'name', 'contact', 'vehicle', 'concern'].forEach(id => {
+                        const el = document.getElementById(`intake-${id}`);
+                        if (el) el.value = '';
                     });
 
                     const catSelect = document.getElementById('intake-category');
@@ -2358,16 +2464,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let apptDate = '', apptTime = '', confirmed = false, laneType = '';
 
             if (isWalkin) {
-                const hour = document.getElementById('intake-arrival-hour').value;
-                const min = document.getElementById('intake-arrival-minute').value;
-                arrival = `${hour}:${min}`;
+                const arrivalInput = document.getElementById('intake-arrival-time');
+                if (arrivalInput && arrivalInput.value) {
+                    arrival = arrivalInput.value;
+                } else {
+                    const hour = document.getElementById('intake-arrival-hour')?.value || '08';
+                    const min = document.getElementById('intake-arrival-minute')?.value || '00';
+                    arrival = `${hour}:${min}`;
+                }
                 laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible Lane';
             } else {
                 apptDate = date;
-                const hour = document.getElementById('intake-appt-hour').value;
-                const min = document.getElementById('intake-appt-minute').value;
-                apptTime = `${hour}:${min}`;
-                confirmed = document.getElementById('intake-confirmed').checked;
+                const apptInput = document.getElementById('intake-appt-time');
+                if (apptInput && apptInput.value) {
+                    apptTime = apptInput.value;
+                } else {
+                    const hour = document.getElementById('intake-appt-hour')?.value || '09';
+                    const min = document.getElementById('intake-appt-minute')?.value || '00';
+                    apptTime = `${hour}:${min}`;
+                }
+                confirmed = document.getElementById('intake-confirmed') ? document.getElementById('intake-confirmed').checked : false;
                 laneType = document.getElementById('intake-lane-type')?.value || 'Flexible Lane';
             }
 
