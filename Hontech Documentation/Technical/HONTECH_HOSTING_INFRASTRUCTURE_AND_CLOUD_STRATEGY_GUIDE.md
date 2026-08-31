@@ -1,146 +1,144 @@
-# HonTech Hosting Infrastructure & Cloud Strategy Guide
-**Document Version:** 1.0.0  
-**Project:** HonTech AutoCenter Management System  
+# ☁️ HonTech Hosting Infrastructure & Cloud Strategy Guide
+**Document Version:** `1.0.0`  
+**Project:** HonTech AutoCenter Operations System  
 **Branch:** `branch2-Security-Account-Recovery`  
 **Classification:** Technical Architecture & Decision-Making Framework  
 
 ---
 
-## 1. Executive Summary & Philosophy
+## 1. 📌 Executive Summary & Philosophy
 
-In modern software engineering, **technology stack selection is strictly driven by client operational needs, budget constraints, and risk management**.
+In professional software engineering, **technology stack selection is strictly driven by client operational needs, budget constraints, and risk management**.
 
-This document outlines the comparative architectural analysis, cost models, and deployment roadmaps for four hosting models:
+This document provides a clear, side-by-side architectural and financial comparison of four hosting options:
 1. **Local On-Premises & LAN Server (XAMPP + LocalTunnel)**
 2. **Amazon Web Services (AWS - EC2 / Lightsail)**
 3. **Vercel (Serverless Edge Frontend Platform)**
-4. **Supabase (Open-Source PostgreSQL & Realtime Backend)**
+4. **Supabase (Managed PostgreSQL & Realtime Backend)**
 
 ---
 
-## 2. Comprehensive Technology Comparison Matrix
+## 2. 📊 Comprehensive Technology Comparison Matrix
 
-```
-┌────────────────────────────┬─────────────────────────┬─────────────────────────┬─────────────────────────┬─────────────────────────┐
-│ Feature / Dimension        │ Local Server (XAMPP)    │ AWS (Lightsail / EC2)   │ Vercel                  │ Supabase                │
-├────────────────────────────┼─────────────────────────┼─────────────────────────┼─────────────────────────┼─────────────────────────┤
-│ **Classification**         │ On-Premises / LAN       │ Cloud IaaS / PaaS       │ Serverless Frontend PaaS│ Serverless BaaS (DB)    │
-│ **Underlying Engine**      │ Apache + MariaDB        │ Linux VM + LAMP Stack   │ AWS Lambda / Edge CDN   │ Managed PostgreSQL      │
-│ **PHP / MySQL Support**    │ 🟢 Native (100% Match)  │ 🟢 Native (100% Match)  │ 🔴 No Native PHP Runtime│ 🔴 PostgreSQL (Not MySQL)│
-│ **Real-Time WebSockets**   │ 🟡 Polling / Local WS   │ 🟡 Custom Node/WS Daemon│ 🟡 Serverless Functions │ 🟢 Native Realtime WS   │
-│ **Offline Operation**      │ 🟢 100% Offline Capable │ 🔴 Requires Internet    │ 🔴 Requires Internet    │ 🔴 Requires Internet    │
-│ **Monthly Cost**           │ 🟢 ₱0.00 / month        │ 🟡 ₱200 - ₱1,500 / mo   │ 🟢 ₱0.00 (Hobby Free)   │ 🟢 ₱0.00 (500MB Free)   │
-│ **Setup Complexity**       │ 🟢 Very Low (1-Click)   │ 🔴 High (VPC/Firewalls) │ 🟢 Zero Config (Git Push│ 🟢 Instant Web Console  │
-│ **Current Code Fit**       │ 🟢 Immediate / Tested   │ 🟢 Immediate / Tested   │ 🟡 Requires JS Refactor │ 🟡 Requires API Refactor│
-└────────────────────────────┴─────────────────────────┴─────────────────────────┴─────────────────────────┴─────────────────────────┘
-```
+| Feature / Dimension | 🏢 Local Server (XAMPP) | ☁️ AWS (Lightsail / EC2) | ⚡ Vercel | 🗄️ Supabase |
+| :--- | :--- | :--- | :--- | :--- |
+| **Hosting Classification** | On-Premises / Local Area Network | Cloud Infrastructure (IaaS / PaaS) | Serverless Frontend (PaaS) | Serverless Database (BaaS) |
+| **Underlying Engine** | Apache HTTP + MariaDB | Linux VM + Pre-installed LAMP | AWS Lambda + Global Edge CDN | Managed Cloud PostgreSQL |
+| **PHP & MySQL Support** | 🟢 **100% Native Match** | 🟢 **100% Native Match** | 🔴 **No Native PHP Support** | 🔴 **PostgreSQL (Not MySQL)** |
+| **Real-Time TV Telemetry** | 🟡 Polling / Local WebSockets | 🟡 Custom Node / WS Daemon | 🟡 Serverless Edge Functions | 🟢 **Native Realtime WebSockets** |
+| **Offline Capability** | 🟢 **100% Offline Resilient** | 🔴 Requires Internet | 🔴 Requires Internet | 🔴 Requires Internet |
+| **Monthly Operating Cost** | 🟢 **₱0.00 / month** | 🟡 ₱200 – ₱1,500 / month | 🟢 **₱0.00 (Hobby Free Tier)** | 🟢 **₱0.00 (500MB Free Tier)** |
+| **Configuration Setup** | 🟢 Very Low (1-Click Run) | 🔴 High (VPC, Security Groups) | 🟢 Zero-Config (Git Push Deploy) | 🟢 Instant Web Console |
+| **Current Codebase Fit** | 🟢 **Immediate (Tested & Ready)**| 🟢 **Immediate (Tested & Ready)**| 🟡 Requires JavaScript Refactor | 🟡 Requires API & Schema Refactor |
 
 ---
 
-## 3. Deep Dive into Each Option
+## 3. 🔍 Deep Dive: The 4 Hosting Options
 
-### 🏢 3.1. Local On-Premises & LAN Server (Current Primary Stack)
+### 🏢 3.1. Local On-Premises & LAN Server *(Current Primary Stack)*
 
-* **Architecture:** Apache HTTP Server + PHP 8.x + MySQL / MariaDB running locally on a dedicated shop computer or laptop.
-* **Network Connectivity:**
-  - Local Workshop Access: `http://192.168.x.x/Hontech` over local Wi-Fi.
-  - Remote Panel / Client Access: Secure HTTPS tunnel via `node tunnel.js` or `ngrok`.
-* **Advantages:**
-  - **Zero Cost:** No recurring monthly hosting or database bills.
-  - **Zero Downtime from ISP Outages:** Receptionists can still check in vehicles and technicians can still work even if the internet goes down.
-  - **100% Code Compatibility:** Zero risk of deployment regressions.
-* **Limitations:**
-  - Physical machine must remain powered on during business hours.
-  - Branch-to-branch data sharing requires centralized database replication.
+* **Technical Architecture:**  
+  Apache HTTP Server + PHP 8.x + MySQL (PDO) running directly on a shop laptop or desktop at the Marikina branch.
+* **Network Connectivity:**  
+  - **Inside the Workshop:** Staff devices connect to `http://192.168.x.x/Hontech` over local Wi-Fi.
+  - **Remote Panelists / Client Access:** Instant public HTTPS link via `node tunnel.js` (LocalTunnel).
+* **Key Advantages:**  
+  - **₱0.00 Cost:** Zero cloud subscription or database fees.
+  - **100% Offline Resilient:** Front desk staff can encode work orders and technicians can work even if the internet goes down.
+  - **Zero Deployment Risk:** 100% tested with current codebase.
+* **Limitations:**  
+  - Host computer must remain powered on during operating hours.
 
 ---
 
-### ☁️ 3.2. Amazon Web Services (AWS - EC2 & Lightsail)
+### ☁️ 3.2. Amazon Web Services *(AWS - EC2 & Lightsail)*
 
-* **Architecture:** Virtual private cloud servers hosted in AWS global data centers (Singapore / AP-Southeast-1).
-* **AWS Broad Scope & Complexity:**
-  - Standard AWS (EC2, VPC, RDS, IAM, Route53, Security Groups) is massive (200+ services) and steep for small business maintenance.
-  - **AWS Lightsail** is the simplified alternative: provides a pre-packaged **LAMP stack instance** for a flat fee (~$3.50 to $5.00/month).
-* **Advantages:**
-  - Runs your exact PHP + MySQL PDO codebase without modifying a single line of backend logic.
-  - 99.99% cloud uptime and automatic snapshot backups.
-* **Limitations:**
+* **Technical Architecture:**  
+  Virtual private cloud servers hosted in AWS global data centers (e.g. Singapore region).
+* **Scope & Considerations:**  
+  - Standard AWS (EC2, VPC, RDS, IAM, Route53) has over 200+ services and high setup complexity.
+  - **AWS Lightsail** is the simplified alternative: provides a pre-configured **LAMP Stack** (Linux + Apache + MySQL + PHP) for a flat ~$3.50/month fee.
+* **Key Advantages:**  
+  - Runs your exact PHP + MySQL code without rewriting a single line.
+  - 99.99% enterprise cloud uptime and automatic snapshot backups.
+* **Limitations:**  
   - Requires recurring cloud budget.
-  - Unmanaged EC2 instances require OS security patches and firewall maintenance.
+  - Requires internet access for all workshop operations.
 
 ---
 
-### ⚡ 3.3. Vercel (Modern Frontend & Edge Platform)
+### ⚡ 3.3. Vercel *(Modern Serverless Edge Platform)*
 
-* **Architecture:** Global Edge Content Delivery Network (CDN) optimized for modern JavaScript/TypeScript web applications.
-* **Underlying Relationship with AWS:**
-  - Vercel operates on top of AWS infrastructure (using AWS Lambda, S3, and CloudFront under the hood) with a developer-friendly continuous deployment layer.
-* **Advantages:**
-  - **Permanent Free Tier:** Free hosting with automated HTTPS/SSL.
-  - **Git-Triggered Deployments:** Pushing to GitHub branch automatically updates the live website in ~30 seconds.
-  - Blazing fast performance across global edge nodes.
-* **Limitations for HonTech:**
-  - Vercel is designed for Node.js / Next.js / Static web assets. Traditional PHP Apache scripts are not supported natively.
-  - Adopting Vercel requires converting the PHP backend into serverless API functions or connecting directly to a cloud database.
+* **Technical Architecture:**  
+  Global Edge Content Delivery Network (CDN) optimized for modern frontend web applications.
+* **Relationship with AWS:**  
+  - Vercel actually runs on top of AWS infrastructure (AWS Lambda, S3, CloudFront) with a streamlined user interface.
+* **Key Advantages:**  
+  - **Permanent Free Tier:** $0/month with automated SSL certificates and custom domains.
+  - **Git-Triggered Deployments:** Pushing to GitHub automatically updates the live website in ~30 seconds.
+* **Limitations for HonTech:**  
+  - Vercel is designed for Node.js / React / Next.js / Static assets. Traditional PHP Apache servers are not natively supported.
 
 ---
 
-### 🗄️ 3.4. Supabase (The Open-Source Firebase / PostgreSQL Alternative)
+### 🗄️ 3.4. Supabase *(Open-Source Cloud PostgreSQL & Realtime Backend)*
 
-* **Architecture:** Managed Cloud PostgreSQL database with auto-generated REST APIs, Realtime WebSockets, and Authentication.
-* **Advantages:**
-  - **Generous Free Tier:** 500MB database storage, 50,000 monthly active users at $0 cost.
-  - **Native Realtime Subscriptions:** When a Service Advisor registers a vehicle, the TV Bay Screen (`tv.html`) receives an instant WebSocket push without polling overhead.
+* **Technical Architecture:**  
+  Managed Cloud PostgreSQL database with auto-generated REST APIs, Auth, and Realtime WebSockets.
+* **Key Advantages:**  
+  - **Generous Free Tier:** 500MB database storage, 50,000 active users for $0/month.
+  - **Native WebSockets:** Instant millisecond TV Bay screen updates when a vehicle status changes.
   - Built-in SQL Editor, Row-Level Security (RLS), and automated daily backups.
-* **Limitations for HonTech:**
-  - Supabase uses **PostgreSQL**, whereas HonTech currently uses **MySQL PDO**.
-  - Moving to Supabase requires migrating table structures and updating client data queries from PHP endpoints to the Supabase JS Client SDK.
+* **Limitations for HonTech:**  
+  - Uses **PostgreSQL**, whereas HonTech currently uses **MySQL PDO**.
+  - Requires refactoring PHP backend endpoints into direct Supabase JavaScript SDK calls.
 
 ---
 
-## 4. Adaptive Engineering Strategy: Client-Driven Decision Framework
+## 4. 🧭 Adaptive Engineering Decision Matrix
 
 ```
-                          CLIENT DISCOVERY & DECISION TREE
-                                         │
-                 ┌───────────────────────┴───────────────────────┐
-                 ▼                                               ▼
-     [ CLIENT CHOOSES LOCAL HOSTING ]                [ CLIENT CHOOSES CLOUD (VERCEL+SUPABASE) ]
-     ────────────────────────────────                ─────────────────────────────────────────
-     • Target: Single branch workshop                • Target: Multi-branch cloud accessible
-     • Budget: ₱0.00 / month                         • Budget: ₱0.00 / month (Free Tiers)
-     • Stack: Local XAMPP (PHP + MySQL)              • Stack: Vercel (Frontend) + Supabase (Postgres)
-     • Status: 100% Ready & Tested                   • Status: Execute Disciplined Migration Plan
+                      CLIENT REQUIREMENTS & DISCOVERY
+                                     │
+            ┌────────────────────────┴────────────────────────┐
+            ▼                                                 ▼
+[ CLIENT CHOOSES LOCAL HOSTING ]                  [ CLIENT CHOOSES CLOUD HOSTING ]
+────────────────────────────────                  ────────────────────────────────
+• Single-branch workshop focus                    • Multi-branch cloud access needed
+• ₱0.00 / month operating budget                  • ₱0.00 / month (Free Tier Target)
+• Stack: Local XAMPP (PHP + MySQL)                • Stack: Vercel + Supabase (Postgres)
+• Status: 100% Tested & Ready Today               • Status: Execute Disciplined Migration
 ```
 
 ---
 
-## 5. Migration & Refactoring Roadmap (If Cloud Stack is Selected)
+## 5. 🛡️ 5-Stage Migration Roadmap *(If Cloud Stack is Selected)*
 
-If the client selects the Vercel + Supabase cloud deployment, the development team follows a **disciplined 5-stage migration**:
+If the client explicitly approves the cloud migration, the team executes the following disciplined engineering workflow:
 
-1. **Stage 1: Branch Isolation & Safety**
-   - Preserve `branch2-Security-Account-Recovery` as the permanent stable local release.
-   - Spawn a dedicated feature branch: `git checkout -b feature/vercel-supabase-migration`.
-2. **Stage 2: Database Schema Mapping (MySQL -> PostgreSQL)**
-   - Translate `database.sql` MySQL syntax (`AUTO_INCREMENT`, `TINYINT(1)`) to PostgreSQL standards (`BIGSERIAL`, `BOOLEAN`, `UUID`).
-3. **Stage 3: Data Access Layer Refactor**
-   - Replace PHP `apiRequest('/api/jobs', ...)` with Supabase JavaScript client queries (`supabase.from('jobs').select('*')`).
-   - Implement Supabase Realtime channel listeners for the TV Bay Screen (`tv.html`).
-4. **Stage 4: Automated & Unit Testing Matrix**
-   - Execute QA role testing across all 4 personas: **Owner**, **Admin**, **Service Advisor**, **Assistant Desk**.
-   - Verify bay capacity clamping (Admin bay limit vs SA dropdown options).
-5. **Stage 5: Continuous Deployment & Custom Domain**
-   - Connect GitHub repository to Vercel.
-   - Configure environment variables (`SUPABASE_URL`, `SUPABASE_ANON_KEY`) securely in the Vercel dashboard.
+1. **Stage 1: Safety & Branch Protection**  
+   Preserve `branch2-Security-Account-Recovery` as the stable backup and spawn a dedicated feature branch:
+   ```bash
+   git checkout -b feature/vercel-supabase-migration
+   ```
+2. **Stage 2: Database Schema Translation**  
+   Convert MySQL schema (`database.sql`) to PostgreSQL standards (`BIGSERIAL`, `BOOLEAN`, `UUID`).
+3. **Stage 3: Data Access Layer Refactoring**  
+   Replace PHP `apiRequest('/api/jobs')` endpoints with direct Supabase JS Client calls (`supabase.from('jobs').select('*')`).
+4. **Stage 4: Automated & Role-Based QA Testing**  
+   Run full end-to-end verification across all 4 roles (**Owner**, **Admin**, **Service Advisor**, **Assistant Desk**) plus the **TV Bay Queue Screen**.
+5. **Stage 5: Production Deployment & Monitoring**  
+   Connect GitHub repository to Vercel and configure secure environment variables (`SUPABASE_URL`, `SUPABASE_ANON_KEY`).
 
 ---
 
-## 6. Document Metadata & Approval
+## 6. 📋 Document Approval & Metadata
 
-| Attribute | Details |
+| Attribute | Specification |
 | :--- | :--- |
-| **Author** | HonTech Lead Software Engineering & Capstone Practicum Team |
-| **Institution** | STI College Marikina (BSIT Practicum & Capstone Defense) |
-| **Target Client** | HonTech AutoCenter Management |
-| **Status** | Active Technical Reference |
+| **Authors** | Lead Software Engineering & Practicum Team |
+| **Institution** | STI College Marikina (BSIT Capstone Practicum) |
+| **Industry Partner** | HonTech AutoCenter Management |
+| **Repository** | `Hontech_Main_Active_Development_PHP_SQL` |
+| **Active Branch** | `branch2-Security-Account-Recovery` |
+| **Status** | Approved Technical Architecture Reference |
