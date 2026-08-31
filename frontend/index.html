@@ -355,218 +355,214 @@
     </div>
 
     <!-- Authentication View -->
-    <div id="auth-view" class="fixed inset-0 z-[500] grid grid-cols-1 lg:grid-cols-12 bg-white overflow-hidden">
+    <div id="auth-view" class="fixed inset-0 z-[500] grid grid-cols-1 lg:grid-cols-12 bg-white overflow-hidden select-none">
 
-        <!-- Left Side: Branding / Hero Banner (visible on large screens) -->
-        <div
-            class="lg:col-span-5 flex flex-col justify-between p-12 text-white relative auth-hero select-none">
+        <!-- Left Side: Branding / Hero Banner (High-Impact Modern Cyber-Automotive Design) -->
+        <div class="lg:col-span-5 flex flex-col justify-between p-8 xl:p-12 text-white relative auth-hero select-none overflow-hidden">
+            <!-- Ambient Glow Overlay -->
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-rose-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
             <!-- Logo & Brand Header -->
             <div class="flex items-center gap-3 z-10">
-                <i data-lucide="wrench" class="w-8 h-8 text-red-500 drop-shadow"></i>
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-lg shadow-red-600/40 border border-red-400/40 shrink-0">
+                    <i data-lucide="wrench" class="w-6 h-6 text-white drop-shadow"></i>
+                </div>
                 <div class="flex flex-col">
                     <div class="flex items-baseline gap-2">
-                        <span class="font-black italic uppercase tracking-tighter text-3xl leading-none drop-shadow-md">
+                        <span class="font-black italic uppercase tracking-tighter text-3xl leading-none drop-shadow-md text-white">
                             HonTech
                         </span>
-                        <span class="text-[10px] font-bold tracking-wider text-red-200 bg-red-800/30 px-1.5 py-0.5 rounded border border-red-500/30">v1.0.0-beta</span>
+                        <span class="text-[10px] font-black tracking-wider text-red-200 bg-red-950/80 px-2 py-0.5 rounded-full border border-red-500/40 shadow-xs">v1.0.0-beta</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-red-400 uppercase tracking-widest mt-0.5">Automotive Workshop ERP</span>
+                </div>
+            </div>
+
+            <!-- Main Marketing Heading & Live Capabilities -->
+            <div class="space-y-6 my-auto z-10 max-w-md py-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/70 border border-red-500/30 text-red-300 text-[11px] font-extrabold uppercase tracking-wider shadow-xs">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-red-400"></i> Next-Gen Workshop OS
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl xl:text-5xl font-black italic tracking-tight leading-[1.15] text-white uppercase drop-shadow-xl">
+                    Web-Based <br>Vehicle Intake & <br>Queue <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-amber-400">Monitoring</span>
+                </h1>
+
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    Streamlining workshop vehicle intakes, technician bay telemetry, real-time SLA tracking, and automated TV queue broadcasting in a unified digital hub.
+                </p>
+
+                <!-- 3 Live Capability Chips -->
+                <div class="space-y-2.5 pt-2">
+                    <div class="flex items-center gap-2.5 bg-slate-900/60 border border-slate-700/60 rounded-xl p-2.5 backdrop-blur-xs">
+                        <div class="p-1.5 rounded-lg bg-red-500/20 text-red-400 shrink-0"><i data-lucide="activity" class="w-4 h-4"></i></div>
+                        <div class="text-left">
+                            <strong class="text-xs font-bold text-slate-100 block">Real-Time Bay Telemetry</strong>
+                            <span class="text-[10px] text-slate-400">Live service tracking & 2-hour SLA alerts</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 bg-slate-900/60 border border-slate-700/60 rounded-xl p-2.5 backdrop-blur-xs">
+                        <div class="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 shrink-0"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                        <div class="text-left">
+                            <strong class="text-xs font-bold text-slate-100 block">4-Role Strict Security (RBAC)</strong>
+                            <span class="text-[10px] text-slate-400">Owner, Admin, Service Advisor & Assistant</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 bg-slate-900/60 border border-slate-700/60 rounded-xl p-2.5 backdrop-blur-xs">
+                        <div class="p-1.5 rounded-lg bg-amber-500/20 text-amber-400 shrink-0"><i data-lucide="volume-2" class="w-4 h-4"></i></div>
+                        <div class="text-left">
+                            <strong class="text-xs font-bold text-slate-100 block">Automated TV Voice Broadcast</strong>
+                            <span class="text-[10px] text-slate-400">Web Speech API announcements & audio chimes</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Marketing Heading -->
-            <div class="space-y-6 my-auto z-10 max-w-md">
-
-
-                <h1
-                    class="text-4xl xl:text-5xl font-black italic tracking-tight leading-[1.15] text-white uppercase drop-shadow-lg">
-                    Web-Based <br>Vehicle Intake & <br>Queue <span class="text-red-500">Monitoring</span>
-                </h1>
-
-                <p class="text-sm text-gray-400 leading-relaxed font-semibold">
-                    Streamlining workshop vehicle intakes, service assignments, live monitoring, and front desk
-                    scheduling in a single, unified digital hub.
-                </p>
-            </div>
-
             <!-- Footer / Copyright -->
-            <div class="z-10 text-xs text-gray-500 font-semibold space-y-1">
-                <p>© 2026 HonTech AutoCenter Inc. All rights reserved.</p>
-                <p>STI College Marikina | Developed by BSIT Students.</p>
-                <div class="pt-2 flex items-center gap-3 text-[11px]">
+            <div class="z-10 text-xs text-slate-400 font-medium space-y-1 border-t border-slate-800/80 pt-4">
+                <p class="text-slate-300 font-bold">© 2026 HonTech AutoCenter Inc. All rights reserved.</p>
+                <p class="text-slate-400 text-[11px]">STI College Marikina | Developed by BSIT Students.</p>
+                <div class="pt-1.5 flex items-center gap-3 text-[11px]">
                     <button onclick="openTermsModal()" class="text-red-400 hover:text-red-300 underline underline-offset-2 transition cursor-pointer">Terms & Conditions</button>
-                    <span class="text-gray-600">•</span>
-                    <span class="text-gray-400">RA 10173 Compliant</span>
+                    <span class="text-slate-600">•</span>
+                    <span class="text-slate-400">RA 10173 Compliant</span>
                 </div>
             </div>
 
         </div>
 
         <!-- Right Side: Clean Login Form Container -->
-        <div class="lg:col-span-7 flex flex-col min-h-screen bg-white overflow-y-auto">
-
-            <!-- Top Alert Banner (Black background with red accent border) -->
-            <div
-                class="bg-[#111827] text-gray-300 px-6 py-3.5 flex items-start gap-3 text-xs leading-relaxed shrink-0 border-b-2 border-red-600 shadow-sm">
-                <i data-lucide="shield-alert" class="w-5 h-5 shrink-0 text-red-500 mt-0.5 animate-pulse"></i>
-                <div>
-                    <strong class="uppercase font-extrabold tracking-wider text-red-500">Security Notice:</strong> This
-                    system is strictly for queue management and workshop operations. Access is authorized for registered
-                    HonTech personnel only.
-                </div>
-            </div>
+        <div class="lg:col-span-7 flex flex-col min-h-screen bg-slate-50/50 overflow-y-auto">
 
             <!-- Center Form Wrapper -->
             <div class="flex-1 flex flex-col items-center justify-center p-6 md:p-12 w-full max-w-xl mx-auto my-auto">
 
-                <div class="w-full space-y-8">
-                    <!-- Title -->
-                    <div>
-                        <h2 class="text-3xl font-black text-gray-900 tracking-tight mb-2">Welcome back</h2>
-                        <p class="text-sm font-bold text-gray-500 uppercase tracking-wide">Access internal management
-                            dashboard.</p>
+                <div class="w-full bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/50 space-y-7">
+                    
+                    <!-- Header with Trust Chip -->
+                    <div class="space-y-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-slate-200 border border-slate-700/60 text-[10.5px] font-bold shadow-xs select-none">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-red-500 animate-pulse"></i>
+                            <span>Authorized Personnel Only</span>
+                            <span class="text-slate-600">•</span>
+                            <span class="text-slate-400 font-normal">Encrypted Session</span>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Welcome back</h2>
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">Access internal workshop management dashboard</p>
+                        </div>
                     </div>
 
                     <!-- Login Form -->
-                    <div id="login-form-container" class="space-y-6">
+                    <div id="login-form-container" class="space-y-5">
                         <div>
-                            <label
-                                class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest mb-2">Email
-                                Address</label>
-                            <div class="relative">
-                                <i data-lucide="mail" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                            <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1.5">Email Address</label>
+                            <div class="relative flex items-center">
+                                <i data-lucide="mail" class="absolute left-4 text-slate-400 w-4 h-4 pointer-events-none"></i>
                                 <input type="email" id="login-email"
-                                    class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
-                                    placeholder="Enter assigned email">
+                                    class="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-red-600 focus:ring-4 focus:ring-red-500/10 rounded-2xl pl-11 pr-4 py-3 outline-none font-bold text-xs sm:text-sm text-slate-900 transition-all"
+                                    placeholder="e.g. owner@hontech.com">
                             </div>
                         </div>
 
                         <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <label
-                                    class="block text-[11px] font-bold text-gray-700 uppercase tracking-widest">Password</label>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">Password</label>
                                 <a href="javascript:void(0)" onclick="toggleForgotForm(true)"
-                                    class="text-xs font-bold text-red-600 hover:text-red-700 transition">Forgot
-                                    Password?</a>
+                                    class="text-xs font-bold text-red-600 hover:text-red-700 transition">Forgot Password?</a>
                             </div>
-                            <div class="relative">
-                                <i data-lucide="lock" class="absolute left-4 top-3.5 text-gray-400 w-4 h-4"></i>
+                            <div class="relative flex items-center">
+                                <i data-lucide="lock" class="absolute left-4 text-slate-400 w-4 h-4 pointer-events-none"></i>
                                 <input type="password" id="login-pass"
-                                    class="w-full login-input rounded-xl pl-12 pr-4 py-3.5 outline-none font-semibold text-sm transition"
+                                    onkeydown="if(event.key==='Enter') processLogin();"
+                                    class="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-red-600 focus:ring-4 focus:ring-red-500/10 rounded-2xl pl-11 pr-11 py-3 outline-none font-bold text-xs sm:text-sm text-slate-900 transition-all"
                                     placeholder="Enter password">
+                                <button type="button" onclick="togglePasswordVisibility('login-pass', this)" 
+                                    class="absolute right-3.5 p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer" 
+                                    title="Show/Hide Password">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
                             </div>
                         </div>
 
                         <!-- Access Portal Action Button -->
                         <button onclick="processLogin()"
-                            class="w-full login-btn py-4 text-white font-black uppercase rounded-xl shadow-lg shadow-gray-900/10 text-sm tracking-widest flex items-center justify-center gap-2 cursor-pointer">
-                            Access Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            class="w-full group py-3.5 bg-gradient-to-r from-red-600 via-red-700 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black uppercase rounded-2xl shadow-lg shadow-red-600/25 hover:shadow-red-600/35 text-xs sm:text-sm tracking-widest flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer active:scale-[0.98]">
+                            <span>Access Portal</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                         </button>
 
                         <!-- Terms of Service & Privacy Notice on Login Form -->
-                        <div class="pt-2 text-center">
-                            <p class="text-[11px] text-gray-500 font-medium leading-relaxed">
+                        <div class="pt-1 text-center">
+                            <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
                                 By signing in, you agree to HonTech's 
                                 <button onclick="openTermsModal()" class="font-bold text-red-600 hover:text-red-700 underline decoration-red-300 underline-offset-2 transition cursor-pointer">Terms & Conditions</button> 
-                                and <span class="font-bold text-gray-700">Data Privacy Standards (RA 10173)</span>.
+                                and <span class="font-bold text-slate-700">Data Privacy Standards (RA 10173)</span>.
                             </p>
                         </div>
 
-                        <!-- Developer Credentials & Testing Tools (Collapsible / Minimalist & Professional) -->
-                        <div class="bg-gray-50/90 border border-gray-200 rounded-2xl p-4 mt-4 select-none shadow-2xs">
-                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-1">
+                        <!-- Developer Credentials & Testing Tools (1-Click Instant Role Direct Access) -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mt-4 select-none shadow-2xs">
+                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none py-0.5">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="p-1 bg-red-100 text-red-600 rounded-md">
+                                    <div class="p-1 bg-red-100 text-red-600 rounded-lg">
                                         <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
                                     </div>
-                                    <span class="text-xs font-black uppercase tracking-wider text-gray-800">Developer Credentials & Testing</span>
+                                    <span class="text-xs font-black uppercase tracking-wider text-slate-800">Quick Test Credentials (1-Click Login)</span>
                                 </div>
-                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-400 w-4 h-4 transition-transform duration-200"></i>
+                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-slate-400 w-4 h-4 transition-transform duration-200"></i>
                             </div>
                             
-                            <div id="dev-credentials-grid" class="hidden space-y-3.5 mt-3 pt-3.5 border-t border-gray-200">
+                            <div id="dev-credentials-grid" class="hidden space-y-3.5 mt-3 pt-3.5 border-t border-slate-200">
                                 <!-- 1-Click Role Direct Access -->
-                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-2.5">
-                                    <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
+                                <div class="bg-white border border-slate-200 rounded-xl p-3.5 shadow-2xs space-y-2.5">
+                                    <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                                             <i data-lucide="zap" class="w-3 h-3 text-amber-500"></i> Instant Role Login
                                         </span>
-                                        <button type="button" onclick="openMobileConnectModal()" class="text-[9.5px] font-black uppercase text-gray-700 hover:text-red-600 border border-gray-200 hover:border-red-300 px-2.5 py-1 rounded-lg transition cursor-pointer bg-gray-50 flex items-center gap-1 shadow-2xs">
-                                            <i data-lucide="qr-code" class="w-3 h-3 text-gray-500"></i> Mobile QR
+                                        <button type="button" onclick="openMobileConnectModal()" class="text-[9.5px] font-black uppercase text-slate-700 hover:text-red-600 border border-slate-200 hover:border-red-300 px-2.5 py-1 rounded-lg transition cursor-pointer bg-slate-50 flex items-center gap-1 shadow-2xs">
+                                            <i data-lucide="qr-code" class="w-3 h-3 text-slate-500"></i> Mobile QR
                                         </button>
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="p-2.5 bg-slate-50 hover:bg-red-50/70 border border-slate-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
                                             <div class="flex items-center justify-between mb-0.5">
-                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
-                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Global</span>
+                                                <span class="text-[9px] font-black uppercase text-slate-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-slate-500 bg-white border border-slate-200 px-1.5 py-0.2 rounded">Global</span>
                                             </div>
-                                            <strong class="text-xs font-black text-gray-900 block">Owner</strong>
+                                            <strong class="text-xs font-black text-slate-900 block">👑 Owner</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="p-2.5 bg-slate-50 hover:bg-red-50/70 border border-slate-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
                                             <div class="flex items-center justify-between mb-0.5">
-                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
-                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Marikina</span>
+                                                <span class="text-[9px] font-black uppercase text-slate-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-slate-500 bg-white border border-slate-200 px-1.5 py-0.2 rounded">Marikina</span>
                                             </div>
-                                            <strong class="text-xs font-black text-gray-900 block">Administrator</strong>
+                                            <strong class="text-xs font-black text-slate-900 block">🛡️ Admin</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="p-2.5 bg-slate-50 hover:bg-red-50/70 border border-slate-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
                                             <div class="flex items-center justify-between mb-0.5">
-                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
-                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Floor</span>
+                                                <span class="text-[9px] font-black uppercase text-slate-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-slate-500 bg-white border border-slate-200 px-1.5 py-0.2 rounded">Floor</span>
                                             </div>
-                                            <strong class="text-xs font-black text-gray-900 block">Service Advisor</strong>
+                                            <strong class="text-xs font-black text-slate-900 block">🔧 Advisor Mark</strong>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="p-2.5 bg-gray-50 hover:bg-red-50/70 border border-gray-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
+                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="p-2.5 bg-slate-50 hover:bg-red-50/70 border border-slate-200 hover:border-red-300 rounded-xl transition text-left cursor-pointer group">
                                             <div class="flex items-center justify-between mb-0.5">
-                                                <span class="text-[9px] font-black uppercase text-gray-400 group-hover:text-red-600 tracking-wider">ROLE</span>
-                                                <span class="text-[8.5px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.2 rounded">Desk</span>
+                                                <span class="text-[9px] font-black uppercase text-slate-400 group-hover:text-red-600 tracking-wider">ROLE</span>
+                                                <span class="text-[8.5px] font-bold text-slate-500 bg-white border border-slate-200 px-1.5 py-0.2 rounded">Desk</span>
                                             </div>
-                                            <strong class="text-xs font-black text-gray-900 block">Assistant</strong>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Multi-Branch Test Accounts -->
-                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-2">
-                                    <div class="pb-1.5 border-b border-gray-100 flex items-center justify-between">
-                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Multi-Branch Test Accounts</span>
-                                        <span class="text-[9px] font-bold text-gray-400">Marikina & East</span>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Owner (Global)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">owner@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Staff (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin (East)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin.east@...</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Staff (East)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff.east@...</span>
+                                            <strong class="text-xs font-black text-slate-900 block">📋 Assistant</strong>
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- Utility & Diagnostics Actions -->
                                 <div class="grid grid-cols-2 gap-2 pt-1">
-                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
                                         <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i> Google Auth
                                     </button>
-                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
                                         <i data-lucide="mail" class="w-3.5 h-3.5 text-emerald-600"></i> Dev Mailbox
                                     </button>
                                     <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-red-50 border border-red-200 text-red-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
@@ -5495,7 +5491,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.17"></script>
+    <script src="js/app.js?v=4.18"></script>
 </body>
 
 </html>
