@@ -49,6 +49,7 @@ Welcome to the central documentation and engineering knowledge hub for the **Hon
 | 🌐 [**Local Intranet, Server Hosting & Remote Access Manual**](Technical/LOCAL_INTRANET_DEPLOYMENT_GUIDE.md) | Networking Manual | ₱0 local server hosting (`0.0.0.0:8000`), zero-config `.local` resolution, and remote tunneling via Cloudflare and Localtunnel. |
 | 📅 [**Progressive Deployment Timeline & Next-Month Action Plan**](Technical/HONTECH_PROGRESSIVE_DEPLOYMENT_TIMELINE_AND_MILESTONES.md) | Project Schedule | Official 6-stage pilot-to-production schedule: Codebase revisions, classmate local hosting testing, Google API integration, and physical multi-branch setup. |
 | ⏱️ [**Launch Timeline & Emergency Response Manual**](Technical/LaunchTimelineAndEmergencyManual.md) | Incident Response | Deployment milestones, dry-run checklist, failover procedures, and emergency crash diagnostics. |
+| ☁️ [**Hosting Infrastructure & Cloud Strategy Guide**](Technical/HONTECH_HOSTING_INFRASTRUCTURE_AND_CLOUD_STRATEGY_GUIDE.md) | Cloud & Hosting Architecture | In-depth comparative analysis of Local Server (XAMPP/LAN), AWS (EC2/Lightsail), Vercel, and Supabase with client-driven decision matrices and refactoring roadmaps. |
 | 🚀 [**HonTech Future Roadmap & Long-Term Vision**](Technical/HONTECH_FUTURE_ROADMAP_AND_PROGRESS.md) | Future Scope | Multi-branch synchronization, mobile client portal, customer SMS alerts, and AI predictive maintenance plans. |
 
 ---
