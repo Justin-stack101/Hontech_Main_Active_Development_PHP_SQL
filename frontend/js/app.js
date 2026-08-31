@@ -3207,7 +3207,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <th class="px-2 py-3 bg-gray-50">Plate No.</th>
                                 <th class="px-2 py-3 bg-gray-50">Model & Category</th>
                                 <th class="px-2 py-3 bg-gray-50">Source</th>
-                                <th class="px-2 py-3 bg-gray-50">Arrival</th>
+                                <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Arrival (24H)</th>
                                 <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Departure (24H)</th>
                                 <th class="px-2 py-3 bg-gray-50">Evaluation / Diagnosis</th>
                                 <th class="px-2 py-3 bg-gray-50 text-center">Promised Date</th>
@@ -6529,8 +6529,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <th>Claim Stub</th>
                                 <th>Plate No.</th>
                                 <th>Vehicle Model</th>
-                                <th>Arrival</th>
-                                <th>Departure</th>
+                                <th>Arrival (24H)</th>
+                                <th>Departure (24H)</th>
                                 <th>Category</th>
                                 <th>Status</th>
                                 <th>Remarks</th>
@@ -6542,7 +6542,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <td>${job.claimStub || 'N/A'}</td>
                                     <td><strong>${job.plate}</strong></td>
                                     <td>${job.vehicle}</td>
-                                    <td>${formatTime12Hour(job.arrival)}</td>
+                                    <td>${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</td>
                                     <td>${formatTime12Hour(job.departure)}</td>
                                     <td>${job.category}</td>
                                     <td>${job.status}</td>
