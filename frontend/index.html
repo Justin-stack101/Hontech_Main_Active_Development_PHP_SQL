@@ -4525,165 +4525,6 @@
         </div>
     </div>
 
-    <!-- Official Terms and Conditions Modal -->
-    <div id="terms-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            
-            <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-5 text-white flex items-center justify-between border-b border-gray-800 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-500">
-                        <i data-lucide="scale" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black uppercase tracking-wider text-white">HonTech Terms & Conditions</h3>
-                        <p class="text-[11px] text-gray-400 font-medium">User Agreement & Operational Directives</p>
-                    </div>
-                </div>
-                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Modal Content (Scrollable) -->
-            <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-xs text-gray-700 leading-relaxed custom-scroll">
-                
-                <!-- Notice Banner -->
-                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-xl">
-                    <h4 class="font-black text-red-900 uppercase text-[11px] tracking-wider mb-1 flex items-center gap-1.5">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i> Authorized Use & Philippine Law Compliance
-                    </h4>
-                    <p class="text-[11px] text-red-800 font-medium leading-normal">
-                        This digital system is deployed solely for HonTech AutoCenter workshop management and vehicle queue monitoring. By logging in, all users agree to the terms outlined below in accordance with Republic Act No. 10173 (Data Privacy Act of 2012).
-                    </p>
-                </div>
-
-                <!-- Section 1 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">1</span>
-                        Role-Based Access Control (RBAC) & Credential Confidentiality
-                    </h4>
-                    <p class="text-gray-600 pl-7">
-                        Staff accounts are strictly personal and non-transferable. Sharing credentials or using another employee's session is grounds for administrative sanction. Sessions will automatically expire after 30 minutes of inactivity.
-                    </p>
-                </div>
-
-                <!-- Section 2 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">2</span>
-                        Customer Data Privacy & Record Integrity
-                    </h4>
-                    <p class="text-gray-600 pl-7">
-                        Customer contact numbers, vehicle plates, claim stubs, and PMS logs must not be disclosed or exported to unauthorized third parties. All recorded data is securely stored on local workshop infrastructure.
-                    </p>
-                </div>
-
-                <!-- Section 3 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">3</span>
-                        Queue Scheduling & Workshop Operations
-                    </h4>
-                    <p class="text-gray-600 pl-7">
-                        Service Advisors (SA) and Technicians are responsible for maintaining real-time accuracy of vehicle bay locations, status changes (Waiting, Inspection, In Bay, QC, Ready), and PMS 2-Hour Goal targets.
-                    </p>
-                </div>
-
-                <!-- Section 4 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">4</span>
-                        Billing & Payment Boundaries
-                    </h4>
-                    <p class="text-gray-600 pl-7">
-                        This software operates as an operational intake, queue monitoring, and analytics tracker. Official billing, payment receipts, and cash transactions must be processed via HonTech's over-the-counter accounting registry.
-                    </p>
-                </div>
-
-                <!-- Section 5 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">5</span>
-                        Academic & Development Disclosure
-                    </h4>
-                    <p class="text-gray-600 pl-7">
-                        Developed in partnership with STI College Marikina BSIT Capstone Program. System logs and performance metrics may be audited for academic evaluation and maintenance purposes.
-                    </p>
-                </div>
-
-            </div>
-
-            <!-- Footer Action -->
-                            <input type="radio" name="export-report-type" value="monthly_sla" class="mt-1 accent-red-600 shrink-0">
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Monthly Performance & SLA</div>
-                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Volume trends, PMS goal rates, completion metrics.</p>
-                            </div>
-                        </label>
-                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
-                            <input type="radio" name="export-report-type" value="carryover" class="mt-1 accent-red-600 shrink-0">
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Carry-Over Audit</div>
-                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Extended stays, promised dates & parts availability.</p>
-                            </div>
-                        </label>
-                        <label class="report-type-card cursor-pointer border border-gray-200 p-4 rounded-xl flex items-start gap-3.5 transition hover:border-red-500 hover:shadow-sm">
-                            <input type="radio" name="export-report-type" value="sa_efficiency" class="mt-1 accent-red-600 shrink-0">
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs font-black text-gray-900 uppercase tracking-wide">Service Advisor Efficiency</div>
-                                <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Jobs handled, average repair times per advisor.</p>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- 2. Output Format Selection -->
-                <div>
-                    <label class="block text-[11px] font-extrabold text-gray-700 uppercase tracking-wider mb-3">2. Output Format</label>
-                    <div class="grid grid-cols-3 gap-4">
-                        <label class="format-card cursor-pointer border border-red-500 bg-red-50/40 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:shadow-sm">
-                            <input type="radio" name="export-format" value="PDF" checked class="accent-red-600">
-                            <i data-lucide="file-text" class="w-4 h-4 text-red-600 shrink-0"></i> PDF (.pdf)
-                        </label>
-                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-blue-500 hover:shadow-sm">
-                            <input type="radio" name="export-format" value="Word" class="accent-blue-600">
-                            <i data-lucide="file-type-2" class="w-4 h-4 text-blue-600 shrink-0"></i> Word (.docx)
-                        </label>
-                        <label class="format-card cursor-pointer border border-gray-200 p-3.5 rounded-xl flex items-center justify-center gap-2.5 transition text-xs font-black text-gray-900 hover:border-emerald-500 hover:shadow-sm">
-                            <input type="radio" name="export-format" value="Excel" class="accent-emerald-600">
-                            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600 shrink-0"></i> Excel (.xls)
-                        </label>
-                    </div>
-                </div>
-
-                <!-- 3. Range & Branch Parameters -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-gray-100 pt-5">
-                    <div>
-                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Target Date / Start Date</label>
-                        <input type="date" id="export-start-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1.5">Branch Scope</label>
-                        <select id="export-branch-scope" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs font-bold text-gray-900 outline-none focus:border-red-600 transition cursor-pointer">
-                            <option value="all">All Branches (Combined)</option>
-                            <option value="Marikina">Marikina Branch</option>
-                            <option value="Regalado">Regalado Branch</option>
-                        </select>
-                    </div>
-                </div>
-
-            <!-- Footer -->
-            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-3">
-                <button onclick="closeReportExportModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 font-extrabold text-xs text-gray-700 hover:bg-gray-100 transition uppercase tracking-wider">Cancel</button>
-                <button onclick="submitReportExport()" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs transition uppercase tracking-wider shadow-md shadow-red-600/20 flex items-center gap-2">
-                    <i data-lucide="download" class="w-4 h-4"></i> Download Report
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- SYSTEM GUIDE & USER REFERENCE MODAL -->
     <div id="modal-system-tutorial" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[9999] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[88vh] shadow-xl border border-gray-200 overflow-hidden flex flex-col transform transition-all">
@@ -5022,99 +4863,99 @@
     </div>
 
     <!-- Official Terms and Conditions Modal -->
-    <div id="terms-modal" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div id="terms-modal" class="hidden fixed inset-0 bg-slate-900/75 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 md:p-6 select-none">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] shadow-2xl border border-slate-200 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             
             <!-- Modal Header -->
-            <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-black p-5 text-white flex items-center justify-between border-b border-gray-800 shrink-0">
+            <div class="bg-slate-900 p-5 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-500">
+                    <div class="w-10 h-10 bg-red-600/20 border border-red-500/30 rounded-2xl flex items-center justify-center text-red-500 shadow-inner shrink-0">
                         <i data-lucide="scale" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-base font-black uppercase tracking-wider text-white">HonTech Terms & Conditions</h3>
-                        <p class="text-[11px] text-gray-400 font-medium">User Agreement & Operational Directives</p>
+                        <h3 class="text-sm sm:text-base font-black uppercase tracking-wider text-white">HonTech Terms & Conditions</h3>
+                        <p class="text-[11px] text-slate-400 font-medium">User Agreement & Operational Compliance Directives</p>
                     </div>
                 </div>
-                <button onclick="closeTermsModal()" class="text-gray-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition cursor-pointer">
+                <button onclick="closeTermsModal()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Modal Content (Scrollable) -->
-            <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-xs text-gray-700 leading-relaxed custom-scroll">
+            <div class="p-6 md:p-8 overflow-y-auto space-y-5 text-xs text-slate-700 leading-relaxed custom-scroll">
                 
                 <!-- Notice Banner -->
-                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-xl">
-                    <h4 class="font-black text-red-900 uppercase text-[11px] tracking-wider mb-1 flex items-center gap-1.5">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i> Authorized Use & Philippine Law Compliance
+                <div class="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-2xl shadow-2xs">
+                    <h4 class="font-black text-red-900 uppercase text-[11px] tracking-wider mb-1.5 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-red-600 shrink-0"></i> Authorized Use & Philippine Law Compliance
                     </h4>
-                    <p class="text-[11px] text-red-800 font-medium leading-normal">
-                        This digital system is deployed solely for HonTech AutoCenter workshop management and vehicle queue monitoring. By logging in, all users agree to the terms outlined below in accordance with Republic Act No. 10173 (Data Privacy Act of 2012).
+                    <p class="text-[11.5px] text-red-900 font-medium leading-relaxed">
+                        This digital system is deployed exclusively for HonTech AutoCenter workshop queue management and operational diagnostics. By accessing this platform, all users agree to adhere to company operating policies in compliance with <strong>Republic Act No. 10173 (Data Privacy Act of 2012)</strong>.
                     </p>
                 </div>
 
                 <!-- Section 1 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">1</span>
-                        Role-Based Access Control (RBAC) & Credential Confidentiality
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                    <h4 class="font-black text-slate-900 uppercase text-xs tracking-wide flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-lg bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px] shrink-0">1</span>
+                        Role-Based Access Control (RBAC) & Credential Security
                     </h4>
-                    <p class="text-gray-600 pl-7">
-                        Staff accounts are strictly personal and non-transferable. Sharing credentials or using another employee's session is grounds for administrative sanction. Sessions will automatically expire after 30 minutes of inactivity.
+                    <p class="text-slate-600 text-[11.5px] leading-relaxed pl-7">
+                        User accounts are assigned strictly to designated personnel (Owner, Admin, Service Advisor, Assistant) and are non-transferable. Sharing credentials or operating under another user's session is strictly prohibited. Inactive sessions automatically expire after 30 minutes.
                     </p>
                 </div>
 
                 <!-- Section 2 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">2</span>
-                        Customer Data Privacy & Record Integrity
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                    <h4 class="font-black text-slate-900 uppercase text-xs tracking-wide flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-lg bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px] shrink-0">2</span>
+                        Customer Privacy & Vehicle Record Confidentiality
                     </h4>
-                    <p class="text-gray-600 pl-7">
-                        Customer contact numbers, vehicle plates, claim stubs, and PMS logs must not be disclosed or exported to unauthorized third parties. All recorded data is securely stored on local workshop infrastructure.
+                    <p class="text-slate-600 text-[11.5px] leading-relaxed pl-7">
+                        Customer phone numbers, license plates, claim stubs, and PMS service logs are protected intellectual and private records. Unauthorized external duplication, export, or distribution of customer records is strictly forbidden under RA 10173.
                     </p>
                 </div>
 
                 <!-- Section 3 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">3</span>
-                        Queue Scheduling & Workshop Operations
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                    <h4 class="font-black text-slate-900 uppercase text-xs tracking-wide flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-lg bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px] shrink-0">3</span>
+                        Bay Telemetry, Queue Scheduling & 2-Hour PMS SLA
                     </h4>
-                    <p class="text-gray-600 pl-7">
-                        Service Advisors (SA) and Technicians are responsible for maintaining real-time accuracy of vehicle bay locations, status changes (Waiting, Inspection, In Bay, QC, Ready), and PMS 2-Hour Goal targets.
+                    <p class="text-slate-600 text-[11.5px] leading-relaxed pl-7">
+                        Service Advisors and Technicians must ensure real-time accuracy when updating vehicle stage transitions (Waiting, Inspection, In Bay, QC, Ready) to maintain accurate TV broadcast feeds and comply with the standard 2-hour PMS turnaround target.
                     </p>
                 </div>
 
                 <!-- Section 4 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">4</span>
-                        Billing & Payment Boundaries
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                    <h4 class="font-black text-slate-900 uppercase text-xs tracking-wide flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-lg bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px] shrink-0">4</span>
+                        Billing, Invoicing & Cashier Registry Boundaries
                     </h4>
-                    <p class="text-gray-600 pl-7">
-                        This software operates as an operational intake, queue monitoring, and analytics tracker. Official billing, payment receipts, and cash transactions must be processed via HonTech's over-the-counter accounting registry.
+                    <p class="text-slate-600 text-[11.5px] leading-relaxed pl-7">
+                        This platform serves as an operational intake, queue monitoring, and telemetry audit system. Official BIR receipts, cash collections, credit payments, and parts invoicing remain under the physical front-desk cashier registry.
                     </p>
                 </div>
 
                 <!-- Section 5 -->
-                <div class="space-y-2">
-                    <h4 class="font-black text-gray-900 uppercase text-xs tracking-wider flex items-center gap-2">
-                        <span class="w-5 h-5 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center text-[10px]">5</span>
-                        Academic & Development Disclosure
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-1.5">
+                    <h4 class="font-black text-slate-900 uppercase text-xs tracking-wide flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-lg bg-red-100 text-red-700 font-bold flex items-center justify-center text-[10px] shrink-0">5</span>
+                        Academic Partnership & Audit Disclosure
                     </h4>
-                    <p class="text-gray-600 pl-7">
-                        Developed in partnership with STI College Marikina BSIT Capstone Program. System logs and performance metrics may be audited for academic evaluation and maintenance purposes.
+                    <p class="text-slate-600 text-[11.5px] leading-relaxed pl-7">
+                        Developed in academic collaboration with <strong>STI College Marikina BSIT Capstone Program</strong>. Operational logs and telemetry analytics may be audited for academic evaluation and performance maintenance.
                     </p>
                 </div>
 
             </div>
 
             <!-- Footer Action -->
-            <div class="bg-gray-50 px-6 py-3.5 border-t border-gray-200 flex items-center justify-between shrink-0">
-                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">HonTech • STI College Marikina</span>
-                <button onclick="closeTermsModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer">
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-between shrink-0">
+                <span class="text-[10.5px] text-slate-500 font-bold uppercase tracking-wider">HonTech AutoCenter • STI College Marikina</span>
+                <button onclick="closeTermsModal()" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md shadow-red-600/20 transition cursor-pointer">
                     I Understand & Agree
                 </button>
             </div>
@@ -5495,7 +5336,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.19"></script>
+    <script src="js/app.js?v=4.20"></script>
 </body>
 
 </html>
