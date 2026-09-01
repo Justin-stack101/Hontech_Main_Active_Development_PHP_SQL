@@ -19,6 +19,7 @@ use App\Controllers\BranchController;
 use App\Controllers\StaffController;
 use App\Controllers\PasswordResetController;
 use App\Controllers\DeveloperController;
+use App\Controllers\ExpressIssueController;
 
 // Load environment
 Env::load();
@@ -260,6 +261,27 @@ if ($method === 'DELETE' && preg_match('#^/jobs/([^/]+)$#', $route, $m)) {
 }
 if ($method === 'POST' && $route === '/jobs/export-temp') {
     JobController::uploadTempFile();
+    exit;
+}
+
+// --- Protected Express Issues Routes (2H Delay Incident Reports) ---
+if ($method === 'POST' && $route === '/express-issues') {
+    ExpressIssueController::createIssue();
+    exit;
+}
+if ($method === 'GET' && $route === '/express-issues') {
+    ExpressIssueController::getIssues();
+    exit;
+}
+
+// --- Protected Audit Trail Routes ---
+if ($method === 'GET' && preg_match('#^/jobs/([^/]+)/audit-history$#', $route, $m)) {
+    JobController::getJobAuditHistory($m[1]);
+    exit;
+}
+if ($method === 'GET' && $route === '/audit-logs') {
+    if (!Auth::requireRole(['owner', 'admin'])) exit;
+    JobController::getSystemAuditLogs();
     exit;
 }
 

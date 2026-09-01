@@ -95,6 +95,21 @@ This document provides a clear, side-by-side architectural and financial compari
 
 ---
 
+### ⚠️ 3.5. Crucial Free-Tier Caveats & Operational Gotchas (What Every Engineer Must Know)
+
+Before committing to any cloud stack, the development team and client must be aware of these **hard operational constraints**:
+
+| Platform | Free-Tier Gotcha / Limitation | Real-World Operational Risk for HonTech | Mitigation & Solution |
+| :--- | :--- | :--- | :--- |
+| **Supabase** | **💤 7-Day Inactivity Database Pausing** | If the auto shop closes for a holiday (e.g. Holy Week or Christmas break) with zero requests for 7 days, Supabase pauses the project. | Admin logs into Supabase dashboard to click "Unpause" (~1 min), or set up a recurring automated health-check ping, or upgrade to Pro ($25/mo). |
+| **Supabase** | **🗃️ 500 MB Database Storage Cap** | While 500MB holds ~50,000+ text repair jobs, storing high-resolution vehicle damage photos directly in table rows will quickly fill up the database. | Store vehicle photos in **Supabase Storage Buckets (Object Storage)** and only save image URL strings in the database. |
+| **Supabase** | **🔒 Row-Level Security (RLS) Mandate** | Because client JavaScript communicates directly with Supabase via the public `anon` key, missing RLS policies could allow unauthorized users to modify other branches' data. | Always write strict PostgreSQL RLS policies ensuring users can only read/write records matching their authenticated role or branch ID. |
+| **Vercel** | **⏱️ 10–15s Serverless Function Timeout** | Generating large 500-page monthly analytics PDF reports or bulk CSV exports might exceed the serverless execution timeout. | Perform client-side PDF rendering using `jsPDF` / `autoTable` in the browser instead of server-side computation. |
+| **Vercel** | **💼 Commercial Policy (Hobby vs. Pro)** | Vercel Hobby plan is officially for non-commercial / student capstone usage. If HonTech expands to multi-commercial branches, Vercel suggests upgrading to Pro ($20/seat/mo). | Use Hobby for Capstone defense and single pilot; recommend Pro only when scaling to multi-branch commercial operations. |
+| **Local Server** | **⚡ Physical Power & Hardware Dependency** | If the shop computer shuts down or the local router resets, local intranet access is temporarily offline. | Use a dedicated low-power mini-PC or laptop with built-in battery backup (UPS) connected to the workshop Wi-Fi router. |
+
+---
+
 ## 4. 🧭 Adaptive Engineering Decision Matrix
 
 ```

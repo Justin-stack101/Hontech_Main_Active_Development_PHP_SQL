@@ -122,3 +122,50 @@ CREATE TABLE IF NOT EXISTS `jobs` (
     INDEX `idx_claim_stub` (`claim_stub`),
     INDEX `idx_vehicle` (`vehicle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ============================================================
+-- EXPRESS LANE ISSUES TABLE
+-- Tracks 2-Hour SLA Delay Reports filed by Service Advisors
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `express_lane_issues` (
+    `id`                    INT AUTO_INCREMENT PRIMARY KEY,
+    `job_id`                VARCHAR(20) NOT NULL,
+    `plate`                 VARCHAR(20) NOT NULL,
+    `customer_name`         VARCHAR(255) NOT NULL,
+    `vehicle`               VARCHAR(255) NOT NULL,
+    `sa_name`               VARCHAR(255) NOT NULL,
+    `arrival_time`          VARCHAR(10) NOT NULL,
+    `elapsed_minutes`       INT NOT NULL DEFAULT 0,
+    `reason_category`       VARCHAR(100) NOT NULL,
+    `reason_details`        TEXT NOT NULL,
+    `reported_by_id`        INT NOT NULL,
+    `reported_by_name`      VARCHAR(255) NOT NULL,
+    `created_at`            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX `idx_job_id` (`job_id`),
+    INDEX `idx_plate` (`plate`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- ============================================================
+-- JOB AUDIT LOGS TABLE
+-- System-Wide Reason-Required Edit Trail for All Saved Records
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `job_audit_logs` (
+    `id`                    INT AUTO_INCREMENT PRIMARY KEY,
+    `job_id`                VARCHAR(20) NOT NULL,
+    `plate`                 VARCHAR(20) NOT NULL,
+    `field_name`            VARCHAR(100) NOT NULL,
+    `old_value`             TEXT NULL,
+    `new_value`             TEXT NULL,
+    `edit_reason`           TEXT NOT NULL,
+    `edited_by_id`          INT NOT NULL,
+    `edited_by_name`        VARCHAR(255) NOT NULL,
+    `edited_by_role`        VARCHAR(50) NOT NULL,
+    `created_at`            DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX `idx_job_id` (`job_id`),
+    INDEX `idx_plate` (`plate`),
+    INDEX `idx_created_at` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

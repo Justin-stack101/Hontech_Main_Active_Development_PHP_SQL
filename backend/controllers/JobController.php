@@ -307,6 +307,27 @@ class JobController
 
                 $stmt = $db->prepare("UPDATE jobs SET `{$dbCol}` = ? WHERE id = ?");
                 $stmt->execute([$value, $job['id']]);
+
+                // Record immutable audit log entry if edit reason provided
+                $editReason = trim($input['editReason'] ?? $input['edit_reason'] ?? $input['reason'] ?? '');
+                if (!empty($editReason)) {
+                    $auditStmt = $db->prepare('
+                        INSERT INTO job_audit_logs 
+                        (job_id, plate, field_name, old_value, new_value, edit_reason, edited_by_id, edited_by_name, edited_by_role)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ');
+                    $auditStmt->execute([
+                        $job['job_id'],
+                        $job['plate'],
+                        $field,
+                        (string)($job[$dbCol] ?? ''),
+                        (string)$value,
+                        $editReason,
+                        $user['id'] ?? 0,
+                        $user['name'] ?? 'Staff User',
+                        $user['role'] ?? 'sa'
+                    ]);
+                }
             }
 
             // Auto-calculate goalStatus if relevant fields change
@@ -628,4 +649,73 @@ class JobController
             echo json_encode(['message' => 'Error retrieving analytics data.', 'error' => $e->getMessage()]);
         }
     }
+
+    /**
+     * GET /api/jobs/:id/audit-history
+     * Retrieve chronological audit log entries for a specific job
+     */
+    public static function getJobAuditHistory(string $jobId): void
+    {
+        $user = Auth::getCurrentUser();
+        if (!$user) {
+            ApiResponse::unauthorized('Authentication required.');
+            return;
+        }
+
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->prepare('SELECT * FROM job_audit_logs WHERE job_id = ? ORDER BY created_at DESC');
+            $stmt->execute([$jobId]);
+            $logs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            ApiResponse::json($logs);
+        } catch (\Exception $e) {
+            ApiResponse::serverError('Failed to fetch job audit history.', $e->getMessage());
+        }
+    }
+
+    /**
+     * GET /api/audit-logs
+     * Retrieve system-wide operational audit log entries (Owner/Admin)
+     */
+    public static function getSystemAuditLogs(): void
+    {
+        $user = Auth::getCurrentUser();
+        if (!$user) {
+            ApiResponse::unauthorized('Authentication required.');
+            return;
+        }
+
+        try {
+            $db = Database::getConnection();
+            $conditions = [];
+            $params = [];
+
+            if (!empty($_GET['startDate'])) {
+                $conditions[] = 'DATE(created_at) >= ?';
+                $params[] = $_GET['startDate'];
+            }
+            if (!empty($_GET['endDate'])) {
+                $conditions[] = 'DATE(created_at) <= ?';
+                $params[] = $_GET['endDate'];
+            }
+            if (!empty($_GET['search'])) {
+                $q = '%' . trim($_GET['search']) . '%';
+                $conditions[] = '(plate LIKE ? OR job_id LIKE ? OR field_name LIKE ? OR edit_reason LIKE ? OR edited_by_name LIKE ?)';
+                $params[] = $q;
+                $params[] = $q;
+                $params[] = $q;
+                $params[] = $q;
+                $params[] = $q;
+            }
+
+            $where = !empty($conditions) ? 'WHERE ' . implode(' AND ', $conditions) : '';
+            $stmt = $db->prepare("SELECT * FROM job_audit_logs {$where} ORDER BY created_at DESC LIMIT 500");
+            $stmt->execute($params);
+            $logs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            ApiResponse::json($logs);
+        } catch (\Exception $e) {
+            ApiResponse::serverError('Failed to fetch system audit logs.', $e->getMessage());
+        }
+    }
 }
+

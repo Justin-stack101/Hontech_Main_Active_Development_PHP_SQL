@@ -5444,6 +5444,220 @@
         </div>
     </div>
 
+    <!-- 1. EXPRESS LANE 2-HOUR SLA DELAY REPORTING MODAL -->
+    <div id="modal-express-delay-report" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] fade-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center border border-amber-500/20">
+                        <i data-lucide="clock-alert" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Express Lane 2H Delay Incident Report</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Document root cause for exceeding the 2-hour benchmark</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeExpressDelayModal()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 overflow-y-auto custom-scroll text-slate-700">
+                <input type="hidden" id="modal-delay-job-id">
+                
+                <!-- Vehicle & Customer Summary Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="text-[11px] font-black uppercase tracking-wider text-slate-400">Customer & Vehicle Details</span>
+                        <span id="modal-delay-plate-badge" class="font-mono font-bold text-xs bg-slate-900 text-white px-2.5 py-0.5 rounded-md">PLATE</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Customer Name</span>
+                            <strong id="modal-delay-customer-name" class="text-slate-800 font-bold block mt-0.5">-</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Vehicle Model</span>
+                            <strong id="modal-delay-vehicle-model" class="text-slate-800 font-bold block mt-0.5">-</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Arrival Time (24H)</span>
+                            <strong id="modal-delay-arrival-time" class="text-slate-800 font-mono font-bold block mt-0.5">08:00</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-semibold block text-[11px]">Elapsed Duration</span>
+                            <span id="modal-delay-elapsed-badge" class="inline-flex items-center gap-1 font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded mt-0.5">2h 15m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delay Reason Category Dropdown -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Delay Reason Category <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="modal-delay-reason" onchange="toggleDelayCustomReason(this.value)"
+                            class="w-full bg-white border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-bold text-xs text-slate-900 transition cursor-pointer appearance-none">
+                            <option value="Required Parts Delay / Not In Stock">Required Parts Delay / Not In Stock</option>
+                            <option value="Additional Deep Diagnostics Required">Additional Deep Diagnostics Required</option>
+                            <option value="Customer Requested Scope Change / Additional Work">Customer Requested Scope Change / Additional Work</option>
+                            <option value="Technician Bay Bottleneck / Lift Availability">Technician Bay Bottleneck / Lift Availability</option>
+                            <option value="Unforeseen Mechanical Complications">Unforeseen Mechanical Complications</option>
+                            <option value="Others">Others (Specify Custom Reason)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none absolute right-3.5 top-3"></i>
+                    </div>
+                </div>
+
+                <!-- Custom Reason Input (Revealed on Others) -->
+                <div id="modal-delay-custom-wrap" class="space-y-1.5 hidden">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Specify Custom Delay Category <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="modal-delay-custom-input" placeholder="e.g. Electrical wiring complication..."
+                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-semibold text-xs text-slate-900 transition">
+                </div>
+
+                <!-- Detailed Explanation Textarea -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Diagnostic Remarks & Root Cause Explanation <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="modal-delay-details" rows="3" placeholder="Provide specific operational details explaining why this customer's vehicle could not be finished within the 2-hour limit..."
+                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="closeExpressDelayModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="submitExpressDelayReport()" id="btn-submit-express-delay" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-red-600/20 transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Submit Delay Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SYSTEM-WIDE REASON-REQUIRED EDIT PROMPT MODAL -->
+    <div id="modal-edit-reason-prompt" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] fade-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Audit Guard: Reason Required</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">All record modifications must be documented</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cancelFieldEdit()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 overflow-y-auto custom-scroll text-slate-700">
+                <!-- Change Context Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-400 font-bold uppercase text-[10px]">Field Being Modified</span>
+                        <span id="modal-edit-field-name" class="font-bold text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md">Departure Time</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 pt-1 text-xs">
+                        <div class="p-2.5 bg-white border border-slate-200 rounded-xl">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Previous Value</span>
+                            <span id="modal-edit-old-val" class="font-mono font-bold text-slate-700 truncate block mt-0.5">15:00</span>
+                        </div>
+                        <div class="p-2.5 bg-blue-50/60 border border-blue-200 rounded-xl">
+                            <span class="text-[10px] text-blue-500 font-bold block uppercase">Updated Value</span>
+                            <span id="modal-edit-new-val" class="font-mono font-black text-blue-900 truncate block mt-0.5">16:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reason Preset Dropdown -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Reason Category <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="modal-edit-reason-preset" onchange="handleEditPresetChange(this.value)"
+                            class="w-full bg-white border border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-3.5 py-2.5 outline-none font-bold text-xs text-slate-900 transition cursor-pointer appearance-none">
+                            <option value="Typo / Data Entry Correction">Typo / Data Entry Correction</option>
+                            <option value="Customer Requested Modification">Customer Requested Modification</option>
+                            <option value="Supervisor / Manager Authorization">Supervisor / Manager Authorization</option>
+                            <option value="Parts / Operational Status Change">Parts / Operational Status Change</option>
+                            <option value="Others">Others (Custom Justification)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none absolute right-3.5 top-3"></i>
+                    </div>
+                </div>
+
+                <!-- Mandatory Justification Textarea -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Justification Details <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="modal-edit-reason-text" rows="2" placeholder="State the operational reason for modifying this customer record..."
+                        class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="cancelFieldEdit()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel & Discard
+                </button>
+                <button type="button" onclick="confirmFieldEditWithReason()" id="btn-confirm-field-edit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-blue-600/20 transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Save & Apply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. AUDIT HISTORY TIMELINE MODAL -->
+    <div id="modal-job-audit-history" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] fade-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Audit History Timeline</h3>
+                            <span id="modal-audit-plate-badge" class="font-mono font-bold text-xs bg-slate-900 text-white px-2 py-0.5 rounded">PLATE</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="modal-audit-customer-subtitle">Customer Change History Log</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeJobAuditHistoryModal()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Chronological Timeline) -->
+            <div class="p-6 space-y-3 overflow-y-auto custom-scroll" id="modal-audit-history-content">
+                <!-- Injected dynamically by app.js -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-150 flex items-center justify-end shrink-0">
+                <button type="button" onclick="closeJobAuditHistoryModal()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Close History
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- OFFLINE NETWORK STATUS SCREEN (Guaranteed Fallback Screen for Disconnections) -->
     <div id="offline-network-screen" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center space-y-5 transform transition-all">
@@ -5466,7 +5680,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.35"></script>
+    <script src="js/app.js?v=4.36"></script>
 </body>
 
 </html>

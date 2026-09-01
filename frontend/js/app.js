@@ -2520,9 +2520,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             await executeIntakeSubmission(intakePayload);
         }
 
-        async function updateJobField(jobId, field, value) {
+        async function updateJobField(jobId, field, value, editReason = null) {
             try {
-                const job = allJobs.find(j => j.id === jobId);
+                const job = allJobs.find(j => (j.id === jobId || j.job_id === jobId));
                 if (job && field === 'laneType') {
                     const allowed = getAvailableLanesForJob(job.category).map(l => l.value);
                     if (!allowed.includes(value)) {
@@ -2551,9 +2551,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (job) announceVehicleMonitoring(job, value);
                 }
 
+                const payload = { field, value };
+                if (editReason) {
+                    payload.editReason = editReason;
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
-                    body: { field, value }
+                    body: payload
                 });
 
                 if (job) {
@@ -2566,7 +2571,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             const clampedLane = allowed[0];
                             await apiRequest(`/api/jobs/${jobId}/field`, {
                                 method: 'PATCH',
-                                body: { field: 'laneType', value: clampedLane }
+                                body: { field: 'laneType', value: clampedLane, editReason: editReason || 'Category auto-clamp' }
                             });
                             job.laneType = clampedLane;
                         }
@@ -2578,12 +2583,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         if (computed !== 'N/A' && job.goalStatus !== computed) {
                             await apiRequest(`/api/jobs/${jobId}/field`, {
                                 method: 'PATCH',
-                                body: { field: 'goalStatus', value: computed }
+                                body: { field: 'goalStatus', value: computed, editReason: 'Goal status auto-calculation' }
                             });
                             job.goalStatus = computed;
                         }
                     }
                 }
+
+                if (editReason) {
+                    showSystemToast(`Field "${field}" updated and logged to audit trail.`, 'success', 'Audit Saved');
+                }
+
+                renderStaffTables();
+            } catch (err) {
+                console.error(`Error updating job field ${field}:`, err);
+                showSystemToast(err.message || 'Error updating job record.', 'error', 'Update Error');
+                renderStaffTables();
+            }
+        }
 
                 await loadData();
                 renderStaffTables();
@@ -3007,22 +3024,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function handleDepartureChange(jobId, inputEl) {
             const rawVal = (inputEl.value || '').trim();
+            const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
             if (!rawVal) {
-                updateJobField(jobId, 'departure', '');
+                requestFieldEditWithReason(jobId, 'departure', '', job?.departure || '');
                 return;
             }
 
             const parsedMins = parseTimeToMinutes(rawVal);
             if (parsedMins === null) {
                 showSystemToast(`Invalid time "${rawVal}". Please enter a valid 24H time (e.g. 12:00 or 1233).`, 'warning', 'Time Guide');
-                const job = allJobs.find(j => j.id === jobId);
                 inputEl.value = convertTimeTo24Hour(job?.departure) || '';
                 return;
             }
 
             const formatted = convertTimeTo24Hour(rawVal);
             inputEl.value = formatted;
-            updateJobField(jobId, 'departure', formatted);
+            requestFieldEditWithReason(jobId, 'departure', formatted, job?.departure || '');
         }
         window.handleDepartureChange = handleDepartureChange;
 
@@ -3266,16 +3283,47 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             }
                         });
 
-                                return `
-                        <tr class="${job.status === 'Ready' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
+                        // Calculate Express Lane 2-Hour (120-Min) SLA Duration & Incident State
+                        const arrivalTime24 = convertTimeTo24Hour(job.arrival);
+                        let isExpressOverdue = false;
+                        let expressElapsedMin = 0;
+                        const isExpressLane = (job.laneType === 'Express Lane' || job.lane_type === 'Express Lane' || (job.category && job.category.toUpperCase().includes('EXPRESS')));
+
+                        if (isExpressLane && arrivalTime24 && job.status !== 'Completed' && job.status !== 'Released' && job.status !== 'Ready' && job.status !== 'Ready to Release') {
+                            const [ah, am] = arrivalTime24.split(':').map(Number);
+                            if (!isNaN(ah) && !isNaN(am)) {
+                                const now = new Date();
+                                const currentMin = now.getHours() * 60 + now.getMinutes();
+                                let diff = currentMin - (ah * 60 + am);
+                                if (diff < 0) diff += 1440;
+                                expressElapsedMin = diff;
+                                if (expressElapsedMin >= 120) {
+                                    isExpressOverdue = true;
+                                }
+                            }
+                        }
+
+                        const reportedIssue = (window.reportedExpressIssues && (
+                            window.reportedExpressIssues[job.id] || 
+                            window.reportedExpressIssues[job.job_id] || 
+                            window.reportedExpressIssues[job.plate]
+                        ));
+
+                        return `
+                        <tr class="${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : isExpressOverdue && !reportedIssue ? 'bg-amber-50/40' : ''}">
                             <!-- Row Number -->
                             <td class="px-2 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
-                            <!-- Claim Stub -->
+                            <!-- Claim Stub & Audit History -->
                             <td class="px-2 py-3 align-middle">
-                                <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
-                                    <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
-                                </button>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
+                                    </button>
+                                    <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-1 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0" title="View Audit History Trail">
+                                        <i data-lucide="history" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
                             </td>
                             
                             <!-- Plate -->
@@ -3290,7 +3338,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </td>
                             
-                            <!-- Model & Category -->
+                            <!-- Model & Category & Express SLA Alert -->
                             <td class="px-2.5 py-3 align-middle">
                                 <div class="font-black text-gray-900 text-xs sm:text-[13px] flex items-center gap-2 mb-1.5">
                                     <i data-lucide="car" class="w-4 h-4 text-slate-600 shrink-0"></i>
@@ -3320,7 +3368,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                                placeholder="Custom..." 
                                                maxlength="30"
                                                onkeydown="if(event.key === 'Enter') this.blur();"
-                                               onblur="updateJobField('${job.id}', 'category', this.value.trim() || 'OTHERS')" 
+                                               onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
                                                class="table-select text-[11px] font-semibold text-gray-800 bg-transparent border-none outline-none w-20 p-0 cursor-text">
                                     </div>
                                     ` : ''}
@@ -3337,7 +3385,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-[11px] font-extrabold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
+                                        <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                             ${getAvailableLanesForJob(job.category).map(opt => `
                                                 <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
                                             `).join('')}
@@ -3381,6 +3429,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         `}
                                     </div>
                                 </div>
+
+                                <!-- Express Lane 2-Hour SLA Status Alert or Reported Indicator -->
+                                ${isExpressOverdue ? `
+                                <div class="mt-2 flex items-center gap-2 flex-wrap">
+                                    ${reportedIssue ? `
+                                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-lg shadow-2xs" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
+                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                            <span>Reported: ${(reportedIssue.reason_category || 'Delay Logged').replace(/^Others:\s*/i, '')}</span>
+                                        </span>
+                                    ` : `
+                                        <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-lg shadow-2xs animate-pulse">
+                                            <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-rose-600"></i>
+                                            <span>⚠️ Express 2H Limit Exceeded (${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m)</span>
+                                        </span>
+                                        ${isAssignedToMe ? `
+                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide bg-red-600 hover:bg-red-700 text-white px-2.5 py-0.5 rounded-lg shadow-2xs transition cursor-pointer active:scale-95">
+                                            <i data-lucide="flag" class="w-3 h-3"></i>
+                                            <span>Report Delay</span>
+                                        </button>
+                                        ` : ''}
+                                    `}
+                                </div>
+                                ` : ''}
                             </td>
                             
                             <!-- Source -->
@@ -3412,7 +3483,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <!-- Preset Dropdown Selection -->
                                     <div class="relative inline-flex items-center ml-0.5 border-l border-gray-200 pl-1 cursor-pointer" title="Click to choose a preset time">
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 transition shrink-0 pointer-events-none stroke-[2]"></i>
-                                        <select onchange="document.getElementById('dep-input-${job.id}').value = this.value; updateJobField('${job.id}', 'departure', this.value);" 
+                                        <select onchange="document.getElementById('dep-input-${job.id}').value = this.value; requestFieldEditWithReason('${job.id}', 'departure', this.value, '${job.departure || ''}');" 
                                                 class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                                                 title="Select from preset times">
                                             <option value="" disabled selected>Presets</option>
@@ -3427,7 +3498,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-3 py-3 align-middle min-w-[320px]">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
                                 ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[260px]" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
@@ -8496,6 +8567,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const isOwnerOrAdmin = currentUserRole === 'owner' || currentUserRole === 'admin';
                 const jobsUrl = isTVMode ? '/api/jobs?monitor=true' : (isOwnerOrAdmin ? '/api/jobs?all=true' : '/api/jobs');
                 allJobs = await apiRequest(jobsUrl);
+
+                // Fetch and cache Express Lane Delay Incident Reports
+                try {
+                    const issues = await apiRequest('/api/express-issues');
+                    window.reportedExpressIssues = {};
+                    if (Array.isArray(issues)) {
+                        issues.forEach(iss => {
+                            if (iss.job_id) window.reportedExpressIssues[iss.job_id] = iss;
+                            if (iss.plate) window.reportedExpressIssues[iss.plate] = iss;
+                        });
+                    }
+                } catch (issErr) {
+                    console.warn('Express issues cache load error:', issErr);
+                }
+
                 if (isOwnerOrAdmin) {
                     staffAccounts = await apiRequest('/api/auth/staff');
                     populatePeriodicSaFilter();
@@ -10299,3 +10385,382 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         if (chimeSelect) {
             chimeSelect.value = savedChimeTheme;
         }
+
+        // ============================================================
+        // 1. EXPRESS LANE 2-HOUR SLA DELAY REPORTING WORKFLOW
+        // ============================================================
+        window.reportedExpressIssues = window.reportedExpressIssues || {};
+
+        function openExpressDelayModal(jobId) {
+            const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
+            if (!job) {
+                showSystemToast('Vehicle job record not found.', 'error');
+                return;
+            }
+
+            const modal = document.getElementById('modal-express-delay-report');
+            if (!modal) return;
+
+            const jobIdInput = document.getElementById('modal-delay-job-id');
+            const plateBadge = document.getElementById('modal-delay-plate-badge');
+            const custName = document.getElementById('modal-delay-customer-name');
+            const vehModel = document.getElementById('modal-delay-vehicle-model');
+            const arrTime = document.getElementById('modal-delay-arrival-time');
+            const elapsedBadge = document.getElementById('modal-delay-elapsed-badge');
+            const reasonSelect = document.getElementById('modal-delay-reason');
+            const customWrap = document.getElementById('modal-delay-custom-wrap');
+            const customInput = document.getElementById('modal-delay-custom-input');
+            const detailsTextarea = document.getElementById('modal-delay-details');
+
+            // Calculate elapsed time
+            const arr24 = convertTimeTo24Hour(job.arrival) || job.arrival || '08:00';
+            let elapsedMin = 120;
+            if (arr24 && arr24.includes(':')) {
+                const [ah, am] = arr24.split(':').map(Number);
+                const now = new Date();
+                const diff = (now.getHours() * 60 + now.getMinutes()) - (ah * 60 + am);
+                elapsedMin = diff > 0 ? diff : 120;
+            }
+
+            const hours = Math.floor(elapsedMin / 60);
+            const mins = elapsedMin % 60;
+
+            if (jobIdInput) jobIdInput.value = job.job_id || job.id;
+            if (plateBadge) plateBadge.innerText = job.plate || 'PLATE';
+            if (custName) custName.innerText = job.name || job.customer_name || 'Walk-in Customer';
+            if (vehModel) vehModel.innerText = job.vehicle || '-';
+            if (arrTime) arrTime.innerText = arr24;
+            if (elapsedBadge) elapsedBadge.innerText = `${hours}h ${mins}m (${elapsedMin} mins)`;
+
+            if (reasonSelect) reasonSelect.value = 'Required Parts Delay / Not In Stock';
+            if (customWrap) customWrap.classList.add('hidden');
+            if (customInput) customInput.value = '';
+            if (detailsTextarea) detailsTextarea.value = '';
+
+            modal.classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function closeExpressDelayModal() {
+            const modal = document.getElementById('modal-express-delay-report');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function toggleDelayCustomReason(val) {
+            const wrap = document.getElementById('modal-delay-custom-wrap');
+            if (!wrap) return;
+            if (val === 'Others') {
+                wrap.classList.remove('hidden');
+            } else {
+                wrap.classList.add('hidden');
+            }
+        }
+
+        async function submitExpressDelayReport() {
+            const jobId = document.getElementById('modal-delay-job-id')?.value;
+            const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
+            if (!job) {
+                showSystemToast('Target vehicle record is invalid.', 'error');
+                return;
+            }
+
+            const reasonSelect = document.getElementById('modal-delay-reason');
+            const customInput = document.getElementById('modal-delay-custom-input');
+            const detailsTextarea = document.getElementById('modal-delay-details');
+
+            const reasonCategory = reasonSelect?.value || '';
+            const customReasonCategory = customInput?.value?.trim() || '';
+            const reasonDetails = detailsTextarea?.value?.trim() || '';
+
+            if (reasonCategory === 'Others' && !customReasonCategory) {
+                showSystemToast('Please specify the custom delay category.', 'warning', 'Required Field');
+                customInput?.focus();
+                return;
+            }
+
+            if (!reasonDetails) {
+                showSystemToast('Please provide a brief root cause explanation for the delay.', 'warning', 'Required Field');
+                detailsTextarea?.focus();
+                return;
+            }
+
+            // Calculate elapsed minutes
+            const arr24 = convertTimeTo24Hour(job.arrival) || job.arrival || '08:00';
+            let elapsedMin = 120;
+            if (arr24 && arr24.includes(':')) {
+                const [ah, am] = arr24.split(':').map(Number);
+                const now = new Date();
+                const diff = (now.getHours() * 60 + now.getMinutes()) - (ah * 60 + am);
+                elapsedMin = diff > 0 ? diff : 120;
+            }
+
+            const submitBtn = document.getElementById('btn-submit-express-delay');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Submitting...`;
+            }
+
+            try {
+                const payload = {
+                    jobId: job.job_id || job.id,
+                    plate: job.plate,
+                    customerName: job.name || job.customer_name || 'Walk-in Customer',
+                    vehicle: job.vehicle || '-',
+                    saName: job.saName || currentUserName || 'Service Advisor',
+                    arrivalTime: arr24,
+                    elapsedMinutes: elapsedMin,
+                    reasonCategory: reasonCategory,
+                    customReasonCategory: customReasonCategory,
+                    reasonDetails: reasonDetails
+                };
+
+                const savedRecord = await apiRequest('/api/express-issues', {
+                    method: 'POST',
+                    body: payload
+                });
+
+                // Update local cache
+                window.reportedExpressIssues[job.id] = savedRecord;
+                window.reportedExpressIssues[job.job_id || job.id] = savedRecord;
+                window.reportedExpressIssues[job.plate] = savedRecord;
+
+                closeExpressDelayModal();
+                showSystemToast(`Express delay report recorded successfully for ${job.plate}.`, 'success', 'Incident Logged');
+
+                renderStaffTables();
+                if (typeof renderExpressIntelligenceModule === 'function') {
+                    renderExpressIntelligenceModule();
+                }
+            } catch (err) {
+                console.error('Failed to submit express delay report:', err);
+                showSystemToast(err.message || 'Failed to submit delay report.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Submit Delay Report`;
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            }
+        }
+
+        // ============================================================
+        // 2. SYSTEM-WIDE REASON-REQUIRED EDIT WORKFLOW
+        // ============================================================
+        let pendingFieldEdit = null;
+
+        function formatFieldName(field) {
+            const map = {
+                'departure': 'Departure Time',
+                'arrival': 'Arrival Time',
+                'evaluation': 'Diagnosis / Evaluation',
+                'category': 'Service Category',
+                'laneType': 'Lane Type',
+                'promisedDate': 'Promised Date',
+                'carryOverStatus': 'Carry Over Status',
+                'status': 'Job Status',
+                'remarks': 'Remarks & Notes',
+                'location': 'Workshop Bay',
+                'saName': 'Assigned Service Advisor'
+            };
+            return map[field] || field;
+        }
+
+        function requestFieldEditWithReason(jobId, field, value, oldValue = null) {
+            const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
+            if (!job) {
+                updateJobField(jobId, field, value);
+                return;
+            }
+
+            // Normalization for comparison
+            let curVal = oldValue !== null ? oldValue : (job[field] || '');
+            let newVal = value || '';
+            if (field === 'departure' || field === 'arrival') {
+                curVal = convertTimeTo24Hour(curVal) || curVal;
+                newVal = convertTimeTo24Hour(newVal) || newVal;
+            }
+
+            // If identical, do nothing
+            if (curVal === newVal) return;
+
+            pendingFieldEdit = {
+                jobId: job.job_id || job.id,
+                field: field,
+                value: newVal,
+                oldValue: curVal || 'None'
+            };
+
+            const modal = document.getElementById('modal-edit-reason-prompt');
+            if (!modal) {
+                updateJobField(jobId, field, value);
+                return;
+            }
+
+            const fieldNameElem = document.getElementById('modal-edit-field-name');
+            const oldValElem = document.getElementById('modal-edit-old-val');
+            const newValElem = document.getElementById('modal-edit-new-val');
+            const presetSelect = document.getElementById('modal-edit-reason-preset');
+            const reasonTextarea = document.getElementById('modal-edit-reason-text');
+
+            if (fieldNameElem) fieldNameElem.innerText = formatFieldName(field);
+            if (oldValElem) oldValElem.innerText = String(pendingFieldEdit.oldValue);
+            if (newValElem) newValElem.innerText = String(newVal);
+            if (presetSelect) presetSelect.value = 'Typo / Data Entry Correction';
+            if (reasonTextarea) reasonTextarea.value = '';
+
+            modal.classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+            if (reasonTextarea) setTimeout(() => reasonTextarea.focus(), 150);
+        }
+
+        function handleEditPresetChange(val) {
+            const reasonTextarea = document.getElementById('modal-edit-reason-text');
+            if (!reasonTextarea) return;
+            if (val !== 'Others' && !reasonTextarea.value) {
+                reasonTextarea.placeholder = `Details for "${val}"...`;
+            } else if (val === 'Others') {
+                reasonTextarea.placeholder = 'Please state your specific operational justification...';
+            }
+        }
+
+        async function confirmFieldEditWithReason() {
+            if (!pendingFieldEdit) return;
+
+            const presetSelect = document.getElementById('modal-edit-reason-preset');
+            const reasonTextarea = document.getElementById('modal-edit-reason-text');
+
+            const preset = presetSelect?.value || 'Data Entry Update';
+            const details = reasonTextarea?.value?.trim() || '';
+
+            if (!details && preset === 'Others') {
+                showSystemToast('Please provide an operational justification reason for this modification.', 'warning', 'Reason Required');
+                reasonTextarea?.focus();
+                return;
+            }
+
+            const finalReason = details ? `${preset}: ${details}` : preset;
+
+            const modal = document.getElementById('modal-edit-reason-prompt');
+            if (modal) modal.classList.add('hidden');
+
+            const { jobId, field, value } = pendingFieldEdit;
+            pendingFieldEdit = null;
+
+            await updateJobField(jobId, field, value, finalReason);
+        }
+
+        function cancelFieldEdit() {
+            pendingFieldEdit = null;
+            const modal = document.getElementById('modal-edit-reason-prompt');
+            if (modal) modal.classList.add('hidden');
+            renderStaffTables();
+        }
+
+        // ============================================================
+        // 3. AUDIT HISTORY TIMELINE WORKFLOW
+        // ============================================================
+        async function openJobAuditHistoryModal(jobId) {
+            const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
+            const modal = document.getElementById('modal-job-audit-history');
+            const plateBadge = document.getElementById('modal-audit-plate-badge');
+            const subtitle = document.getElementById('modal-audit-customer-subtitle');
+            const content = document.getElementById('modal-audit-history-content');
+
+            if (!modal || !content) return;
+
+            const targetJobId = job ? (job.job_id || job.id) : jobId;
+            if (plateBadge) plateBadge.innerText = job?.plate || 'VEHICLE';
+            if (subtitle) subtitle.innerText = job ? `${job.name || 'Customer'} • ${job.vehicle || 'Model'}` : 'Customer Change History Log';
+
+            content.innerHTML = `
+                <div class="py-8 text-center text-slate-400 space-y-2">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-500"></i>
+                    <p class="text-xs font-semibold">Loading immutable audit trail...</p>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+            if (window.lucide) window.lucide.createIcons();
+
+            try {
+                const logs = await apiRequest(`/api/jobs/${targetJobId}/audit-history`);
+                if (!Array.isArray(logs) || logs.length === 0) {
+                    content.innerHTML = `
+                        <div class="py-10 text-center text-slate-400 space-y-2">
+                            <i data-lucide="shield-check" class="w-8 h-8 mx-auto text-emerald-500"></i>
+                            <p class="text-xs font-bold text-slate-700">Original Record Pristine</p>
+                            <p class="text-[11px] text-slate-400">No modifications or delay reports logged for this vehicle.</p>
+                        </div>
+                    `;
+                    if (window.lucide) window.lucide.createIcons();
+                    return;
+                }
+
+                let html = '';
+                logs.forEach(log => {
+                    const formattedDate = log.created_at ? log.created_at.replace('T', ' ').substring(0, 16) : 'Recently';
+                    const isDelayReport = log.field_name === 'express_delay_report';
+
+                    html += `
+                        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full ${isDelayReport ? 'bg-amber-500' : 'bg-blue-500'}"></span>
+                                    <span class="font-extrabold text-slate-800 uppercase text-[11px]">${formatFieldName(log.field_name)}</span>
+                                </div>
+                                <span class="font-mono text-[10px] text-slate-400 font-bold">${formattedDate}</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="p-2 bg-white rounded-xl border border-slate-150">
+                                    <span class="text-[9px] text-slate-400 font-bold block uppercase">Previous</span>
+                                    <span class="font-mono text-slate-600 truncate block text-[11px]">${escapeHtml(log.old_value || 'None')}</span>
+                                </div>
+                                <div class="p-2 bg-white rounded-xl border border-slate-150">
+                                    <span class="text-[9px] text-blue-500 font-bold block uppercase">Updated</span>
+                                    <span class="font-mono text-slate-900 font-bold truncate block text-[11px]">${escapeHtml(log.new_value || 'None')}</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-1.5 border-t border-slate-200/80 flex items-start justify-between gap-2 text-[11px]">
+                                <div class="text-slate-700">
+                                    <strong class="text-slate-900 font-bold">Reason:</strong>
+                                    <span class="italic text-slate-600">${escapeHtml(log.edit_reason || '-')}</span>
+                                </div>
+                                <span class="px-2 py-0.5 bg-slate-200/80 text-slate-700 rounded text-[9px] font-extrabold uppercase shrink-0">
+                                    ${escapeHtml(log.edited_by_name || 'Staff')} (${escapeHtml(log.edited_by_role || 'SA')})
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                content.innerHTML = html;
+                if (window.lucide) window.lucide.createIcons();
+            } catch (err) {
+                console.error('Failed to load job audit history:', err);
+                content.innerHTML = `
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 text-center">
+                        Failed to retrieve audit records. Please try again.
+                    </div>
+                `;
+            }
+        }
+
+        function closeJobAuditHistoryModal() {
+            const modal = document.getElementById('modal-job-audit-history');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        // Global exports for inline HTML handlers
+        window.openExpressDelayModal = openExpressDelayModal;
+        window.closeExpressDelayModal = closeExpressDelayModal;
+        window.toggleDelayCustomReason = toggleDelayCustomReason;
+        window.submitExpressDelayReport = submitExpressDelayReport;
+        window.requestFieldEditWithReason = requestFieldEditWithReason;
+        window.handleEditPresetChange = handleEditPresetChange;
+        window.confirmFieldEditWithReason = confirmFieldEditWithReason;
+        window.cancelFieldEdit = cancelFieldEdit;
+        window.openJobAuditHistoryModal = openJobAuditHistoryModal;
+        window.closeJobAuditHistoryModal = closeJobAuditHistoryModal;
+
