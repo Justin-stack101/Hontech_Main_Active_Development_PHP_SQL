@@ -1,0 +1,42 @@
+{
+  "name": "antigravityskill",
+  "version": "1.0.0",
+  "description": "Simple engineering framework for /debug, /push, and /install across TypeScript, Python, Go, Rust, and PHP.",
+  "main": "bin/cli.js",
+  "bin": {
+    "antigravityskill": "./bin/cli.js"
+  },
+  "type": "commonjs",
+  "files": [
+    "bin",
+    "commands",
+    "references",
+    "project-profile",
+    "SKILL.md",
+    "README.md",
+    "GEMINI.md",
+    "AGENTS.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "keywords": [
+    "antigravity",
+    "ai-agent",
+    "skills",
+    "debug",
+    "git-push",
+    "install"
+  ],
+  "author": "s5condlast-cmd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s5condlast-cmd/Antigravityskill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/s5condlast-cmd/Antigravityskill/issues"
+  },
+  "homepage": "https://github.com/s5condlast-cmd/Antigravityskill#readme"
+}

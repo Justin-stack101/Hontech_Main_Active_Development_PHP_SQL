@@ -1,0 +1,127 @@
+# ==============================================================================
+# 🛡️ Universal Zero-Defect .gitignore (Multi-Stack & Polyglot)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment & Sensitive Secrets (NEVER COMMIT SECRETS)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.pem
+*.key
+*.cert
+*.pfx
+*.pkcs12
+
+# ------------------------------------------------------------------------------
+# 2. Node.js, TypeScript & Frontend Artifacts
+# ------------------------------------------------------------------------------
+node_modules/
+jspm_packages/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.output/
+.turbo/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+.eslintcache
+
+# ------------------------------------------------------------------------------
+# 3. Python Artifacts & Virtual Environments
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Python test caches & coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ------------------------------------------------------------------------------
+# 4. Go Artifacts
+# ------------------------------------------------------------------------------
+*.exe
+*.exe~
+*.dll
+*.dylib
+*.test
+*.out
+
+# ------------------------------------------------------------------------------
+# 5. Rust Artifacts
+# ------------------------------------------------------------------------------
+target/
+**/*.rs.bk
+
+# ------------------------------------------------------------------------------
+# 6. AI Agent, Scratch Files & Temporary Logs
+# ------------------------------------------------------------------------------
+.gemini/
+.antigravity/
+scratch/
+tmp/
+*.tmp
+*.log
+
+# ------------------------------------------------------------------------------
+# 7. OS & IDE System Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDEs (Keep root workspace files, ignore user caches)
+.idea/
+*.swp
+*.swo
+*~
+*.bak

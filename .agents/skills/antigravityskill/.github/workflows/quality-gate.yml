@@ -1,0 +1,318 @@
+name: Universal Zero-Red-Line Quality Gate
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+  push:
+    branches: [ 'feature/**', 'fix/**', 'chore/**', 'refactor/**', 'feat/**', 'ui/**', 'perf/**', 'docs/**' ]
+
+# Prevent redundant concurrent CI runs on the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # -------------------------------------------------------------
+  # 1. Repository & Skill Meta Integrity Gate
+  # -------------------------------------------------------------
+  meta-gate:
+    name: 🧭 Repository & Skill Meta Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 🔍 Validate SKILL.md Frontmatter & 2-Pillar Protocols
+        run: |
+          node -e '
+            const fs = require("fs");
+            if (!fs.existsSync("SKILL.md")) {
+              throw new Error("SKILL.md is missing from repository root");
+            }
+            const content = fs.readFileSync("SKILL.md", "utf-8");
+            if (!content.startsWith("---")) {
+              throw new Error("SKILL.md is missing YAML frontmatter opening delimiter (---)");
+            }
+            if (!content.includes("name:") || !content.includes("description:")) {
+              throw new Error("SKILL.md frontmatter must contain name and description fields");
+            }
+            const requiredPillars = ["/debug", "/push"];
+            for (const pillar of requiredPillars) {
+              if (!content.includes(pillar)) {
+                throw new Error("SKILL.md missing required pillar protocol: " + pillar);
+              }
+            }
+            console.log("✔ SKILL.md frontmatter and /debug & /push protocol definitions successfully validated.");
+          '
+
+      - name: 🔗 Validate Reference Documents & Project Profile
+        run: |
+          node -e '
+            const fs = require("fs");
+            const requiredFiles = [
+              "README.md",
+              "SKILL.md",
+              "GEMINI.md",
+              "AGENTS.md",
+              "project-profile/PROJECT_PROFILE.md",
+              "references/PUSH_PROTOCOL.md",
+              "references/DEBUG_UTILITIES.md",
+              "references/COMMON_BUG_PATTERNS.md",
+              "references/CLI_CHEAT_SHEET.md",
+              "commands/debug.md",
+              "commands/push.md",
+              "commands/install.md",
+              ".github/pull_request_template.md",
+              "LICENSE",
+              "package.json",
+              "bin/cli.js"
+            ];
+            for (const f of requiredFiles) {
+              if (!fs.existsSync(f)) {
+                throw new Error("Required repository asset is missing: " + f);
+              }
+            }
+            console.log("✔ All " + requiredFiles.length + " core documentation and package assets verified present.");
+          '
+
+      - name: 📦 Validate NPM Package & Executable CLI
+        run: |
+          node bin/cli.js --help
+          npm pack --dry-run
+
+
+  # -------------------------------------------------------------
+  # 3. Node.js / TypeScript Workspace Gate
+  # -------------------------------------------------------------
+  node-gate:
+    name: 🟦 Node / TypeScript Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for Node Manifest
+        id: check_node
+        run: |
+          if [ -f "package.json" ]; then
+            echo "has_node=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_node=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚙️ Setup Node.js
+        if: steps.check_node.outputs.has_node == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        if: steps.check_node.outputs.has_node == 'true'
+        run: npm ci || npm install
+
+      - name: 🔬 Strict TypeScript Typecheck (0 Errors)
+        if: steps.check_node.outputs.has_node == 'true'
+        run: |
+          if [ -f "tsconfig.json" ]; then
+            npx tsc --noEmit
+          else
+            echo "No tsconfig.json detected, skipping typecheck."
+          fi
+
+      - name: 🧹 Linter Gate
+        if: steps.check_node.outputs.has_node == 'true'
+        run: |
+          if npm run | grep -q "lint"; then
+            npm run lint
+          else
+            echo "No lint script defined in package.json, skipping."
+          fi
+
+      - name: 🧪 Test Suite Gate
+        if: steps.check_node.outputs.has_node == 'true'
+        run: |
+          if npm run | grep -q "test"; then
+            npm test --if-present
+          else
+            echo "No test script defined in package.json, skipping."
+          fi
+
+      - name: 🏗️ Production Build Gate
+        if: steps.check_node.outputs.has_node == 'true'
+        run: |
+          if npm run | grep -q "build"; then
+            npm run build
+          else
+            echo "No build script defined in package.json, skipping."
+          fi
+
+  # -------------------------------------------------------------
+  # 4. Python Workspace Gate
+  # -------------------------------------------------------------
+  python-gate:
+    name: 🐍 Python Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for Python Manifest
+        id: check_py
+        run: |
+          if [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then
+            echo "has_py=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_py=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚙️ Setup Python
+        if: steps.check_py.outputs.has_py == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Install Python Dependencies & Linters
+        if: steps.check_py.outputs.has_py == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f "requirements.txt" ]; then
+            pip install -r requirements.txt
+          fi
+          pip install mypy pytest flake8 ruff
+
+      - name: 🔬 Python Type Safety (mypy)
+        if: steps.check_py.outputs.has_py == 'true'
+        run: |
+          if [ -f "mypy.ini" ] || [ -f "pyproject.toml" ]; then
+            mypy . --ignore-missing-imports
+          fi
+
+      - name: 🧪 Python Test Suite (pytest)
+        if: steps.check_py.outputs.has_py == 'true'
+        run: |
+          if [ -d "tests" ] || [ -d "test" ]; then
+            pytest
+          fi
+
+  # -------------------------------------------------------------
+  # 5. Go Workspace Gate
+  # -------------------------------------------------------------
+  go-gate:
+    name: 🐹 Go Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for Go Manifest
+        id: check_go
+        run: |
+          if [ -f "go.mod" ]; then
+            echo "has_go=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_go=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚙️ Setup Go
+        if: steps.check_go.outputs.has_go == 'true'
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: 🔬 Go Vet & Compilation
+        if: steps.check_go.outputs.has_go == 'true'
+        run: |
+          go vet ./...
+          go build ./...
+
+      - name: 🧪 Go Test Suite
+        if: steps.check_go.outputs.has_go == 'true'
+        run: go test -v ./...
+
+  # -------------------------------------------------------------
+  # 6. Rust Workspace Gate
+  # -------------------------------------------------------------
+  rust-gate:
+    name: 🦀 Rust Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for Rust Manifest
+        id: check_rust
+        run: |
+          if [ -f "Cargo.toml" ]; then
+            echo "has_rust=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_rust=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚙️ Setup Rust
+        if: steps.check_rust.outputs.has_rust == 'true'
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: 🔬 Rust Compilation (cargo check)
+        if: steps.check_rust.outputs.has_rust == 'true'
+        run: cargo check --all-targets
+
+      - name: 🧪 Rust Test Suite (cargo test)
+        if: steps.check_rust.outputs.has_rust == 'true'
+        run: cargo test
+
+  # -------------------------------------------------------------
+  # 7. PHP Workspace Gate
+  # -------------------------------------------------------------
+  php-gate:
+    name: 🐘 PHP Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check for PHP Composer Manifest
+        id: check_php
+        run: |
+          if [ -f "composer.json" ]; then
+            echo "has_php=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_php=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ⚙️ Setup PHP
+        if: steps.check_php.outputs.has_php == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2, phpstan, phpunit
+
+      - name: 📦 Install Composer Dependencies
+        if: steps.check_php.outputs.has_php == 'true'
+        run: composer install --prefer-dist --no-progress
+
+      - name: 🔬 PHP Syntax Check (php -l)
+        if: steps.check_php.outputs.has_php == 'true'
+        run: find . -name "*.php" -not -path "./vendor/*" -exec php -l {} +
+
+      - name: 🔬 PHP Static Analysis (PHPStan)
+        if: steps.check_php.outputs.has_php == 'true'
+        run: |
+          if [ -f "phpstan.neon" ] || [ -f "phpstan.neon.dist" ]; then
+            vendor/bin/phpstan analyse
+          fi
+
+      - name: 🧪 PHP Test Suite (Pest / PHPUnit)
+        if: steps.check_php.outputs.has_php == 'true'
+        run: |
+          if [ -f "vendor/bin/pest" ]; then
+            vendor/bin/pest
+          elif [ -f "phpunit.xml" ] || [ -f "phpunit.xml.dist" ]; then
+            vendor/bin/phpunit
+          fi
+
