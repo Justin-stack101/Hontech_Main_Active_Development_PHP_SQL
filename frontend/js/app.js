@@ -2602,16 +2602,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
-                await loadData();
-                renderStaffTables();
-                if (typeof renderTV === 'function') renderTV();
-                if (typeof renderReports === 'function') renderReports();
-            } catch (err) {
-                showSystemToast(err.message || 'Error updating job property.', 'error');
-                renderStaffTables();
-            }
-        }
-
         function updateCheckbox(jobId, field, checked) {
             updateJobField(jobId, field, checked);
         }
