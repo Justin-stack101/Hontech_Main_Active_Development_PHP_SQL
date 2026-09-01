@@ -4315,6 +4315,27 @@
                     </div>
                 </div>
 
+                <!-- CATEGORY 4: EXPRESS 2H SLA & AUDIT TRAIL SIMULATION -->
+                <div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
+                        <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-amber-500"></i> Express 2H SLA & Audit Testing
+                    </span>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button onclick="window.triggerSimulateExpressOverdue(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-amber-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
+                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Sim: 2H Express Overrun
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Spawns 2h 15m overdue job</p>
+                        </button>
+                        <button onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-red-500/50 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Audit & Delay Logs
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-1">Purges test reports clean</p>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Action: MariaDB Seed Reset -->
                 <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3.5 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-900/60 rounded-2xl text-left transition cursor-pointer flex items-center justify-between">
                     <div class="flex items-center gap-3">
@@ -5680,7 +5701,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.36"></script>
+    <script src="js/app.js?v=4.37"></script>
 </body>
 
 </html>

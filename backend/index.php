@@ -83,6 +83,14 @@ if ($method === 'POST' && $route === '/auth/developer/reset-seed') {
     DeveloperController::resetSeedDev();
     exit;
 }
+if ($method === 'POST' && $route === '/auth/developer/clear-audit-logs') {
+    DeveloperController::clearAuditLogs();
+    exit;
+}
+if ($method === 'POST' && $route === '/auth/developer/simulate-express-overdue') {
+    DeveloperController::simulateExpressOverdue();
+    exit;
+}
 
 // Public auth routes
 if ($method === 'POST' && $route === '/auth/login') {

@@ -10752,6 +10752,43 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (modal) modal.classList.add('hidden');
         }
 
+        // ============================================================
+        // 4. DEVELOPER SANDBOX SIMULATION TRIGGERS
+        // ============================================================
+        async function triggerSimulateExpressOverdue() {
+            try {
+                showSystemToast('Spawning simulated 2-hour overdue Express Lane vehicle...', 'info', 'Dev Simulator');
+                const res = await apiRequest('/api/auth/developer/simulate-express-overdue', {
+                    method: 'POST'
+                });
+                await loadData();
+                renderStaffTables();
+                showSection('queue');
+                showSystemToast(res.message || 'Simulated 2H overdue vehicle created.', 'success', 'Sim Created');
+            } catch (err) {
+                console.error('Failed to simulate express overdue job:', err);
+                showSystemToast(err.message || 'Simulation error.', 'error');
+            }
+        }
+
+        async function triggerClearAuditLogs() {
+            try {
+                const res = await apiRequest('/api/auth/developer/clear-audit-logs', {
+                    method: 'POST'
+                });
+                window.reportedExpressIssues = {};
+                await loadData();
+                renderStaffTables();
+                if (typeof renderExpressIntelligenceModule === 'function') {
+                    renderExpressIntelligenceModule();
+                }
+                showSystemToast(res.message || 'Audit logs and express delay reports cleared.', 'success', 'Logs Purged');
+            } catch (err) {
+                console.error('Failed to clear audit logs:', err);
+                showSystemToast(err.message || 'Failed to clear logs.', 'error');
+            }
+        }
+
         // Global exports for inline HTML handlers
         window.openExpressDelayModal = openExpressDelayModal;
         window.closeExpressDelayModal = closeExpressDelayModal;
@@ -10763,4 +10800,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.cancelFieldEdit = cancelFieldEdit;
         window.openJobAuditHistoryModal = openJobAuditHistoryModal;
         window.closeJobAuditHistoryModal = closeJobAuditHistoryModal;
+        window.triggerSimulateExpressOverdue = triggerSimulateExpressOverdue;
+        window.triggerClearAuditLogs = triggerClearAuditLogs;
+
 
