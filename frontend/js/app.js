@@ -2372,7 +2372,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 category = categoryOther;
             }
 
-            if (!plate || !name) return showSystemToast("Plate and Customer Name are required.", "error");
+            if (!plate) return showSystemToast("Plate Number is required.", "error");
+            if (!name) return showSystemToast("Customer Name is required.", "error");
+            if (!vehicle) return showSystemToast("Vehicle Model is required.", "error");
 
             let pendingDuplicateIntakePayload = null;
 
@@ -2390,7 +2392,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     });
 
                     await loadData();
-                    showSystemToast(`Vehicle ${payload.plate} registered successfully.`, 'success', 'Intake Completed');
+                    renderStaffTables();
+                    showSection('queue');
+                    showSystemToast(`Vehicle ${payload.plate} registered successfully. Added to Daily Intakes.`, 'success', 'Intake Completed');
 
                     ['plate', 'name', 'contact', 'vehicle', 'concern'].forEach(id => {
                         const el = document.getElementById(`intake-${id}`);
@@ -2409,7 +2413,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
 
                     if (payload.source === 'Walk-in') updateStubPreview();
-                    renderStaffTables();
                 } catch (err) {
                     showSystemToast(err.message || 'Failed to submit intake.', 'error');
                 } finally {
