@@ -266,3 +266,12 @@ Upon project completion, HonTech AutoCenter management will receive:
 **Lead Systems Developer:** ___________________________  
 **Justin Nolasco J.**  
 **Date:** September 2, 2026
+
+---
+
+## 10. Supplementary Technical Documentation & Engineering Blueprints
+
+For detailed technical implementation, low-cost hardware verification, and zero-risk local network configuration, please refer to the accompanying engineering guides:
+
+* 📄 **[Local Intranet Technical Feasibility & Zero-Risk Setup Guide](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_LOCAL_HOSTING_TECHNICAL_FEASIBILITY_AND_ZERO_RISK_SETUP_GUIDE.md)** — *Step-by-step local Wi-Fi architecture, ₱6,500 mini-PC hardware specs, firewall configuration, and zero-risk testing checklist.*
+* 📄 **[Cloud Sandbox PoC Setup Guide (Vercel + Supabase)](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_SANDBOX_POC_VERCEL_SUPABASE_SETUP_GUIDE.md)** — *Step-by-step ₱0-upfront modern cloud deployment guide for multi-branch environments.*
