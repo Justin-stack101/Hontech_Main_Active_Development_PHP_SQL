@@ -26,89 +26,78 @@
 ---
 
 ## Table of Contents
-1. [Executive Summary & Strategic Recommendation](#1-executive-summary--academic-grant-terms)
-2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
-3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
-   - [Strategic Architecture Decision Matrix](#-strategic-architecture-decision-matrix)
-   - [IT Maintenance & Developer Support Profile](#-it-maintenance--developer-support-profile-who-manages-what)
-   - [The Financial Lifecycle: Upfront Cost vs. Compounding Subscriptions](#-1-the-financial-lifecycle-upfront-cost-vs-long-term-compounding)
-   - [Account Suspension & Data Lockout Risks](#-2-account-suspension--data-lockout-risks-cloud-vs-local)
-   - [The 2026 PC Parts Inflation Reality](#-3-the-2026-pc-parts-price-inflation-reality)
-   - [Auto Shop Environmental Hazards & Hardware Longevity](#-4-auto-shop-environmental-hazards--hardware-longevity)
-   - [Internet Outage Safeguards & The ₱999 Safety Net](#-5-the-999-internet-safety-net-for-cloud)
-   - [Detailed Pros & Cons Breakdown](#-side-by-side-pros--cons-for-ownership)
-   - [Recommended Hybrid Phased Strategy](#-recommended-hybrid-phased-strategy-for-hontech)
-4. [Comprehensive Risk Assessment & Mitigation Plan](#4-comprehensive-risk-assessment--mitigation-plan)
+1. [Executive Summary & Project Purpose](#1-executive-summary--project-purpose)
+2. [Technical Evaluation: Local On-Premise vs. Modern Cloud Operations](#2-technical-evaluation-local-on-premise-vs-modern-cloud-operations)
+   - [Option A: Local On-Premise Intranet Hosting](#️-option-a-local-on-premise-intranet-hosting-in-shop-server-pc)
+   - [Option B: Modern Cloud Solutions (Recommended)](#️-option-b-modern-cloud-solutions-vercel--supabase--recommended)
+   - [Operational Feature & Cost Comparison Table](#-operational-feature--cost-comparison-table)
+3. [Comprehensive Risk Assessment & Mitigation Plan](#3-comprehensive-risk-assessment--mitigation-plan)
    - [Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps](#️-risk-1-local-hosting-multi-branch--wi-fi-network-traps)
    - [Risk 2: Hardware Budget Depletion Strategy (The Staff PC First Rule)](#️-risk-2-hardware-budget-depletion-strategy-the-staff-pc-first-rule)
    - [Risk 3: Shop Environment & Electrical Power Spikes](#️-risk-3-shop-environment--electrical-power-spikes)
    - [Risk 4: External Internet Outages on Cloud](#️-risk-4-external-internet-outages-on-cloud)
-5. [Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability](#5-hardware-sourcing-spec-classifications--realistic-2-branch-scalability)
-6. [Dual Detailed Weekly Execution Roadmaps](#6-dual-detailed-weekly-execution-roadmaps)
+4. [Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability](#4-hardware-sourcing-spec-classifications--realistic-2-branch-scalability)
+5. [Dual Detailed Weekly Execution Roadmaps](#5-dual-detailed-weekly-execution-roadmaps)
    - [Track A: Local Intranet Hosting Plan](#-track-a-detailed-roadmap-for-local-intranet-hosting)
    - [Track B: Modern Cloud Deployment Plan](#-track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
-7. [Training, Simulation & Dry-Run Protocols](#7-training-simulation--dry-run-protocols)
-8. [Security Governance, Internal & External Cyber Defense Protocols](#8-security-governance-internal--external-cyber-defense-protocols)
-9. [Handover Deliverables Package & Post-Warranty Retainer Options](#9-handover-deliverables-package--post-warranty-retainer-options)
-10. [Official Client Sign-Off](#10-official-client-sign-off)
-11. [APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint](#-appendix-a-complete-local-intranet-feasibility--zero-risk-setup-blueprint)
-12. [APPENDIX B: Complete Cloud Sandbox PoC Setup Blueprint (Vercel + Supabase)](#-appendix-b-complete-cloud-sandbox-poc-setup-blueprint-vercel--supabase)
-13. [APPENDIX C: Developer Dual-Repository Workflow, Adapter Pattern & Testing Protocol](#-appendix-c-developer-dual-repository-workflow-adapter-pattern--testing-protocol)
+6. [Staff Training & "Shadow Mode" Dry-Run Protocol](#6-staff-training--shadow-mode-dry-run-protocol)
+7. [Security Governance, Internal & External Cyber Defense Protocols](#7-security-governance-internal--external-cyber-defense-protocols)
+8. [Handover Deliverables Package & Project Authorization](#8-handover-deliverables-package--project-authorization)
+9. [APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint](#-appendix-a-complete-local-intranet-feasibility--zero-risk-setup-blueprint)
+10. [APPENDIX B: Complete Cloud Sandbox PoC Setup Blueprint (Vercel + Supabase)](#-appendix-b-complete-cloud-sandbox-poc-setup-blueprint-vercel--supabase)
+11. [APPENDIX C: Developer Dual-Repository Workflow, Adapter Pattern & Testing Protocol](#-appendix-c-developer-dual-repository-workflow-adapter-pattern--testing-protocol)
 
 ---
 
-## 1. Executive Summary & Academic Grant Terms
+## 1. Executive Summary & Project Purpose
 
-Running a high-throughput auto service center requires speed, coordination, and customer transparency. Today, HonTech AutoCenter handles customer intake, job routing, and status updates through paper claim stubs and verbal communication. While familiar, this manual flow creates three critical operational bottlenecks:
+The **HonTech Operations Management System** is a project designed to eliminate operational bottlenecks, modernize service bay tracking, automate Express PMS turnaround monitoring, and provide customer lounge transparency for HonTech AutoCenter.
 
-1. **Information Gaps Between Front Desk & Bays:** Service Advisors (SAs) cannot view technician progress in real time without physically walking to the repair bays.
-2. **Customer Lounge Uncertainty:** Waiting customers frequently approach the front desk asking for updates, interrupting intake staff.
-3. **Express Service Turnaround Bottlenecks:** When Express Lane PMS services exceed target limits, there is no standardized tracking to identify parts delays or workload imbalances.
+### 🌐 The Core Technological Requirement: Web Delivery & Database Storage
+To operate seamlessly across front desk terminals, Service Advisor tablets, and the Customer Waiting Lounge TV, the system requires two foundational technological components:
+1. **Web Delivery & Domain Platform:** The platform that serves the visual interface to staff tablets, computers, and lounge displays.
+2. **Central Database Storage:** The secure repository that stores vehicle repair orders, customer histories, Express PMS 2-hour SLA turnaround timers, and tamper-proof audit trails.
 
-```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                        🏆 DEVELOPMENT TEAM & ARCHITECT RECOMMENDATION                             │
-├───────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ The Development Team and System Architect STRONGLY RECOMMEND Option B (Modern Cloud Solutions):   │
-│                                                                                                   │
-│ 1. 💰 Saves ₱18,500–₱23,000 Upfront: Zero server hardware needed in Gilmore.                      │
-│ 2. 💸 ₱0.00 Monthly Cost: Vercel CDN and Supabase DB free tiers handle 100% of shop workload.    │
-│ 3. 📱 24/7 Remote Owner Access: Monitor bay queues and daily volume from anywhere on smartphone.  │
-│ 4. 🏢 Effortless Multi-Branch Syncing: Branch A & Branch B share live data with zero setup.       │
-│ 5. ⚡ Sub-100ms Live Sync: Instant WebSocket updates for the Waiting Lounge TV and SA tablets.    │
-└───────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+This document provides HonTech AutoCenter ownership with a clear, business-minded evaluation of the two viable hosting pathways—**Option A: Local On-Premise Intranet Server** vs. **Option B: Modern Cloud Solutions**—to help management select the ideal operational model for the workshop.
 
-### 🎓 Academic Capstone Grant Terms (Zero Software Cost)
+### 🎓 Academic Software Grant Terms (Zero Software Cost)
 * **100% Free Software Grant:** Because this is an official academic capstone development project, **the software, source code, licensing, on-site setup, and staff training are provided to HonTech AutoCenter at ₱0 (FREE of charge).**
 * **Client Hardware Ownership:** The only investment required from HonTech AutoCenter is any physical hardware equipment (*if choosing Option A: Server PC, Ethernet cables; if choosing Recommended Option B: ₱0 new hardware*), which remains 100% the property of the client.
 * **1–2 Months Complimentary Warranty & Support:** The development team provides 1–2 months of free post-launch monitoring, bug fixes, and operational assistance.
 
 ---
 
-## 2. Executive Strategic Brainstorming: Local vs. Cloud
+## 2. Technical Evaluation: Local On-Premise vs. Modern Cloud Operations
 
-To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **Multi-Branch Network Topology**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
+To connect all service bay devices into one synchronized system, HonTech can choose between two operational architectures:
 
-### 📊 Strategic Architecture Decision Matrix
+### 🖥️ Option A: Local On-Premise Intranet Hosting (In-Shop Server PC)
+* **How it Works:** A dedicated computer physically set up inside HonTech's office acts as the central server (running Apache and MySQL via XAMPP). All staff tablets, desktop computers, and the Waiting Lounge TV connect directly to this local PC through the shop's private Wi-Fi router.
+* **How it Solves the Problem:** Keeps all data physically inside the building on internal copper cables and local Wi-Fi. It continues operating normally even if municipal fiber internet goes down, but it requires purchasing a dedicated desktop PC (~₱18,500–₱23,000) and cannot connect multiple physical branches together without complex networking hardware.
 
-| Evaluation Pillar | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
+### ☁️ Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED
+* **How it Works:** The web system interface is hosted on a high-speed global web delivery network (Vercel), and the central database is hosted in enterprise cloud data centers (Supabase on AWS). Staff access the system securely through a web browser on any internet-connected device (laptops, tablets, smartphones).
+* **How it Solves the Problem:** Requires **₱0 upfront server hardware cost** (runs on existing office devices), eliminates shop floor clutter, connects multiple branch locations into one master dashboard automatically, and enables remote management from anywhere. It requires an active internet connection (or a ₱999 backup 4G/5G SIM router).
+
+---
+
+### 📊 Operational Feature & Cost Comparison Table
+
+| Evaluation Feature | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
 | :--- | :--- | :--- |
 | **Recommendation Status** | **🌟 PRIMARY RECOMMENDATION (Best Value)** | Secondary Supported Alternative |
-| **Financial Model (CapEx vs OpEx)** | **Zero Upfront / Free Long-Term**<br>• **₱0 upfront hardware cost**<br>• **₱0/yr** on permanent free tier | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees |
-| **Internal Security (Inside the Shop)** | **Automatic Data Isolation & Staff Roles**<br>• Staff only see what they are allowed to see<br>• Branch A staff cannot view Branch B records<br>• Mandatory reason logs for all record changes | **Private Shop Network Defense**<br>• Kept 100% inside the shop Wi-Fi<br>• Strict staff roles & password protection<br>• Mandatory reason logs for all record changes |
-| **External Security (Internet & Hackers)**| **Bank-Grade Online Protection**<br>• Built-in protection against online hackers<br>• Automatic security certificate (HTTPS Padlock)<br>• Data stored securely in AWS cloud centers | **Completely Hidden from Web Hackers**<br>• Offline server is invisible on the internet<br>• Cannot be targeted by online attacks |
-| **Multi-Branch Cross-Building Sync** | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers |
-| **Unpaid Provider / Lockout Risk** | **100% Free Forever (No Card Required)**<br>• Generous free tier supports 500,000+ repair records (~45 years of shop data!) | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer |
-| **IT & Developer Maintenance** | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks |
-| **Upfront Hardware Investment** | **₱0** *(Runs on existing office PCs/tablets)* | ₱14,500 – ₱23,000 *(Work-Grade PC)* |
-| **Monthly Software Hosting** | **₱0 / month (Permanent Free Tier)** | **₱0 / month (Free forever)** |
-| **Electricity Cost (Meralco)** | **₱0** *(Cloud data center hosts compute)* | ~₱350–₱600 / month *(PC running 24/7)* |
+| **Upfront Hardware Cost** | **₱0** *(Runs on existing office PCs, tablets, & phones)* | ₱14,500 – ₱23,000 *(Requires dedicated Server PC)* |
+| **Monthly Software Hosting** | **₱0 / month (Permanent Free Tier)** | **₱0 / month (Free software license)** |
+| **Electricity Bill (Meralco)** | **₱0** *(Cloud data centers host the compute)* | ~₱350–₱600 / month *(PC running 24/7 in shop)* |
+| **Physical Space & Shop Clutter** | **Zero Physical Space (100% Clutter-Free)**<br>• No server boxes, towers, or cables on desks | **Requires Dedicated Desk / Shelf Space**<br>• Needs space for PC tower, monitor, UPS, and cables |
+| **Multi-Branch Synchronization** | **Native Multi-Branch Syncing**<br>• Branch A, B, and future branches connect instantly | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static IP / VPN |
+| **Remote Owner Visibility** | **Full Access** via smartphone / laptop anywhere | None *(Accessible inside shop Wi-Fi only)* |
+| **Internal Shop Security** | **Automatic Staff Roles & Branch Isolation**<br>• Staff only see what their role allows<br>• Mandatory reason logs for all record changes | **Private Shop Network Defense**<br>• Kept 100% inside the shop Wi-Fi<br>• Mandatory reason logs for all record changes |
+| **External Internet Security** | **Bank-Grade Cloud Protection**<br>• Built-in SSL HTTPS encryption & anti-hacker shield<br>• Data stored securely in AWS Tier-4 centers | **Completely Hidden from Web Hackers**<br>• Offline server is invisible on the internet<br>• Cannot be targeted by online attacks |
 | **Internet Outage Resilience** | Requires backup 4G/5G Wi-Fi SIM (~₱999) | **100% Immune** *(Continues running offline)* |
-| **Remote Owner Visibility** | **Full Access** via smartphone / laptop anywhere | None *(Accessible inside shop network only)* |
-| **Physical Space & Shop Clutter** | **Zero Physical Space (100% Clutter-Free)**<br>• No bulky PC towers, monitor desks, or tangled cables in the shop | **Requires Dedicated Desk / Shelf Space**<br>• Needs space for PC tower, monitor, keyboard, UPS battery backup, and power cables |
-| **Auto Shop Environmental Hazards** | **100% Protected** in climate-controlled AWS data centers | Vulnerable to shop dust, grease, & power spikes |
-| **Disaster Recovery** | Automated daily point-in-time cloud backups | Manual USB backup drive needed weekly |
+| **Disaster Recovery & Backups** | Automated daily cloud backups | Manual USB backup drive needed weekly |
+| **Shop Environmental Hazards** | **100% Protected** in climate-controlled AWS centers | Vulnerable to shop dust, grease, & power surges |
+| **Long-Term Quota / Lockout Risk** | **100% Free Forever (No Credit Card Required)**<br>• Free tier supports 500,000+ repair records (~45 yrs) | **Zero Risk (100% Sovereign)**<br>• Physical computer stays inside the shop |
 
 ---
 
@@ -148,30 +137,6 @@ Deploying a mission-critical operations system across service bays requires anti
 * **The Mitigation:** A backup **₱999 prepaid 4G/5G Wi-Fi router (Smart Bro / Globe At Home)** with a budget reloadable data SIM stays in the front office. Staff switch Wi-Fi in 5 seconds with zero interruption.
 
 ---
-
-### ⚖️ Side-by-Side Pros & Cons for Ownership
-
-#### 🌟 Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED
-| Pros (Advantages) | Cons (Trade-Offs) |
-| :--- | :--- |
-| ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
-| ✅ **Zero Physical Shop Space Needed:** 100% clutter-free front office; no bulky PC towers, monitor desks, or tangled wires. | ❌ **Cloud Admin Support Needed:** Requires someone to manage database quotas, API keys, and domain settings. |
-| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
-| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | |
-| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | |
-| ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | |
-
----
-
-#### 🟢 Option A: Local Intranet Hosting (On-Premise Server) — ALTERNATIVE
-| Pros (Advantages) | Cons (Trade-Offs) |
-| :--- | :--- |
-| ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,500–₱23,000+ immediately on new computer parts. |
-| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Consumes Physical Office Space:** Requires dedicated desk/shelf space for the PC tower, monitor, UPS battery, and cables. |
-| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
-| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
-| ✅ **Instant 15ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
-| | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
 
 ---
 
