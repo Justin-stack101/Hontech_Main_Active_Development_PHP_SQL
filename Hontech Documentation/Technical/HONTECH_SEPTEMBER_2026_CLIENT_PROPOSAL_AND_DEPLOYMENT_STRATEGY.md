@@ -520,11 +520,11 @@ Create a standalone file `index.html` with this complete working demonstration c
 ---
 ---
 
-# 📖 APPENDIX C: DEVELOPER DUAL-REPOSITORY WORKFLOW & DEPLOYMENT FLOW
+# 📖 APPENDIX C: DEVELOPER DUAL-REPOSITORY WORKFLOW, ADAPTER PATTERN & TESTING PROTOCOL
 
-*This section defines the exact developer workflow, repository isolation rules, and decision flow for Justin Nolasco J. (Lead Systems Developer).*
+*This section defines the exact developer workflow, repository isolation rules, 3-step cloud adapter transition, and comprehensive unit testing protocols for Justin Nolasco J. (Lead Systems Developer).*
 
-### C.1. Dual-Repository Architectural Architecture
+### C.1. Dual-Repository Sandboxing Architecture
 
 ```
                                  [ JUSTIN NOLASCO J. ]
@@ -533,14 +533,14 @@ Create a standalone file `index.html` with this complete working demonstration c
             ┌─────────────────────────────┴─────────────────────────────┐
             ▼                                                           ▼
 ┌──────────────────────────────────────────┐ ┌──────────────────────────────────────────┐
-│ 🛡️ REPOSITORY 1: PRODUCTION SYSTEM       │ │ 🧪 REPOSITORY 2: CLOUD SANDBOX POC       │
-│ `Hontech_Main_Active_Development_PHP_SQL`│ │ `hontech-cloud-poc`                      │
+│ 🛡️ REPOSITORY 1: PRODUCTION SYSTEM       │ │ 🧪 REPOSITORY 2: CLOUD SOLUTIONS ENGINE  │
+│ `Hontech_Main_Active_Development_PHP_SQL`│ │ `hontech-cloud-vercel-supabase`          │
 ├──────────────────────────────────────────┤ ├──────────────────────────────────────────┤
 │ • Full Stack: PHP PDO + MySQL + JS       │ │ • Serverless: Vercel CDN + Supabase DB   │
 │ • Express 2H SLA + Audit History Modal   │ │ • Live Realtime WebSocket broadcast      │
 │ • Local Intranet XAMPP (192.168.1.100)   │ │ • Live HTTPS URL: `hontech.vercel.app`   │
 │ • OR Standard Cloud VPS (0 code refactor)│ │ • ₱0.00 / Month Permanent Free Tier      │
-│ • Git: `branch2-Security-Account-Recovery│ │ • Git: `main` (Isolated sandbox)         │
+│ • Git: `branch2-Security-Account-Recovery│ │ • Git: `main` (Isolated cloud repo)      │
 └──────────────────────────────────────────┘ └──────────────────────────────────────────┘
 ```
 
@@ -558,9 +558,9 @@ Create a standalone file `index.html` with this complete working demonstration c
 
 ---
 
-### C.3. Repository 2: Cloud Sandbox PoC (`hontech-cloud-poc`)
+### C.3. Repository 2: Cloud Solutions Engine (`hontech-cloud-vercel-supabase`)
 
-* **Primary Purpose:** A lightweight, isolated sandbox repository used to demonstrate instant mobile-to-TV cloud synchronization without touching or risking the primary PHP production code.
+* **Primary Purpose:** An isolated, dedicated cloud repository used to run the serverless cloud version on Vercel + Supabase without touching or risking the primary PHP/MySQL production code.
 * **Tech Stack:**
   * Frontend: Static HTML5, Tailwind CSS, Vanilla JavaScript.
   * Backend: Supabase PostgreSQL Realtime (`@supabase/supabase-js`).
@@ -569,7 +569,44 @@ Create a standalone file `index.html` with this complete working demonstration c
 
 ---
 
-### C.4. Developer Deployment & Decision Flowchart
+### C.4. The 3-Step Simple Code Transition Process (The Adapter Pattern)
+
+If the client chooses Cloud Solutions, the code transition is straightforward because our frontend and backend are completely decoupled:
+
+```
+[ STEP 1: Initialize New Cloud Repository ]
+  • Create `hontech-cloud-vercel-supabase` on GitHub.
+  • Copy over 100% of the Frontend UI (`index.html`, CSS, icons, modals, and tables).
+  • Zero local hosting code is deleted or removed from Repo 1.
+              │
+              ▼
+[ STEP 2: Swap the Data Layer Only (Adapter Pattern) ]
+  • Keep 100% of the UI design, Express SLA overdue badges, and modal popups.
+  • Paste Supabase Project URL & Anon Key in the client configuration.
+  • Replace PHP `fetch('api/jobs.php')` calls with `supabase.from('jobs').select()` or Realtime WebSockets.
+              │
+              ▼
+[ STEP 3: Execute Formal Unit Testing Suite & Deploy 🧪 ]
+  • Run comprehensive unit tests to verify all 4 roles and real-time syncing.
+  • Connect repo to Vercel for 30-second automated worldwide deployment.
+```
+
+---
+
+### C.5. Formal Unit Testing & Functionality Verification Matrix
+
+Before client handover or capstone defense, the developer executes the following 4 verification test cases:
+
+| Test Case | Target Feature | Procedure | Expected Pass Criteria |
+| :--- | :--- | :--- | :--- |
+| **Test 1: Realtime Push** | Waiting Lounge TV | Add vehicle on smartphone as SA | Vehicle appears on TV in **$\le 100\text{ ms}$** without refreshing page. |
+| **Test 2: Express 2H SLA** | Express Overdue Badge | Run test vehicle with arrival > 120m ago | Dynamic `⚠️ Express 2H Limit Exceeded` badge renders; Delay Report modal saves reason. |
+| **Test 3: RBAC Isolation** | 4-Role Permissions | Log in as SA, Admin, Assistant, Owner | SAs restricted to intake; Admins restricted to branch; Owner has global rollup. |
+| **Test 4: Claim Stub Print** | Receipt Generation | Click "Print Claim Stub" on active job | Generates 80mm thermal receipt & formatted printable PDF with vehicle barcode. |
+
+---
+
+### C.6. Developer Hardware Decision & Deployment Flowchart
 
 ```
                  [ STEP 1: CLIENT HARDWARE PROCUREMENT IN GILMORE ]
@@ -591,9 +628,10 @@ Create a standalone file `index.html` with this complete working demonstration c
 
 ---
 
-### C.5. Developer Best Practices & Quality Checklist
+### C.7. Developer Best Practices & Quality Checklist
 
 1. **Defensive DOM Operations:** Always verify element existence (`if (document.getElementById('...'))`) before accessing properties to prevent uncaught runtime errors during role switching.
 2. **Cache Busting Rule:** Always increment the script query version in `frontend/index.html` (e.g., `js/app.js?v=4.39`) when updating JavaScript logic.
-3. **Repository Isolation:** Never mix Supabase sandbox experimental files into the primary PHP/MySQL repository; keep them in their separate GitHub repository (`hontech-cloud-poc`) for clean version control.
+3. **Repository Isolation:** Never mix Supabase sandbox experimental files into the primary PHP/MySQL repository; keep them in their separate GitHub repository (`hontech-cloud-vercel-supabase`) for clean version control.
+
 
