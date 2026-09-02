@@ -516,3 +516,84 @@ Create a standalone file `index.html` with this complete working demonstration c
 3. Click **"Deploy"**.
 4. In ~20 seconds, Vercel gives you a live global link (e.g. `https://hontech-cloud-poc.vercel.app`).
 5. Open the link on your phone and on a laptop $\rightarrow$ Add a vehicle on your phone $\rightarrow$ **Watch it instantly pop up on your laptop screen in under 100 milliseconds via WebSockets!**
+
+---
+---
+
+# 📖 APPENDIX C: DEVELOPER DUAL-REPOSITORY WORKFLOW & DEPLOYMENT FLOW
+
+*This section defines the exact developer workflow, repository isolation rules, and decision flow for Justin Nolasco J. (Lead Systems Developer).*
+
+### C.1. Dual-Repository Architectural Architecture
+
+```
+                                 [ JUSTIN NOLASCO J. ]
+                               (Lead Systems Developer)
+                                          │
+            ┌─────────────────────────────┴─────────────────────────────┐
+            ▼                                                           ▼
+┌──────────────────────────────────────────┐ ┌──────────────────────────────────────────┐
+│ 🛡️ REPOSITORY 1: PRODUCTION SYSTEM       │ │ 🧪 REPOSITORY 2: CLOUD SANDBOX POC       │
+│ `Hontech_Main_Active_Development_PHP_SQL`│ │ `hontech-cloud-poc`                      │
+├──────────────────────────────────────────┤ ├──────────────────────────────────────────┤
+│ • Full Stack: PHP PDO + MySQL + JS       │ │ • Serverless: Vercel CDN + Supabase DB   │
+│ • Express 2H SLA + Audit History Modal   │ │ • Live Realtime WebSocket broadcast      │
+│ • Local Intranet XAMPP (192.168.1.100)   │ │ • Live HTTPS URL: `hontech.vercel.app`   │
+│ • OR Standard Cloud VPS (0 code refactor)│ │ • ₱0.00 / Month Permanent Free Tier      │
+│ • Git: `branch2-Security-Account-Recovery│ │ • Git: `main` (Isolated sandbox)         │
+└──────────────────────────────────────────┘ └──────────────────────────────────────────┘
+```
+
+---
+
+### C.2. Repository 1: Primary Production Engine (`Hontech_Main_Active_Development_PHP_SQL`)
+
+* **Primary Purpose:** Official capstone production codebase containing the complete business logic, RBAC, 2-Hour Express PMS SLA alerts, audit trails, and claim stub printing.
+* **Dual Deployment Capability (No Code Refactoring Needed):**
+  * **Local Intranet Mode:** Placed on the shop's local Windows Server PC inside `C:\xampp\htdocs\...`. Accessed at `http://192.168.1.100/frontend/index.html`.
+  * **Standard Cloud Mode:** Uploaded directly to any PHP/MySQL cloud host (e.g. Railway, Render, DigitalOcean, Hostinger). Runs on standard HTTPS (`https://app.hontechautocenter.com`) with **0 code changes**.
+* **Branch Strategy:**
+  * Active development: `branch2-Security-Account-Recovery`
+  * Stable client release: `main`
+
+---
+
+### C.3. Repository 2: Cloud Sandbox PoC (`hontech-cloud-poc`)
+
+* **Primary Purpose:** A lightweight, isolated sandbox repository used to demonstrate instant mobile-to-TV cloud synchronization without touching or risking the primary PHP production code.
+* **Tech Stack:**
+  * Frontend: Static HTML5, Tailwind CSS, Vanilla JavaScript.
+  * Backend: Supabase PostgreSQL Realtime (`@supabase/supabase-js`).
+  * Hosting: Vercel Global Edge Network.
+* **Cost:** ₱0.00 forever (No credit card required).
+
+---
+
+### C.4. Developer Deployment & Decision Flowchart
+
+```
+                 [ STEP 1: CLIENT HARDWARE PROCUREMENT IN GILMORE ]
+                                          │
+                                          ▼
+                      [ Did client buy Front Desk & SA Screens? ]
+                                          │
+                                          ▼
+                      [ Is there budget left for a Server PC? ]
+                                          │
+                       ┌──────────────────┴──────────────────┐
+                       ▼ YES                                 ▼ NO
+      [ OPTION A: LOCAL INTRANET ]               [ OPTION B: CLOUD HOSTING ]
+      • Install XAMPP on Server PC               • Launch Repo 2 on Vercel/Supabase
+      • Deploy Repo 1 (PHP + MySQL)              • OR Deploy Repo 1 on Cloud PHP host
+      • Set Static IP 192.168.1.100              • ₱0 Server Hardware Needed
+      • Connect via Shop Wi-Fi & LAN             • Live worldwide via HTTPS in 15 mins
+```
+
+---
+
+### C.5. Developer Best Practices & Quality Checklist
+
+1. **Defensive DOM Operations:** Always verify element existence (`if (document.getElementById('...'))`) before accessing properties to prevent uncaught runtime errors during role switching.
+2. **Cache Busting Rule:** Always increment the script query version in `frontend/index.html` (e.g., `js/app.js?v=4.39`) when updating JavaScript logic.
+3. **Repository Isolation:** Never mix Supabase sandbox experimental files into the primary PHP/MySQL repository; keep them in their separate GitHub repository (`hontech-cloud-poc`) for clean version control.
+
