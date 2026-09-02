@@ -18,7 +18,7 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 7.0 (Financial Lifecycle CapEx/OpEx & Data Governance Edition)
+**Document Version:** 8.0 (IT Maintenance & Developer Support Edition)
 
 ---
 
@@ -26,6 +26,7 @@
 1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
 2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
 3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
+   - [IT Maintenance & Developer Support Profile](#-it-maintenance--developer-support-profile-who-manages-what)
    - [The Financial Lifecycle: Upfront Cost vs. Compounding Subscriptions](#-1-the-financial-lifecycle-upfront-cost-vs-long-term-compounding)
    - [Account Suspension & Data Lockout Risks](#-2-account-suspension--data-lockout-risks-cloud-vs-local)
    - [The 2026 PC Parts Inflation Reality](#-3-the-2026-pc-parts-price-inflation-reality)
@@ -39,7 +40,7 @@
    - [Track B: Modern Cloud Deployment Plan](#-track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
 6. [Training, Simulation & Dry-Run Protocols](#6-training-simulation--dry-run-protocols)
 7. [Security, Audit Governance & Emergency Protocols](#7-security-audit-governance--emergency-protocols)
-8. [Handover Deliverables Package](#8-handover-deliverables-package)
+8. [Handover Deliverables Package & Post-Warranty Retainer Options](#8-handover-deliverables-package--post-warranty-retainer-options)
 9. [Official Client Sign-Off](#9-official-client-sign-off)
 
 ---
@@ -71,7 +72,7 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ## 3. Executive Strategic Brainstorming: Local vs. Cloud
 
-To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **Current Hardware Market Inflation**, **Account Lockout & Data Sovereignty Risks**, **Auto Shop Physical Hazards**, and **Disaster Recovery**.
+To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **IT Maintenance & Developer Support Needs**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -81,6 +82,9 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
 │ Financial Model          │ **High Upfront / Cheap Long**│ **Cheap Start / Compounding** │
 │ (CapEx vs. OpEx)         │ ₱22,000 once $\rightarrow$ ₱0/yr ongoing│ ₱0 start $\rightarrow$ ₱16,800/yr forever│
+├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
+│ IT / Developer Support   │ **On-Call Hardware/DB Tech**│ **Cloud Admin / Web Dev**     │
+│ Requirement              │ (For physical dust/backups) │ (For quota/API/DNS management)│
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
 │ Upfront Hardware Capital │ ₱16,500 – ₱25,000+          │ ₱0 (Runs on existing devices) │
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
@@ -103,6 +107,32 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 │ Disaster Recovery        │ Manual USB backup needed    │ Automated daily cloud backups │
 └──────────────────────────┴─────────────────────────────┴───────────────────────────────┘
 ```
+
+---
+
+### 🛠️ IT Maintenance & Developer Support Profile (Who Manages What?)
+
+A key question for management is: *"Does HonTech need a developer or IT specialist to maintain this system?"*
+
+* **During Daily Shop Operations (Both Options):**
+  * **Zero Developer Needed Daily:** The system is designed for non-technical staff. Service Advisors and Admins simply turn on their screens, log in, and use the graphical dashboard.
+* **Post-Launch Maintenance Requirements by Architecture:**
+
+#### 🟢 Option A (Local Intranet Server):
+* **Type of IT Support Needed:** **Hardware & Local Network Maintenance**
+* **Tasks Involved:**
+  * Cleaning dust and grease from the server PC fans every 6 months to prevent overheating.
+  * Checking that scheduled USB database backups are running properly.
+  * Assisting if Windows encounters an OS update crash or power surge issue.
+* **Recommended Setup:** HonTech can engage an **On-Call IT Technician / Developer** on an as-needed basis or under a modest quarterly retainer.
+
+#### 🔵 Option B (Cloud Vercel + Supabase):
+* **Type of IT Support Needed:** **Cloud Account & Web Administration**
+* **Tasks Involved:**
+  * Monitoring monthly database read/write quotas to ensure the shop doesn't hit tier limits.
+  * Renewing custom domain names (`hontech.com`) and managing SSL certificates annually.
+  * Updating cloud environment variables, API keys, and deploying software patches.
+* **Recommended Setup:** HonTech can engage a **Freelance Web Developer / Cloud Admin** on a light monthly retainer or on-demand retainer.
 
 ---
 
@@ -154,7 +184,7 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 | ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
 | ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
 | ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
-| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | |
+| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **On-Premise IT Maintenance:** Requires periodic local PC dust cleaning and physical hardware oversight. |
 
 ---
 
@@ -165,7 +195,7 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 | ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Account Suspension / Lockout Risk:** If credit card billing fails or is delayed, cloud providers can freeze database access. |
 | ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
 | ✅ **Multi-Branch Ready (Branch B & C):** Connects future branch locations into one synchronized company dashboard. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
-| ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | |
+| ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | ❌ **Cloud Admin Support Needed:** Requires someone to manage monthly database quotas, API keys, and domain renewals. |
 
 ---
 
@@ -239,7 +269,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ---
 
-## 6. Training, Simulation & Dry-Run Protocols
+## 6. Staff Training & "Shadow Mode" Dry Run Protocol
 
 ```
 [ Step 1: Guided Staff Workshop (60 Mins) ]
@@ -274,7 +304,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ---
 
-## 8. Handover Deliverables Package
+## 8. Handover Deliverables Package & Post-Warranty Retainer Options
 
 Upon project completion, HonTech AutoCenter management will receive:
 1. **Configured Working System:** Active on the chosen platform (*Local Server or Cloud*).
@@ -282,6 +312,8 @@ Upon project completion, HonTech AutoCenter management will receive:
 3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user roles, audit histories, and password resets.
 4. **Emergency Fallback Protocol (PDF):** Clear contingency steps for power outages and hardware recovery.
 5. **Source Code & Database Archive:** Full system code and initial database snapshot.
+6. **Complimentary 1–2 Months Maintenance:** Free bug fixes, performance monitoring, and staff support during the transition.
+7. **Optional Post-Warranty IT Retainer:** After the complimentary 2-month warranty, HonTech may opt into an affordable on-call IT retainer (or on-demand per visit) covering periodic dust cleaning, manual/cloud backups, and future system enhancements.
 
 ---
 
