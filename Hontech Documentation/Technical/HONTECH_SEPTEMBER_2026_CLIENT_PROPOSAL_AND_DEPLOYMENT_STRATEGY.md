@@ -258,106 +258,108 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 
 ---
 
-## 6. Staff Training & "Shadow Mode" Dry Run Protocol
+## 6. Staff Training & "Shadow Mode" Dry-Run Protocol
+
+To guarantee a seamless transition without disrupting daily customer intake, the rollout follows a structured 3-phase training and testing methodology:
+
+### 👥 6.1 Role-by-Role Training Matrix
+
+| Staff Role | Target Devices | Training Curriculum & Focus Areas | Duration |
+| :--- | :--- | :--- | :--- |
+| **Service Advisors (SAs)** | Tablets / Smartphones | • 30-second vehicle intake & plate number lookup<br>• Express 2-Hour PMS SLA timer tracking<br>• Logging delay reasons & parts waiting flags<br>• Real-time bay status updates *(Intake → Bay → Done)* | 45 Mins |
+| **Cashier / Front Desk** | Desktop PC / Laptop | • Generating & printing 80mm thermal / PDF claim stubs<br>• Customer checkout, billing status & invoice printing<br>• Customer phone SMS / call notification triggers | 30 Mins |
+| **Owner / General Manager** | Smartphone / Laptop | • Real-time bay throughput & daily revenue analytics<br>• Inspecting tamper-proof audit trails (`job_audit_logs`)<br>• Multi-branch management & staff account administration | 30 Mins |
+| **Lounge Display Operator** | Waiting Lounge TV | • Launching full-screen Waiting Lounge TV URL (`?mode=tv`)<br>• Verifying real-time auto-refresh queue & privacy mode | 15 Mins |
+
+---
+
+### 🔄 6.2 The 3-Stage "Shadow Mode" Operational Protocol (Zero Customer Risk)
 
 ```
-[ Step 1: Guided Staff Workshop (60 Mins) ]
-  • Front desk walk-in & booking workflow
-  • Express 2-Hour SLA delay logging
-  • 80mm / PDF Claim Stub printing
+[ Stage 1: Guided Staff Workshop (60 Mins) ]
+  • Hands-on simulation using 5 mock repair orders
+  • Staff practice intake, delay logging, and claim stub printing
               │
               ▼
-[ Step 2: "Shadow Mode" Dry Run (2–3 Days) ]
-  • Staff use paper stubs + digital system simultaneously
-  • Zero risk to actual shop operations
-  • Identifies UI/UX questions in real time
+[ Stage 2: Live "Shadow Mode" (2–3 Days) ]
+  • Staff use traditional paper stubs AND enter data into digital system simultaneously
+  • Zero risk to actual shop operations (paper stubs act as 100% fail-safe)
+  • Identifies staff questions, Wi-Fi dead zones, or UI adjustments in real time
               │
               ▼
-[ Step 3: Full Go-Live Cutover ]
-  • Paper stubs retired
-  • 100% synchronized digital workflow
+[ Stage 3: End-of-Day Reconciliation & Staff Feedback ]
+  • Team compares digital logs against paper receipts to verify 100% data accuracy
+  • Fine-tune workflows based on direct staff feedback
+              │
+              ▼
+[ Stage 4: 100% Digital Cutover (Go-Live) ]
+  • Paper stubs retired; system becomes standard operating procedure
 ```
+
+---
+
+### ✅ 6.3 Staff Competency & Go-Live Checklist
+
+Before retiring paper claim stubs, the team and HonTech management verify the following 5 criteria:
+- [ ] **Fast Vehicle Intake:** Service Advisors can intake a walk-in vehicle and assign a service bay in under 60 seconds.
+- [ ] **Express 2H Delay Logging:** SAs understand how to log parts/labor delay reasons when Express PMS exceeds target SLA.
+- [ ] **Claim Stub Verification:** Cashier can print clear 80mm thermal claim stubs with complete repair order details.
+- [ ] **Lounge TV Real-Time Sync:** Customer lounge display updates automatically when a car finishes servicing without page reloads.
+- [ ] **Remote Owner Visibility:** Business owner can log into the live dashboard and view shop bay queues on a smartphone.
 
 ---
 
 ## 7. Security Governance, Internal & External Cyber Defense Protocols
 
-To safeguard customer privacy, financial data, and shop operational integrity, the system implements a multi-layered security model addressing both **Internal Workshop Defense** and **External Cyber Exposure**:
+To safeguard customer privacy, financial records, and operational integrity, the system implements defense-in-depth across both **Internal Workshop Floor** and **External Cyber Exposure**:
 
-```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                           INTERNAL VS. EXTERNAL SECURITY COMPARISON                               │
-├──────────────────────────┬────────────────────────────────────┬───────────────────────────────────┤
-│ SECURITY LAYER           │ OPTION A: LOCAL INTRANET SERVER    │ 🌟 OPTION B: MODERN CLOUD (RECOMM)│
-├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
-│ 🔒 Inside the Shop       │ • Private internal shop Wi-Fi      │ • Automatic role permissions      │
-│    (Staff & Workflow)    │ • Server PC password protection    │ • SAs cannot view owner finances  │
-│                          │ • Strict 4-role staff permissions  │ • Branch data completely isolated │
-│                          │ • Reason-Required change logs      │ • Reason-Required change logs     │
-├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
-│ 🌐 Outside the Shop      │ • **Hidden from Online Hackers**   │ • **Bank-Grade Cloud Protection** │
-│    (Internet & Remote)   │ • Invisible to public internet     │ • Automatic SSL Padlock (HTTPS)   │
-│                          │ • Immune to online attacks         │ • Stored in Tier-4 data centers   │
-│                          │ • No open router ports needed      │ • Automatic password brute-force  │
-│                          │                                    │   rate-limiting                   │
-└──────────────────────────┴────────────────────────────────────┴───────────────────────────────────┘
-```
+### 🔒 7.1 Internal Workshop Floor Security (Staff & LAN Governance)
+
+| Security Feature | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
+| :--- | :--- | :--- |
+| **Role-Based Access Control (RBAC)** | • 4 distinct roles: Owner, Admin, SA, Assistant<br>• SAs restricted from viewing revenue reports<br>• Cashiers restricted from deleting records | • 4 distinct roles: Owner, Admin, SA, Assistant<br>• SAs restricted from viewing revenue reports<br>• Cashiers restricted from deleting records |
+| **Tamper-Proof Audit Logging** | • Mandatory written justification for record changes<br>• Immutable `job_audit_logs` record editor name, timestamp, old value, & new value | • Mandatory written justification for record changes<br>• Immutable `job_audit_logs` record editor name, timestamp, old value, & new value |
+| **Multi-Branch Data Isolation** | • Branch A staff cannot view or modify Branch B records<br>• Central Owner account views aggregated multi-branch analytics | • Physical isolation per shop building<br>• Cross-branch viewing requires dedicated VPN hardware |
+| **Physical Workshop Network** | • Secured via WPA3 shop Wi-Fi password<br>• Accessible from authorized staff devices | • Dedicated `HonTech_Staff` LAN subnet<br>• Customer lounge Wi-Fi separated from server LAN |
 
 ---
 
-### 🔒 7.1 Internal Security Architecture (Workshop Floor & LAN Defense)
+### 🌐 7.2 External Cyber Defense (Internet & Remote Security)
 
-Internal security prevents unauthorized access or accidental data tampering by staff, technicians, or visitors inside the shop:
-
-* **Role-Based Access Control (RBAC):**
-  * **Owner:** Complete system control, global multi-branch analytics, staff creation, database reset, and backup exports.
-  * **Admin:** System configuration, branch audit trail inspection, and repair monitoring.
-  * **Service Advisor (SA):** Job intake, claim stub printing, status updates, and Express 2H delay reporting. *Strictly restricted from viewing financial revenue reports or deleting records.*
-  * **Assistant:** View-only queue inspection and bay progress updates.
-* **Tamper-Proof Reason-Required Audit Trail (`job_audit_logs`):**
-  * Any modification to departure times, service categories, lane types, or vehicle diagnoses **requires a mandatory operational justification** (*e.g., "Customer requested additional brake pad replacement"*).
-  * The system records the old value, new value, editor's full name, role, and exact timestamp into an immutable audit table.
-* **Local LAN Network Segmentation (Option A):**
-  * The server runs on a dedicated **Staff Wi-Fi network (`HonTech_Staff`)** with WPA3 encryption, completely separated from customer lounge guest Wi-Fi.
-  * Windows Server PC is locked with a dedicated Administrator password, and public database consoles (PHPMyAdmin) are disabled on external network interfaces.
+| Defense Layer | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
+| :--- | :--- | :--- |
+| **Public Internet Exposure** | **Bank-Grade Cloud Defense**<br>• Protected behind Cloudflare edge network<br>• Automated bot & DDoS attack filtering | **Complete Air-Gap Invisibility**<br>• Server PC is invisible on the public internet<br>• 0 open inbound firewall ports |
+| **Data Encryption (In Transit & At Rest)** | • **SSL/TLS 1.3** bank-grade encryption in transit<br>• **AES-256** enterprise hardware encryption at rest | • Local LAN unencrypted HTTP (or self-signed SSL)<br>• Data stored on local Windows NTFS drive |
+| **Brute-Force & Credential Security** | • Bcrypt password hashing (Cost Factor 10)<br>• Automated rate-limiting on failed login attempts | • Bcrypt password hashing (Cost Factor 10)<br>• Windows PC password protection |
+| **Remote Access Method** | Native HTTPS web URL from any browser worldwide | Zero-Trust Cloudflare Tunnel (`cloudflared`) required |
 
 ---
 
-### 🌐 7.2 External Security Architecture (Cyber Attack Exposure & Cloud Defense)
+### ⚡ 7.3 Emergency Outage & Disaster Recovery Comparison
 
-External security protects HonTech's business data from outside internet hackers, malware, and unauthorized remote access:
-
-* **Option A: Physical Air-Gap Protection (Maximum Peace of Mind):**
-  * Because the Local Server operates purely on internal copper cables and shop Wi-Fi, **it has 0 open ports to the outside world**.
-  * Automated internet web crawlers, ransomware bots, and foreign cyber attackers cannot scan or reach the server because it is not connected to a public IP address.
-  * *Remote Multi-Branch Access:* If Branch B needs to connect, we use a **Zero-Trust Cloudflare Tunnel (`cloudflared`)**, which authenticates connections over encrypted outbound tunnels without opening risky inbound firewall ports.
-* **Option B: Enterprise Cloud Defense (Tier-4 Infrastructure):**
-  * **DDoS & Bot Mitigation:** Hosted behind Cloudflare’s global Anycast edge network, automatically filtering malicious traffic spikes.
-  * **Data Encryption in Transit & at Rest:** All data exchanged between staff devices and the cloud is encrypted with **SSL/TLS 1.3** and stored under **AES-256 hardware encryption**.
-  * **Brute-Force Login Protection:** Authentication endpoints utilize **Bcrypt password hashing (Cost Factor 10)** with automated rate-limiting to prevent password-guessing attacks.
-
----
-
-### ⚡ 7.3 Emergency Power Outage & Fallback Protocol
-
-* In the event of a total municipal power failure (Meralco blackout):
-  1. The server UPS maintains power for 15–20 minutes to permit a clean database shutdown.
-  2. Staff temporarily issue backup paper claim stubs.
-  3. Upon power restoration, the system restarts automatically via Windows Startup scripts, and paper stubs are digitized in under 5 minutes.
-
+| Failure Scenario | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
+| :--- | :--- | :--- |
+| **Meralco Power Outage (Blackout)** | **100% Unaffected in Cloud**<br>• Cloud database runs continuously in AWS<br>• Staff can continue using cellular tablets/phones | **Requires UPS Battery Backup**<br>• UPS powers PC for 15–20 mins for safe shutdown<br>• Temporary paper fallback until power restores |
+| **Municipal Fiber Internet Outage** | **5-Second Backup Wi-Fi Switchover**<br>• Front desk switches to ₱999 4G/5G prepaid SIM router | **100% Immune to Internet Outages**<br>• System runs locally over shop Wi-Fi without internet |
+| **Hardware Crash / Drive Failure** | **Zero Data Loss**<br>• Point-in-time automated daily cloud backups | **Requires Manual USB Backups**<br>• Restore from weekly manual USB drive backup |
 
 ---
 
 ## 8. Handover Deliverables Package & Project Authorization
 
-Upon project completion and sign-off, HonTech AutoCenter management will receive:
-1. **Configured Working System:** Fully operational and active on the chosen platform (*Recommended Cloud or Local Server*).
-2. **Staff Quick-Start User Manual (PDF):** Visual, screenshot-heavy guide for Front Desk & Service Advisors.
-3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user accounts, roles, audit histories, and password resets.
-4. **Emergency Fallback Protocol (PDF):** Clear contingency steps for power outages and database recovery.
-5. **Source Code & Database Architecture Archive:** Full system code and initial database snapshot.
-6. **Complimentary 1–2 Months Maintenance & Warranty:** Free bug fixes, performance monitoring, and staff support during the operational transition.
-7. **Optional Post-Warranty Support:** After the complimentary 2-month warranty, HonTech may opt into an affordable on-call IT retainer (or on-demand per visit) covering periodic checkups, manual/cloud backups, and future enhancements.
+Upon project completion and sign-off, HonTech AutoCenter management will receive a complete operational handover package tailored to the selected pathway:
+
+### 📦 Comprehensive Deliverables Breakdown: Cloud vs. Local
+
+| Deliverable Item | 🌟 Option B: Modern Cloud Package *(RECOMMENDED)* | Option A: Local Intranet Server Package *(Alternative)* |
+| :--- | :--- | :--- |
+| **1. Live Operational System** | • Production Web URL & SSL Domain<br>• Full ownership of Supabase Cloud DB project<br>• Active Vercel CDN deployment | • Assembled Work-Grade Server PC in office<br>• Configured Apache/MySQL on static IP (`192.168.1.100`)<br>• Windows background startup services configured |
+| **2. Staff Quick-Start Manual (PDF)** | • Visual guide for tablets, smartphones, & PCs<br>• QR code bookmarks for staff instant access | • Visual guide for front desk PC & local LAN tablets<br>• Local IP desktop shortcuts (`HonTech_Intranet.lnk`) |
+| **3. Administrator & Security Guide (PDF)** | • Supabase database backup & export instructions<br>• Staff account creation, role changes, & password resets<br>• Cloud quota monitoring guide | • Windows XAMPP start/stop procedures<br>• MySQL automated USB backup batch script manual<br>• Local static IP troubleshooting guide |
+| **4. Emergency Fallback Runbook (PDF)** | • 4G/5G mobile backup Wi-Fi switchover protocol<br>• Temporary paper intake procedure | • UPS battery backup shutdown & restart protocol<br>• Database restoration from USB flash drive |
+| **5. Source Code & Architecture Archive** | • Complete GitHub repository source code<br>• Database schema SQL scripts & seed definitions | • USB Flash Drive containing full system source code, XAMPP installer, & master `.sql` schema backup |
+| **6. Complimentary 1–2 Months Warranty** | • **₱0 Free Support:** Remote uptime monitoring, query optimization, bug fixes, & staff guidance | • **₱0 Free Support:** On-site hardware checkups, LAN performance tuning, bug fixes, & staff guidance |
+| **7. Optional Post-Warranty Support** | • **Cloud Admin Retainer:** Remote monthly database checkups, quota monitoring, & feature updates | • **On-Call Hardware Support:** On-site hardware cleaning, physical drive maintenance, & network repairs |
 
 ---
 
