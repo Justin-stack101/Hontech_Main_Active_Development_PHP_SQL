@@ -6,7 +6,7 @@
 
 **Client Organization:** HonTech AutoCenter (Management & Operations)  
 **Project Initiative:** Enterprise Bay Management & Queue Monitoring Platform  
-**Authors & Engineering Team:**  
+**Prepared by — HonTech Development Team:**  
 • **Mary Dayne Villas T.** — *System Architect & System Designer*  
 • **Justin Nolasco J.** — *Lead Systems Developer & Technical Implementation*  
 • **Catherine Ramos G.** — *Technical Documentation & QA Lead*  
