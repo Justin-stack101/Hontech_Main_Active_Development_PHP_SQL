@@ -18,7 +18,7 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 6.0 (Comprehensive Executive Brainstorming & Financial TCO Edition)
+**Document Version:** 7.0 (Financial Lifecycle CapEx/OpEx & Data Governance Edition)
 
 ---
 
@@ -26,10 +26,11 @@
 1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
 2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
 3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
-   - [The 2026 PC Parts Inflation Reality](#-1-the-2026-pc-parts-price-inflation-reality)
-   - [Auto Shop Environmental Hazards & Wear](#-2-auto-shop-environmental-hazards--hardware-longevity)
-   - [Hidden Electricity & Meralco TCO Analysis](#-3-the-hidden-cost-of-electricity-tco-analysis)
-   - [Internet Outage Safeguards & The ₱999 Safety Net](#-4-the-internet-outage-myth--the-999-safety-net-for-cloud)
+   - [The Financial Lifecycle: Upfront Cost vs. Compounding Subscriptions](#-1-the-financial-lifecycle-upfront-cost-vs-long-term-compounding)
+   - [Account Suspension & Data Lockout Risks](#-2-account-suspension--data-lockout-risks-cloud-vs-local)
+   - [The 2026 PC Parts Inflation Reality](#-3-the-2026-pc-parts-price-inflation-reality)
+   - [Auto Shop Environmental Hazards & Hardware Longevity](#-4-auto-shop-environmental-hazards--hardware-longevity)
+   - [Internet Outage Safeguards & The ₱999 Safety Net](#-5-the-999-internet-safety-net-for-cloud)
    - [Detailed Pros & Cons Breakdown](#-side-by-side-pros--cons-for-ownership)
    - [Recommended Hybrid Phased Strategy](#-recommended-hybrid-phased-strategy-for-hontech)
 4. [Hardware Sourcing & Facility Preparation](#4-hardware-sourcing--facility-preparation)
@@ -70,7 +71,7 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ## 3. Executive Strategic Brainstorming: Local vs. Cloud
 
-To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Current Hardware Market Inflation**, **Auto Shop Physical Hazards**, **Electricity & Hidden Costs**, **Internet Outage Safeguards**, and **Disaster Recovery**.
+To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **Current Hardware Market Inflation**, **Account Lockout & Data Sovereignty Risks**, **Auto Shop Physical Hazards**, and **Disaster Recovery**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -78,8 +79,13 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 ├──────────────────────────┬─────────────────────────────┬───────────────────────────────┤
 │ EVALUATION PILLAR        │ OPTION A: LOCAL INTRANET    │ OPTION B: CLOUD (VERCEL+SUPA) │
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
+│ Financial Model          │ **High Upfront / Cheap Long**│ **Cheap Start / Compounding** │
+│ (CapEx vs. OpEx)         │ ₱22,000 once $\rightarrow$ ₱0/yr ongoing│ ₱0 start $\rightarrow$ ₱16,800/yr forever│
+├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
 │ Upfront Hardware Capital │ ₱16,500 – ₱25,000+          │ ₱0 (Runs on existing devices) │
-│ (Current PC Parts Cost)  │ (High upfront capital risk) │ (Zero upfront hardware risk)  │
+├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
+│ Unpaid Provider Risk     │ **Zero Risk (Cannot be locked│ **Account Suspension & Lock** │
+│ (Billing / Credit Card)  │ out of physical computer)** │ (Data frozen if card fails)   │
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
 │ Monthly Software Cost    │ ₱0 / month                  │ ₱0 – ₱1,400 / month           │
 ├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
@@ -102,22 +108,40 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 
 ### 💡 Fresh Insights & Business Brainstorming
 
-#### 💰 1. The 2026 PC Parts Price Inflation Reality
-* **The Problem with Local Hardware Today:** Desktop PC components (processors, RAM, SSDs, power supply units) have experienced noticeable price inflation. Buying a new dedicated server rig today requires an immediate cash outlay of **₱18,000–₱25,000+** from HonTech before the system even goes live.
-* **Why Cloud (Vercel + Supabase) Solves This:** The Cloud option completely **eliminates the upfront ₱25,000 hardware barrier**. HonTech can launch immediately using their existing front desk computer, laptops, tablets, or smartphones without spending a single peso on new computer parts.
+#### 📈 1. The Financial Lifecycle: Upfront Cost vs. Long-Term Compounding
+* **Option A (Local Hosting — Capital Asset / CapEx):**
+  * *The Dynamic:* **Pay more upfront, save huge long-term.**
+  * HonTech purchases the server PC upfront (~₱22,000). While painful on Day 1, there are **₱0 monthly software bills for Year 2, Year 3, Year 4, and Year 5**. The longer HonTech uses the system, the cheaper it becomes per month over its lifetime.
+* **Option B (Cloud Hosting — Operational Subscription / OpEx):**
+  * *The Dynamic:* **Cheap to start today, but compounding costs forever.**
+  * HonTech launches with ₱0 upfront capital, which is great for short-term cash flow. However, cloud usage fees (~₱1,000–₱1,400/month) continue indefinitely and compound over time (reaching **₱60,000–₱85,000+ over 5 years**).
 
-#### 🏭 2. Auto Shop Environmental Hazards & Hardware Longevity
-* **Auto Center Workshop Realities:** Auto centers have heavy airborne tire dust, oil vapors, high ambient humidity, and electrical voltage spikes whenever heavy hydraulic lifts and air compressors kick in.
-* **Option A Risk:** A physical server desktop sitting in the shop requires a dedicated Uninterruptible Power Supply (UPS), periodic internal dust cleaning, and runs the risk of motherboard or power supply burnout over a 2–3 year lifespan.
-* **Option B Advantage:** The server engine lives in an enterprise-grade, climate-controlled AWS data center with 99.99% uptime guarantees and automatic hardware replacement handled by cloud providers.
+---
 
-#### 🔌 3. The Hidden Cost of Electricity (TCO Analysis)
-* A local server desktop PC running continuously during shop hours consumes electricity, adding approximately **₱350–₱600/month** to the shop’s Meralco bill (~₱4,200–₱7,200/year).
-* With the Cloud solution, that electrical cost is ₱0 because computation happens on external cloud servers, making the actual cost difference between Local and Cloud virtually identical over 2 years!
+#### 🔒 2. Account Suspension & Data Lockout Risks (Cloud vs. Local)
+* **What Happens if Cloud Bills Aren't Paid (Option B Risk):**
+  * In modern cloud services (Supabase/AWS/Vercel), if a monthly payment fails, an expired credit card is rejected, or management forgets to renew:
+  * **The cloud provider will automatically suspend project access, lock database queries, or put the system in read-only freeze until payment is settled.** In severe overdue cases (60–90 days), cloud providers can permanently delete unmaintained databases.
+* **The Local Sovereignty Advantage (Option A Peace of Mind):**
+  * With a Local Intranet Server, **nobody on Earth can ever lock HonTech out of its own system**. The data sits on physical SSDs inside the building. Even if internet or third-party companies go bankrupt, HonTech maintains 100% operational continuity.
 
-#### 📡 4. The Internet Outage Myth & The ₱999 Safety Net for Cloud
-* **The Main Concern with Cloud:** "What happens if PLDT or Globe fiber cuts out?"
-* **The Modern Solution:** A simple **₱999 prepaid backup Wi-Fi router (Smart Bro / Globe At Home)** with a budget data SIM sitting in the front office. If the main shop fiber ever goes down, staff connect to the backup Wi-Fi in 5 seconds and operations continue uninterrupted!
+---
+
+#### 💰 3. The 2026 PC Parts Price Inflation Reality
+* Desktop PC components (processors, RAM, SSDs, power supply units) have experienced noticeable price inflation. Buying a new dedicated server rig today requires an immediate cash outlay of **₱18,000–₱25,000+** from HonTech before the system even goes live.
+* The Cloud option completely **eliminates this upfront ₱25,000 hardware barrier** for immediate launch.
+
+---
+
+#### 🏭 4. Auto Shop Environmental Hazards & Hardware Longevity
+* Auto centers have heavy airborne tire dust, oil vapors, high ambient humidity, and electrical voltage spikes whenever heavy hydraulic lifts and air compressors kick in.
+* **Option A:** Requires a dedicated UPS (Uninterruptible Power Supply), periodic dust cleaning, and runs the risk of motherboard or power supply burnout over a 2–3 year lifespan.
+* **Option B:** The server engine lives in an enterprise-grade, climate-controlled AWS data center with 99.99% uptime and automatic hardware replacement.
+
+---
+
+#### 📡 5. The ₱999 Internet Safety Net for Cloud
+* If HonTech chooses Cloud, a simple **₱999 prepaid backup Wi-Fi router (Smart Bro / Globe At Home)** with a budget data SIM in the front office guarantees that staff can switch over in 5 seconds if main fiber internet drops.
 
 ---
 
@@ -126,20 +150,21 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 #### 🟢 Option A: Local Intranet Hosting (On-Premise Server)
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
-| ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees or database billing. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,000–₱25,000+ immediately on new computer parts. |
-| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
-| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
-| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
+| ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,000–₱25,000+ immediately on new computer parts. |
+| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
+| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
+| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
+| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | |
 
 ---
 
 #### 🔵 Option B: Modern Cloud Solutions (Vercel + Supabase)
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
-| ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
-| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world. | ❌ **Modest Monthly Usage Fees:** Incurs ₱800–₱1,400/month after free database tier limits are scaled. |
-| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
-| ✅ **Multi-Branch Ready (Branch B & C):** Connects future branch locations into one synchronized company dashboard. | |
+| ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Compounding Long-Term Expense:** Recurring monthly fees (~₱1,000–₱1,400/mo) never end, totaling ₱60,000–₱85,000+ over 5 years. |
+| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Account Suspension / Lockout Risk:** If credit card billing fails or is delayed, cloud providers can freeze database access. |
+| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
+| ✅ **Multi-Branch Ready (Branch B & C):** Connects future branch locations into one synchronized company dashboard. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
 | ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | |
 
 ---
@@ -147,7 +172,7 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 ### 🚀 Recommended "Hybrid Phased" Strategy for HonTech
 If management is undecided, we recommend the **Hybrid Phased Rollout**:
 1. **Phase 1 (Launch on Cloud — ₱0 Upfront):** Launch with Vercel + Supabase in September. This allows HonTech to start immediately with **₱0 hardware expense** and test remote mobile access.
-2. **Phase 2 (Optional Local Migration Later):** If HonTech ever decides they prefer a local server in the future, our codebase is 100% modular and can be transferred to a local PC with 1 click!
+2. **Phase 2 (Optional Local Migration Later):** If HonTech ever decides they prefer a local server in the future to eliminate monthly fees, our codebase is 100% modular and can be transferred to a local PC with 1 click!
 
 ---
 
@@ -217,7 +242,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 ## 6. Training, Simulation & Dry-Run Protocols
 
 ```
-[ Step 1: Interactive Guided Sandbox (60 Mins) ]
+[ Step 1: Guided Staff Workshop (60 Mins) ]
   • Front desk walk-in & booking workflow
   • Express 2-Hour SLA delay logging
   • 80mm / PDF Claim Stub printing
