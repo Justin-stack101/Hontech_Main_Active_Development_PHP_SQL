@@ -359,45 +359,97 @@ External security protects HonTech's business data from outside internet hackers
 
 ---
 
-## 8. Handover Deliverables Package & Post-Warranty Retainer Options
+## 8. Handover Deliverables, Post-Turnover Developer Strategy & Project Authorization
 
-Upon project completion, HonTech AutoCenter management will receive:
-1. **Configured Working System:** Active on the chosen platform (*Local Server or Cloud*).
-2. **Staff Quick-Start User Manual (PDF):** Visual, screenshot-heavy guide for Front Desk & Service Advisors.
-3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user roles, audit histories, and password resets.
-4. **Emergency Fallback Protocol (PDF):** Clear contingency steps for power outages and hardware recovery.
-5. **Source Code & Database Archive:** Full system code and initial database snapshot.
-6. **Complimentary 1–2 Months Maintenance:** Free bug fixes, performance monitoring, and staff support during the transition.
-7. **Optional Post-Warranty IT Retainer:** After the complimentary 2-month warranty, HonTech may opt into an affordable on-call IT retainer (or on-demand per visit) covering periodic dust cleaning, manual/cloud backups, and future system enhancements.
+### 📦 8.1 Handover Deliverables Package
+Upon project completion and sign-off, HonTech AutoCenter management will receive:
+1. **Configured Working Production System:** Fully operational on the chosen platform (*Recommended Cloud or Local Server*).
+2. **Staff Quick-Start User Manual (PDF):** Visual, screenshot-heavy step-by-step guide for Front Desk staff & Service Advisors.
+3. **Administrator & Security Operations Guide (PDF):** Complete manual for Owner/Admin covering user creation, RBAC permissions, audit log review, and PIN/password resets.
+4. **Emergency Fallback Protocol & Disaster Recovery Runbook (PDF):** Clear contingency steps for power blackouts, internet drops, and database restoration.
+5. **Full Source Code Repository & Database Architecture Archive:** Complete, uncompiled source code, SQL schema migrations, and initial seed snapshots.
+6. **Built-in Diagnostic Tools:** High-contrast developer error reporting overlay with one-click log export (`.txt`) for instant troubleshooting.
 
 ---
 
-### ✍️ Client Acknowledgment & Authorization
+### 🛠️ 8.2 Post-Turnover Developer & Maintenance Strategy ("Who Will Handle the System?")
 
-\
-**Client Representative / Owner:** ___________________________  
-**HonTech AutoCenter**  
-**Date:** ___________________________
+A common and important question from business ownership is: *"After the capstone development phase is completed, who will maintain and manage the system?"*
 
+To ensure HonTech AutoCenter never faces operational downtime or developer dependency, the project incorporates a **3-tier sustainability framework**:
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                           POST-TURNOVER SYSTEM SUSTAINABILITY FRAMEWORK                           │
+├───────────────────────────────────┬───────────────────────────────────────────────────────────────┤
+│ 1. Zero-Code Daily Operations     │ • All day-to-day tasks (adding staff, changing rates, bay    │
+│    (Self-Sustaining Admin Panel)  │   queues, backups) are done via buttons in the user interface. │
+│                                   │ • Shop managers NEVER need to write code or touch databases.  │
+├───────────────────────────────────┼───────────────────────────────────────────────────────────────┤
+│ 2. Clean, Standard Architecture   │ • Built on industry-standard HTML/CSS/JS and SQL.             │
+│    (No Vendor Lock-In)            │ • No obscure proprietary coding languages. Any junior web     │
+│                                   │   developer or IT student can understand the code in 30 mins. │
+├───────────────────────────────────┼───────────────────────────────────────────────────────────────┤
+│ 3. Tiered Post-Launch Support     │ • Phase 1: 1–2 Months 100% Free Developer Warranty Support.   │
+│                                   │ • Phase 2: Affordable on-call / per-visit retainer option.    │
+│                                   │ • Phase 3: Academic department internship pipeline for future │
+│                                   │   feature expansions.                                         │
+└───────────────────────────────────┴───────────────────────────────────────────────────────────────┘
+```
+
+1. **Self-Sustaining Admin Controls (No Daily Developer Needed):**
+   * The system is engineered so that HonTech does **not** need a full-time programmer on payroll. The Owner and Admin can create accounts, toggle active/inactive staff, change branch assignments, view audit histories, and export backups directly through intuitive visual screens.
+2. **Phase 1: 1–2 Months Complimentary Developer Warranty (₱0.00):**
+   * The development team provides 1–2 months of free post-launch monitoring, immediate bug fixes, and on-site/remote assistance while staff become 100% comfortable with the workflow.
+3. **Phase 2: Affordable On-Call IT Retainer (Optional):**
+   * After the free 2-month warranty, HonTech can engage the lead developer or an on-call IT specialist on an affordable, on-demand basis (*e.g., per scheduled quarterly checkup or per custom feature request*) rather than paying an expensive monthly IT salary.
+4. **Phase 3: Academic Collaboration & Student Internship Pipeline:**
+   * HonTech can maintain an active partnership with the college/university IT department, allowing future graduating capstone batches or student interns to build future add-on modules (*such as customer mobile apps or loyalty programs*) at zero software cost.
+
+---
+
+### ✍️ Formal Project Review, Endorsement & Authorization
+
+#### Part I: Prepared & Submitted by the Development Team
 \
 **Lead System Architect & Designer:** ___________________________  
 **Mary Dayne Villas T.**  
-**Date:** September 2, 2026
+*Signature over Printed Name* | **Date:** September 2, 2026
 
 \
-**Lead Systems Developer:** ___________________________  
+**Lead Systems Developer & Implementation Engineer:** ___________________________  
 **Justin Nolasco J.**  
-**Date:** September 2, 2026
+*Signature over Printed Name* | **Date:** September 2, 2026
 
 \
 **Technical Documentation & QA Lead:** ___________________________  
 **Catherine Ramos G.**  
-**Date:** September 2, 2026
+*Signature over Printed Name* | **Date:** September 2, 2026
 
+---
+
+#### Part II: Academic Faculty Review & Verification
 \
 **Capstone Project Adviser:** ___________________________  
 **Mr. Ar-Jay C. Agbayani**  
-**Date:** September 2, 2026
+*Faculty Capstone Project Adviser | Department of Information Technology*
+
+**Date Reviewed & Verified:** ___________________________  
+**Adviser Review Status:** `[  ] Endorsed for Client Presentation & Execution` &nbsp;&nbsp;&nbsp; `[  ] Endorsed with Minor Revisions`  
+**Adviser Notes / Remarks:** __________________________________________________________________
+
+---
+
+#### Part III: Client Acceptance & Authorization (HonTech AutoCenter)
+\
+**Client Representative / Business Owner:** ___________________________  
+**HonTech AutoCenter Management**  
+*Signature over Printed Name*
+
+**Date Approved:** ___________________________  
+**Selected Deployment Architecture:**  
+`[  ] Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED`  
+`[  ] Option A: Local Intranet Hosting (On-Premise Server PC)`
 
 ---
 ---
