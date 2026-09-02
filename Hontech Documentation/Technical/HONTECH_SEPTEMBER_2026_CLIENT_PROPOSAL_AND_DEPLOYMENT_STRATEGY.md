@@ -115,14 +115,14 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ---
 
-### ⚠️ Risk 2: Hardware Budget Depletion Strategy (The "Staff PC First" Rule)
+### ⚠️ Risk 2: Hardware Budget Constraints (The "Staff Terminals First" Rule)
 * **The Problem:** 
-  * If HonTech has a limited hardware budget and prioritizes purchasing reliable computers/tablets for the Service Advisors and Front Desk, **there may be no remaining budget left to purchase a dedicated ₱22,000 Server PC.**
-* **The Mitigation (The Budget Pivot Rule):**
-  * **Step 1:** The team and client canvass equipment prices in Gilmore. The client buys the necessary Service Advisor/front desk terminals first.
-  * **Step 2 (The Decision Fork):**
-    * *If budget is still open:* The client purchases the Server PC $\rightarrow$ Deploy **Track A (Local Hosting)**.
-    * *If budget is depleted:* The client skips the Server PC entirely $\rightarrow$ Deploy **Track B (Cloud Vercel + Supabase)** with **₱0 server hardware cost**!
+  * If HonTech has an allocated hardware budget and prioritizes purchasing tablets and laptops for the Service Advisors and front desk first, **there may not be enough budget remaining to purchase a dedicated ₱18,500–₱23,000 Local Server PC.**
+* **The Mitigation (The Smart Decision Flow):**
+  * **Step 1:** The development team and client canvass equipment prices together in Gilmore, purchasing the necessary staff intake tablets and front desk terminals first.
+  * **Step 2 (The Strategic Decision):**
+    * **If remaining budget permits:** The client purchases the dedicated Server PC → Proceed with **Track A (Local On-Premise Hosting)**.
+    * **If budget is fully utilized:** The client skips the Server PC completely → Seamlessly launch **Track B (Modern Cloud Solutions)** at **₱0.00 additional server hardware cost**!
 
 ---
 
@@ -135,8 +135,6 @@ Deploying a mission-critical operations system across service bays requires anti
 ### ⚠️ Risk 4: External Internet Outages on Cloud
 * **The Problem:** If HonTech chooses Cloud and the primary fiber line (PLDT/Globe) is accidentally cut down the street, staff cannot update records.
 * **The Mitigation:** A backup **₱999 prepaid 4G/5G Wi-Fi router (Smart Bro / Globe At Home)** with a budget reloadable data SIM stays in the front office. Staff switch Wi-Fi in 5 seconds with zero interruption.
-
----
 
 ---
 
