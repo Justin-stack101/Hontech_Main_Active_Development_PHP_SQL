@@ -389,6 +389,16 @@ Upon project completion, HonTech AutoCenter management will receive:
 **Justin Nolasco J.**  
 **Date:** September 2, 2026
 
+\
+**Technical Documentation & QA Lead:** ___________________________  
+**Catherine Ramos G.**  
+**Date:** September 2, 2026
+
+\
+**Capstone Project Adviser:** ___________________________  
+**Mr. Ar-Jay C. Agbayani**  
+**Date:** September 2, 2026
+
 ---
 ---
 
