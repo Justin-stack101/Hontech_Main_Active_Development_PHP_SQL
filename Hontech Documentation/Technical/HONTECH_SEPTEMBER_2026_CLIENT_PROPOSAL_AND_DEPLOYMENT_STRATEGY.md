@@ -20,7 +20,7 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 9.0 (Accurate Team Architecture & Roles Edition)
+**Document Version:** 10.0 (Polished Executive Typography & Clean Table Edition)
 
 ---
 
@@ -28,6 +28,7 @@
 1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
 2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
 3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
+   - [Strategic Decision Matrix](#-strategic-architecture-decision-matrix)
    - [IT Maintenance & Developer Support Profile](#-it-maintenance--developer-support-profile-who-manages-what)
    - [The Financial Lifecycle: Upfront Cost vs. Compounding Subscriptions](#-1-the-financial-lifecycle-upfront-cost-vs-long-term-compounding)
    - [Account Suspension & Data Lockout Risks](#-2-account-suspension--data-lockout-risks-cloud-vs-local)
@@ -76,39 +77,21 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **IT Maintenance & Developer Support Needs**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        COMPREHENSIVE STRATEGIC DECISION MATRIX                         │
-├──────────────────────────┬─────────────────────────────┬───────────────────────────────┤
-│ EVALUATION PILLAR        │ OPTION A: LOCAL INTRANET    │ OPTION B: CLOUD (VERCEL+SUPA) │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Financial Model          │ **High Upfront / Cheap Long**│ **Cheap Start / Compounding** │
-│ (CapEx vs. OpEx)         │ ₱22,000 once $\rightarrow$ ₱0/yr ongoing│ ₱0 start $\rightarrow$ ₱16,800/yr forever│
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ IT / Developer Support   │ **On-Call Hardware/DB Tech**│ **Cloud Admin / Web Dev**     │
-│ Requirement              │ (For physical dust/backups) │ (For quota/API/DNS management)│
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Upfront Hardware Capital │ ₱16,500 – ₱25,000+          │ ₱0 (Runs on existing devices) │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Unpaid Provider Risk     │ **Zero Risk (Cannot be locked│ **Account Suspension & Lock** │
-│ (Billing / Credit Card)  │ out of physical computer)** │ (Data frozen if card fails)   │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Monthly Software Cost    │ ₱0 / month                  │ ₱0 – ₱1,400 / month           │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Electricity (Meralco)    │ ~₱350–₱600 / mo (PC 24/7)   │ ₱0 (Cloud hosts compute)      │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Internet Outage Safety   │ 100% Immune (Runs offline)  │ Requires backup 4G/5G SIM     │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Remote Owner Visibility  │ None (In-shop only)         │ Full smartphone / home access │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Auto Shop Physical Wear  │ Vulnerable to grease, dust, │ 100% Protected in climate-    │
-│ (Vibration / Power Surge)│ humidity, compressor surges │ controlled Tier-4 data center │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Multi-Branch Scaling     │ Local to 1 location         │ Instant sync for Branch B & C │
-├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
-│ Disaster Recovery        │ Manual USB backup needed    │ Automated daily cloud backups │
-└──────────────────────────┴─────────────────────────────┴───────────────────────────────┘
-```
+### 📊 Strategic Architecture Decision Matrix
+
+| Evaluation Pillar | Option A: Local Intranet Server *(Recommended for 1 Shop)* | Option B: Modern Cloud *(Vercel + Supabase)* |
+| :--- | :--- | :--- |
+| **Financial Model (CapEx vs OpEx)** | **High Upfront / Cheap Long-Term**<br>• Pay ~₱22,000 once for PC<br>• ₱0/yr ongoing software fees | **Zero Upfront / Compounding Cost**<br>• ₱0 upfront hardware cost<br>• ~₱12,000–₱16,800/yr ongoing fees |
+| **Unpaid Provider / Lockout Risk** | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer | **Account Suspension Risk**<br>• If credit card or monthly bill fails, cloud provider freezes database |
+| **IT & Developer Maintenance** | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management |
+| **Upfront Hardware Investment** | ₱16,500 – ₱25,000+ *(Server PC + Cabling)* | **₱0** *(Runs on existing office PCs/tablets)* |
+| **Monthly Software Hosting** | **₱0 / month (Free forever)** | ₱0 – ₱1,400 / month *(scales with traffic)* |
+| **Electricity Cost (Meralco)** | ~₱350–₱600 / month *(PC running 24/7)* | **₱0** *(Cloud data center hosts compute)* |
+| **Internet Outage Resilience** | **100% Immune** *(Continues running offline)* | Requires backup 4G/5G Wi-Fi SIM (~₱999) |
+| **Remote Owner Visibility** | None *(Accessible inside shop network only)* | **Full Access** via smartphone / laptop anywhere |
+| **Auto Shop Environmental Hazards** | Vulnerable to shop dust, grease, & power spikes | **100% Protected** in climate-controlled AWS data centers |
+| **Multi-Branch Expansion** | Local to 1 physical branch | **Multi-Branch Ready** for Branch B & C syncing |
+| **Disaster Recovery** | Manual USB backup drive needed weekly | Automated daily point-in-time cloud backups |
 
 ---
 
@@ -233,16 +216,11 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ### 🟢 TRACK A: Detailed Roadmap for Local Intranet Hosting
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    HOW LOCAL INTRANET HOSTING OPERATES                      │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  1. Server PC sits in office, wired via Cat6 to the main shop router.       │
-│  2. Acts as local database brain broadcasting to `http://192.168.1.100`.   │
-│  3. Front desk PCs, tablets, and Lounge TV connect via shop LAN/Wi-Fi.      │
-│  4. 100% functional during external ISP fiber cuts.                         │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+* **How Local Hosting Operates:**
+  * The Server PC sits safely in the office, wired via Cat6 cable to the main shop router.
+  * It acts as the local database brain, broadcasting directly to `http://192.168.1.100`.
+  * All front desk PCs, SA tablets, and the Waiting Lounge TV connect using the shop's local Wi-Fi or LAN.
+  * **100% functional during external ISP fiber outages.**
 
 * **Week 1 (Sept 1–5):** Timeline review, features review (Express 2H SLA, Audit Guard), online hardware price canvassing, Gilmore trip scheduling.
 * **Week 2 (Sept 8–12):** Joint Gilmore purchase trip, Apache/MariaDB installation, static IP (`192.168.1.100`) setup, Lounge TV testing, LAN multi-device validation.
@@ -253,16 +231,11 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ### 🔵 TRACK B: Detailed Roadmap for Modern Cloud Deployment (Vercel + Supabase)
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    HOW CLOUD ARCHITECTURE OPERATES                          │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  1. Web app hosted on Vercel Global Edge; DB on Supabase PostgreSQL.       │
-│  2. ₱0 new server hardware needed—runs on existing office PCs & tablets.   │
-│  3. Owner tracks live bays and daily volume on smartphone from home.        │
-│  4. Multi-branch ready for future expansion to Branch B and Branch C.      │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+* **How Cloud Architecture Operates:**
+  * The web application is hosted on Vercel's Global Edge Network; database is on Supabase PostgreSQL.
+  * **₱0 new server hardware needed**—runs on existing office PCs, tablets, and smartphones.
+  * Owner tracks live bays, technician statuses, and daily customer volume from home or mobile.
+  * **Multi-branch ready** for seamless future expansion to Branch B and Branch C.
 
 * **Week 1 (Sept 1–5):** Timeline review, features review, cloud account registration (Vercel + Supabase), domain setup.
 * **Week 2 (Sept 8–12):** Supabase database migration, Row-Level Security setup, real-time WebSocket syncing, Lounge TV cloud test, backup 4G/5G Wi-Fi validation.
@@ -325,6 +298,11 @@ Upon project completion, HonTech AutoCenter management will receive:
 **Client Representative / Owner:** ___________________________  
 **HonTech AutoCenter**  
 **Date:** ___________________________
+
+\
+**Lead System Architect & Designer:** ___________________________  
+**Mary Dayne Villas T.**  
+**Date:** September 2, 2026
 
 \
 **Lead Systems Developer:** ___________________________  
