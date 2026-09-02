@@ -10,12 +10,9 @@
 **HonTech AutoCenter — Management & Ownership**
 
 **Prepared by — HonTech Systems Development Team:**
-- **Mary Dayne Villas T.** — *Lead System Architect & System Designer*  
-  *(Responsible for overall system design, technical architecture, workflow modeling, and UI/UX interface design)*
-- **Justin Nolasco J.** — *Lead Systems Developer & Implementation Engineer*  
-  *(Responsible for full-stack programming, building and engineering the system according to the architectural blueprints, database implementation, and deployment)*
-- **Catherine Ramos G.** — *Technical Documentation & QA Lead*  
-  *(Responsible for quality assurance testing, user manuals, emergency SOPs, and project documentation)*
+- **Mary Dayne Villas T.** — *System Architect & System Designer*
+- **Justin Nolasco J.** — *System Developer & Technical Implementation*
+- **Catherine Ramos G.** — *Technical Documentation & QA Tester*
 
 **Project Adviser:**  
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
@@ -97,7 +94,7 @@ To connect all service bay devices into one synchronized system, HonTech can cho
 | **Internet Outage Resilience** | Requires backup 4G/5G Wi-Fi SIM (~₱999) | **100% Immune** *(Continues running offline)* |
 | **Disaster Recovery & Backups** | Automated daily cloud backups | Manual USB backup drive needed weekly |
 | **Shop Environmental Hazards** | **100% Protected** in climate-controlled AWS centers | Vulnerable to shop dust, grease, & power surges |
-| **Long-Term Quota / Lockout Risk** | **100% Free Forever (No Credit Card Required)**<br>• Free tier supports 500,000+ repair records (~45 yrs) | **Zero Risk (100% Sovereign)**<br>• Physical computer stays inside the shop |
+| **Long-Term Quotas & Data Retention Policy** | **100% Free Tier (500,000+ Records / ~45 Years)**<br>• Zero credit card required to operate.<br>• Free 500MB DB stores 500k+ repair orders.<br>• *If ever upgraded to paid and payment lapses:* Cloud providers provide a 30-day grace period; data is never immediately deleted, and a full `.sql` database backup can be downloaded anytime.<br>• *Alternative at 500k records:* Archive older records to CSV at ₱0 cost! | **Zero Provider Risk (100% Sovereign)**<br>• Physical computer stays inside the shop.<br>• No third party can freeze or suspend your records.<br>• Limited only by physical hard drive capacity. |
 
 ---
 
@@ -105,13 +102,13 @@ To connect all service bay devices into one synchronized system, HonTech can cho
 
 Deploying a mission-critical operations system across service bays requires anticipating technical, physical, and financial failure points. Below are the 4 primary risks and their exact mitigation strategies:
 
-### ⚠️ Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps
-* **The Problem:** 
-  * If HonTech runs on a Local Server PC in Branch A, **Branch B (located across town) cannot access Branch A's server** without purchasing expensive static public IP addresses and setting up complex Site-to-Site VPN routers between buildings.
-  * Within the shop, if staff tablets connect to a guest Wi-Fi extender or a different router subnet (e.g. `192.168.2.x` instead of `192.168.1.x`), the system will display a network connection error.
+### ⚠️ Risk 1: Local Hosting Multi-Branch & In-Shop Wi-Fi Subnet Traps
+* **The Problem (Two Specific Network Failures on Local Servers):** 
+  1. **The Multi-Branch Barrier:** If HonTech runs a Local Server PC inside Branch A (Marikina), **Branch B (located across town) cannot access Branch A's server over the standard internet** without purchasing expensive static public IP addresses from PLDT/Globe and installing complex Site-to-Site VPN routers in both buildings.
+  2. **In-Shop Wi-Fi Subnet Disconnections:** Within the shop, if a Service Advisor's tablet wanders and connects to a secondary guest Wi-Fi extender or a different router subnet (e.g. `192.168.2.x` instead of the main server router `192.168.1.x`), the tablet will lose connection and display a *"Server Not Found"* error even though the staff member is physically inside the building.
 * **The Mitigation:**
   * **For Local Hosting (Option A):** We configure a single unified shop Wi-Fi SSID, assign a fixed static IP (`192.168.1.100`), and wire primary front desk terminals directly via Cat6 Ethernet cable.
-  * **For Multi-Branch Chains:** If HonTech wants multiple physical branch locations synchronized under one master dashboard, **we strongly recommend Option B (Cloud Vercel + Supabase)**, which eliminates all networking headaches.
+  * **For Multi-Branch Chains:** If HonTech wants multiple physical branch locations synchronized under one master dashboard, **we strongly recommend Option B (Cloud Vercel + Supabase)**, which connects all branches instantly over any internet with zero network configuration.
 
 ---
 
@@ -164,25 +161,11 @@ Because Cloud computing is hosted remotely, **HonTech does NOT need to purchase 
 
 If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be purchased and kept running 24/7 in the front office. Sized for HonTech's **3 to 5 staff users per branch (6–10 users across 2 branches)**:
 
-```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                      HARDWARE SPECIFICATION & SIZING TIERS (3–5 STAFF/BRANCH)                     │
-├──────────────────────────┬─────────────────────────────┬──────────────────────────┬───────────────┤
-│ TIER / CLASSIFICATION    │ TECHNICAL SPECIFICATIONS    │ OPERATIONAL CAPACITY     │ EST. COST     │
-├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥉 Standard Criteria     │ Core i3 (10th Gen+) / R3    │ **Branch 1 (Marikina)**  │ ₱14,500 –     │
-│    (Single Shop Baseline)│ 8GB RAM, 256GB NVMe SSD     │ 3–5 Staff + 1 Lounge TV  │ ₱17,500       │
-│                          │ Windows 10/11 Home/Pro      │ (~15–25 cars/day)        │ *(or ₱0 old)* │
-├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥈 Work-Grade Class      │ Core i5 (11th/12th Gen) / R5│ **Both Branches 1 & 2**  │ ₱18,500 –     │
-│    (Recommended Standard)│ 16GB RAM, 512GB NVMe SSD    │ 6–10 Staff + 2 Lounge TVs│ ₱23,000       │
-│                          │ 80+ Bronze Power Supply     │ (~30–50 cars/day)        │               │
-├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥇 Mid-Range Premium     │ Core i7 / Ryzen 7           │ **3–4 Future Branches**  │ ₱26,000 –     │
-│    Class (Expansion)     │ 32GB RAM, 1TB NVMe SSD      │ 15–20 Staff + 4 TVs      │ ₱32,000       │
-│                          │ UPS + Heavy AVR Protection  │ 4+ Years Peak Longevity  │               │
-└──────────────────────────┴─────────────────────────────┴──────────────────────────┴───────────────┘
-```
+| Hardware Tier / Classification | Technical Specifications | Operational Capacity (3–5 Staff/Branch) | Estimated Hardware Cost |
+| :--- | :--- | :--- | :--- |
+| **🥉 Standard Criteria**<br>*(Single Shop Baseline)* | • Core i3 (10th Gen+) / Ryzen 3<br>• 8GB RAM, 256GB NVMe SSD<br>• Windows 10/11 Home/Pro | **Branch 1 (Marikina Main)**<br>• 3–5 Staff + 1 Lounge TV<br>• ~15–25 cars / day | **₱14,500 – ₱17,500**<br>*(or ₱0 if repurposing existing PC)* |
+| **🥈 Work-Grade Class**<br>*(Recommended Standard)* | • Core i5 (11th/12th Gen) / Ryzen 5<br>• 16GB RAM, 512GB NVMe SSD<br>• 80+ Bronze Power Supply | **Both Branches 1 & 2**<br>• 6–10 Staff + 2 Lounge TVs<br>• ~30–50 cars / day | **₱18,500 – ₱23,000** |
+| **🥇 Mid-Range Premium**<br>*(Multi-Branch Expansion)* | • Core i7 / Ryzen 7<br>• 32GB RAM, 1TB NVMe SSD<br>• UPS + Heavy AVR Protection | **3–4 Future Branches**<br>• 15–20 Staff + 4 Lounge TVs<br>• 4+ Years Peak Longevity | **₱26,000 – ₱32,000** |
 
 ---
 
@@ -367,17 +350,17 @@ Upon project completion and sign-off, HonTech AutoCenter management will receive
 
 #### Part I: Prepared & Submitted by the Development Team
 \
-**Lead System Architect & Designer:** ___________________________  
+**System Architect & System Designer:** ___________________________  
 **Mary Dayne Villas T.**  
 *Signature over Printed Name* | **Date:** September 2, 2026
 
 \
-**Lead Systems Developer & Implementation Engineer:** ___________________________  
+**System Developer & Technical Implementation:** ___________________________  
 **Justin Nolasco J.**  
 *Signature over Printed Name* | **Date:** September 2, 2026
 
 \
-**Technical Documentation & QA Lead:** ___________________________  
+**Technical Documentation & QA Tester:** ___________________________  
 **Catherine Ramos G.**  
 *Signature over Printed Name* | **Date:** September 2, 2026
 
@@ -390,7 +373,6 @@ Upon project completion and sign-off, HonTech AutoCenter management will receive
 *Faculty Capstone Project Adviser | Department of Information Technology*
 
 **Date Reviewed & Verified:** ___________________________  
-**Adviser Review Status:** `[  ] Endorsed for Client Presentation & Execution` &nbsp;&nbsp;&nbsp; `[  ] Endorsed with Minor Revisions`  
 **Adviser Notes / Remarks:** __________________________________________________________________
 
 ---
@@ -406,7 +388,6 @@ Upon project completion and sign-off, HonTech AutoCenter management will receive
 `[  ] Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED`  
 `[  ] Option A: Local Intranet Hosting (On-Premise Server PC)`
 
----
 ---
 
 # 📖 APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint
