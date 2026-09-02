@@ -86,7 +86,7 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ---
 
-## 2. Core System Features & Operational Capabilities
+## 2. Core System Features & Operational Capabilities (Under Revision)
 
 * **Real-Time Bay & Queue Tracking:** Live visibility of all vehicles, bay locations, assigned technicians, and service categories (*PMS, GRS, Express*).
 * **Automated Express Lane 2-Hour SLA Alerts:** Continuous duration counter displaying `⚠️ Express 2H Limit Exceeded` when turnaround exceeds 120 minutes, with structured delay root-cause reporting (*Parts delay, deep diagnostic, customer approval, technician bottleneck*).
@@ -105,14 +105,14 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 | Evaluation Pillar | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
 | :--- | :--- | :--- |
 | **Recommendation Status** | **🌟 PRIMARY RECOMMENDATION (Best Value)** | Secondary Supported Alternative |
-| **Financial Model (CapEx vs OpEx)** | **Zero Upfront / Compounding Cost**<br>• **₱0 upfront hardware cost**<br>• ~₱0/yr on generous permanent free tier | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees |
-| **Internal Security (LAN & Workshop)** | **Cryptographic Row-Level Security (RLS)**<br>• Database-level policy rules isolate data<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• HTTPS encrypted intra-app communication | **Air-Gapped LAN Protection**<br>• Isolated from public internet bots<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• Protected by WPA3 Shop Wi-Fi password |
-| **External Security (Cyber Attack Exposure)**| **Tier-4 Enterprise Cloud Shield**<br>• Cloudflare Global DDoS defense<br>• Automated SSL/TLS 1.3 encryption in transit<br>• AES-256 cloud encryption at rest | **Zero Public Internet Attack Surface**<br>• Offline server is invisible to web hackers<br>• Immune to global DDoS / web scrapers |
+| **Financial Model (CapEx vs OpEx)** | **Zero Upfront / Free Long-Term**<br>• **₱0 upfront hardware cost**<br>• **₱0/yr** on permanent free tier | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees |
+| **Internal Security (Inside the Shop)** | **Automatic Data Isolation & Staff Roles**<br>• Staff only see what they are allowed to see<br>• Branch A staff cannot view Branch B records<br>• Mandatory reason logs for all record changes | **Private Shop Network Defense**<br>• Kept 100% inside the shop Wi-Fi<br>• Strict staff roles & password protection<br>• Mandatory reason logs for all record changes |
+| **External Security (Internet & Hackers)**| **Bank-Grade Online Protection**<br>• Built-in protection against online hackers<br>• Automatic security certificate (HTTPS Padlock)<br>• Data stored securely in AWS cloud centers | **Completely Hidden from Web Hackers**<br>• Offline server is invisible on the internet<br>• Cannot be targeted by online attacks |
 | **Multi-Branch Cross-Building Sync** | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers |
-| **Unpaid Provider / Lockout Risk** | **Zero Risk on Permanent Free Tier**<br>• Generous free quota easily handles 3–5 staff | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer |
+| **Unpaid Provider / Lockout Risk** | **100% Free Forever (No Card Required)**<br>• Generous free tier supports 500,000+ repair records (~45 years of shop data!) | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer |
 | **IT & Developer Maintenance** | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks |
 | **Upfront Hardware Investment** | **₱0** *(Runs on existing office PCs/tablets)* | ₱14,500 – ₱23,000 *(Work-Grade PC)* |
-| **Monthly Software Hosting** | **₱0 / month (Free Tier)** | **₱0 / month (Free forever)** |
+| **Monthly Software Hosting** | **₱0 / month (Permanent Free Tier)** | **₱0 / month (Free forever)** |
 | **Electricity Cost (Meralco)** | **₱0** *(Cloud data center hosts compute)* | ~₱350–₱600 / month *(PC running 24/7)* |
 | **Internet Outage Resilience** | Requires backup 4G/5G Wi-Fi SIM (~₱999) | **100% Immune** *(Continues running offline)* |
 | **Remote Owner Visibility** | **Full Access** via smartphone / laptop anywhere | None *(Accessible inside shop network only)* |
@@ -307,17 +307,18 @@ To safeguard customer privacy, financial data, and shop operational integrity, t
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                           INTERNAL VS. EXTERNAL SECURITY COMPARISON                               │
 ├──────────────────────────┬────────────────────────────────────┬───────────────────────────────────┤
-│ SECURITY LAYER           │ OPTION A: LOCAL INTRANET SERVER    │ OPTION B: MODERN CLOUD (SUPABASE) │
+│ SECURITY LAYER           │ OPTION A: LOCAL INTRANET SERVER    │ 🌟 OPTION B: MODERN CLOUD (RECOMM)│
 ├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
-│ 🔒 Internal Security     │ • Air-gapped from public web       │ • Cryptographic Row-Level Security│
-│    (Inside Workshop)     │ • WPA3 Staff Wi-Fi isolation       │ • JWT session token validation    │
-│                          │ • Physical PC password lock        │ • Strict 4-Role RBAC enforcement  │
-│                          │ • Reason-Required Audit Logging    │ • Reason-Required Audit Logging   │
+│ 🔒 Inside the Shop       │ • Private internal shop Wi-Fi      │ • Automatic role permissions      │
+│    (Staff & Workflow)    │ • Server PC password protection    │ • SAs cannot view owner finances  │
+│                          │ • Strict 4-role staff permissions  │ • Branch data completely isolated │
+│                          │ • Reason-Required change logs      │ • Reason-Required change logs     │
 ├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
-│ 🌐 External Security     │ • **Zero Internet Attack Surface** │ • **Tier-4 Cloudflare Shield**    │
-│    (Cyber Exposure)      │ • Invisible to global botnets/DDoS │ • Automated SSL/TLS 1.3 encryption│
-│                          │ • Zero-Trust Cloudflare Tunneling  │ • AES-256 cloud encryption at rest│
-│                          │ • No open public router ports      │ • Brute-force rate limiting       │
+│ 🌐 Outside the Shop      │ • **Hidden from Online Hackers**   │ • **Bank-Grade Cloud Protection** │
+│    (Internet & Remote)   │ • Invisible to public internet     │ • Automatic SSL Padlock (HTTPS)   │
+│                          │ • Immune to online attacks         │ • Stored in Tier-4 data centers   │
+│                          │ • No open router ports needed      │ • Automatic password brute-force  │
+│                          │                                    │   rate-limiting                   │
 └──────────────────────────┴────────────────────────────────────┴───────────────────────────────────┘
 ```
 
