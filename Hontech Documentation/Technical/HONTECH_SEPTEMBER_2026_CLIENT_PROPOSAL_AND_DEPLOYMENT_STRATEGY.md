@@ -1,7 +1,8 @@
 # HONTECH AUTOCENTER
 ## Operations Management System
 ### Client Proposal & September 2026 Strategic Architecture Blueprint
-#### (Local Intranet Server vs. Modern Cloud Vercel + Supabase)
+### 🌟 Primary Recommendation: Modern Cloud Solutions (Vercel + Supabase)
+#### *(Secondary Alternative: On-Premise Local Intranet XAMPP Server)*
 
 ---
 
@@ -20,12 +21,12 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 12.0 (Unified Master Document with Embedded Technical Blueprints)
+**Document Version:** 14.0 (Unified Master Document — Cloud Strategy Recommended)
 
 ---
 
 ## Table of Contents
-1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
+1. [Executive Summary & Strategic Recommendation](#1-executive-summary--academic-grant-terms)
 2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
 3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
    - [Strategic Architecture Decision Matrix](#-strategic-architecture-decision-matrix)
@@ -42,16 +43,17 @@
    - [Risk 2: Hardware Budget Depletion Strategy (The Staff PC First Rule)](#️-risk-2-hardware-budget-depletion-strategy-the-staff-pc-first-rule)
    - [Risk 3: Shop Environment & Electrical Power Spikes](#️-risk-3-shop-environment--electrical-power-spikes)
    - [Risk 4: External Internet Outages on Cloud](#️-risk-4-external-internet-outages-on-cloud)
-5. [Hardware Sourcing & Facility Preparation](#5-hardware-sourcing--facility-preparation)
+5. [Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability](#5-hardware-sourcing-spec-classifications--realistic-2-branch-scalability)
 6. [Dual Detailed Weekly Execution Roadmaps](#6-dual-detailed-weekly-execution-roadmaps)
    - [Track A: Local Intranet Hosting Plan](#-track-a-detailed-roadmap-for-local-intranet-hosting)
    - [Track B: Modern Cloud Deployment Plan](#-track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
 7. [Training, Simulation & Dry-Run Protocols](#7-training-simulation--dry-run-protocols)
-8. [Security, Audit Governance & Emergency Protocols](#8-security-audit-governance--emergency-protocols)
+8. [Security Governance, Internal & External Cyber Defense Protocols](#8-security-governance-internal--external-cyber-defense-protocols)
 9. [Handover Deliverables Package & Post-Warranty Retainer Options](#9-handover-deliverables-package--post-warranty-retainer-options)
 10. [Official Client Sign-Off](#10-official-client-sign-off)
 11. [APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint](#-appendix-a-complete-local-intranet-feasibility--zero-risk-setup-blueprint)
 12. [APPENDIX B: Complete Cloud Sandbox PoC Setup Blueprint (Vercel + Supabase)](#-appendix-b-complete-cloud-sandbox-poc-setup-blueprint-vercel--supabase)
+13. [APPENDIX C: Developer Dual-Repository Workflow, Adapter Pattern & Testing Protocol](#-appendix-c-developer-dual-repository-workflow-adapter-pattern--testing-protocol)
 
 ---
 
@@ -63,9 +65,23 @@ Running a high-throughput auto service center requires speed, coordination, and 
 2. **Customer Lounge Uncertainty:** Waiting customers frequently approach the front desk asking for updates, interrupting intake staff.
 3. **Express Service Turnaround Bottlenecks:** When Express Lane PMS services exceed target limits, there is no standardized tracking to identify parts delays or workload imbalances.
 
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                        🏆 DEVELOPMENT TEAM & ARCHITECT RECOMMENDATION                             │
+├───────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ The Development Team and System Architect STRONGLY RECOMMEND Option B (Modern Cloud Solutions):   │
+│                                                                                                   │
+│ 1. 💰 Saves ₱18,500–₱23,000 Upfront: Zero server hardware needed in Gilmore.                      │
+│ 2. 💸 ₱0.00 Monthly Cost: Vercel CDN and Supabase DB free tiers handle 100% of shop workload.    │
+│ 3. 📱 24/7 Remote Owner Access: Monitor bay queues and daily volume from anywhere on smartphone.  │
+│ 4. 🏢 Effortless Multi-Branch Syncing: Branch A & Branch B share live data with zero setup.       │
+│ 5. ⚡ Sub-100ms Live Sync: Instant WebSocket updates for the Waiting Lounge TV and SA tablets.    │
+└───────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ### 🎓 Academic Capstone Grant Terms (Zero Software Cost)
 * **100% Free Software Grant:** Because this is an official academic capstone development project, **the software, source code, licensing, on-site setup, and staff training are provided to HonTech AutoCenter at ₱0 (FREE of charge).**
-* **Client Hardware Ownership:** The only investment required from HonTech AutoCenter is the physical hardware equipment (*if choosing Option A: Server PC, Ethernet cables; if choosing Option B: ₱0 new hardware*), which remains 100% the property of the client.
+* **Client Hardware Ownership:** The only investment required from HonTech AutoCenter is any physical hardware equipment (*if choosing Option A: Server PC, Ethernet cables; if choosing Recommended Option B: ₱0 new hardware*), which remains 100% the property of the client.
 * **1–2 Months Complimentary Warranty & Support:** The development team provides 1–2 months of free post-launch monitoring, bug fixes, and operational assistance.
 
 ---
@@ -86,21 +102,22 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 
 ### 📊 Strategic Architecture Decision Matrix
 
-| Evaluation Pillar | Option A: Local Intranet Server *(Recommended for 1 Shop)* | Option B: Modern Cloud *(Vercel + Supabase)* |
+| Evaluation Pillar | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
 | :--- | :--- | :--- |
-| **Financial Model (CapEx vs OpEx)** | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees | **Zero Upfront / Compounding Cost**<br>• ₱0 upfront hardware cost<br>• ~₱12,000–₱16,800/yr ongoing fees |
-| **Internal Security (LAN & Workshop)** | **Air-Gapped LAN Protection**<br>• Isolated from public internet bots<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• Protected by WPA3 Shop Wi-Fi password | **Cryptographic Row-Level Security (RLS)**<br>• Database-level policy rules isolate data<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• HTTPS encrypted intra-app communication |
-| **External Security (Cyber Attack Exposure)**| **Zero Public Internet Attack Surface**<br>• Offline server is invisible to web hackers<br>• Immune to global DDoS / web scrapers | **Tier-4 Enterprise Cloud Shield**<br>• Cloudflare Global DDoS defense<br>• Automated SSL/TLS 1.3 encryption in transit<br>• AES-256 cloud encryption at rest |
-| **Multi-Branch Cross-Building Sync** | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet |
-| **Unpaid Provider / Lockout Risk** | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer | **Account Suspension Risk**<br>• If credit card or monthly bill fails, cloud provider freezes database |
-| **IT & Developer Maintenance** | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management |
-| **Upfront Hardware Investment** | ₱14,500 – ₱23,000 *(Work-Grade PC)* | **₱0** *(Runs on existing office PCs/tablets)* |
-| **Monthly Software Hosting** | **₱0 / month (Free forever)** | ₱0 – ₱1,400 / month *(scales with traffic)* |
-| **Electricity Cost (Meralco)** | ~₱350–₱600 / month *(PC running 24/7)* | **₱0** *(Cloud data center hosts compute)* |
-| **Internet Outage Resilience** | **100% Immune** *(Continues running offline)* | Requires backup 4G/5G Wi-Fi SIM (~₱999) |
-| **Remote Owner Visibility** | None *(Accessible inside shop network only)* | **Full Access** via smartphone / laptop anywhere |
-| **Auto Shop Environmental Hazards** | Vulnerable to shop dust, grease, & power spikes | **100% Protected** in climate-controlled AWS data centers |
-| **Disaster Recovery** | Manual USB backup drive needed weekly | Automated daily point-in-time cloud backups |
+| **Recommendation Status** | **🌟 PRIMARY RECOMMENDATION (Best Value)** | Secondary Supported Alternative |
+| **Financial Model (CapEx vs OpEx)** | **Zero Upfront / Compounding Cost**<br>• **₱0 upfront hardware cost**<br>• ~₱0/yr on generous permanent free tier | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees |
+| **Internal Security (LAN & Workshop)** | **Cryptographic Row-Level Security (RLS)**<br>• Database-level policy rules isolate data<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• HTTPS encrypted intra-app communication | **Air-Gapped LAN Protection**<br>• Isolated from public internet bots<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• Protected by WPA3 Shop Wi-Fi password |
+| **External Security (Cyber Attack Exposure)**| **Tier-4 Enterprise Cloud Shield**<br>• Cloudflare Global DDoS defense<br>• Automated SSL/TLS 1.3 encryption in transit<br>• AES-256 cloud encryption at rest | **Zero Public Internet Attack Surface**<br>• Offline server is invisible to web hackers<br>• Immune to global DDoS / web scrapers |
+| **Multi-Branch Cross-Building Sync** | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers |
+| **Unpaid Provider / Lockout Risk** | **Zero Risk on Permanent Free Tier**<br>• Generous free quota easily handles 3–5 staff | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer |
+| **IT & Developer Maintenance** | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks |
+| **Upfront Hardware Investment** | **₱0** *(Runs on existing office PCs/tablets)* | ₱14,500 – ₱23,000 *(Work-Grade PC)* |
+| **Monthly Software Hosting** | **₱0 / month (Free Tier)** | **₱0 / month (Free forever)** |
+| **Electricity Cost (Meralco)** | **₱0** *(Cloud data center hosts compute)* | ~₱350–₱600 / month *(PC running 24/7)* |
+| **Internet Outage Resilience** | Requires backup 4G/5G Wi-Fi SIM (~₱999) | **100% Immune** *(Continues running offline)* |
+| **Remote Owner Visibility** | **Full Access** via smartphone / laptop anywhere | None *(Accessible inside shop network only)* |
+| **Auto Shop Environmental Hazards** | **100% Protected** in climate-controlled AWS data centers | Vulnerable to shop dust, grease, & power spikes |
+| **Disaster Recovery** | Automated daily point-in-time cloud backups | Manual USB backup drive needed weekly |
 
 ---
 
@@ -143,24 +160,25 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ### ⚖️ Side-by-Side Pros & Cons for Ownership
 
-#### 🟢 Option A: Local Intranet Hosting (On-Premise Server)
+#### 🌟 Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
-| ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,000–₱25,000+ immediately on new computer parts. |
-| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
-| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
-| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
-| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
+| ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
+| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Cloud Admin Support Needed:** Requires someone to manage database quotas, API keys, and domain settings. |
+| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
+| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | |
+| ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | |
 
 ---
 
-#### 🔵 Option B: Modern Cloud Solutions (Vercel + Supabase)
+#### 🟢 Option A: Local Intranet Hosting (On-Premise Server) — ALTERNATIVE
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
-| ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Compounding Long-Term Expense:** Recurring monthly fees (~₱1,000–₱1,400/mo) never end, totaling ₱60,000–₱85,000+ over 5 years. |
-| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Account Suspension / Lockout Risk:** If credit card billing fails or is delayed, cloud providers can freeze database access. |
-| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
-| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
+| ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,500–₱23,000+ immediately on new computer parts. |
+| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
+| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
+| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
+| ✅ **Instant 15ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
 | ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | ❌ **Cloud Admin Support Needed:** Requires someone to manage monthly database quotas, API keys, and domain renewals. |
 
 ---
