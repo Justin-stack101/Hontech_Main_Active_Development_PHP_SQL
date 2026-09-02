@@ -88,11 +88,13 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 
 | Evaluation Pillar | Option A: Local Intranet Server *(Recommended for 1 Shop)* | Option B: Modern Cloud *(Vercel + Supabase)* |
 | :--- | :--- | :--- |
-| **Financial Model (CapEx vs OpEx)** | **High Upfront / Cheap Long-Term**<br>• Pay ~₱22,000 once for PC<br>• ₱0/yr ongoing software fees | **Zero Upfront / Compounding Cost**<br>• ₱0 upfront hardware cost<br>• ~₱12,000–₱16,800/yr ongoing fees |
+| **Financial Model (CapEx vs OpEx)** | **High Upfront / Cheap Long-Term**<br>• Pay ~₱18.5k–₱23k once for PC<br>• ₱0/yr ongoing software fees | **Zero Upfront / Compounding Cost**<br>• ₱0 upfront hardware cost<br>• ~₱12,000–₱16,800/yr ongoing fees |
+| **Internal Security (LAN & Workshop)** | **Air-Gapped LAN Protection**<br>• Isolated from public internet bots<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• Protected by WPA3 Shop Wi-Fi password | **Cryptographic Row-Level Security (RLS)**<br>• Database-level policy rules isolate data<br>• Strict 4-Role RBAC + Edit Audit Trail<br>• HTTPS encrypted intra-app communication |
+| **External Security (Cyber Attack Exposure)**| **Zero Public Internet Attack Surface**<br>• Offline server is invisible to web hackers<br>• Immune to global DDoS / web scrapers | **Tier-4 Enterprise Cloud Shield**<br>• Cloudflare Global DDoS defense<br>• Automated SSL/TLS 1.3 encryption in transit<br>• AES-256 cloud encryption at rest |
 | **Multi-Branch Cross-Building Sync** | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet |
 | **Unpaid Provider / Lockout Risk** | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer | **Account Suspension Risk**<br>• If credit card or monthly bill fails, cloud provider freezes database |
 | **IT & Developer Maintenance** | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management |
-| **Upfront Hardware Investment** | ₱16,500 – ₱25,000+ *(Server PC + Cabling)* | **₱0** *(Runs on existing office PCs/tablets)* |
+| **Upfront Hardware Investment** | ₱14,500 – ₱23,000 *(Work-Grade PC)* | **₱0** *(Runs on existing office PCs/tablets)* |
 | **Monthly Software Hosting** | **₱0 / month (Free forever)** | ₱0 – ₱1,400 / month *(scales with traffic)* |
 | **Electricity Cost (Meralco)** | ~₱350–₱600 / month *(PC running 24/7)* | **₱0** *(Cloud data center hosts compute)* |
 | **Internet Outage Resilience** | **100% Immune** *(Continues running offline)* | Requires backup 4G/5G Wi-Fi SIM (~₱999) |
@@ -279,16 +281,70 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-## 8. Security, Audit Governance & Emergency Protocols
+## 8. Security Governance, Internal & External Cyber Defense Protocols
 
-* **Data Sovereignty & Physical Privacy:** All customer contact numbers, vehicle diagnostic notes, and shop revenue data remain physically inside the HonTech shop building (Option A) or encrypted in AWS Tier-4 Singapore Cloud (Option B).
-* **Immutable Audit Trail (`job_audit_logs`):** Every edit to departure time, status, or vehicle diagnosis is logged with old value, new value, editor identity, role, and mandatory justification.
+To safeguard customer privacy, financial data, and shop operational integrity, the system implements a multi-layered security model addressing both **Internal Workshop Defense** and **External Cyber Exposure**:
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                           INTERNAL VS. EXTERNAL SECURITY COMPARISON                               │
+├──────────────────────────┬────────────────────────────────────┬───────────────────────────────────┤
+│ SECURITY LAYER           │ OPTION A: LOCAL INTRANET SERVER    │ OPTION B: MODERN CLOUD (SUPABASE) │
+├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
+│ 🔒 Internal Security     │ • Air-gapped from public web       │ • Cryptographic Row-Level Security│
+│    (Inside Workshop)     │ • WPA3 Staff Wi-Fi isolation       │ • JWT session token validation    │
+│                          │ • Physical PC password lock        │ • Strict 4-Role RBAC enforcement  │
+│                          │ • Reason-Required Audit Logging    │ • Reason-Required Audit Logging   │
+├──────────────────────────┼────────────────────────────────────┼───────────────────────────────────┤
+│ 🌐 External Security     │ • **Zero Internet Attack Surface** │ • **Tier-4 Cloudflare Shield**    │
+│    (Cyber Exposure)      │ • Invisible to global botnets/DDoS │ • Automated SSL/TLS 1.3 encryption│
+│                          │ • Zero-Trust Cloudflare Tunneling  │ • AES-256 cloud encryption at rest│
+│                          │ • No open public router ports      │ • Brute-force rate limiting       │
+└──────────────────────────┴────────────────────────────────────┴───────────────────────────────────┘
+```
+
+---
+
+### 🔒 8.1 Internal Security Architecture (Workshop Floor & LAN Defense)
+
+Internal security prevents unauthorized access or accidental data tampering by staff, technicians, or visitors inside the shop:
+
 * **Role-Based Access Control (RBAC):**
-  * **Owner:** Full system control, financial analytics, staff creation, database backups.
-  * **Admin:** System configuration, audit trail inspection, job monitoring.
-  * **Service Advisor (SA):** Job intake, claim stub printing, repair status updates, express delay reporting.
-  * **Assistant:** View-only queue inspection and bay support.
-* **Emergency Fallback Protocol:** In the event of a power outage or hardware failure, staff temporarily issue backup paper claim stubs until power/server recovery.
+  * **Owner:** Complete system control, global multi-branch analytics, staff creation, database reset, and backup exports.
+  * **Admin:** System configuration, branch audit trail inspection, and repair monitoring.
+  * **Service Advisor (SA):** Job intake, claim stub printing, status updates, and Express 2H delay reporting. *Strictly restricted from viewing financial revenue reports or deleting records.*
+  * **Assistant:** View-only queue inspection and bay progress updates.
+* **Tamper-Proof Reason-Required Audit Trail (`job_audit_logs`):**
+  * Any modification to departure times, service categories, lane types, or vehicle diagnoses **requires a mandatory operational justification** (*e.g., "Customer requested additional brake pad replacement"*).
+  * The system records the old value, new value, editor's full name, role, and exact timestamp into an immutable audit table.
+* **Local LAN Network Segmentation (Option A):**
+  * The server runs on a dedicated **Staff Wi-Fi network (`HonTech_Staff`)** with WPA3 encryption, completely separated from customer lounge guest Wi-Fi.
+  * Windows Server PC is locked with a dedicated Administrator password, and public database consoles (PHPMyAdmin) are disabled on external network interfaces.
+
+---
+
+### 🌐 8.2 External Security Architecture (Cyber Attack Exposure & Cloud Defense)
+
+External security protects HonTech's business data from outside internet hackers, malware, and unauthorized remote access:
+
+* **Option A: Physical Air-Gap Protection (Maximum Peace of Mind):**
+  * Because the Local Server operates purely on internal copper cables and shop Wi-Fi, **it has 0 open ports to the outside world**.
+  * Automated internet web crawlers, ransomware bots, and foreign cyber attackers cannot scan or reach the server because it is not connected to a public IP address.
+  * *Remote Multi-Branch Access:* If Branch B needs to connect, we use a **Zero-Trust Cloudflare Tunnel (`cloudflared`)**, which authenticates connections over encrypted outbound tunnels without opening risky inbound firewall ports.
+* **Option B: Enterprise Cloud Defense (Tier-4 Infrastructure):**
+  * **DDoS & Bot Mitigation:** Hosted behind Cloudflare’s global Anycast edge network, automatically filtering malicious traffic spikes.
+  * **Data Encryption in Transit & at Rest:** All data exchanged between staff devices and the cloud is encrypted with **SSL/TLS 1.3** and stored under **AES-256 hardware encryption**.
+  * **Brute-Force Login Protection:** Authentication endpoints utilize **Bcrypt password hashing (Cost Factor 10)** with automated rate-limiting to prevent password-guessing attacks.
+
+---
+
+### ⚡ 8.3 Emergency Power Outage & Fallback Protocol
+
+* In the event of a total municipal power failure (Meralco blackout):
+  1. The server UPS maintains power for 15–20 minutes to permit a clean database shutdown.
+  2. Staff temporarily issue backup paper claim stubs.
+  3. Upon power restoration, the system restarts automatically via Windows Startup scripts, and paper stubs are digitized in under 5 minutes.
+
 
 ---
 
