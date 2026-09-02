@@ -372,12 +372,12 @@ Upon project completion and sign-off, HonTech AutoCenter management will receive
 
 #### Part III: Client Acceptance & Authorization (HonTech AutoCenter)
 \
-**Client Representative / Business Owner:** ___________________________  
-**HonTech AutoCenter Management**  
-*Signature over Printed Name*
+**Company President & Business Owner:** ___________________________  
+**HonTech AutoCenter Management & Ownership**  
+*Signature over Printed Name* | **Title / Designation:** Company President & General Manager  
 
-**Date Approved:** ___________________________  
-**Selected Deployment Architecture:**  
+**Date Approved & Signed:** ___________________________  
+**Selected Deployment Architecture Pathway:**  
 `[  ] Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED`  
 `[  ] Option A: Local Intranet Hosting (On-Premise Server PC)`
 
