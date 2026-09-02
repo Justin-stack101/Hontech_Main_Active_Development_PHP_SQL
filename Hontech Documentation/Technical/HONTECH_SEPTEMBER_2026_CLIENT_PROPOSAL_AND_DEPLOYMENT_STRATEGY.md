@@ -197,7 +197,7 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-### 🛒 4.4 Joint Gilmore Sourcing & Inspection Plan (If Option A is Chosen)
+### 🛒 4.4 Joint Gilmore Sourcing & Inspection Plan (For Local On-Premise Hosting)
 * **Online Canvassing:** Team and client canvass real-time pricing from *Lazada, Shopee, EasyPC, PC Express, and DynaQuest*.
 * **On-Site Gilmore Buying Trip:** Team and client visit **Gilmore Computer Center** together to inspect physical parts, verify 1–3 year manufacturer warranties, and negotiate store bundle discounts.
 * *Alternative Option:* Repurpose an existing functional Core i3/i5 office desktop at **₱0.00 hardware cost**.
@@ -213,19 +213,19 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ## 5. Dual Detailed Weekly Execution Roadmaps (September 2026 Rollout)
 
-To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have structured comprehensive 4-week execution schedules for both deployment tracks. Each week defines clear technical objectives, on-site activities, client touchpoints, and tangible milestone deliverables.
+To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have structured comprehensive 4-week execution schedules for both deployment tracks. Each week defines clear technical objectives, on-site activities, client touchpoints, and tangible milestone deliverables:
 
 ---
 
 ### 🌟 TRACK B: Modern Cloud Deployment Roadmap (RECOMMENDED)
 *Fastest deployment path, ₱0 upfront server hardware cost, and instant multi-device synchronization.*
 
-| Week / Period | Phase & Objectives | Key Engineering & On-Site Activities | Client & Staff Touchpoint | Weekly Milestone Deliverable |
+| Week / Period | Phase & Objectives | Team Activity & Engineering Responsibilities | Client & Adviser Touchpoint | Weekly Milestone Deliverable |
 | :--- | :--- | :--- | :--- | :--- |
-| **Week 1**<br>*(Sept 1–5)* | **Cloud Infrastructure & Account Provisioning** | • Provision production accounts on Vercel and Supabase<br>• Deploy database schema and initial test seed data<br>• Configure SSL security certificates & custom web domain<br>• Verify sub-100ms API response times | • Kickoff alignment meeting with management<br>• Confirm staff role accounts *(Owner, Admin, 2 SAs, 1 Cashier)* | ✅ **Live Cloud System URL Active & Accessible** |
-| **Week 2**<br>*(Sept 8–12)* | **Multi-Device Sync & Workshop Validation** | • Connect front desk office PCs & SA tablets to cloud domain<br>• Configure Customer Lounge Smart TV display (`?mode=tv`)<br>• Validate real-time WebSocket live updates across repair bays<br>• Test ₱999 backup 4G/5G mobile router failover | • On-site inspection of shop Wi-Fi signal in bays & lounge<br>• Verify TV screen visibility and auto-refresh in lounge | ✅ **All Shop Devices Connected & Verified** |
-| **Week 3**<br>*(Sept 15–19)* | **Staff Training & "Shadow Mode" Dry-Run** | • Conduct 60-min hands-on training for Service Advisors & Cashier<br>• Demonstrate Express 2-Hour SLA delay logging & claim stub printing<br>• Train Owner/Manager on remote mobile phone dashboard<br>• Execute 2–3 day live customer "Shadow Mode" *(dual entry)* | • SAs use digital system alongside existing paper stubs<br>• Team gathers daily workflow feedback from staff | ✅ **100% Staff Certified & Confident** |
-| **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of paper claim stubs (100% digital cutover)<br>• Final latency fine-tuning and security verification<br>• Delivery of PDF User Manuals, Admin Guides, & Fallback Runbooks<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System fully adopted as standard daily operating procedure | ✅ **Production Go-Live & Warranty Active** |
+| **Week 1**<br>*(Sept 1–5)* | **Adviser Review, Client Decision & Core Polish** | • **Lead Developer:** Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (`hontech-cloud-poc`) to explore cloud deployment safely without touching master code.<br>• **System Designer:** Assist developer in finalizing UI/UX flows and bay tracking layouts.<br>• **QA & Documentation:** Create hardware/cloud expense analysis and test verification sheets. | • Present proposal document to **Mr. Ar-Jay C. Agbayani** for review and endorsement.<br>• Present comparison to **HonTech Management** for hosting pathway sign-off. | ✅ **Proposal Signed & Cloud Sandbox Initialized** |
+| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Lead Developer:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, SA tablets, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), claim stub printing guides, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
+| **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write paper claim stubs AND enter records on tablets simultaneously)*.<br>• Gather daily staff feedback and adjust UI inputs. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
+| **Week 4**<br>*(Sept 22–30)* | **Buffer, Final Polish & 100% Digital Go-Live** | • Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>• Official retirement of paper claim stubs (100% digital cutover).<br>• Kickoff of **1–2 months complimentary warranty & support**. | • Formal sign-off on Project Handover Package.<br>• System operational as primary daily standard. | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
