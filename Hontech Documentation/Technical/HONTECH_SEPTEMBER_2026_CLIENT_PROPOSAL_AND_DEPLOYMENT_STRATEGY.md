@@ -86,17 +86,7 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ---
 
-## 2. Core System Features & Operational Capabilities (Under Revision)
-
-* **Real-Time Bay & Queue Tracking:** Live visibility of all vehicles, bay locations, assigned technicians, and service categories (*PMS, GRS, Express*).
-* **Automated Express Lane 2-Hour SLA Alerts:** Continuous duration counter displaying `⚠️ Express 2H Limit Exceeded` when turnaround exceeds 120 minutes, with structured delay root-cause reporting (*Parts delay, deep diagnostic, customer approval, technician bottleneck*).
-* **Customer Waiting Lounge TV Broadcast:** Real-time, non-interactive status board displaying vehicle progress (*Waiting, In Progress, Ready for Release*) to keep waiting customers informed.
-* **Tamper-Proof Audit Guard:** System-wide reason-required logging for every record modification (*departure times, diagnoses, categories*) with old/new value comparison and editor logging.
-* **Customer Lookup & History:** Instant recall of repeat customer contact numbers and historical service visits.
-
----
-
-## 3. Executive Strategic Brainstorming: Local vs. Cloud
+## 2. Executive Strategic Brainstorming: Local vs. Cloud
 
 To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **Multi-Branch Network Topology**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
 
@@ -122,7 +112,7 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 
 ---
 
-## 4. Comprehensive Risk Assessment & Mitigation Plan
+## 3. Comprehensive Risk Assessment & Mitigation Plan
 
 Deploying a mission-critical operations system across service bays requires anticipating technical, physical, and financial failure points. Below are the 4 primary risks and their exact mitigation strategies:
 
@@ -185,9 +175,9 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ---
 
-## 5. Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability
+## 4. Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability
 
-### 🖥️ 5.1 Hardware Spec Tiers Calibrated to HonTech's Team Size (3–5 Staff / Branch)
+### 🖥️ 4.1 Hardware Spec Tiers Calibrated to HonTech's Team Size (3–5 Staff / Branch)
 
 HonTech's operational team profile is **3 to 5 active users per branch** *(1 Admin/Owner, 2 Service Advisors, 1 Cashier/Assistant + 1 Lounge TV)*. Across 2 branches, this represents **6 to 10 simultaneous staff users**. 
 
@@ -215,7 +205,7 @@ Because HonTech has a focused, agile team, **there is no need to overspend on ex
 
 ---
 
-### 🏢 5.2 Realistic Operational Scenario: "2 Branches with 3–5 Staff Over 4 Years"
+### 🏢 4.2 Realistic Operational Scenario: "2 Branches with 3–5 Staff Over 4 Years"
 
 Here is how the hardware specifications directly affect HonTech's daily workflow across its 3–5 staff members per location:
 
@@ -243,21 +233,21 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-### 🛒 5.3 Joint Gilmore Sourcing & Inspection Plan
+### 🛒 4.3 Joint Gilmore Sourcing & Inspection Plan
 * **Online Canvassing:** Team and client canvass real-time pricing from *Lazada, Shopee, EasyPC, PC Express, and DynaQuest*.
 * **On-Site Gilmore Buying Trip:** Team and client visit **Gilmore Computer Center** together to inspect physical parts, verify 1–3 year manufacturer warranties, and negotiate store bundle discounts.
 * *Alternative Option:* Repurpose an existing functional Core i3/i5 office desktop at **₱0.00 hardware cost**.
 
 ---
 
-### 📺 5.4 Customer Waiting Lounge TV (Both Options)
+### 📺 4.4 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
 
 
 ---
 
-## 6. Dual Detailed Weekly Execution Roadmaps
+## 5. Dual Detailed Weekly Execution Roadmaps
 
 ---
 
@@ -279,7 +269,7 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-## 7. Staff Training & "Shadow Mode" Dry Run Protocol
+## 6. Staff Training & "Shadow Mode" Dry Run Protocol
 
 ```
 [ Step 1: Guided Staff Workshop (60 Mins) ]
@@ -301,7 +291,7 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-## 8. Security Governance, Internal & External Cyber Defense Protocols
+## 7. Security Governance, Internal & External Cyber Defense Protocols
 
 To safeguard customer privacy, financial data, and shop operational integrity, the system implements a multi-layered security model addressing both **Internal Workshop Defense** and **External Cyber Exposure**:
 
@@ -326,7 +316,7 @@ To safeguard customer privacy, financial data, and shop operational integrity, t
 
 ---
 
-### 🔒 8.1 Internal Security Architecture (Workshop Floor & LAN Defense)
+### 🔒 7.1 Internal Security Architecture (Workshop Floor & LAN Defense)
 
 Internal security prevents unauthorized access or accidental data tampering by staff, technicians, or visitors inside the shop:
 
@@ -344,7 +334,7 @@ Internal security prevents unauthorized access or accidental data tampering by s
 
 ---
 
-### 🌐 8.2 External Security Architecture (Cyber Attack Exposure & Cloud Defense)
+### 🌐 7.2 External Security Architecture (Cyber Attack Exposure & Cloud Defense)
 
 External security protects HonTech's business data from outside internet hackers, malware, and unauthorized remote access:
 
@@ -359,7 +349,7 @@ External security protects HonTech's business data from outside internet hackers
 
 ---
 
-### ⚡ 8.3 Emergency Power Outage & Fallback Protocol
+### ⚡ 7.3 Emergency Power Outage & Fallback Protocol
 
 * In the event of a total municipal power failure (Meralco blackout):
   1. The server UPS maintains power for 15–20 minutes to permit a clean database shutdown.
@@ -369,7 +359,7 @@ External security protects HonTech's business data from outside internet hackers
 
 ---
 
-## 9. Handover Deliverables Package & Post-Warranty Retainer Options
+## 8. Handover Deliverables Package & Post-Warranty Retainer Options
 
 Upon project completion, HonTech AutoCenter management will receive:
 1. **Configured Working System:** Active on the chosen platform (*Local Server or Cloud*).
