@@ -222,10 +222,10 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 
 | Week / Period | Phase & Objectives | Team Activity & Engineering Responsibilities | Client & Adviser Touchpoint | Weekly Milestone Deliverable |
 | :--- | :--- | :--- | :--- | :--- |
-| **Week 1**<br>*(Sept 1–5)* | **Adviser Review, Client Decision & Core Polish** | • **Lead Developer:** Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (`hontech-cloud-poc`) to explore cloud deployment safely without touching master code.<br>• **System Designer:** Assist developer in finalizing UI/UX flows and bay tracking layouts.<br>• **QA & Documentation:** Create hardware/cloud expense analysis and test verification sheets. | • Present proposal document to **Mr. Ar-Jay C. Agbayani** for review and endorsement.<br>• Present comparison to **HonTech Management** for hosting pathway sign-off. | ✅ **Proposal Signed & Cloud Sandbox Initialized** |
-| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Lead Developer:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, SA tablets, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), claim stub printing guides, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
-| **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write paper claim stubs AND enter records on tablets simultaneously)*.<br>• Gather daily staff feedback and adjust UI inputs. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
-| **Week 4**<br>*(Sept 22–30)* | **Buffer, Final Polish & 100% Digital Go-Live** | • Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>• Official retirement of paper claim stubs (100% digital cutover).<br>• Kickoff of **1–2 months complimentary warranty & support**. | • Formal sign-off on Project Handover Package.<br>• System operational as primary daily standard. | ✅ **Production Go-Live & Warranty Active** |
+| **Week 1**<br>*(Sept 1–5)* | **Adviser Review, Client Decision & Core Polish** | • **Developing Team:** Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (`hontech-cloud-poc`) to explore cloud deployment safely without touching master code.<br>• **System Designer:** Assist the developer in handling the system flow, bay tracking layout, and proper UI/UX design.<br>• **QA & Documentation:** Create hardware/cloud expense documentation and conduct extensive QA & unit testing verification. | • Present proposal document to **Mr. Ar-Jay C. Agbayani** for review and endorsement.<br>• Present comparison to **HonTech Management** for hosting pathway sign-off. | ✅ **Proposal Signed & Cloud Sandbox Initialized** |
+| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Developing Team:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, SA tablets, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
+| **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write on traditional whiteboard stubs AND enter records on tablets simultaneously)*.<br>• Gather daily staff feedback; if any issues are encountered, document them immediately and apply the necessary revisions and bug fixes. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
+| **Week 4**<br>*(Sept 22–30)* | **Buffer, Final Polish & 100% Digital Go-Live** | • Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>• Official retirement of traditional whiteboard queue tracking (100% digital cutover).<br>• Kickoff of **1–2 months complimentary warranty & support**. | • Formal sign-off on Project Handover Package.<br>• System operational as primary daily standard. | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
@@ -236,8 +236,8 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 | :--- | :--- | :--- | :--- | :--- |
 | **Week 1**<br>*(Sept 1–5)* | **Hardware Canvassing & Shop LAN Audit** | • Finalize bill of materials for Work-Grade Server PC<br>• Audit Gilmore Computer Center real-time parts pricing<br>• Inspect shop router, Cat6 cabling, and front desk power outlets<br>• Schedule joint Gilmore buying trip | • Management approves hardware budget (~₱18.5k–₱23k)<br>• Schedule date for Gilmore visit | ✅ **Final Gilmore Purchasing Checklist Ready** |
 | **Week 2**<br>*(Sept 8–12)* | **Hardware Procurement, Assembly & Network Setup** | • Joint Gilmore parts purchase & warranty verification<br>• Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>• Assign static local IP (`192.168.1.100`) & configure shop Wi-Fi<br>• Wire primary server directly via Cat6 Ethernet cable<br>• Install UPS battery backup & configure automated local backups | • Client purchases hardware in Gilmore<br>• Server PC physically positioned in front office | ✅ **Server PC Assembled, Configured & Running 24/7** |
-| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect SA tablets & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & claim stubs<br>• Execute 2–3 day live customer "Shadow Mode" *(dual entry)*<br>• Test local database automatic backup batch scripts to USB | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
-| **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of paper claim stubs (100% digital cutover)<br>• Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System operational as primary shop workflow | ✅ **Production Go-Live & Warranty Active** |
+| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect SA tablets & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & daily operations guidelines<br>• Execute 2–3 day live customer "Shadow Mode" *(dual whiteboard + digital entry)*<br>• Test local database automatic backup batch scripts to USB | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
+| **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of traditional whiteboard queue tracking (100% digital cutover)<br>• Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System operational as primary shop workflow | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
@@ -265,25 +265,25 @@ To guarantee a seamless transition without disrupting daily customer intake, the
               │
               ▼
 [ Stage 2: Live "Shadow Mode" (2–3 Days) ]
-  • Staff use traditional paper stubs AND enter data into digital system simultaneously
-  • Zero risk to actual shop operations (paper stubs act as 100% fail-safe)
+  • Staff use traditional whiteboard queue tracking AND enter data into digital system simultaneously
+  • Zero risk to actual shop operations (whiteboard acts as 100% fail-safe)
   • Identifies staff questions, Wi-Fi dead zones, or UI adjustments in real time
               │
               ▼
-[ Stage 3: End-of-Day Reconciliation & Staff Feedback ]
-  • Team compares digital logs against paper receipts to verify 100% data accuracy
-  • Fine-tune workflows based on direct staff feedback
+[ Stage 3: End-of-Day Reconciliation & Issue Fixes ]
+  • Team compares digital logs against whiteboard records to verify 100% data accuracy
+  • Document encountered issues and apply immediate bug fixes and UI refinements
               │
               ▼
 [ Stage 4: 100% Digital Cutover (Go-Live) ]
-  • Paper stubs retired; system becomes standard operating procedure
+  • Whiteboard queue tracking retired; system becomes standard operating procedure
 ```
 
 ---
 
 ### ✅ 6.3 Staff Competency & Go-Live Checklist
 
-Before retiring paper claim stubs, the team and HonTech management verify the following 5 criteria:
+Before retiring traditional whiteboard tracking, the team and HonTech management verify the following 5 criteria:
 - [ ] **Fast Vehicle Intake:** Service Advisors can intake a walk-in vehicle and assign a service bay in under 60 seconds.
 - [ ] **Express 2H Delay Logging:** SAs understand how to log parts/labor delay reasons when Express PMS exceeds target SLA.
 - [ ] **Claim Stub Verification:** Cashier can print clear 80mm thermal claim stubs with complete repair order details.
