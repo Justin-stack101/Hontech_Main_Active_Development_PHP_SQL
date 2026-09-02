@@ -163,18 +163,71 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ---
 
-## 5. Hardware Sourcing & Facility Preparation
+## 5. Hardware Sourcing, Spec Classifications & Long-Term Scalability
 
-### 🖥️ Option A: Central Server PC (If Choosing Local Hosting)
-* **Recommended Specs:** Intel Core i3 (10th Gen+) / AMD Ryzen 3, 8GB–16GB RAM, 256GB SSD, Windows 10/11.
-* **Joint Canvassing & Buying Trip:**
-  * Team and client canvass online prices (*Lazada, Shopee, DynaQuest, EasyPC, PC Express*).
-  * Team and client go together to **Gilmore Computer Center** to negotiate bulk discounts and verify physical shop warranties.
-  * *Estimated Cost:* ₱16,500 – ₱22,000 *(or ₱0 if repurposing an existing functional office desktop)*.
+### 🖥️ 5.1 Hardware Spec Tiers & Commercial Classifications (If Choosing Local Hosting)
 
-### 📺 Customer Waiting Lounge TV (Both Options)
+To ensure the client understands the direct relationship between computer specifications, long-term durability, and multi-user performance, we classify hardware options into three distinct tiers:
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                           HARDWARE SPECIFICATION & LONGEVITY TIERS                                │
+├──────────────────────────┬─────────────────────────────┬──────────────────────────┬───────────────┤
+│ TIER / CLASSIFICATION    │ TECHNICAL SPECIFICATIONS    │ OPERATIONAL CAPACITY     │ EST. COST     │
+├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
+│ 🥉 Standard Criteria     │ Core i3 (10th Gen+) / R3    │ 1 Branch                 │ ₱16,500 –     │
+│    (Baseline Entry)      │ 8GB RAM, 256GB SSD          │ Up to 10–12 devices      │ ₱18,500       │
+│                          │ Windows 10/11 Home/Pro      │ (~15–20 cars/day)        │               │
+├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
+│ 🥈 Work-Grade Class      │ Core i5 (11th/12th Gen) / R5│ 1–2 Branches             │ ₱22,000 –     │
+│    (Recommended Standard)│ 16GB RAM, 512GB NVMe SSD    │ Up to 25 concurrent users│ ₱26,000       │
+│                          │ 80+ Bronze Power Supply     │ (~40–60 cars/day)        │               │
+├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
+│ 🥇 Mid-Range Premium     │ Core i7 / Ryzen 7           │ 3–5 Multi-Branches       │ ₱32,000 –     │
+│    Class (Future-Proof)  │ 32GB RAM, 1TB NVMe PCIe 4.0 │ 50+ concurrent users     │ ₱38,000       │
+│                          │ UPS + Heavy AVR Protection  │ 5 Live Waiting TVs (4+ Y)│               │
+└──────────────────────────┴─────────────────────────────┴──────────────────────────┴───────────────┘
+```
+
+---
+
+### 🏢 5.2 Real-World Business Scenario: "The 4-Year 5-Branch Growth Test"
+
+Why does computer hardware specification matter for HonTech? Consider this 4-year growth projection:
+
+* **Year 1 (Single Facility — Marikina):**
+  * HonTech runs 1 branch with 2 Service Advisors, 1 Cashier, and 1 Waiting Lounge TV (~15 cars/day).
+  * *Hardware Impact:* A **Standard Criteria** PC handles this easily with sub-second response times.
+
+* **Year 3–4 (Multi-Branch Expansion — 5 Branches Across Metro Manila):**
+  * HonTech expands to **5 locations** (*Marikina, Quezon City, Pasig, Taguig, Antipolo*).
+  * Over **40+ concurrent staff** (SAs, technicians, cashiers, inventory managers) are logging inspections, generating invoices, and updating repair bay statuses simultaneously.
+  * **5 Waiting Lounge TVs** are continuously polling live queue updates every second.
+  * The database contains **over 120,000 historical job records, audit logs, and customer profiles**.
+
+#### 💥 What Happens if Cheap / Under-Spec Hardware Was Purchased:
+* A low-end consumer PC (e.g. Celeron / 4GB–8GB RAM / slow SATA drive) will suffer severe memory saturation.
+* MySQL queries will queue up and freeze, causing staff tablet screens to spin for 8–15 seconds per click.
+* The customer lounge TV will stutter or disconnect, and power supply components may burn out from 24/7 heat strain in the auto shop environment.
+
+#### 🛡️ What Happens with Work-Grade & Mid-Range Premium Class Hardware:
+* **NVMe SSD Speed (3,500+ MB/s):** Thousands of historical customer searches execute in **under 20 milliseconds**.
+* **16GB–32GB RAM Buffer:** Holds the entire active MySQL database and index tables in ultra-fast memory without swapping to disk.
+* **Continuous 24/7 Durability:** High-grade cooling and 80+ Bronze certified power supplies withstand ambient shop heat, humidity, and vibration, lasting **4 to 5+ years without needing replacement**.
+
+---
+
+### 🛒 5.3 Joint Gilmore Sourcing & Inspection Plan
+* **Online Canvassing:** Team and client canvass real-time pricing from *Lazada, Shopee, EasyPC, PC Express, and DynaQuest*.
+* **On-Site Gilmore Buying Trip:** Team and client visit **Gilmore Computer Center** together to inspect physical parts, verify 1–3 year manufacturer warranties, and negotiate store bundle discounts.
+* *Alternative Option:* Repurpose an existing functional Core i3/i5 office desktop at **₱0.00 hardware cost**.
+
+---
+
+### 📺 5.4 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
+
 
 ---
 
