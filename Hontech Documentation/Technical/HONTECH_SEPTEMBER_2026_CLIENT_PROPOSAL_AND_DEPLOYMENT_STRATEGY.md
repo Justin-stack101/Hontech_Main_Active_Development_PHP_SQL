@@ -256,29 +256,21 @@ To guarantee a seamless transition without disrupting daily customer intake, the
 
 ---
 
-### 🔄 6.2 The 3-Stage "Shadow Mode" Operational Protocol (Zero Customer Risk)
+### 🔄 6.2 The 4-Stage "Shadow Mode" Operational Protocol (Zero Customer Risk)
 
-```
-[ Stage 1: Guided Staff Workshop (60 Mins) ]
-  • Hands-on simulation using 5 mock repair orders
-  • Staff practice intake, delay logging, and claim stub printing
-              │
-              ▼
-[ Stage 2: Live "Shadow Mode" with On-Site Floor Guarding (2–3 Days) ]
-  • Staff use traditional whiteboard queue tracking AND enter data into digital system simultaneously
-  • Development team stays on-site to guard shop operations, answer questions, and assist in real time
-  • Zero risk to actual shop operations (whiteboard acts as 100% fail-safe)
-  • Identifies staff questions, Wi-Fi dead zones, or UI adjustments in real time
-              │
-              ▼
-[ Stage 3: End-of-Day Reconciliation & Issue Fixes ]
-  • Team compares digital logs against whiteboard records to verify 100% data accuracy
-  • Document encountered issues and apply immediate bug fixes and UI refinements
-              │
-              ▼
-[ Stage 4: 100% Digital Cutover (Go-Live) ]
-  • Whiteboard queue tracking retired; system becomes standard operating procedure
-```
+The "Shadow Mode" protocol is a proven, risk-free operational transition strategy designed to introduce the digital management system into HonTech AutoCenter without disrupting daily customer intake or workshop productivity. During this rollout, staff operate the new digital platform in parallel with their existing routine, ensuring complete operational safety while staff build practical confidence.
+
+1. **Stage 1: Guided Staff Simulation Workshop (60 Minutes)**  
+   Before handling live customer cars, the development team conducts an interactive dry-run workshop in the shop office. Service Advisors and Cashiers practice creating 5 simulated repair orders, tracking Express 2-Hour PMS timers, logging parts delay reasons, and printing sample claim stubs to become fully comfortable with the interface.
+
+2. **Stage 2: Live "Shadow Mode" with On-Site Floor Guarding (2 to 3 Days)**  
+   During regular shop business hours, staff continue writing repair orders on their traditional workshop whiteboard as their primary fail-safe, while simultaneously recording every vehicle digitally on their tablets. The development team remains physically present on the workshop floor to guard operations, guide staff during live customer walk-ins, and provide immediate assistance with zero impact on customer waiting times.
+
+3. **Stage 3: End-of-Day Data Reconciliation & Issue Resolution**  
+   At the close of each business day, the development team and shop management cross-reference the digital records against the whiteboard entries to verify 100% data accuracy. Any questions, Wi-Fi signal dead spots, or workflow bottlenecks identified by staff are documented immediately, allowing the team to apply overnight refinements and software bug fixes.
+
+4. **Stage 4: 100% Digital Cutover & Official Go-Live**  
+   Once Service Advisors achieve consistent sub-60-second vehicle intakes and management verifies complete data integrity, manual whiteboard queue tracking is retired. The HonTech Operations Management System becomes the primary daily standard across all service bays, backed by our complimentary 1–2 months warranty and support.
 
 ---
 
