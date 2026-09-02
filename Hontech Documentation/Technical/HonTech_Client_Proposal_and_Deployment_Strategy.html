@@ -1,757 +1,1231 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HonTech Operations System — Client Proposal & Deployment Strategy</title>
+    <title>HonTech AutoCenter — Technical Proposal & Strategic Deployment Roadmap</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-        :root {
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --accent: #d97706;
-            --text-main: #1f2937;
-            --text-muted: #4b5563;
-            --bg-light: #f9fafb;
-            --border-color: #e5e7eb;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        @page {
+            size: letter portrait;
+            margin: 1in;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: var(--text-main);
-            background-color: #f3f4f6;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Calibri, Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.55;
+            color: #1e293b;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
-        /* Page Layout & Print Simulation */
-        .page-container {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 20mm 20mm 20mm 20mm;
-            margin: 20px auto;
-            background: #ffffff;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            position: relative;
+        .no-print {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .page-header {
-            font-size: 8.5pt;
-            color: #6b7280;
-            border-b: 1px solid #e5e7eb;
-            padding-bottom: 8px;
-            margin-bottom: 24px;
+        .no-print .btn-group {
             display: flex;
-            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            font-size: 10pt;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background-color: #334155;
+        }
+
+        .document-wrapper {
+            max-width: 820px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 50px 65px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Typography & Hierarchy */
+        h1.doc-title {
+            font-size: 22pt;
+            font-weight: 800;
+            color: #0f172a;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .page-footer {
-            font-size: 8.5pt;
-            color: #6b7280;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 8px;
-            margin-top: 32px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .content-body {
-            flex: 1;
-        }
-
-        /* Title Page Layout */
-        .title-page {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            height: 250mm;
-        }
-
-        .sub-header-gold {
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 11pt;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .main-title {
-            color: var(--primary);
-            font-size: 32pt;
-            font-weight: 900;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .main-subtitle {
-            color: #475569;
-            font-size: 14pt;
-            font-style: italic;
-            font-weight: 500;
-            margin-bottom: 60px;
-        }
-
-        .divider-line {
-            width: 100%;
-            height: 1.5px;
-            background: #cbd5e1;
-            margin: 40px 0;
-        }
-
-        .meta-block {
-            font-size: 10.5pt;
-            color: var(--text-main);
-            margin-bottom: 28px;
-        }
-
-        .meta-label {
-            font-size: 9pt;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
             margin-bottom: 4px;
+            line-height: 1.2;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 8px;
         }
 
-        .meta-title {
-            font-weight: 800;
-            color: var(--primary);
-            font-size: 11pt;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin: 20px 0;
-        }
-
-        .team-member {
-            margin-bottom: 8px;
-        }
-
-        .team-name {
-            font-weight: 800;
-            font-size: 10.5pt;
-        }
-
-        .team-role {
+        h2.doc-subtitle {
+            font-size: 14pt;
             font-weight: 700;
-            color: var(--primary-light);
-            font-size: 9.5pt;
+            color: #1e3a8a;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            line-height: 1.3;
         }
 
-        /* Typography & Section Styles */
-        h2.section-title {
-            color: var(--primary);
-            font-size: 15pt;
-            font-weight: 800;
-            border-bottom: 2px solid var(--primary);
+        h3.doc-tertiary {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #475569;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h2.section-heading {
+            font-size: 13pt;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 1.5px solid #cbd5e1;
             padding-bottom: 6px;
-            margin-bottom: 16px;
-            margin-top: 8px;
+            margin-top: 32px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
-        h3.subsection-title {
-            color: #1e293b;
+        h3.subsection-heading {
             font-size: 11.5pt;
-            font-weight: 800;
-            margin-top: 16px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-top: 20px;
             margin-bottom: 8px;
+        }
+
+        h4.tier-heading {
+            font-size: 10.5pt;
+            font-weight: 700;
+            color: #334155;
+            margin-top: 14px;
+            margin-bottom: 6px;
         }
 
         p {
-            font-size: 9.8pt;
-            color: #334155;
+            margin-top: 0;
             margin-bottom: 12px;
             text-align: justify;
         }
 
-        ul {
-            margin-left: 20px;
-            margin-bottom: 14px;
+        /* Metadata Block */
+        .meta-card {
+            background-color: #f8fafc;
+            border-left: 4px solid #1e3a8a;
+            border-top: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            font-size: 10pt;
         }
 
-        li {
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            row-gap: 6px;
+        }
+
+        .meta-label {
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .meta-value {
+            color: #0f172a;
+        }
+
+        /* Table of Contents */
+        .toc-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 16px 22px;
+            margin-bottom: 28px;
             font-size: 9.5pt;
-            color: #334155;
+        }
+
+        .toc-card h3 {
+            font-size: 10.5pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 4px;
+        }
+
+        .toc-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .toc-list > li {
+            font-weight: 600;
+            color: #1e3a8a;
             margin-bottom: 6px;
         }
 
-        li strong {
-            color: var(--primary);
+        .toc-list ul {
+            list-style-type: none;
+            padding-left: 18px;
+            font-weight: 400;
+            color: #475569;
+            margin-top: 3px;
+            margin-bottom: 6px;
+        }
+
+        .toc-list ul li {
+            margin-bottom: 3px;
+        }
+
+        .toc-list a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .toc-list a:hover {
+            text-decoration: underline;
         }
 
         /* Tables */
-        table.custom-table {
+        table.formal-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 9pt;
+            margin-top: 12px;
+            margin-bottom: 20px;
+            font-size: 9.5pt;
+            page-break-inside: avoid;
         }
 
-        table.custom-table th {
-            background-color: var(--primary);
+        table.formal-table th, 
+        table.formal-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        table.formal-table th {
+            background-color: #0f172a;
             color: #ffffff;
             font-weight: 700;
-            text-align: left;
-            padding: 10px 12px;
             text-transform: uppercase;
             font-size: 8.5pt;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
-        table.custom-table td {
-            padding: 9px 12px;
-            border-bottom: 1px solid var(--border-color);
-            color: #334155;
-            vertical-align: top;
-        }
-
-        table.custom-table tr:nth-child(even) td {
+        table.formal-table tr:nth-child(even) td {
             background-color: #f8fafc;
         }
 
-        .highlight-box {
-            background-color: #f0f9ff;
-            border-left: 4px solid var(--primary-light);
+        .highlight-col {
+            background-color: #eff6ff !important;
+            border-left: 2px solid #2563eb !important;
+            border-right: 2px solid #2563eb !important;
+        }
+
+        th.highlight-col-th {
+            background-color: #1e3a8a !important;
+            color: #ffffff !important;
+        }
+
+        /* Callout Notes */
+        .callout-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            border-top: 1px solid #dcfce7;
+            border-right: 1px solid #dcfce7;
+            border-bottom: 1px solid #dcfce7;
             padding: 12px 16px;
-            margin: 14px 0;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .highlight-box p {
-            margin-bottom: 0;
+            margin-top: 14px;
+            margin-bottom: 18px;
             font-size: 9.5pt;
-            color: #1e3a8a;
-            font-weight: 500;
         }
 
-        .signature-section {
-            margin-top: 60px;
-            display: flex;
-            justify-content: space-between;
-            gap: 40px;
+        .callout-box.callout-blue {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            border-top: 1px solid #dbeafe;
+            border-right: 1px solid #dbeafe;
+            border-bottom: 1px solid #dbeafe;
         }
 
-        .signature-block {
-            flex: 1;
+        .callout-box.callout-amber {
+            background-color: #fffbeb;
+            border-left: 4px solid #d97706;
+            border-top: 1px solid #fef3c7;
+            border-right: 1px solid #fef3c7;
+            border-bottom: 1px solid #fef3c7;
         }
 
-        .signature-line {
-            border-bottom: 1px solid #1e293b;
-            margin-bottom: 8px;
-            height: 40px;
-        }
-
-        .signature-label {
-            font-size: 9pt;
+        .callout-title {
             font-weight: 700;
-            color: var(--text-main);
+            margin-bottom: 4px;
+            color: #0f172a;
         }
 
-        /* Print Page Break Controls */
+        /* Checklists */
+        .checklist-group {
+            margin: 12px 0;
+            padding-left: 4px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 10pt;
+        }
+
+        .checkbox-box {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #475569;
+            border-radius: 2px;
+            display: inline-block;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Signatures Block */
+        .signature-section {
+            margin-top: 36px;
+            page-break-inside: avoid;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+            margin-bottom: 24px;
+        }
+
+        .signature-card {
+            border: 1px solid #cbd5e1;
+            padding: 14px 16px;
+            background-color: #ffffff;
+        }
+
+        .sig-line {
+            border-bottom: 1px solid #0f172a;
+            margin-top: 35px;
+            margin-bottom: 6px;
+        }
+
+        .sig-name {
+            font-weight: 700;
+            font-size: 10pt;
+            color: #0f172a;
+        }
+
+        .sig-title {
+            font-size: 8.5pt;
+            color: #64748b;
+        }
+
+        .sig-date {
+            font-size: 8.5pt;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .decision-block {
+            border: 1.5px solid #1e3a8a;
+            background-color: #f8fafc;
+            padding: 16px 20px;
+            margin-top: 18px;
+        }
+
+        hr.divider {
+            border: none;
+            border-top: 1px solid #cbd5e1;
+            margin: 28px 0;
+        }
+
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 12px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
         @media print {
             body {
-                background: none;
+                background: #ffffff;
             }
-
-            .page-container {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 15mm 15mm 15mm 15mm;
-                box-shadow: none;
-                page-break-after: always;
-            }
-
             .no-print {
                 display: none !important;
             }
-        }
-
-        .print-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 11pt;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(30, 58, 138, 0.4);
-            transition: all 0.2s ease;
-            z-index: 9999;
-        }
-
-        .print-btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
+            .document-wrapper {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
+            table.formal-table {
+                font-size: 9pt;
+            }
+            h2.section-heading {
+                page-break-before: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <button class="print-btn no-print" onclick="window.print()">🖨️ Save as PDF / Print</button>
-
-    <!-- PAGE 1: COVER PAGE -->
-    <div class="page-container">
-        <div class="content-body title-page">
-            <div class="sub-header-gold">HONTECH AUTOCENTER</div>
-            <h1 class="main-title">HonTech Operations System</h1>
-            <div class="main-subtitle">Client Proposal & Deployment Strategy</div>
-
-            <div class="divider-line"></div>
-
-            <div class="meta-block">
-                <div class="meta-label">Prepared for</div>
-                <div class="meta-title">HonTech AutoCenter — Management & Ownership</div>
-            </div>
-
-            <div class="meta-block" style="margin-top: 20px;">
-                <div class="meta-label">Prepared by</div>
-                <div class="meta-title" style="margin-bottom: 12px;">HonTech Systems Development Team:</div>
-                
-                <div class="team-member">
-                    <div class="team-name">Justin Nolasco J.</div>
-                    <div class="team-role">(Developer)</div>
-                </div>
-                <div class="team-member">
-                    <div class="team-name">Mary Dayne Villas T.</div>
-                    <div class="team-role">(Designer)</div>
-                </div>
-                <div class="team-member">
-                    <div class="team-name">Catherine Ramos G.</div>
-                    <div class="team-role">(Documentation)</div>
-                </div>
-            </div>
-
-            <div class="meta-block" style="margin-top: 30px;">
-                <div class="team-name">Mr. Ar-Jay C. Agbayani</div>
-                <div class="team-role" style="color: var(--text-muted);">Capstone Project Adviser</div>
-            </div>
-
-            <div style="margin-top: 40px; font-size: 9.5pt; font-weight: 600; color: #64748b;">
-                July 9, 2026
-            </div>
+    <!-- Non-Printing Top Action Bar -->
+    <div class="no-print">
+        <div>
+            <strong>HonTech Operations System</strong> &mdash; Official Proposal & Deployment Blueprint (Version 14.0)
+        </div>
+        <div class="btn-group">
+            <button onclick="window.print()" class="btn">Print / Save as PDF</button>
+            <button onclick="exportToWord()" class="btn btn-secondary">Download as Word (.doc)</button>
         </div>
     </div>
 
-    <!-- PAGE 2: TABLE OF CONTENTS -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
+    <!-- Main Document Container -->
+    <div class="document-wrapper" id="proposal-content">
+
+        <!-- Title Block -->
+        <h1 class="doc-title">HONTECH AUTOCENTER</h1>
+        <h2 class="doc-subtitle">Operations Management & Service Bay Queue System</h2>
+        <h3 class="doc-tertiary">Technical Architecture Evaluation, Deployment Strategy & Implementation Roadmap</h3>
+
+        <!-- Formal Metadata Card -->
+        <div class="meta-card">
+            <div class="meta-grid">
+                <div class="meta-label">Client Organization:</div>
+                <div class="meta-value">HonTech AutoCenter (Management & Operations)</div>
+                <div class="meta-label">Project Initiative:</div>
+                <div class="meta-value">Enterprise Bay Management & Queue Monitoring Platform</div>
+                <div class="meta-label">Engineering Team:</div>
+                <div class="meta-value">
+                    <strong>Mary Dayne Villas T.</strong> (System Architect & System Designer)<br>
+                    <strong>Justin Nolasco J.</strong> (Lead Systems Developer & Technical Implementation)<br>
+                    <strong>Catherine Ramos G.</strong> (Technical Documentation & QA Lead)
+                </div>
+                <div class="meta-label">Project Adviser:</div>
+                <div class="meta-value"><strong>Mr. Ar-Jay C. Agbayani</strong> (Faculty Adviser | Department of Information Technology)</div>
+                <div class="meta-label">Target Period:</div>
+                <div class="meta-value">September 2026 Rollout</div>
+                <div class="meta-label">Classification:</div>
+                <div class="meta-value">Official Client Proposal & Strategic Deployment Blueprint (Version 14.0)</div>
+            </div>
         </div>
-        <div class="content-body">
-            <h2 class="section-title" style="margin-top: 20px; margin-bottom: 24px;">Table of Contents</h2>
+
+        <!-- Table of Contents -->
+        <div class="toc-card">
+            <h3>Table of Contents</h3>
+            <ul class="toc-list">
+                <li>1. <a href="#sec-1">Executive Summary & Project Purpose</a></li>
+                <li>2. <a href="#sec-2">Technical Evaluation: Local On-Premise vs. Modern Cloud Operations</a>
+                    <ul>
+                        <li>• Option A: Local On-Premise Intranet Hosting</li>
+                        <li>• Option B: Modern Cloud Solutions (Recommended)</li>
+                        <li>• Operational Feature & Cost Comparison Table</li>
+                    </ul>
+                </li>
+                <li>3. <a href="#sec-3">Comprehensive Risk Assessment & Mitigation Plan</a>
+                    <ul>
+                        <li>• Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps</li>
+                        <li>• Risk 2: Hardware Budget Constraints (The Staff Terminals First Rule)</li>
+                        <li>• Risk 3: Shop Environment & Electrical Power Spikes</li>
+                        <li>• Risk 4: External Internet Outages on Cloud</li>
+                    </ul>
+                </li>
+                <li>4. <a href="#sec-4">Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability</a>
+                    <ul>
+                        <li>• 4.1 Track B: Cloud Deployment Device Requirements (Recommended)</li>
+                        <li>• 4.2 Track A: Local Server PC Sourcing & Spec Tiers (Alternative)</li>
+                        <li>• 4.3 Operational Scenario: 2 Branches Over 4 Years</li>
+                        <li>• 4.4 Joint Gilmore Sourcing & Inspection Plan</li>
+                        <li>• 4.5 Customer Waiting Lounge TV</li>
+                    </ul>
+                </li>
+                <li>5. <a href="#sec-5">Dual Detailed Weekly Execution Roadmaps (September 2026 Rollout)</a>
+                    <ul>
+                        <li>• Track B: Modern Cloud Deployment Plan (Recommended)</li>
+                        <li>• Track A: Local Intranet Hosting Plan (Alternative)</li>
+                    </ul>
+                </li>
+                <li>6. <a href="#sec-6">Staff Training & "Shadow Mode" Dry-Run Protocol (Draft Framework)</a>
+                    <ul>
+                        <li>• 6.1 Role-by-Role Training Matrix (Draft Framework)</li>
+                        <li>• 6.2 4-Stage "Shadow Mode" Operational Protocol (Draft Framework)</li>
+                        <li>• 6.3 Staff Competency & Go-Live Checklist (Draft Framework)</li>
+                    </ul>
+                </li>
+                <li>7. <a href="#sec-7">Security Governance, Internal & External Cyber Defense Protocols</a>
+                    <ul>
+                        <li>• 7.1 Internal Workshop Floor Security (Staff & LAN Governance)</li>
+                        <li>• 7.2 External Cyber Defense (Internet & Remote Security)</li>
+                        <li>• 7.3 Emergency Outage & Disaster Recovery Comparison</li>
+                    </ul>
+                </li>
+                <li>8. <a href="#sec-8">Handover Deliverables Package & Project Authorization</a>
+                    <ul>
+                        <li>• Comprehensive Deliverables Breakdown: Cloud vs. Local</li>
+                        <li>• Formal Project Review, Endorsement & Authorization</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Section 1 -->
+        <h2 class="section-heading" id="sec-1">1. Executive Summary & Project Purpose</h2>
+        
+        <p>The <strong>HonTech Operations Management System</strong> is a project designed to eliminate operational bottlenecks, modernize service bay tracking, automate Express PMS turnaround monitoring, and provide customer lounge transparency for HonTech AutoCenter.</p>
+
+        <h3 class="subsection-heading">The Core Technological Requirement: Web Delivery & Database Storage</h3>
+        <p>To operate seamlessly across front desk terminals, Service Advisor desktop computers, and the Customer Waiting Lounge TV, the system requires two foundational technological components:</p>
+        <ol>
+            <li><strong>Web Delivery & Domain Platform:</strong> The platform that serves the visual interface to staff desktop PCs, laptops, and lounge displays.</li>
+            <li><strong>Central Database Storage:</strong> The secure repository that stores vehicle repair orders, customer histories, Express PMS 2-hour SLA turnaround timers, and tamper-proof audit trails.</li>
+        </ol>
+
+        <p>This document provides HonTech AutoCenter ownership with a clear, business-minded evaluation of the two viable hosting pathways&mdash;<strong>Option A: Local On-Premise Intranet Server</strong> vs. <strong>Option B: Modern Cloud Solutions</strong>&mdash;to help management select the ideal operational model for the workshop.</p>
+
+        <div class="callout-box">
+            <div class="callout-title">Academic Software Grant Terms (Zero Software Cost)</div>
+            <ul>
+                <li><strong>100% Free Software Grant:</strong> Because this is an official academic capstone development project, <strong>the software, source code, licensing, on-site setup, and staff training are provided to HonTech AutoCenter at &#8369;0 (FREE of charge).</strong></li>
+                <li><strong>Client Hardware Ownership:</strong> The only investment required from HonTech AutoCenter is any physical hardware equipment (<em>if choosing Option A: Server PC, Ethernet cables; if choosing Recommended Option B: &#8369;0 new hardware</em>), which remains 100% the property of the client.</li>
+                <li><strong>1&ndash;2 Months Complimentary Warranty & Support:</strong> The development team provides 1&ndash;2 months of free post-launch monitoring, bug fixes, and operational assistance.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Section 2 -->
+        <h2 class="section-heading" id="sec-2">2. Technical Evaluation: Local On-Premise vs. Modern Cloud Operations</h2>
+
+        <p>To connect all service bay devices into one synchronized system, HonTech can choose between two operational architectures:</p>
+
+        <h3 class="subsection-heading">Option A: Local On-Premise Intranet Hosting (In-Shop Server PC)</h3>
+        <ul>
+            <li><strong>How it Works:</strong> A dedicated computer physically set up inside HonTech's office acts as the central server (running Apache and MySQL via XAMPP). All staff desktop computers, laptops, and the Waiting Lounge TV connect directly to this local PC through the shop's private Wi-Fi router.</li>
+            <li><strong>How it Solves the Problem:</strong> Keeps all data physically inside the building on internal copper cables and local Wi-Fi. It continues operating normally even if municipal fiber internet goes down, but it requires purchasing a dedicated desktop PC (~&#8369;18,500&ndash;&#8369;23,000) and cannot connect multiple physical branches together without complex networking hardware.</li>
+        </ul>
+
+        <h3 class="subsection-heading">Option B: Modern Cloud Solutions (Vercel + Supabase) &mdash; RECOMMENDED</h3>
+        <ul>
+            <li><strong>How it Works:</strong> The web system interface is hosted on a high-speed global web delivery network (Vercel), and the central database is hosted in enterprise cloud data centers (Supabase on AWS). Staff access the system securely through a web browser on any internet-connected device (desktop PCs, laptops, or smartphones).</li>
+            <li><strong>How it Solves the Problem:</strong> Requires <strong>&#8369;0 upfront server hardware cost</strong> (runs on existing office devices), eliminates shop floor clutter, connects multiple branch locations into one master dashboard automatically, and enables remote management from anywhere. It requires an active internet connection (or a &#8369;999 backup 4G/5G SIM router).</li>
+        </ul>
+
+        <h3 class="subsection-heading">Operational Feature & Cost Comparison Table</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Evaluation Feature</th>
+                    <th style="width: 40%;" class="highlight-col-th">Option B: Modern Cloud (RECOMMENDED)</th>
+                    <th style="width: 35%;">Option A: Local Intranet Server (Alternative)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Recommendation Status</strong></td>
+                    <td class="highlight-col"><strong>PRIMARY RECOMMENDATION (Best Value)</strong></td>
+                    <td>Secondary Supported Alternative</td>
+                </tr>
+                <tr>
+                    <td><strong>Upfront Hardware Cost</strong></td>
+                    <td class="highlight-col"><strong>&#8369;0</strong> <em>(Runs on existing office desktop PCs, laptops, & phones)</em></td>
+                    <td>&#8369;14,500 &ndash; &#8369;23,000 <em>(Requires dedicated Server PC)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Monthly Software Hosting</strong></td>
+                    <td class="highlight-col"><strong>&#8369;0 / month (Permanent Free Tier)</strong></td>
+                    <td><strong>&#8369;0 / month (Free software license)</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Electricity Bill (Meralco)</strong></td>
+                    <td class="highlight-col"><strong>&#8369;0</strong> <em>(Cloud data centers host the compute)</em></td>
+                    <td>~&#8369;350&ndash;&#8369;600 / month <em>(PC running 24/7 in shop)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Physical Space & Clutter</strong></td>
+                    <td class="highlight-col"><strong>Zero Physical Space (100% Clutter-Free)</strong><br>&bull; No server boxes, towers, or cables on desks</td>
+                    <td><strong>Requires Dedicated Desk / Shelf Space</strong><br>&bull; Needs space for PC tower, monitor, UPS, and cables</td>
+                </tr>
+                <tr>
+                    <td><strong>Multi-Branch Sync</strong></td>
+                    <td class="highlight-col"><strong>Native Multi-Branch Syncing</strong><br>&bull; Branch A, B, and future branches connect instantly</td>
+                    <td><strong>Complex Hardware VPN Required</strong><br>&bull; Branch B cannot reach Branch A without static IP / VPN</td>
+                </tr>
+                <tr>
+                    <td><strong>Remote Owner Visibility</strong></td>
+                    <td class="highlight-col"><strong>Full Access</strong> via smartphone / laptop anywhere</td>
+                    <td>None <em>(Accessible inside shop Wi-Fi only)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Internal Shop Security</strong></td>
+                    <td class="highlight-col"><strong>Automatic Staff Roles & Branch Isolation</strong><br>&bull; Staff only see what their role allows<br>&bull; Mandatory reason logs for all record changes</td>
+                    <td><strong>Private Shop Network Defense</strong><br>&bull; Kept 100% inside the shop Wi-Fi<br>&bull; Mandatory reason logs for all record changes</td>
+                </tr>
+                <tr>
+                    <td><strong>External Internet Security</strong></td>
+                    <td class="highlight-col"><strong>Bank-Grade Cloud Protection</strong><br>&bull; Built-in SSL HTTPS encryption & anti-hacker shield<br>&bull; Data stored securely in AWS Tier-4 centers</td>
+                    <td><strong>Completely Hidden from Web Hackers</strong><br>&bull; Offline server is invisible on the internet<br>&bull; Cannot be targeted by online attacks</td>
+                </tr>
+                <tr>
+                    <td><strong>Internet Outage Resilience</strong></td>
+                    <td class="highlight-col">Requires backup 4G/5G Wi-Fi SIM (~&#8369;999)</td>
+                    <td><strong>100% Immune</strong> <em>(Continues running offline)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Disaster Recovery & Backups</strong></td>
+                    <td class="highlight-col">Automated daily cloud backups</td>
+                    <td>Manual USB backup drive needed weekly</td>
+                </tr>
+                <tr>
+                    <td><strong>Environmental Hazards</strong></td>
+                    <td class="highlight-col"><strong>100% Protected</strong> in climate-controlled AWS centers</td>
+                    <td>Vulnerable to shop dust, grease, & power surges</td>
+                </tr>
+                <tr>
+                    <td><strong>Long-Term Quotas & Data Retention</strong></td>
+                    <td class="highlight-col"><strong>100% Free Tier (500,000+ Records / ~45 Years)</strong><br>&bull; Zero credit card required to operate.<br>&bull; Free 500MB DB stores 500k+ repair orders.<br>&bull; <em>If ever upgraded to paid and payment lapses:</em> Cloud providers provide a 30-day grace period; data is never immediately deleted, and a full .sql database backup can be downloaded anytime.<br>&bull; <em>Alternative at 500k records:</em> Archive older records to CSV at &#8369;0 cost!</td>
+                    <td><strong>Zero Provider Risk (100% Sovereign)</strong><br>&bull; Physical computer stays inside the shop.<br>&bull; No third party can freeze or suspend your records.<br>&bull; Limited only by physical hard drive capacity.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <!-- Section 3 -->
+        <h2 class="section-heading" id="sec-3">3. Comprehensive Risk Assessment & Mitigation Plan</h2>
+
+        <p>Deploying a mission-critical operations system across service bays requires anticipating technical, physical, and financial failure points. Below are the 4 primary risks and their exact mitigation strategies:</p>
+
+        <h3 class="subsection-heading">Risk 1: Local Hosting Multi-Branch & In-Shop Wi-Fi Subnet Traps</h3>
+        <ul>
+            <li><strong>The Problem (Two Specific Network Failures on Local Servers):</strong>
+                <ol>
+                    <li><strong>The Multi-Branch Barrier:</strong> If HonTech runs a Local Server PC inside Branch A (Marikina), <strong>Branch B (located across town) cannot access Branch A's server over the standard internet</strong> without purchasing expensive static public IP addresses from PLDT/Globe and installing complex Site-to-Site VPN routers in both buildings.</li>
+                    <li><strong>In-Shop Wi-Fi Subnet Disconnections:</strong> Within the shop, if a staff desktop PC or laptop connects to a secondary guest Wi-Fi extender or a different router subnet (e.g. <code>192.168.2.x</code> instead of the main server router <code>192.168.1.x</code>), the computer will lose connection and display a <em>"Server Not Found"</em> error even though the staff member is physically inside the building.</li>
+                </ol>
+            </li>
+            <li><strong>The Mitigation:</strong>
+                <ul>
+                    <li><strong>For Local Hosting (Option A):</strong> We configure a single unified shop Wi-Fi SSID, assign a fixed static IP (<code>192.168.1.100</code>), and wire primary front desk terminals directly via Cat6 Ethernet cable.</li>
+                    <li><strong>For Multi-Branch Chains:</strong> If HonTech wants multiple physical branch locations synchronized under one master dashboard, <strong>we strongly recommend Option B (Cloud Vercel + Supabase)</strong>, which connects all branches instantly over any internet with zero network configuration.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 class="subsection-heading">Risk 2: Hardware Budget Constraints (The "Staff Terminals First" Rule)</h3>
+        <ul>
+            <li><strong>The Problem:</strong> If HonTech has an allocated hardware budget and prioritizes purchasing desktop PCs and laptops for the Service Advisors and front desk first, <strong>there may not be enough budget remaining to purchase a dedicated &#8369;18,500&ndash;&#8369;23,000 Local Server PC.</strong></li>
+            <li><strong>The Mitigation (The Smart Decision Flow):</strong>
+                <ul>
+                    <li><strong>Step 1:</strong> The development team and client canvass equipment prices together in Gilmore, purchasing the necessary staff desktop computers and front desk terminals first.</li>
+                    <li><strong>Step 2 (The Strategic Decision):</strong>
+                        <ul>
+                            <li><strong>If remaining budget permits:</strong> The client purchases the dedicated Server PC &rarr; Proceed with <strong>Track A (Local On-Premise Hosting)</strong>.</li>
+                            <li><strong>If budget is fully utilized:</strong> The client skips the Server PC completely &rarr; Seamlessly launch <strong>Track B (Modern Cloud Solutions)</strong> at <strong>&#8369;0.00 additional server hardware cost</strong>!</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 class="subsection-heading">Risk 3: Shop Environment & Electrical Power Spikes</h3>
+        <ul>
+            <li><strong>The Problem:</strong> Auto repair centers generate heavy electrical voltage surges when air compressors and hydraulic lifts turn on, risking motherboard burnout on an unprotected on-premise server PC.</li>
+            <li><strong>The Mitigation:</strong>
+                <ul>
+                    <li><strong>For Option B (Cloud Solutions &mdash; Recommended):</strong> <strong>100% Protected.</strong> All server compute and database engines run in Amazon's Tier-4 climate-controlled data centers. Workshop electrical surges in Marikina have <strong>zero impact</strong> on system data.</li>
+                    <li><strong>For Option A (Local Hosting &mdash; Alternative):</strong> A dedicated <strong>Uninterruptible Power Supply (UPS with AVR / Surge Protection ~&#8369;1,800)</strong> must be installed between the wall outlet and the local server PC to ensure clean, continuous power.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3 class="subsection-heading">Risk 4: External Internet Outages on Cloud</h3>
+        <ul>
+            <li><strong>The Problem:</strong> If HonTech chooses Cloud and the primary fiber line (PLDT/Globe) is accidentally cut down the street, staff cannot update records.</li>
+            <li><strong>The Mitigation:</strong> A backup <strong>&#8369;999 prepaid 4G/5G Wi-Fi router (Smart Bro / Globe At Home)</strong> with a budget reloadable data SIM stays in the front office. Staff switch Wi-Fi in 5 seconds with zero interruption.</li>
+        </ul>
+
+        <hr class="divider">
+
+        <!-- Section 4 -->
+        <h2 class="section-heading" id="sec-4">4. Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability</h2>
+
+        <p>This section outlines the exact device and hardware requirements for both operational pathways so HonTech management can clearly budget and plan equipment:</p>
+
+        <h3 class="subsection-heading">4.1 Track B: Modern Cloud Device Requirements (RECOMMENDED &mdash; &#8369;0 Server Cost)</h3>
+        <p>Because Cloud computing is hosted remotely, <strong>HonTech does NOT need to purchase a dedicated server PC</strong>. The system runs on existing shop devices:</p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Shop Location / Role</th>
+                    <th style="width: 25%;">Device Required</th>
+                    <th style="width: 35%;">Minimum Specification</th>
+                    <th style="width: 15%;">Est. Hardware Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Front Desk / Cashier</strong></td>
+                    <td>Existing Office PC or Laptop</td>
+                    <td>Any Windows 10/11 desktop or laptop with Google Chrome / Edge</td>
+                    <td><strong>&#8369;0.00</strong> <em>(Use existing)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Service Advisors (SAs)</strong></td>
+                    <td>Dedicated SA Desktop / Bay Computer</td>
+                    <td>Existing PC or laptop designated for SA intake & bay monitoring</td>
+                    <td><strong>&#8369;0.00</strong> <em>(Use existing)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Customer Waiting Lounge</strong></td>
+                    <td>Wall Display TV</td>
+                    <td>Smart TV with built-in browser <em>(or &#8369;1,800 Fire Stick)</em></td>
+                    <td><strong>&#8369;0.00</strong> <em>(Shop already owns TV)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Central Server Unit</strong></td>
+                    <td><strong>None Needed</strong> <em>(Cloud-Hosted)</em></td>
+                    <td>Amazon AWS Tier-4 Data Center (Managed by Provider)</td>
+                    <td><strong>&#8369;0.00</strong></td>
+                </tr>
+                <tr style="font-weight: bold; background-color: #f1f5f9;">
+                    <td colspan="3">TOTAL UPFRONT INVESTMENT</td>
+                    <td>&#8369;0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">4.2 Track A: Local Server PC Sourcing & Spec Tiers (ALTERNATIVE)</h3>
+        <p>If HonTech chooses <strong>Local On-Premise Hosting</strong>, a dedicated Server PC must be purchased and kept running 24/7 in the front office. Sized for HonTech's <strong>3 to 5 staff users per branch (6&ndash;10 users across 2 branches)</strong>:</p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Hardware Tier / Classification</th>
+                    <th style="width: 30%;">Technical Specifications</th>
+                    <th style="width: 25%;">Operational Capacity (3&ndash;5 Staff/Branch)</th>
+                    <th style="width: 20%;">Estimated Hardware Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Standard Criteria</strong><br><em>(Single Shop Baseline)</em></td>
+                    <td>&bull; Core i3 (10th Gen+) / Ryzen 3<br>&bull; 8GB RAM, 256GB NVMe SSD<br>&bull; Windows 10/11 Home/Pro</td>
+                    <td><strong>Branch 1 (Marikina Main)</strong><br>&bull; 3&ndash;5 Staff + 1 Lounge TV<br>&bull; ~15&ndash;25 cars / day</td>
+                    <td><strong>&#8369;14,500 &ndash; &#8369;17,500</strong><br><em>(or &#8369;0 if repurposing existing PC)</em></td>
+                </tr>
+                <tr>
+                    <td><strong>Work-Grade Class</strong><br><em>(Recommended Standard)</em></td>
+                    <td>&bull; Core i5 (11th/12th Gen) / Ryzen 5<br>&bull; 16GB RAM, 512GB NVMe SSD<br>&bull; 80+ Bronze Power Supply</td>
+                    <td><strong>Both Branches 1 & 2</strong><br>&bull; 6&ndash;10 Staff + 2 Lounge TVs<br>&bull; ~30&ndash;50 cars / day</td>
+                    <td><strong>&#8369;18,500 &ndash; &#8369;23,000</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Mid-Range Premium</strong><br><em>(Multi-Branch Expansion)</em></td>
+                    <td>&bull; Core i7 / Ryzen 7<br>&bull; 32GB RAM, 1TB NVMe SSD<br>&bull; UPS + Heavy AVR Protection</td>
+                    <td><strong>3&ndash;4 Future Branches</strong><br>&bull; 15&ndash;20 Staff + 4 Lounge TVs<br>&bull; 4+ Years Peak Longevity</td>
+                    <td><strong>&#8369;26,000 &ndash; &#8369;32,000</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">4.3 Realistic Operational Scenario: "2 Branches with 3&ndash;5 Staff Over 4 Years"</h3>
+        <p>Here is how the hardware specifications directly affect HonTech's daily workflow across its 3&ndash;5 staff members per location:</p>
+        <ul>
+            <li><strong>Branch 1 (Marikina Main &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles and log PMS status updates on dedicated computers, 1 Cashier generates invoices and prints claim stubs, 1 Waiting Lounge TV runs continuously displaying the customer queue. <em>Daily Volume:</em> ~15 to 25 repair orders/day.</li>
+            <li><strong>Branch 2 (Second Branch Expansion &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles on dedicated computers, 1 Cashier handles billing and invoice processing, 1 Waiting Lounge TV shows branch customer queues. <em>Combined Multi-Branch Load:</em> ~30 to 50 active repair orders/day across both branches.</li>
+        </ul>
+
+        <h4 class="tier-heading">Why Minimum/Budget Hardware (4GB RAM) Fails Over Time:</h4>
+        <p>When 3 Service Advisors click <em>"Save Job"</em> at the exact same second while the Lounge TV is auto-refreshing, a 4GB RAM PC runs out of memory buffers. Staff experience annoying 3&ndash;5 second input freezes, and consumer power supplies overheat from running 24/7 in hot auto shop bays.</p>
+
+        <h4 class="tier-heading">Why Work-Grade Class (16GB RAM + NVMe SSD) Runs Flawlessly:</h4>
+        <ul>
+            <li><strong>Instant 15ms Response Times:</strong> With 16GB RAM, the entire 45,000-vehicle database stays cached in active memory. Even during peak morning intake rushes, queries return instantly.</li>
+            <li><strong>4+ Years 24/7 Durability:</strong> High-grade cooling and an 80+ Bronze certified power supply prevent hardware crashes, giving HonTech total operational peace of mind for years without replacement.</li>
+        </ul>
+
+        <h3 class="subsection-heading">4.4 Joint Gilmore Sourcing & Inspection Plan (For Local On-Premise Hosting)</h3>
+        <ul>
+            <li><strong>Online Canvassing:</strong> Team and client canvass real-time pricing from <em>Lazada, Shopee, EasyPC, PC Express, and DynaQuest</em>.</li>
+            <li><strong>On-Site Gilmore Buying Trip:</strong> Team and client visit <strong>Gilmore Computer Center</strong> together to inspect physical parts, verify 1&ndash;3 year manufacturer warranties, and negotiate store bundle discounts.</li>
+            <li><em>Alternative Option:</em> Repurpose an existing functional Core i3/i5 office desktop at <strong>&#8369;0.00 hardware cost</strong>.</li>
+        </ul>
+
+        <h3 class="subsection-heading">4.5 Customer Waiting Lounge TV (Both Options)</h3>
+        <ul>
+            <li><strong>Current Status:</strong> HonTech AutoCenter <strong>already owns a functional Smart TV</strong> in the customer lounge.</li>
+            <li><strong>Week 2 Inspection:</strong> Team will test the built-in browser with the TV URL (<code>?mode=tv</code>), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (<em>Google Chromecast / Fire Stick ~&#8369;1,800</em>) if the TV browser is slow.</li>
+        </ul>
+
+        <hr class="divider">
+
+        <!-- Section 5 -->
+        <h2 class="section-heading" id="sec-5">5. Dual Detailed Weekly Execution Roadmaps (September 2026 Rollout)</h2>
+
+        <p>To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have structured comprehensive 4-week execution schedules for both deployment tracks. Each week defines clear technical objectives, on-site activities, client touchpoints, and tangible milestone deliverables:</p>
+
+        <h3 class="subsection-heading">TRACK B: Modern Cloud Deployment Roadmap (RECOMMENDED)</h3>
+        <p><em>Fastest deployment path, &#8369;0 upfront server hardware cost, and instant multi-device synchronization.</em></p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Week / Period</th>
+                    <th style="width: 25%;">Phase & Objectives</th>
+                    <th style="width: 30%;">Team Activity & Engineering Responsibilities</th>
+                    <th style="width: 15%;">Client & Adviser Touchpoint</th>
+                    <th style="width: 15%;">Weekly Milestone Deliverable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Week 1</strong><br><em>(Sept 1&ndash;5)</em></td>
+                    <td><strong>Adviser Review, Client Decision & Core Polish</strong></td>
+                    <td>&bull; <strong>Developing Team:</strong> Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (<code>hontech-cloud-poc</code>) to explore cloud deployment safely without touching master code.<br>&bull; <strong>System Designer:</strong> Assist the developer in handling the system flow, bay tracking layout, and proper UI/UX design.<br>&bull; <strong>QA & Documentation:</strong> Create hardware/cloud expense documentation and conduct extensive QA & unit testing verification.</td>
+                    <td>&bull; Present proposal document to <strong>Mr. Ar-Jay C. Agbayani</strong> for review and endorsement.<br>&bull; Present comparison to <strong>HonTech Management</strong> for hosting pathway sign-off.</td>
+                    <td><strong>Proposal Signed & Cloud Sandbox Initialized</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong><br><em>(Sept 8&ndash;12)</em></td>
+                    <td><strong>System Unit Testing & Staff Training Preparation</strong></td>
+                    <td>&bull; <strong>Developing Team:</strong> Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, dedicated SA computers, and Lounge Smart TV.<br>&bull; <strong>Designer & Documentation:</strong> Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material.</td>
+                    <td>&bull; On-site check of shop Wi-Fi signal in bays & lounge.<br>&bull; Confirm staff training schedule with shop management.</td>
+                    <td><strong>Unit Testing Passed & Training Materials Ready</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
+                    <td><strong>Staff Training & Live Customer "Shadow Mode"</strong></td>
+                    <td>&bull; Conduct 60-min guided workshop for Service Advisors & Cashier.<br>&bull; Launch <strong>2&ndash;3 Day Live Customer "Shadow Mode"</strong> <em>(dual entry: staff write on traditional whiteboard stubs AND enter records on dedicated SA computers simultaneously)</em>.<br>&bull; <strong>On-Site Floor Guarding:</strong> The development team members will personally stay on-site to guard shop floor operations, support staff in real time, document any friction points, and apply immediate revisions and bug fixes.</td>
+                    <td>&bull; SAs use digital system on live walk-in cars with zero risk.<br>&bull; Owner tests remote mobile monitoring dashboard.</td>
+                    <td><strong>100% Staff Certified & Confident</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 4</strong><br><em>(Sept 22&ndash;30)</em></td>
+                    <td><strong>Buffer, Final Polish & 100% Digital Go-Live</strong></td>
+                    <td>&bull; Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>&bull; Official retirement of traditional whiteboard queue tracking (100% digital cutover).<br>&bull; Kickoff of <strong>1&ndash;2 months complimentary warranty & support</strong>.</td>
+                    <td>&bull; Formal sign-off on Project Handover Package.<br>&bull; System operational as primary daily standard.</td>
+                    <td><strong>Production Go-Live & Warranty Active</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">TRACK A: Local On-Premise Intranet Roadmap (ALTERNATIVE)</h3>
+        <p><em>Complete physical data sovereignty inside the building; requires dedicated PC purchase and on-site network cabling.</em></p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Week / Period</th>
+                    <th style="width: 25%;">Phase & Objectives</th>
+                    <th style="width: 30%;">Key Engineering & On-Site Activities</th>
+                    <th style="width: 15%;">Client & Staff Touchpoint</th>
+                    <th style="width: 15%;">Weekly Milestone Deliverable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Week 1</strong><br><em>(Sept 1&ndash;5)</em></td>
+                    <td><strong>Hardware Canvassing & Shop LAN Audit</strong></td>
+                    <td>&bull; Finalize bill of materials for Work-Grade Server PC<br>&bull; Audit Gilmore Computer Center real-time parts pricing<br>&bull; Inspect shop router, Cat6 cabling, and front desk power outlets<br>&bull; Schedule joint Gilmore buying trip</td>
+                    <td>&bull; Management approves hardware budget (~&#8369;18.5k&ndash;&#8369;23k)<br>&bull; Schedule date for Gilmore visit</td>
+                    <td><strong>Final Gilmore Purchasing Checklist Ready</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong><br><em>(Sept 8&ndash;12)</em></td>
+                    <td><strong>Hardware Procurement, Assembly & Network Setup</strong></td>
+                    <td>&bull; Joint Gilmore parts purchase & warranty verification<br>&bull; Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>&bull; Assign static local IP (<code>192.168.1.100</code>) & configure shop Wi-Fi<br>&bull; Wire primary server directly via Cat6 Ethernet cable<br>&bull; Install UPS battery backup & configure automated local backups</td>
+                    <td>&bull; Client purchases hardware in Gilmore<br>&bull; Server PC physically positioned in front office</td>
+                    <td><strong>Server PC Assembled, Configured & Running 24/7</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
+                    <td><strong>Local Multi-Device Validation & "Shadow Mode"</strong></td>
+                    <td>&bull; Connect dedicated SA computers & Lounge Smart TV to local server IP<br>&bull; Conduct 60-min staff training on job intake & daily operations guidelines<br>&bull; Execute 2&ndash;3 day live customer "Shadow Mode" <em>(dual whiteboard + digital entry)</em><br>&bull; <strong>On-Site Floor Guarding:</strong> Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts.</td>
+                    <td>&bull; Staff practice on local shop network<br>&bull; Management reviews daily entry speed and feedback</td>
+                    <td><strong>Shop Devices Synced & Staff Trained</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Week 4</strong><br><em>(Sept 22&ndash;30)</em></td>
+                    <td><strong>Full Digital Go-Live & Formal Handover</strong></td>
+                    <td>&bull; Official retirement of traditional whiteboard queue tracking (100% digital cutover)<br>&bull; Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>&bull; Kickoff of 1&ndash;2 months complimentary warranty & support</td>
+                    <td>&bull; Owner signs Project Handover Authorization<br>&bull; System operational as primary shop workflow</td>
+                    <td><strong>Production Go-Live & Warranty Active</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <!-- Section 6 -->
+        <h2 class="section-heading" id="sec-6">6. Staff Training & "Shadow Mode" Dry-Run Protocol (Draft Framework)</h2>
+
+        <p>To guarantee a seamless transition without disrupting daily customer intake, the rollout follows a structured 4-phase training and testing methodology. <em>(Note: This section serves as a preliminary working draft framework for initial review and will be fine-tuned based on client operational preferences).</em></p>
+
+        <h3 class="subsection-heading">6.1 Role-by-Role Training Matrix (Draft Framework)</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Staff Role</th>
+                    <th style="width: 25%;">Target Devices</th>
+                    <th style="width: 35%;">Training Curriculum & Focus Areas</th>
+                    <th style="width: 15%;">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Service Advisors (SAs)</strong></td>
+                    <td>Dedicated SA Desktop Console / PC</td>
+                    <td>&bull; 30-second vehicle intake & plate number lookup<br>&bull; Express 2-Hour PMS SLA timer tracking<br>&bull; Logging delay reasons & parts waiting flags<br>&bull; Real-time bay status updates <em>(Intake &rarr; Bay &rarr; Done)</em></td>
+                    <td>45 Mins</td>
+                </tr>
+                <tr>
+                    <td><strong>Cashier / Front Desk</strong></td>
+                    <td>Desktop PC / Laptop</td>
+                    <td>&bull; Generating & printing 80mm thermal / PDF claim stubs<br>&bull; Customer checkout, billing status & invoice printing<br>&bull; Customer phone SMS / call notification triggers</td>
+                    <td>30 Mins</td>
+                </tr>
+                <tr>
+                    <td><strong>Owner / General Manager</strong></td>
+                    <td>Smartphone / Laptop</td>
+                    <td>&bull; Real-time bay throughput & daily revenue analytics<br>&bull; Inspecting tamper-proof audit trails (<code>job_audit_logs</code>)<br>&bull; Multi-branch management & staff account administration</td>
+                    <td>30 Mins</td>
+                </tr>
+                <tr>
+                    <td><strong>Lounge Display Operator</strong></td>
+                    <td>Waiting Lounge TV</td>
+                    <td>&bull; Launching full-screen Waiting Lounge TV URL (<code>?mode=tv</code>)<br>&bull; Verifying real-time auto-refresh queue & privacy mode</td>
+                    <td>15 Mins</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">6.2 The 4-Stage "Shadow Mode" Operational Protocol (Draft Framework)</h3>
+        <p>The "Shadow Mode" protocol is a proven, risk-free operational transition strategy designed to introduce the digital management system into HonTech AutoCenter without disrupting daily customer intake or workshop productivity. During this rollout, staff operate the new digital platform in parallel with their existing routine, ensuring complete operational safety while staff build practical confidence.</p>
+
+        <ol>
+            <li><strong>Stage 1: Guided Staff Simulation Workshop (60 Minutes)</strong><br>Before handling live customer cars, the development team conducts an interactive dry-run workshop in the shop office. Service Advisors and Cashiers practice creating 5 simulated repair orders, tracking Express 2-Hour PMS timers, logging parts delay reasons, and printing sample claim stubs to become fully comfortable with the interface.</li>
+            <li><strong>Stage 2: Live "Shadow Mode" with On-Site Floor Guarding (2 to 3 Days)</strong><br>During regular shop business hours, staff continue writing repair orders on their traditional workshop whiteboard as their primary fail-safe, while simultaneously recording every vehicle digitally on their dedicated SA computers. The development team remains physically present on the workshop floor to guard operations, guide staff during live customer walk-ins, and provide immediate assistance with zero impact on customer waiting times.</li>
+            <li><strong>Stage 3: End-of-Day Data Reconciliation & Issue Resolution</strong><br>At the close of each business day, the development team and shop management cross-reference the digital records against the whiteboard entries to verify 100% data accuracy. Any questions, Wi-Fi signal dead spots, or workflow bottlenecks identified by staff are documented immediately, allowing the team to apply overnight refinements and software bug fixes.</li>
+            <li><strong>Stage 4: 100% Digital Cutover & Official Go-Live</strong><br>Once Service Advisors achieve consistent sub-60-second vehicle intakes and management verifies complete data integrity, manual whiteboard queue tracking is retired. The HonTech Operations Management System becomes the primary daily standard across all service bays, backed by our complimentary 1&ndash;2 months warranty and support.</li>
+        </ol>
+
+        <h3 class="subsection-heading">6.3 Staff Competency & Go-Live Checklist (Draft Framework)</h3>
+        <p>Before retiring traditional whiteboard tracking, the team and HonTech management verify the following 5 criteria:</p>
+
+        <div class="checklist-group">
+            <div class="check-item"><span class="checkbox-box"></span> <span><strong>Fast Vehicle Intake:</strong> Service Advisors can intake a walk-in vehicle and assign a service bay in under 60 seconds on their dedicated computer.</span></div>
+            <div class="check-item"><span class="checkbox-box"></span> <span><strong>Express 2H Delay Logging:</strong> SAs understand how to log parts/labor delay reasons when Express PMS exceeds target SLA.</span></div>
+            <div class="check-item"><span class="checkbox-box"></span> <span><strong>Claim Stub Verification:</strong> Cashier can print clear 80mm thermal claim stubs with complete repair order details.</span></div>
+            <div class="check-item"><span class="checkbox-box"></span> <span><strong>Lounge TV Real-Time Sync:</strong> Customer lounge display updates automatically when a car finishes servicing without page reloads.</span></div>
+            <div class="check-item"><span class="checkbox-box"></span> <span><strong>Remote Owner Visibility:</strong> Business owner can log into the live dashboard and view shop bay queues on a smartphone.</span></div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Section 7 -->
+        <h2 class="section-heading" id="sec-7">7. Security Governance, Internal & External Cyber Defense Protocols</h2>
+
+        <p>To safeguard customer privacy, financial records, and operational integrity, the system implements defense-in-depth across both <strong>Internal Workshop Floor</strong> and <strong>External Cyber Exposure</strong>:</p>
+
+        <h3 class="subsection-heading">7.1 Internal Workshop Floor Security (Staff & LAN Governance)</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Security Feature</th>
+                    <th style="width: 40%;" class="highlight-col-th">Option B: Modern Cloud (RECOMMENDED)</th>
+                    <th style="width: 35%;">Option A: Local Intranet Server (Alternative)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Role-Based Access Control (RBAC)</strong></td>
+                    <td class="highlight-col">&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Cashiers restricted from deleting records</td>
+                    <td>&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Cashiers restricted from deleting records</td>
+                </tr>
+                <tr>
+                    <td><strong>Tamper-Proof Audit Logging</strong></td>
+                    <td class="highlight-col">&bull; Mandatory written justification for record changes<br>&bull; Immutable <code>job_audit_logs</code> record editor name, timestamp, old value, & new value</td>
+                    <td>&bull; Mandatory written justification for record changes<br>&bull; Immutable <code>job_audit_logs</code> record editor name, timestamp, old value, & new value</td>
+                </tr>
+                <tr>
+                    <td><strong>Multi-Branch Data Isolation</strong></td>
+                    <td class="highlight-col">&bull; Branch A staff cannot view or modify Branch B records<br>&bull; Central Owner account views aggregated multi-branch analytics</td>
+                    <td>&bull; Physical isolation per shop building<br>&bull; Cross-branch viewing requires dedicated VPN hardware</td>
+                </tr>
+                <tr>
+                    <td><strong>Physical Workshop Network</strong></td>
+                    <td class="highlight-col">&bull; Secured via WPA3 shop Wi-Fi password<br>&bull; Accessible from authorized staff devices</td>
+                    <td>&bull; Dedicated <code>HonTech_Staff</code> LAN subnet<br>&bull; Customer lounge Wi-Fi separated from server LAN</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">7.2 External Cyber Defense (Internet & Remote Security)</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Defense Layer</th>
+                    <th style="width: 40%;" class="highlight-col-th">Option B: Modern Cloud (RECOMMENDED)</th>
+                    <th style="width: 35%;">Option A: Local Intranet Server (Alternative)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Public Internet Exposure</strong></td>
+                    <td class="highlight-col"><strong>Bank-Grade Cloud Defense</strong><br>&bull; Protected behind Cloudflare edge network<br>&bull; Automated bot & DDoS attack filtering</td>
+                    <td><strong>Complete Air-Gap Invisibility</strong><br>&bull; Server PC is invisible on the public internet<br>&bull; 0 open inbound firewall ports</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Encryption</strong></td>
+                    <td class="highlight-col">&bull; <strong>SSL/TLS 1.3</strong> bank-grade encryption in transit<br>&bull; <strong>AES-256</strong> enterprise hardware encryption at rest</td>
+                    <td>&bull; Local LAN unencrypted HTTP (or self-signed SSL)<br>&bull; Data stored on local Windows NTFS drive</td>
+                </tr>
+                <tr>
+                    <td><strong>Brute-Force Security</strong></td>
+                    <td class="highlight-col">&bull; Bcrypt password hashing (Cost Factor 10)<br>&bull; Automated rate-limiting on failed login attempts</td>
+                    <td>&bull; Bcrypt password hashing (Cost Factor 10)<br>&bull; Windows PC password protection</td>
+                </tr>
+                <tr>
+                    <td><strong>Remote Access Method</strong></td>
+                    <td class="highlight-col">Native HTTPS web URL from any browser worldwide</td>
+                    <td>Zero-Trust Cloudflare Tunnel (<code>cloudflared</code>) required</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="subsection-heading">7.3 Emergency Outage & Disaster Recovery Comparison</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Failure Scenario</th>
+                    <th style="width: 40%;" class="highlight-col-th">Option B: Modern Cloud (RECOMMENDED)</th>
+                    <th style="width: 35%;">Option A: Local Intranet Server (Alternative)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Meralco Power Outage</strong></td>
+                    <td class="highlight-col"><strong>100% Unaffected in Cloud</strong><br>&bull; Cloud database runs continuously in AWS<br>&bull; Staff can continue using cellular laptops/phones</td>
+                    <td><strong>Requires UPS Battery Backup</strong><br>&bull; UPS powers PC for 15&ndash;20 mins for safe shutdown<br>&bull; Temporary paper fallback until power restores</td>
+                </tr>
+                <tr>
+                    <td><strong>Municipal Fiber Internet Outage</strong></td>
+                    <td class="highlight-col"><strong>5-Second Backup Wi-Fi Switchover</strong><br>&bull; Front desk switches to &#8369;999 4G/5G prepaid SIM router</td>
+                    <td><strong>100% Immune to Internet Outages</strong><br>&bull; System runs locally over shop Wi-Fi without internet</td>
+                </tr>
+                <tr>
+                    <td><strong>Hardware Crash / Drive Failure</strong></td>
+                    <td class="highlight-col"><strong>Zero Data Loss</strong><br>&bull; Point-in-time automated daily cloud backups</td>
+                    <td><strong>Requires Manual USB Backups</strong><br>&bull; Restore from weekly manual USB drive backup</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <!-- Section 8 -->
+        <h2 class="section-heading" id="sec-8">8. Handover Deliverables Package & Project Authorization</h2>
+
+        <p>Upon project completion and sign-off, HonTech AutoCenter management will receive a complete operational handover package tailored to the selected pathway:</p>
+
+        <h3 class="subsection-heading">Comprehensive Deliverables Breakdown: Cloud vs. Local</h3>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Deliverable Item</th>
+                    <th style="width: 40%;" class="highlight-col-th">Option B: Modern Cloud Package (RECOMMENDED)</th>
+                    <th style="width: 35%;">Option A: Local Intranet Server Package (Alternative)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Live Operational System</strong></td>
+                    <td class="highlight-col">&bull; Production Web URL & SSL Domain<br>&bull; Full ownership of Supabase Cloud DB project<br>&bull; Active Vercel CDN deployment</td>
+                    <td>&bull; Assembled Work-Grade Server PC in office<br>&bull; Configured Apache/MySQL on static IP (<code>192.168.1.100</code>)<br>&bull; Windows background startup services configured</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Staff Quick-Start Manual (PDF)</strong></td>
+                    <td class="highlight-col">&bull; Visual guide for desktop PCs, laptops, & smartphones<br>&bull; Browser bookmarks for staff instant access</td>
+                    <td>&bull; Visual guide for front desk PC & local LAN computers<br>&bull; Local IP desktop shortcuts (<code>HonTech_Intranet.lnk</code>)</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Administrator & Security Guide</strong></td>
+                    <td class="highlight-col">&bull; Supabase database backup & export instructions<br>&bull; Staff account creation, role changes, & password resets<br>&bull; Cloud quota monitoring guide</td>
+                    <td>&bull; Windows XAMPP start/stop procedures<br>&bull; MySQL automated USB backup batch script manual<br>&bull; Local static IP troubleshooting guide</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Emergency Fallback Runbook</strong></td>
+                    <td class="highlight-col">&bull; 4G/5G mobile backup Wi-Fi switchover protocol<br>&bull; Temporary paper intake procedure</td>
+                    <td>&bull; UPS battery backup shutdown & restart protocol<br>&bull; Database restoration from USB flash drive</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Source Code & Architecture Archive</strong></td>
+                    <td class="highlight-col">&bull; Complete GitHub repository source code<br>&bull; Database schema SQL scripts & seed definitions</td>
+                    <td>&bull; USB Flash Drive containing full system source code, XAMPP installer, & master .sql schema backup</td>
+                </tr>
+                <tr>
+                    <td><strong>6. Complimentary 1&ndash;2 Months Warranty</strong></td>
+                    <td class="highlight-col"><strong>&#8369;0 Free Support:</strong> Remote uptime monitoring, query optimization, bug fixes, & staff guidance</td>
+                    <td><strong>&#8369;0 Free Support:</strong> On-site hardware checkups, LAN performance tuning, bug fixes, & staff guidance</td>
+                </tr>
+                <tr>
+                    <td><strong>7. Optional Post-Warranty Support</strong></td>
+                    <td class="highlight-col"><strong>Cloud Admin Retainer:</strong> Remote monthly database checkups, quota monitoring, & feature updates</td>
+                    <td><strong>On-Call Hardware Support:</strong> On-site hardware cleaning, physical drive maintenance, & network repairs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Formal Signatures -->
+        <div class="signature-section">
+            <h3 class="subsection-heading">Formal Project Review, Endorsement & Authorization</h3>
+
+            <h4 class="tier-heading">Part I: Prepared & Submitted by the Development Team</h4>
+            <div class="signature-grid">
+                <div class="signature-card">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Mary Dayne Villas T.</div>
+                    <div class="sig-title">System Architect & System Designer</div>
+                    <div class="sig-date">Date: September 2, 2026</div>
+                </div>
+                <div class="signature-card">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Justin Nolasco J.</div>
+                    <div class="sig-title">Lead Systems Developer & Technical Implementation</div>
+                    <div class="sig-date">Date: September 2, 2026</div>
+                </div>
+                <div class="signature-card" style="grid-column: span 2;">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Catherine Ramos G.</div>
+                    <div class="sig-title">Technical Documentation & QA Lead</div>
+                    <div class="sig-date">Date: September 2, 2026</div>
+                </div>
+            </div>
+
+            <h4 class="tier-heading">Part II: Academic Faculty Review & Verification</h4>
+            <div class="signature-card" style="margin-bottom: 24px;">
+                <div class="sig-line"></div>
+                <div class="sig-name">Mr. Ar-Jay C. Agbayani</div>
+                <div class="sig-title">Faculty Capstone Project Adviser | Department of Information Technology</div>
+                <div style="margin-top: 10px; font-size: 9pt; color: #475569;">
+                    <strong>Date Reviewed & Verified:</strong> ___________________________<br>
+                    <strong>Adviser Notes / Remarks:</strong> __________________________________________________________________
+                </div>
+            </div>
+
+            <h4 class="tier-heading">Part III: Client Acceptance & Authorization (HonTech AutoCenter)</h4>
+            <div class="decision-block">
+                <div style="margin-bottom: 12px; font-size: 10pt; font-weight: 700; color: #0f172a;">
+                    Selected Deployment Architecture:
+                </div>
+                <div style="margin-bottom: 8px; font-size: 9.5pt;">
+                    <span class="checkbox-box"></span> <strong>Option B: Modern Cloud Solutions (Vercel + Supabase) &mdash; RECOMMENDED</strong>
+                </div>
+                <div style="margin-bottom: 18px; font-size: 9.5pt;">
+                    <span class="checkbox-box"></span> <strong>Option A: Local Intranet Hosting (On-Premise Server PC)</strong>
+                </div>
+
+                <div class="sig-line"></div>
+                <div class="sig-name">HonTech AutoCenter Management</div>
+                <div class="sig-title">Client Representative / Business Owner &bull; Signature over Printed Name</div>
+                <div class="sig-date">Date Approved: ___________________________</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Word Export JavaScript Engine -->
+    <script>
+        function exportToWord() {
+            const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                "<head><meta charset='utf-8'><title>HonTech Proposal</title>" +
+                "<style>" +
+                "body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #1e293b; }" +
+                "table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 9.5pt; }" +
+                "th, td { border: 1px solid #cbd5e1; padding: 7px 9px; vertical-align: top; }" +
+                "th { background-color: #0f172a; color: #ffffff; font-weight: bold; font-size: 9pt; }" +
+                "h1 { font-size: 20pt; color: #0f172a; border-bottom: 2px solid #0f172a; padding-bottom: 5px; }" +
+                "h2 { font-size: 14pt; color: #1e3a8a; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-top: 25px; }" +
+                "h3 { font-size: 12pt; color: #1e3a8a; margin-top: 18px; }" +
+                ".meta-card { background: #f8fafc; border-left: 4px solid #1e3a8a; padding: 12px; margin-bottom: 20px; font-size: 10pt; }" +
+                ".callout-box { background: #f0fdf4; border-left: 4px solid #16a34a; padding: 10px; margin: 15px 0; }" +
+                ".sig-line { border-bottom: 1px solid #000; margin-top: 35px; margin-bottom: 5px; }" +
+                "</style></head><body>";
+            const footer = "</body></html>";
+            const sourceHTML = header + document.getElementById("proposal-content").innerHTML + footer;
             
-            <table class="custom-table" style="font-size: 10.5pt;">
-                <tbody>
-                    <tr>
-                        <td style="font-weight: 700; width: 85%;">1. Executive Summary</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">2. Architecture Strategy & Local Domain Addressing (http://hontech.ph)</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">3. Hardware Requirements</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">3</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">4. Financial Analysis: Local vs. Cloud</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">4</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">5. Investment & Support Structure</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">6. Security, Data Privacy & Maintenance</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">7. Deployment Roadmap</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">5</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">8. Project Deliverables</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">6</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700;">9. Next Steps & Client Requirements</td>
-                        <td style="text-align: right; font-weight: 800; color: var(--primary);">6</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 2 of 7</span>
-        </div>
-    </div>
-
-    <!-- PAGE 3: EXECUTIVE SUMMARY & ARCHITECTURE STRATEGY -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
-        </div>
-        <div class="content-body">
-            <h2 class="section-title">1. Executive Summary</h2>
-            <p>Running a busy auto center depends on speed and clear communication. Today, HonTech AutoCenter relies on paper claim stubs and verbal updates between the front desk, the service bays, and waiting customers. This creates avoidable bottlenecks: the front desk cannot see what mechanics are doing in real time, mechanics wait on approvals that get lost in the shuffle, and customers in the lounge are left guessing about the status of their vehicle.</p>
-            
-            <p>This proposal introduces the <strong>HonTech Operations System</strong>, a fully digital, real-time management dashboard that connects the front desk, service bays, and customer lounge on one shared platform—with no one needing to leave their station to stay informed.</p>
-
-            <h3 class="subsection-title" style="color: var(--accent);">Why This Matters to HonTech</h3>
-            <ul>
-                <li><strong>Speed & Organization</strong> — staff always know exactly which vehicles are on which lifts and what stage each job is in.</li>
-                <li><strong>Customer Trust</strong> — a live status monitor in the lounge keeps customers calm, informed, and confident in the shop.</li>
-                <li><strong>Cost Efficiency</strong> — the system is built to run on a local network, eliminating recurring monthly cloud hosting fees.</li>
-                <li><strong>Absolute Privacy</strong> — customer and vehicle data stay physically inside the HonTech building at all times.</li>
-            </ul>
-
-            <p>The remainder of this document walks through the recommended architecture, local domain network configuration, hardware requirements, full cost comparison, investment structure, security posture, and the step-by-step rollout plan that will bring this system to life on the shop floor.</p>
-
-            <h2 class="section-title" style="margin-top: 24px;">2. Architecture Strategy & Local Domain Addressing</h2>
-            <p>We recommend deploying the HonTech Operations System on a local intranet server rather than a cloud-hosting platform. This decision is grounded in three priorities that matter most to a shop like HonTech: eliminating recurring costs, minimizing the technical knowledge required to keep the system running day to day, and guaranteeing that sensitive customer data never leaves the premises.</p>
-
-            <h3 class="subsection-title">2.1 Local Wi-Fi Domain Name Resolution (http://hontech.ph)</h3>
-            <p>To ensure maximum convenience for staff and waiting room display monitors, access to the server does <strong>not</strong> require memorizing numerical IP addresses (such as <code>192.168.1.105</code>). Instead, we configure a <strong>Clean Local Domain Name</strong> (e.g., <code>http://hontech.ph</code> or <code>http://hontech.local</code>) directly on the shop's local Wi-Fi router network.</p>
-
-            <div class="highlight-box">
-                <p>💡 <strong>Client & Adviser Technical Advantage:</strong> This local domain setup operates for <strong>₱0 monthly fees</strong>, requires <strong>zero internet registration paperwork</strong>, and remains <strong>100% operational offline</strong> even if external internet service goes down.</p>
-            </div>
-
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Priority</th>
-                        <th>How Local Deployment & Local Domain Delivers It</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Lower Cost</strong></td>
-                        <td>No monthly hosting or domain fees — a clean local address (<code>http://hontech.ph</code>) replaces years of recurring bills.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Simplicity</strong></td>
-                        <td>Managed entirely through a familiar Windows interface — staff type <code>http://hontech.ph</code> into any tablet or TV browser.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Data Privacy</strong></td>
-                        <td>All records stay on-site on the shop's own server, never transmitted to a third-party data center.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2 class="section-title" style="margin-top: 20px;">3. Hardware Requirements</h2>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 3 of 7</span>
-        </div>
-    </div>
-
-    <!-- PAGE 4: HARDWARE & FINANCIAL ANALYSIS -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
-        </div>
-        <div class="content-body">
-            <p>To run the local server architecture, HonTech will need to prepare the following on-site hardware.</p>
-
-            <h3 class="subsection-title">3.1 Primary Application Server (Local XAMPP Server)</h3>
-            <p>This machine is the brain of the operation and should remain powered on during all business hours.</p>
-
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th style="width: 30%;">Specification</th>
-                        <th>Requirement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Form Factor</strong></td>
-                        <td>Desktop PC or Mini-PC (avoid laptops — 24/7 plug-in use risks battery swelling)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Operating System</strong></td>
-                        <td>Windows 10 or 11 (64-bit)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Processor</strong></td>
-                        <td>Intel Core i3 (10th Gen+) or AMD Ryzen 3</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Memory (RAM)</strong></td>
-                        <td>8GB DDR4 minimum, 16GB recommended</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Storage</strong></td>
-                        <td>256GB SSD required for fast database read/write speeds</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Networking</strong></td>
-                        <td>Wired RJ45 Ethernet connection to the shop router (Wi-Fi not recommended for the server)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p style="font-size: 8.5pt; font-style: italic; color: #64748b;">Budget note: a new machine meeting these specs runs approximately ₱16,500–₱22,000. If HonTech has a spare desktop on hand, it can be wiped and repurposed to reduce this cost to ₱0.</p>
-
-            <h3 class="subsection-title">3.2 Staff Terminals (Front Desk & Service Advisors)</h3>
-            <ul>
-                <li>Standard PCs, budget laptops, or tablets (e.g., iPads)</li>
-                <li>Any device capable of running a modern web browser — Chrome, Edge, or Safari</li>
-            </ul>
-
-            <h3 class="subsection-title">3.3 Waiting Lounge Broadcast Monitor</h3>
-            <ul>
-                <li>40-inch or larger Smart TV</li>
-                <li>Built-in web browser, or a streaming stick (Chromecast / Fire Stick) to display the live dashboard</li>
-            </ul>
-
-            <h2 class="section-title" style="margin-top: 24px;">4. Financial Analysis: Local vs. Cloud</h2>
-            <p>Choosing a local server shifts the cost structure from a recurring monthly expense to a single upfront asset purchase — with substantial savings over time.</p>
-
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>Expense Category</th>
-                        <th>Cloud Deployment (AWS / DigitalOcean)</th>
-                        <th>Local Intranet Server (XAMPP + Local Domain)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Server Hardware</strong></td>
-                        <td>₱0 (rented off-site)</td>
-                        <td>₱16,500 – ₱22,000 (one-time)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Monthly Hosting Fee</strong></td>
-                        <td>₱1,300 – ₱2,700 / month</td>
-                        <td><strong>₱0 / month</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Domain Name Fee</strong></td>
-                        <td>₱800 / year (hontech.com)</td>
-                        <td><strong>₱0 / year (Clean Local Address: http://hontech.ph)</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Database Storage Limits</strong></td>
-                        <td>Pay-per-GB, scaled pricing</td>
-                        <td>Unlimited (up to 256GB local SSD)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Internet Bandwidth Costs</strong></td>
-                        <td>Subject to provider fees</td>
-                        <td><strong>₱0 (runs on local shop network)</strong></td>
-                    </tr>
-                    <tr style="background-color: #f1f5f9; font-weight: 800;">
-                        <td><strong>5-Year Total Estimate</strong></td>
-                        <td>₱80,000 – ₱165,000+</td>
-                        <td style="color: var(--primary);">≈ ₱22,000 total</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="highlight-box">
-                <p>💰 <strong>Bottom line:</strong> Over a five-year horizon, the local deployment saves HonTech an estimated <strong>₱58,000 to ₱143,000</strong> compared to an equivalent cloud-hosted solution.</p>
-            </div>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 4 of 7</span>
-        </div>
-    </div>
-
-    <!-- PAGE 5: INVESTMENT, SECURITY & ROADMAP -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
-        </div>
-        <div class="content-body">
-            <h2 class="section-title">5. Investment & Support Structure</h2>
-            
-            <h3 class="subsection-title">5.1 System Development (One-Time Cost)</h3>
-            <p>To keep the transition manageable, the software development fee is divided into two milestones:</p>
-            <ul>
-                <li><strong>Project Initiation (30%):</strong> an initial deposit to begin hardware preparation and setup work.</li>
-                <li><strong>Final Turnover (70%):</strong> the remaining balance, due only once the client is fully satisfied with the Dry Run and the system is actively supporting shop operations.</li>
-            </ul>
-
-            <h3 class="subsection-title">5.2 Complimentary Support & Future Maintenance</h3>
-            <ul>
-                <li><strong>1–2 Months Free Maintenance (tentative):</strong> as the system is newly deployed, the first 1–2 months after launch include free maintenance and bug fixes while staff adjust to the new workflow.</li>
-                <li><strong>Ongoing IT Retainer (optional):</strong> after the free period, HonTech may opt into a maintenance contract covering routine database backups, password resets, and disaster recovery. Even with a modest retainer, total savings versus cloud hosting still exceed ₱165,000 over five years.</li>
-            </ul>
-
-            <h2 class="section-title" style="margin-top: 24px;">6. Security, Data Privacy & Maintenance</h2>
-            <p>Running on a local XAMPP server rather than the cloud brings meaningful security and operational advantages:</p>
-            <ul>
-                <li><strong>Physical Security</strong> — the customer database (names, phone numbers, vehicle records) never leaves the HonTech building.</li>
-                <li><strong>Air-Gapped Isolation</strong> — the server is not exposed to the public internet, so it cannot be breached remotely by internet scanners.</li>
-                <li><strong>Data Sovereignty</strong> — HonTech owns 100% of its data, with no reliance on third-party cloud providers.</li>
-                <li><strong>Local Subnet Domain Security</strong> — <code>http://hontech.ph</code> resolves strictly within shop router boundary, keeping internal shop operations invisible to external networks.</li>
-                <li><strong>Zero Command-Line Administration</strong> — the system is fully managed through a standard Windows interface—no Linux knowledge required.</li>
-                <li><strong>One-Click Boot</strong> — starting the server is as simple as powering it on and opening the XAMPP Control Panel.</li>
-                <li><strong>No Cloud Outages</strong> — the system stays fully operational even if the shop's external internet connection goes down.</li>
-            </ul>
-
-            <h2 class="section-title" style="margin-top: 24px;">7. Deployment Roadmap</h2>
-            <p><strong>Phase 1 — Procurement & Setup</strong></p>
-            <ul>
-                <li>Procure a server PC, or repurpose a spare unit; assess the lounge TV setup.</li>
-                <li>Physically install and wire the server PC to the local router.</li>
-            </ul>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 5 of 7</span>
-        </div>
-    </div>
-
-    <!-- PAGE 6: DELIVERABLES & NEXT STEPS -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
-        </div>
-        <div class="content-body">
-            <ul>
-                <li>Install XAMPP, migrate the HonTech database, and test terminal connections for fast load times. Configure local router domain entry (<code>http://hontech.ph</code>).</li>
-            </ul>
-
-            <p style="margin-top: 12px;"><strong>Phase 2 — On-Site Client Testing ("Dry Run")</strong></p>
-            <ul>
-                <li>Staff continue using paper stubs for safety while also entering data into the new digital system.</li>
-                <li>Goal: let staff stress-test the software and get comfortable with the workflow without risking live operations.</li>
-            </ul>
-
-            <p style="margin-top: 12px;"><strong>Phase 3 — Staff Training & Go-Live Cutover</strong></p>
-            <ul>
-                <li>Conduct final training sessions informed by Dry Run feedback.</li>
-                <li>Officially retire paper stubs — from this point forward, all intake and status tracking is fully digital.</li>
-            </ul>
-
-            <p style="margin-top: 12px;"><strong>Phase 4 — Post-Launch Observation (Free Maintenance Period)</strong></p>
-            <ul>
-                <li>Developer closely monitors the system for 1–2 months to ensure stability, resolve bugs, and support staff adoption.</li>
-            </ul>
-
-            <h2 class="section-title" style="margin-top: 24px;">8. Project Deliverables</h2>
-            <p>Upon final payment and official Go-Live cutover, HonTech will receive the following, ensuring full ownership and understanding of the system:</p>
-            <ul>
-                <li><strong>User Manuals</strong> — step-by-step PDF guides with screenshots for front desk and service advisor staff.</li>
-                <li><strong>Administrator & Security Guide</strong> — instructions for the owner on password resets, analytics, and managing employee access.</li>
-                <li><strong>Emergency Protocol Document</strong> — clear steps for server crashes, power outages, or internet loss, including temporary fallback to paper stubs.</li>
-                <li><strong>Source Code License / Contract</strong> — the legal document defining code ownership and terms of use.</li>
-            </ul>
-
-            <h2 class="section-title" style="margin-top: 24px;">9. Next Steps & Client Requirements</h2>
-            <p>The following action items will conclude the proposal meeting and set the project in motion:</p>
-
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th style="width: 10%;">#</th>
-                        <th style="width: 35%;">Action Item</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>1</strong></td>
-                        <td><strong>Approval & Sign-Off</strong></td>
-                        <td>Client agrees to the hardware list, local domain configuration (<code>http://hontech.ph</code>), and payment structure.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>2</strong></td>
-                        <td><strong>Hardware Procurement</strong></td>
-                        <td>Client purchases the required lounge TV and server PC (or identifies spare shop desktop).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>3</strong></td>
-                        <td><strong>Payment</strong></td>
-                        <td>Collection of the Milestone 1 deposit.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>4</strong></td>
-                        <td><strong>Schedule the Dry Run</strong></td>
-                        <td>Select a slow day (e.g., a Tuesday) to begin Phase 2 testing.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 6 of 7</span>
-        </div>
-    </div>
-
-    <!-- PAGE 7: APPROVAL SIGNATURES -->
-    <div class="page-container">
-        <div class="page-header">
-            <span>HonTech Operations System — Client Proposal</span>
-            <span>HonTech AutoCenter</span>
-        </div>
-        <div class="content-body" style="display: flex; flex-direction: column; justify-content: space-between; height: 220mm;">
-            <div>
-                <h2 class="section-title" style="margin-top: 20px;">Approval</h2>
-                <p style="margin-top: 20px;">By signing below, HonTech AutoCenter management approves the operational scope, local intranet architecture, <code>http://hontech.ph</code> local domain setup, and project milestones outlined in this proposal.</p>
-            </div>
-
-            <div class="signature-section" style="margin-bottom: 120px;">
-                <div class="signature-block">
-                    <div class="signature-line"></div>
-                    <div class="signature-label">Client Signature — HonTech AutoCenter</div>
-                </div>
-                <div class="signature-block">
-                    <div class="signature-line"></div>
-                    <div class="signature-label">Date</div>
-                </div>
-            </div>
-
-            <div>
-                <div class="divider-line" style="margin: 20px 0;"></div>
-                <div style="font-size: 8.5pt; color: #94a3b8; text-align: center;">
-                    HonTech AutoCenter Operations System — Prepared by Justin Nolasco J., Mary Dayne Villas T., Catherine Ramos G. | Adviser: Mr. Ar-Jay C. Agbayani
-                </div>
-            </div>
-        </div>
-        <div class="page-footer">
-            <span>HonTech Systems Development Team</span>
-            <span>Page 7 of 7</span>
-        </div>
-    </div>
-
+            const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+            const fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = 'HonTech_September_2026_Client_Proposal_and_Deployment_Strategy.doc';
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+        }
+    </script>
 </body>
 </html>
