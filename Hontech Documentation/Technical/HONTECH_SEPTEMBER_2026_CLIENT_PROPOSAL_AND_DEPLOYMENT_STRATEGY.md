@@ -359,52 +359,16 @@ External security protects HonTech's business data from outside internet hackers
 
 ---
 
-## 8. Handover Deliverables, Post-Turnover Developer Strategy & Project Authorization
+## 8. Handover Deliverables Package & Project Authorization
 
-### 📦 8.1 Handover Deliverables Package
 Upon project completion and sign-off, HonTech AutoCenter management will receive:
-1. **Configured Working Production System:** Fully operational on the chosen platform (*Recommended Cloud or Local Server*).
-2. **Staff Quick-Start User Manual (PDF):** Visual, screenshot-heavy step-by-step guide for Front Desk staff & Service Advisors.
-3. **Administrator & Security Operations Guide (PDF):** Complete manual for Owner/Admin covering user creation, RBAC permissions, audit log review, and PIN/password resets.
-4. **Emergency Fallback Protocol & Disaster Recovery Runbook (PDF):** Clear contingency steps for power blackouts, internet drops, and database restoration.
-5. **Full Source Code Repository & Database Architecture Archive:** Complete, uncompiled source code, SQL schema migrations, and initial seed snapshots.
-6. **Built-in Diagnostic Tools:** High-contrast developer error reporting overlay with one-click log export (`.txt`) for instant troubleshooting.
-
----
-
-### 🛠️ 8.2 Post-Turnover Developer & Maintenance Strategy ("Who Will Handle the System?")
-
-A common and important question from business ownership is: *"After the capstone development phase is completed, who will maintain and manage the system?"*
-
-To ensure HonTech AutoCenter never faces operational downtime or developer dependency, the project incorporates a **3-tier sustainability framework**:
-
-```
-┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                           POST-TURNOVER SYSTEM SUSTAINABILITY FRAMEWORK                           │
-├───────────────────────────────────┬───────────────────────────────────────────────────────────────┤
-│ 1. Zero-Code Daily Operations     │ • All day-to-day tasks (adding staff, changing rates, bay    │
-│    (Self-Sustaining Admin Panel)  │   queues, backups) are done via buttons in the user interface. │
-│                                   │ • Shop managers NEVER need to write code or touch databases.  │
-├───────────────────────────────────┼───────────────────────────────────────────────────────────────┤
-│ 2. Clean, Standard Architecture   │ • Built on industry-standard HTML/CSS/JS and SQL.             │
-│    (No Vendor Lock-In)            │ • No obscure proprietary coding languages. Any junior web     │
-│                                   │   developer or IT student can understand the code in 30 mins. │
-├───────────────────────────────────┼───────────────────────────────────────────────────────────────┤
-│ 3. Tiered Post-Launch Support     │ • Phase 1: 1–2 Months 100% Free Developer Warranty Support.   │
-│                                   │ • Phase 2: Affordable on-call / per-visit retainer option.    │
-│                                   │ • Phase 3: Academic department internship pipeline for future │
-│                                   │   feature expansions.                                         │
-└───────────────────────────────────┴───────────────────────────────────────────────────────────────┘
-```
-
-1. **Self-Sustaining Admin Controls (No Daily Developer Needed):**
-   * The system is engineered so that HonTech does **not** need a full-time programmer on payroll. The Owner and Admin can create accounts, toggle active/inactive staff, change branch assignments, view audit histories, and export backups directly through intuitive visual screens.
-2. **Phase 1: 1–2 Months Complimentary Developer Warranty (₱0.00):**
-   * The development team provides 1–2 months of free post-launch monitoring, immediate bug fixes, and on-site/remote assistance while staff become 100% comfortable with the workflow.
-3. **Phase 2: Affordable On-Call IT Retainer (Optional):**
-   * After the free 2-month warranty, HonTech can engage the lead developer or an on-call IT specialist on an affordable, on-demand basis (*e.g., per scheduled quarterly checkup or per custom feature request*) rather than paying an expensive monthly IT salary.
-4. **Phase 3: Academic Collaboration & Student Internship Pipeline:**
-   * HonTech can maintain an active partnership with the college/university IT department, allowing future graduating capstone batches or student interns to build future add-on modules (*such as customer mobile apps or loyalty programs*) at zero software cost.
+1. **Configured Working System:** Fully operational and active on the chosen platform (*Recommended Cloud or Local Server*).
+2. **Staff Quick-Start User Manual (PDF):** Visual, screenshot-heavy guide for Front Desk & Service Advisors.
+3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user accounts, roles, audit histories, and password resets.
+4. **Emergency Fallback Protocol (PDF):** Clear contingency steps for power outages and database recovery.
+5. **Source Code & Database Architecture Archive:** Full system code and initial database snapshot.
+6. **Complimentary 1–2 Months Maintenance & Warranty:** Free bug fixes, performance monitoring, and staff support during the operational transition.
+7. **Optional Post-Warranty Support:** After the complimentary 2-month warranty, HonTech may opt into an affordable on-call IT retainer (or on-demand per visit) covering periodic checkups, manual/cloud backups, and future enhancements.
 
 ---
 
