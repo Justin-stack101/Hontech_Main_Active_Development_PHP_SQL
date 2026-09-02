@@ -116,6 +116,7 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 | **Electricity Cost (Meralco)** | **₱0** *(Cloud data center hosts compute)* | ~₱350–₱600 / month *(PC running 24/7)* |
 | **Internet Outage Resilience** | Requires backup 4G/5G Wi-Fi SIM (~₱999) | **100% Immune** *(Continues running offline)* |
 | **Remote Owner Visibility** | **Full Access** via smartphone / laptop anywhere | None *(Accessible inside shop network only)* |
+| **Physical Space & Shop Clutter** | **Zero Physical Space (100% Clutter-Free)**<br>• No bulky PC towers, monitor desks, or tangled cables in the shop | **Requires Dedicated Desk / Shelf Space**<br>• Needs space for PC tower, monitor, keyboard, UPS battery backup, and power cables |
 | **Auto Shop Environmental Hazards** | **100% Protected** in climate-controlled AWS data centers | Vulnerable to shop dust, grease, & power spikes |
 | **Disaster Recovery** | Automated daily point-in-time cloud backups | Manual USB backup drive needed weekly |
 
@@ -164,8 +165,9 @@ Deploying a mission-critical operations system across service bays requires anti
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
 | ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
-| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Cloud Admin Support Needed:** Requires someone to manage database quotas, API keys, and domain settings. |
-| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
+| ✅ **Zero Physical Shop Space Needed:** 100% clutter-free front office; no bulky PC towers, monitor desks, or tangled wires. | ❌ **Cloud Admin Support Needed:** Requires someone to manage database quotas, API keys, and domain settings. |
+| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
+| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | |
 | ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | |
 | ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | |
 
@@ -175,11 +177,11 @@ Deploying a mission-critical operations system across service bays requires anti
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
 | ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,500–₱23,000+ immediately on new computer parts. |
-| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
-| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
-| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
-| ✅ **Instant 15ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
-| ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | ❌ **Cloud Admin Support Needed:** Requires someone to manage monthly database quotas, API keys, and domain renewals. |
+| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Consumes Physical Office Space:** Requires dedicated desk/shelf space for the PC tower, monitor, UPS battery, and cables. |
+| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
+| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
+| ✅ **Instant 15ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
+| | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
 
 ---
 
