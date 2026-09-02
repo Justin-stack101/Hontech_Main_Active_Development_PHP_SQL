@@ -18,18 +18,20 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 4.0 (Official September Release — Academic Grant & Dual-Track Blueprint)
+**Document Version:** 5.0 (Client Insights, Pros/Cons & Dual-Track Blueprint)
 
 ---
 
 ## Table of Contents
 1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
-2. [Core System Features & Recent Revisions](#2-core-system-features--recent-revisions)
+2. [Core System Features & Recent Enhancements](#2-core-system-features--recent-enhancements)
 3. [Architecture Comparison: Local Intranet vs. Cloud Solutions](#3-architecture-comparison-local-intranet-vs-cloud-solutions)
-4. [Hardware Procurement & Facility Preparation](#4-hardware-procurement--facility-preparation)
+   - [Pros & Cons: Option A (Local Intranet)](#-option-a-local-intranet-hosting-on-premise-server)
+   - [Pros & Cons: Option B (Modern Cloud)](#-option-b-modern-cloud-solutions-vercel--supabase--aws)
+4. [Hardware Sourcing & Facility Preparation](#4-hardware-sourcing--facility-preparation)
 5. [Dual Detailed Weekly Execution Roadmaps](#5-dual-detailed-weekly-execution-roadmaps)
-   - [Track A: Local Intranet Hosting Plan](#track-a-detailed-roadmap-for-local-intranet-hosting-recommended)
-   - [Track B: Modern Cloud Deployment Plan](#track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
+   - [Track A: Local Intranet Hosting Plan & Fresh Insights](#-track-a-detailed-roadmap-for-local-intranet-hosting-recommended)
+   - [Track B: Modern Cloud Deployment Plan & Fresh Insights](#-track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
 6. [Training, Simulation & Dry-Run Protocols](#6-training-simulation--dry-run-protocols)
 7. [Security, Audit Governance & Emergency Protocols](#7-security-audit-governance--emergency-protocols)
 8. [Handover Deliverables Package](#8-handover-deliverables-package)
@@ -52,7 +54,7 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ---
 
-## 2. Core System Features & Recent Revisions
+## 2. Core System Features & Recent Enhancements
 
 * **Real-Time Bay & Queue Tracking:** Live visibility of all vehicles, bay locations, assigned technicians, and service categories (*PMS, GRS, Express*).
 * **Automated Express Lane 2-Hour SLA Alerts:** Continuous duration counter displaying `⚠️ Express 2H Limit Exceeded` when turnaround exceeds 120 minutes, with structured delay root-cause reporting (*Parts delay, deep diagnostic, customer approval, technician bottleneck*).
@@ -64,21 +66,49 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ## 3. Architecture Comparison: Local Intranet vs. Cloud Solutions
 
-To give HonTech management complete flexibility, the system has been architected to support two distinct deployment options:
+To give HonTech management complete clarity and strategic decision-making power, we provide a side-by-side comparison including detailed **Pros & Cons** and operational trade-offs:
 
-| Evaluation Criteria | Option A: Local Intranet Server *(Recommended)* | Option B: Modern Cloud *(Vercel + Supabase)* | Option C: Enterprise Cloud *(AWS)* |
-| :--- | :--- | :--- | :--- |
-| **Primary Strength** | **₱0 monthly fees & 100% offline resilience.** | Remote access from outside shop / home. | Multi-branch scalability. |
-| **Internet Dependency** | **Zero.** Continues working during PLDT/Globe fiber cuts. | **Mandatory.** System pauses if internet fails. | **Mandatory.** Continuous uplink needed. |
-| **Monthly Hosting Fee** | **₱0 / month (Free forever)** | ₱0 – ₱1,400 / month | ₱1,300 – ₱2,700 / month |
-| **Domain & SSL Cost** | **₱0** *(Local Static IP address)* | ₱800 / year *(Custom domain)* | ₱800 / year + SSL maintenance |
-| **Data Privacy** | **100% On-Premises.** Data never leaves the building. | Cloud-hosted *(Singapore / US AWS region)*. | Cloud-hosted *(AWS Cloud)*. |
-| **Maintenance** | Turn on PC $\rightarrow$ starts automatically. | Web console management. | Linux server administration. |
-| **5-Year Estimated Cost** | **₱16,500 – ₱22,000** *(Hardware only)* | **₱45,000 – ₱85,000+** | **₱80,000 – ₱165,000+** |
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                          ARCHITECTURE DECISION MATRIX                                  │
+├──────────────────────────┬─────────────────────────────┬───────────────────────────────┤
+│ CRITERIA                 │ OPTION A: LOCAL INTRANET    │ OPTION B: CLOUD (VERCEL+SUPA) │
+├──────────────────────────┼─────────────────────────────┼───────────────────────────────┤
+│ Monthly Hosting Fee      │ ₱0 / month (Free forever)   │ ₱0 – ₱1,400 / month           │
+│ Internet Dependency      │ 100% Offline Resilience     │ Mandatory Internet Uplink     │
+│                          │ (Works during fiber cuts)   │ (Halts if ISP drops)          │
+│ Remote / Off-Site Access │ Local Shop Network Only     │ Anywhere via Mobile/Home PC   │
+│ Multi-Branch Syncing     │ Local Branch Network        │ Central Cloud Database Sync   │
+│ Data Privacy             │ 100% Inside Shop Building   │ Cloud Server (Singapore AWS)  │
+│ Hardware Needed          │ Central Server PC           │ Any Standard Office PC/Tablet │
+└──────────────────────────┴─────────────────────────────┴───────────────────────────────┘
+```
 
 ---
 
-## 4. Hardware Procurement & Facility Preparation
+### ⚖️ Detailed Pros & Cons Breakdown for Management
+
+#### 🟢 Option A: Local Intranet Hosting (On-Premise Server)
+| Pros (Advantages) | Cons (Trade-Offs) |
+| :--- | :--- |
+| ✅ **Zero Monthly Bills (₱0):** No recurring monthly cloud server bills, no domain renewals, and no database bandwidth charges. | ❌ **No Remote Access:** Management cannot view the dashboard from home or smartphone when outside the shop. |
+| ✅ **100% Internet Immunity:** If PLDT, Globe, or Converge fiber goes down, the entire shop, front desk, and Lounge TV keep working with zero interruption. | ❌ **Hardware Responsibility:** HonTech must keep the local server PC running during business hours and replace parts if the PC breaks years later. |
+| ✅ **Absolute Data Privacy:** Customer names, contact numbers, and repair billing never leave the physical shop building. | ❌ **Single-Branch Localized:** If HonTech opens a second branch in another city, data does not sync automatically without an internet bridge. |
+| ✅ **Blazing Fast Local Speed:** Instant load times (under 20ms) because data travels through direct Ethernet cable and local Wi-Fi. | |
+
+---
+
+#### 🔵 Option B: Modern Cloud Solutions (Vercel + Supabase / AWS)
+| Pros (Advantages) | Cons (Trade-Offs) |
+| :--- | :--- |
+| ✅ **Anywhere, Anytime Remote Access:** The Owner and Managers can monitor live bay operations, daily revenue, and customer queues from their smartphone or laptop at home. | ❌ **Strict Internet Dependency:** If the shop’s broadband connection drops, staff cannot load or update records unless a backup mobile hotspot is switched on. |
+| ✅ **Zero Server Hardware Hassle:** No need to buy or maintain a dedicated server desktop in the shop—runs on any PC, tablet, or mobile browser. | ❌ **Recurring Cloud Costs:** After free tiers are exceeded, cloud databases (Supabase/AWS) incur modest monthly usage fees (₱800–₱1,400/month). |
+| ✅ **Effortless Multi-Branch Scaling:** When HonTech opens Branch B and Branch C in the future, all branches share one unified master database in real time. | ❌ **External Data Hosting:** Customer records and database logs are stored in secure cloud data centers (e.g., AWS Singapore) rather than on-site. |
+| ✅ **Automated Cloud Backups:** Database snapshots and disaster recovery are automated daily in the cloud. | |
+
+---
+
+## 4. Hardware Sourcing & Facility Preparation
 
 ### 🖥️ 4.1 Central Server PC (For Option A: Local Intranet)
 * **Form Factor:** Desktop PC or Mini-PC (*Avoid laptops due to battery swelling under 24/7 continuous operation*).
@@ -103,11 +133,24 @@ To give HonTech management complete flexibility, the system has been architected
 
 ## 5. Dual Detailed Weekly Execution Roadmaps
 
-The client may select either **Track A (Local Hosting)** or **Track B (Cloud Hosting)** based on their operational preference:
-
 ---
 
 ### 🟢 TRACK A: Detailed Roadmap for Local Intranet Hosting (Recommended)
+
+#### 💡 Fresh Insights: How Local Hosting Works on the Shop Floor
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    HOW LOCAL INTRANET HOSTING OPERATES                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  1. The Server PC sits safely in the front office, connected by Cat6 cable  │
+│     to the main shop Wi-Fi router.                                          │
+│  2. It acts as the "Brain" of the shop, hosting the database locally.       │
+│  3. Every front desk PC, Service Advisor tablet, and the Waiting Lounge TV   │
+│     connects using the shop's local Wi-Fi or LAN (e.g. 192.168.1.100).      │
+│  4. ✨ KEY BENEFIT: Even if PLDT/Globe fiber is totally down, the entire     │
+│     shop continues operating at 100% speed with zero downtime!              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
 #### 📅 Week 1 (Sept 1 – 5): Client Alignment & Hardware Planning
 * Present the 4-week September deployment timeline to HonTech management.
@@ -143,6 +186,23 @@ The client may select either **Track A (Local Hosting)** or **Track B (Cloud Hos
 ---
 
 ### 🔵 TRACK B: Detailed Roadmap for Modern Cloud Deployment (Vercel + Supabase)
+
+#### 💡 Fresh Insights: How Cloud Solutions Work for Modern Auto Centers
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    HOW CLOUD ARCHITECTURE OPERATES                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  1. The application lives on Vercel's global edge network, and the database │
+│     is hosted on Supabase (PostgreSQL with real-time WebSockets).          │
+│  2. No server PC needed in the shop—any device with an internet connection  │
+│     can access the system instantly.                                        │
+│  3. ✨ KEY BENEFIT: Management can view live shop metrics, daily intake     │
+│     totals, and technician status from their smartphone from home or        │
+│     while traveling!                                                        │
+│  4. 🚀 MULTI-BRANCH READY: Connects multiple branch locations into one      │
+│     centralized dashboard without complex VPN networking.                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
 #### 📅 Week 1 (Sept 1 – 5): Client Alignment & Cloud Subscription Setup
 * Present the 4-week September deployment timeline and remote cloud advantages to management.
@@ -213,9 +273,9 @@ To guarantee 100% adoption without slowing down busy morning operations, we foll
 ## 8. Handover Deliverables Package
 
 Upon project completion, HonTech AutoCenter management will receive:
-1. **Configured On-Site Application:** Full system active and running on the chosen platform (*Local Server or Cloud*).
+1. **Configured Working System:** Active on the chosen platform (*Local Server or Cloud*).
 2. **Staff User Manual (PDF):** Visual, step-by-step guide with screenshots for Service Advisors.
-3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user accounts, analytics, and audit logs.
+3. **Administrator & Security Guide (PDF):** Manual for Owner/Admin covering user roles, audit histories, and password resets.
 4. **Emergency Fallback Protocol (PDF):** Clear contingency steps for power outages and hardware recovery.
 5. **Source Code & Database Archive:** Full system code and initial database snapshot.
 
