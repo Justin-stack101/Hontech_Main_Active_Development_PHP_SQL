@@ -20,7 +20,7 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 10.0 (Polished Executive Typography & Clean Table Edition)
+**Document Version:** 11.0 (Comprehensive Risk Matrix & Budget Allocation Strategy Edition)
 
 ---
 
@@ -28,7 +28,7 @@
 1. [Executive Summary & Academic Grant Terms](#1-executive-summary--academic-grant-terms)
 2. [Core System Features & Operational Capabilities](#2-core-system-features--operational-capabilities)
 3. [Executive Strategic Brainstorming: Local vs. Cloud](#3-executive-strategic-brainstorming-local-vs-cloud)
-   - [Strategic Decision Matrix](#-strategic-architecture-decision-matrix)
+   - [Strategic Architecture Decision Matrix](#-strategic-architecture-decision-matrix)
    - [IT Maintenance & Developer Support Profile](#-it-maintenance--developer-support-profile-who-manages-what)
    - [The Financial Lifecycle: Upfront Cost vs. Compounding Subscriptions](#-1-the-financial-lifecycle-upfront-cost-vs-long-term-compounding)
    - [Account Suspension & Data Lockout Risks](#-2-account-suspension--data-lockout-risks-cloud-vs-local)
@@ -37,14 +37,19 @@
    - [Internet Outage Safeguards & The ₱999 Safety Net](#-5-the-999-internet-safety-net-for-cloud)
    - [Detailed Pros & Cons Breakdown](#-side-by-side-pros--cons-for-ownership)
    - [Recommended Hybrid Phased Strategy](#-recommended-hybrid-phased-strategy-for-hontech)
-4. [Hardware Sourcing & Facility Preparation](#4-hardware-sourcing--facility-preparation)
-5. [Dual Detailed Weekly Execution Roadmaps](#5-dual-detailed-weekly-execution-roadmaps)
+4. [Comprehensive Risk Assessment & Mitigation Plan](#4-comprehensive-risk-assessment--mitigation-plan)
+   - [Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps](#️-risk-1-local-hosting-multi-branch--wi-fi-network-traps)
+   - [Risk 2: Hardware Budget Depletion Strategy (The Staff PC First Rule)](#️-risk-2-hardware-budget-depletion-strategy-the-staff-pc-first-rule)
+   - [Risk 3: Shop Environment & Electrical Power Spikes](#️-risk-3-shop-environment--electrical-power-spikes)
+   - [Risk 4: External Internet Outages on Cloud](#️-risk-4-external-internet-outages-on-cloud)
+5. [Hardware Sourcing & Facility Preparation](#5-hardware-sourcing--facility-preparation)
+6. [Dual Detailed Weekly Execution Roadmaps](#6-dual-detailed-weekly-execution-roadmaps)
    - [Track A: Local Intranet Hosting Plan](#-track-a-detailed-roadmap-for-local-intranet-hosting)
    - [Track B: Modern Cloud Deployment Plan](#-track-b-detailed-roadmap-for-modern-cloud-deployment-vercel--supabase)
-6. [Training, Simulation & Dry-Run Protocols](#6-training-simulation--dry-run-protocols)
-7. [Security, Audit Governance & Emergency Protocols](#7-security-audit-governance--emergency-protocols)
-8. [Handover Deliverables Package & Post-Warranty Retainer Options](#8-handover-deliverables-package--post-warranty-retainer-options)
-9. [Official Client Sign-Off](#9-official-client-sign-off)
+7. [Training, Simulation & Dry-Run Protocols](#7-training-simulation--dry-run-protocols)
+8. [Security, Audit Governance & Emergency Protocols](#8-security-audit-governance--emergency-protocols)
+9. [Handover Deliverables Package & Post-Warranty Retainer Options](#9-handover-deliverables-package--post-warranty-retainer-options)
+10. [Official Client Sign-Off](#10-official-client-sign-off)
 
 ---
 
@@ -75,13 +80,14 @@ Running a high-throughput auto service center requires speed, coordination, and 
 
 ## 3. Executive Strategic Brainstorming: Local vs. Cloud
 
-To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **IT Maintenance & Developer Support Needs**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
+To give HonTech management a comprehensive, business-minded evaluation, we analyze both solutions across **Financial Lifecycles (CapEx vs. OpEx)**, **Multi-Branch Network Topology**, **Hardware Market Inflation**, **Account Lockout Risks**, and **Disaster Recovery**.
 
 ### 📊 Strategic Architecture Decision Matrix
 
 | Evaluation Pillar | Option A: Local Intranet Server *(Recommended for 1 Shop)* | Option B: Modern Cloud *(Vercel + Supabase)* |
 | :--- | :--- | :--- |
 | **Financial Model (CapEx vs OpEx)** | **High Upfront / Cheap Long-Term**<br>• Pay ~₱22,000 once for PC<br>• ₱0/yr ongoing software fees | **Zero Upfront / Compounding Cost**<br>• ₱0 upfront hardware cost<br>• ~₱12,000–₱16,800/yr ongoing fees |
+| **Multi-Branch Cross-Building Sync** | **Complex Hardware VPN Required**<br>• Branch B cannot reach Branch A without static public IP or VPN routers | **Native Multi-Branch Syncing**<br>• Branch A, B, and C connect to unified cloud instantly from any internet |
 | **Unpaid Provider / Lockout Risk** | **Zero Risk (100% Sovereign)**<br>• Nobody can ever lock you out of your shop's physical computer | **Account Suspension Risk**<br>• If credit card or monthly bill fails, cloud provider freezes database |
 | **IT & Developer Maintenance** | **On-Call Hardware Technician**<br>• Dust cleaning & local USB backup checks | **Cloud Administrator / Web Dev**<br>• Quota, API key, & domain renewal management |
 | **Upfront Hardware Investment** | ₱16,500 – ₱25,000+ *(Server PC + Cabling)* | **₱0** *(Runs on existing office PCs/tablets)* |
@@ -90,73 +96,44 @@ To give HonTech management a comprehensive, business-minded evaluation, we analy
 | **Internet Outage Resilience** | **100% Immune** *(Continues running offline)* | Requires backup 4G/5G Wi-Fi SIM (~₱999) |
 | **Remote Owner Visibility** | None *(Accessible inside shop network only)* | **Full Access** via smartphone / laptop anywhere |
 | **Auto Shop Environmental Hazards** | Vulnerable to shop dust, grease, & power spikes | **100% Protected** in climate-controlled AWS data centers |
-| **Multi-Branch Expansion** | Local to 1 physical branch | **Multi-Branch Ready** for Branch B & C syncing |
 | **Disaster Recovery** | Manual USB backup drive needed weekly | Automated daily point-in-time cloud backups |
 
 ---
 
-### 🛠️ IT Maintenance & Developer Support Profile (Who Manages What?)
+## 4. Comprehensive Risk Assessment & Mitigation Plan
 
-A key question for management is: *"Does HonTech need a developer or IT specialist to maintain this system?"*
+Deploying a mission-critical operations system across service bays requires anticipating technical, physical, and financial failure points. Below are the 4 primary risks and their exact mitigation strategies:
 
-* **During Daily Shop Operations (Both Options):**
-  * **Zero Developer Needed Daily:** The system is designed for non-technical staff. Service Advisors and Admins simply turn on their screens, log in, and use the graphical dashboard.
-* **Post-Launch Maintenance Requirements by Architecture:**
-
-#### 🟢 Option A (Local Intranet Server):
-* **Type of IT Support Needed:** **Hardware & Local Network Maintenance**
-* **Tasks Involved:**
-  * Cleaning dust and grease from the server PC fans every 6 months to prevent overheating.
-  * Checking that scheduled USB database backups are running properly.
-  * Assisting if Windows encounters an OS update crash or power surge issue.
-* **Recommended Setup:** HonTech can engage an **On-Call IT Technician / Developer** on an as-needed basis or under a modest quarterly retainer.
-
-#### 🔵 Option B (Cloud Vercel + Supabase):
-* **Type of IT Support Needed:** **Cloud Account & Web Administration**
-* **Tasks Involved:**
-  * Monitoring monthly database read/write quotas to ensure the shop doesn't hit tier limits.
-  * Renewing custom domain names (`hontech.com`) and managing SSL certificates annually.
-  * Updating cloud environment variables, API keys, and deploying software patches.
-* **Recommended Setup:** HonTech can engage a **Freelance Web Developer / Cloud Admin** on a light monthly retainer or on-demand retainer.
+### ⚠️ Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps
+* **The Problem:** 
+  * If HonTech runs on a Local Server PC in Branch A, **Branch B (located across town) cannot access Branch A's server** without purchasing expensive static public IP addresses and setting up complex Site-to-Site VPN routers between buildings.
+  * Within the shop, if staff tablets connect to a guest Wi-Fi extender or a different router subnet (e.g. `192.168.2.x` instead of `192.168.1.x`), the system will display a network connection error.
+* **The Mitigation:**
+  * **For Local Hosting (Option A):** We configure a single unified shop Wi-Fi SSID, assign a fixed static IP (`192.168.1.100`), and wire primary front desk terminals directly via Cat6 Ethernet cable.
+  * **For Multi-Branch Chains:** If HonTech wants multiple physical branch locations synchronized under one master dashboard, **we strongly recommend Option B (Cloud Vercel + Supabase)**, which eliminates all networking headaches.
 
 ---
 
-### 💡 Fresh Insights & Business Brainstorming
-
-#### 📈 1. The Financial Lifecycle: Upfront Cost vs. Long-Term Compounding
-* **Option A (Local Hosting — Capital Asset / CapEx):**
-  * *The Dynamic:* **Pay more upfront, save huge long-term.**
-  * HonTech purchases the server PC upfront (~₱22,000). While painful on Day 1, there are **₱0 monthly software bills for Year 2, Year 3, Year 4, and Year 5**. The longer HonTech uses the system, the cheaper it becomes per month over its lifetime.
-* **Option B (Cloud Hosting — Operational Subscription / OpEx):**
-  * *The Dynamic:* **Cheap to start today, but compounding costs forever.**
-  * HonTech launches with ₱0 upfront capital, which is great for short-term cash flow. However, cloud usage fees (~₱1,000–₱1,400/month) continue indefinitely and compound over time (reaching **₱60,000–₱85,000+ over 5 years**).
-
----
-
-#### 🔒 2. Account Suspension & Data Lockout Risks (Cloud vs. Local)
-* **What Happens if Cloud Bills Aren't Paid (Option B Risk):**
-  * In modern cloud services (Supabase/AWS/Vercel), if a monthly payment fails, an expired credit card is rejected, or management forgets to renew:
-  * **The cloud provider will automatically suspend project access, lock database queries, or put the system in read-only freeze until payment is settled.** In severe overdue cases (60–90 days), cloud providers can permanently delete unmaintained databases.
-* **The Local Sovereignty Advantage (Option A Peace of Mind):**
-  * With a Local Intranet Server, **nobody on Earth can ever lock HonTech out of its own system**. The data sits on physical SSDs inside the building. Even if internet or third-party companies go bankrupt, HonTech maintains 100% operational continuity.
+### ⚠️ Risk 2: Hardware Budget Depletion Strategy (The "Staff PC First" Rule)
+* **The Problem:** 
+  * If HonTech has a limited hardware budget and prioritizes purchasing reliable computers/tablets for the Service Advisors and Front Desk, **there may be no remaining budget left to purchase a dedicated ₱22,000 Server PC.**
+* **The Mitigation (The Budget Pivot Rule):**
+  * **Step 1:** The team and client canvass equipment prices in Gilmore. The client buys the necessary Service Advisor/front desk terminals first.
+  * **Step 2 (The Decision Fork):**
+    * *If budget is still open:* The client purchases the Server PC $\rightarrow$ Deploy **Track A (Local Hosting)**.
+    * *If budget is depleted:* The client skips the Server PC entirely $\rightarrow$ Deploy **Track B (Cloud Vercel + Supabase)** with **₱0 server hardware cost**!
 
 ---
 
-#### 💰 3. The 2026 PC Parts Price Inflation Reality
-* Desktop PC components (processors, RAM, SSDs, power supply units) have experienced noticeable price inflation. Buying a new dedicated server rig today requires an immediate cash outlay of **₱18,000–₱25,000+** from HonTech before the system even goes live.
-* The Cloud option completely **eliminates this upfront ₱25,000 hardware barrier** for immediate launch.
+### ⚠️ Risk 3: Shop Environment & Electrical Power Spikes
+* **The Problem:** Auto repair centers generate heavy electrical voltage surges when air compressors and hydraulic lifts turn on, risking motherboard burnout on an unprotected on-premise server PC.
+* **The Mitigation:** For Local Hosting, a dedicated **Uninterruptible Power Supply (UPS with AVR / Surge Protection ~₱1,800)** must be installed between the wall outlet and the server PC to ensure clean, continuous power.
 
 ---
 
-#### 🏭 4. Auto Shop Environmental Hazards & Hardware Longevity
-* Auto centers have heavy airborne tire dust, oil vapors, high ambient humidity, and electrical voltage spikes whenever heavy hydraulic lifts and air compressors kick in.
-* **Option A:** Requires a dedicated UPS (Uninterruptible Power Supply), periodic dust cleaning, and runs the risk of motherboard or power supply burnout over a 2–3 year lifespan.
-* **Option B:** The server engine lives in an enterprise-grade, climate-controlled AWS data center with 99.99% uptime and automatic hardware replacement.
-
----
-
-#### 📡 5. The ₱999 Internet Safety Net for Cloud
-* If HonTech chooses Cloud, a simple **₱999 prepaid backup Wi-Fi router (Smart Bro / Globe At Home)** with a budget data SIM in the front office guarantees that staff can switch over in 5 seconds if main fiber internet drops.
+### ⚠️ Risk 4: External Internet Outages on Cloud
+* **The Problem:** If HonTech chooses Cloud and the primary fiber line (PLDT/Globe) is accidentally cut down the street, staff cannot update records.
+* **The Mitigation:** A backup **₱999 prepaid 4G/5G Wi-Fi router (Smart Bro / Globe At Home)** with a budget reloadable data SIM stays in the front office. Staff switch Wi-Fi in 5 seconds with zero interruption.
 
 ---
 
@@ -166,10 +143,10 @@ A key question for management is: *"Does HonTech need a developer or IT speciali
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
 | ✅ **₱0 Monthly Cloud Subscriptions:** No recurring software fees; pays for itself completely over 5 years. | ❌ **High Upfront Capital Cost:** Requires spending ₱18,000–₱25,000+ immediately on new computer parts. |
-| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
-| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
-| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
-| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **On-Premise IT Maintenance:** Requires periodic local PC dust cleaning and physical hardware oversight. |
+| ✅ **Zero Risk of Data Lockout:** No third-party provider can freeze or suspend your shop records. | ❌ **Cross-Branch Barrier:** Branch B cannot connect to Branch A without expensive VPN hardware. |
+| ✅ **Zero Internet Dependency:** Operates 100% normally even during severe fiber cable outages. | ❌ **Zero Remote Visibility:** Owner cannot check bay queues or revenue from home or phone. |
+| ✅ **100% Data Sovereignty:** Customer phone numbers and repair histories stay physically inside the building. | ❌ **Physical Hardware Breakdown Risk:** Susceptible to shop dust, heat, power surges, and drive failure. |
+| ✅ **Instant 20ms LAN Speed:** Ultra-fast page loads through local Ethernet cabling. | ❌ **Manual Backup Burden:** Requires staff to remember to plug in backup USB drives weekly. |
 
 ---
 
@@ -177,50 +154,37 @@ A key question for management is: *"Does HonTech need a developer or IT speciali
 | Pros (Advantages) | Cons (Trade-Offs) |
 | :--- | :--- |
 | ✅ **₱0 Upfront Hardware Cost:** Launches instantly on existing office PCs, tablets, and phones with zero upfront cash out-of-pocket. | ❌ **Compounding Long-Term Expense:** Recurring monthly fees (~₱1,000–₱1,400/mo) never end, totaling ₱60,000–₱85,000+ over 5 years. |
-| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Account Suspension / Lockout Risk:** If credit card billing fails or is delayed, cloud providers can freeze database access. |
-| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
-| ✅ **Multi-Branch Ready (Branch B & C):** Connects future branch locations into one synchronized company dashboard. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
+| ✅ **Effortless Multi-Branch Syncing:** Branch A, B, and C instantly share one synchronized master database from anywhere. | ❌ **Account Suspension / Lockout Risk:** If credit card billing fails or is delayed, cloud providers can freeze database access. |
+| ✅ **Real-Time Remote Management:** Owner/Managers can track live bays and customer volume from anywhere in the world on a smartphone. | ❌ **Internet Dependent:** Requires active broadband or a backup 4G/5G prepaid Wi-Fi SIM. |
+| ✅ **Zero Physical Maintenance:** No computer fans to clean, no power supplies to replace, zero Meralco server electric bill. | ❌ **Third-Party Cloud Storage:** Data resides in encrypted Tier-4 AWS data centers (Singapore region). |
 | ✅ **Automated Daily Backups:** Point-in-time disaster recovery with zero manual staff effort. | ❌ **Cloud Admin Support Needed:** Requires someone to manage monthly database quotas, API keys, and domain renewals. |
 
 ---
 
-### 🚀 Recommended "Hybrid Phased" Strategy for HonTech
-If management is undecided, we recommend the **Hybrid Phased Rollout**:
-1. **Phase 1 (Launch on Cloud — ₱0 Upfront):** Launch with Vercel + Supabase in September. This allows HonTech to start immediately with **₱0 hardware expense** and test remote mobile access.
-2. **Phase 2 (Optional Local Migration Later):** If HonTech ever decides they prefer a local server in the future to eliminate monthly fees, our codebase is 100% modular and can be transferred to a local PC with 1 click!
+## 5. Hardware Sourcing & Facility Preparation
 
----
-
-## 4. Hardware Sourcing & Facility Preparation
-
-### 🖥️ 4.1 Option A: Central Server PC (If Choosing Local Hosting)
+### 🖥️ 5.1 Option A: Central Server PC (If Choosing Local Hosting)
 * **Recommended Specs:** Intel Core i3 (10th Gen+) / AMD Ryzen 3, 8GB–16GB RAM, 256GB SSD, Windows 10/11.
 * **Joint Canvassing & Buying Trip:**
   * Team and client canvass online prices (*Lazada, Shopee, DynaQuest, EasyPC, PC Express*).
   * Team and client go together to **Gilmore Computer Center** to negotiate bulk discounts and verify physical shop warranties.
   * *Estimated Cost:* ₱16,500 – ₱22,000 *(or ₱0 if repurposing an existing functional office desktop)*.
 
-### 📺 4.2 Customer Waiting Lounge TV (Both Options)
+### 📺 5.2 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
 
-### 🌐 4.3 Network Infrastructure
+### 🌐 5.3 Network Infrastructure
 * **Cabling:** Cat6 RJ45 Ethernet cable to wire the central server PC directly into the shop's main router.
 * **Terminals:** Existing front desk desktop computers, laptops, or tablets (*iPads / Android tablets*).
 
 ---
 
-## 5. Dual Detailed Weekly Execution Roadmaps
+## 6. Dual Detailed Weekly Execution Roadmaps
 
 ---
 
 ### 🟢 TRACK A: Detailed Roadmap for Local Intranet Hosting
-
-* **How Local Hosting Operates:**
-  * The Server PC sits safely in the office, wired via Cat6 cable to the main shop router.
-  * It acts as the local database brain, broadcasting directly to `http://192.168.1.100`.
-  * All front desk PCs, SA tablets, and the Waiting Lounge TV connect using the shop's local Wi-Fi or LAN.
-  * **100% functional during external ISP fiber outages.**
 
 * **Week 1 (Sept 1–5):** Timeline review, features review (Express 2H SLA, Audit Guard), online hardware price canvassing, Gilmore trip scheduling.
 * **Week 2 (Sept 8–12):** Joint Gilmore purchase trip, Apache/MariaDB installation, static IP (`192.168.1.100`) setup, Lounge TV testing, LAN multi-device validation.
@@ -231,12 +195,6 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ### 🔵 TRACK B: Detailed Roadmap for Modern Cloud Deployment (Vercel + Supabase)
 
-* **How Cloud Architecture Operates:**
-  * The web application is hosted on Vercel's Global Edge Network; database is on Supabase PostgreSQL.
-  * **₱0 new server hardware needed**—runs on existing office PCs, tablets, and smartphones.
-  * Owner tracks live bays, technician statuses, and daily customer volume from home or mobile.
-  * **Multi-branch ready** for seamless future expansion to Branch B and Branch C.
-
 * **Week 1 (Sept 1–5):** Timeline review, features review, cloud account registration (Vercel + Supabase), domain setup.
 * **Week 2 (Sept 8–12):** Supabase database migration, Row-Level Security setup, real-time WebSocket syncing, Lounge TV cloud test, backup 4G/5G Wi-Fi validation.
 * **Week 3 (Sept 15–19):** SA training, remote owner mobile dashboard training, 2–3 day live customer "Shadow Mode" dry run, cloud admin documentation handover.
@@ -244,7 +202,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ---
 
-## 6. Staff Training & "Shadow Mode" Dry Run Protocol
+## 7. Staff Training & "Shadow Mode" Dry Run Protocol
 
 ```
 [ Step 1: Guided Staff Workshop (60 Mins) ]
@@ -266,7 +224,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ---
 
-## 7. Security, Audit Governance & Emergency Protocols
+## 8. Security, Audit Governance & Emergency Protocols
 
 * **Data Sovereignty & Physical Privacy:** All customer contact numbers, vehicle diagnostic notes, and shop revenue data remain physically inside the HonTech shop building (Option A) or encrypted in AWS Tier-4 Singapore Cloud (Option B).
 * **Immutable Audit Trail (`job_audit_logs`):** Every edit to departure time, status, or vehicle diagnosis is logged with old value, new value, editor identity, role, and mandatory justification.
@@ -279,7 +237,7 @@ If management is undecided, we recommend the **Hybrid Phased Rollout**:
 
 ---
 
-## 8. Handover Deliverables Package & Post-Warranty Retainer Options
+## 9. Handover Deliverables Package & Post-Warranty Retainer Options
 
 Upon project completion, HonTech AutoCenter management will receive:
 1. **Configured Working System:** Active on the chosen platform (*Local Server or Cloud*).
