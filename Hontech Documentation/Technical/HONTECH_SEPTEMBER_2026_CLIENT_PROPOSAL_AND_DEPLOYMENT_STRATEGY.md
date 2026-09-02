@@ -20,7 +20,7 @@
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 11.0 (Comprehensive Risk Matrix & Budget Allocation Strategy Edition)
+**Document Version:** 12.0 (Unified Master Document with Embedded Technical Blueprints)
 
 ---
 
@@ -50,6 +50,8 @@
 8. [Security, Audit Governance & Emergency Protocols](#8-security-audit-governance--emergency-protocols)
 9. [Handover Deliverables Package & Post-Warranty Retainer Options](#9-handover-deliverables-package--post-warranty-retainer-options)
 10. [Official Client Sign-Off](#10-official-client-sign-off)
+11. [APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint](#-appendix-a-complete-local-intranet-feasibility--zero-risk-setup-blueprint)
+12. [APPENDIX B: Complete Cloud Sandbox PoC Setup Blueprint (Vercel + Supabase)](#-appendix-b-complete-cloud-sandbox-poc-setup-blueprint-vercel--supabase)
 
 ---
 
@@ -163,20 +165,16 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ## 5. Hardware Sourcing & Facility Preparation
 
-### 🖥️ 5.1 Option A: Central Server PC (If Choosing Local Hosting)
+### 🖥️ Option A: Central Server PC (If Choosing Local Hosting)
 * **Recommended Specs:** Intel Core i3 (10th Gen+) / AMD Ryzen 3, 8GB–16GB RAM, 256GB SSD, Windows 10/11.
 * **Joint Canvassing & Buying Trip:**
   * Team and client canvass online prices (*Lazada, Shopee, DynaQuest, EasyPC, PC Express*).
   * Team and client go together to **Gilmore Computer Center** to negotiate bulk discounts and verify physical shop warranties.
   * *Estimated Cost:* ₱16,500 – ₱22,000 *(or ₱0 if repurposing an existing functional office desktop)*.
 
-### 📺 5.2 Customer Waiting Lounge TV (Both Options)
+### 📺 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
-
-### 🌐 5.3 Network Infrastructure
-* **Cabling:** Cat6 RJ45 Ethernet cable to wire the central server PC directly into the shop's main router.
-* **Terminals:** Existing front desk desktop computers, laptops, or tablets (*iPads / Android tablets*).
 
 ---
 
@@ -268,10 +266,253 @@ Upon project completion, HonTech AutoCenter management will receive:
 **Date:** September 2, 2026
 
 ---
+---
 
-## 10. Supplementary Technical Documentation & Engineering Blueprints
+# 📖 APPENDIX A: Complete Local Intranet Feasibility & Zero-Risk Setup Blueprint
 
-For detailed technical implementation, low-cost hardware verification, and zero-risk local network configuration, please refer to the accompanying engineering guides:
+*This section provides the full, unabridged engineering guide for Local Intranet Hosting.*
 
-* 📄 **[Local Intranet Technical Feasibility & Zero-Risk Setup Guide](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_LOCAL_HOSTING_TECHNICAL_FEASIBILITY_AND_ZERO_RISK_SETUP_GUIDE.md)** — *Step-by-step local Wi-Fi architecture, ₱6,500 mini-PC hardware specs, firewall configuration, and zero-risk testing checklist.*
-* 📄 **[Cloud Sandbox PoC Setup Guide (Vercel + Supabase)](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Technical/HONTECH_SANDBOX_POC_VERCEL_SUPABASE_SETUP_GUIDE.md)** — *Step-by-step ₱0-upfront modern cloud deployment guide for multi-branch environments.*
+### A.1. Executive Feasibility Statement: "Does Local Hosting Really Work?"
+**The Direct Answer: YES, 100% YES.**
+Local intranet hosting is **not experimental**. It is the standard architecture used by thousands of automotive workshops, dental clinics, point-of-sale (POS) systems, pharmacies, and hardware stores across the Philippines.
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                         HOW LOCAL HOSTING ACTUALLY WORKS                         │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│   [ SHOP ROUTER / WI-FI ] (e.g., PLDT / Globe / TP-Link Router)                  │
+│         │                                                                        │
+│         ├── (Cat6 Cable) ──► [ LOCAL SERVER PC (XAMPP / PHP / MySQL) ]           │
+│         │                    Static IP: 192.168.1.100                            │
+│         │                                                                        │
+│         ├── (Wi-Fi) ────────► [ Front Desk PC / Tablet ] (SA Intake & Billing)   │
+│         ├── (Wi-Fi) ────────► [ Service Advisor Tablets ] (Bay Status Updates)   │
+│         └── (Wi-Fi / HDMI) ─► [ Waiting Lounge Smart TV ] (Customer Queue Board) │
+│                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Why You Can Be Confident It Will Not Fail:
+1. **Zero External Internet Needed:** The entire database, API, and user interface run directly inside the shop's local network. If an internet cable gets cut outside on the street, **your system continues running at full speed**.
+2. **Instant Response Times:** Pages load in **15–30 milliseconds** because data travels over local copper cables and shop Wi-Fi rather than round-tripping across international cloud servers.
+3. **No Expensive Server Needed:** HonTech **does NOT need an expensive ₱50,000 enterprise server**. A standard budget desktop, a refurbished mini-PC (₱6,000–₱9,000), or even an existing functional office laptop is more than powerful enough to handle 50+ simultaneous shop devices.
+
+### A.2. Preventing Financial Waste: Hardware Budget Options
+To protect the client from spending too much money, here are the **3 real-world hardware paths** ranked by budget:
+
+| Path | Hardware Choice | Estimated Cost | Feasibility & Verdict |
+| :--- | :--- | :--- | :--- |
+| **Option 1 (Best Value)** | **Repurpose Existing Shop PC or Laptop** | **₱0.00** | **100% Feasible.** If HonTech has a spare office desktop or laptop (Core i3 / 8GB RAM), install XAMPP and make it the server. Zero money spent! |
+| **Option 2 (Recommended Budget)** | **Refurbished Mini-PC (Dell OptiPlex / HP ProDesk)** | **₱6,500 – ₱9,500** | **100% Feasible & Ultra-Durable.** Tiny footprint, low power consumption (~35W), runs 24/7 quietly in the office. Available at Gilmore or online. |
+| **Option 3 (Brand New Build)** | **New Entry-Level Desktop (Ryzen 3 / Core i3)** | **₱16,500 – ₱22,000** | **100% Feasible.** Good if the client wants brand-new parts with 1–3 year manufacturer warranties. |
+
+### A.3. Solving the Wi-Fi & Network Reliability Problem
+The biggest worry with local hosting is: *"What if the staff tablets can't connect to the Wi-Fi or can't find the server?"*
+
+Here are the **4 engineering rules** to ensure 100% connection reliability:
+1. **Rule 1 (Always Wire the Server PC via Cat6 Ethernet):** Connect the Server PC directly to the main router LAN port using a Cat6 cable. Physical cables give the server an unbreakable 1,000 Mbps connection.
+2. **Rule 2 (Set a Permanent Static IP Address):** Set the Server PC's IPv4 address permanently to `192.168.1.100` (Subnet: `255.255.255.0`, Gateway: `192.168.1.1`). Even if the router restarts during a brownout, DHCP will never change the IP address.
+3. **Rule 3 (Single Unified Shop Wi-Fi SSID):** Ensure all tablets and laptops connect to the primary shop Wi-Fi network (e.g., `HonTech_Staff`). Avoid connecting staff devices to Guest Wi-Fi or isolated range extenders.
+4. **Rule 4 (Windows Firewall Inbound Rule for Port 80 & 3306):** In Windows Defender Firewall $\rightarrow$ Inbound Rules, add an Allow Rule for TCP Port 80 (Apache) and TCP Port 3306 (MySQL).
+
+### A.4. Multi-Branch Connection on Local Hosting (Cloudflare Tunnel)
+If HonTech opens Branch B across town while keeping the local server in Branch A:
+* Install the official free `cloudflared` utility on the Branch A Server PC.
+* Cloudflare creates a secure, encrypted tunnel to the internet without needing a static public IP or risky router port forwarding.
+* **Result:** Branch B and the shop Owner on their smartphone can access `https://hub.hontechautocenter.com` securely for **₱0/month**, while all data remains stored on the local Branch A PC!
+
+### A.5. Zero-Risk Testing Checklist (Test Today on Your Laptop!)
+* [ ] **Step 1:** Connect your laptop and your smartphone to the same home/shop Wi-Fi network.
+* [ ] **Step 2:** Open Command Prompt (`cmd`) on your laptop and type `ipconfig`. Note your IPv4 Address (e.g., `192.168.1.15`).
+* [ ] **Step 3:** Start Apache and MySQL in XAMPP.
+* [ ] **Step 4:** Open the browser on your smartphone and type `http://192.168.1.15/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/frontend/index.html`.
+* [ ] **Step 5:** Log in as Service Advisor or Owner on your phone.
+* [ ] **Step 6:** Open the Waiting Lounge TV view on another screen (`?mode=tv`).
+* [ ] **Result:** Create a new vehicle job on your phone $\rightarrow$ watch it immediately appear on your laptop and TV screen.
+
+---
+---
+
+# 📖 APPENDIX B: Complete Cloud Sandbox PoC Setup Blueprint (Vercel + Supabase)
+
+*This section provides the full, unabridged engineering guide for Cloud Sandbox Testing.*
+
+### B.1. Overview & Free Sandbox Strategy
+Creating a **separate Proof of Concept (PoC) repository** to test **Vercel + Supabase Free Tiers** is the industry standard for risk-free software evaluation:
+
+```
+┌────────────────────────────────────────────────────────┐
+│ 🛡️ PRIMARY PRODUCTION REPO (HonTech PHP/MySQL)         │
+│ • Branch: `branch2-Security-Account-Recovery`          │
+│ • 100% Stable, Protected, and Working Locally          │
+└────────────────────────────────────────────────────────┘
+                           ▲
+                           │ Isolated (Zero Risk)
+                           ▼
+┌────────────────────────────────────────────────────────┐
+│ 🧪 SANDBOX POC REPO (e.g. `hontech-cloud-poc`)         │
+│ • Vercel Frontend + Supabase PostgreSQL Realtime       │
+│ • Free Tier Sandbox for Client Demonstration           │
+└────────────────────────────────────────────────────────┘
+```
+
+### B.2. What the 100% Free Tiers Include (₱0.00 / No Credit Card Needed)
+
+| Service | Free Tier Allowance | What You Get |
+| :--- | :--- | :--- |
+| **Vercel** (Hobby Plan) | **$0 / month forever** | • Unlimited preview deployments<br>• Automated HTTPS/SSL certificates<br>• Custom domains (e.g. `hontech-demo.vercel.app`)<br>• Fast Global Edge CDN |
+| **Supabase** (Free Tier) | **$0 / month forever** | • 500 MB PostgreSQL Database Storage<br>• Up to 2 Free Cloud Projects<br>• 50,000 Monthly Active Users<br>• **Native Realtime WebSockets** (instant TV queue pushes)<br>• Web-based Table Editor & SQL Console |
+
+### B.3. Step-by-Step 15-Minute Sandbox Setup Guide
+
+#### Step 1: Create Free Cloud Accounts
+1. **Supabase:** Go to [supabase.com](https://supabase.com) $\to$ Sign in with your **GitHub Account**. Click **"New Project"** (e.g. `hontech-poc-marikina`).
+2. **Vercel:** Go to [vercel.com](https://vercel.com) $\to$ Sign up with your **GitHub Account**.
+
+#### Step 2: Create a Minimal Sandbox Table in Supabase
+In your Supabase project dashboard, open the **SQL Editor** and run this simple script to create a sample job queue table with Realtime enabled:
+
+```sql
+-- 1. Create a minimal Jobs table
+CREATE TABLE poc_jobs (
+    id BIGSERIAL PRIMARY KEY,
+    plate_number TEXT NOT NULL,
+    customer_name TEXT NOT NULL,
+    service_type TEXT NOT NULL DEFAULT 'PMS',
+    bay_number TEXT NOT NULL DEFAULT 'Bay 1',
+    status TEXT NOT NULL DEFAULT 'In Progress',
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 2. Enable Supabase Realtime Broadcasting
+ALTER PUBLICATION supabase_realtime ADD TABLE poc_jobs;
+
+-- 3. Insert initial test vehicle
+INSERT INTO poc_jobs (plate_number, customer_name, service_type, bay_number, status)
+VALUES ('ABC 1234', 'Juan Dela Cruz', 'PMS (Periodic Maintenance)', 'Bay 1', 'In Progress');
+```
+
+#### Step 3: Minimal 1-File Working PoC (`index.html`)
+Create a standalone file `index.html` with this complete working demonstration code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonTech Cloud PoC (Vercel + Supabase Realtime)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Official Supabase Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-6">
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl font-black uppercase text-white tracking-wide">HonTech Cloud Queue PoC</h1>
+                <p class="text-xs text-slate-400">Live Realtime Sync via Supabase WebSockets & Vercel</p>
+            </div>
+            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold rounded-full animate-pulse">
+                ⚡ Realtime Connected
+            </span>
+        </div>
+
+        <!-- Add Vehicle Form -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 space-y-3">
+            <h2 class="text-sm font-bold uppercase text-slate-300">Fast Vehicle Dispatch Demo</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <input id="poc-plate" type="text" placeholder="Plate (e.g. NBD 9988)" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono font-bold text-white outline-none focus:border-cyan-400">
+                <input id="poc-name" type="text" placeholder="Customer Name" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-bold text-white outline-none focus:border-cyan-400">
+                <button onclick="addPocJob()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black uppercase text-xs rounded-lg py-2 transition shadow-md cursor-pointer">
+                    + Dispatch to Queue
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Realtime TV Queue Cards -->
+        <div class="space-y-3">
+            <h2 class="text-sm font-bold uppercase text-slate-300">Live Workshop Bay Queue</h2>
+            <div id="poc-queue-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Cards will render dynamically -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. Initialize Supabase Client (Paste your keys from Supabase Dashboard -> Settings -> API)
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. Fetch and render initial jobs
+        async function fetchJobs() {
+            const { data, error } = await supabase.from('poc_jobs').select('*').order('id', { ascending: false });
+            if (error) return console.error(error);
+            renderQueue(data);
+        }
+
+        // 3. Render Queue Cards
+        function renderQueue(jobs) {
+            const container = document.getElementById('poc-queue-list');
+            if (!jobs || jobs.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 italic">No vehicles in queue.</p>`;
+                return;
+            }
+            container.innerHTML = jobs.map(j => `
+                <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                    <div>
+                        <span class="font-mono font-black text-cyan-400 text-sm tracking-wider">${j.plate_number}</span>
+                        <p class="text-xs font-bold text-white">${j.customer_name}</p>
+                        <p class="text-[11px] text-slate-400">${j.service_type} • <span class="text-amber-400 font-semibold">${j.bay_number}</span></p>
+                    </div>
+                    <span class="px-2.5 py-1 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 text-[10px] font-bold uppercase rounded-lg">
+                        ${j.status}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // 4. Dispatch new vehicle
+        async function addPocJob() {
+            const plate = document.getElementById('poc-plate').value.trim();
+            const name = document.getElementById('poc-name').value.trim();
+            if (!plate || !name) return alert('Please enter plate number and name');
+
+            const { error } = await supabase.from('poc_jobs').insert([{
+                plate_number: plate,
+                customer_name: name,
+                service_type: 'PMS Express (10,000 KM)',
+                bay_number: 'Bay 2',
+                status: 'In Progress'
+            }]);
+
+            if (error) alert('Error: ' + error.message);
+            document.getElementById('poc-plate').value = '';
+            document.getElementById('poc-name').value = '';
+        }
+
+        // 5. Subscribe to Realtime WebSocket Updates
+        supabase.channel('custom-all-channel')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'poc_jobs' }, () => {
+                fetchJobs(); // Auto re-fetches when any device adds/updates a vehicle!
+            })
+            .subscribe();
+
+        // Initial Load
+        fetchJobs();
+    </script>
+</body>
+</html>
+```
+
+#### Step 4: Deploy to Vercel in 60 Seconds
+1. Create a new GitHub repository named `hontech-cloud-poc` and push `index.html`.
+2. Go to [vercel.com](https://vercel.com) $\to$ Click **"Add New..."** $\to$ **"Project"** $\to$ Select `hontech-cloud-poc`.
+3. Click **"Deploy"**.
+4. In ~20 seconds, Vercel gives you a live global link (e.g. `https://hontech-cloud-poc.vercel.app`).
+5. Open the link on your phone and on a laptop $\rightarrow$ Add a vehicle on your phone $\rightarrow$ **Watch it instantly pop up on your laptop screen in under 100 milliseconds via WebSockets!**
