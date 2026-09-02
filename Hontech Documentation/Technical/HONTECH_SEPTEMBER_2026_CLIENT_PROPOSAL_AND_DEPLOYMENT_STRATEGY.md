@@ -51,8 +51,8 @@
 The **HonTech Operations Management System** is a project designed to eliminate operational bottlenecks, modernize service bay tracking, automate Express PMS turnaround monitoring, and provide customer lounge transparency for HonTech AutoCenter.
 
 ### 🌐 The Core Technological Requirement: Web Delivery & Database Storage
-To operate seamlessly across front desk terminals, Service Advisor tablets, and the Customer Waiting Lounge TV, the system requires two foundational technological components:
-1. **Web Delivery & Domain Platform:** The platform that serves the visual interface to staff tablets, computers, and lounge displays.
+To operate seamlessly across front desk terminals, Service Advisor desktop computers, and the Customer Waiting Lounge TV, the system requires two foundational technological components:
+1. **Web Delivery & Domain Platform:** The platform that serves the visual interface to staff desktop PCs, laptops, and lounge displays.
 2. **Central Database Storage:** The secure repository that stores vehicle repair orders, customer histories, Express PMS 2-hour SLA turnaround timers, and tamper-proof audit trails.
 
 This document provides HonTech AutoCenter ownership with a clear, business-minded evaluation of the two viable hosting pathways—**Option A: Local On-Premise Intranet Server** vs. **Option B: Modern Cloud Solutions**—to help management select the ideal operational model for the workshop.
@@ -69,11 +69,11 @@ This document provides HonTech AutoCenter ownership with a clear, business-minde
 To connect all service bay devices into one synchronized system, HonTech can choose between two operational architectures:
 
 ### 🖥️ Option A: Local On-Premise Intranet Hosting (In-Shop Server PC)
-* **How it Works:** A dedicated computer physically set up inside HonTech's office acts as the central server (running Apache and MySQL via XAMPP). All staff tablets, desktop computers, and the Waiting Lounge TV connect directly to this local PC through the shop's private Wi-Fi router.
+* **How it Works:** A dedicated computer physically set up inside HonTech's office acts as the central server (running Apache and MySQL via XAMPP). All staff desktop computers, laptops, and the Waiting Lounge TV connect directly to this local PC through the shop's private Wi-Fi router.
 * **How it Solves the Problem:** Keeps all data physically inside the building on internal copper cables and local Wi-Fi. It continues operating normally even if municipal fiber internet goes down, but it requires purchasing a dedicated desktop PC (~₱18,500–₱23,000) and cannot connect multiple physical branches together without complex networking hardware.
 
 ### ☁️ Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED
-* **How it Works:** The web system interface is hosted on a high-speed global web delivery network (Vercel), and the central database is hosted in enterprise cloud data centers (Supabase on AWS). Staff access the system securely through a web browser on any internet-connected device (laptops, tablets, smartphones).
+* **How it Works:** The web system interface is hosted on a high-speed global web delivery network (Vercel), and the central database is hosted in enterprise cloud data centers (Supabase on AWS). Staff access the system securely through a web browser on any internet-connected device (desktop PCs, laptops, or smartphones).
 * **How it Solves the Problem:** Requires **₱0 upfront server hardware cost** (runs on existing office devices), eliminates shop floor clutter, connects multiple branch locations into one master dashboard automatically, and enables remote management from anywhere. It requires an active internet connection (or a ₱999 backup 4G/5G SIM router).
 
 ---
@@ -83,7 +83,7 @@ To connect all service bay devices into one synchronized system, HonTech can cho
 | Evaluation Feature | 🌟 Option B: Modern Cloud *(RECOMMENDED)* | Option A: Local Intranet Server *(Alternative)* |
 | :--- | :--- | :--- |
 | **Recommendation Status** | **🌟 PRIMARY RECOMMENDATION (Best Value)** | Secondary Supported Alternative |
-| **Upfront Hardware Cost** | **₱0** *(Runs on existing office PCs, tablets, & phones)* | ₱14,500 – ₱23,000 *(Requires dedicated Server PC)* |
+| **Upfront Hardware Cost** | **₱0** *(Runs on existing office desktop PCs, laptops, & phones)* | ₱14,500 – ₱23,000 *(Requires dedicated Server PC)* |
 | **Monthly Software Hosting** | **₱0 / month (Permanent Free Tier)** | **₱0 / month (Free software license)** |
 | **Electricity Bill (Meralco)** | **₱0** *(Cloud data centers host the compute)* | ~₱350–₱600 / month *(PC running 24/7 in shop)* |
 | **Physical Space & Shop Clutter** | **Zero Physical Space (100% Clutter-Free)**<br>• No server boxes, towers, or cables on desks | **Requires Dedicated Desk / Shelf Space**<br>• Needs space for PC tower, monitor, UPS, and cables |
@@ -105,7 +105,7 @@ Deploying a mission-critical operations system across service bays requires anti
 ### ⚠️ Risk 1: Local Hosting Multi-Branch & In-Shop Wi-Fi Subnet Traps
 * **The Problem (Two Specific Network Failures on Local Servers):** 
   1. **The Multi-Branch Barrier:** If HonTech runs a Local Server PC inside Branch A (Marikina), **Branch B (located across town) cannot access Branch A's server over the standard internet** without purchasing expensive static public IP addresses from PLDT/Globe and installing complex Site-to-Site VPN routers in both buildings.
-  2. **In-Shop Wi-Fi Subnet Disconnections:** Within the shop, if a Service Advisor's tablet wanders and connects to a secondary guest Wi-Fi extender or a different router subnet (e.g. `192.168.2.x` instead of the main server router `192.168.1.x`), the tablet will lose connection and display a *"Server Not Found"* error even though the staff member is physically inside the building.
+  2. **In-Shop Wi-Fi Subnet Disconnections:** Within the shop, if a staff desktop PC or laptop connects to a secondary guest Wi-Fi extender or a different router subnet (e.g. `192.168.2.x` instead of the main server router `192.168.1.x`), the computer will lose connection and display a *"Server Not Found"* error even though the staff member is physically inside the building.
 * **The Mitigation:**
   * **For Local Hosting (Option A):** We configure a single unified shop Wi-Fi SSID, assign a fixed static IP (`192.168.1.100`), and wire primary front desk terminals directly via Cat6 Ethernet cable.
   * **For Multi-Branch Chains:** If HonTech wants multiple physical branch locations synchronized under one master dashboard, **we strongly recommend Option B (Cloud Vercel + Supabase)**, which connects all branches instantly over any internet with zero network configuration.
@@ -114,9 +114,9 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ### ⚠️ Risk 2: Hardware Budget Constraints (The "Staff Terminals First" Rule)
 * **The Problem:** 
-  * If HonTech has an allocated hardware budget and prioritizes purchasing tablets and laptops for the Service Advisors and front desk first, **there may not be enough budget remaining to purchase a dedicated ₱18,500–₱23,000 Local Server PC.**
+  * If HonTech has an allocated hardware budget and prioritizes purchasing desktop PCs and laptops for the Service Advisors and front desk first, **there may not be enough budget remaining to purchase a dedicated ₱18,500–₱23,000 Local Server PC.**
 * **The Mitigation (The Smart Decision Flow):**
-  * **Step 1:** The development team and client canvass equipment prices together in Gilmore, purchasing the necessary staff intake tablets and front desk terminals first.
+  * **Step 1:** The development team and client canvass equipment prices together in Gilmore, purchasing the necessary staff desktop computers and front desk terminals first.
   * **Step 2 (The Strategic Decision):**
     * **If remaining budget permits:** The client purchases the dedicated Server PC → Proceed with **Track A (Local On-Premise Hosting)**.
     * **If budget is fully utilized:** The client skips the Server PC completely → Seamlessly launch **Track B (Modern Cloud Solutions)** at **₱0.00 additional server hardware cost**!
@@ -329,7 +329,7 @@ Upon project completion and sign-off, HonTech AutoCenter management will receive
 | Deliverable Item | 🌟 Option B: Modern Cloud Package *(RECOMMENDED)* | Option A: Local Intranet Server Package *(Alternative)* |
 | :--- | :--- | :--- |
 | **1. Live Operational System** | • Production Web URL & SSL Domain<br>• Full ownership of Supabase Cloud DB project<br>• Active Vercel CDN deployment | • Assembled Work-Grade Server PC in office<br>• Configured Apache/MySQL on static IP (`192.168.1.100`)<br>• Windows background startup services configured |
-| **2. Staff Quick-Start Manual (PDF)** | • Visual guide for tablets, smartphones, & PCs<br>• QR code bookmarks for staff instant access | • Visual guide for front desk PC & local LAN tablets<br>• Local IP desktop shortcuts (`HonTech_Intranet.lnk`) |
+| **2. Staff Quick-Start Manual (PDF)** | • Visual guide for desktop PCs, laptops, & smartphones<br>• Browser bookmarks for staff instant access | • Visual guide for front desk PC & local LAN computers<br>• Local IP desktop shortcuts (`HonTech_Intranet.lnk`) |
 | **3. Administrator & Security Guide (PDF)** | • Supabase database backup & export instructions<br>• Staff account creation, role changes, & password resets<br>• Cloud quota monitoring guide | • Windows XAMPP start/stop procedures<br>• MySQL automated USB backup batch script manual<br>• Local static IP troubleshooting guide |
 | **4. Emergency Fallback Runbook (PDF)** | • 4G/5G mobile backup Wi-Fi switchover protocol<br>• Temporary paper intake procedure | • UPS battery backup shutdown & restart protocol<br>• Database restoration from USB flash drive |
 | **5. Source Code & Architecture Archive** | • Complete GitHub repository source code<br>• Database schema SQL scripts & seed definitions | • USB Flash Drive containing full system source code, XAMPP installer, & master `.sql` schema backup |
@@ -400,8 +400,8 @@ Local intranet hosting is **not experimental**. It is the standard architecture 
 │         ├── (Cat6 Cable) ──► [ LOCAL SERVER PC (XAMPP / PHP / MySQL) ]           │
 │         │                    Static IP: 192.168.1.100                            │
 │         │                                                                        │
-│         ├── (Wi-Fi) ────────► [ Front Desk PC / Tablet ] (SA Intake & Billing)   │
-│         ├── (Wi-Fi) ────────► [ Service Advisor Tablets ] (Bay Status Updates)   │
+│         ├── (Wi-Fi / LAN) ──► [ Front Desk PC / Laptop ] (Cashier & Intake)      │
+│         ├── (Wi-Fi / LAN) ──► [ Service Advisor PCs / Desktops ] (Bay Status)    │
 │         └── (Wi-Fi / HDMI) ─► [ Waiting Lounge Smart TV ] (Customer Queue Board) │
 │                                                                                  │
 └──────────────────────────────────────────────────────────────────────────────────┘
@@ -422,12 +422,12 @@ To protect the client from spending too much money, here are the **3 real-world 
 | **Option 3 (Brand New Build)** | **New Entry-Level Desktop (Ryzen 3 / Core i3)** | **₱16,500 – ₱22,000** | **100% Feasible.** Good if the client wants brand-new parts with 1–3 year manufacturer warranties. |
 
 ### A.3. Solving the Wi-Fi & Network Reliability Problem
-The biggest worry with local hosting is: *"What if the staff tablets can't connect to the Wi-Fi or can't find the server?"*
+The biggest worry with local hosting is: *"What if the staff computers can't connect to the Wi-Fi or can't find the server?"*
 
 Here are the **4 engineering rules** to ensure 100% connection reliability:
 1. **Rule 1 (Always Wire the Server PC via Cat6 Ethernet):** Connect the Server PC directly to the main router LAN port using a Cat6 cable. Physical cables give the server an unbreakable 1,000 Mbps connection.
 2. **Rule 2 (Set a Permanent Static IP Address):** Set the Server PC's IPv4 address permanently to `192.168.1.100` (Subnet: `255.255.255.0`, Gateway: `192.168.1.1`). Even if the router restarts during a brownout, DHCP will never change the IP address.
-3. **Rule 3 (Single Unified Shop Wi-Fi SSID):** Ensure all tablets and laptops connect to the primary shop Wi-Fi network (e.g., `HonTech_Staff`). Avoid connecting staff devices to Guest Wi-Fi or isolated range extenders.
+3. **Rule 3 (Single Unified Shop Wi-Fi SSID):** Ensure all desktop PCs and laptops connect to the primary shop Wi-Fi network (e.g., `HonTech_Staff`). Avoid connecting staff devices to Guest Wi-Fi or isolated range extenders.
 4. **Rule 4 (Windows Firewall Inbound Rule for Port 80 & 3306):** In Windows Defender Firewall $\rightarrow$ Inbound Rules, add an Allow Rule for TCP Port 80 (Apache) and TCP Port 3306 (MySQL).
 
 ### A.4. Multi-Branch Connection on Local Hosting (Cloudflare Tunnel)
