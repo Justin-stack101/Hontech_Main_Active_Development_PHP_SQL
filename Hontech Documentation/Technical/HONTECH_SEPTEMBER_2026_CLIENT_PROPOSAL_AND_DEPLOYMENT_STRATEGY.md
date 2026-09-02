@@ -228,25 +228,33 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-## 5. Dual Detailed Weekly Execution Roadmaps
+## 5. Dual Detailed Weekly Execution Roadmaps (September 2026 Rollout)
+
+To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have structured comprehensive 4-week execution schedules for both deployment tracks. Each week defines clear technical objectives, on-site activities, client touchpoints, and tangible milestone deliverables.
 
 ---
 
-### 🟢 TRACK A: Detailed Roadmap for Local Intranet Hosting
+### 🌟 TRACK B: Modern Cloud Deployment Roadmap (RECOMMENDED)
+*Fastest deployment path, ₱0 upfront server hardware cost, and instant multi-device synchronization.*
 
-* **Week 1 (Sept 1–5):** Timeline review, features review (Express 2H SLA, Audit Guard), online hardware price canvassing, Gilmore trip scheduling.
-* **Week 2 (Sept 8–12):** Joint Gilmore purchase trip, Apache/MariaDB installation, static IP (`192.168.1.100`) setup, Lounge TV testing, LAN multi-device validation.
-* **Week 3 (Sept 15–19):** Hands-on SA training, 2–3 day live customer "Shadow Mode" (dual paper + digital entry), documentation delivery, and system handover.
-* **Week 4 (Sept 22–30):** 100% digital cutover (retire paper stubs), buffer stabilization, and kickoff of 1–2 months free warranty support.
+| Week / Period | Phase & Objectives | Key Engineering & On-Site Activities | Client & Staff Touchpoint | Weekly Milestone Deliverable |
+| :--- | :--- | :--- | :--- | :--- |
+| **Week 1**<br>*(Sept 1–5)* | **Cloud Infrastructure & Account Provisioning** | • Provision production accounts on Vercel and Supabase<br>• Deploy database schema and initial test seed data<br>• Configure SSL security certificates & custom web domain<br>• Verify sub-100ms API response times | • Kickoff alignment meeting with management<br>• Confirm staff role accounts *(Owner, Admin, 2 SAs, 1 Cashier)* | ✅ **Live Cloud System URL Active & Accessible** |
+| **Week 2**<br>*(Sept 8–12)* | **Multi-Device Sync & Workshop Validation** | • Connect front desk office PCs & SA tablets to cloud domain<br>• Configure Customer Lounge Smart TV display (`?mode=tv`)<br>• Validate real-time WebSocket live updates across repair bays<br>• Test ₱999 backup 4G/5G mobile router failover | • On-site inspection of shop Wi-Fi signal in bays & lounge<br>• Verify TV screen visibility and auto-refresh in lounge | ✅ **All Shop Devices Connected & Verified** |
+| **Week 3**<br>*(Sept 15–19)* | **Staff Training & "Shadow Mode" Dry-Run** | • Conduct 60-min hands-on training for Service Advisors & Cashier<br>• Demonstrate Express 2-Hour SLA delay logging & claim stub printing<br>• Train Owner/Manager on remote mobile phone dashboard<br>• Execute 2–3 day live customer "Shadow Mode" *(dual entry)* | • SAs use digital system alongside existing paper stubs<br>• Team gathers daily workflow feedback from staff | ✅ **100% Staff Certified & Confident** |
+| **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of paper claim stubs (100% digital cutover)<br>• Final latency fine-tuning and security verification<br>• Delivery of PDF User Manuals, Admin Guides, & Fallback Runbooks<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System fully adopted as standard daily operating procedure | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
-### 🔵 TRACK B: Detailed Roadmap for Modern Cloud Deployment (Vercel + Supabase)
+### 🖥️ TRACK A: Local On-Premise Intranet Roadmap (ALTERNATIVE)
+*Complete physical data sovereignty inside the building; requires dedicated PC purchase and on-site network cabling.*
 
-* **Week 1 (Sept 1–5):** Timeline review, features review, cloud account registration (Vercel + Supabase), domain setup.
-* **Week 2 (Sept 8–12):** Supabase database migration, Row-Level Security setup, real-time WebSocket syncing, Lounge TV cloud test, backup 4G/5G Wi-Fi validation.
-* **Week 3 (Sept 15–19):** SA training, remote owner mobile dashboard training, 2–3 day live customer "Shadow Mode" dry run, cloud admin documentation handover.
-* **Week 4 (Sept 22–30):** 100% digital cutover, latency fine-tuning, buffer stabilization, and kickoff of 1–2 months free warranty support.
+| Week / Period | Phase & Objectives | Key Engineering & On-Site Activities | Client & Staff Touchpoint | Weekly Milestone Deliverable |
+| :--- | :--- | :--- | :--- | :--- |
+| **Week 1**<br>*(Sept 1–5)* | **Hardware Canvassing & Shop LAN Audit** | • Finalize bill of materials for Work-Grade Server PC<br>• Audit Gilmore Computer Center real-time parts pricing<br>• Inspect shop router, Cat6 cabling, and front desk power outlets<br>• Schedule joint Gilmore buying trip | • Management approves hardware budget (~₱18.5k–₱23k)<br>• Schedule date for Gilmore visit | ✅ **Final Gilmore Purchasing Checklist Ready** |
+| **Week 2**<br>*(Sept 8–12)* | **Hardware Procurement, Assembly & Network Setup** | • Joint Gilmore parts purchase & warranty verification<br>• Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>• Assign static local IP (`192.168.1.100`) & configure shop Wi-Fi<br>• Wire primary server directly via Cat6 Ethernet cable<br>• Install UPS battery backup & configure automated local backups | • Client purchases hardware in Gilmore<br>• Server PC physically positioned in front office | ✅ **Server PC Assembled, Configured & Running 24/7** |
+| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect SA tablets & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & claim stubs<br>• Execute 2–3 day live customer "Shadow Mode" *(dual entry)*<br>• Test local database automatic backup batch scripts to USB | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
+| **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of paper claim stubs (100% digital cutover)<br>• Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System operational as primary shop workflow | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
