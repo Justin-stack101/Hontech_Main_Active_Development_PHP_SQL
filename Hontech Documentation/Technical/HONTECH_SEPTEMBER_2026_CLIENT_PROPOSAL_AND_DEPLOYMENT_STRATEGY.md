@@ -150,7 +150,7 @@ Because Cloud computing is hosted remotely, **HonTech does NOT need to purchase 
 | Shop Location / Role | Device Required | Minimum Specification | Est. Hardware Cost |
 | :--- | :--- | :--- | :--- |
 | **Front Desk / Cashier** | Existing Office PC or Laptop | Any Windows 10/11 desktop or laptop with Google Chrome / Edge | **₱0.00** *(Use existing)* |
-| **Service Advisors (Bays)** | Mobile Tablets or Phones | Any Android Tablet / iPad / Smartphone with modern browser | **₱0.00** *(Use existing)* |
+| **Service Advisors (SAs)** | Dedicated SA Desktop / Bay Computer | Existing PC or laptop designated for SA intake & bay monitoring | **₱0.00** *(Use existing)* |
 | **Customer Waiting Lounge** | Wall Display TV | Smart TV with built-in browser *(or ₱1,800 Fire Stick)* | **₱0.00** *(Shop already owns TV)* |
 | **Central Server Unit** | **None Needed** *(Cloud-Hosted)* | Amazon AWS Tier-4 Data Center (Managed by Provider) | **₱0.00** |
 | **TOTAL UPFRONT INVESTMENT**| | | **₱0.00** |
@@ -174,19 +174,18 @@ If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be p
 Here is how the hardware specifications directly affect HonTech's daily workflow across its 3–5 staff members per location:
 
 * **Branch 1 (Marikina Main — 3 to 5 Users):**
-  * 2 Service Advisors intake vehicles and log PMS status updates on tablets.
+  * 2 Service Advisors intake vehicles and log PMS status updates on dedicated computers.
   * 1 Cashier generates invoices and prints claim stubs.
   * 1 Waiting Lounge TV runs continuously displaying the customer queue.
   * *Daily Volume:* ~15 to 25 repair orders/day.
 
-* **Branch 2 (Expansion Branch — 3 to 5 Users):**
-  * 2 Service Advisors, 1 Cashier, and 1 Waiting Lounge TV.
-  * *Daily Volume:* ~15 to 25 repair orders/day.
+* **Branch 2 (Second Branch Expansion — 3 to 5 Users):**
+  * 2 Service Advisors intake vehicles on dedicated computers.
+  * 1 Cashier handles billing and invoice processing.
+  * 1 Waiting Lounge TV shows branch customer queues.
+  * *Combined Multi-Branch Load:* ~30 to 50 active repair orders/day across both branches.
 
-* **4-Year Cumulative Data Load:**
-  * After 4 years of daily operations, the central database will store **~45,000 vehicle repair histories, customer contact profiles, Express 2H delay logs, and audit trails**.
-
-#### 💥 Why Cheap / Consumer Celeron (4GB RAM) PCs Struggle Even with 3–5 Users:
+#### ⚠️ Why Minimum/Budget Hardware (4GB RAM) Fails Over Time:
 * When 3 Service Advisors click *"Save Job"* at the exact same second while the Lounge TV is auto-refreshing, a 4GB RAM PC runs out of memory buffers.
 * Staff experience annoying 3–5 second input freezes, and consumer power supplies overheat from running 24/7 in hot auto shop bays.
 
@@ -223,8 +222,8 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 | Week / Period | Phase & Objectives | Team Activity & Engineering Responsibilities | Client & Adviser Touchpoint | Weekly Milestone Deliverable |
 | :--- | :--- | :--- | :--- | :--- |
 | **Week 1**<br>*(Sept 1–5)* | **Adviser Review, Client Decision & Core Polish** | • **Developing Team:** Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (`hontech-cloud-poc`) to explore cloud deployment safely without touching master code.<br>• **System Designer:** Assist the developer in handling the system flow, bay tracking layout, and proper UI/UX design.<br>• **QA & Documentation:** Create hardware/cloud expense documentation and conduct extensive QA & unit testing verification. | • Present proposal document to **Mr. Ar-Jay C. Agbayani** for review and endorsement.<br>• Present comparison to **HonTech Management** for hosting pathway sign-off. | ✅ **Proposal Signed & Cloud Sandbox Initialized** |
-| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Developing Team:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, SA tablets, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
-| **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write on traditional whiteboard stubs AND enter records on tablets simultaneously)*.<br>• **On-Site Floor Guarding:** The development team members will personally stay on-site to guard shop floor operations, support staff in real time, document any friction points, and apply immediate revisions and bug fixes. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
+| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Developing Team:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, dedicated SA computers, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
+| **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write on traditional whiteboard stubs AND enter records on dedicated SA computers simultaneously)*.<br>• **On-Site Floor Guarding:** The development team members will personally stay on-site to guard shop floor operations, support staff in real time, document any friction points, and apply immediate revisions and bug fixes. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
 | **Week 4**<br>*(Sept 22–30)* | **Buffer, Final Polish & 100% Digital Go-Live** | • Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>• Official retirement of traditional whiteboard queue tracking (100% digital cutover).<br>• Kickoff of **1–2 months complimentary warranty & support**. | • Formal sign-off on Project Handover Package.<br>• System operational as primary daily standard. | ✅ **Production Go-Live & Warranty Active** |
 
 ---
@@ -236,27 +235,27 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 | :--- | :--- | :--- | :--- | :--- |
 | **Week 1**<br>*(Sept 1–5)* | **Hardware Canvassing & Shop LAN Audit** | • Finalize bill of materials for Work-Grade Server PC<br>• Audit Gilmore Computer Center real-time parts pricing<br>• Inspect shop router, Cat6 cabling, and front desk power outlets<br>• Schedule joint Gilmore buying trip | • Management approves hardware budget (~₱18.5k–₱23k)<br>• Schedule date for Gilmore visit | ✅ **Final Gilmore Purchasing Checklist Ready** |
 | **Week 2**<br>*(Sept 8–12)* | **Hardware Procurement, Assembly & Network Setup** | • Joint Gilmore parts purchase & warranty verification<br>• Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>• Assign static local IP (`192.168.1.100`) & configure shop Wi-Fi<br>• Wire primary server directly via Cat6 Ethernet cable<br>• Install UPS battery backup & configure automated local backups | • Client purchases hardware in Gilmore<br>• Server PC physically positioned in front office | ✅ **Server PC Assembled, Configured & Running 24/7** |
-| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect SA tablets & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & daily operations guidelines<br>• Execute 2–3 day live customer "Shadow Mode" *(dual whiteboard + digital entry)*<br>• **On-Site Floor Guarding:** Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts. | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
+| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect dedicated SA computers & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & daily operations guidelines<br>• Execute 2–3 day live customer "Shadow Mode" *(dual whiteboard + digital entry)*<br>• **On-Site Floor Guarding:** Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts. | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
 | **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of traditional whiteboard queue tracking (100% digital cutover)<br>• Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System operational as primary shop workflow | ✅ **Production Go-Live & Warranty Active** |
 
 ---
 
 ## 6. Staff Training & "Shadow Mode" Dry-Run Protocol
 
-To guarantee a seamless transition without disrupting daily customer intake, the rollout follows a structured 3-phase training and testing methodology:
+To guarantee a seamless transition without disrupting daily customer intake, the rollout follows a structured 4-phase training and testing methodology. *(Note: This section serves as a preliminary working draft framework for initial review and will be fine-tuned based on client operational preferences).*
 
-### 👥 6.1 Role-by-Role Training Matrix
+### 👥 6.1 Role-by-Role Training Matrix (Draft Framework)
 
 | Staff Role | Target Devices | Training Curriculum & Focus Areas | Duration |
 | :--- | :--- | :--- | :--- |
-| **Service Advisors (SAs)** | Tablets / Smartphones | • 30-second vehicle intake & plate number lookup<br>• Express 2-Hour PMS SLA timer tracking<br>• Logging delay reasons & parts waiting flags<br>• Real-time bay status updates *(Intake → Bay → Done)* | 45 Mins |
+| **Service Advisors (SAs)** | Dedicated SA Desktop Console / PC | • 30-second vehicle intake & plate number lookup<br>• Express 2-Hour PMS SLA timer tracking<br>• Logging delay reasons & parts waiting flags<br>• Real-time bay status updates *(Intake → Bay → Done)* | 45 Mins |
 | **Cashier / Front Desk** | Desktop PC / Laptop | • Generating & printing 80mm thermal / PDF claim stubs<br>• Customer checkout, billing status & invoice printing<br>• Customer phone SMS / call notification triggers | 30 Mins |
 | **Owner / General Manager** | Smartphone / Laptop | • Real-time bay throughput & daily revenue analytics<br>• Inspecting tamper-proof audit trails (`job_audit_logs`)<br>• Multi-branch management & staff account administration | 30 Mins |
 | **Lounge Display Operator** | Waiting Lounge TV | • Launching full-screen Waiting Lounge TV URL (`?mode=tv`)<br>• Verifying real-time auto-refresh queue & privacy mode | 15 Mins |
 
 ---
 
-### 🔄 6.2 The 4-Stage "Shadow Mode" Operational Protocol (Zero Customer Risk)
+### 🔄 6.2 The 4-Stage "Shadow Mode" Operational Protocol (Draft Framework)
 
 The "Shadow Mode" protocol is a proven, risk-free operational transition strategy designed to introduce the digital management system into HonTech AutoCenter without disrupting daily customer intake or workshop productivity. During this rollout, staff operate the new digital platform in parallel with their existing routine, ensuring complete operational safety while staff build practical confidence.
 
@@ -264,7 +263,7 @@ The "Shadow Mode" protocol is a proven, risk-free operational transition strateg
    Before handling live customer cars, the development team conducts an interactive dry-run workshop in the shop office. Service Advisors and Cashiers practice creating 5 simulated repair orders, tracking Express 2-Hour PMS timers, logging parts delay reasons, and printing sample claim stubs to become fully comfortable with the interface.
 
 2. **Stage 2: Live "Shadow Mode" with On-Site Floor Guarding (2 to 3 Days)**  
-   During regular shop business hours, staff continue writing repair orders on their traditional workshop whiteboard as their primary fail-safe, while simultaneously recording every vehicle digitally on their tablets. The development team remains physically present on the workshop floor to guard operations, guide staff during live customer walk-ins, and provide immediate assistance with zero impact on customer waiting times.
+   During regular shop business hours, staff continue writing repair orders on their traditional workshop whiteboard as their primary fail-safe, while simultaneously recording every vehicle digitally on their dedicated SA computers. The development team remains physically present on the workshop floor to guard operations, guide staff during live customer walk-ins, and provide immediate assistance with zero impact on customer waiting times.
 
 3. **Stage 3: End-of-Day Data Reconciliation & Issue Resolution**  
    At the close of each business day, the development team and shop management cross-reference the digital records against the whiteboard entries to verify 100% data accuracy. Any questions, Wi-Fi signal dead spots, or workflow bottlenecks identified by staff are documented immediately, allowing the team to apply overnight refinements and software bug fixes.
@@ -274,10 +273,10 @@ The "Shadow Mode" protocol is a proven, risk-free operational transition strateg
 
 ---
 
-### ✅ 6.3 Staff Competency & Go-Live Checklist
+### ✅ 6.3 Staff Competency & Go-Live Checklist (Draft Framework)
 
 Before retiring traditional whiteboard tracking, the team and HonTech management verify the following 5 criteria:
-- [ ] **Fast Vehicle Intake:** Service Advisors can intake a walk-in vehicle and assign a service bay in under 60 seconds.
+- [ ] **Fast Vehicle Intake:** Service Advisors can intake a walk-in vehicle and assign a service bay in under 60 seconds on their dedicated computer.
 - [ ] **Express 2H Delay Logging:** SAs understand how to log parts/labor delay reasons when Express PMS exceeds target SLA.
 - [ ] **Claim Stub Verification:** Cashier can print clear 80mm thermal claim stubs with complete repair order details.
 - [ ] **Lounge TV Real-Time Sync:** Customer lounge display updates automatically when a car finishes servicing without page reloads.
