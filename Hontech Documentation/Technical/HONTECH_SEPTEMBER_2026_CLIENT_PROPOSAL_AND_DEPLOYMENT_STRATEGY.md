@@ -128,7 +128,9 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ### ⚠️ Risk 3: Shop Environment & Electrical Power Spikes
 * **The Problem:** Auto repair centers generate heavy electrical voltage surges when air compressors and hydraulic lifts turn on, risking motherboard burnout on an unprotected on-premise server PC.
-* **The Mitigation:** For Local Hosting, a dedicated **Uninterruptible Power Supply (UPS with AVR / Surge Protection ~₱1,800)** must be installed between the wall outlet and the server PC to ensure clean, continuous power.
+* **The Mitigation:** 
+  * **For Option B (Cloud Solutions — Recommended):** **100% Protected.** All server compute and database engines run in Amazon's Tier-4 climate-controlled data centers. Workshop electrical surges in Marikina have **zero impact** on system data.
+  * **For Option A (Local Hosting — Alternative):** A dedicated **Uninterruptible Power Supply (UPS with AVR / Surge Protection ~₱1,800)** must be installed between the wall outlet and the local server PC to ensure clean, continuous power.
 
 ---
 
@@ -138,13 +140,29 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ---
 
-## 4. Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability
+## 4. Hardware & Device Requirements: Cloud vs. Local Sourcing
 
-### 🖥️ 4.1 Hardware Spec Tiers Calibrated to HonTech's Team Size (3–5 Staff / Branch)
+This section outlines the exact device and hardware requirements for both operational pathways so HonTech management can clearly budget and plan equipment:
 
-HonTech's operational team profile is **3 to 5 active users per branch** *(1 Admin/Owner, 2 Service Advisors, 1 Cashier/Assistant + 1 Lounge TV)*. Across 2 branches, this represents **6 to 10 simultaneous staff users**. 
+---
 
-Because HonTech has a focused, agile team, **there is no need to overspend on expensive enterprise servers**. Below are the calibrated tiers:
+### ☁️ 4.1 Track B: Modern Cloud Device Requirements (RECOMMENDED — ₱0 Server Cost)
+
+Because Cloud computing is hosted remotely, **HonTech does NOT need to purchase a dedicated server PC**. The system runs on existing shop devices:
+
+| Shop Location / Role | Device Required | Minimum Specification | Est. Hardware Cost |
+| :--- | :--- | :--- | :--- |
+| **Front Desk / Cashier** | Existing Office PC or Laptop | Any Windows 10/11 desktop or laptop with Google Chrome / Edge | **₱0.00** *(Use existing)* |
+| **Service Advisors (Bays)** | Mobile Tablets or Phones | Any Android Tablet / iPad / Smartphone with modern browser | **₱0.00** *(Use existing)* |
+| **Customer Waiting Lounge** | Wall Display TV | Smart TV with built-in browser *(or ₱1,800 Fire Stick)* | **₱0.00** *(Shop already owns TV)* |
+| **Central Server Unit** | **None Needed** *(Cloud-Hosted)* | Amazon AWS Tier-4 Data Center (Managed by Provider) | **₱0.00** |
+| **TOTAL UPFRONT INVESTMENT**| | | **₱0.00** |
+
+---
+
+### 🖥️ 4.2 Track A: Local Server PC Sourcing & Spec Tiers (ALTERNATIVE)
+
+If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be purchased and kept running 24/7 in the front office. Sized for HonTech's **3 to 5 staff users per branch (6–10 users across 2 branches)**:
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -168,7 +186,7 @@ Because HonTech has a focused, agile team, **there is no need to overspend on ex
 
 ---
 
-### 🏢 4.2 Realistic Operational Scenario: "2 Branches with 3–5 Staff Over 4 Years"
+### 🏢 4.3 Realistic Operational Scenario: "2 Branches with 3–5 Staff Over 4 Years"
 
 Here is how the hardware specifications directly affect HonTech's daily workflow across its 3–5 staff members per location:
 
@@ -196,14 +214,14 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-### 🛒 4.3 Joint Gilmore Sourcing & Inspection Plan
+### 🛒 4.4 Joint Gilmore Sourcing & Inspection Plan (If Option A is Chosen)
 * **Online Canvassing:** Team and client canvass real-time pricing from *Lazada, Shopee, EasyPC, PC Express, and DynaQuest*.
 * **On-Site Gilmore Buying Trip:** Team and client visit **Gilmore Computer Center** together to inspect physical parts, verify 1–3 year manufacturer warranties, and negotiate store bundle discounts.
 * *Alternative Option:* Repurpose an existing functional Core i3/i5 office desktop at **₱0.00 hardware cost**.
 
 ---
 
-### 📺 4.4 Customer Waiting Lounge TV (Both Options)
+### 📺 4.5 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
 
