@@ -8,17 +8,19 @@
 **Prepared for:**  
 **HonTech AutoCenter — Management & Ownership**
 
-**Prepared by:**  
-**HonTech Systems Development Team**
-- **Justin Nolasco J.** — *Lead Systems Developer*
-- **Mary Dayne Villas T.** — *UI/UX & Frontend Designer*
-- **Catherine Ramos G.** — *Technical Documentation & QA Lead*
+**Prepared by — HonTech Systems Development Team:**
+- **Mary Dayne Villas T.** — *Lead System Architect & System Designer*  
+  *(Responsible for overall system design, technical architecture, workflow modeling, and UI/UX interface design)*
+- **Justin Nolasco J.** — *Lead Systems Developer & Implementation Engineer*  
+  *(Responsible for full-stack programming, building and engineering the system according to the architectural blueprints, database implementation, and deployment)*
+- **Catherine Ramos G.** — *Technical Documentation & QA Lead*  
+  *(Responsible for quality assurance testing, user manuals, emergency SOPs, and project documentation)*
 
 **Project Adviser:**  
 **Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
 
 **Date:** September 2, 2026  
-**Document Version:** 8.0 (IT Maintenance & Developer Support Edition)
+**Document Version:** 9.0 (Accurate Team Architecture & Roles Edition)
 
 ---
 
