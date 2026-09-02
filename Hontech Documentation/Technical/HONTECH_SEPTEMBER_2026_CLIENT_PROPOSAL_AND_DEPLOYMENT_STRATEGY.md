@@ -1,24 +1,18 @@
 # HONTECH AUTOCENTER
-## Operations Management System
-### Client Proposal & September 2026 Strategic Architecture Blueprint
-### 🌟 Primary Recommendation: Modern Cloud Solutions (Vercel + Supabase)
-#### *(Secondary Alternative: On-Premise Local Intranet XAMPP Server)*
+## Operations Management & Service Bay Queue System
+### Technical Architecture Evaluation, Deployment Strategy & Implementation Roadmap
 
 ---
 
-**Prepared for:**  
-**HonTech AutoCenter — Management & Ownership**
-
-**Prepared by — HonTech Systems Development Team:**
-- **Mary Dayne Villas T.** — *System Architect & System Designer*
-- **Justin Nolasco J.** — *System Developer & Technical Implementation*
-- **Catherine Ramos G.** — *Technical Documentation & QA Tester*
-
-**Project Adviser:**  
-**Mr. Ar-Jay C. Agbayani** — *Capstone Project Adviser*
-
-**Date:** September 2, 2026  
-**Document Version:** 14.0 (Unified Master Document — Cloud Strategy Recommended)
+**Client Organization:** HonTech AutoCenter (Management & Operations)  
+**Project Initiative:** Enterprise Bay Management & Queue Monitoring Platform  
+**Authors & Engineering Team:**  
+• **Mary Dayne Villas T.** — *System Architect & System Designer*  
+• **Justin Nolasco J.** — *Lead Systems Developer & Technical Implementation*  
+• **Catherine Ramos G.** — *Technical Documentation & QA Lead*  
+**Capstone Project Adviser:** **Mr. Ar-Jay C. Agbayani** *(Faculty Adviser | Department of Information Technology)*  
+**Target Deployment Period:** September 2026 Rollout  
+**Document Classification:** Official Client Proposal & Strategic Deployment Blueprint (Version 14.0)  
 
 ---
 
