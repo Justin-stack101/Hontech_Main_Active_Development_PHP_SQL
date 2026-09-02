@@ -163,57 +163,61 @@ Deploying a mission-critical operations system across service bays requires anti
 
 ---
 
-## 5. Hardware Sourcing, Spec Classifications & Long-Term Scalability
+## 5. Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability
 
-### 🖥️ 5.1 Hardware Spec Tiers & Commercial Classifications (If Choosing Local Hosting)
+### 🖥️ 5.1 Hardware Spec Tiers Calibrated to HonTech's Team Size (3–5 Staff / Branch)
 
-To ensure the client understands the direct relationship between computer specifications, long-term durability, and multi-user performance, we classify hardware options into three distinct tiers:
+HonTech's operational team profile is **3 to 5 active users per branch** *(1 Admin/Owner, 2 Service Advisors, 1 Cashier/Assistant + 1 Lounge TV)*. Across 2 branches, this represents **6 to 10 simultaneous staff users**. 
+
+Because HonTech has a focused, agile team, **there is no need to overspend on expensive enterprise servers**. Below are the calibrated tiers:
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                           HARDWARE SPECIFICATION & LONGEVITY TIERS                                │
+│                      HARDWARE SPECIFICATION & SIZING TIERS (3–5 STAFF/BRANCH)                     │
 ├──────────────────────────┬─────────────────────────────┬──────────────────────────┬───────────────┤
 │ TIER / CLASSIFICATION    │ TECHNICAL SPECIFICATIONS    │ OPERATIONAL CAPACITY     │ EST. COST     │
 ├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥉 Standard Criteria     │ Core i3 (10th Gen+) / R3    │ 1 Branch                 │ ₱16,500 –     │
-│    (Baseline Entry)      │ 8GB RAM, 256GB SSD          │ Up to 10–12 devices      │ ₱18,500       │
-│                          │ Windows 10/11 Home/Pro      │ (~15–20 cars/day)        │               │
+│ 🥉 Standard Criteria     │ Core i3 (10th Gen+) / R3    │ **Branch 1 (Marikina)**  │ ₱14,500 –     │
+│    (Single Shop Baseline)│ 8GB RAM, 256GB NVMe SSD     │ 3–5 Staff + 1 Lounge TV  │ ₱17,500       │
+│                          │ Windows 10/11 Home/Pro      │ (~15–25 cars/day)        │ *(or ₱0 old)* │
 ├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥈 Work-Grade Class      │ Core i5 (11th/12th Gen) / R5│ 1–2 Branches             │ ₱22,000 –     │
-│    (Recommended Standard)│ 16GB RAM, 512GB NVMe SSD    │ Up to 25 concurrent users│ ₱26,000       │
-│                          │ 80+ Bronze Power Supply     │ (~40–60 cars/day)        │               │
+│ 🥈 Work-Grade Class      │ Core i5 (11th/12th Gen) / R5│ **Both Branches 1 & 2**  │ ₱18,500 –     │
+│    (Recommended Standard)│ 16GB RAM, 512GB NVMe SSD    │ 6–10 Staff + 2 Lounge TVs│ ₱23,000       │
+│                          │ 80+ Bronze Power Supply     │ (~30–50 cars/day)        │               │
 ├──────────────────────────┼─────────────────────────────┼──────────────────────────┼───────────────┤
-│ 🥇 Mid-Range Premium     │ Core i7 / Ryzen 7           │ 3–5 Multi-Branches       │ ₱32,000 –     │
-│    Class (Future-Proof)  │ 32GB RAM, 1TB NVMe PCIe 4.0 │ 50+ concurrent users     │ ₱38,000       │
-│                          │ UPS + Heavy AVR Protection  │ 5 Live Waiting TVs (4+ Y)│               │
+│ 🥇 Mid-Range Premium     │ Core i7 / Ryzen 7           │ **3–4 Future Branches**  │ ₱26,000 –     │
+│    Class (Expansion)     │ 32GB RAM, 1TB NVMe SSD      │ 15–20 Staff + 4 TVs      │ ₱32,000       │
+│                          │ UPS + Heavy AVR Protection  │ 4+ Years Peak Longevity  │               │
 └──────────────────────────┴─────────────────────────────┴──────────────────────────┴───────────────┘
 ```
 
 ---
 
-### 🏢 5.2 Real-World Business Scenario: "The 4-Year 5-Branch Growth Test"
+### 🏢 5.2 Realistic Operational Scenario: "2 Branches with 3–5 Staff Over 4 Years"
 
-Why does computer hardware specification matter for HonTech? Consider this 4-year growth projection:
+Here is how the hardware specifications directly affect HonTech's daily workflow across its 3–5 staff members per location:
 
-* **Year 1 (Single Facility — Marikina):**
-  * HonTech runs 1 branch with 2 Service Advisors, 1 Cashier, and 1 Waiting Lounge TV (~15 cars/day).
-  * *Hardware Impact:* A **Standard Criteria** PC handles this easily with sub-second response times.
+* **Branch 1 (Marikina Main — 3 to 5 Users):**
+  * 2 Service Advisors intake vehicles and log PMS status updates on tablets.
+  * 1 Cashier generates invoices and prints claim stubs.
+  * 1 Waiting Lounge TV runs continuously displaying the customer queue.
+  * *Daily Volume:* ~15 to 25 repair orders/day.
 
-* **Year 3–4 (Multi-Branch Expansion — 5 Branches Across Metro Manila):**
-  * HonTech expands to **5 locations** (*Marikina, Quezon City, Pasig, Taguig, Antipolo*).
-  * Over **40+ concurrent staff** (SAs, technicians, cashiers, inventory managers) are logging inspections, generating invoices, and updating repair bay statuses simultaneously.
-  * **5 Waiting Lounge TVs** are continuously polling live queue updates every second.
-  * The database contains **over 120,000 historical job records, audit logs, and customer profiles**.
+* **Branch 2 (Expansion Branch — 3 to 5 Users):**
+  * 2 Service Advisors, 1 Cashier, and 1 Waiting Lounge TV.
+  * *Daily Volume:* ~15 to 25 repair orders/day.
 
-#### 💥 What Happens if Cheap / Under-Spec Hardware Was Purchased:
-* A low-end consumer PC (e.g. Celeron / 4GB–8GB RAM / slow SATA drive) will suffer severe memory saturation.
-* MySQL queries will queue up and freeze, causing staff tablet screens to spin for 8–15 seconds per click.
-* The customer lounge TV will stutter or disconnect, and power supply components may burn out from 24/7 heat strain in the auto shop environment.
+* **4-Year Cumulative Data Load:**
+  * After 4 years of daily operations, the central database will store **~45,000 vehicle repair histories, customer contact profiles, Express 2H delay logs, and audit trails**.
 
-#### 🛡️ What Happens with Work-Grade & Mid-Range Premium Class Hardware:
-* **NVMe SSD Speed (3,500+ MB/s):** Thousands of historical customer searches execute in **under 20 milliseconds**.
-* **16GB–32GB RAM Buffer:** Holds the entire active MySQL database and index tables in ultra-fast memory without swapping to disk.
-* **Continuous 24/7 Durability:** High-grade cooling and 80+ Bronze certified power supplies withstand ambient shop heat, humidity, and vibration, lasting **4 to 5+ years without needing replacement**.
+#### 💥 Why Cheap / Consumer Celeron (4GB RAM) PCs Struggle Even with 3–5 Users:
+* When 3 Service Advisors click *"Save Job"* at the exact same second while the Lounge TV is auto-refreshing, a 4GB RAM PC runs out of memory buffers.
+* Staff experience annoying 3–5 second input freezes, and consumer power supplies overheat from running 24/7 in hot auto shop bays.
+
+#### 🛡️ Why Work-Grade Class (16GB RAM + NVMe SSD) Runs Flawlessly:
+* **Instant 15ms Response Times:** With 16GB RAM, the entire 45,000-vehicle database stays cached in active memory. Even during peak morning intake rushes, queries return instantly.
+* **4+ Years 24/7 Durability:** High-grade cooling and an 80+ Bronze certified power supply prevent hardware crashes, giving HonTech total operational peace of mind for years without replacement.
+
 
 ---
 
