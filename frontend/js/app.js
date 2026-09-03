@@ -3503,11 +3503,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <div class="flex items-center gap-1.5 flex-nowrap">
                                     <!-- Category Pill -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Category">
+                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
                                         <i data-lucide="wrench" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
                                         <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
+                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                             <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
@@ -3516,20 +3516,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     </div>
                                     
                                     ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
-                                    <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="Specify custom service name">
+                                    <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
                                         <input type="text" 
                                                value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
                                                placeholder="Specify..." 
                                                maxlength="25"
                                                onkeydown="if(event.key === 'Enter') this.blur();"
+                                               oninput="this.title = this.value.trim() || 'Custom Service Specification';"
                                                onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
-                                               class="text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text"
+                                               class="text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text truncate"
                                                style="width: 86px !important; min-width: 75px !important; max-width: 95px !important; padding: 0 !important;"
-                                               title="${job.category || 'Specify custom service'}">
+                                               title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
                                     </div>
                                     ` : ''}
                                     ` : `
-                                    <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase text-slate-700 shadow-2xs shrink-0" title="${job.category || '-'}">
+                                    <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase text-slate-700 shadow-2xs shrink-0" title="Category: ${job.category || '-'}">
                                         <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i>
                                         <span>${job.category || '-'}</span>
                                     </span>
