@@ -259,4 +259,231 @@ input[type=checkbox] {
   transform: translateY(1px);
 }
 
+/* ==========================================================================
+   CLEAN & MINIMALIST LANE TYPE SELECTOR & BADGES
+   ========================================================================== */
+.lane-selector-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1e293b;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  cursor: pointer;
+  min-width: 145px;
+}
+
+.lane-selector-pill:hover {
+  background-color: #ffffff;
+  border-color: #64748b;
+}
+
+.lane-selector-pill:focus-within {
+  background-color: #ffffff;
+  border-color: #0f172a;
+}
+
+.lane-selector-pill select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 6px 28px 6px 10px;
+  cursor: pointer;
+  color: #1e293b;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.lane-selector-pill select option {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.lane-selector-pill .lane-arrow-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 13px;
+  height: 13px;
+  color: #64748b;
+  transition: color 0.15s ease;
+}
+
+.lane-selector-pill:hover .lane-arrow-icon {
+  color: #0f172a;
+}
+
+/* Static Read-only Badge */
+.lane-badge-static {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #334155;
+  padding: 6px 12px;
+}
+
+/* ==========================================================================
+   CLEAN & MINIMALIST APPOINTMENT (DATE, TIME) COMPONENT
+   ========================================================================== */
+.appt-selector-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  min-width: 145px;
+  max-width: 170px;
+}
+
+.appt-selector-card:hover {
+  background-color: #ffffff;
+  border-color: #64748b;
+}
+
+.appt-selector-card:focus-within {
+  background-color: #ffffff;
+  border-color: #0f172a;
+}
+
+.appt-field-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.appt-field-row input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 2px 0;
+  font-family: inherit;
+}
+
+.appt-field-row input[type="date"] {
+  cursor: pointer;
+}
+
+.appt-field-row input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.55;
+  filter: grayscale(1);
+  transform: scale(0.85);
+}
+
+.appt-field-row input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.appt-badge-static {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 5px 10px;
+  min-width: 140px;
+  max-width: 165px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.appt-badge-static:hover {
+  background-color: #ffffff;
+  border-color: #64748b;
+}
+
+/* ==========================================================================
+   CLEAN & MINIMALIST EVALUATION / DIAGNOSIS COMPONENT
+   ========================================================================== */
+.eval-field-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 220px;
+  max-width: 320px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.eval-field-card:hover {
+  background-color: #ffffff;
+  border-color: #64748b;
+}
+
+.eval-field-card:focus-within {
+  background-color: #ffffff;
+  border-color: #0f172a;
+}
+
+.eval-field-card input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e293b;
+  padding: 0;
+  font-family: inherit;
+}
+
+.eval-field-card input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.eval-badge-static {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 200px;
+  max-width: 300px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.eval-badge-static:hover {
+  background-color: #ffffff;
+  border-color: #64748b;
+}
+
 /*# sourceMappingURL=main.css.map */
+

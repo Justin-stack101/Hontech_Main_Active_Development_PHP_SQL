@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?v=4.51">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -536,45 +536,49 @@
                                     
                                     <!-- 1. Top Global Executive -->
                                     <div>
-                                        <span class="text-[9px] font-black uppercase tracking-wider text-amber-600 mb-1 block">👑 Global Executive</span>
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="w-full bg-amber-50/60 hover:bg-amber-100/80 p-2 rounded-lg border border-amber-200 text-left transition cursor-pointer flex items-center justify-between" title="Login as Global Business Owner (Pass: owner123)">
+                                        <span class="text-[9.5px] font-bold uppercase tracking-wider text-gray-700 flex items-center gap-1.5 mb-1.5">
+                                            <i data-lucide="globe" class="w-3 h-3 text-gray-500"></i> Global Executive
+                                        </span>
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="w-full bg-gray-50 hover:bg-white p-2.5 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer flex items-center justify-between" title="Login as Global Business Owner (Pass: owner123)">
                                             <div>
-                                                <span class="font-black text-amber-950 text-[11px] block">System Owner (Global)</span>
-                                                <span class="text-amber-800 text-[9.5px] font-mono">owner@hontech.com</span>
+                                                <span class="font-bold text-gray-900 text-xs block">System Owner (Global)</span>
+                                                <span class="text-gray-500 text-[9.5px] font-mono">owner@hontech.com</span>
                                             </div>
-                                            <span class="text-[9px] font-bold bg-amber-200/70 text-amber-950 px-2 py-0.5 rounded border border-amber-300">Pass: owner123</span>
+                                            <span class="text-[9px] font-mono font-semibold bg-gray-100 text-gray-700 px-2 py-0.5 rounded border border-gray-200">owner123</span>
                                         </button>
                                     </div>
 
                                     <!-- 2. Marikina Main Branch (Branch 1) -->
                                     <div>
-                                        <span class="text-[9px] font-black uppercase tracking-wider text-red-600 mb-1 block">🏢 Branch 1 (Marikina Main)</span>
+                                        <span class="text-[9.5px] font-bold uppercase tracking-wider text-gray-700 flex items-center gap-1.5 mb-1.5">
+                                            <i data-lucide="building-2" class="w-3 h-3 text-gray-500"></i> Branch 1 (Marikina Main)
+                                        </span>
                                         <div class="grid grid-cols-2 gap-1.5">
-                                            <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Admin (Main Branch) - Pass: admin123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Admin (Main)</span>
-                                                    <span class="text-[8px] font-bold text-red-700 bg-red-100/80 px-1 py-0.2 rounded">admin123</span>
+                                            <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Admin (Main Branch) - Pass: admin123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Admin (Main)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">admin123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">admin@hontech.com</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (Main Branch) - Pass: staff123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Staff (Main)</span>
-                                                    <span class="text-[8px] font-bold text-emerald-700 bg-emerald-100/80 px-1 py-0.2 rounded">staff123</span>
+                                            <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Front Desk Assistant (Main Branch) - Pass: staff123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Staff (Main)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">staff123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">staff@hontech.com</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 1 (Main Branch) - Pass: sa123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Advisor 1 (Main)</span>
-                                                    <span class="text-[8px] font-bold text-blue-700 bg-blue-100/80 px-1 py-0.2 rounded">sa123</span>
+                                            <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Service Advisor 1 (Main Branch) - Pass: sa123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Advisor 1 (Main)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">sa123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">sa@hontech.com</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('sa2@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 2 (Main Branch) - Pass: sa123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Advisor 2 (Main)</span>
-                                                    <span class="text-[8px] font-bold text-blue-700 bg-blue-100/80 px-1 py-0.2 rounded">sa123</span>
+                                            <button type="button" onclick="quickDirectLogin('sa2@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Service Advisor 2 (Main Branch) - Pass: sa123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Advisor 2 (Main)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">sa123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">sa2@hontech.com</span>
                                             </button>
@@ -583,33 +587,35 @@
 
                                     <!-- 3. East Branch (Branch 2 - Other Branch) -->
                                     <div>
-                                        <span class="text-[9px] font-black uppercase tracking-wider text-blue-600 mb-1 block">🏢 Branch 2 (East Branch)</span>
+                                        <span class="text-[9.5px] font-bold uppercase tracking-wider text-gray-700 flex items-center gap-1.5 mb-1.5">
+                                            <i data-lucide="building" class="w-3 h-3 text-gray-500"></i> Branch 2 (East Branch)
+                                        </span>
                                         <div class="grid grid-cols-2 gap-1.5">
-                                            <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Admin (East Branch) - Pass: admin123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Admin (East)</span>
-                                                    <span class="text-[8px] font-bold text-red-700 bg-red-100/80 px-1 py-0.2 rounded">admin123</span>
+                                            <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Admin (East Branch) - Pass: admin123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Admin (East)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">admin123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">admin.east@...</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (East Branch) - Pass: staff123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Staff (East)</span>
-                                                    <span class="text-[8px] font-bold text-emerald-700 bg-emerald-100/80 px-1 py-0.2 rounded">staff123</span>
+                                            <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Front Desk Assistant (East Branch) - Pass: staff123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Staff (East)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">staff123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">staff.east@...</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('sa.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 1 (East Branch) - Pass: sa123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Advisor 1 (East)</span>
-                                                    <span class="text-[8px] font-bold text-blue-700 bg-blue-100/80 px-1 py-0.2 rounded">sa123</span>
+                                            <button type="button" onclick="quickDirectLogin('sa.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Service Advisor 1 (East Branch) - Pass: sa123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Advisor 1 (East)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">sa123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">sa.east@...</span>
                                             </button>
-                                            <button type="button" onclick="quickDirectLogin('sa2.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 2 (East Branch) - Pass: sa123">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="font-black text-gray-900 block text-[10.5px]">Advisor 2 (East)</span>
-                                                    <span class="text-[8px] font-bold text-blue-700 bg-blue-100/80 px-1 py-0.2 rounded">sa123</span>
+                                            <button type="button" onclick="quickDirectLogin('sa2.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-white p-2 rounded-lg border border-gray-200 hover:border-gray-400 text-left transition cursor-pointer" title="Login as Service Advisor 2 (East Branch) - Pass: sa123">
+                                                <div class="flex items-center justify-between mb-0.5">
+                                                    <span class="font-bold text-gray-900 block text-[10.5px]">Advisor 2 (East)</span>
+                                                    <span class="text-[8.5px] font-mono font-medium text-gray-600 bg-gray-100 px-1.5 py-0.2 rounded border border-gray-200">sa123</span>
                                                 </div>
                                                 <span class="text-gray-500 text-[9px] font-mono block truncate">sa2.east@...</span>
                                             </button>
@@ -619,17 +625,17 @@
 
                                 <!-- Utility & Diagnostics Actions -->
                                 <div class="grid grid-cols-2 gap-2 pt-1">
-                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
-                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i> Google Auth
+                                    <button type="button" onclick="triggerGoogleLogin()" class="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-gray-500"></i> Google Auth
                                     </button>
-                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
-                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-emerald-600"></i> Dev Mailbox
+                                    <button type="button" onclick="toggleDevMailbox()" class="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-gray-500"></i> Dev Mailbox
                                     </button>
-                                    <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-red-50 border border-red-200 text-red-700 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
-                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-red-600"></i> Test Crash
+                                    <button type="button" onclick="window.triggerTestCrash()" class="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-gray-500"></i> Test Crash
                                     </button>
-                                    <button type="button" onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-amber-50 border border-amber-300 text-amber-800 text-xs font-bold py-2 px-2.5 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
-                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-600"></i> Lost Conn
+                                    <button type="button" onclick="window.triggerSimulateLostConnection()" class="bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 text-gray-700 text-xs font-bold py-2 px-2.5 rounded-lg transition cursor-pointer text-center flex items-center justify-center gap-1.5 shadow-2xs">
+                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-gray-500"></i> Lost Conn
                                     </button>
                                 </div>
                             </div>
@@ -2850,24 +2856,24 @@
                                 <!-- Walk-In Lane -->
                                 <div id="div-walkin-lane-wrap" class="relative">
                                     <select id="intake-walkin-lane-type"
-                                        class="w-full bg-white border border-gray-200 focus:border-red-600 focus:ring-1 focus:ring-red-500 rounded-xl px-3 py-2.5 outline-none font-bold text-xs text-gray-900 transition cursor-pointer appearance-none">
+                                        class="w-full bg-slate-50 hover:bg-white border border-gray-300 hover:border-gray-400 focus:border-gray-900 rounded-lg px-3 py-2 outline-none font-bold text-xs text-gray-900 transition-colors cursor-pointer appearance-none">
                                         <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
                                         <option value="Special Lane">Special Lane</option>
                                         <option value="Priority Lane">Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-3"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-2.5"></i>
                                 </div>
                                 <!-- Booking Lane -->
                                 <div id="div-booking-lane-wrap" class="relative hidden">
                                     <select id="intake-lane-type"
-                                        class="w-full bg-white border border-gray-200 focus:border-red-600 focus:ring-1 focus:ring-red-500 rounded-xl px-3 py-2.5 outline-none font-bold text-xs text-gray-900 transition cursor-pointer appearance-none">
+                                        class="w-full bg-slate-50 hover:bg-white border border-gray-300 hover:border-gray-400 focus:border-gray-900 rounded-lg px-3 py-2 outline-none font-bold text-xs text-gray-900 transition-colors cursor-pointer appearance-none">
                                         <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
                                         <option value="Special Lane">Special Lane</option>
                                         <option value="Priority Lane">Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-3"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-2.5"></i>
                                 </div>
                             </div>
 
@@ -5757,7 +5763,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.46"></script>
+    <script src="js/app.js?v=4.51"></script>
 </body>
 
 </html>

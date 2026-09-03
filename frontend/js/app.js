@@ -3105,6 +3105,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
                     const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
+                    const curLane = job.laneType || 'Flexible Lane';
                     return `
                     <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
                         <td class="py-3 px-3">
@@ -3119,47 +3120,95 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <span class="inline-block text-[11px] font-bold uppercase ${isExpress ? 'text-amber-800 bg-amber-50 border-amber-200' : 'text-blue-800 bg-blue-50 border-blue-200'} border rounded-lg px-2.5 py-1">
-                                    ${job.laneType || 'Flexible Lane'}
+                                <span class="lane-badge-static">
+                                    ${curLane}
                                 </span>
                             ` : `
-                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-3 py-2 shadow-2xs transition min-w-[155px]">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-7 outline-none appearance-none text-gray-900 w-full">
-                                        <option value="Express Lane" ${isExpress ? 'selected' : ''}>Express Lane</option>
-                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>Flexible Lane</option>
-                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>Special Lane</option>
-                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>Priority Lane</option>
+                                <div class="lane-selector-pill">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" title="Lane Type">
+                                        <option value="Express Lane" ${curLane === 'Express Lane' || curLane === 'Express' ? 'selected' : ''}>Express Lane</option>
+                                        <option value="Flexible Lane" ${curLane === 'Flexible Lane' || curLane === 'Flexible' ? 'selected' : ''}>Flexible Lane</option>
+                                        <option value="Special Lane" ${curLane === 'Special Lane' || curLane === 'Special' ? 'selected' : ''}>Special Lane</option>
+                                        <option value="Priority Lane" ${curLane === 'Priority Lane' || curLane === 'Priority' ? 'selected' : ''}>Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-2.5"></i>
+                                    <svg class="lane-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
                                 </div>
                             `}
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="flex flex-col space-y-1">
-                                    <div class="text-xs font-bold text-gray-900">${job.apptDate || 'N/A'}</div>
-                                    <div class="text-xs font-mono font-bold text-gray-600">${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</div>
+                                <div class="appt-badge-static">
+                                    <div class="flex items-center gap-1.5 font-bold text-gray-900 text-xs">
+                                        <svg class="w-3.5 h-3.5 text-gray-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        <span class="truncate">${job.apptDate || 'N/A'}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 font-mono font-bold text-gray-700 text-[11px] mt-1 pt-1 border-t border-slate-200">
+                                        <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <span>${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</span>
+                                    </div>
                                 </div>
                             ` : `
-                                <div class="flex flex-col gap-2 w-40 min-w-[160px]">
-                                    <input type="date" value="${job.apptDate || ''}" 
-                                        onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
-                                        class="table-select text-xs font-semibold text-gray-900 border border-gray-300 rounded-lg bg-white px-3 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs"
-                                        title="Select Appointment Date">
-                                    <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
-                                        placeholder="08:00" maxlength="8"
-                                        onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                        onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                        class="table-select text-xs font-mono font-bold text-gray-900 border border-gray-300 rounded-lg bg-white px-3 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs" 
-                                        title="Appointment Time">
+                                <div class="appt-selector-card">
+                                    <div class="appt-field-row">
+                                        <svg class="w-3.5 h-3.5 text-gray-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        <input type="date" value="${job.apptDate || ''}" 
+                                            onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
+                                            class="appt-date-input" 
+                                            title="Select Appointment Date">
+                                    </div>
+                                    <div class="appt-field-row border-t border-slate-200">
+                                        <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
+                                            placeholder="08:00" maxlength="8"
+                                            onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                            onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                            class="appt-time-input font-mono font-bold" 
+                                            title="Appointment Time (HH:MM)">
+                                    </div>
                                 </div>
                             `}
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="text-xs font-semibold text-gray-700 truncate max-w-[260px]" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</div>
+                                <div class="eval-badge-static">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <span class="text-xs font-semibold text-gray-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
+                                </div>
                             ` : `
-                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-2 rounded-xl w-full min-w-[240px] max-w-[320px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
+                                <div class="eval-field-card">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)">
+                                </div>
                             `}
                         </td>
                         <td class="py-3 px-3 text-center">
