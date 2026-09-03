@@ -1166,12 +1166,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let defaultView = 'queue';
 
             const userDisplayName = currentUserName || 'System User';
-            const cleanDisplayName = userDisplayName.replace(/\s*\([^)]*\)/, '').trim() || userDisplayName;
             const userRoleLabel = getRoleLabel(role);
+            const userBranch = currentUserBranch || 'Marikina Branch';
 
             if (document.getElementById('header-user-name')) {
-                document.getElementById('header-user-name').innerText = cleanDisplayName;
-                document.getElementById('header-user-name').title = userDisplayName;
+                document.getElementById('header-user-name').innerText = userDisplayName;
+                document.getElementById('header-user-name').title = `${userDisplayName} (${userRoleLabel} - ${userBranch})`;
+            }
+            if (document.getElementById('header-user-branch-text')) {
+                document.getElementById('header-user-branch-text').innerText = userBranch;
             }
             if (document.getElementById('header-user-role')) {
                 document.getElementById('header-user-role').innerText = userRoleLabel;
@@ -1183,21 +1186,37 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('sidebar-user-role').innerText = userRoleLabel;
             }
             if (document.getElementById('sidebar-menu-user-name')) {
-                document.getElementById('sidebar-menu-user-name').innerText = cleanDisplayName;
-                document.getElementById('sidebar-menu-user-name').title = userDisplayName;
+                document.getElementById('sidebar-menu-user-name').innerText = userDisplayName;
+                document.getElementById('sidebar-menu-user-name').title = `${userDisplayName} (${userRoleLabel} - ${userBranch})`;
             }
             if (document.getElementById('sidebar-menu-user-role')) {
-                document.getElementById('sidebar-menu-user-role').innerText = userRoleLabel;
+                document.getElementById('sidebar-menu-user-role').innerText = `${userBranch} • ${userRoleLabel}`;
             }
 
             if (document.getElementById('dropdown-user-name')) {
                 document.getElementById('dropdown-user-name').innerText = userDisplayName;
+            }
+            if (document.getElementById('dropdown-user-branch')) {
+                document.getElementById('dropdown-user-branch').innerText = userBranch;
             }
             if (document.getElementById('dropdown-user-email')) {
                 document.getElementById('dropdown-user-email').innerText = currentUserEmail || 'user@hontech.com';
             }
             if (document.getElementById('dropdown-user-role')) {
                 document.getElementById('dropdown-user-role').innerText = userRoleLabel;
+            }
+
+            if (document.getElementById('sidebar-dropdown-user-name')) {
+                document.getElementById('sidebar-dropdown-user-name').innerText = userDisplayName;
+            }
+            if (document.getElementById('sidebar-dropdown-user-branch')) {
+                document.getElementById('sidebar-dropdown-user-branch').innerText = userBranch;
+            }
+            if (document.getElementById('sidebar-dropdown-user-email')) {
+                document.getElementById('sidebar-dropdown-user-email').innerText = currentUserEmail || 'user@hontech.com';
+            }
+            if (document.getElementById('sidebar-dropdown-user-role')) {
+                document.getElementById('sidebar-dropdown-user-role').innerText = userRoleLabel;
             }
 
             // --- RBAC for Security Settings & Bay Capacity ---
