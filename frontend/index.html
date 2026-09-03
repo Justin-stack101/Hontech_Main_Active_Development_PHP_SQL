@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.57">
+    <link rel="stylesheet" href="css/main.css?v=4.58">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -763,61 +763,61 @@
     <div id="app-shell" class="hidden flex h-full bg-gray-100 overflow-hidden layout-sidebar">
 
         <!-- Left Sidebar (Google Chat style) -->
-        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-[260px] select-none shrink-0">
+        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-52 select-none shrink-0">
             <!-- Sidebar Header / Logo -->
-            <div class="sidebar-header h-14 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
+            <div class="sidebar-header h-14 flex items-center justify-between px-3.5 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
                 <div class="flex items-center gap-1.5 overflow-hidden logo-container">
                     <!-- Sidebar Logo -->
-                    <div class="shrink-0 flex items-center justify-center w-8 h-8 text-red-600">
-                        <i data-lucide="wrench" class="w-8 h-8"></i>
+                    <div class="shrink-0 flex items-center justify-center w-7 h-7 text-red-600">
+                        <i data-lucide="wrench" class="w-6 h-6"></i>
                     </div>
                     <div class="flex flex-col sidebar-expand-only transition-all duration-300">
-                        <div class="flex items-baseline gap-2">
-                            <span class="font-black italic uppercase tracking-tighter text-xl leading-none text-gray-900">HonTech</span>
-                            <span class="text-[8.5px] font-bold tracking-wider text-red-400 bg-red-950/60 px-1.5 py-0.5 rounded border border-red-800/60">v1.0</span>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="font-black italic uppercase tracking-tighter text-lg leading-none text-gray-900">HonTech</span>
+                            <span class="text-[8px] font-bold tracking-wider text-red-400 bg-red-950/60 px-1 py-0.5 rounded border border-red-800/60">v1.0</span>
                         </div>
                     </div>
                 </div>
                 <!-- Collapse Button -->
-                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
                     <i data-lucide="chevrons-left" id="sidebar-toggle-icon" class="w-4 h-4"></i>
                 </button>
-                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
                     <i data-lucide="chevrons-right" class="w-4 h-4"></i>
                 </button>
             </div>
 
             <!-- Sidebar Navigation Content -->
-            <div class="flex-1 overflow-y-auto py-4 px-3 space-y-4">
+            <div class="flex-1 overflow-y-auto py-3 px-2 space-y-3">
                 <!-- Main Nav Links -->
                 <nav id="sidebar-dynamic-nav" class="space-y-1"></nav>
             </div>
 
             <!-- Sidebar Footer (User info & Settings) -->
-            <div class="p-3 border-t border-slate-700/60 bg-slate-900/60 shrink-0 relative">
+            <div class="p-2.5 border-t border-slate-700/60 bg-slate-900/60 shrink-0 relative">
                 <!-- Sidebar Dropdown Menu (Pops up) -->
-                <div id="sidebar-user-dropdown" class="hidden absolute left-3 bottom-[100%] mb-2 w-60 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
+                <div id="sidebar-user-dropdown" class="hidden absolute left-2.5 bottom-[100%] mb-2 w-52 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
                     <!-- User Bio -->
-                    <div class="px-4 py-3 bg-slate-50/80 rounded-t-2xl">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Account</p>
+                    <div class="px-3.5 py-2.5 bg-slate-50/80 rounded-t-2xl">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Account</p>
                         <p class="text-xs font-black text-slate-900 truncate mt-0.5" id="sidebar-dropdown-user-email">user@hontech.com</p>
                     </div>
 
                     <!-- Account Settings Link -->
-                    <div class="p-2">
-                        <button type="button" onclick="showSection('settings'); toggleSidebarDropdown(event)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer">
-                            <div class="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600">
-                                <i data-lucide="settings" class="w-4 h-4"></i>
+                    <div class="p-1.5">
+                        <button type="button" onclick="showSection('settings'); toggleSidebarDropdown(event)" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer">
+                            <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                                <i data-lucide="settings" class="w-3.5 h-3.5"></i>
                             </div>
                             <span>Account Settings</span>
                         </button>
                     </div>
 
                     <!-- Sign Out Action -->
-                    <div class="p-2">
-                        <button type="button" onclick="handleLogout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700 transition cursor-pointer">
-                            <div class="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
-                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <div class="p-1.5">
+                        <button type="button" onclick="handleLogout()" class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700 transition cursor-pointer">
+                            <div class="w-6 h-6 rounded-lg bg-red-50 flex items-center justify-center text-red-600 shrink-0">
+                                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
                             </div>
                             <span>Sign Out</span>
                         </button>
@@ -826,25 +826,25 @@
 
                 <!-- Collapsed View footer -->
                 <div id="sidebar-footer-collapsed" class="hidden flex flex-col items-center gap-3">
-                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition" title="User Profile">
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm cursor-pointer hover:scale-105 active:scale-95 transition" title="User Profile">
                         <i data-lucide="user" class="w-4 h-4"></i>
-                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                        <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </button>
                 </div>
                 <!-- Expanded View footer -->
                 <div id="sidebar-footer-expanded" class="w-full">
-                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
-                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
-                                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
+                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                            <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-white"></i>
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                             </div>
                             <div class="min-w-0 flex-1 overflow-hidden">
                                 <p class="text-xs font-bold text-white truncate leading-tight tracking-tight" id="sidebar-menu-user-name">User</p>
-                                <p class="text-[9.5px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
+                                <p class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
                             </div>
                         </div>
-                        <div class="p-1 text-slate-400 group-hover:text-white transition shrink-0">
+                        <div class="p-0.5 text-slate-400 group-hover:text-white transition shrink-0">
                             <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
                         </div>
                     </button>
@@ -5783,7 +5783,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.57"></script>
+    <script src="js/app.js?v=4.58"></script>
 </body>
 
 </html>
