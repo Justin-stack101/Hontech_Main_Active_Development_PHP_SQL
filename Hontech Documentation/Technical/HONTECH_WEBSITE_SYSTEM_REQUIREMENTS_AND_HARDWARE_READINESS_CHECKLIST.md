@@ -108,7 +108,7 @@ Prior to initiating the **Week 3 Live Customer "Shadow Mode"**, the Developing T
 ## 7. Timeline Integration & Audit Sign-Off Protocol
 
 ### 📅 Execution in Rollout Timeline:
-* **Week 2 (Sept 8–12, 2026):** Developing Team and HonTech Management conduct the physical walk-through audit using this checklist.
+* **Week 2:** Developing Team and HonTech Management conduct the physical walk-through audit using this checklist.
 * **Pre-requisite Gate:** All items under Categories A, B, C, and D must achieve a **PASS** rating before authorizing **Week 3 Live Customer "Shadow Mode"**.
 
 ---
