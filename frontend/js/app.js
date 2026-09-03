@@ -3108,13 +3108,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return `
                     <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
                         <td class="py-3 px-3">
-                            <div class="font-bold text-gray-900 flex items-center gap-1.5">
-                                <i data-lucide="user" class="w-3.5 h-3.5 text-gray-400 shrink-0"></i>
-                                <span>${job.name}</span>
-                            </div>
-                            <div class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1 pl-5">
-                                <span>${formatPhoneNumber(job.contact)}</span>
-                            </div>
+                            <div class="font-bold text-gray-900">${job.name}</div>
+                            <div class="text-[11px] text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
                         </td>
                         <td class="py-3 px-3">
                             <div class="inline-block font-black font-mono text-gray-900 bg-gray-100 border border-gray-300 px-2 py-0.5 rounded-lg text-sm tracking-wide shadow-2xs">${job.plate}</div>
@@ -3124,58 +3119,39 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase ${isExpress ? 'text-amber-800 bg-amber-50 border-amber-200' : 'text-blue-800 bg-blue-50 border-blue-200'} border rounded-lg px-2.5 py-1">
-                                    <i data-lucide="${isExpress ? 'zap' : 'git-branch'}" class="w-3 h-3"></i>
+                                <span class="inline-block text-[11px] font-bold uppercase ${isExpress ? 'text-amber-800 bg-amber-50 border-amber-200' : 'text-blue-800 bg-blue-50 border-blue-200'} border rounded-lg px-2.5 py-1">
                                     ${job.laneType || 'Flexible Lane'}
                                 </span>
                             ` : `
-                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-2.5 py-1.5 shadow-2xs transition group">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900">
-                                        <option value="Express Lane" ${isExpress ? 'selected' : ''}>⚡ Express Lane</option>
-                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>🔄 Flexible Lane</option>
-                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>⭐ Special Lane</option>
-                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>🔥 Priority Lane</option>
+                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-2.5 py-1.5 shadow-2xs transition min-w-[130px]">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900 w-full">
+                                        <option value="Express Lane" ${isExpress ? 'selected' : ''}>Express Lane</option>
+                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>Flexible Lane</option>
+                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>Special Lane</option>
+                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 pointer-events-none absolute right-2 transition"></i>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 pointer-events-none absolute right-2"></i>
                                 </div>
                             `}
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="inline-flex flex-col bg-gray-50 border border-gray-200 rounded-xl p-2 space-y-1 w-max shadow-2xs">
-                                    <div class="flex items-center gap-1.5 text-xs font-bold text-gray-900">
-                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
-                                        <span>${job.apptDate || 'No Date'}</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-red-600">
-                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
-                                        <span>${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</span>
-                                        <span class="text-[8.5px] font-sans font-bold uppercase text-red-700 bg-red-100/80 border border-red-200 px-1 py-0.2 rounded">24H</span>
-                                    </div>
+                                <div class="flex flex-col space-y-0.5">
+                                    <div class="text-xs font-bold text-gray-900">${job.apptDate || 'N/A'}</div>
+                                    <div class="text-xs font-mono font-bold text-gray-600">${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</div>
                                 </div>
                             ` : `
-                                <div class="inline-flex flex-col bg-gray-50/90 hover:bg-gray-100/80 border border-gray-200 hover:border-gray-300 rounded-xl p-1.5 transition space-y-1.5 w-max shadow-2xs">
-                                    <!-- Date Picker Row -->
-                                    <div class="flex items-center gap-1.5 bg-white border border-gray-200 focus-within:border-red-500 rounded-lg px-2 py-1 transition shadow-2xs">
-                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
-                                        <input type="date" value="${job.apptDate || ''}" 
-                                            onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
-                                            class="bg-transparent text-xs font-bold text-gray-800 outline-none cursor-pointer w-28 p-0 border-none"
-                                            title="Select Appointment Date">
-                                    </div>
-                                    <!-- 24-Hour Time Row -->
-                                    <div class="flex items-center justify-between gap-1.5 bg-white border border-gray-200 focus-within:border-red-500 rounded-lg px-2 py-1 transition shadow-2xs">
-                                        <div class="flex items-center gap-1.5">
-                                            <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
-                                            <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
-                                                placeholder="14:30" maxlength="8"
-                                                onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                                onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                                class="w-14 bg-transparent font-mono font-black text-xs text-gray-900 outline-none p-0 border-none" 
-                                                title="Enter 24-hour appointment time (e.g. 09:30, 14:00)">
-                                        </div>
-                                        <span class="text-[8.5px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">24H</span>
-                                    </div>
+                                <div class="flex flex-col gap-1.5 w-32">
+                                    <input type="date" value="${job.apptDate || ''}" 
+                                        onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
+                                        class="table-select text-xs font-semibold text-gray-900 border border-gray-300 rounded-lg bg-white px-2.5 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs"
+                                        title="Select Appointment Date">
+                                    <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
+                                        placeholder="08:00" maxlength="8"
+                                        onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                        onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                        class="table-select text-xs font-mono font-bold text-gray-900 border border-gray-300 rounded-lg bg-white px-2.5 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs" 
+                                        title="Appointment Time">
                                 </div>
                             `}
                         </td>
