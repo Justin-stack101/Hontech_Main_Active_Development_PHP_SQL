@@ -3122,6 +3122,7 @@
                                     <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Model</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Date (Received, Promised)</th>
+                                    <th class="px-3 py-3.5 bg-gray-55 text-center whitespace-nowrap">Parts & Materials Available?</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Service Advisor</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Evaluation</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Status</th>
@@ -4348,7 +4349,20 @@
                     <input type="date" id="carryover-promised-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm focus:border-orange-500 transition">
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Parts & Materials Available? <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer border border-gray-200 hover:border-emerald-500 rounded-xl p-3 flex items-center justify-between transition bg-gray-50 has-checked:bg-emerald-50 has-checked:border-emerald-500 has-checked:text-emerald-900 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> YES</span>
+                            <input type="radio" name="carryover-parts-available" value="Yes" class="accent-emerald-600 w-4 h-4 cursor-pointer">
+                        </label>
+                        <label class="cursor-pointer border border-gray-200 hover:border-rose-500 rounded-xl p-3 flex items-center justify-between transition bg-gray-50 has-checked:bg-rose-50 has-checked:border-rose-500 has-checked:text-rose-900 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> NO</span>
+                            <input type="radio" name="carryover-parts-available" value="No" checked class="accent-rose-600 w-4 h-4 cursor-pointer">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
                     <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
                         <option value="Awaiting Parts">Awaiting Parts</option>
                         <option value="Extended Repair">Extended Repair</option>
@@ -5856,7 +5870,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.75"></script>
+    <script src="js/app.js?v=4.76"></script>
 </body>
 
 </html>

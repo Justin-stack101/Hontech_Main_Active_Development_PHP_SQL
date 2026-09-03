@@ -3888,6 +3888,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         actions = `<span class="text-xs text-gray-400 italic">Read-Only</span>`;
                     }
 
+                    const partsAvail = String(job.partsAvailable || '').trim().toLowerCase();
+                    const isPartsYes = (partsAvail === 'yes' || partsAvail === '1' || partsAvail === 'true');
+                    const isPartsNo = (partsAvail === 'no' || partsAvail === '0' || partsAvail === 'false');
+
                     return `
                     <tr>
                         <!-- Row Number -->
@@ -3915,6 +3919,35 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
                         </td>
+                        <!-- Parts & Materials Available? (Whiteboard YES / NO requirement) -->
+                        <td class="px-3 py-3 align-middle text-center whitespace-nowrap">
+                            ${isEditable ? `
+                            <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-xl shadow-2xs">
+                                <button type="button" 
+                                        onclick="updateJobField('${job.id}', 'partsAvailable', 'Yes')" 
+                                        class="px-2.5 py-1 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1 ${isPartsYes ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-500 hover:text-emerald-700 hover:bg-emerald-50'}"
+                                        title="Mark Parts & Materials as AVAILABLE (YES)">
+                                    <i data-lucide="check" class="w-3 h-3"></i> YES
+                                </button>
+                                <button type="button" 
+                                        onclick="updateJobField('${job.id}', 'partsAvailable', 'No')" 
+                                        class="px-2.5 py-1 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1 ${(isPartsNo || (!isPartsYes && !isPartsNo)) ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-500 hover:text-rose-700 hover:bg-rose-50'}"
+                                        title="Mark Parts & Materials as NOT AVAILABLE (NO)">
+                                    <i data-lucide="x" class="w-3 h-3"></i> NO
+                                </button>
+                            </div>
+                            ` : `
+                            ${isPartsYes ? `
+                                <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-xl text-xs font-black uppercase tracking-wider">
+                                    <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> YES
+                                </span>
+                            ` : `
+                                <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-xl text-xs font-black uppercase tracking-wider">
+                                    <i data-lucide="x-circle" class="w-3.5 h-3.5 text-rose-600"></i> NO
+                                </span>
+                            `}
+                            `}
+                        </td>
                         <td class="px-3 py-3 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
                         <td class="px-3 py-3 align-middle">
                             ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] truncate focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] max-w-[280px] truncate block" title="${job.evaluation || ''}">${job.evaluation || '-'}</span>`}
@@ -3941,7 +3974,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+                }).join('') || `<tr><td colspan="10" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
             }
 
             lucide.createIcons();
@@ -4052,6 +4085,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             document.getElementById('carryover-job-id').value = jobId;
             
             const job = allJobs.find(j => j.id === jobId);
+            const partsAvail = job ? String(job.partsAvailable || '').trim().toLowerCase() : '';
+            const isYes = (partsAvail === 'yes' || partsAvail === '1' || partsAvail === 'true');
+            
+            const radioYes = document.querySelector('input[name="carryover-parts-available"][value="Yes"]');
+            const radioNo = document.querySelector('input[name="carryover-parts-available"][value="No"]');
+            if (radioYes && radioNo) {
+                if (isYes) radioYes.checked = true;
+                else radioNo.checked = true;
+            }
             
             if (job && (job.promisedDate || job.carryOverStatus)) {
                 document.getElementById('carryover-promised-date').value = job.promisedDate || '';
@@ -4064,6 +4106,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             
             document.getElementById('carryover-modal').classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
         }
 
         function closeCarryoverModal() {
@@ -4082,6 +4125,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const jobId = document.getElementById('carryover-job-id').value;
             const promisedDate = document.getElementById('carryover-promised-date').value;
             const carryOverStatus = document.getElementById('carryover-status').value;
+            const partsAvailableInput = document.querySelector('input[name="carryover-parts-available"]:checked');
+            const partsAvailable = partsAvailableInput ? partsAvailableInput.value : 'No';
+
             if (!promisedDate) {
                 return alert('Promised date is required.');
             }
@@ -4097,6 +4143,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     });
                 }
 
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: { field: 'partsAvailable', value: partsAvailable }
+                });
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field: 'carryOverStatus', value: carryOverStatus }
