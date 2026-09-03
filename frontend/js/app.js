@@ -1170,7 +1170,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const userRoleLabel = getRoleLabel(role);
 
             if (document.getElementById('header-user-name')) {
-                document.getElementById('header-user-name').innerText = userDisplayName;
+                document.getElementById('header-user-name').innerText = cleanDisplayName;
                 document.getElementById('header-user-name').title = userDisplayName;
             }
             if (document.getElementById('header-user-role')) {
@@ -3475,19 +3475,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-2.5 py-3 align-middle">
-                                <div class="font-black text-gray-900 text-xs sm:text-[13px] flex items-center gap-2 mb-1.5">
-                                    <i data-lucide="car" class="w-4 h-4 text-slate-600 shrink-0"></i>
-                                    <span class="truncate max-w-[240px] font-bold">${job.vehicle}</span>
+                            <td class="px-3 py-2.5 align-middle">
+                                <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5 mb-1">
+                                    <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
+                                    <span class="truncate max-w-[220px] font-bold">${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex items-center gap-1.5 flex-wrap">
+                                <div class="flex items-center gap-1.5 flex-nowrap overflow-x-auto no-scrollbar">
                                     <!-- Category Pill -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Category">
-                                        <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-[11px] font-extrabold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 shrink-0 pointer-events-none"></i>
+                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-2 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Category">
+                                        <i data-lucide="wrench" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
+                                        <span class="text-[10.5px] font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
+                                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
                                         <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
@@ -3497,30 +3497,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     </div>
                                     
                                     ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
-                                    <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2 py-1 shadow-2xs transition group shrink-0" title="Specify custom service name">
-                                        <i data-lucide="edit-3" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-500 transition shrink-0 pointer-events-none"></i>
+                                    <div class="inline-flex items-center gap-1 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition group shrink-0" title="Specify custom service name">
                                         <input type="text" 
                                                value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
                                                placeholder="Custom..." 
                                                maxlength="30"
                                                onkeydown="if(event.key === 'Enter') this.blur();"
                                                onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
-                                               class="table-select text-[11px] font-semibold text-gray-800 bg-transparent border-none outline-none w-20 p-0 cursor-text">
+                                               class="table-select text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none w-16 p-0 cursor-text">
                                     </div>
                                     ` : ''}
                                     ` : `
-                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg text-[11px] font-extrabold uppercase text-slate-700 shadow-2xs shrink-0" title="${job.category || '-'}">
-                                        <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md text-[10.5px] font-bold uppercase text-slate-700 shadow-2xs shrink-0" title="${job.category || '-'}">
+                                        <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i>
                                         <span>${job.category || '-'}</span>
                                     </span>
                                     `}
                                     
                                     <!-- Lane Pill -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-lg px-2.5 py-1 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
-                                        <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-[11px] font-extrabold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 shrink-0 pointer-events-none"></i>
+                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-2 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
+                                        <i data-lucide="route" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
+                                        <span class="text-[10.5px] font-bold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
+                                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
                                         <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                             ${getAvailableLanesForJob(job.category).map(opt => `
                                                 <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
@@ -3528,8 +3527,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         </select>
                                     </div>
                                     ` : `
-                                    <div class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 shadow-2xs shrink-0">
-                                        <i data-lucide="route" class="w-3.5 h-3.5 text-red-500 shrink-0"></i>
+                                    <div class="inline-flex items-center gap-1 text-[10.5px] font-bold uppercase text-slate-700 bg-slate-50 border border-slate-200 rounded-md px-2 py-0.5 shadow-2xs shrink-0">
+                                        <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
                                         <span>${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
                                     </div>
                                     `}
@@ -3537,30 +3536,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <!-- Service Advisor Badge -->
                                     <div class="inline-flex items-center shrink-0">
                                         ${isAssignedToMe ? `
-                                            <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-900 border border-emerald-300 text-[11px] font-extrabold uppercase px-2.5 py-1 rounded-lg shadow-2xs" title="Assigned to you">
-                                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                                <span>My Job (${cleanJobSA || 'You'})</span>
+                                            <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to you">
+                                                <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
+                                                <span>My Job</span>
                                             </span>
                                         ` : isAssignedToOtherSA ? `
-                                            <div class="inline-flex items-center gap-1.5">
-                                                <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 border border-slate-200 text-[11px] font-bold uppercase px-2.5 py-1 rounded-lg shadow-2xs" title="Assigned to ${cleanJobSA}">
-                                                    <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500"></i>
-                                                    <span>SA: ${cleanJobSA}</span>
+                                            <div class="inline-flex items-center gap-1">
+                                                <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-semibold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to ${cleanJobSA}">
+                                                    <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+                                                    <span>${cleanJobSA}</span>
                                                 </span>
-                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider bg-white hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-300 hover:border-slate-900 px-2 py-1 rounded-lg transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
-                                                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-white hover:bg-slate-900 text-slate-600 hover:text-white border border-slate-300 hover:border-slate-900 px-1.5 py-0.5 rounded-md transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
+                                                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
                                                     <span>Take Over</span>
                                                 </button>
                                             </div>
                                         ` : (isSA && isUnassigned) ? `
-                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-[11px] font-black uppercase bg-slate-900 hover:bg-black text-white px-2.5 py-1 rounded-lg transition-all shadow-2xs cursor-pointer active:scale-95">
-                                                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-slate-300"></i>
-                                                <span>Assign to Me</span>
+                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10.5px] font-bold uppercase bg-slate-900 hover:bg-black text-white px-2 py-0.5 rounded-md transition-all shadow-2xs cursor-pointer active:scale-95">
+                                                <i data-lucide="user-plus" class="w-3 h-3 text-slate-300"></i>
+                                                <span>Take Job</span>
                                             </button>
                                         ` : `
-                                            <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-700 border border-gray-200 text-[11px] font-semibold uppercase px-2.5 py-1 rounded-lg shadow-2xs">
-                                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-                                                <span>SA: ${cleanJobSA || 'Unassigned'}</span>
+                                            <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10.5px] font-medium uppercase px-2 py-0.5 rounded-md shadow-2xs">
+                                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+                                                <span>${cleanJobSA || 'Unassigned'}</span>
                                             </span>
                                         `}
                                     </div>
@@ -3916,27 +3915,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         <td class="px-3 py-3 align-middle"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
                         <td class="px-3 py-3 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
-                        <td class="px-3.5 py-3 align-middle whitespace-nowrap">
-                            <div class="flex flex-col gap-1.5 min-w-[200px]">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-20 shrink-0">Recv:</span>
-                                    <span class="inline-flex items-center justify-center bg-gray-50 text-gray-800 font-mono font-bold text-[11px] px-2 py-0.5 rounded-lg border border-gray-200 shadow-2xs w-28 text-center">${job.dateReceived || '--'}</span>
+                        <td class="px-3 py-2.5 align-middle whitespace-nowrap">
+                            <div class="inline-flex flex-col bg-slate-50 border border-slate-200 rounded-lg overflow-hidden min-w-[150px] shadow-2xs">
+                                <div class="flex items-center justify-between px-2.5 py-1 text-[10.5px] border-b border-slate-200 font-medium text-slate-600 gap-2">
+                                    <span class="text-[9.5px] uppercase font-bold text-slate-400 shrink-0">Recv:</span>
+                                    <span class="font-mono font-bold text-slate-800">${job.dateReceived || '--'}</span>
                                 </div>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="text-[10px] font-semibold uppercase tracking-wider text-gray-500 w-20 shrink-0">Promised:</span>
+                                <div class="relative flex items-center justify-between px-2.5 py-1 text-[10.5px] font-medium text-slate-600 gap-2 ${isEditable ? 'hover:bg-white cursor-pointer group' : ''}">
+                                    <span class="text-[9.5px] uppercase font-bold text-amber-600 shrink-0">Promised:</span>
+                                    <span class="font-mono font-bold text-slate-900 ${!job.promisedDate ? 'text-slate-400 italic' : ''}">${job.promisedDate || 'Set Date'}</span>
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center justify-between w-28 bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2 py-0.5 shadow-2xs transition cursor-pointer group" title="Click to choose promised date">
-                                        <span class="font-mono font-bold text-[11px] ${job.promisedDate ? 'text-gray-900' : 'text-gray-400'} flex-1 text-center pointer-events-none">${job.promisedDate || 'Set Date'}</span>
-                                        <i data-lucide="calendar" class="w-3 h-3 text-gray-400 group-hover:text-red-600 transition pointer-events-none shrink-0 stroke-[2]"></i>
-                                        <input type="date" 
-                                               value="${job.promisedDate || ''}" 
-                                               onchange="updateJobField('${job.id}', 'promisedDate', this.value)" 
-                                               class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                               title="Click to select promised date">
-                                    </div>
-                                    ` : `
-                                    <span class="inline-flex items-center justify-center font-mono font-bold text-[11px] bg-gray-50 text-gray-800 px-2 py-0.5 rounded-lg border border-gray-200 shadow-2xs w-28 text-center">${job.promisedDate || 'TBD'}</span>
-                                    `}
+                                    <input type="date" 
+                                           value="${job.promisedDate || ''}" 
+                                           onchange="updateJobField('${job.id}', 'promisedDate', this.value)" 
+                                           class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                           title="Click to select promised date">
+                                    ` : ''}
                                 </div>
                             </div>
                         </td>
