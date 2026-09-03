@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.55">
+    <link rel="stylesheet" href="css/main.css?v=4.56">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -763,7 +763,7 @@
     <div id="app-shell" class="hidden flex h-full bg-gray-100 overflow-hidden layout-sidebar">
 
         <!-- Left Sidebar (Google Chat style) -->
-        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-64 select-none shrink-0">
+        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-[260px] select-none shrink-0">
             <!-- Sidebar Header / Logo -->
             <div class="sidebar-header h-14 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
                 <div class="flex items-center gap-1.5 overflow-hidden logo-container">
@@ -788,15 +788,15 @@
             </div>
 
             <!-- Sidebar Navigation Content -->
-            <div class="flex-1 overflow-y-auto py-6 px-4 space-y-6">
+            <div class="flex-1 overflow-y-auto py-4 px-3 space-y-4">
                 <!-- Main Nav Links -->
-                <nav id="sidebar-dynamic-nav" class="space-y-1.5"></nav>
+                <nav id="sidebar-dynamic-nav" class="space-y-1"></nav>
             </div>
 
             <!-- Sidebar Footer (User info & Settings) -->
-            <div class="p-4 border-t border-slate-700/60 bg-slate-900/60 shrink-0 relative">
+            <div class="p-3 border-t border-slate-700/60 bg-slate-900/60 shrink-0 relative">
                 <!-- Sidebar Dropdown Menu (Pops up) -->
-                <div id="sidebar-user-dropdown" class="hidden absolute left-4 bottom-[100%] mb-2 w-60 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
+                <div id="sidebar-user-dropdown" class="hidden absolute left-3 bottom-[100%] mb-2 w-60 bg-white rounded-2xl border border-slate-200 shadow-2xl z-[99999] py-2 divide-y divide-slate-100 transition-all">
                     <!-- User Bio -->
                     <div class="px-4 py-3 bg-slate-50/80 rounded-t-2xl">
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Account</p>
@@ -856,7 +856,7 @@
         <div id="app-main-wrapper" class="flex-1 flex flex-col h-full overflow-hidden">
 
             <header
-                class="bg-white shadow-md z-50 flex h-14 items-center justify-between border-b border-gray-200 shrink-0">
+                class="bg-white shadow-md z-50 flex h-14 items-center justify-between border-b border-gray-200 shrink-0 px-4 md:px-6">
                 <div id="header-logo-container" class="h-full bg-red-600 text-white flex items-center pl-8 pr-16 slanted-logo-bg shadow-inner">
                     <div class="flex items-center gap-3">
                         <!-- Header Brand Logo -->
@@ -874,7 +874,7 @@
 
             <nav id="dynamic-nav" class="flex flex-1 items-center px-4 gap-2 md:gap-3 overflow-x-auto"></nav>
 
-            <div id="header-user-section" class="flex items-center gap-3 px-4 border-l border-gray-150 h-full">
+            <div id="header-user-section" class="flex items-center gap-3 h-full ml-auto">
                 <div id="header-status"
                     class="hidden lg:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -883,16 +883,16 @@
 
                 <!-- User Profile Dropdown Container -->
                 <div class="relative">
-                    <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-slate-100/80 active:scale-95 border border-slate-200/60 hover:border-slate-300 transition-all focus:outline-none cursor-pointer shadow-2xs group">
-                        <div class="text-right flex flex-col items-end min-w-[60px]">
-                            <p class="text-xs font-black text-slate-900 leading-tight group-hover:text-red-600 transition-colors" id="header-user-name">User</p>
-                            <span class="mt-0.5 text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-red-50 text-red-600 border border-red-200/80" id="header-user-role">Role</span>
+                    <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button" class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-200 hover:border-slate-300 transition focus:outline-none cursor-pointer shadow-2xs group shrink-0">
+                        <div class="text-right flex flex-col items-end justify-center">
+                            <p class="text-xs font-bold text-slate-900 leading-tight group-hover:text-red-600 transition-colors max-w-[140px] truncate" id="header-user-name">User</p>
+                            <span class="mt-0.5 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-red-50 text-red-600 border border-red-200/80 leading-none" id="header-user-role">Role</span>
                         </div>
-                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm group-hover:shadow-md transition-shadow">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-bold text-xs relative shadow-xs shrink-0">
                             <i data-lucide="user" class="w-4 h-4 text-white"></i>
                             <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full"></span>
                         </div>
-                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition-transform"></i>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition shrink-0"></i>
                     </button>
 
                     <!-- Dropdown Menu -->
@@ -5783,7 +5783,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.55"></script>
+    <script src="js/app.js?v=4.56"></script>
 </body>
 
 </html>
