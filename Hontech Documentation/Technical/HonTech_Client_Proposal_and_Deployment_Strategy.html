@@ -862,6 +862,52 @@
             <li><strong>Week 2 Inspection:</strong> Team will test the built-in browser with the TV URL (<code>?mode=tv</code>), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (<em>Google Chromecast / Fire Stick ~&#8369;1,800</em>) if the TV browser is slow.</li>
         </ul>
 
+        <h3 class="subsection-heading">4.6 Multi-Branch Website & Hardware Readiness Checklist (Pre-Flight Audit Standard)</h3>
+        <p>To guarantee 100% operational readiness before live customer intake, the Developing Team and HonTech Management will conduct an on-site physical walk-through during <strong>Week 2 (September 8&ndash;12, 2026)</strong> using the following formal checklist:</p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Category</th>
+                    <th style="width: 30%;">Required Equipment / Target</th>
+                    <th style="width: 35%;">Evaluation Criteria & Operating Standard</th>
+                    <th style="width: 15%;">Audit Target</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Dedicated SA PCs</strong></td>
+                    <td><strong>4 Dedicated Computers</strong><br>&bull; 2 PCs in Branch 1 (Main)<br>&bull; 2 PCs in Branch 2</td>
+                    <td>&bull; Windows 10/11 64-bit, 4GB&ndash;8GB RAM, 1080p Full HD<br>&bull; Google Chrome (v110+) / Edge with unblocked LocalStorage<br>&bull; Dedicated USB keyboard/mouse, clean intake counter placement</td>
+                    <td>[ ] PASS<br>[ ] FAIL</td>
+                </tr>
+                <tr>
+                    <td><strong>Billing & Cashier</strong></td>
+                    <td><strong>2 Front Desk PCs</strong><br>&bull; 1 PC in Branch 1<br>&bull; 1 PC in Branch 2</td>
+                    <td>&bull; Windows 10/11 desktop/laptop connected to 80mm thermal receipt printer<br>&bull; Fast print preview for instant invoice & claim stub generation</td>
+                    <td>[ ] PASS<br>[ ] FAIL</td>
+                </tr>
+                <tr>
+                    <td><strong>Lounge Smart TVs</strong></td>
+                    <td><strong>2 Wall Displays</strong><br>&bull; 1 TV in Branch 1<br>&bull; 1 TV in Branch 2</td>
+                    <td>&bull; 32" to 55" Smart TV with built-in browser running full-screen (<code>?mode=tv</code>)<br>&bull; Zero buffering, auto-refresh customer queue, customer privacy enabled</td>
+                    <td>[ ] PASS<br>[ ] FAIL</td>
+                </tr>
+                <tr>
+                    <td><strong>Network & Failover</strong></td>
+                    <td><strong>Dual Internet Infrastructure</strong></td>
+                    <td>&bull; Primary fiber line (15&ndash;25 Mbps) with &ge; -65 dBm Wi-Fi across Bays 1&ndash;6<br>&bull; Backup &#8369;999 prepaid 4G/5G Wi-Fi hotspot tested for 5-second switch</td>
+                    <td>[ ] PASS<br>[ ] FAIL</td>
+                </tr>
+                <tr>
+                    <td><strong>Security & Accounts</strong></td>
+                    <td><strong>Role-Based Access Governance</strong></td>
+                    <td>&bull; 4 SA Accounts, 2 Cashier Accounts, Owner & Admin Accounts configured<br>&bull; 6-Digit PIN recovery & automated audit logging verified</td>
+                    <td>[ ] PASS<br>[ ] FAIL</td>
+                </tr>
+            </tbody>
+        </table>
+
         <hr class="divider">
 
         <!-- Section 5 -->
@@ -892,10 +938,10 @@
                 </tr>
                 <tr>
                     <td><strong>Week 2</strong><br><em>(Sept 8&ndash;12)</em></td>
-                    <td><strong>System Unit Testing & Equipment Readiness</strong></td>
-                    <td>&bull; <strong>Developing Team:</strong> Complete 100% passing unit tests; validate cloud database syncing and web browser responsiveness across all operating equipment (Total: 4 dedicated Service Advisor personal computers [2 in Branch 1, 2 in Branch 2], 2 Front Desk cashier PCs, and 2 Waiting Lounge Smart TVs).<br>&bull; <strong>Designer & Documentation:</strong> Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material.</td>
-                    <td>&bull; On-site check of shop Wi-Fi signal in bays & lounge for all 4 SA computers.<br>&bull; Confirm staff operating hardware readiness with shop management.</td>
-                    <td><strong>Unit Testing Passed & Equipment Ready</strong></td>
+                    <td><strong>System Unit Testing & Website Requirements Checklist Sign-Off</strong></td>
+                    <td>&bull; <strong>Developing Team:</strong> Complete 100% passing unit tests; execute the formal <strong>Website System Requirements & Hardware Readiness Checklist</strong> across all shop equipment (4 dedicated SA personal computers [2 in Branch 1, 2 in Branch 2], 2 Front Desk cashier PCs, 2 Waiting Lounge Smart TVs, thermal printers, and network failover).<br>&bull; <strong>Designer & Documentation:</strong> Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material.</td>
+                    <td>&bull; On-site joint physical audit of shop Wi-Fi coverage across Bays 1&ndash;6 and lounge.<br>&bull; Client formal sign-off on <strong>Hardware & Website Readiness Checklist</strong>.</td>
+                    <td><strong>Unit Testing Passed & Readiness Checklist Signed</strong></td>
                 </tr>
                 <tr>
                     <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
@@ -938,9 +984,9 @@
                 <tr>
                     <td><strong>Week 2</strong><br><em>(Sept 8&ndash;12)</em></td>
                     <td><strong>Hardware Procurement, Assembly & Network Setup</strong></td>
-                    <td>&bull; Joint Gilmore parts purchase & warranty verification<br>&bull; Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>&bull; Assign static local IP (<code>192.168.1.100</code>) & configure shop Wi-Fi<br>&bull; Wire primary server directly via Cat6 Ethernet cable<br>&bull; Install UPS battery backup & configure automated local backups</td>
-                    <td>&bull; Client purchases hardware in Gilmore<br>&bull; Server PC physically positioned in front office</td>
-                    <td><strong>Server PC Assembled, Configured & Running 24/7</strong></td>
+                    <td>&bull; Joint Gilmore parts purchase & warranty verification<br>&bull; Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>&bull; Assign static local IP (<code>192.168.1.100</code>) & configure shop Wi-Fi<br>&bull; Wire primary server directly via Cat6 Ethernet cable<br>&bull; Install UPS battery backup & execute formal <strong>Hardware & Website Readiness Checklist</strong></td>
+                    <td>&bull; Client purchases hardware in Gilmore<br>&bull; Server PC physically positioned in front office<br>&bull; Client sign-off on hardware checklist</td>
+                    <td><strong>Server PC Assembled & Readiness Checklist Signed</strong></td>
                 </tr>
                 <tr>
                     <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
