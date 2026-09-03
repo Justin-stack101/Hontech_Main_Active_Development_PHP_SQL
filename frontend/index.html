@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.58">
+    <link rel="stylesheet" href="css/main.css?v=4.59">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -196,9 +196,14 @@
 
         /* Premium Dark Sidebar styles */
         #app-sidebar {
+            width: 236px !important;
+            overflow-x: hidden !important;
             background-color: #0f172a !important; /* bg-slate-900 */
             border-right-color: #1e293b !important; /* border-slate-800 */
             color: #cbd5e1 !important; /* text-slate-300 */
+        }
+        .sidebar-collapsed #app-sidebar {
+            width: 72px !important;
         }
         #app-sidebar .bg-gray-50 {
             background-color: #020617 !important; /* bg-slate-950 */
@@ -763,10 +768,10 @@
     <div id="app-shell" class="hidden flex h-full bg-gray-100 overflow-hidden layout-sidebar">
 
         <!-- Left Sidebar (Google Chat style) -->
-        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-52 select-none shrink-0">
+        <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-[236px] select-none shrink-0 overflow-hidden">
             <!-- Sidebar Header / Logo -->
             <div class="sidebar-header h-14 flex items-center justify-between px-3.5 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
-                <div class="flex items-center gap-1.5 overflow-hidden logo-container">
+                <div class="flex items-center gap-2 overflow-hidden logo-container">
                     <!-- Sidebar Logo -->
                     <div class="shrink-0 flex items-center justify-center w-7 h-7 text-red-600">
                         <i data-lucide="wrench" class="w-6 h-6"></i>
@@ -779,16 +784,16 @@
                     </div>
                 </div>
                 <!-- Collapse Button -->
-                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only" title="Collapse Sidebar">
                     <i data-lucide="chevrons-left" id="sidebar-toggle-icon" class="w-4 h-4"></i>
                 </button>
-                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn" title="Expand Sidebar">
                     <i data-lucide="chevrons-right" class="w-4 h-4"></i>
                 </button>
             </div>
 
             <!-- Sidebar Navigation Content -->
-            <div class="flex-1 overflow-y-auto py-3 px-2 space-y-3">
+            <div class="flex-1 overflow-y-auto py-3 px-2 space-y-3 overflow-x-hidden">
                 <!-- Main Nav Links -->
                 <nav id="sidebar-dynamic-nav" class="space-y-1"></nav>
             </div>
@@ -833,15 +838,15 @@
                 </div>
                 <!-- Expanded View footer -->
                 <div id="sidebar-footer-expanded" class="w-full">
-                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
-                        <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
                             <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
                                 <i data-lucide="user" class="w-3.5 h-3.5 text-white"></i>
                                 <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                             </div>
                             <div class="min-w-0 flex-1 overflow-hidden">
-                                <p class="text-xs font-bold text-white truncate leading-tight tracking-tight" id="sidebar-menu-user-name">User</p>
-                                <p class="text-[9px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
+                                <p class="text-xs font-bold text-white whitespace-nowrap leading-tight tracking-tight" id="sidebar-menu-user-name">User</p>
+                                <p class="text-[9.5px] font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
                             </div>
                         </div>
                         <div class="p-0.5 text-slate-400 group-hover:text-white transition shrink-0">
@@ -5783,7 +5788,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.58"></script>
+    <script src="js/app.js?v=4.59"></script>
 </body>
 
 </html>
