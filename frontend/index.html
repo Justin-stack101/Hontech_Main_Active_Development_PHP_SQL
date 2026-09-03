@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.52">
+    <link rel="stylesheet" href="css/main.css?v=4.53">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -765,7 +765,7 @@
         <!-- Left Sidebar (Google Chat style) -->
         <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-64 select-none shrink-0">
             <!-- Sidebar Header / Logo -->
-            <div class="sidebar-header h-20 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
+            <div class="sidebar-header h-14 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
                 <div class="flex items-center gap-1.5 overflow-hidden logo-container">
                     <!-- Sidebar Logo -->
                     <div class="shrink-0 flex items-center justify-center w-8 h-8 text-red-600">
@@ -856,7 +856,7 @@
         <div id="app-main-wrapper" class="flex-1 flex flex-col h-full overflow-hidden">
 
             <header
-                class="bg-white shadow-md z-50 flex h-20 items-center justify-between border-b border-gray-200 shrink-0">
+                class="bg-white shadow-md z-50 flex h-14 items-center justify-between border-b border-gray-200 shrink-0">
                 <div id="header-logo-container" class="h-full bg-red-600 text-white flex items-center pl-8 pr-16 slanted-logo-bg shadow-inner">
                     <div class="flex items-center gap-3">
                         <!-- Header Brand Logo -->
@@ -865,34 +865,34 @@
                         </div>
                         <div class="flex flex-col">
                             <div class="flex items-baseline gap-2">
-                                <span class="font-black italic uppercase tracking-tighter text-2xl leading-none block drop-shadow-md">HonTech</span>
-                                <span class="text-[10px] font-bold tracking-wider text-red-200 bg-red-800/30 px-1.5 py-0.5 rounded border border-red-500/30">v1.0.0-beta</span>
+                                <span class="font-black italic uppercase tracking-tighter text-xl leading-none block drop-shadow-md">HonTech</span>
+                                <span class="text-[9px] font-bold tracking-wider text-red-200 bg-red-800/30 px-1.5 py-0.5 rounded border border-red-500/30">v1.0</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            <nav id="dynamic-nav" class="flex flex-1 items-center px-6 gap-2 md:gap-4 overflow-x-auto"></nav>
+            <nav id="dynamic-nav" class="flex flex-1 items-center px-4 gap-2 md:gap-3 overflow-x-auto"></nav>
 
-            <div id="header-user-section" class="flex items-center gap-4 px-6 border-l border-gray-150 h-full">
+            <div id="header-user-section" class="flex items-center gap-3 px-4 border-l border-gray-150 h-full">
                 <div id="header-status"
-                    class="hidden lg:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full">
+                    class="hidden lg:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-[10px] font-black uppercase text-emerald-800 tracking-wider">System Online</span>
+                    <span class="text-[9.5px] font-black uppercase text-emerald-800 tracking-wider">System Online</span>
                 </div>
 
                 <!-- User Profile Dropdown Container -->
                 <div class="relative">
-                    <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button" class="flex items-center gap-3 p-2 rounded-2xl hover:bg-slate-100/80 active:scale-95 border border-slate-200/60 hover:border-slate-300 transition-all focus:outline-none cursor-pointer shadow-2xs group">
-                        <div class="text-right flex flex-col items-end min-w-[70px]">
+                    <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button" class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-slate-100/80 active:scale-95 border border-slate-200/60 hover:border-slate-300 transition-all focus:outline-none cursor-pointer shadow-2xs group">
+                        <div class="text-right flex flex-col items-end min-w-[60px]">
                             <p class="text-xs font-black text-slate-900 leading-tight group-hover:text-red-600 transition-colors" id="header-user-name">User</p>
-                            <span class="mt-0.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-red-50 text-red-600 border border-red-200/80" id="header-user-role">Role</span>
+                            <span class="mt-0.5 text-[8.5px] font-black uppercase tracking-wider px-1.5 py-0.2 rounded bg-red-50 text-red-600 border border-red-200/80" id="header-user-role">Role</span>
                         </div>
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm group-hover:shadow-md transition-shadow">
-                            <i data-lucide="user" class="w-5 h-5 text-white"></i>
-                            <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black relative shadow-sm group-hover:shadow-md transition-shadow">
+                            <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                            <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full"></span>
                         </div>
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-transform"></i>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition-transform"></i>
                     </button>
 
                     <!-- Dropdown Menu -->
@@ -2922,35 +2922,53 @@
             </div>
 
             <!-- RECORDS & QUEUES VIEW -->
-            <div id="section-queue" class="section-content hidden fade-in space-y-4">
+            <div id="section-queue" class="section-content hidden fade-in space-y-3">
+
+                <!-- Queue View Segmented Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-3 p-1.5 bg-white border border-gray-200 rounded-xl shadow-2xs" id="queue-tab-controls">
+                    <div class="inline-flex p-1 bg-gray-100 rounded-lg gap-1 text-xs font-bold">
+                        <button type="button" id="tab-btn-pending" onclick="switchQueueTab('pending')" class="px-3 py-1.5 rounded-md transition text-gray-900 font-bold bg-white shadow-2xs cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="calendar-clock" class="w-3.5 h-3.5 text-gray-700"></i>
+                            <span>Pending Inquiries</span>
+                            <span id="badge-pending-count" class="px-1.5 py-0.2 text-[9.5px] rounded-full bg-red-600 text-white font-mono">0</span>
+                        </button>
+                        <button type="button" id="tab-btn-active" onclick="switchQueueTab('active')" class="px-3 py-1.5 rounded-md transition text-gray-600 hover:text-gray-900 cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="list-todo" class="w-3.5 h-3.5 text-gray-500"></i>
+                            <span>Active Workshop</span>
+                            <span id="badge-active-count" class="px-1.5 py-0.2 text-[9.5px] rounded-full bg-gray-300 text-gray-700 font-mono">0</span>
+                        </button>
+                        <button type="button" id="tab-btn-all" onclick="switchQueueTab('all')" class="px-3 py-1.5 rounded-md transition text-gray-600 hover:text-gray-900 cursor-pointer flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-gray-500"></i>
+                            <span>Split View (All)</span>
+                        </button>
+                    </div>
+                </div>
 
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
-                    class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-4 md:p-5 rounded-2xl shadow-md flex flex-col hidden">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-gray-100 rounded-lg text-gray-800"><i data-lucide="calendar-clock"
-                                    class="w-5 h-5"></i></div>
+                    class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-gray-100 rounded-lg text-gray-800"><i data-lucide="calendar-clock"
+                                    class="w-4 h-4"></i></div>
                             <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Booking Module
-                                </h3>
-                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Pending
-                                    Online Inquiries</p>
+                                <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Booking Module</h3>
+                                <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest">Pending Online Inquiries</p>
                             </div>
                         </div>
                     </div>
-                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                    <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                         <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-gray-50">
-                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                    <th class="px-3 py-3.5 bg-gray-50">Customer Name</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Model</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Lane Type</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Appointment (Date, Time)</th>
-                                    <th class="px-3 py-3.5 bg-gray-50 min-w-[260px]">Evaluation / Diagnosis</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Confirmed</th>
-                                    <th class="px-3 py-3.5 text-right bg-gray-50">Action</th>
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                    <th class="px-3 py-2.5 bg-gray-50">Customer Name</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Plate No.</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Model</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Lane Type</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Appointment</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Evaluation / Notes</th>
+                                    <th class="px-3 py-2.5 bg-gray-50">Confirmed</th>
+                                    <th class="px-3 py-2.5 text-right bg-gray-50">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="table-pending-express"></tbody>
@@ -5763,7 +5781,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.52"></script>
+    <script src="js/app.js?v=4.53"></script>
 </body>
 
 </html>

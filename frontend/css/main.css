@@ -25,11 +25,11 @@ td.hidden,
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap");
 html {
-  font-size: 13.5px;
+  font-size: 13px;
 }
 @media (max-width: 1536px) {
   html {
-    font-size: 12.5px;
+    font-size: 12px;
   }
 }
 @media (max-width: 1280px) {
@@ -268,15 +268,15 @@ input[type=checkbox] {
   align-items: center;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: #1e293b;
   transition: border-color 0.15s ease, background-color 0.15s ease;
   cursor: pointer;
-  min-width: 145px;
+  min-width: 96px;
+  max-width: 125px;
 }
 
 .lane-selector-pill:hover {
@@ -298,32 +298,32 @@ input[type=checkbox] {
   border: none;
   outline: none;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  padding: 6px 28px 6px 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+  padding: 4px 22px 4px 7px;
   cursor: pointer;
   color: #1e293b;
   font-family: inherit;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .lane-selector-pill select option {
   background-color: #ffffff;
   color: #0f172a;
   font-weight: 600;
-  font-size: 12px;
-  padding: 6px 10px;
+  font-size: 11px;
+  padding: 4px 8px;
 }
 
 .lane-selector-pill .lane-arrow-icon {
   position: absolute;
-  right: 8px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   color: #64748b;
   transition: color 0.15s ease;
 }
@@ -339,13 +339,14 @@ input[type=checkbox] {
   justify-content: center;
   background-color: #f1f5f9;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
   color: #334155;
-  padding: 6px 12px;
+  padding: 4px 8px;
+  min-width: 90px;
 }
 
 /* ==========================================================================
@@ -356,11 +357,11 @@ input[type=checkbox] {
   flex-direction: column;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   transition: border-color 0.15s ease, background-color 0.15s ease;
-  min-width: 145px;
-  max-width: 170px;
+  min-width: 118px;
+  max-width: 138px;
 }
 
 .appt-selector-card:hover {
@@ -376,8 +377,8 @@ input[type=checkbox] {
 .appt-field-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
+  gap: 4px;
+  padding: 2.5px 6px;
 }
 
 .appt-field-row input {
@@ -385,10 +386,10 @@ input[type=checkbox] {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 600;
   color: #1e293b;
-  padding: 2px 0;
+  padding: 1px 0;
   font-family: inherit;
 }
 
@@ -400,7 +401,7 @@ input[type=checkbox] {
   cursor: pointer;
   opacity: 0.55;
   filter: grayscale(1);
-  transform: scale(0.85);
+  transform: scale(0.8);
 }
 
 .appt-field-row input[type="date"]::-webkit-calendar-picker-indicator:hover {
@@ -412,10 +413,10 @@ input[type=checkbox] {
   flex-direction: column;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 5px 10px;
-  min-width: 140px;
-  max-width: 165px;
+  border-radius: 6px;
+  padding: 3px 6px;
+  min-width: 115px;
+  max-width: 135px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -430,13 +431,13 @@ input[type=checkbox] {
 .eval-field-card {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 6px 10px;
-  min-width: 220px;
-  max-width: 320px;
+  border-radius: 6px;
+  padding: 3.5px 7px;
+  min-width: 130px;
+  max-width: 190px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -455,8 +456,8 @@ input[type=checkbox] {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10.5px;
+  font-weight: 500;
   color: #1e293b;
   padding: 0;
   font-family: inherit;
@@ -470,13 +471,13 @@ input[type=checkbox] {
 .eval-badge-static {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 6px 10px;
-  min-width: 200px;
-  max-width: 300px;
+  border-radius: 6px;
+  padding: 3.5px 7px;
+  min-width: 130px;
+  max-width: 190px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
