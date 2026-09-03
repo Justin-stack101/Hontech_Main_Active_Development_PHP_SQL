@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.61">
+    <link rel="stylesheet" href="css/main.css?v=4.62">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -179,14 +179,19 @@
             background-color: #1e293b !important;
         }
         #app-sidebar.sidebar-collapsed .nav-btn,
-        .sidebar-collapsed .nav-btn {
+        #app-sidebar.sidebar-collapsed #sidebar-dynamic-nav button,
+        .sidebar-collapsed .nav-btn,
+        .sidebar-collapsed #sidebar-dynamic-nav button {
             justify-content: center !important;
             padding-left: 0 !important;
             padding-right: 0 !important;
             gap: 0 !important;
+            width: 100% !important;
         }
         #app-sidebar.sidebar-collapsed .nav-btn i,
-        .sidebar-collapsed .nav-btn i {
+        #app-sidebar.sidebar-collapsed #sidebar-dynamic-nav button i,
+        .sidebar-collapsed .nav-btn i,
+        .sidebar-collapsed #sidebar-dynamic-nav button i {
             margin: 0 auto !important;
         }
         /* Top Navigation vs Sidebar hiding rules */
@@ -5795,7 +5800,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.61"></script>
+    <script src="js/app.js?v=4.62"></script>
 </body>
 
 </html>
