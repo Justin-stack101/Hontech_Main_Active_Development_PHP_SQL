@@ -37,8 +37,8 @@ Prior to initiating the **Week 3 Live Customer "Shadow Mode"**, the Developing T
 | **A.2** | **Dedicated Service Advisor (SA) Personal Computers** | **Branch 2 (Expansion)** | **2 PCs** | • Intel Core i3 (8th Gen+) / AMD Ryzen 3<br>• 4GB–8GB DDR4 RAM, 128GB+ SSD<br>• 1080p Full HD Display (1920x1080)<br>• Windows 10/11 64-bit OS<br>• Dedicated USB Keyboard & Mouse | [ ] PASS<br>[ ] FAIL |
 | **A.3** | **Front Desk / Cashier Billing Computers** | **Branch 1 (Marikina Main)** | **1 PC** | • Windows 10/11 Desktop or Laptop<br>• 4GB+ RAM, Thermal Printer USB/LAN Driver<br>• 1080p or 1366x768 Display | [ ] PASS<br>[ ] FAIL |
 | **A.4** | **Front Desk / Cashier Billing Computers** | **Branch 2 (Expansion)** | **1 PC** | • Windows 10/11 Desktop or Laptop<br>• 4GB+ RAM, Thermal Printer USB/LAN Driver<br>• 1080p or 1366x768 Display | [ ] PASS<br>[ ] FAIL |
-| **A.5** | **Customer Waiting Lounge Queue Display** | **Branch 1 (Marikina Main)** | **1 Smart TV** | • 32" to 55" Smart TV with Built-in Web Browser *(or HDMI 1080p Fire Stick / Chromecast)*<br>• Full-screen kiosk mode support (`?mode=tv`) | [ ] PASS<br>[ ] FAIL |
-| **A.6** | **Customer Waiting Lounge Queue Display** | **Branch 2 (Expansion)** | **1 Smart TV** | • 32" to 55" Smart TV with Built-in Web Browser *(or HDMI 1080p Fire Stick / Chromecast)*<br>• Full-screen kiosk mode support (`?mode=tv`) | [ ] PASS<br>[ ] FAIL |
+| **A.5** | **Customer Waiting Lounge Queue Display with Audio** | **Branch 1 (Marikina Main)** | **1 Smart TV** | • 32" to 55" Smart TV with Built-in Web Browser *(or HDMI 1080p Fire Stick / Chromecast)*<br>• **Integrated Sound / Stereo Speakers:** Must be capable of clear audible chime playback above ambient shop lounge noise for queue notifications (Bay Dispatch, Vehicle Ready, SLA alerts)<br>• Full-screen kiosk mode support (`?mode=tv`) | [ ] PASS<br>[ ] FAIL |
+| **A.6** | **Customer Waiting Lounge Queue Display with Audio** | **Branch 2 (Expansion)** | **1 Smart TV** | • 32" to 55" Smart TV with Built-in Web Browser *(or HDMI 1080p Fire Stick / Chromecast)*<br>• **Integrated Sound / Stereo Speakers:** Must be capable of clear audible chime playback above ambient shop lounge noise for queue notifications (Bay Dispatch, Vehicle Ready, SLA alerts)<br>• Full-screen kiosk mode support (`?mode=tv`) | [ ] PASS<br>[ ] FAIL |
 | **A.7** | **Thermal Receipt & Claim Stub Printers** | **Both Branches (1 & 2)** | **2 Printers** | • 80mm or 58mm POS Thermal Receipt Printer<br>• ESC/POS or System Print Dialog Compatible | [ ] PASS<br>[ ] FAIL |
 | **A.8** | **Uninterruptible Power Supply (UPS / AVR)** | **Front Desk & Cashier** | **2 Units** | • 650VA–1000VA UPS with built-in surge suppressor to protect against power sags | [ ] PASS<br>[ ] FAIL |
 
@@ -53,10 +53,11 @@ Prior to initiating the **Week 3 Live Customer "Shadow Mode"**, the Developing T
 | **B.1** | **Primary Web Browser** | Google Chrome (Version 110.0+) or Microsoft Edge (Chromium) | Up-to-date modern Chromium engine | [ ] PASS<br>[ ] FAIL |
 | **B.2** | **Secondary / Fallback Browser** | Mozilla Firefox (Version 115.0+ ESR) | Verified for responsive layout rendering | [ ] PASS<br>[ ] FAIL |
 | **B.3** | **JavaScript & DOM APIs** | JavaScript must be enabled in browser settings | Required for SLA timers & queue reactivity | [ ] PASS<br>[ ] FAIL |
-| **B.4** | **Client Storage Access** | LocalStorage & SessionStorage unblocked (Third-party cookie blocks must not disable local storage) | Required for active session persistence | [ ] PASS<br>[ ] FAIL |
-| **B.5** | **Display Scaling & Resolution** | Minimum 1366x768 resolution (Optimal: 1920x1080 Full HD at 100% Windows scaling) | Crisp table display without layout wrapping | [ ] PASS<br>[ ] FAIL |
-| **B.6** | **PDF / Print Capability** | Native browser print preview enabled with background graphics checkbox turned ON | Required for customer invoice & claim stub printing | [ ] PASS<br>[ ] FAIL |
-| **B.7** | **Browser Cache Versioning** | Browser set to load latest CSS/JS version tags (`v=2.x`) without stale caching | Verified across all 6 workstations | [ ] PASS<br>[ ] FAIL |
+| **B.4** | **HTML5 & Web Audio API (Sound Output)** | Browser audio auto-play unblocked / enabled on `?mode=tv` and staff consoles | Synthesized chime playback (`playBayDispatchSound()`, `playReleaseConfirmSound()`, `playAutomotiveChime()`) functional with audio unmute toggled | [ ] PASS<br>[ ] FAIL |
+| **B.5** | **Client Storage Access** | LocalStorage & SessionStorage unblocked (Third-party cookie blocks must not disable local storage) | Required for active session persistence | [ ] PASS<br>[ ] FAIL |
+| **B.6** | **Display Scaling & Resolution** | Minimum 1366x768 resolution (Optimal: 1920x1080 Full HD at 100% Windows scaling) | Crisp table display without layout wrapping | [ ] PASS<br>[ ] FAIL |
+| **B.7** | **PDF / Print Capability** | Native browser print preview enabled with background graphics checkbox turned ON | Required for customer invoice & claim stub printing | [ ] PASS<br>[ ] FAIL |
+| **B.8** | **Browser Cache Versioning** | Browser set to load latest CSS/JS version tags (`v=2.x`) without stale caching | Verified across all 6 workstations | [ ] PASS<br>[ ] FAIL |
 
 ---
 

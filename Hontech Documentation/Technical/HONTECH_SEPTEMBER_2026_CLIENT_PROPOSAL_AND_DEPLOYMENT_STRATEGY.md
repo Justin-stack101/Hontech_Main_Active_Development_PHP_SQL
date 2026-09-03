@@ -203,9 +203,10 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 
 ---
 
-### 📺 4.5 Customer Waiting Lounge TV (Both Options)
+### 📺 4.5 Customer Waiting Lounge TV & Audio Chime System (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
-* **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
+* **Audio Notification Capability:** The Smart TV (or connected HDMI stick) **must have functional stereo speakers enabled** to produce clear audible notification chimes when vehicle statuses update (e.g. Bay Dispatch sound, Vehicle Ready chime, SLA timers) so waiting customers hear alerts immediately without needing to look at the screen constantly.
+* **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), test Web Audio API chime playback volume, inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
 
 ---
 
@@ -216,7 +217,7 @@ To guarantee 100% operational readiness before live customer intake, the Develop
 | :--- | :--- | :--- | :---: |
 | **Dedicated SA PCs** | **4 Dedicated Computers**<br>• 2 PCs in Branch 1 (Main)<br>• 2 PCs in Branch 2 | • Windows 10/11 64-bit, 4GB–8GB RAM, 1080p Full HD<br>• Google Chrome (v110+) / Edge with unblocked LocalStorage<br>• Dedicated USB keyboard/mouse, clean intake counter placement | [ ] PASS<br>[ ] FAIL |
 | **Billing & Cashier** | **2 Front Desk PCs**<br>• 1 PC in Branch 1<br>• 1 PC in Branch 2 | • Windows 10/11 desktop/laptop connected to 80mm thermal receipt printer<br>• Fast print preview for instant invoice & claim stub generation | [ ] PASS<br>[ ] FAIL |
-| **Lounge Smart TVs** | **2 Wall Displays**<br>• 1 TV in Branch 1<br>• 1 TV in Branch 2 | • 32" to 55" Smart TV with built-in browser running full-screen (`?mode=tv`)<br>• Zero buffering, auto-refresh customer queue, customer privacy enabled | [ ] PASS<br>[ ] FAIL |
+| **Lounge Smart TVs with Audio** | **2 Wall Displays with Sound**<br>• 1 TV in Branch 1<br>• 1 TV in Branch 2 | • 32" to 55" Smart TV with built-in browser running full-screen (`?mode=tv`)<br>• **Audio Sound Output:** Integrated speakers enabled for queue chimes (Bay Dispatch & Vehicle Ready)<br>• Zero buffering, auto-refresh customer queue, customer privacy enabled | [ ] PASS<br>[ ] FAIL |
 | **Network & Failover** | **Dual Internet Infrastructure** | • Primary fiber line (15–25 Mbps) with ≥ -65 dBm Wi-Fi across Bays 1–6<br>• Backup ₱999 prepaid 4G/5G Wi-Fi hotspot tested for 5-second switch | [ ] PASS<br>[ ] FAIL |
 | **Security & Accounts** | **Role-Based Access Governance** | • 4 SA Accounts, 2 Cashier Accounts, Owner & Admin Accounts configured<br>• 6-Digit PIN recovery & automated audit logging verified | [ ] PASS<br>[ ] FAIL |
 
