@@ -3210,23 +3210,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         <thead class="sticky top-0 z-10 bg-gray-50">
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
                                 <th class="px-2 py-3 bg-gray-50 text-center w-10 text-gray-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-2 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                                <th onclick="toggleClaimStubSort()" class="px-3 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
                                         <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-2 py-3 bg-gray-50">Plate No.</th>
-                                <th class="px-2 py-3 bg-gray-50">Model & Category</th>
-                                <th class="px-2 py-3 bg-gray-50">Source</th>
-                                <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Arrival (24H)</th>
-                                <th class="px-2 py-3 bg-gray-50 whitespace-nowrap">Departure (24H)</th>
+                                <th class="px-3 py-3 bg-gray-50 whitespace-nowrap">Plate No.</th>
+                                <th class="px-3 py-3 bg-gray-50 min-w-[260px]">Model & Category</th>
+                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Source</th>
+                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Arrival (24H)</th>
+                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Departure (24H)</th>
                                 <th class="px-3 py-3 bg-gray-50 min-w-[320px]">Evaluation / Diagnosis</th>
-                                <th class="px-2 py-3 bg-gray-50 text-center">Promised Date</th>
-                                <th class="px-2 py-3 bg-gray-50 text-center">C.O. Status</th>
-                                ${showGoal ? '<th class="px-2 py-3 bg-gray-50">SLA Status (2h)</th>' : ''}
-                                <th class="px-2 py-3 bg-gray-50 text-center">Status</th>
-                                <th class="px-2 py-3 bg-gray-50 text-center">Location</th>
+                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[110px]">Promised Date</th>
+                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[100px]">C.O. Status</th>
+                                ${showGoal ? '<th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[120px]">SLA Status (2h)</th>' : ''}
+                                <th class="px-3 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[165px]">Status</th>
+                                <th class="px-3 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[165px]">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -3445,17 +3445,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Source -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-800 border border-gray-250 shadow-2xs">${job.source || 'Walk-in'}</span>
                             </td>
 
                             <!-- Arrival (24-Hour Base) -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 <span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
                             </td>
                             
                             <!-- Departure (Hybrid Combo-Box: Direct Type Numbers + Preset Quick Selection) -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2 py-3 align-middle text-center">
                                 ${isEditable ? `
                                 <div class="inline-flex items-center bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-100/50 rounded-xl px-2 py-0.5 shadow-2xs transition group" title="Type departure time or pick from presets">
                                     <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none mr-1"></i>
@@ -3493,12 +3493,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Promised Date -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[110px]">
                                 <span class="inline-block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
                             </td>
 
                             <!-- C.O. Status -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[100px]">
                                 ${job.carryOverStatus ? `
                                 <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
                                     ${job.carryOverStatus}
@@ -3506,10 +3506,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 ` : '<span class="text-gray-400">-</span>'}
                             </td>
 
-
-                                                      <!-- SLA status -->
+                            <!-- SLA status -->
                             ${showGoal ? `
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[120px]">
                                 <span class="px-1.5 py-0.5 rounded text-xs font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                     ${job.goalStatus || 'N/A'}
                                 </span>
@@ -3517,9 +3516,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[165px]">
                                 ${isEditable ? `
-                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[145px]" 
+                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer min-w-[155px] max-w-[170px]" 
                                      style="${
                                          job.status === 'Ready to Release' || job.status === 'Ready' 
                                              ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
@@ -3529,8 +3528,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                                      ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
                                                      : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
                                      }" title="Change Status">
-                                    <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none whitespace-nowrap">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                     <select onchange="handleStatusChange('${job.id}', this.value, this)" 
                                             class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                                             title="Change Status">
@@ -3542,7 +3541,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     </select>
                                 </div>
                                 ` : `
-                                <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px]" 
+                                <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-3 py-1.5 rounded-xl shadow-2xs min-w-[155px] max-w-[170px] whitespace-nowrap" 
                                       style="${
                                           job.status === 'Ready to Release' || job.status === 'Ready' 
                                               ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
@@ -3558,18 +3557,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Location -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[165px]">
                                 ${(() => {
                                     const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
                                     if (isEditable && isMonitoringOrActive) {
                                         return `
-                                        <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition w-[145px] ${
+                                        <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition min-w-[155px] max-w-[170px] ${
                                             (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
                                                 ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
                                                 : 'bg-amber-50/80 text-amber-900 border-amber-300 cursor-pointer hover:border-amber-400'
                                         }" title="Assign / Change Workshop Bay">
-                                            <span class="font-bold text-xs uppercase flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Select Bay...' : job.location.replace(/^Lift/, 'Bay')}</span>
-                                            <i data-lucide="chevron-down" class="w-4 h-4 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none whitespace-nowrap">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                             <select onchange="updateJobField('${job.id}', 'location', this.value)" 
                                                 class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                                 title="Assign Location">
@@ -3594,15 +3593,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         `;
                                     } else if (isEditable && !isMonitoringOrActive) {
                                         return `
-                                        <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-2.5 py-1.5 shadow-2xs w-[145px] cursor-not-allowed select-none opacity-85" 
+                                        <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-3 py-1.5 shadow-2xs min-w-[155px] max-w-[170px] cursor-not-allowed select-none opacity-85" 
                                              title="Vehicle is in '${job.status}'. Set Status to 'Monitoring' to assign a workshop bay.">
-                                            <span class="font-bold text-xs uppercase flex-1 text-center truncate">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center whitespace-nowrap">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
                                             <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 shrink-0 stroke-[2.2]"></i>
                                         </div>
                                         `;
                                     } else {
                                         return `
-                                        <span class="inline-flex items-center justify-center font-bold text-xs uppercase px-2.5 py-1.5 rounded-xl shadow-2xs w-[145px] ${
+                                        <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-3 py-1.5 rounded-xl shadow-2xs min-w-[155px] max-w-[170px] whitespace-nowrap ${
                                             (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
                                                 ? 'bg-blue-50 text-blue-800 border border-blue-200' 
                                                 : 'bg-gray-100/90 text-gray-800 border border-gray-250'
