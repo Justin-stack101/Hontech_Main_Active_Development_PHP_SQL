@@ -534,27 +534,35 @@
                                         <span class="text-[9px] font-bold text-gray-400">Marikina & East</span>
                                     </div>
                                     <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Global Business Owner">
                                             <span class="font-black text-gray-900 block text-[11px]">Owner (Global)</span>
                                             <span class="text-gray-500 text-[9.5px] font-mono block truncate">owner@hontech.com</span>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin (Main)</span>
+                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Primary Administrator (Marikina Main)">
+                                            <span class="font-black text-gray-900 block text-[11px]">Admin 1 (Main)</span>
                                             <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin@hontech.com</span>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa@hontech.com</span>
+                                        <button type="button" onclick="quickDirectLogin('admin2@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Secondary Administrator (Marikina Main)">
+                                            <span class="font-black text-gray-900 block text-[11px]">Admin 2 (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin2@hontech.com</span>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
-                                            <span class="font-black text-gray-900 block text-[11px]">Staff (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                        <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Branch Administrator (East Branch)">
                                             <span class="font-black text-gray-900 block text-[11px]">Admin (East)</span>
                                             <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin.east@...</span>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer">
+                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor (Marikina Main)">
+                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('sa.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor (East Branch)">
+                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (East)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa.east@...</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (Marikina Main)">
+                                            <span class="font-black text-gray-900 block text-[11px]">Staff (Main)</span>
+                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff@hontech.com</span>
+                                        </button>
+                                        <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (East Branch)">
                                             <span class="font-black text-gray-900 block text-[11px]">Staff (East)</span>
                                             <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff.east@...</span>
                                         </button>
@@ -5701,7 +5709,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.39"></script>
+    <script src="js/app.js?v=4.40"></script>
 </body>
 
 </html>
