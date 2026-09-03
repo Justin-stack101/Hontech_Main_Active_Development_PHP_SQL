@@ -260,60 +260,49 @@ input[type=checkbox] {
 }
 
 /* ==========================================================================
-   CLEAN & MINIMALIST LANE TYPE SELECTOR & BADGES
+   CLEAN & MINIMALIST LANE SELECTOR COMPONENT
    ========================================================================== */
 .lane-selector-pill {
   position: relative;
   display: inline-flex;
   align-items: center;
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: #1e293b;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
-  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 22px 4px 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   min-width: 96px;
-  max-width: 125px;
+  max-width: 120px;
 }
 
 .lane-selector-pill:hover {
-  background-color: #ffffff;
   border-color: #64748b;
 }
 
 .lane-selector-pill:focus-within {
-  background-color: #ffffff;
   border-color: #0f172a;
+  box-shadow: 0 0 0 1px #0f172a;
 }
 
 .lane-selector-pill select {
-  width: 100%;
   appearance: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  text-transform: capitalize;
-  padding: 4px 22px 4px 7px;
+  color: #0f172a;
   cursor: pointer;
-  color: #1e293b;
+  padding: 0;
   font-family: inherit;
-  line-height: 1.35;
 }
 
 .lane-selector-pill select option {
   background-color: #ffffff;
   color: #0f172a;
-  font-weight: 600;
-  font-size: 11px;
-  padding: 4px 8px;
 }
 
 .lane-selector-pill .lane-arrow-icon {
@@ -339,14 +328,14 @@ input[type=checkbox] {
   justify-content: center;
   background-color: #f1f5f9;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.01em;
   text-transform: capitalize;
   color: #334155;
-  padding: 4px 8px;
-  min-width: 90px;
+  padding: 4px 10px;
+  min-width: 96px;
 }
 
 /* ==========================================================================
@@ -357,11 +346,11 @@ input[type=checkbox] {
   flex-direction: column;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   transition: border-color 0.15s ease, background-color 0.15s ease;
-  min-width: 118px;
-  max-width: 138px;
+  min-width: 136px;
+  max-width: 156px;
 }
 
 .appt-selector-card:hover {
@@ -377,8 +366,8 @@ input[type=checkbox] {
 .appt-field-row {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2.5px 6px;
+  gap: 6px;
+  padding: 3px 8px;
 }
 
 .appt-field-row input {
@@ -386,7 +375,7 @@ input[type=checkbox] {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #1e293b;
   padding: 1px 0;
@@ -401,7 +390,8 @@ input[type=checkbox] {
   cursor: pointer;
   opacity: 0.55;
   filter: grayscale(1);
-  transform: scale(0.8);
+  transform: scale(0.85);
+  margin-left: auto;
 }
 
 .appt-field-row input[type="date"]::-webkit-calendar-picker-indicator:hover {
@@ -413,10 +403,10 @@ input[type=checkbox] {
   flex-direction: column;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 3px 6px;
-  min-width: 115px;
-  max-width: 135px;
+  border-radius: 8px;
+  padding: 3.5px 8px;
+  min-width: 130px;
+  max-width: 150px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -434,10 +424,10 @@ input[type=checkbox] {
   gap: 6px;
   background-color: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 3.5px 7px;
-  min-width: 130px;
-  max-width: 190px;
+  border-radius: 8px;
+  padding: 4px 8px;
+  min-width: 140px;
+  max-width: 210px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 

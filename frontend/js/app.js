@@ -2805,8 +2805,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
             document.getElementById('delete-confirm-job-id').value = jobId;
-            document.getElementById('delete-confirm-message').innerText = `Are you sure you want to permanently delete the booking for ${job.name} (${job.plate})?`;
+            const msgEl = document.getElementById('delete-confirm-message');
+            if (msgEl) {
+                msgEl.innerHTML = `Are you sure you want to delete the booking for <strong class="text-slate-900 font-bold">${job.name}</strong> (<span class="font-mono font-bold text-slate-800">${job.plate}</span>)?`;
+            }
             document.getElementById('delete-confirm-modal').classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
         }
 
         function closeDeleteConfirmModal() {
@@ -3164,17 +3168,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const curLane = job.laneType || 'Flexible Lane';
                     return `
                     <tr class="hover:bg-gray-50/60 transition border-b border-gray-100 text-xs">
-                        <td class="py-2.5 px-2.5">
+                        <td class="py-3 px-3.5 align-middle">
                             <div class="font-bold text-gray-900">${job.name}</div>
                             <div class="text-[10px] text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
                         </td>
-                        <td class="py-2.5 px-2.5">
-                            <div class="inline-block font-bold font-mono text-gray-900 bg-gray-100 border border-gray-300 px-1.5 py-0.5 rounded-md text-xs tracking-wide shadow-2xs">${job.plate}</div>
+                        <td class="py-3 px-3.5 align-middle">
+                            <div class="inline-block font-bold font-mono text-gray-900 bg-gray-100 border border-gray-300 px-2 py-0.5 rounded-md text-xs tracking-wide shadow-2xs">${job.plate}</div>
                         </td>
-                        <td class="py-2.5 px-2.5">
-                            <span class="text-gray-700 text-[11px] font-semibold block truncate max-w-[120px]" title="${job.vehicle}">${job.vehicle}</span>
+                        <td class="py-3 px-3.5 align-middle">
+                            <span class="text-gray-700 text-[11px] font-semibold block truncate max-w-[130px]" title="${job.vehicle}">${job.vehicle}</span>
                         </td>
-                        <td class="py-2.5 px-2.5">
+                        <td class="py-3 px-3.5 align-middle">
                             ${isReadOnlyOnline ? `
                                 <span class="lane-badge-static">
                                     ${curLane.replace(' Lane', '')}
@@ -3193,10 +3197,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             `}
                         </td>
-                        <td class="py-2.5 px-2.5">
+                        <td class="py-3 px-3.5 align-middle">
                             ${isReadOnlyOnline ? `
                                 <div class="appt-badge-static">
-                                    <div class="flex items-center gap-1 font-bold text-gray-900 text-[10.5px]">
+                                    <div class="flex items-center gap-1.5 font-bold text-gray-900 text-[10.5px]">
                                         <svg class="w-3 h-3 text-gray-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                             <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -3205,7 +3209,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         </svg>
                                         <span class="truncate">${job.apptDate || 'N/A'}</span>
                                     </div>
-                                    <div class="flex items-center gap-1 font-mono font-bold text-gray-700 text-[10px] mt-0.5 pt-0.5 border-t border-slate-200">
+                                    <div class="flex items-center gap-1.5 font-mono font-bold text-gray-700 text-[10px] mt-0.5 pt-0.5 border-t border-slate-200">
                                         <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <polyline points="12 6 12 12 16 14"></polyline>
@@ -3242,7 +3246,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             `}
                         </td>
-                        <td class="py-2.5 px-2.5">
+                        <td class="py-3 px-3.5 align-middle">
                             ${isReadOnlyOnline ? `
                                 <div class="eval-badge-static">
                                     <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3267,10 +3271,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             `}
                         </td>
-                        <td class="py-2.5 px-2.5 text-center">
+                        <td class="py-3 px-3.5 text-center align-middle">
                             <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-3.5 h-3.5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
                         </td>
-                        <td class="py-2.5 px-2.5 text-right">
+                        <td class="py-3 px-3.5 text-right align-middle">
                             <div class="flex items-center justify-end gap-1.5">
                                 ${isReadOnlyOnline ? `
                                     <span class="text-[11px] font-bold text-gray-400 italic">View Only</span>
