@@ -3109,43 +3109,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         window.switchQueueTab = function(tab) {
-            localStorage.setItem('hontech-queue-tab', tab);
-            const btnPending = document.getElementById('tab-btn-pending');
-            const btnActive = document.getElementById('tab-btn-active');
-            const btnAll = document.getElementById('tab-btn-all');
-            
-            const activeClasses = ['bg-white', 'shadow-2xs', 'text-gray-900', 'font-bold'];
-            const inactiveClasses = ['text-gray-600', 'hover:text-gray-900'];
-            
-            [btnPending, btnActive, btnAll].forEach(btn => {
-                if (btn) {
-                    btn.classList.remove(...activeClasses);
-                    btn.classList.add(...inactiveClasses);
-                }
-            });
-            
-            const targetBtn = tab === 'pending' ? btnPending : (tab === 'active' ? btnActive : btnAll);
-            if (targetBtn) {
-                targetBtn.classList.remove(...inactiveClasses);
-                targetBtn.classList.add(...activeClasses);
-            }
-            
-            const onlineQueueEl = document.getElementById('container-online-queue');
-            const dailyIntakesEl = document.getElementById('container-daily-intakes');
-            
-            const isTech = currentUserRole === 'tech';
-            const canViewOnline = currentUserRole === 'assistant' || currentUserRole === 'owner' || currentUserRole === 'admin' || currentUserRole === 'sa';
-            
-            if (tab === 'pending') {
-                if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
-                if (dailyIntakesEl) dailyIntakesEl.classList.add('hidden');
-            } else if (tab === 'active') {
-                if (onlineQueueEl) onlineQueueEl.classList.add('hidden');
-                if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
-            } else {
-                if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
-                if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
-            }
+            // Deprecated queue tab switch stub
         };
 
         function renderStaffTables() {
@@ -3163,21 +3127,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const techBoardEl = document.getElementById('container-tech-board');
             const periodicRecordsEl = document.getElementById('container-periodic-records');
 
-            const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
-            const activeWorkshop = allJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
-
-            if (document.getElementById('badge-pending-count')) {
-                document.getElementById('badge-pending-count').innerText = pendingOnline.length;
-            }
-            if (document.getElementById('badge-active-count')) {
-                document.getElementById('badge-active-count').innerText = activeWorkshop.length;
-            }
-
-            const currentQueueTab = localStorage.getItem('hontech-queue-tab') || (isAsst ? 'pending' : 'active');
-            if (typeof window.switchQueueTab === 'function') {
-                window.switchQueueTab(currentQueueTab);
-            }
-
+            if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
+            if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 

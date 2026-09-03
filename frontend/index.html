@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.68">
+    <link rel="stylesheet" href="css/main.css?v=4.69">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -2958,26 +2958,6 @@
             <!-- RECORDS & QUEUES VIEW -->
             <div id="section-queue" class="section-content hidden fade-in space-y-3">
 
-                <!-- Queue View Segmented Controls -->
-                <div class="flex flex-wrap items-center justify-between gap-3 p-1.5 bg-white border border-gray-200 rounded-xl shadow-2xs" id="queue-tab-controls">
-                    <div class="inline-flex p-1 bg-gray-100 rounded-lg gap-1 text-xs font-bold">
-                        <button type="button" id="tab-btn-pending" onclick="switchQueueTab('pending')" class="px-3 py-1.5 rounded-md transition text-gray-900 font-bold bg-white shadow-2xs cursor-pointer flex items-center gap-1.5">
-                            <i data-lucide="calendar-clock" class="w-3.5 h-3.5 text-gray-700"></i>
-                            <span>Pending Inquiries</span>
-                            <span id="badge-pending-count" class="px-1.5 py-0.2 text-[9.5px] rounded-full bg-red-600 text-white font-mono">0</span>
-                        </button>
-                        <button type="button" id="tab-btn-active" onclick="switchQueueTab('active')" class="px-3 py-1.5 rounded-md transition text-gray-600 hover:text-gray-900 cursor-pointer flex items-center gap-1.5">
-                            <i data-lucide="list-todo" class="w-3.5 h-3.5 text-gray-500"></i>
-                            <span>Active Workshop</span>
-                            <span id="badge-active-count" class="px-1.5 py-0.2 text-[9.5px] rounded-full bg-gray-300 text-gray-700 font-mono">0</span>
-                        </button>
-                        <button type="button" id="tab-btn-all" onclick="switchQueueTab('all')" class="px-3 py-1.5 rounded-md transition text-gray-600 hover:text-gray-900 cursor-pointer flex items-center gap-1.5">
-                            <i data-lucide="layers" class="w-3.5 h-3.5 text-gray-500"></i>
-                            <span>Split View (All)</span>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
                     class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col hidden">
@@ -5817,7 +5797,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.68"></script>
+    <script src="js/app.js?v=4.69"></script>
 </body>
 
 </html>
