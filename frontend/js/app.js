@@ -3494,7 +3494,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-3 py-2.5 align-middle min-w-[340px]">
+                            <td class="px-3 py-2.5 align-middle min-w-[380px]">
                                 <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5 mb-1">
                                     <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
                                     <span class="truncate max-w-[200px] font-bold" title="${job.vehicle}">${job.vehicle}</span>
@@ -3520,11 +3520,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <input type="text" 
                                                value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
                                                placeholder="Specify..." 
-                                               maxlength="20"
+                                               maxlength="25"
                                                onkeydown="if(event.key === 'Enter') this.blur();"
                                                onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
-                                               class="text-[10px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text"
-                                               style="width: 58px !important; min-width: 50px !important; max-width: 65px !important; padding: 0 !important;">
+                                               class="text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text"
+                                               style="width: 86px !important; min-width: 75px !important; max-width: 95px !important; padding: 0 !important;"
+                                               title="${job.category || 'Specify custom service'}">
                                     </div>
                                     ` : ''}
                                     ` : `
