@@ -207,7 +207,7 @@
 
         /* Premium Dark Sidebar styles */
         #app-sidebar {
-            width: 236px !important;
+            width: 252px !important;
             background-color: #0f172a !important; /* bg-slate-900 */
             border-right-color: #1e293b !important; /* border-slate-800 */
             color: #cbd5e1 !important; /* text-slate-300 */
@@ -215,7 +215,7 @@
         }
         #app-sidebar.sidebar-collapsed,
         .sidebar-collapsed #app-sidebar {
-            width: 68px !important;
+            width: 72px !important;
         }
         .sidebar-collapsed #sidebar-user-dropdown {
             left: calc(100% + 10px) !important;
@@ -238,15 +238,27 @@
         }
         #app-sidebar .nav-btn {
             color: #cbd5e1 !important;
+            font-size: 13.5px !important;
+            font-weight: 700 !important;
+            padding: 10px 14px !important;
+            border-radius: 12px !important;
             transition: all 0.2s ease;
+        }
+        #app-sidebar .nav-btn i {
+            width: 20px !important;
+            height: 20px !important;
         }
         #app-sidebar .nav-btn:hover {
             background-color: #1e293b !important; /* hover:bg-slate-800 */
             color: #ffffff !important;
+            transform: translateX(2px);
         }
         #app-sidebar .nav-btn.bg-gray-100 {
-            background-color: #dc2626 !important; /* active: bg-red-600 */
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; /* active: bg-red-600 */
             color: #ffffff !important;
+            box-shadow: 0 4px 14px -2px rgba(220, 38, 38, 0.4) !important;
+            border: 1px solid rgba(248, 113, 113, 0.35) !important;
+            font-weight: 800 !important;
         }
         #app-sidebar button:hover {
             background-color: #1e293b !important;
@@ -921,19 +933,19 @@
                 <!-- User Profile Dropdown Container -->
                 <div class="relative flex items-center">
                     <button id="header-user-dropdown-btn" onclick="toggleUserDropdown(event)" type="button"
-                        class="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-200 hover:border-red-300 transition focus:outline-none cursor-pointer shadow-2xs group shrink-0 my-auto"
+                        class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] border border-slate-200 hover:border-red-300 transition-all focus:outline-none cursor-pointer shadow-xs group shrink-0 my-auto"
                         title="Account & Branch">
                         <!-- Avatar -->
-                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500 to-rose-700 text-white flex items-center justify-center font-black text-sm relative shadow-sm shrink-0">
+                        <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-red-500 to-rose-700 text-white flex items-center justify-center font-black text-sm relative shadow-xs shrink-0">
                             <i data-lucide="user" class="w-4 h-4 text-white"></i>
                             <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full shadow-xs"></span>
                         </div>
                         <!-- Name + Branch -->
-                        <div class="text-left flex flex-col justify-center leading-tight hidden sm:flex">
-                            <span class="text-[11px] font-black text-slate-900 group-hover:text-red-600 transition-colors whitespace-nowrap block max-w-[160px] truncate" id="header-user-name">User</span>
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-red-500 transition-colors whitespace-nowrap" id="header-user-branch-text">Branch</span>
+                        <div class="text-left flex flex-col justify-center leading-tight min-w-0">
+                            <span class="text-[12px] font-black text-slate-800 group-hover:text-red-600 transition-colors whitespace-nowrap block max-w-[150px] md:max-w-[210px] truncate" id="header-user-name">User</span>
+                            <span class="text-[9.5px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-red-500 transition-colors whitespace-nowrap truncate" id="header-user-branch-text">Branch</span>
                         </div>
-                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-red-500 transition shrink-0"></i>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-red-500 group-hover:translate-y-0.5 transition-all shrink-0 ml-0.5"></i>
                     </button>
 
                     <!-- Dropdown Menu -->
@@ -3716,7 +3728,7 @@
                         </div>
                     </div>
 
-                    <!-- Workshop Capacity & Bay Allocation (Admin / Owner / SA) -->
+                    <!-- Workshop Capacity & Bay Allocation (Owner / Admin Authority) -->
                     <div id="settings-bay-config-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center justify-between border-b border-gray-150 pb-4">
                             <div class="flex items-center gap-3">
@@ -3725,7 +3737,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Facility Max Bay Limit</h3>
-                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Admin Facility Ceiling (Max Bays Allowed for SA)</p>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Owner & Admin Facility Ceiling (Max Bays Allowed for SA)</p>
                                 </div>
                             </div>
                             <span id="settings-bay-count-badge" class="text-xs font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full">20 Bays Max Ceiling</span>
@@ -3737,13 +3749,17 @@
                                 <div class="flex items-center gap-2">
                                     <div class="relative flex-1">
                                         <select id="settings-facility-max-bays" onchange="setFacilityMaxBayLimit(this.value)" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer appearance-none">
+                                            <option value="4">4 Bays (Compact Pod)</option>
+                                            <option value="5">5 Bays</option>
+                                            <option value="6">6 Bays</option>
+                                            <option value="7">7 Bays (Target Period Limit)</option>
+                                            <option value="8">8 Bays</option>
+                                            <option value="9">9 Bays</option>
                                             <option value="10">10 Bays (Small Workshop Facility Limit)</option>
                                             <option value="12">12 Bays (Medium Branch Facility Limit)</option>
                                             <option value="16">16 Bays (Large Branch Facility Limit)</option>
                                             <option value="20" selected>20 Bays (Standard Full Hub Ceiling)</option>
                                             <option value="30">30 Bays (Expanded Mega Facility)</option>
-                                            <option value="40">40 Bays (Regional Service Center)</option>
-                                            <option value="50">50 Bays (Maximum Enterprise Hub Limit)</option>
                                         </select>
                                         <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 pointer-events-none absolute right-4 top-3.5"></i>
                                     </div>
@@ -3753,16 +3769,19 @@
                             <!-- Quick Ceiling Presets -->
                             <div class="flex flex-wrap items-center gap-1.5 pt-1">
                                 <span class="text-[9.5px] text-gray-400 font-bold uppercase tracking-wider mr-1">Ceiling Presets:</span>
+                                <button type="button" onclick="setFacilityMaxBayLimit(4)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">4 Max</button>
+                                <button type="button" onclick="setFacilityMaxBayLimit(6)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">6 Max</button>
+                                <button type="button" onclick="setFacilityMaxBayLimit(7)" class="px-2.5 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 font-bold text-[11px] transition cursor-pointer">7 Max</button>
                                 <button type="button" onclick="setFacilityMaxBayLimit(10)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">10 Max</button>
                                 <button type="button" onclick="setFacilityMaxBayLimit(20)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">20 Max</button>
-                                <button type="button" onclick="setFacilityMaxBayLimit(30)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">30 Max</button>
-                                <button type="button" onclick="setFacilityMaxBayLimit(50)" class="px-2.5 py-1.5 rounded-lg bg-gray-100 hover:bg-red-50 hover:text-red-600 border border-gray-200 font-bold text-[11px] text-gray-700 transition cursor-pointer">50 Max</button>
+                                <button type="button" onclick="promptCustomCeilingLimit()" class="px-2.5 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-black font-bold text-[11px] uppercase transition cursor-pointer flex items-center gap-1">Custom...</button>
                             </div>
 
                             <p class="text-xs text-slate-500 leading-relaxed pt-1">
-                                Service Advisors on the workshop floor can dynamically adjust active operational bays up to this maximum facility limit.
+                                Service Advisors on the workshop floor can dynamically adjust active operational bays up to this maximum facility ceiling (e.g. 1 to 7 bays).
                             </p>
-                            </div>
+                        </div>
+                    </div>
 
                             <!-- Direct Link to Live Workshop Floor Module -->
                             <div class="pt-3 border-t border-gray-100">
@@ -5837,7 +5856,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.73"></script>
+    <script src="js/app.js?v=4.75"></script>
 </body>
 
 </html>

@@ -1230,8 +1230,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('settings-bay-config-container')) {
-                // Only Administrator has master authority to configure facility max capacity limit
-                document.getElementById('settings-bay-config-container').style.display = isAdmin ? 'block' : 'none';
+                // Both Owner and Administrator have authority to configure facility max capacity ceiling
+                document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('bays-control-card')) {
                 // SA and Admin can scale active floor bays; Owner is view-only
@@ -1252,10 +1252,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="pie-chart" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="database" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1273,11 +1273,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="pie-chart" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="history" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="users" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="database" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1289,18 +1289,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Assistant Order: 1. Online Bookings, 2. Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
+                // Assistant Order: 1. Online Bookings, 2. Master Queue, 3. Customer Lookup, 4. TV Monitor (Bay Status excluded per specification)
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
-                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="calendar-plus" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="list-todo" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Master Queue</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="history" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-500 text-xs"><i data-lucide="monitor" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Master Queue</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
+                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('assistant');
                 defaultView = 'intake';
@@ -1320,11 +1318,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="user-plus" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="clipboard-list" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="history" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-600 text-xs"><i data-lucide="layout-grid" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-2.5 py-2 rounded-xl font-bold transition hover:bg-gray-100 flex items-center gap-2 text-gray-500 text-xs"><i data-lucide="monitor" class="w-4 h-4 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
+                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('sa');
                 defaultView = 'intake';
@@ -1639,6 +1637,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function showSection(id, btnElement) {
+            // Guard: Assistant does not have Bay Status reader permissions
+            if (id === 'bays' && currentUserRole === 'assistant') {
+                showSystemToast('Access Restricted: Assistant role does not have Bay Status reader access.', 'warning', 'Permission Denied');
+                showSection('intake');
+                return;
+            }
+
             // Save current section to local storage for persistence across reloads
             localStorage.setItem('hontech-active-section', id);
             
@@ -8075,7 +8080,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function getFacilityMaxBayLimit() {
             const stored = parseInt(localStorage.getItem('hontech_max_bay_limit'), 10);
-            if (!isNaN(stored) && stored >= 2 && stored <= 50) {
+            if (!isNaN(stored) && stored >= 1 && stored <= 50) {
                 return stored;
             }
             return 20; // Default facility maximum ceiling
@@ -8083,11 +8088,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.getFacilityMaxBayLimit = getFacilityMaxBayLimit;
 
         function setFacilityMaxBayLimit(val) {
-            if (currentUserRole !== 'admin') {
-                showSystemToast('Only Administrator can configure facility maximum capacity limit.', 'warning', 'Admin Authority');
+            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
+                showSystemToast('Only Owner and Administrator can configure facility maximum capacity ceiling.', 'warning', 'Higher Authority Required');
                 return;
             }
-            const maxVal = Math.min(50, Math.max(2, parseInt(val, 10) || 20));
+            const maxVal = Math.min(50, Math.max(1, parseInt(val, 10) || 20));
             localStorage.setItem('hontech_max_bay_limit', maxVal.toString());
             
             // If current active bays exceed new max limit, clamp it down
@@ -8099,17 +8104,36 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             initWorkshopBaySettings();
             if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
             if (typeof renderStaffTables === 'function') renderStaffTables();
-            showSystemToast(`Facility maximum capacity ceiling set to ${maxVal} bays.`, 'success', 'Ceiling Configured');
+            if (typeof renderTV === 'function') renderTV();
+            showSystemToast(`Facility capacity ceiling set to ${maxVal} bays for Service Advisor operations.`, 'success', 'Ceiling Configured');
         }
         window.setFacilityMaxBayLimit = setFacilityMaxBayLimit;
+
+        function promptCustomCeilingLimit() {
+            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
+                showSystemToast('Only Owner and Administrator can configure facility maximum capacity ceiling.', 'warning', 'Higher Authority Required');
+                return;
+            }
+            const current = getFacilityMaxBayLimit();
+            const input = prompt(`Enter Facility Max Bay Ceiling for Service Advisors (1-50 bays):`, current.toString());
+            if (input !== null) {
+                const parsed = parseInt(input.trim(), 10);
+                if (!isNaN(parsed) && parsed >= 1 && parsed <= 50) {
+                    setFacilityMaxBayLimit(parsed);
+                } else {
+                    showSystemToast('Please enter a valid bay ceiling number between 1 and 50.', 'error', 'Invalid Input');
+                }
+            }
+        }
+        window.promptCustomCeilingLimit = promptCustomCeilingLimit;
 
         function getWorkshopBayCount() {
             const maxLimit = getFacilityMaxBayLimit();
             const stored = parseInt(localStorage.getItem('hontech_workshop_bay_count'), 10);
-            if (!isNaN(stored) && stored >= 2) {
+            if (!isNaN(stored) && stored >= 1) {
                 return Math.min(maxLimit, stored);
             }
-            return Math.min(maxLimit, 4); // Default 4 service bays
+            return Math.min(maxLimit, Math.min(4, maxLimit)); // Default up to 4 service bays
         }
         window.getWorkshopBayCount = getWorkshopBayCount;
 
@@ -8120,9 +8144,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             const current = getWorkshopBayCount();
             const maxLimit = getFacilityMaxBayLimit();
-            const next = Math.min(maxLimit, Math.max(2, current + Number(delta || 0)));
+            const next = Math.min(maxLimit, Math.max(1, current + Number(delta || 0)));
             if (next === current && delta > 0 && current >= maxLimit) {
-                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Admin.`, 'warning', 'Limit Reached');
+                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Owner/Admin.`, 'warning', 'Limit Reached');
                 return;
             }
             handleWorkshopBayCountChange(next);
@@ -8156,7 +8180,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function adjustCustomModalBayCount(delta) {
             const maxLimit = getFacilityMaxBayLimit();
-            tempCustomModalBayCount = Math.min(maxLimit, Math.max(2, tempCustomModalBayCount + Number(delta || 0)));
+            tempCustomModalBayCount = Math.min(maxLimit, Math.max(1, tempCustomModalBayCount + Number(delta || 0)));
             const valEl = document.getElementById('modal-bay-stepper-value');
             if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
         }
@@ -8164,7 +8188,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function setCustomModalBayCount(count) {
             const maxLimit = getFacilityMaxBayLimit();
-            tempCustomModalBayCount = Math.min(maxLimit, Math.max(2, parseInt(count, 10) || 4));
+            tempCustomModalBayCount = Math.min(maxLimit, Math.max(1, parseInt(count, 10) || 1));
             const valEl = document.getElementById('modal-bay-stepper-value');
             if (valEl) valEl.innerText = tempCustomModalBayCount.toString();
         }
@@ -8182,28 +8206,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return;
             }
             const maxLimit = getFacilityMaxBayLimit();
-            const requested = parseInt(newCount, 10) || 4;
+            const requested = parseInt(newCount, 10) || 1;
             if (requested > maxLimit) {
-                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Admin.`, 'warning', 'Limit Reached');
+                showSystemToast(`Cannot exceed facility maximum of ${maxLimit} bays configured by Owner/Admin.`, 'warning', 'Limit Reached');
             }
-            const num = Math.min(maxLimit, Math.max(2, requested));
+            const num = Math.min(maxLimit, Math.max(1, requested));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
             
-            const badge1 = document.getElementById('settings-bay-count-badge');
-            if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
-            const badge2 = document.getElementById('bays-module-count-badge');
-            if (badge2) badge2.innerText = `${num} / ${maxLimit} Bays Active`;
-
-            const select2 = document.getElementById('bays-module-select');
-            if (select2) {
-                if (!select2.querySelector(`option[value="${num}"]`)) {
-                    const opt = document.createElement('option');
-                    opt.value = num.toString();
-                    opt.innerText = `${num} Bays (Active)`;
-                    select2.appendChild(opt);
-                }
-                select2.value = num.toString();
-            }
+            initWorkshopBaySettings();
             
             try {
                 if (typeof renderStaffTables === 'function') renderStaffTables();
@@ -8223,7 +8233,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
-            showSystemToast(`Floor active capacity scaled to ${num} service bays (Facility Max: ${maxLimit}).`, 'success', 'Bays Scaled');
+            showSystemToast(`Floor active capacity scaled to ${num} service bays (Facility Ceiling: ${maxLimit}).`, 'success', 'Bays Scaled');
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
 
@@ -8232,13 +8242,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const bayCount = getWorkshopBayCount();
 
             const settingMaxSelect = document.getElementById('settings-facility-max-bays');
-            if (settingMaxSelect) settingMaxSelect.value = maxLimit.toString();
+            if (settingMaxSelect) {
+                if (!settingMaxSelect.querySelector(`option[value="${maxLimit}"]`)) {
+                    const opt = document.createElement('option');
+                    opt.value = maxLimit.toString();
+                    opt.innerText = `${maxLimit} Bays (Custom Ceiling)`;
+                    settingMaxSelect.appendChild(opt);
+                }
+                settingMaxSelect.value = maxLimit.toString();
+            }
 
             const badge1 = document.getElementById('settings-bay-count-badge');
             if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
 
             const select2 = document.getElementById('bays-module-select');
-            if (select2) select2.value = bayCount.toString();
+            if (select2) {
+                let optionsHtml = '';
+                for (let i = 1; i <= maxLimit; i++) {
+                    const label = (i === 1) ? '1 Bay (Solo Pod)' : (i === 4 ? '4 Bays (Standard)' : `${i} Bays`);
+                    optionsHtml += `<option value="${i}" ${i === bayCount ? 'selected' : ''}>${label}</option>`;
+                }
+                select2.innerHTML = optionsHtml;
+            }
             const badge2 = document.getElementById('bays-module-count-badge');
             if (badge2) badge2.innerText = `${bayCount} / ${maxLimit} Bays Active`;
         }
