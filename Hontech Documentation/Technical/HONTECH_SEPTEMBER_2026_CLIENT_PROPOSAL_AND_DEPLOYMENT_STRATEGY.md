@@ -146,15 +146,15 @@ This section outlines the exact device and hardware requirements for both operat
 
 ### ☁️ 4.1 Track B: Modern Cloud Device Requirements (RECOMMENDED — ₱0 Server Cost)
 
-Because Cloud computing is hosted remotely, **HonTech does NOT need to purchase a dedicated server PC**. The system runs on existing shop devices:
+Because Cloud computing is hosted remotely, **HonTech does NOT need to purchase a dedicated server PC**. The system runs on existing shop devices across both branches:
 
-| Shop Location / Role | Device Required | Minimum Specification | Est. Hardware Cost |
+| Shop Location / Role | Equipment Required (2 Branches) | Minimum Client Hardware / Operating Spec | Est. Hardware Cost |
 | :--- | :--- | :--- | :--- |
-| **Front Desk / Cashier** | Existing Office PC or Laptop | Any Windows 10/11 desktop or laptop with Google Chrome / Edge | **₱0.00** *(Use existing)* |
-| **Service Advisors (SAs)** | Dedicated SA Desktop / Bay Computer | Existing PC or laptop designated for SA intake & bay monitoring | **₱0.00** *(Use existing)* |
-| **Customer Waiting Lounge** | Wall Display TV | Smart TV with built-in browser *(or ₱1,800 Fire Stick)* | **₱0.00** *(Shop already owns TV)* |
-| **Central Server Unit** | **None Needed** *(Cloud-Hosted)* | Amazon AWS Tier-4 Data Center (Managed by Provider) | **₱0.00** |
-| **TOTAL UPFRONT INVESTMENT**| | | **₱0.00** |
+| **Service Advisors (SAs)** | **4 Dedicated SA Personal Computers**<br>• Branch 1 (Main): 2 SA Computers<br>• Branch 2: 2 SA Computers | • Windows 10/11 desktop PC or laptop<br>• Google Chrome / Microsoft Edge browser<br>• 4GB–8GB RAM, 1080p display, Wi-Fi/LAN | **₱0.00** *(Use existing staff PCs)* |
+| **Front Desk / Cashier** | **2 Front Desk Computers**<br>• Branch 1: 1 Cashier PC<br>• Branch 2: 1 Cashier PC | • Windows 10/11 PC/laptop for billing & 80mm thermal receipt/claim stub printing | **₱0.00** *(Use existing office PCs)* |
+| **Customer Waiting Lounge** | **2 Wall Display TVs**<br>• Branch 1: 1 Smart TV<br>• Branch 2: 1 Smart TV | • Smart TV with built-in web browser *(or ₱1,800 Google Chromecast / Fire Stick)* | **₱0.00** *(Shop already owns TVs)* |
+| **Central Server Unit** | **None Needed** *(Cloud-Hosted)* | • Amazon AWS Tier-4 Data Centers (Managed by Supabase & Vercel) | **₱0.00** |
+| **TOTAL UPFRONT INVESTMENT**| **Total: 6 Staff PCs + 2 Smart TVs** | | **₱0.00** |
 
 ---
 
@@ -175,16 +175,16 @@ If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be p
 Here is how the hardware specifications directly affect HonTech's daily workflow across its 3–5 staff members per location:
 
 * **Branch 1 (Marikina Main — 3 to 5 Users):**
-  * 2 Service Advisors intake vehicles and log PMS status updates on dedicated computers.
-  * 1 Cashier generates invoices and prints claim stubs.
+  * 2 Service Advisors intake vehicles and log PMS status updates on 2 dedicated personal computers.
+  * 1 Cashier generates invoices and prints claim stubs on the front desk PC.
   * 1 Waiting Lounge TV runs continuously displaying the customer queue.
   * *Daily Volume:* ~15 to 25 repair orders/day.
 
 * **Branch 2 (Second Branch Expansion — 3 to 5 Users):**
-  * 2 Service Advisors intake vehicles on dedicated computers.
+  * 2 Service Advisors intake vehicles on 2 dedicated personal computers.
   * 1 Cashier handles billing and invoice processing.
   * 1 Waiting Lounge TV shows branch customer queues.
-  * *Combined Multi-Branch Load:* ~30 to 50 active repair orders/day across both branches.
+  * *Combined Multi-Branch Load:* 4 SA personal computers + 2 Cashier PCs + 2 TVs (~30 to 50 active repair orders/day across both branches).
 
 #### ⚠️ Why Minimum/Budget Hardware (4GB RAM) Fails Over Time:
 * When 3 Service Advisors click *"Save Job"* at the exact same second while the Lounge TV is auto-refreshing, a 4GB RAM PC runs out of memory buffers.
@@ -193,7 +193,6 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 #### 🛡️ Why Work-Grade Class (16GB RAM + NVMe SSD) Runs Flawlessly:
 * **Instant 15ms Response Times:** With 16GB RAM, the entire 45,000-vehicle database stays cached in active memory. Even during peak morning intake rushes, queries return instantly.
 * **4+ Years 24/7 Durability:** High-grade cooling and an 80+ Bronze certified power supply prevent hardware crashes, giving HonTech total operational peace of mind for years without replacement.
-
 
 ---
 
@@ -207,7 +206,6 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 ### 📺 4.5 Customer Waiting Lounge TV (Both Options)
 * **Current Status:** HonTech AutoCenter **already owns a functional Smart TV** in the customer lounge.
 * **Week 2 Inspection:** Team will test the built-in browser with the TV URL (`?mode=tv`), inspect Wi-Fi stability, and only recommend an HDMI streaming stick (*Google Chromecast / Fire Stick ~₱1,800*) if the TV browser is slow.
-
 
 ---
 
@@ -223,7 +221,7 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 | Week / Period | Phase & Objectives | Team Activity & Engineering Responsibilities | Client & Adviser Touchpoint | Weekly Milestone Deliverable |
 | :--- | :--- | :--- | :--- | :--- |
 | **Week 1**<br>*(Sept 1–5)* | **Adviser Review, Client Decision & Core Polish** | • **Developing Team:** Complete final auth/security revisions (Google Auth / Recovery PINs), execute unit testing, and initialize a dedicated sandbox repository (`hontech-cloud-poc`) to explore cloud deployment safely without touching master code.<br>• **System Designer:** Assist the developer in handling the system flow, bay tracking layout, and proper UI/UX design.<br>• **QA & Documentation:** Create hardware/cloud expense documentation and conduct extensive QA & unit testing verification. | • Present proposal document to **Mr. Ar-Jay C. Agbayani** for review and endorsement.<br>• Present comparison to **HonTech Management** for hosting pathway sign-off. | ✅ **Proposal Signed & Cloud Sandbox Initialized** |
-| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Staff Training Preparation** | • **Developing Team:** Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, dedicated SA computers, and Lounge Smart TV.<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge.<br>• Confirm staff training schedule with shop management. | ✅ **Unit Testing Passed & Training Materials Ready** |
+| **Week 2**<br>*(Sept 8–12)* | **System Unit Testing & Equipment Readiness** | • **Developing Team:** Complete 100% passing unit tests; validate cloud database syncing and web browser responsiveness across all operating equipment (Total: 4 dedicated Service Advisor personal computers [2 in Branch 1, 2 in Branch 2], 2 Front Desk cashier PCs, and 2 Waiting Lounge Smart TVs).<br>• **Designer & Documentation:** Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material. | • On-site check of shop Wi-Fi signal in bays & lounge for all 4 SA computers.<br>• Confirm staff operating hardware readiness with shop management. | ✅ **Unit Testing Passed & Equipment Ready** |
 | **Week 3**<br>*(Sept 15–19)* | **Staff Training & Live Customer "Shadow Mode"** | • Conduct 60-min guided workshop for Service Advisors & Cashier.<br>• Launch **2–3 Day Live Customer "Shadow Mode"** *(dual entry: staff write on traditional whiteboard stubs AND enter records on dedicated SA computers simultaneously)*.<br>• **On-Site Floor Guarding:** The development team members will personally stay on-site to guard shop floor operations, support staff in real time, document any friction points, and apply immediate revisions and bug fixes. | • SAs use digital system on live walk-in cars with zero risk.<br>• Owner tests remote mobile monitoring dashboard. | ✅ **100% Staff Certified & Confident** |
 | **Week 4**<br>*(Sept 22–30)* | **Buffer, Final Polish & 100% Digital Go-Live** | • Dedicated buffer period for final edge-case polish, latency fine-tuning, and security verification.<br>• Official retirement of traditional whiteboard queue tracking (100% digital cutover).<br>• Kickoff of **1–2 months complimentary warranty & support**. | • Formal sign-off on Project Handover Package.<br>• System operational as primary daily standard. | ✅ **Production Go-Live & Warranty Active** |
 
@@ -236,7 +234,7 @@ To ensure a smooth, zero-downtime transition for HonTech AutoCenter, we have str
 | :--- | :--- | :--- | :--- | :--- |
 | **Week 1**<br>*(Sept 1–5)* | **Hardware Canvassing & Shop LAN Audit** | • Finalize bill of materials for Work-Grade Server PC<br>• Audit Gilmore Computer Center real-time parts pricing<br>• Inspect shop router, Cat6 cabling, and front desk power outlets<br>• Schedule joint Gilmore buying trip | • Management approves hardware budget (~₱18.5k–₱23k)<br>• Schedule date for Gilmore visit | ✅ **Final Gilmore Purchasing Checklist Ready** |
 | **Week 2**<br>*(Sept 8–12)* | **Hardware Procurement, Assembly & Network Setup** | • Joint Gilmore parts purchase & warranty verification<br>• Assemble Work-Grade PC, install Windows OS, XAMPP, & MySQL<br>• Assign static local IP (`192.168.1.100`) & configure shop Wi-Fi<br>• Wire primary server directly via Cat6 Ethernet cable<br>• Install UPS battery backup & configure automated local backups | • Client purchases hardware in Gilmore<br>• Server PC physically positioned in front office | ✅ **Server PC Assembled, Configured & Running 24/7** |
-| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect dedicated SA computers & Lounge Smart TV to local server IP<br>• Conduct 60-min staff training on job intake & daily operations guidelines<br>• Execute 2–3 day live customer "Shadow Mode" *(dual whiteboard + digital entry)*<br>• **On-Site Floor Guarding:** Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts. | • Staff practice on local shop network<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
+| **Week 3**<br>*(Sept 15–19)* | **Local Multi-Device Validation & "Shadow Mode"** | • Connect all 4 dedicated SA personal computers (2 per branch), 2 cashier PCs, and Lounge Smart TVs to the local server IP (`192.168.1.100`)<br>• Conduct 60-min staff training on job intake & daily operations guidelines<br>• Execute 2–3 day live customer "Shadow Mode" *(dual whiteboard + digital entry)*<br>• **On-Site Floor Guarding:** Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts. | • Staff practice on local shop network across dedicated computers<br>• Management reviews daily entry speed and feedback | ✅ **Shop Devices Synced & Staff Trained** |
 | **Week 4**<br>*(Sept 22–30)* | **Full Digital Go-Live & Formal Handover** | • Official retirement of traditional whiteboard queue tracking (100% digital cutover)<br>• Delivery of printed & PDF User Manuals, Admin Guides, and Emergency Fallback Runbook<br>• Kickoff of 1–2 months complimentary warranty & support | • Owner signs Project Handover Authorization<br>• System operational as primary shop workflow | ✅ **Production Go-Live & Warranty Active** |
 
 ---

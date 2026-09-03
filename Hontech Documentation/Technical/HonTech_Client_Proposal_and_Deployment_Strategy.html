@@ -756,44 +756,44 @@
         <p>This section outlines the exact device and hardware requirements for both operational pathways so HonTech management can clearly budget and plan equipment:</p>
 
         <h3 class="subsection-heading">4.1 Track B: Modern Cloud Device Requirements (RECOMMENDED &mdash; &#8369;0 Server Cost)</h3>
-        <p>Because Cloud computing is hosted remotely, <strong>HonTech does NOT need to purchase a dedicated server PC</strong>. The system runs on existing shop devices:</p>
+        <p>Because Cloud computing is hosted remotely, <strong>HonTech does NOT need to purchase a dedicated server PC</strong>. The system runs on existing shop devices across both branches:</p>
 
         <table class="formal-table">
             <thead>
                 <tr>
                     <th style="width: 25%;">Shop Location / Role</th>
-                    <th style="width: 25%;">Device Required</th>
-                    <th style="width: 35%;">Minimum Specification</th>
+                    <th style="width: 28%;">Equipment Required (2 Branches)</th>
+                    <th style="width: 32%;">Minimum Client Operating Spec</th>
                     <th style="width: 15%;">Est. Hardware Cost</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Front Desk / Cashier</strong></td>
-                    <td>Existing Office PC or Laptop</td>
-                    <td>Any Windows 10/11 desktop or laptop with Google Chrome / Edge</td>
-                    <td><strong>&#8369;0.00</strong> <em>(Use existing)</em></td>
+                    <td><strong>Service Advisors (SAs)</strong></td>
+                    <td><strong>4 Dedicated SA Personal Computers</strong><br>&bull; Branch 1 (Main): 2 SA Computers<br>&bull; Branch 2: 2 SA Computers</td>
+                    <td>&bull; Windows 10/11 desktop PC or laptop<br>&bull; Google Chrome / Microsoft Edge browser<br>&bull; 4GB&ndash;8GB RAM, 1080p display, Wi-Fi/LAN</td>
+                    <td><strong>&#8369;0.00</strong> <em>(Use existing staff PCs)</em></td>
                 </tr>
                 <tr>
-                    <td><strong>Service Advisors (SAs)</strong></td>
-                    <td>Dedicated SA Desktop / Bay Computer</td>
-                    <td>Existing PC or laptop designated for SA intake & bay monitoring</td>
-                    <td><strong>&#8369;0.00</strong> <em>(Use existing)</em></td>
+                    <td><strong>Front Desk / Cashier</strong></td>
+                    <td><strong>2 Front Desk Computers</strong><br>&bull; Branch 1: 1 Cashier PC<br>&bull; Branch 2: 1 Cashier PC</td>
+                    <td>&bull; Windows 10/11 PC/laptop for billing & 80mm thermal receipt/claim stub printing</td>
+                    <td><strong>&#8369;0.00</strong> <em>(Use existing office PCs)</em></td>
                 </tr>
                 <tr>
                     <td><strong>Customer Waiting Lounge</strong></td>
-                    <td>Wall Display TV</td>
-                    <td>Smart TV with built-in browser <em>(or &#8369;1,800 Fire Stick)</em></td>
-                    <td><strong>&#8369;0.00</strong> <em>(Shop already owns TV)</em></td>
+                    <td><strong>2 Wall Display TVs</strong><br>&bull; Branch 1: 1 Smart TV<br>&bull; Branch 2: 1 Smart TV</td>
+                    <td>&bull; Smart TV with built-in web browser <em>(or &#8369;1,800 Google Chromecast / Fire Stick)</em></td>
+                    <td><strong>&#8369;0.00</strong> <em>(Shop already owns TVs)</em></td>
                 </tr>
                 <tr>
                     <td><strong>Central Server Unit</strong></td>
                     <td><strong>None Needed</strong> <em>(Cloud-Hosted)</em></td>
-                    <td>Amazon AWS Tier-4 Data Center (Managed by Provider)</td>
+                    <td>&bull; Amazon AWS Tier-4 Data Centers (Managed by Supabase & Vercel)</td>
                     <td><strong>&#8369;0.00</strong></td>
                 </tr>
                 <tr style="font-weight: bold; background-color: #f1f5f9;">
-                    <td colspan="3">TOTAL UPFRONT INVESTMENT</td>
+                    <td colspan="3">TOTAL UPFRONT INVESTMENT (Total: 6 Staff PCs + 2 Smart TVs)</td>
                     <td>&#8369;0.00</td>
                 </tr>
             </tbody>
@@ -836,8 +836,8 @@
         <h3 class="subsection-heading">4.3 Realistic Operational Scenario: "2 Branches with 3&ndash;5 Staff Over 4 Years"</h3>
         <p>Here is how the hardware specifications directly affect HonTech's daily workflow across its 3&ndash;5 staff members per location:</p>
         <ul>
-            <li><strong>Branch 1 (Marikina Main &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles and log PMS status updates on dedicated computers, 1 Cashier generates invoices and prints claim stubs, 1 Waiting Lounge TV runs continuously displaying the customer queue. <em>Daily Volume:</em> ~15 to 25 repair orders/day.</li>
-            <li><strong>Branch 2 (Second Branch Expansion &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles on dedicated computers, 1 Cashier handles billing and invoice processing, 1 Waiting Lounge TV shows branch customer queues. <em>Combined Multi-Branch Load:</em> ~30 to 50 active repair orders/day across both branches.</li>
+            <li><strong>Branch 1 (Marikina Main &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles and log PMS status updates on 2 dedicated personal computers, 1 Cashier generates invoices and prints claim stubs on the front desk PC, 1 Waiting Lounge TV runs continuously displaying the customer queue. <em>Daily Volume:</em> ~15 to 25 repair orders/day.</li>
+            <li><strong>Branch 2 (Second Branch Expansion &mdash; 3 to 5 Users):</strong> 2 Service Advisors intake vehicles on 2 dedicated personal computers, 1 Cashier handles billing and invoice processing, 1 Waiting Lounge TV shows branch customer queues. <em>Combined Multi-Branch Load:</em> 4 SA personal computers + 2 Cashier PCs + 2 TVs (~30 to 50 active repair orders/day across both branches).</li>
         </ul>
 
         <h4 class="tier-heading">Why Minimum/Budget Hardware (4GB RAM) Fails Over Time:</h4>
@@ -892,10 +892,10 @@
                 </tr>
                 <tr>
                     <td><strong>Week 2</strong><br><em>(Sept 8&ndash;12)</em></td>
-                    <td><strong>System Unit Testing & Staff Training Preparation</strong></td>
-                    <td>&bull; <strong>Developing Team:</strong> Complete 100% passing unit tests, validate cloud database syncing across front desk PCs, dedicated SA computers, and Lounge Smart TV.<br>&bull; <strong>Designer & Documentation:</strong> Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material.</td>
-                    <td>&bull; On-site check of shop Wi-Fi signal in bays & lounge.<br>&bull; Confirm staff training schedule with shop management.</td>
-                    <td><strong>Unit Testing Passed & Training Materials Ready</strong></td>
+                    <td><strong>System Unit Testing & Equipment Readiness</strong></td>
+                    <td>&bull; <strong>Developing Team:</strong> Complete 100% passing unit tests; validate cloud database syncing and web browser responsiveness across all operating equipment (Total: 4 dedicated Service Advisor personal computers [2 in Branch 1, 2 in Branch 2], 2 Front Desk cashier PCs, and 2 Waiting Lounge Smart TVs).<br>&bull; <strong>Designer & Documentation:</strong> Finalize Staff Quick-Start User Manual (PDF), daily operations guidelines, and training presentation material.</td>
+                    <td>&bull; On-site check of shop Wi-Fi signal in bays & lounge for all 4 SA computers.<br>&bull; Confirm staff operating hardware readiness with shop management.</td>
+                    <td><strong>Unit Testing Passed & Equipment Ready</strong></td>
                 </tr>
                 <tr>
                     <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
@@ -945,8 +945,8 @@
                 <tr>
                     <td><strong>Week 3</strong><br><em>(Sept 15&ndash;19)</em></td>
                     <td><strong>Local Multi-Device Validation & "Shadow Mode"</strong></td>
-                    <td>&bull; Connect dedicated SA computers & Lounge Smart TV to local server IP<br>&bull; Conduct 60-min staff training on job intake & daily operations guidelines<br>&bull; Execute 2&ndash;3 day live customer "Shadow Mode" <em>(dual whiteboard + digital entry)</em><br>&bull; <strong>On-Site Floor Guarding:</strong> Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts.</td>
-                    <td>&bull; Staff practice on local shop network<br>&bull; Management reviews daily entry speed and feedback</td>
+                    <td>&bull; Connect all 4 dedicated SA personal computers (2 per branch), 2 cashier PCs, and Lounge Smart TVs to the local server IP (<code>192.168.1.100</code>)<br>&bull; Conduct 60-min staff training on job intake & daily operations guidelines<br>&bull; Execute 2&ndash;3 day live customer "Shadow Mode" <em>(dual whiteboard + digital entry)</em><br>&bull; <strong>On-Site Floor Guarding:</strong> Development team stays on-site during shop hours to guard local operations and test USB automated backup scripts.</td>
+                    <td>&bull; Staff practice on local shop network across dedicated computers<br>&bull; Management reviews daily entry speed and feedback</td>
                     <td><strong>Shop Devices Synced & Staff Trained</strong></td>
                 </tr>
                 <tr>
