@@ -3104,70 +3104,104 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (canViewOnline && document.getElementById('table-pending-express')) {
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
+                    const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
                     return `
-                    <tr>
-                        <td>
-                            <div class="font-bold text-gray-900">${job.name}</div>
-                            <div class="text-xs text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
+                    <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
+                        <td class="py-3 px-3">
+                            <div class="font-bold text-gray-900 flex items-center gap-1.5">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-gray-400 shrink-0"></i>
+                                <span>${job.name}</span>
+                            </div>
+                            <div class="text-[11px] text-gray-500 font-mono mt-0.5 flex items-center gap-1 pl-5">
+                                <span>${formatPhoneNumber(job.contact)}</span>
+                            </div>
                         </td>
-                        <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
-                        <td class="text-gray-500 text-sm">${job.vehicle}</td>
-                        <td>
+                        <td class="py-3 px-3">
+                            <div class="inline-block font-black font-mono text-gray-900 bg-gray-100 border border-gray-300 px-2 py-0.5 rounded-lg text-sm tracking-wide shadow-2xs">${job.plate}</div>
+                        </td>
+                        <td class="py-3 px-3">
+                            <span class="text-gray-700 text-xs font-semibold block truncate max-w-[140px]" title="${job.vehicle}">${job.vehicle}</span>
+                        </td>
+                        <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <span class="text-xs font-semibold uppercase text-gray-700 bg-gray-50 border border-gray-150 rounded px-2 py-0.5">${job.laneType || 'Flexible Lane'}</span>
+                                <span class="inline-flex items-center gap-1 text-[11px] font-bold uppercase ${isExpress ? 'text-amber-800 bg-amber-50 border-amber-200' : 'text-blue-800 bg-blue-50 border-blue-200'} border rounded-lg px-2.5 py-1">
+                                    <i data-lucide="${isExpress ? 'zap' : 'git-branch'}" class="w-3 h-3"></i>
+                                    ${job.laneType || 'Flexible Lane'}
+                                </span>
                             ` : `
-                                <div class="relative inline-flex items-center bg-gray-50 border border-gray-300 hover:border-red-600 rounded-xl px-3 py-1.5 shadow-2xs transition">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-black uppercase bg-transparent border-none cursor-pointer p-0 pr-6 outline-none appearance-none text-gray-900">
-                                        <option value="Express Lane" ${job.laneType === 'Express Lane' || job.laneType === 'Express' ? 'selected' : ''}>Express Lane</option>
-                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>Flexible Lane</option>
-                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>Special Lane</option>
-                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>Priority Lane</option>
+                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-2.5 py-1.5 shadow-2xs transition group">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900">
+                                        <option value="Express Lane" ${isExpress ? 'selected' : ''}>⚡ Express Lane</option>
+                                        <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>🔄 Flexible Lane</option>
+                                        <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>⭐ Special Lane</option>
+                                        <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>🔥 Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-800 pointer-events-none absolute right-1.5"></i>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 pointer-events-none absolute right-2 transition"></i>
                                 </div>
                             `}
                         </td>
-                        <td>
+                        <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="text-xs text-gray-900 font-bold">${job.apptDate || 'N/A'}</div>
-                                <div class="text-xs text-red-600 font-mono font-bold mt-0.5 flex items-center gap-1.5">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600"></i> ${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'} <span class="text-[9px] text-gray-400 font-sans font-normal">(24H)</span>
+                                <div class="inline-flex flex-col bg-gray-50 border border-gray-200 rounded-xl p-2 space-y-1 w-max shadow-2xs">
+                                    <div class="flex items-center gap-1.5 text-xs font-bold text-gray-900">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
+                                        <span>${job.apptDate || 'No Date'}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-red-600">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
+                                        <span>${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</span>
+                                        <span class="text-[8.5px] font-sans font-bold uppercase text-red-700 bg-red-100/80 border border-red-200 px-1 py-0.2 rounded">24H</span>
+                                    </div>
                                 </div>
                             ` : `
-                                <div class="flex flex-col gap-1.5">
-                                    <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-300 rounded-lg bg-white px-2 py-1 w-32 focus:border-red-600 outline-none shadow-2xs">
-                                    <div class="relative flex items-center bg-white border border-gray-300 focus-within:border-red-600 rounded-lg px-2 py-1 w-32 shadow-2xs" title="24-Hour Time Format (e.g. 09:30, 14:00)">
-                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 mr-1.5 shrink-0"></i>
-                                        <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" placeholder="14:30" maxlength="8" 
-                                            onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                            onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none" 
-                                            title="Enter 24-hour appointment time (e.g. 09:30, 14:00)">
+                                <div class="inline-flex flex-col bg-gray-50/90 hover:bg-gray-100/80 border border-gray-200 hover:border-gray-300 rounded-xl p-1.5 transition space-y-1.5 w-max shadow-2xs">
+                                    <!-- Date Picker Row -->
+                                    <div class="flex items-center gap-1.5 bg-white border border-gray-200 focus-within:border-red-500 rounded-lg px-2 py-1 transition shadow-2xs">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-500 shrink-0"></i>
+                                        <input type="date" value="${job.apptDate || ''}" 
+                                            onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
+                                            class="bg-transparent text-xs font-bold text-gray-800 outline-none cursor-pointer w-28 p-0 border-none"
+                                            title="Select Appointment Date">
+                                    </div>
+                                    <!-- 24-Hour Time Row -->
+                                    <div class="flex items-center justify-between gap-1.5 bg-white border border-gray-200 focus-within:border-red-500 rounded-lg px-2 py-1 transition shadow-2xs">
+                                        <div class="flex items-center gap-1.5">
+                                            <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0"></i>
+                                            <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
+                                                placeholder="14:30" maxlength="8"
+                                                onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                                onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                                class="w-14 bg-transparent font-mono font-black text-xs text-gray-900 outline-none p-0 border-none" 
+                                                title="Enter 24-hour appointment time (e.g. 09:30, 14:00)">
+                                        </div>
+                                        <span class="text-[8.5px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">24H</span>
                                     </div>
                                 </div>
                             `}
                         </td>
-                        <td>
+                        <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="text-xs font-semibold text-gray-700 truncate max-w-[280px]" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</div>
+                                <div class="text-xs font-semibold text-gray-700 truncate max-w-[260px]" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</div>
                             ` : `
-                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[260px] max-w-[340px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
+                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-2 rounded-xl w-full min-w-[240px] max-w-[320px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">
                             `}
                         </td>
-                        <td class="text-center">
-                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}">
+                        <td class="py-3 px-3 text-center">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
                         </td>
-                        <td class="text-right flex items-center justify-end gap-2">
-                            ${isReadOnlyOnline ? `
-                                <span class="text-xs font-bold text-gray-400 italic">View Only</span>
-                            ` : `
-                                <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
-                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
-                                </button>
-                                <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
-                            `}
+                        <td class="py-3 px-3 text-right">
+                            <div class="flex items-center justify-end gap-1.5">
+                                ${isReadOnlyOnline ? `
+                                    <span class="text-xs font-bold text-gray-400 italic">View Only</span>
+                                ` : `
+                                    <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-sm hover:shadow-md flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
+                                    </button>
+                                    <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-1.5 rounded-xl transition flex items-center justify-center cursor-pointer" title="Delete Booking">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                `}
+                            </div>
                         </td>
                     </tr>
                     `;
