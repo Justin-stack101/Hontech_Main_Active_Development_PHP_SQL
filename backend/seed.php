@@ -22,19 +22,21 @@ echo "=== HonTech Database Seeder ===\n\n";
 // SEED USERS
 // =============================================
 $defaultUsers = [
-    ['name' => 'System Owner',           'role' => 'owner',     'email' => 'owner@hontech.com', 'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'System Admin (Marikina)', 'role' => 'admin',     'email' => 'admin@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Secondary Admin (Main)',  'role' => 'admin',     'email' => 'admin2@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
-    
-    // Marikina Main Branch Test Users
-    ['name' => 'Jessica (Front Desk)',   'role' => 'assistant', 'email' => 'staff@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Mark (Advisor)',         'role' => 'sa',        'email' => 'sa@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Juan (Technician)',      'role' => 'tech',      'email' => 'tech@hontech.com',  'password' => Env::get('TECH_PASSWORD', 'tech123'), 'branch' => 'Marikina Branch'],
+    // 1. TOP GLOBAL EXECUTIVE
+    ['name' => 'System Owner (Global)',   'role' => 'owner',     'email' => 'owner@hontech.com',      'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
 
-    // Secondary Branch Multi-Branch Test Users
-    ['name' => 'Admin (East Branch)',    'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
-    ['name' => 'Advisor (East Branch)',  'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'), 'branch' => 'East Branch'],
-    ['name' => 'Staff (East Branch)',    'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
+    // 2. MARIKINA MAIN BRANCH (Branch 1)
+    ['name' => 'System Admin (Main)',     'role' => 'admin',     'email' => 'admin@hontech.com',      'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Mark (Advisor 1 - Main)', 'role' => 'sa',        'email' => 'sa@hontech.com',         'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Dayne (Advisor 2 - Main)','role' => 'sa',        'email' => 'sa2@hontech.com',        'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Jessica (Staff - Main)',  'role' => 'assistant', 'email' => 'staff@hontech.com',      'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Juan (Tech - Main)',      'role' => 'tech',      'email' => 'tech@hontech.com',       'password' => Env::get('TECH_PASSWORD', 'tech123'),   'branch' => 'Marikina Branch'],
+
+    // 3. EAST BRANCH (Branch 2 - Other Branch)
+    ['name' => 'Admin (East Branch)',     'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
+    ['name' => 'Alex (Advisor 1 - East)', 'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
+    ['name' => 'Carl (Advisor 2 - East)', 'role' => 'sa',        'email' => 'sa2.east@hontech.com',   'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
+    ['name' => 'Maria (Staff - East)',    'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
 ];
 
 foreach ($defaultUsers as $u) {

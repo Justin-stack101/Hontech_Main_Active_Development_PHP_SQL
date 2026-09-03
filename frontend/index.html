@@ -527,45 +527,66 @@
                                     </div>
                                 </div>
 
-                                <!-- Multi-Branch Test Accounts -->
-                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-2">
+                                <!-- Multi-Branch Test Accounts Matrix -->
+                                <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-2xs space-y-3">
                                     <div class="pb-1.5 border-b border-gray-100 flex items-center justify-between">
-                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Multi-Branch Test Accounts</span>
-                                        <span class="text-[9px] font-bold text-gray-400">Marikina & East</span>
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500">Multi-Branch Credentials Matrix</span>
+                                        <span class="text-[9px] font-bold text-gray-400">9 Active Accounts</span>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Global Business Owner">
-                                            <span class="font-black text-gray-900 block text-[11px]">Owner (Global)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">owner@hontech.com</span>
+                                    
+                                    <!-- 1. Top Global Executive -->
+                                    <div>
+                                        <span class="text-[9px] font-black uppercase tracking-wider text-amber-600 mb-1 block">👑 Global Executive</span>
+                                        <button type="button" onclick="quickDirectLogin('owner@hontech.com', 'owner123')" class="w-full bg-amber-50/60 hover:bg-amber-100/80 p-2 rounded-lg border border-amber-200 text-left transition cursor-pointer flex items-center justify-between" title="Login as Global Business Owner">
+                                            <span class="font-black text-amber-950 text-[11px]">System Owner (Global)</span>
+                                            <span class="text-amber-800 text-[9.5px] font-mono">owner@hontech.com</span>
                                         </button>
-                                        <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Primary Administrator (Marikina Main)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin 1 (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('admin2@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Secondary Administrator (Marikina Main)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin 2 (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin2@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Branch Administrator (East Branch)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Admin (East)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">admin.east@...</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor (Marikina Main)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('sa.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor (East Branch)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Advisor (East)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">sa.east@...</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (Marikina Main)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Staff (Main)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff@hontech.com</span>
-                                        </button>
-                                        <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (East Branch)">
-                                            <span class="font-black text-gray-900 block text-[11px]">Staff (East)</span>
-                                            <span class="text-gray-500 text-[9.5px] font-mono block truncate">staff.east@...</span>
-                                        </button>
+                                    </div>
+
+                                    <!-- 2. Marikina Main Branch (Branch 1) -->
+                                    <div>
+                                        <span class="text-[9px] font-black uppercase tracking-wider text-red-600 mb-1 block">🏢 Branch 1 (Marikina Main)</span>
+                                        <div class="grid grid-cols-2 gap-1.5">
+                                            <button type="button" onclick="quickDirectLogin('admin@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Admin (Main Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Admin (Main)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">admin@hontech.com</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('staff@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (Main Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Staff (Main)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">staff@hontech.com</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('sa@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 1 (Main Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Advisor 1 (Main)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">sa@hontech.com</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('sa2@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-red-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 2 (Main Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Advisor 2 (Main)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">sa2@hontech.com</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- 3. East Branch (Branch 2 - Other Branch) -->
+                                    <div>
+                                        <span class="text-[9px] font-black uppercase tracking-wider text-blue-600 mb-1 block">🏢 Branch 2 (East Branch)</span>
+                                        <div class="grid grid-cols-2 gap-1.5">
+                                            <button type="button" onclick="quickDirectLogin('admin.east@hontech.com', 'admin123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Admin (East Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Admin (East)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">admin.east@...</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('staff.east@hontech.com', 'staff123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Front Desk Assistant (East Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Staff (East)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">staff.east@...</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('sa.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 1 (East Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Advisor 1 (East)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">sa.east@...</span>
+                                            </button>
+                                            <button type="button" onclick="quickDirectLogin('sa2.east@hontech.com', 'sa123')" class="bg-gray-50 hover:bg-blue-50/60 p-2 rounded-lg border border-gray-200 text-left transition cursor-pointer" title="Login as Service Advisor 2 (East Branch)">
+                                                <span class="font-black text-gray-900 block text-[10.5px]">Advisor 2 (East)</span>
+                                                <span class="text-gray-500 text-[9px] font-mono block truncate">sa2.east@...</span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -5709,7 +5730,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.40"></script>
+    <script src="js/app.js?v=4.41"></script>
 </body>
 
 </html>
