@@ -3123,34 +3123,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     ${job.laneType || 'Flexible Lane'}
                                 </span>
                             ` : `
-                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-2.5 py-1.5 shadow-2xs transition min-w-[130px]">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-5 outline-none appearance-none text-gray-900 w-full">
+                                <div class="relative inline-flex items-center bg-white border border-gray-300 hover:border-red-600 rounded-xl px-3 py-2 shadow-2xs transition min-w-[155px]">
+                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase bg-transparent border-none cursor-pointer p-0 pr-7 outline-none appearance-none text-gray-900 w-full">
                                         <option value="Express Lane" ${isExpress ? 'selected' : ''}>Express Lane</option>
                                         <option value="Flexible Lane" ${job.laneType === 'Flexible Lane' || job.laneType === 'Flexible' || !job.laneType ? 'selected' : ''}>Flexible Lane</option>
                                         <option value="Special Lane" ${job.laneType === 'Special Lane' || job.laneType === 'Special' ? 'selected' : ''}>Special Lane</option>
                                         <option value="Priority Lane" ${job.laneType === 'Priority Lane' || job.laneType === 'Priority' ? 'selected' : ''}>Priority Lane</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 pointer-events-none absolute right-2"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-2.5"></i>
                                 </div>
                             `}
                         </td>
                         <td class="py-3 px-3">
                             ${isReadOnlyOnline ? `
-                                <div class="flex flex-col space-y-0.5">
+                                <div class="flex flex-col space-y-1">
                                     <div class="text-xs font-bold text-gray-900">${job.apptDate || 'N/A'}</div>
                                     <div class="text-xs font-mono font-bold text-gray-600">${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</div>
                                 </div>
                             ` : `
-                                <div class="flex flex-col gap-1.5 w-32">
+                                <div class="flex flex-col gap-2 w-40 min-w-[160px]">
                                     <input type="date" value="${job.apptDate || ''}" 
                                         onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
-                                        class="table-select text-xs font-semibold text-gray-900 border border-gray-300 rounded-lg bg-white px-2.5 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs"
+                                        class="table-select text-xs font-semibold text-gray-900 border border-gray-300 rounded-lg bg-white px-3 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs"
                                         title="Select Appointment Date">
                                     <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" 
                                         placeholder="08:00" maxlength="8"
                                         onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
                                         onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
-                                        class="table-select text-xs font-mono font-bold text-gray-900 border border-gray-300 rounded-lg bg-white px-2.5 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs" 
+                                        class="table-select text-xs font-mono font-bold text-gray-900 border border-gray-300 rounded-lg bg-white px-3 py-1.5 w-full focus:border-red-600 outline-none shadow-2xs" 
                                         title="Appointment Time">
                                 </div>
                             `}
