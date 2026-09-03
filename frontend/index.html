@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.59">
+    <link rel="stylesheet" href="css/main.css?v=4.60">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -128,60 +128,66 @@
             pointer-events: none;
             display: none !important;
         }
+        #app-sidebar.sidebar-collapsed .nav-text,
         .sidebar-collapsed .nav-text {
             opacity: 0;
             width: 0;
             overflow: hidden;
             display: none !important;
         }
+        #app-sidebar.sidebar-collapsed #sidebar-footer-expanded,
         .sidebar-collapsed #sidebar-footer-expanded {
             display: none !important;
         }
+        #app-sidebar.sidebar-collapsed #sidebar-footer-collapsed,
         .sidebar-collapsed #sidebar-footer-collapsed {
             display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
         }
+        #app-sidebar.sidebar-collapsed #sidebar-toggle-icon,
         .sidebar-collapsed #sidebar-toggle-icon {
             transform: rotate(180deg);
         }
         /* Sidebar toggle buttons hover visibility */
         .sidebar-header .sidebar-toggle-btn {
-            opacity: 0;
             transition: opacity 0.2s ease-in-out;
         }
-        .sidebar-header:hover .sidebar-toggle-btn {
-            opacity: 1 !important;
-        }
 
+        #app-sidebar.sidebar-collapsed .sidebar-header,
         .sidebar-collapsed .sidebar-header {
             justify-content: center !important;
             padding: 0 !important;
             position: relative;
         }
+        #app-sidebar.sidebar-collapsed .logo-container,
         .sidebar-collapsed .logo-container {
-            opacity: 1;
-            transition: opacity 0.2s ease-in-out;
-            margin: 0 auto;
+            display: none !important;
         }
-        .sidebar-collapsed .sidebar-header:hover .logo-container {
-            opacity: 0;
-            pointer-events: none;
-        }
+        #app-sidebar.sidebar-collapsed #sidebar-expand-btn,
         .sidebar-collapsed #sidebar-expand-btn {
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0 !important;
-        }
-        .sidebar-collapsed .sidebar-header:hover #sidebar-expand-btn {
+            display: flex !important;
             opacity: 1 !important;
+            position: static !important;
+            transform: none !important;
+            margin: 0 auto !important;
+            color: #94a3b8 !important;
         }
+        #app-sidebar.sidebar-collapsed #sidebar-expand-btn:hover,
+        .sidebar-collapsed #sidebar-expand-btn:hover {
+            color: #ffffff !important;
+            background-color: #1e293b !important;
+        }
+        #app-sidebar.sidebar-collapsed .nav-btn,
         .sidebar-collapsed .nav-btn {
             justify-content: center !important;
             padding-left: 0 !important;
             padding-right: 0 !important;
+            gap: 0 !important;
+        }
+        #app-sidebar.sidebar-collapsed .nav-btn i,
+        .sidebar-collapsed .nav-btn i {
+            margin: 0 auto !important;
         }
         /* Top Navigation vs Sidebar hiding rules */
         .layout-top #app-sidebar {
@@ -202,8 +208,9 @@
             border-right-color: #1e293b !important; /* border-slate-800 */
             color: #cbd5e1 !important; /* text-slate-300 */
         }
+        #app-sidebar.sidebar-collapsed,
         .sidebar-collapsed #app-sidebar {
-            width: 72px !important;
+            width: 68px !important;
         }
         #app-sidebar .bg-gray-50 {
             background-color: #020617 !important; /* bg-slate-950 */
@@ -5788,7 +5795,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.59"></script>
+    <script src="js/app.js?v=4.60"></script>
 </body>
 
 </html>
