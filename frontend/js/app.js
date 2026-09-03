@@ -3122,6 +3122,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const isReadOnlyOnline = isOwner || isAdmin || isSA;
             const canViewOnline = isAsst || isOwner || isAdmin || isSA;
 
+            const safeJobs = Array.isArray(allJobs) ? allJobs : [];
+            const pendingOnline = safeJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
+
             const onlineQueueEl = document.getElementById('container-online-queue');
             const dailyIntakesEl = document.getElementById('container-daily-intakes');
             const techBoardEl = document.getElementById('container-tech-board');
