@@ -24,6 +24,7 @@
         let saIntakeFilter = 'All';
         let intakeSearchQuery = '';
         let intakeSourceFilter = 'all';
+        let intakeAdvisorFilter = 'all';
         let intakeTimeFilter = 'all';
         let intakeSortBy = 'claimStub';
         let intakeSortOrder = 'desc';
@@ -37,6 +38,7 @@
         function updateIntakeFilter(type, value) {
             if (type === 'search') intakeSearchQuery = value;
             if (type === 'source') intakeSourceFilter = value;
+            if (type === 'advisor') intakeAdvisorFilter = value;
             if (type === 'time') intakeTimeFilter = value;
             if (type === 'sort') {
                 if (value === 'claimStubDesc') {
@@ -3296,6 +3298,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     activeJobs = activeJobs.filter(j => j.source === intakeSourceFilter);
                 }
 
+                // Filter by Advisor / Responsibility
+                if (intakeAdvisorFilter === 'mine') {
+                    const cleanCurrentSA = (currentUserName || '').replace(/\s*\(Advisor\)\s*/i, '').trim().toLowerCase();
+                    activeJobs = activeJobs.filter(j => {
+                        const rawJobSA = j.saName || j.handled_by || j.sa || '';
+                        const cleanJobSA = rawJobSA.replace(/\s*\(Advisor\)\s*/i, '').trim().toLowerCase();
+                        if (!cleanJobSA || cleanJobSA === '-' || cleanJobSA === 'front desk sa' || cleanJobSA === 'unassigned') return false;
+                        return cleanJobSA === cleanCurrentSA || rawJobSA.toLowerCase().includes(cleanCurrentSA);
+                    });
+                } else if (intakeAdvisorFilter === 'unassigned') {
+                    activeJobs = activeJobs.filter(j => {
+                        const rawJobSA = j.saName || j.handled_by || j.sa || '';
+                        const cleanJobSA = rawJobSA.replace(/\s*\(Advisor\)\s*/i, '').trim().toLowerCase();
+                        return !cleanJobSA || cleanJobSA === '-' || cleanJobSA === 'front desk sa' || cleanJobSA === 'unassigned';
+                    });
+                }
+
                 // Filter by Time (Prototype)
                 if (intakeTimeFilter === 'morning') {
                     activeJobs = activeJobs.filter(j => {
@@ -3780,6 +3799,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 
                                 <!-- Dropdown Filters -->
                                 <div class="flex flex-wrap items-center gap-3">
+                                    <!-- Advisor / Works Filter -->
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Advisor:</span>
+                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                            <select id="intake-advisor-filter" onchange="updateIntakeFilter('advisor', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                                <option value="all" ${intakeAdvisorFilter === 'all' ? 'selected' : ''}>All Advisors</option>
+                                                <option value="mine" ${intakeAdvisorFilter === 'mine' ? 'selected' : ''}>My Works Only</option>
+                                                <option value="unassigned" ${intakeAdvisorFilter === 'unassigned' ? 'selected' : ''}>Unassigned Only</option>
+                                            </select>
+                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        </div>
+                                    </div>
+
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Source:</span>
                                         <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
