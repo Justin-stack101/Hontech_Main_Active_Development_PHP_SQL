@@ -3494,37 +3494,39 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-3 py-2.5 align-middle min-w-[320px]">
+                            <td class="px-3 py-2.5 align-middle min-w-[340px]">
                                 <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5 mb-1">
                                     <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
-                                    <span class="truncate max-w-[220px] font-bold">${job.vehicle}</span>
+                                    <span class="truncate max-w-[200px] font-bold" title="${job.vehicle}">${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex items-center gap-1.5 flex-nowrap overflow-x-auto no-scrollbar">
-                                    <!-- Category Pill (Combined Compact) -->
+                                <div class="flex items-center gap-1.5 flex-nowrap">
+                                    <!-- Category Pill -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="Click to change Category">
+                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Category">
                                         <i data-lucide="wrench" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
-                                        ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
-                                        <span class="text-slate-300 font-normal">|</span>
-                                        <input type="text" 
-                                               value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
-                                               placeholder="Custom..." 
-                                               maxlength="20"
-                                               onkeydown="if(event.key === 'Enter') this.blur();"
-                                               onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
-                                               class="table-select text-[10px] font-semibold text-gray-800 bg-transparent border-none outline-none w-14 p-0 cursor-text relative z-20"
-                                               title="Type custom category name">
-                                        ` : ''}
                                         <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
+                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Category">
                                             <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
                                             <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
                                             <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
                                             <option value="OTHERS" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
                                         </select>
                                     </div>
+                                    
+                                    ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
+                                    <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="Specify custom service name">
+                                        <input type="text" 
+                                               value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
+                                               placeholder="Specify..." 
+                                               maxlength="20"
+                                               onkeydown="if(event.key === 'Enter') this.blur();"
+                                               onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
+                                               class="text-[10px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text"
+                                               style="width: 58px !important; min-width: 50px !important; max-width: 65px !important; padding: 0 !important;">
+                                    </div>
+                                    ` : ''}
                                     ` : `
                                     <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase text-slate-700 shadow-2xs shrink-0" title="${job.category || '-'}">
                                         <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i>
@@ -3538,7 +3540,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <i data-lucide="route" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
                                         <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
+                                        <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                             ${getAvailableLanesForJob(job.category).map(opt => `
                                                 <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
                                             `).join('')}
@@ -3994,20 +3996,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 setJobStatus(jobId, newStatus);
             }
         }
-
-        window.handleTableCategoryChange = function(jobId, selectElement) {
-            const val = selectElement.value;
-            const wrapEl = document.getElementById(`category-input-wrap-${jobId}`);
-            const inputEl = document.getElementById(`category-input-${jobId}`);
-            if (val === 'Others') {
-                if (wrapEl) wrapEl.classList.remove('hidden');
-                if (inputEl) inputEl.focus();
-            } else {
-                if (wrapEl) wrapEl.classList.add('hidden');
-                if (inputEl) inputEl.value = '';
-                updateJobField(jobId, 'category', val);
-            }
-        };
 
         function applyPeriodicFilters() {
             const query = document.getElementById('periodic-search-query') ? document.getElementById('periodic-search-query').value.toLowerCase().trim() : '';
