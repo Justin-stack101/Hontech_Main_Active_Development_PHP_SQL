@@ -815,7 +815,7 @@ class AuthController
     public static function googleLogin(): void
     {
         $input       = json_decode(file_get_contents('php://input'), true) ?? [];
-        $googleEmail = strtolower(trim($input['googleEmail'] ?? ''));
+        $googleEmail = strtolower(trim($input['googleEmail'] ?? $input['email'] ?? ''));
 
         if (empty($googleEmail)) {
             http_response_code(400);

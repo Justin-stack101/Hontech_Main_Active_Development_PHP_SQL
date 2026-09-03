@@ -45,7 +45,11 @@ class PasswordResetController
             // Dispatch simulated email
             EmailUtils::sendPasswordResetEmail($user['email'], $user['name'], $token, $otp);
 
-            ApiResponse::json(['message' => 'Password reset instructions have been sent to your email.']);
+            ApiResponse::json([
+                'message' => 'Password reset instructions have been sent to your email.',
+                'token'   => $token,
+                'otp'     => $otp
+            ]);
         } catch (\Exception $e) {
             ApiResponse::serverError('Error processing forgot password request.', $e->getMessage());
         }
@@ -58,9 +62,9 @@ class PasswordResetController
     {
         try {
             $input    = json_decode(file_get_contents('php://input'), true) ?? [];
-            $token    = trim($input['token'] ?? '');
-            $otp      = trim($input['otp'] ?? '');
-            $password = $input['password'] ?? '';
+            $token    = trim($input['token'] ?? $input['resetToken'] ?? '');
+            $otp      = trim($input['otp'] ?? $input['code'] ?? $input['pin'] ?? '');
+            $password = $input['newPassword'] ?? $input['password'] ?? '';
 
             if (empty($password)) {
                 ApiResponse::badRequest('New password is required.');
