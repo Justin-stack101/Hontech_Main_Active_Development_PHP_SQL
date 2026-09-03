@@ -476,5 +476,28 @@ input[type=checkbox] {
   border-color: #64748b;
 }
 
+/* Evaluation & Diagnosis text truncation with ellipsis (...) */
+input.table-select,
+.eval-field-card input,
+td input[type="text"] {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+input.table-select:focus,
+.eval-field-card input:focus,
+td input[type="text"]:focus {
+  text-overflow: clip !important;
+}
+
+td span[id^="evaluation-"],
+td .eval-text-truncated {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
 /*# sourceMappingURL=main.css.map */
+
 

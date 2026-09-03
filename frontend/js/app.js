@@ -3633,8 +3633,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-3 py-3 align-middle min-w-[320px]">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
-                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[260px]" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
+                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[260px] max-w-[320px] truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
                             <!-- Promised Date -->
@@ -3936,7 +3936,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td class="px-3 py-3 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
                         <td class="px-3 py-3 align-middle">
-                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] block">${job.evaluation || '-'}</span>`}
+                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] truncate focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] max-w-[280px] truncate block" title="${job.evaluation || ''}">${job.evaluation || '-'}</span>`}
                         </td>
                         <td class="px-3 py-3 align-middle">
                             ${isEditable ? `
