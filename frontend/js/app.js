@@ -3129,12 +3129,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td>
                             ${isReadOnlyOnline ? `
-                                <div class="text-xs text-gray-700 font-bold">${job.apptDate || 'N/A'}</div>
-                                <div class="text-xs text-gray-500 font-mono mt-0.5">${job.apptTime ? formatTime12Hour(job.apptTime) : 'N/A'}</div>
+                                <div class="text-xs text-gray-900 font-bold">${job.apptDate || 'N/A'}</div>
+                                <div class="text-xs text-red-600 font-mono font-bold mt-0.5 flex items-center gap-1.5">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600"></i> ${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'} <span class="text-[9px] text-gray-400 font-sans font-normal">(24H)</span>
+                                </div>
                             ` : `
                                 <div class="flex flex-col gap-1.5">
-                                    <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-28">
-                                    <input type="time" value="${job.apptTime || ''}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-24">
+                                    <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-300 rounded-lg bg-white px-2 py-1 w-32 focus:border-red-600 outline-none shadow-2xs">
+                                    <div class="relative flex items-center bg-white border border-gray-300 focus-within:border-red-600 rounded-lg px-2 py-1 w-32 shadow-2xs" title="24-Hour Time Format (e.g. 09:30, 14:00)">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 mr-1.5 shrink-0"></i>
+                                        <input type="text" value="${convertTimeTo24Hour(job.apptTime) || ''}" placeholder="14:30" maxlength="8" 
+                                            onchange="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                            onblur="this.value = convertTimeTo24Hour(this.value) || this.value; updateJobField('${job.id}', 'apptTime', this.value)"
+                                            class="w-full bg-transparent font-mono font-bold text-xs text-gray-900 outline-none" 
+                                            title="Enter 24-hour appointment time (e.g. 09:30, 14:00)">
+                                    </div>
                                 </div>
                             `}
                         </td>
