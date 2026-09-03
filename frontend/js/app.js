@@ -1164,6 +1164,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let defaultView = 'queue';
 
             const userDisplayName = currentUserName || 'System User';
+            const cleanDisplayName = userDisplayName.replace(/\s*\([^)]*\)/, '').trim() || userDisplayName;
             const userRoleLabel = getRoleLabel(role);
 
             if (document.getElementById('header-user-name')) {
@@ -1179,7 +1180,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('sidebar-user-role').innerText = userRoleLabel;
             }
             if (document.getElementById('sidebar-menu-user-name')) {
-                document.getElementById('sidebar-menu-user-name').innerText = userDisplayName;
+                document.getElementById('sidebar-menu-user-name').innerText = cleanDisplayName;
+                document.getElementById('sidebar-menu-user-name').title = userDisplayName;
             }
             if (document.getElementById('sidebar-menu-user-role')) {
                 document.getElementById('sidebar-menu-user-role').innerText = userRoleLabel;
@@ -1259,20 +1261,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             else if (role === 'assistant') {
                 if (document.getElementById('sidebar-user-role')) {
-                    document.getElementById('sidebar-user-role').innerText = 'Assistant Staff';
+                    document.getElementById('sidebar-user-role').innerText = 'Assistant';
                 }
                 if (document.getElementById('header-actions')) {
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Assistant Order: 1. Online Booking Form, 2. Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
-                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
+                // Assistant Order: 1. Online Bookings, 2. Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
+                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Bookings</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Bay Status</span></button>`;
@@ -1723,7 +1725,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function getRoleLabel(roleId) {
-            const roles = { 'owner': 'Owner', 'admin': 'Administrator', 'assistant': 'Assistant Staff', 'sa': 'Service Advisor' };
+            const roles = { 'owner': 'Owner', 'admin': 'Administrator', 'assistant': 'Assistant', 'sa': 'Service Advisor' };
             return roles[roleId] || roleId;
         }
 

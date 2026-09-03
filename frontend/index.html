@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.51">
+    <link rel="stylesheet" href="css/main.css?v=4.52">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -246,7 +246,7 @@
             border-color: #334155 !important;
         }
         #sidebar-menu-user-role {
-            color: #ef4444 !important; /* Red accent role */
+            color: #94a3b8 !important; /* Muted sleek slate-400 */
         }
         
         /* Overlapping arrow spacing fix for narrow table select elements */
@@ -774,7 +774,7 @@
                     <div class="flex flex-col sidebar-expand-only transition-all duration-300">
                         <div class="flex items-baseline gap-2">
                             <span class="font-black italic uppercase tracking-tighter text-xl leading-none text-gray-900">HonTech</span>
-                            <span class="text-[9px] font-bold tracking-wider text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">v1.0</span>
+                            <span class="text-[8.5px] font-bold tracking-wider text-red-400 bg-red-950/60 px-1.5 py-0.5 rounded border border-red-800/60">v1.0</span>
                         </div>
                     </div>
                 </div>
@@ -833,19 +833,19 @@
                 </div>
                 <!-- Expanded View footer -->
                 <div id="sidebar-footer-expanded" class="w-full">
-                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
+                    <button type="button" onclick="toggleSidebarDropdown(event)" class="w-full flex items-center justify-between p-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700/80 transition group text-left cursor-pointer shadow-xs active:scale-[0.99]">
                         <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
+                            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 to-rose-700 text-white flex items-center justify-center font-black shrink-0 relative shadow-sm">
                                 <i data-lucide="user" class="w-4 h-4 text-white"></i>
-                                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                                <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                             </div>
                             <div class="min-w-0 flex-1 overflow-hidden">
                                 <p class="text-xs font-bold text-white truncate leading-tight tracking-tight" id="sidebar-menu-user-name">User</p>
-                                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-1" id="sidebar-menu-user-role">Role</p>
+                                <p class="text-[9.5px] font-semibold text-slate-400 uppercase tracking-wider truncate leading-tight mt-0.5" id="sidebar-menu-user-role">Role</p>
                             </div>
                         </div>
                         <div class="p-1 text-slate-400 group-hover:text-white transition shrink-0">
-                            <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                            <i data-lucide="more-vertical" class="w-3.5 h-3.5"></i>
                         </div>
                     </button>
                 </div>
@@ -5763,7 +5763,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.51"></script>
+    <script src="js/app.js?v=4.52"></script>
 </body>
 
 </html>
