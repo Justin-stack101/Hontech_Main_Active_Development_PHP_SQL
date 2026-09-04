@@ -3460,37 +3460,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                                 
                                 <div class="flex flex-col gap-1.5 items-start">
-                                    <!-- Service Advisor Action / Status Badge -->
-                                    <div class="inline-flex items-center shrink-0">
-                                        ${isAssignedToMe ? `
-                                            <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to you">
-                                                <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
-                                                <span>My Job</span>
-                                            </span>
-                                        ` : isAssignedToOtherSA ? `
-                                            <div class="inline-flex items-center gap-1 flex-wrap">
-                                                <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-semibold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to ${cleanJobSA}">
-                                                    <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
-                                                    <span>${cleanJobSA}</span>
-                                                </span>
-                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-white hover:bg-slate-900 text-slate-600 hover:text-white border border-slate-300 hover:border-slate-900 px-1.5 py-0.5 rounded-md transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
-                                                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
-                                                    <span>Take Over</span>
-                                                </button>
-                                            </div>
-                                        ` : (isSA && isUnassigned) ? `
-                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10.5px] font-bold uppercase bg-slate-900 hover:bg-black text-white px-2 py-0.5 rounded-md transition-all shadow-2xs cursor-pointer active:scale-95">
-                                                <i data-lucide="user-plus" class="w-3 h-3 text-slate-300"></i>
-                                                <span>Take Job</span>
-                                            </button>
-                                        ` : `
-                                            <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10.5px] font-medium uppercase px-2 py-0.5 rounded-md shadow-2xs">
-                                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
-                                                <span>${cleanJobSA || 'Unassigned'}</span>
-                                            </span>
-                                        `}
-                                    </div>
-
                                     <!-- Service Category & Lane Selection Controls -->
                                     <div class="flex items-center gap-1.5 flex-wrap">
                                         <!-- Category Pill -->
@@ -3545,6 +3514,37 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
                                             <span>${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
                                         </div>
+                                        `}
+                                    </div>
+
+                                    <!-- Service Advisor Action / Status Badge (Bottom) -->
+                                    <div class="inline-flex items-center shrink-0">
+                                        ${isAssignedToMe ? `
+                                            <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to you">
+                                                <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
+                                                <span>My Job</span>
+                                            </span>
+                                        ` : isAssignedToOtherSA ? `
+                                            <div class="inline-flex items-center gap-1 flex-wrap">
+                                                <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-semibold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to ${cleanJobSA}">
+                                                    <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+                                                    <span>${cleanJobSA}</span>
+                                                </span>
+                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-white hover:bg-slate-900 text-slate-600 hover:text-white border border-slate-300 hover:border-slate-900 px-1.5 py-0.5 rounded-md transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
+                                                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                                                    <span>Take Over</span>
+                                                </button>
+                                            </div>
+                                        ` : (isSA && isUnassigned) ? `
+                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10.5px] font-bold uppercase bg-slate-900 hover:bg-black text-white px-2 py-0.5 rounded-md transition-all shadow-2xs cursor-pointer active:scale-95">
+                                                <i data-lucide="user-plus" class="w-3 h-3 text-slate-300"></i>
+                                                <span>Take Job</span>
+                                            </button>
+                                        ` : `
+                                            <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10.5px] font-medium uppercase px-2 py-0.5 rounded-md shadow-2xs">
+                                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+                                                <span>${cleanJobSA || 'Unassigned'}</span>
+                                            </span>
                                         `}
                                     </div>
                                 </div>
