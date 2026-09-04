@@ -3565,9 +3565,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             <span>Express: ${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m</span>
                                         </span>
                                         ${isAssignedToMe ? `
-                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 px-2 py-0.5 rounded-md shadow-2xs transition cursor-pointer active:scale-95" title="Add progress note or technical reason for extended duration">
+                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 px-2 py-0.5 rounded-md shadow-2xs transition cursor-pointer active:scale-95" title="Report technical reason for extended service duration">
                                             <i data-lucide="file-text" class="w-3 h-3 text-slate-500"></i>
-                                            <span>Add Note</span>
+                                            <span>Report Reason</span>
                                         </button>
                                         ` : ''}
                                     `}
