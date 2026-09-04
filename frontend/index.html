@@ -5642,12 +5642,12 @@
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center border border-amber-500/20">
-                        <i data-lucide="clock-alert" class="w-5 h-5"></i>
+                    <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Express Lane 2H Delay Incident Report</h3>
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Document root cause for exceeding the 2-hour benchmark</p>
+                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Express Service Progress Note</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Document technical notes or reason for extended duration</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeExpressDelayModal()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
@@ -5688,7 +5688,7 @@
                 <!-- Delay Reason Category Dropdown -->
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                        Delay Reason Category <span class="text-red-500">*</span>
+                        Reason Category <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
                         <select id="modal-delay-reason" onchange="toggleDelayCustomReason(this.value)"
@@ -5707,18 +5707,18 @@
                 <!-- Custom Reason Input (Revealed on Others) -->
                 <div id="modal-delay-custom-wrap" class="space-y-1.5 hidden">
                     <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                        Specify Custom Delay Category <span class="text-red-500">*</span>
+                        Specify Custom Reason <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="modal-delay-custom-input" placeholder="e.g. Electrical wiring complication..."
-                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-semibold text-xs text-slate-900 transition">
+                    <input type="text" id="modal-delay-custom-input" placeholder="e.g. Additional electrical inspection requested..."
+                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-medium text-xs text-slate-900 transition">
                 </div>
 
                 <!-- Detailed Explanation Textarea -->
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                        Diagnostic Remarks & Root Cause Explanation <span class="text-red-500">*</span>
+                        Diagnostic Remarks & Operational Notes <span class="text-red-500">*</span>
                     </label>
-                    <textarea id="modal-delay-details" rows="3" placeholder="Provide specific operational details explaining why this customer's vehicle could not be finished within the 2-hour limit..."
+                    <textarea id="modal-delay-details" rows="3" placeholder="Provide notes on the vehicle status or why additional service time is required..."
                         class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
                 </div>
             </div>
@@ -5728,8 +5728,8 @@
                 <button type="button" onclick="closeExpressDelayModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
                     Cancel
                 </button>
-                <button type="button" onclick="submitExpressDelayReport()" id="btn-submit-express-delay" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-red-600/20 transition flex items-center gap-1.5 cursor-pointer">
-                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Submit Delay Report
+                <button type="button" onclick="submitExpressDelayReport()" id="btn-submit-express-delay" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Save Progress Note
                 </button>
             </div>
         </div>
@@ -5872,7 +5872,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.83"></script>
+    <script src="js/app.js?v=4.84"></script>
 </body>
 
 </html>

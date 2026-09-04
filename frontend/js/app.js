@@ -3424,7 +3424,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         ));
 
                         return `
-                        <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : isExpressOverdue && !reportedIssue ? 'bg-amber-50/40' : ''}">
+                        <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
                             <!-- Row Number -->
                             <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
@@ -3551,23 +3551,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     </div>
                                 </div>
 
-                                <!-- Express Lane 2-Hour SLA Status Alert or Reported Indicator -->
+                                <!-- Express Lane Progress / Note Indicator -->
                                 ${isExpressOverdue ? `
-                                <div class="mt-2 flex items-center gap-2 flex-wrap">
+                                <div class="mt-1.5 flex items-center gap-1.5 flex-wrap">
                                     ${reportedIssue ? `
-                                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-lg shadow-2xs" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
-                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                            <span>Reported: ${(reportedIssue.reason_category || 'Delay Logged').replace(/^Others:\s*/i, '')}</span>
+                                        <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-2xs" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
+                                            <i data-lucide="file-check" class="w-3 h-3 text-emerald-600"></i>
+                                            <span>Note: ${(reportedIssue.reason_category || 'Logged').replace(/^Others:\s*/i, '')}</span>
                                         </span>
                                     ` : `
-                                        <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-lg shadow-2xs animate-pulse">
-                                            <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-rose-600"></i>
-                                            <span>⚠️ Express 2H Limit Exceeded (${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m)</span>
+                                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-2xs">
+                                            <i data-lucide="clock" class="w-3 h-3 text-amber-600"></i>
+                                            <span>Express: ${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m</span>
                                         </span>
                                         ${isAssignedToMe ? `
-                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide bg-red-600 hover:bg-red-700 text-white px-2.5 py-0.5 rounded-lg shadow-2xs transition cursor-pointer active:scale-95">
-                                            <i data-lucide="flag" class="w-3 h-3"></i>
-                                            <span>Report Delay</span>
+                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 px-2 py-0.5 rounded-md shadow-2xs transition cursor-pointer active:scale-95" title="Add progress note or technical reason for extended duration">
+                                            <i data-lucide="file-text" class="w-3 h-3 text-slate-500"></i>
+                                            <span>Add Note</span>
                                         </button>
                                         ` : ''}
                                     `}
