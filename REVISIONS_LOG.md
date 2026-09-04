@@ -4,6 +4,38 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 4, 2026 (Operational SLA Tracking & System-Wide Edit Reason Audit Guard)
+
+### ⚡ Express Lane 2-Hour SLA Peak Limit Alert & Delay Reporting (v4.86)
+* **Real-Time 2-Hour Duration Tracking**: Continuously measures turnaround duration for Express Lane customer vehicles against the 24-hour arrival benchmark.
+* **Calm & Non-Disruptive Duration Indicator**: When an in-progress Express job reaches $\ge 2\text{ hours}$ (120 minutes), the system displays a clear duration badge (`⏱️ Express: 2h 15m`) and a clean `📄 Report Reason` action button.
+* **Operational Progress Note Modal (`#modal-express-delay-report`)**:
+  - Automatically prefills Customer Name, Plate Number, Vehicle Model, Arrival Time, and Total Elapsed Time.
+  - Features standardized automotive delay categories (*Parts Delay / Not in Stock*, *Additional Deep Diagnostics*, *Customer Requested Scope Change*, *Bay & Lift Bottleneck*, *Unforeseen Mechanical Complexity*, *Others*).
+  - Enforces mandatory technical justification remarks when custom reasons are selected.
+* **Live In-Table Update**: Submitting the delay report immediately updates the table row with a clean note badge (`Note: Parts Not in Stock`) without requiring a page reload.
+* **Dual Database Persistence**: Persists records to `express_lane_issues` and simultaneously records an immutable entry into `job_audit_logs`.
+* **Management Report Integration**: Synchronized into the **Reports Tab** (`⚡ Express Lane & Delay Intelligence` / `#db-tab-express`) for Owner and Admin performance evaluation with CSV/Excel export and Chart.js distribution analytics.
+
+### 🛡️ System-Wide Reason-Required Edit Audit Guard & Timeline History
+* **Anti-Tampering Record Protection**: Protects saved customer and vehicle operational records (Departure Time, Diagnosis, Vehicle Category, Lane, Plate, Status) against silent or unauthorized modifications.
+* **Mandatory Edit Reason Prompt (`#modal-edit-reason-prompt`)**:
+  - Intercepts all field edits across the system.
+  - Renders a side-by-side comparison displaying Field Name, Old Saved Value, and New Updated Value.
+  - Provides operational reason presets (*Typo / Data Entry Correction*, *Customer Requested Scope Change*, *Diagnostic Escalation*, *Technical Re-evaluation*, *Others*) plus mandatory justification notes.
+* **Immutable Audit Trail (`job_audit_logs`)**: Permanent database audit logging capturing `edited_by_id`, `edited_by_name`, `edited_by_role`, `field_name`, `old_value`, `new_value`, `edit_reason`, and `created_at`.
+* **Vehicle-Level Audit History Modal (`#modal-job-audit-history`)**: Accessible via the History clock button (`<i data-lucide="history"></i>`) next to each claim stub, providing a complete chronological timeline of every edit and delay note logged for that specific vehicle.
+
+### 🎨 Vehicle Table Cell & Evaluation/Diagnosis Ergonomics Refinement
+* **3-Row Stacked Vehicle Hierarchy**: Restructured the intake vehicle cell into a clean vertical 3-row layout:
+  - **Row 1**: Service Advisor status / actions (`My Job` / `Take Job` / `[SA Name] + Take Over`).
+  - **Row 2**: Service Category selector (`PMS` / `GRS` / `PMS & GRS` / `OTHERS` with an extended 140px custom service textbox).
+  - **Row 3**: Service Lane / Priority selector (`Flexible` / `Express` / `Priority` / `Special`).
+* **Unified Evaluation Card Design**: Replaced raw inputs in Daily Intakes and Carry Over tables with the minimalist `eval-field-card` and `eval-badge-static` design from the Staff Booking Module.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=4.86`.
+
+---
+
 ## 📅 August 31, 2026 (UI Ergonomics Upgrade & Cloud Infrastructure Strategy)
 
 ### 🎨 Vehicle Intake & Online Booking Form Modernization (v4.26)
