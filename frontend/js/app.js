@@ -3617,10 +3617,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             
 
                             <!-- Evaluation / Diagnosis -->
-                            <td class="px-3 py-2.5 align-middle min-w-[300px]">
+                            <td class="px-3 py-2.5 align-middle min-w-[240px]">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[280px] truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
-                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[240px] max-w-[300px] truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <div class="eval-field-card">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')">
+                                </div>
+                                ` : `
+                                <div class="eval-badge-static">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                    <span class="text-[10.5px] font-medium text-gray-700 truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || 'No evaluation note'}</span>
+                                </div>
+                                `}
                             </td>
 
                             <!-- Promised Date -->
@@ -3953,9 +3973,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             `}
                             `}
                         </td>
-                        <td class="px-3 py-2.5 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
-                        <td class="px-3 py-2.5 align-middle">
-                            ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] truncate focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] max-w-[280px] truncate block" title="${job.evaluation || ''}">${job.evaluation || '-'}</span>`}
+                        <td class="px-3 py-2.5 align-middle min-w-[220px]">
+                            ${isEditable ? `
+                            <div class="eval-field-card">
+                                <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)">
+                            </div>
+                            ` : `
+                            <div class="eval-badge-static">
+                                <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span class="text-[10.5px] font-medium text-gray-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
+                            </div>
+                            `}
                         </td>
                         <td class="px-3 py-2.5 align-middle">
                             ${isEditable ? `

@@ -427,7 +427,8 @@ input[type=checkbox] {
   border-radius: 8px;
   padding: 4px 8px;
   min-width: 140px;
-  max-width: 210px;
+  max-width: 280px;
+  width: 100%;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -467,7 +468,8 @@ input[type=checkbox] {
   border-radius: 6px;
   padding: 3.5px 7px;
   min-width: 130px;
-  max-width: 190px;
+  max-width: 280px;
+  width: 100%;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
