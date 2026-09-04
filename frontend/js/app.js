@@ -3334,23 +3334,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         <thead class="sticky top-0 z-10 bg-slate-50">
                             <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
                                 <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-3 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                                <th onclick="toggleClaimStubSort()" class="px-3 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap min-w-[150px]" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
-                                        Claim Stub
+                                        Ticket & Plate
                                         <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-3 py-2.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
-                                <th class="px-3 py-2.5 bg-slate-50 min-w-[260px]">Model & Category</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Arrival (24H)</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Departure (24H)</th>
-                                <th class="px-3 py-2.5 bg-slate-50 min-w-[300px]">Evaluation / Diagnosis</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[110px]">Promised Date</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[100px]">C.O. Status</th>
-                                ${showGoal ? '<th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[120px]">SLA Status (2h)</th>' : ''}
-                                <th class="px-3 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[165px]">Status</th>
-                                <th class="px-3 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[165px]">Location</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[220px]">Vehicle & Service</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[150px]">Service Advisor</th>
+                                <th class="px-3 py-2.5 bg-slate-50 text-center min-w-[140px]">Arrival / Departure</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[260px]">Evaluation / Diagnosis</th>
+                                <th class="px-3 py-2.5 bg-slate-50 text-center min-w-[150px]">Workshop Bay</th>
+                                <th class="px-3 py-2.5 bg-slate-50 text-center min-w-[150px]">Status</th>
                             </tr>
                         </thead>
                     `;
@@ -3425,279 +3420,171 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                         return `
                         <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : isExpressOverdue && !reportedIssue ? 'bg-amber-50/40' : ''}">
-                            <!-- Row Number -->
-                            <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                            <!-- 1. Row Number -->
+                            <td class="px-2.5 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
-                            <!-- Claim Stub & Audit History -->
-                            <td class="px-3 py-2.5 align-middle">
-                                <div class="flex items-center gap-1">
-                                    <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-slate-100/90 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
-                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
-                                    </button>
-                                    <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-1 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0" title="View Audit History Trail">
-                                        <i data-lucide="history" class="w-3.5 h-3.5"></i>
-                                    </button>
+                            <!-- 2. Ticket & Plate (Clean Stacked Identifier) -->
+                            <td class="px-3 py-3 align-middle min-w-[150px]">
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="flex items-center gap-1">
+                                        <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-slate-100 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer active:scale-95" title="Click to print Claim Stub PDF">
+                                            <i data-lucide="ticket" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
+                                        </button>
+                                        <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-1 rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-200 transition cursor-pointer shrink-0" title="View Audit History">
+                                            <i data-lucide="history" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="inline-flex items-center font-mono font-bold text-xs uppercase bg-white text-slate-900 px-2 py-0.5 rounded-md border border-slate-300 shadow-2xs">${job.plate}</span>
+                                        <span class="inline-flex items-center text-[9px] font-black uppercase px-1.5 py-0.5 rounded ${job.source === 'Online' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-600 border border-slate-200'}">${job.source || 'Walk-in'}</span>
+                                        ${(job.promisedDate || job.carryOverStatus) ? `
+                                        <span class="inline-flex items-center bg-orange-100 text-orange-800 text-[9px] font-black uppercase px-1.5 py-0.5 rounded border border-orange-200">C.O.</span>
+                                        ` : ''}
+                                    </div>
                                 </div>
                             </td>
-                            
-                            <!-- Plate -->
-                            <td class="px-3 py-2.5 align-middle">
-                                <div class="flex flex-col gap-1">
-                                    <span class="inline-flex items-center justify-center w-fit font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span>
-                                    ${(job.promisedDate || job.carryOverStatus) ? `
-                                    <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border border-orange-200">
-                                        Carry-Over
-                                    </span>
-                                    ` : ''}
-                                </div>
-                            </td>
-                            
-                            <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-3 py-2.5 align-middle min-w-[340px]">
-                                <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5 mb-1">
-                                    <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
-                                    <span class="truncate max-w-[200px] font-bold" title="${job.vehicle}">${job.vehicle}</span>
-                                </div>
-                                
-                                <div class="flex items-center gap-1.5 flex-nowrap">
-                                    <!-- Category Pill -->
-                                    ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
-                                        <i data-lucide="wrench" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
-                                        <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
-                                            <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
-                                            <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
-                                            <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
-                                            <option value="OTHERS" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
-                                        </select>
-                                    </div>
-                                    
-                                    ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
-                                    <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
-                                        <input type="text" 
-                                               value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
-                                               placeholder="Specify..." 
-                                               maxlength="25"
-                                               onkeydown="if(event.key === 'Enter') this.blur();"
-                                               oninput="this.title = this.value.trim() || 'Custom Service Specification';"
-                                               onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
-                                               class="text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text truncate"
-                                               style="width: 86px !important; min-width: 75px !important; max-width: 95px !important; padding: 0 !important;"
-                                               title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
-                                    </div>
-                                    ` : ''}
-                                    ` : `
-                                    <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase text-slate-700 shadow-2xs shrink-0" title="Category: ${job.category || '-'}">
-                                        <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i>
-                                        <span>${job.category || '-'}</span>
-                                    </span>
-                                    `}
-                                    
-                                    <!-- Lane Pill -->
-                                    ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
-                                        <i data-lucide="route" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
-                                        <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
-                                        <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                        <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
-                                            ${getAvailableLanesForJob(job.category).map(opt => `
-                                                <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
-                                            `).join('')}
-                                        </select>
-                                    </div>
-                                    ` : `
-                                    <div class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-slate-700 bg-slate-50 border border-slate-200 rounded-md px-1.5 py-0.5 shadow-2xs shrink-0">
-                                        <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
-                                        <span>${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
-                                    </div>
-                                    `}
 
-                                    <!-- Service Advisor Badge -->
-                                    <div class="inline-flex items-center shrink-0">
-                                        ${isAssignedToMe ? `
-                                            <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10.5px] font-bold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to you">
-                                                <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i>
-                                                <span>My Job</span>
-                                            </span>
-                                        ` : isAssignedToOtherSA ? `
-                                            <div class="inline-flex items-center gap-1">
-                                                <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-semibold uppercase px-2 py-0.5 rounded-md shadow-2xs" title="Assigned to ${cleanJobSA}">
-                                                    <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
-                                                    <span>${cleanJobSA}</span>
-                                                </span>
-                                                <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-bold uppercase bg-white hover:bg-slate-900 text-slate-600 hover:text-white border border-slate-300 hover:border-slate-900 px-1.5 py-0.5 rounded-md transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
-                                                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
-                                                    <span>Take Over</span>
-                                                </button>
-                                            </div>
-                                        ` : (isSA && isUnassigned) ? `
-                                            <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-[10.5px] font-bold uppercase bg-slate-900 hover:bg-black text-white px-2 py-0.5 rounded-md transition-all shadow-2xs cursor-pointer active:scale-95">
-                                                <i data-lucide="user-plus" class="w-3 h-3 text-slate-300"></i>
-                                                <span>Take Job</span>
-                                            </button>
+                            <!-- 3. Vehicle & Service (Model + Category & Lane Pills) -->
+                            <td class="px-3 py-3 align-middle min-w-[220px]">
+                                <div class="flex flex-col gap-1.5">
+                                    <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5">
+                                        <i data-lucide="car" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                                        <span class="truncate max-w-[200px]" title="${job.vehicle}">${job.vehicle}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <!-- Category Pill -->
+                                        ${isEditable ? `
+                                        <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'}">
+                                            <i data-lucide="wrench" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
+                                            <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
+                                            <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
+                                            <select onchange="handleTableCategoryChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                                <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                                <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                                <option value="PMS & GRS" ${job.category === 'PMS & GRS' || job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS & GRS</option>
+                                                <option value="OTHERS" ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>OTHERS</option>
+                                            </select>
+                                        </div>
+                                        ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
+                                        <div class="inline-flex items-center bg-white border border-slate-300 rounded-md px-1.5 py-0.5 shadow-2xs">
+                                            <input type="text" value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" placeholder="Specify..." maxlength="25" onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" class="text-[10px] font-semibold text-gray-800 bg-transparent border-none outline-none w-16 p-0">
+                                        </div>
+                                        ` : ''}
                                         ` : `
-                                            <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-600 border border-gray-200 text-[10.5px] font-medium uppercase px-2 py-0.5 rounded-md shadow-2xs">
-                                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
-                                                <span>${cleanJobSA || 'Unassigned'}</span>
-                                            </span>
+                                        <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase text-slate-700 shadow-2xs">
+                                            <i data-lucide="wrench" class="w-3 h-3 text-slate-400"></i> ${job.category || '-'}
+                                        </span>
+                                        `}
+                                        <!-- Lane Pill -->
+                                        ${isEditable ? `
+                                        <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer" title="Click to change Lane">
+                                            <i data-lucide="route" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
+                                            <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
+                                            <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
+                                            <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                                ${getAvailableLanesForJob(job.category).map(opt => `
+                                                    <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
+                                                `).join('')}
+                                            </select>
+                                        </div>
+                                        ` : `
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-slate-700 bg-slate-50 border border-slate-200 rounded-md px-1.5 py-0.5 shadow-2xs">
+                                            <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i> ${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}
+                                        </span>
                                         `}
                                     </div>
                                 </div>
+                            </td>
 
-                                <!-- Express Lane 2-Hour SLA Status Alert or Reported Indicator -->
+                            <!-- 4. Service Advisor (Dedicated Clean Column) -->
+                            <td class="px-3 py-3 align-middle min-w-[150px]">
+                                ${isAssignedToMe ? `
+                                    <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] font-bold uppercase px-2.5 py-1 rounded-lg shadow-2xs" title="Assigned to you">
+                                        <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                        <span>My Job</span>
+                                    </span>
+                                ` : isAssignedToOtherSA ? `
+                                    <div class="inline-flex flex-col gap-1">
+                                        <span class="inline-flex items-center gap-1 text-slate-800 text-[11.5px] font-bold truncate max-w-[130px]" title="Assigned to ${cleanJobSA}">
+                                            <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i> ${cleanJobSA}
+                                        </span>
+                                        <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center gap-1 text-[9.5px] font-black uppercase bg-white hover:bg-slate-900 text-slate-600 hover:text-white border border-slate-300 hover:border-slate-900 px-2 py-0.5 rounded-md transition cursor-pointer w-fit shadow-2xs" title="Take over ticket">
+                                            <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> Take Over
+                                        </button>
+                                    </div>
+                                ` : (isSA && isUnassigned) ? `
+                                    <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase bg-slate-900 hover:bg-black text-white px-2.5 py-1 rounded-lg transition-all shadow-2xs cursor-pointer active:scale-95">
+                                        <i data-lucide="user-plus" class="w-3.5 h-3.5 text-slate-300"></i>
+                                        <span>Take Job</span>
+                                    </button>
+                                ` : `
+                                    <span class="inline-flex items-center gap-1 text-slate-500 text-xs font-medium">
+                                        <i data-lucide="user" class="w-3.5 h-3.5 text-slate-300"></i> ${cleanJobSA || 'Unassigned'}
+                                    </span>
+                                `}
+                            </td>
+
+                            <!-- 5. Schedule / Time (Arrival & Departure + SLA Warning) -->
+                            <td class="px-3 py-3 align-middle text-center min-w-[140px]">
+                                <div class="inline-flex flex-col bg-slate-50 border border-slate-200 rounded-lg overflow-hidden min-w-[125px] shadow-2xs">
+                                    <div class="flex items-center justify-between px-2 py-1 text-[10px] border-b border-slate-200 text-slate-600 gap-1.5">
+                                        <span class="text-[9px] uppercase font-bold text-slate-400">Arr:</span>
+                                        <span class="font-mono font-bold text-slate-800">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
+                                    </div>
+                                    <div class="relative flex items-center justify-between px-2 py-1 text-[10px] text-slate-600 gap-1.5 bg-white">
+                                        <span class="text-[9px] uppercase font-bold text-red-600">Dep:</span>
+                                        ${isEditable ? `
+                                        <div class="inline-flex items-center gap-1">
+                                            <input type="text" id="dep-input-${job.id}" value="${convertTimeTo24Hour(job.departure) || ''}" placeholder="--:--" maxlength="5" onblur="handleDepartureChange('${job.id}', this)" class="table-select font-mono font-bold text-[11px] text-slate-900 bg-transparent border-none outline-none w-10 text-right p-0 cursor-text">
+                                            <div class="relative inline-flex items-center cursor-pointer" title="Presets">
+                                                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 pointer-events-none"></i>
+                                                <select onchange="document.getElementById('dep-input-${job.id}').value = this.value; requestFieldEditWithReason('${job.id}', 'departure', this.value, '${job.departure || ''}');" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                                    <option value="" disabled selected>Presets</option>
+                                                    ${get24HourDepartureOptions(job.departure)}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        ` : `
+                                        <span class="font-mono font-bold text-slate-800">${convertTimeTo24Hour(job.departure) || '--:--'}</span>
+                                        `}
+                                    </div>
+                                </div>
                                 ${isExpressOverdue ? `
-                                <div class="mt-2 flex items-center gap-2 flex-wrap">
+                                <div class="mt-1 flex items-center justify-center">
                                     ${reportedIssue ? `
-                                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-lg shadow-2xs" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
-                                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                            <span>Reported: ${(reportedIssue.reason_category || 'Delay Logged').replace(/^Others:\s*/i, '')}</span>
+                                        <span class="text-[9px] font-bold uppercase text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
+                                            ✓ Delay Reported
                                         </span>
                                     ` : `
-                                        <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-lg shadow-2xs animate-pulse">
-                                            <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-rose-600"></i>
-                                            <span>⚠️ Express 2H Limit Exceeded (${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m)</span>
-                                        </span>
-                                        ${isAssignedToMe ? `
-                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide bg-red-600 hover:bg-red-700 text-white px-2.5 py-0.5 rounded-lg shadow-2xs transition cursor-pointer active:scale-95">
-                                            <i data-lucide="flag" class="w-3 h-3"></i>
-                                            <span>Report Delay</span>
+                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="text-[9px] font-black uppercase text-rose-700 bg-rose-50 hover:bg-rose-100 px-1.5 py-0.5 rounded border border-rose-200 transition cursor-pointer animate-pulse" title="Click to report delay">
+                                            ⚠️ SLA Overdue
                                         </button>
-                                        ` : ''}
                                     `}
                                 </div>
                                 ` : ''}
                             </td>
-                            
-                            <!-- Source -->
-                            <td class="px-2.5 py-2.5 align-middle text-center">
-                                <span class="px-2 py-0.5 rounded-md text-[9.5px] font-black uppercase tracking-wider ${job.source === 'Online' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-700 border border-slate-200'} shadow-2xs">${job.source || 'Walk-in'}</span>
-                            </td>
 
-                            <!-- Arrival (24-Hour Base) -->
-                            <td class="px-2.5 py-2.5 align-middle text-center">
-                                <span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
-                            </td>
-                            
-                            <!-- Departure (Hybrid Combo-Box: Direct Type Numbers + Preset Quick Selection) -->
-                            <td class="px-2.5 py-2.5 align-middle text-center">
+                            <!-- 6. Evaluation / Diagnosis -->
+                            <td class="px-3 py-3 align-middle min-w-[260px]">
                                 ${isEditable ? `
-                                <div class="inline-flex items-center bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-100/50 rounded-xl px-2 py-0.5 shadow-2xs transition group" title="Type departure time or pick from presets">
-                                    <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none mr-1"></i>
-                                    <!-- Direct Type Numbers -->
-                                    <input type="text" 
-                                           id="dep-input-${job.id}" 
-                                           value="${convertTimeTo24Hour(job.departure) || ''}" 
-                                           placeholder="08:00" 
-                                           maxlength="15"
-                                           onkeydown="if(event.key === 'Enter') this.blur();"
-                                           onblur="handleDepartureChange('${job.id}', this)" 
-                                           class="table-select font-mono font-bold text-xs text-gray-900 bg-transparent border-none outline-none w-11 text-center p-0 cursor-text" 
-                                           title="Type departure time (e.g. 12:00 or 1233)">
-                                    
-                                    <!-- Preset Dropdown Selection -->
-                                    <div class="relative inline-flex items-center ml-0.5 border-l border-gray-200 pl-1 cursor-pointer" title="Click to choose a preset time">
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 transition shrink-0 pointer-events-none stroke-[2]"></i>
-                                        <select onchange="document.getElementById('dep-input-${job.id}').value = this.value; requestFieldEditWithReason('${job.id}', 'departure', this.value, '${job.departure || ''}');" 
-                                                class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                                title="Select from preset times">
-                                            <option value="" disabled selected>Presets</option>
-                                            ${get24HourDepartureOptions(job.departure)}
-                                        </select>
-                                    </div>
-                                </div>
-                                ` : `<span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
-                            </td>
-                            
-
-                            <!-- Evaluation / Diagnosis -->
-                            <td class="px-3 py-2.5 align-middle min-w-[300px]">
-                                ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[280px] truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
-                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[240px] max-w-[300px] truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 outline-none shadow-2xs transition">
+                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
-                            <!-- Promised Date -->
-                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[110px]">
-                                <span class="inline-block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
-                            </td>
-
-                            <!-- C.O. Status -->
-                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[100px]">
-                                ${job.carryOverStatus ? `
-                                <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
-                                    ${job.carryOverStatus}
-                                </span>
-                                ` : '<span class="text-gray-400">-</span>'}
-                            </td>
-
-                            <!-- SLA status -->
-                            ${showGoal ? `
-                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[120px]">
-                                <span class="px-1.5 py-0.5 rounded text-xs font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
-                                    ${job.goalStatus || 'N/A'}
-                                </span>
-                            </td>
-                            ` : ''}
-                            
-                            <!-- Status -->
-                            <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap min-w-[165px]">
-                                ${isEditable ? `
-                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer min-w-[155px] max-w-[170px]" 
-                                     style="${
-                                         job.status === 'Ready to Release' || job.status === 'Ready' 
-                                             ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
-                                             : job.status === 'Carry Over' 
-                                                 ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
-                                                 : job.status === 'Monitoring' 
-                                                     ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
-                                                     : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
-                                     }" title="Change Status">
-                                    <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none whitespace-nowrap">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
-                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                    <select onchange="handleStatusChange('${job.id}', this.value, this)" 
-                                            class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                            title="Change Status">
-                                        <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
-                                        <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
-                                        <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
-                                        <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
-                                        <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
-                                    </select>
-                                </div>
-                                ` : `
-                                <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-3 py-1.5 rounded-xl shadow-2xs min-w-[155px] max-w-[170px] whitespace-nowrap" 
-                                      style="${
-                                          job.status === 'Ready to Release' || job.status === 'Ready' 
-                                              ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
-                                              : job.status === 'Carry Over' 
-                                                  ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
-                                                  : job.status === 'Monitoring' 
-                                                      ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
-                                                      : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
-                                      }">
-                                    ${job.status === 'Ready' ? 'Ready to Release' : job.status}
-                                </span>
-                                `}
-                            </td>
-
-                            <!-- Location -->
-                            <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap min-w-[165px]">
+                            <!-- 7. Workshop Bay (Clean Dedicated Column) -->
+                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[150px]">
                                 ${(() => {
                                     const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
                                     if (isEditable && isMonitoringOrActive) {
                                         return `
-                                        <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition min-w-[155px] max-w-[170px] ${
+                                        <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition min-w-[135px] ${
                                             (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
                                                 ? 'bg-blue-50 text-blue-800 border-blue-200 cursor-pointer hover:border-blue-400' 
                                                 : 'bg-amber-50/80 text-amber-900 border-amber-300 cursor-pointer hover:border-amber-400'
-                                        }" title="Assign / Change Workshop Bay">
-                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none whitespace-nowrap">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                        }" title="Assign Bay">
+                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
                                             <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                            <select onchange="updateJobField('${job.id}', 'location', this.value)" 
-                                                class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                                title="Assign Location">
+                                            <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Assign Location">
                                                 <option value="None" style="background-color: white; color: #374151;" ${(!job.location || job.location === 'None') ? 'selected' : ''}>Waiting Area</option>
                                                 ${(() => {
                                                     const totalBays = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
@@ -3719,15 +3606,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         `;
                                     } else if (isEditable && !isMonitoringOrActive) {
                                         return `
-                                        <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-3 py-1.5 shadow-2xs min-w-[155px] max-w-[170px] cursor-not-allowed select-none opacity-85" 
-                                             title="Vehicle is in '${job.status}'. Set Status to 'Monitoring' to assign a workshop bay.">
-                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center whitespace-nowrap">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
-                                            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 shrink-0 stroke-[2.2]"></i>
+                                        <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-2.5 py-1.5 shadow-2xs min-w-[135px] cursor-not-allowed select-none opacity-85" title="Set Status to 'Monitoring' to assign bay">
+                                            <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center">${(!job.location || job.location === 'None') ? 'Waiting Area' : job.location.replace(/^Lift/, 'Bay')}</span>
+                                            <i data-lucide="lock" class="w-3 h-3 text-slate-400 shrink-0"></i>
                                         </div>
                                         `;
                                     } else {
                                         return `
-                                        <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-3 py-1.5 rounded-xl shadow-2xs min-w-[155px] max-w-[170px] whitespace-nowrap ${
+                                        <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-2.5 py-1.5 rounded-xl shadow-2xs min-w-[135px] ${
                                             (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
                                                 ? 'bg-blue-50 text-blue-800 border border-blue-200' 
                                                 : 'bg-gray-100/90 text-gray-800 border border-gray-250'
@@ -3737,6 +3623,45 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         `;
                                     }
                                 })()}
+                            </td>
+
+                            <!-- 8. Status -->
+                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[150px]">
+                                ${isEditable ? `
+                                <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer min-w-[140px]" 
+                                     style="${
+                                         job.status === 'Ready to Release' || job.status === 'Ready' 
+                                             ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
+                                             : job.status === 'Carry Over' 
+                                                 ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
+                                                 : job.status === 'Monitoring' 
+                                                     ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
+                                                     : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
+                                     }" title="Change Status">
+                                    <span class="font-bold text-[11px] uppercase tracking-tight flex-1 text-center pointer-events-none">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 opacity-80 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                                    <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Status">
+                                        <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
+                                        <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
+                                        <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
+                                        <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
+                                        <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
+                                    </select>
+                                </div>
+                                ` : `
+                                <span class="inline-flex items-center justify-center font-bold text-[11px] uppercase tracking-tight px-2.5 py-1.5 rounded-xl shadow-2xs min-w-[140px]" 
+                                      style="${
+                                          job.status === 'Ready to Release' || job.status === 'Ready' 
+                                              ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
+                                              : job.status === 'Carry Over' 
+                                                  ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
+                                                  : job.status === 'Monitoring' 
+                                                      ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
+                                                      : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
+                                      }">
+                                    ${job.status === 'Ready' ? 'Ready to Release' : job.status}
+                                </span>
+                                `}
                             </td>
                         </tr>
                         `;
@@ -3839,7 +3764,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
