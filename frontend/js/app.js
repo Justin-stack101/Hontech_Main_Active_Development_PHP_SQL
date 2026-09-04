@@ -3508,16 +3508,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         </div>
                                         
                                         ${!['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? `
-                                        <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-1.5 py-0.5 shadow-2xs transition shrink-0" title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
+                                        <div class="inline-flex items-center bg-white border border-slate-300 focus-within:border-red-600 rounded-md px-2 py-0.5 shadow-2xs transition shrink-0" title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
                                             <input type="text" 
                                                    value="${(job.category !== 'Others' && job.category !== 'OTHERS') ? job.category : ''}" 
-                                                   placeholder="Specify..." 
-                                                   maxlength="25"
+                                                   placeholder="Specify service..." 
+                                                   maxlength="40"
                                                    onkeydown="if(event.key === 'Enter') this.blur();"
                                                    oninput="this.title = this.value.trim() || 'Custom Service Specification';"
                                                    onblur="requestFieldEditWithReason('${job.id}', 'category', this.value.trim() || 'OTHERS', '${job.category || 'OTHERS'}')" 
                                                    class="text-[10.5px] font-semibold text-gray-800 bg-transparent border-none outline-none p-0 cursor-text truncate"
-                                                   style="width: 86px !important; min-width: 75px !important; max-width: 95px !important; padding: 0 !important;"
+                                                   style="width: 140px !important; min-width: 120px !important; max-width: 170px !important; padding: 0 !important;"
                                                    title="${job.category && job.category !== 'Others' && job.category !== 'OTHERS' ? job.category : 'Custom Service Specification'}">
                                         </div>
                                         ` : ''}
