@@ -3782,10 +3782,6 @@
 
                             <p class="text-xs text-slate-500 leading-relaxed pt-1">
                                 Service Advisors on the workshop floor can dynamically adjust active operational bays up to this maximum facility ceiling (e.g. 1 to 7 bays).
-                            </p>
-                        </div>
-                    </div>
-
                             <!-- Direct Link to Live Workshop Floor Module -->
                             <div class="pt-3 border-t border-gray-100">
                                 <button type="button" onclick="showSection('bays')" class="w-full py-3 px-4 bg-gray-900 hover:bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-sm group">
@@ -3797,64 +3793,64 @@
                             </div>
                         </div>
                     </div>
- 
-                    <!-- Session & Security Preferences -->
-                    <div id="settings-security-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
-                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
-                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
-                                <i data-lucide="shield" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Security Preferences</h3>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure active sessions & idle rules</p>
-                            </div>
+                </div>
+
+                <!-- Session & Security Preferences -->
+                <div id="settings-security-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                    <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                        <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                            <i data-lucide="shield" class="w-6 h-6"></i>
                         </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Automatic Logout Idle Time</label>
-                                <select id="settings-idle-timeout" onchange="saveSystemSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
-                                    <option value="15">15 Minutes</option>
-                                    <option value="30" selected>30 Minutes (Default Rule)</option>
-                                    <option value="60">1 Hour</option>
-                                    <option value="0">Never (Not Recommended)</option>
-                                </select>
-                            </div>
-
-                            <div class="space-y-3">
-                                <span class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block">Logged In Devices</span>
-                                <div class="space-y-2">
-                                    <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
-                                        <div class="flex items-center gap-3">
-                                            <i data-lucide="laptop" class="w-5 h-5 text-gray-400"></i>
-                                            <div>
-                                                <span class="font-bold text-xs text-gray-900 block">Windows PC · Chrome</span>
-                                                <span class="text-[9px] text-green-600 font-extrabold uppercase">Current Active Session</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
-                                        <div class="flex items-center gap-3">
-                                            <i data-lucide="smartphone" class="w-5 h-5 text-gray-400"></i>
-                                            <div>
-                                                <span class="font-bold text-xs text-gray-900 block">iPhone 14 · Safari</span>
-                                                <span class="text-[9px] text-gray-500 font-bold">Last active: 2 hours ago</span>
-                                            </div>
-                                        </div>
-                                        <button onclick="showSystemToast('Logged out device successfully!', 'success', 'Session Revoked')" class="text-[10px] font-black uppercase text-red-600 bg-red-50 hover:bg-red-100 border border-red-100 rounded-lg px-2.5 py-1">Terminate</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="border-t border-gray-100 pt-6 flex justify-end">
-                            <button onclick="saveSystemSettings()" class="bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider px-6 py-3 rounded-xl transition shadow-md">
-                                Save Settings
-                            </button>
+                        <div>
+                            <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Security Preferences</h3>
+                            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Configure active sessions & idle rules</p>
                         </div>
                     </div>
 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-2 block">Automatic Logout Idle Time</label>
+                            <select id="settings-idle-timeout" onchange="saveSystemSettings()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                <option value="15">15 Minutes</option>
+                                <option value="30" selected>30 Minutes (Default Rule)</option>
+                                <option value="60">1 Hour</option>
+                                <option value="0">Never (Not Recommended)</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-3">
+                            <span class="text-[10px] text-gray-600 font-bold uppercase tracking-wider block">Logged In Devices</span>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="laptop" class="w-5 h-5 text-gray-400"></i>
+                                        <div>
+                                            <span class="font-bold text-xs text-gray-900 block">Windows PC · Chrome</span>
+                                            <span class="text-[9px] text-green-600 font-extrabold uppercase">Current Active Session</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center bg-gray-50 border border-gray-200 rounded-xl p-3">
+                                    <div class="flex items-center gap-3">
+                                        <i data-lucide="smartphone" class="w-5 h-5 text-gray-400"></i>
+                                        <div>
+                                            <span class="font-bold text-xs text-gray-900 block">iPhone 14 · Safari</span>
+                                            <span class="text-[9px] text-gray-500 font-bold">Last active: 2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <button onclick="showSystemToast('Logged out device successfully!', 'success', 'Session Revoked')" class="text-[10px] font-black uppercase text-red-600 bg-red-50 hover:bg-red-100 border border-red-100 rounded-lg px-2.5 py-1">Terminate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-6 flex justify-end">
+                        <button onclick="saveSystemSettings()" class="bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider px-6 py-3 rounded-xl transition shadow-md">
+                            Save Settings
+                        </button>
+                    </div>
                 </div>
+
             </div>
 
             <!-- Help & Support Section -->
@@ -5872,7 +5868,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.86"></script>
+    <script src="js/app.js?v=4.87"></script>
 </body>
 
 </html>
