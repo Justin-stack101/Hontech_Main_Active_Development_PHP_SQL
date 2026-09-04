@@ -3044,37 +3044,39 @@
 
                 <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
                 <div id="container-daily-intakes"
-                    class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-4 md:p-5 rounded-2xl shadow-md flex flex-col hidden">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
-                                    class="w-5 h-5"></i></div>
+                    class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
+                                    class="w-4 h-4"></i></div>
                             <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
-                                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active
+                                <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
+                                <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active
                                     Vehicles in Workshop</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="openQuickCustomerSearchModal()" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center gap-2 cursor-pointer">
-                                <i data-lucide="search" class="w-4 h-4"></i> Search Customer / Back-Job
+                            <button onclick="openQuickCustomerSearchModal()" class="bg-red-600 hover:bg-red-700 active:scale-95 text-white px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center gap-1.5 cursor-pointer">
+                                <i data-lucide="search" class="w-3.5 h-3.5"></i> Search Customer / Back-Job
                             </button>
                         </div>
                     </div>
-                    <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
+                    <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                         <table class="w-full text-left min-w-full">
-                            <thead>
-                                <tr>
-                                    <th>Claim Stub</th>
-                                    <th>Plate No.</th>
-                                    <th>Model & Category</th>
-                                    <th>Source</th>
-                                    <th>Arrival (24H)</th>
-                                    <th>Departure (24H)</th>
-                                    <th>Evaluation / Diagnosis</th>
-                                    <th>Status</th>
-                                    <th>Location</th>
-                                    <th>Reasons</th>
+                            <thead class="sticky top-0 z-10 bg-slate-50">
+                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Claim Stub</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Plate No.</th>
+                                    <th class="px-3 py-2.5 bg-slate-50 min-w-[260px]">Model & Category</th>
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center">Source</th>
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center">Arrival (24H)</th>
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center">Departure (24H)</th>
+                                    <th class="px-3 py-2.5 bg-slate-50 min-w-[300px]">Evaluation / Diagnosis</th>
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center">Promised Date</th>
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center">C.O. Status</th>
+                                    <th class="px-3 py-2.5 bg-slate-50 text-center">Status</th>
+                                    <th class="px-3 py-2.5 bg-slate-50 text-center">Location</th>
                                 </tr>
                             </thead>
                             <tbody id="table-daily-intakes"></tbody>
@@ -3098,35 +3100,35 @@
 
                 <!-- CARRY OVER BOARD (Shared) -->
                 <div id="container-carry-over"
-                    class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-4 md:p-5 rounded-2xl shadow-md flex flex-col mt-4">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="p-2 bg-orange-50 rounded-lg text-orange-600"><i data-lucide="calendar-off"
-                                class="w-5 h-5"></i></div>
+                    class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col mt-4">
+                    <div class="flex items-center gap-2.5 mb-3">
+                        <div class="p-1.5 bg-orange-50 rounded-lg text-orange-600"><i data-lucide="calendar-off"
+                                class="w-4 h-4"></i></div>
                         <div>
-                            <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Carry-Over Data</h3>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Vehicles
+                            <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Carry-Over Data</h3>
+                            <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Vehicles
                                 requiring extended stays</p>
                         </div>
                     </div>
-                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                    <div class="overflow-x-auto max-h-[320px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                         <table class="w-full text-left min-w-full">
-                            <thead class="sticky top-0 z-10 bg-gray-50">
-                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
-                                    <th class="px-2 py-3.5 bg-gray-55 text-center w-10 text-gray-400 font-bold">#</th>
-                                    <th onclick="toggleCarryOverStubSort()" class="px-3 py-3.5 bg-gray-55 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                            <thead class="sticky top-0 z-10 bg-slate-50">
+                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                    <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
+                                    <th onclick="toggleCarryOverStubSort()" class="px-3 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                         <span class="inline-flex items-center gap-1">
                                             Claim Stub
                                             <i data-lucide="arrow-up-down" class="w-3 h-3 text-orange-600"></i>
                                         </span>
                                     </th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Model</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Date (Received, Promised)</th>
-                                    <th class="px-3 py-3.5 bg-gray-55 text-center whitespace-nowrap">Parts & Materials Available?</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Service Advisor</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Evaluation</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Status</th>
-                                    <th class="px-3 py-3.5 text-right w-48 bg-gray-55">Action</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Plate No.</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Model</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Date (Received, Promised)</th>
+                                    <th class="px-3 py-2.5 bg-slate-50 text-center whitespace-nowrap">Parts & Materials Available?</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Service Advisor</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Evaluation</th>
+                                    <th class="px-3 py-2.5 bg-slate-50">Status</th>
+                                    <th class="px-3 py-2.5 text-right w-48 bg-slate-50">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="table-carry-over"></tbody>
@@ -5870,7 +5872,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.76"></script>
+    <script src="js/app.js?v=4.77"></script>
 </body>
 
 </html>

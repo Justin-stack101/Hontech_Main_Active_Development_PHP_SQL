@@ -3331,26 +3331,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const getTableHeaderHtml = () => {
                     return `
-                        <thead class="sticky top-0 z-10 bg-gray-50">
-                            <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
-                                <th class="px-2 py-3 bg-gray-50 text-center w-10 text-gray-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-3 py-3 bg-gray-50 cursor-pointer select-none hover:bg-gray-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                        <thead class="sticky top-0 z-10 bg-slate-50">
+                            <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
+                                <th onclick="toggleClaimStubSort()" class="px-3 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
                                         <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-3 py-3 bg-gray-50 whitespace-nowrap">Plate No.</th>
-                                <th class="px-3 py-3 bg-gray-50 min-w-[260px]">Model & Category</th>
-                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Source</th>
-                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Arrival (24H)</th>
-                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap">Departure (24H)</th>
-                                <th class="px-3 py-3 bg-gray-50 min-w-[320px]">Evaluation / Diagnosis</th>
-                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[110px]">Promised Date</th>
-                                <th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[100px]">C.O. Status</th>
-                                ${showGoal ? '<th class="px-2.5 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[120px]">SLA Status (2h)</th>' : ''}
-                                <th class="px-3 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[165px]">Status</th>
-                                <th class="px-3 py-3 bg-gray-50 text-center whitespace-nowrap min-w-[165px]">Location</th>
+                                <th class="px-3 py-2.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[260px]">Model & Category</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Arrival (24H)</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Departure (24H)</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[300px]">Evaluation / Diagnosis</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[110px]">Promised Date</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[100px]">C.O. Status</th>
+                                ${showGoal ? '<th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[120px]">SLA Status (2h)</th>' : ''}
+                                <th class="px-3 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[165px]">Status</th>
+                                <th class="px-3 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[165px]">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -3424,14 +3424,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         ));
 
                         return `
-                        <tr class="${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : isExpressOverdue && !reportedIssue ? 'bg-amber-50/40' : ''}">
+                        <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : isExpressOverdue && !reportedIssue ? 'bg-amber-50/40' : ''}">
                             <!-- Row Number -->
-                            <td class="px-2 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                            <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
                             <!-- Claim Stub & Audit History -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-3 py-2.5 align-middle">
                                 <div class="flex items-center gap-1">
-                                    <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250 transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
+                                    <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-slate-100/90 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
                                         <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
                                     </button>
                                     <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-1 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0" title="View Audit History Trail">
@@ -3441,9 +3441,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Plate -->
-                            <td class="px-2 py-3 align-middle">
+                            <td class="px-3 py-2.5 align-middle">
                                 <div class="flex flex-col gap-1">
-                                    <span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2.5 py-1 rounded-lg border border-gray-250">${job.plate}</span>
+                                    <span class="inline-flex items-center justify-center w-fit font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span>
                                     ${(job.promisedDate || job.carryOverStatus) ? `
                                     <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border border-orange-200">
                                         Carry-Over
@@ -3453,7 +3453,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-3 py-2.5 align-middle min-w-[380px]">
+                            <td class="px-3 py-2.5 align-middle min-w-[340px]">
                                 <div class="font-bold text-gray-900 text-xs sm:text-[13px] flex items-center gap-1.5 mb-1">
                                     <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
                                     <span class="truncate max-w-[200px] font-bold" title="${job.vehicle}">${job.vehicle}</span>
@@ -3571,17 +3571,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Source -->
-                            <td class="px-2 py-3 align-middle text-center">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-800 border border-gray-250 shadow-2xs">${job.source || 'Walk-in'}</span>
+                            <td class="px-2.5 py-2.5 align-middle text-center">
+                                <span class="px-2 py-0.5 rounded-md text-[9.5px] font-black uppercase tracking-wider ${job.source === 'Online' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-700 border border-slate-200'} shadow-2xs">${job.source || 'Walk-in'}</span>
                             </td>
 
                             <!-- Arrival (24-Hour Base) -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-2.5 py-2.5 align-middle text-center">
                                 <span class="block py-0.5 text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
                             </td>
                             
                             <!-- Departure (Hybrid Combo-Box: Direct Type Numbers + Preset Quick Selection) -->
-                            <td class="px-2 py-3 align-middle text-center">
+                            <td class="px-2.5 py-2.5 align-middle text-center">
                                 ${isEditable ? `
                                 <div class="inline-flex items-center bg-white border border-gray-300 hover:border-red-500 focus-within:border-red-600 focus-within:ring-2 focus-within:ring-red-100/50 rounded-xl px-2 py-0.5 shadow-2xs transition group" title="Type departure time or pick from presets">
                                     <i data-lucide="clock" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none mr-1"></i>
@@ -3612,19 +3612,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             
 
                             <!-- Evaluation / Diagnosis -->
-                            <td class="px-3 py-3 align-middle min-w-[320px]">
+                            <td class="px-3 py-2.5 align-middle min-w-[300px]">
                                 ${isEditable ? `
-                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3.5 py-2 rounded-xl w-full min-w-[300px] truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
-                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[260px] max-w-[320px] truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[280px] truncate focus:border-red-600 focus:ring-1 focus:ring-red-500 focus:bg-white outline-none shadow-2xs transition">
+                                ` : `<span class="block py-1 text-xs font-medium text-gray-700 min-w-[240px] max-w-[300px] truncate" title="${job.evaluation || ''}" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
                             <!-- Promised Date -->
-                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[110px]">
+                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[110px]">
                                 <span class="inline-block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
                             </td>
 
                             <!-- C.O. Status -->
-                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[100px]">
+                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[100px]">
                                 ${job.carryOverStatus ? `
                                 <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
                                     ${job.carryOverStatus}
@@ -3634,7 +3634,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                             <!-- SLA status -->
                             ${showGoal ? `
-                            <td class="px-2.5 py-3 align-middle text-center whitespace-nowrap min-w-[120px]">
+                            <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap min-w-[120px]">
                                 <span class="px-1.5 py-0.5 rounded text-xs font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                     ${job.goalStatus || 'N/A'}
                                 </span>
@@ -3642,7 +3642,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[165px]">
+                            <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap min-w-[165px]">
                                 ${isEditable ? `
                                 <div class="relative inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition cursor-pointer min-w-[155px] max-w-[170px]" 
                                      style="${
@@ -3683,7 +3683,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Location -->
-                            <td class="px-3 py-3 align-middle text-center whitespace-nowrap min-w-[165px]">
+                            <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap min-w-[165px]">
                                 ${(() => {
                                     const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
                                     if (isEditable && isMonitoringOrActive) {
@@ -3763,79 +3763,79 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const selectionEnd = searchInputActive ? document.activeElement.selectionEnd : null;
 
                     dailyIntakesEl.innerHTML = `
-                        <div class="space-y-6">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-5 h-5"></i></div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-4 h-4"></i></div>
                                     <div>
-                                        <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
-                                        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
+                                        <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
+                                        <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Daily Intakes Advanced Filter & Sorting Panel -->
-                            <div class="flex flex-wrap items-center justify-between gap-4 bg-gray-50/50 p-4 rounded-2xl border border-gray-150">
+                            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50/80 p-2.5 md:p-3 rounded-xl border border-slate-200/80">
                                 <!-- Search Input -->
-                                <div class="relative w-64">
-                                    <i data-lucide="search" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4"></i>
-                                    <input type="text" id="intake-search-input" value="${intakeSearchQuery}" oninput="updateIntakeFilter('search', this.value)" placeholder="Search plate, vehicle..." class="w-full bg-white border border-gray-200 rounded-xl pl-9 pr-4 py-2 outline-none text-xs focus:border-red-500 transition font-medium">
+                                <div class="relative w-60">
+                                    <i data-lucide="search" class="absolute left-2.5 top-2 text-gray-400 w-3.5 h-3.5"></i>
+                                    <input type="text" id="intake-search-input" value="${intakeSearchQuery}" oninput="updateIntakeFilter('search', this.value)" placeholder="Search plate, vehicle..." class="w-full bg-white border border-gray-200 rounded-xl pl-8 pr-3 py-1.5 outline-none text-xs focus:border-red-500 transition font-medium shadow-2xs">
                                 </div>
                                 
                                 <!-- Dropdown Filters -->
-                                <div class="flex flex-wrap items-center gap-3">
+                                <div class="flex flex-wrap items-center gap-2.5">
                                     <!-- Advisor / Works Filter -->
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Advisor:</span>
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Advisor:</span>
+                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
                                             <select id="intake-advisor-filter" onchange="updateIntakeFilter('advisor', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeAdvisorFilter === 'all' ? 'selected' : ''}>All Advisors</option>
                                                 <option value="mine" ${intakeAdvisorFilter === 'mine' ? 'selected' : ''}>My Works Only</option>
                                                 <option value="unassigned" ${intakeAdvisorFilter === 'unassigned' ? 'selected' : ''}>Unassigned Only</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
 
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Source:</span>
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Source:</span>
+                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
                                             <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
                                                 <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
                                                 <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
                                     
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Time (Prototype):</span>
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Time:</span>
+                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
                                             <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
                                                 <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
                                                 <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
 
                                     <div class="flex items-center gap-1.5">
-                                        <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">Sort By:</span>
-                                        <div class="inline-flex items-center gap-1.5 bg-white border border-gray-300 hover:border-red-500 rounded-xl px-3 py-1.5 shadow-2xs transition">
+                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Sort By:</span>
+                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
                                             <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
                                                 <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
                                                 <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
                                                 <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
                                             </select>
-                                            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-500 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                            <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                                 <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>
@@ -3893,12 +3893,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const isPartsNo = (partsAvail === 'no' || partsAvail === '0' || partsAvail === 'false');
 
                     return `
-                    <tr>
+                    <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80">
                         <!-- Row Number -->
-                        <td class="px-3 py-3 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
-                        <td class="px-3 py-3 align-middle"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-3 py-3 align-middle"><span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
-                        <td class="px-3 py-3 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
+                        <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                        <td class="px-3 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-3 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span></td>
+                        <td class="px-3 py-2.5 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
                         <td class="px-3 py-2.5 align-middle whitespace-nowrap">
                             <div class="inline-flex flex-col bg-slate-50 border border-slate-200 rounded-lg overflow-hidden min-w-[150px] shadow-2xs">
@@ -3920,7 +3920,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                         </td>
                         <!-- Parts & Materials Available? (Whiteboard YES / NO requirement) -->
-                        <td class="px-3 py-3 align-middle text-center whitespace-nowrap">
+                        <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap">
                             ${isEditable ? `
                             <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-xl shadow-2xs">
                                 <button type="button" 
@@ -3948,11 +3948,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             `}
                             `}
                         </td>
-                        <td class="px-3 py-3 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
-                        <td class="px-3 py-3 align-middle">
+                        <td class="px-3 py-2.5 align-middle"><span class="text-gray-800 text-xs font-semibold">${job.saName || '-'}</span></td>
+                        <td class="px-3 py-2.5 align-middle">
                             ${isEditable ? `<input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Evaluation..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs font-semibold text-gray-900 border border-gray-300 bg-white px-3 py-1.5 rounded-xl w-full min-w-[220px] max-w-[300px] truncate focus:border-red-600 focus:bg-white outline-none shadow-2xs transition">` : `<span class="text-gray-700 text-xs font-medium min-w-[180px] max-w-[280px] truncate block" title="${job.evaluation || ''}">${job.evaluation || '-'}</span>`}
                         </td>
-                        <td class="px-3 py-3 align-middle">
+                        <td class="px-3 py-2.5 align-middle">
                             ${isEditable ? `
                             <div class="relative inline-flex items-center justify-between gap-1.5 border border-orange-200 bg-orange-50/80 hover:bg-orange-100/80 hover:border-orange-400 text-orange-900 rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[165px]" title="Click to Change Carry-Over Status">
                                 <span class="font-extrabold text-xs uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
@@ -3969,7 +3969,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                             ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-semibold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
-                        <td class="px-3 py-3 align-middle text-right">
+                        <td class="px-3 py-2.5 align-middle text-right">
                             ${actions}
                         </td>
                     </tr>
