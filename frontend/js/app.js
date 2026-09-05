@@ -4766,7 +4766,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const totalInBay = inbayPMS + inbayGRS + inbayPMSGrs + inbayOthers;
             const totalReleased = releasedPMS + releasedGRS + releasedPMSGrs + releasedOthers;
 
-            // 2. POPULATE TABLE 1: Category Intakes Matrix & Chart.js Graph (4 Core Categories)
+            // 2. POPULATE TABLE 1: Category Intakes Matrix & Chart.js Graph (4 Core Categories - Clean Executive Monochrome)
             const categoryRows = [
                 {
                     name: 'PMS (Preventive Maintenance Service)',
@@ -4775,7 +4775,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     inbay: inbayPMS,
                     released: releasedPMS,
                     share: sharePMS,
-                    badge: `<span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">PMS</span>`
+                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">PMS</span>`
                 },
                 {
                     name: 'GRS (General Repair Service)',
@@ -4784,7 +4784,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     inbay: inbayGRS,
                     released: releasedGRS,
                     share: shareGRS,
-                    badge: `<span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">GRS</span>`
+                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">GRS</span>`
                 },
                 {
                     name: 'PMS & GRS (Combined Services)',
@@ -4793,7 +4793,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     inbay: inbayPMSGrs,
                     released: releasedPMSGrs,
                     share: sharePMSGrs,
-                    badge: `<span class="bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">PMS & GRS</span>`
+                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">PMS & GRS</span>`
                 },
                 {
                     name: 'Others (Diagnostics, Electrical, Multi-Point, etc.)',
@@ -4802,7 +4802,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     inbay: inbayOthers,
                     released: releasedOthers,
                     share: shareOthers,
-                    badge: `<span class="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Others</span>`
+                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Others</span>`
                 }
             ];
 
@@ -4831,8 +4831,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 {
                                     label: 'Completed & Released',
                                     data: [releasedPMS, releasedGRS, releasedPMSGrs, releasedOthers],
-                                    backgroundColor: '#10b981',
-                                    borderColor: '#059669',
+                                    backgroundColor: '#475569',
+                                    borderColor: '#334155',
                                     borderWidth: 1,
                                     borderRadius: 6,
                                     barPercentage: 0.55,
@@ -4881,17 +4881,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ${row.actual} <span class="text-xs text-gray-400 font-normal">cars</span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-200">
-                                <strong class="text-gray-900 font-bold">${row.inbay}</strong> in bay
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
+                                <strong class="text-slate-900 font-bold">${row.inbay}</strong> in bay
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-                                <strong class="text-emerald-700 font-bold">${row.released}</strong> released
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
+                                <strong class="text-slate-900 font-bold">${row.released}</strong> released
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="font-black text-xs text-slate-800 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">${row.share}%</span>
+                            <span class="font-bold text-xs text-slate-800 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">${row.share}%</span>
                         </td>
                     </tr>
                 `).join('');
@@ -4900,7 +4900,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     <tr class="bg-gray-100/90 text-gray-900 font-extrabold text-xs border-t-2 border-gray-300">
                         <td class="px-6 py-4 text-gray-950 uppercase tracking-wider font-black">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-slate-900"></span>
                                 <span>TOTAL WORKSHOP POPULATION</span>
                             </div>
                         </td>
@@ -4908,13 +4908,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ${totalPumasok} <span class="text-xs text-gray-500 font-semibold">cars</span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
                                 <strong class="text-gray-950 font-black">${totalInBay}</strong> in bay
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
-                                <strong class="text-emerald-600 font-black">${totalReleased}</strong> released
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
+                                <strong class="text-gray-950 font-black">${totalReleased}</strong> released
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right">
