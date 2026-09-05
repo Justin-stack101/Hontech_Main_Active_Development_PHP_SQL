@@ -842,61 +842,78 @@
             </tbody>
         </table>
 
-        <h3 class="subsection-heading">4.3 Client Future Hardware Investment & Costing Draft (For Management Review)</h3>
-        <p>To help HonTech management budget for future hardware procurement or upgrades across both branches, below is an itemized cost estimate draft:</p>
+        <h3 class="subsection-heading">4.3 Client Costing & Future Investment Breakdown: Cloud vs. Local</h3>
+        <p>To ensure total clarity for management, the hardware costs are divided into <strong>(A) Staff Counter Devices</strong> (which run the web browser on either track) and <strong>(B) Central Hosting Infrastructure</strong> (Cloud vs. Local Server):</p>
+
+        <h4 class="tier-heading">Part A: Staff Counter Terminals & Waiting Lounge Displays (Both Tracks)</h4>
+        <p><em>These are the computers and screens used by staff on the shop floor to access the web system:</em></p>
 
         <table class="formal-table">
             <thead>
                 <tr>
-                    <th style="width: 30%;">Procurement Item / Option</th>
-                    <th style="width: 22%;">Unit Cost (Est. Range)</th>
-                    <th style="width: 18%;">Qty Needed (2 Branches)</th>
-                    <th style="width: 15%;">Total Est. Cost</th>
-                    <th style="width: 15%;">Notes</th>
+                    <th style="width: 30%;">Equipment Tier</th>
+                    <th style="width: 25%;">Hardware Description</th>
+                    <th style="width: 15%;">Qty (2 Branches)</th>
+                    <th style="width: 15%;">Total Cost</th>
+                    <th style="width: 15%;">Strategic Value</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Option 1: Using Existing Shop Computers</strong></td>
-                    <td>&#8369;0.00</td>
-                    <td>6 PCs</td>
+                    <td><strong>Primary Standard: Existing Shop Hardware</strong></td>
+                    <td>Use HonTech's existing desktop PCs & laptops</td>
+                    <td>6 PCs + 2 TVs</td>
                     <td><strong>&#8369;0.00</strong></td>
-                    <td>Immediate Launch (Zero Cost)</td>
+                    <td>Immediate ₱0 Launch (Zero Cost)</td>
                 </tr>
                 <tr>
-                    <td><strong>Option 2: Refurbished Work-Grade Office PCs</strong><br><em>(Core i5 8th&ndash;10th Gen, 8GB/16GB, SSD)</em></td>
-                    <td>&#8369;7,500 &ndash; &#8369;9,500</td>
+                    <td><strong>Optional Upgrade: Refurbished Work-Grade PCs</strong></td>
+                    <td>Core i5 (8th&ndash;10th Gen), 8GB/16GB, SSD</td>
                     <td>6 PCs (4 SAs + 2 Front Desk)</td>
                     <td><strong>&#8369;45,000 &ndash; &#8369;57,000</strong></td>
                     <td>Durable counter terminals</td>
                 </tr>
                 <tr>
-                    <td><strong>Option 3: Brand New Work-Grade Desktop PCs</strong><br><em>(Core i5 12th Gen, 16GB RAM, 512GB SSD)</em></td>
-                    <td>&#8369;16,500 &ndash; &#8369;21,000</td>
+                    <td><strong>Optional Upgrade: Brand New Workstations</strong></td>
+                    <td>Core i5 (12th Gen), 16GB RAM, 512GB SSD</td>
                     <td>6 PCs (4 SAs + 2 Front Desk)</td>
                     <td><strong>&#8369;99,000 &ndash; &#8369;126,000</strong></td>
                     <td>4+ year peak longevity</td>
                 </tr>
                 <tr>
-                    <td><strong>Lounge TV Google Chromecast / HDMI Stick</strong><br><em>(If built-in TV browser requires upgrade)</em></td>
-                    <td>&#8369;1,800</td>
+                    <td><strong>Lounge TV Google Chromecast / Fire Stick</strong></td>
+                    <td>HDMI Web Streaming Stick (&#8369;1,800 ea)</td>
                     <td>2 Units (1 per branch)</td>
                     <td><strong>&#8369;3,600</strong></td>
-                    <td>Evaluated during Week 2 audit</td>
+                    <td>Needed ONLY if TV browser is slow</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="tier-heading">Part B: Central Server & Hosting Infrastructure (The Decision Point)</h4>
+        <p><em>This is the core difference between choosing Cloud (Track B) vs. Local In-Shop Server (Track A):</em></p>
+
+        <table class="formal-table">
+            <thead>
+                <tr>
+                    <th style="width: 28%;">Hosting Pathway</th>
+                    <th style="width: 32%;">Central Hardware Required</th>
+                    <th style="width: 18%;">Upfront Server Cost</th>
+                    <th style="width: 22%;">Outage Failover Needed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="highlight-col"><strong>Option B: Modern Cloud (RECOMMENDED)</strong></td>
+                    <td class="highlight-col"><strong>None.</strong> Compute & database hosted in AWS data centers.</td>
+                    <td class="highlight-col"><strong>&#8369;0.00</strong></td>
+                    <td class="highlight-col">&#8369;999 backup 4G/5G SIM router</td>
                 </tr>
                 <tr>
-                    <td><strong>Backup 4G/5G SIM Wi-Fi Failover Router</strong><br><em>(Prepaid Smart / Globe router)</em></td>
-                    <td>&#8369;999</td>
-                    <td>2 Units (1 per branch)</td>
-                    <td><strong>&#8369;1,998</strong></td>
-                    <td>Essential failover for Track B</td>
-                </tr>
-                <tr>
-                    <td><strong>Dedicated Local Server PC + UPS Battery</strong><br><em>(Required ONLY if choosing Track A: Local)</em></td>
-                    <td>&#8369;22,500 &ndash; &#8369;27,000</td>
-                    <td>1 Server Unit</td>
+                    <td><strong>Option A: Local In-Shop Server</strong></td>
+                    <td><strong>1 Dedicated Server PC</strong> (Core i5, 16GB, SSD) + UPS Battery + Router</td>
                     <td><strong>&#8369;22,500 &ndash; &#8369;27,000</strong></td>
-                    <td><strong>&#8369;0 if choosing Track B (Cloud)</strong></td>
+                    <td>None (Runs locally, requires USB backup)</td>
                 </tr>
             </tbody>
         </table>

@@ -177,18 +177,29 @@ If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be p
 
 ---
 
-### 💰 4.3 Client Future Hardware Investment & Costing Draft (For Management Review)
+### 💰 4.3 Client Costing & Future Investment Breakdown: Cloud vs. Local
 
-To help HonTech management budget for future hardware procurement or upgrades across both branches, below is an itemized cost estimate draft:
+To ensure total clarity for management, the hardware costs are divided into **(A) Staff Counter Devices** (which run the web browser on either track) and **(B) Central Hosting Infrastructure** (Cloud vs. Local Server):
 
-| Procurement Item / Option | Unit Cost (Est. Range) | Qty Needed (2 Branches) | Total Estimated Cost | Notes / Strategic Value |
+#### 🖥️ Part A: Staff Counter Terminals & Waiting Lounge Displays (Both Tracks)
+*These are the computers and screens used by staff on the shop floor to access the web system:*
+
+| Equipment Tier | Hardware Description | Qty for 2 Branches | Total Cost | Strategic Value |
 | :--- | :--- | :---: | :--- | :--- |
-| **Option 1: Using Existing Shop Computers** | ₱0.00 | 6 PCs | **₱0.00** | **Immediate Launch:** Use shop's current desktop PCs and laptops with zero new hardware spending. |
-| **Option 2: Refurbished Work-Grade Office PCs**<br>*(Core i5 8th–10th Gen, 8GB/16GB, SSD)* | ₱7,500 – ₱9,500 / unit | 6 PCs (4 SAs + 2 Front Desk) | **₱45,000 – ₱57,000** | Cost-effective expansion option for durable dedicated counter terminals across both branches. |
-| **Option 3: Brand New Work-Grade Desktop PCs**<br>*(Core i5 12th Gen, 16GB RAM, 512GB NVMe SSD)* | ₱16,500 – ₱21,000 / unit | 6 PCs (4 SAs + 2 Front Desk) | **₱99,000 – ₱126,000** | Maximum 4+ year longevity, high-speed multitasking for peak morning intake rushes. |
-| **Lounge TV Google Chromecast / HDMI Stick**<br>*(If built-in TV browser requires upgrade)* | ₱1,800 / unit | 2 Units (1 per branch) | **₱3,600** | Evaluated during Week 2 audit if TV native browser has buffering or sluggish rendering. |
-| **Backup 4G/5G SIM Wi-Fi Failover Router**<br>*(Prepaid Smart / Globe router)* | ₱999 / unit | 2 Units (1 per branch) | **₱1,998** | Essential failover for Track B (Cloud) during municipal fiber cable cuts. |
-| **Dedicated Local Server PC + UPS Battery**<br>*(Required ONLY if choosing Track A: Local)* | ₱22,500 – ₱27,000 | 1 Server Unit | **₱22,500 – ₱27,000** | **₱0 if choosing Track B (Cloud)**. Only needed for on-premise local server hosting. |
+| **🌟 Primary Standard: Existing Shop Hardware** | Use HonTech's existing desktop PCs & laptops | 6 PCs + 2 Smart TVs | **₱0.00** | **Immediate ₱0 Launch:** System runs smoothly in Google Chrome/Edge on existing office computers. |
+| **Optional Future Upgrade: Refurbished Work-Grade PCs** | Core i5 (8th–10th Gen), 8GB/16GB, SSD | 6 PCs (4 SAs + 2 Front Desk) | **₱45,000 – ₱57,000** | Budget expansion option if HonTech ever wishes to add dedicated new counter terminals in the future. |
+| **Optional Future Upgrade: Brand New Workstations** | Core i5 (12th Gen), 16GB RAM, 512GB SSD | 6 PCs (4 SAs + 2 Front Desk) | **₱99,000 – ₱126,000** | Maximum 4+ year durability and speed for heavy morning intake rushes. |
+| **Lounge TV Google Chromecast / Fire Stick** | HDMI Web Streaming Stick | 2 Units (1 per branch) | **₱3,600** *(₱1,800 ea)* | *Needed ONLY if on-site Week 2 audit finds the built-in Smart TV browser slow or unresponsive.* |
+
+---
+
+#### 🌐 Part B: Central Server & Hosting Infrastructure (The Decision Point)
+*This is the core difference between choosing Cloud (Track B) vs. Local In-Shop Server (Track A):*
+
+| Hosting Pathway | Central Hardware Required | Upfront Server Cost | Monthly Software Fee | Outage Failover Needed |
+| :--- | :--- | :---: | :---: | :--- |
+| **🌟 Track B: Modern Cloud Solutions**<br>*(RECOMMENDED)* | **None.** Server compute & MariaDB database are hosted in AWS data centers. | **₱0.00** | **₱0.00 / mo**<br>*(Permanent Free Tier)* | **₱999** backup 4G/5G prepaid Wi-Fi router (for ISP fiber cable cuts). |
+| **🖥️ Track A: Local In-Shop Intranet Server**<br>*(ALTERNATIVE)* | **1 Dedicated In-Shop Server PC** (Core i5, 16GB RAM, SSD) + **UPS Battery** + **Gigabit Router** | **₱22,500 – ₱27,000** | **₱0.00 / mo**<br>*(₱350–₱600/mo electricity)* | None (100% immune to internet outages, but requires weekly USB backups). |
 
 ---
 
