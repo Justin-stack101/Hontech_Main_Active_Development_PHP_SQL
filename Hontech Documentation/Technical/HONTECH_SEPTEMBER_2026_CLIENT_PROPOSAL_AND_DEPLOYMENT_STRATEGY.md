@@ -230,7 +230,10 @@ Here is how the hardware specifications directly affect HonTech's daily workflow
 ---
 
 ### 📋 4.7 Multi-Branch Website & Hardware Readiness Checklist (Pre-Flight Audit Standard)
-To guarantee 100% operational readiness before live customer intake, the Developing Team and HonTech Management will conduct an on-site physical walk-through during **Week 2 (September 8–12, 2026)** using the following formal checklist:
+
+> **💡 Note on Installation & Technical Setup:** The **Development Team handles 100% of all software installation, cloud deployment, network routing, browser shortcuts, and device configuration directly on-site**. HonTech staff and management do **not** need to perform any technical installation. HonTech's role is simply providing physical access to the shop computers/screens, participating in guided staff training, and signing off on the readiness checklist.
+
+During **Week 2 (September 8–12, 2026)**, the Development Team will perform all device setups on-site and conduct a joint physical audit with HonTech Management using the following checklist:
 
 | Category | Required Equipment / Target | Evaluation Criteria & Operating Standard | Audit Target |
 | :--- | :--- | :--- | :---: |
