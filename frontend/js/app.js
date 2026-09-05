@@ -11014,18 +11014,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
-        // Global exports for inline HTML handlers
-        window.openExpressDelayModal = openExpressDelayModal;
-        window.closeExpressDelayModal = closeExpressDelayModal;
-        window.toggleDelayCustomReason = toggleDelayCustomReason;
-        window.submitExpressDelayReport = submitExpressDelayReport;
-        window.requestFieldEditWithReason = requestFieldEditWithReason;
-        window.handleEditPresetChange = handleEditPresetChange;
-        window.confirmFieldEditWithReason = confirmFieldEditWithReason;
-        window.cancelFieldEdit = cancelFieldEdit;
-        window.openJobAuditHistoryModal = openJobAuditHistoryModal;
-        window.closeJobAuditHistoryModal = closeJobAuditHistoryModal;
-        window.triggerSimulateExpressOverdue = triggerSimulateExpressOverdue;
-        window.triggerClearAuditLogs = triggerClearAuditLogs;
+        // Project Team & Contributors Modal Handlers
+        window.openTeamContributorsModal = function() {
+            const modal = document.getElementById('modal-team-contributors');
+            if (modal) {
+                modal.classList.remove('hidden');
+                if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                    lucide.createIcons();
+                }
+            }
+        };
+
+        window.closeTeamContributorsModal = function() {
+            const modal = document.getElementById('modal-team-contributors');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        };
+
 
 
