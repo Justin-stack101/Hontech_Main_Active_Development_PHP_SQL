@@ -3177,6 +3177,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const safeJobs = Array.isArray(allJobs) ? allJobs : [];
             const pendingOnline = safeJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
 
+            const rowOccupiedBays = {};
+            safeJobs.forEach(j => {
+                if (j.status !== 'Completed' && j.status !== 'Released' && j.location && j.location !== 'None') {
+                    const normalizedLocation = j.location.replace(/^Lift\s*/i, 'Bay ');
+                    rowOccupiedBays[normalizedLocation] = j.plate || j.name || 'Occupied';
+                    rowOccupiedBays[j.location] = j.plate || j.name || 'Occupied';
+                }
+            });
+
             const onlineQueueEl = document.getElementById('container-online-queue');
             const dailyIntakesEl = document.getElementById('container-daily-intakes');
             const techBoardEl = document.getElementById('container-tech-board');
@@ -8587,6 +8596,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (isOwnerOrAdmin) {
                     staffAccounts = await apiRequest('/api/auth/staff');
                     populatePeriodicSaFilter();
+                }
+
+                // Re-render active section views to prevent empty states
+                if (typeof renderStaffTables === 'function' && document.getElementById('section-queue') && !document.getElementById('section-queue').classList.contains('hidden')) {
+                    renderStaffTables();
+                }
+
+                if (typeof renderReportDataModule === 'function' && document.getElementById('db-tab-reports') && !document.getElementById('db-tab-reports').classList.contains('hidden')) {
+                    renderReportDataModule();
+                }
+
+                if (typeof renderWorkshopBaysModule === 'function' && document.getElementById('section-bays') && !document.getElementById('section-bays').classList.contains('hidden')) {
+                    renderWorkshopBaysModule();
+                }
+
+                if (typeof renderCustomerLookupModule === 'function' && document.getElementById('section-lookup') && !document.getElementById('section-lookup').classList.contains('hidden')) {
+                    renderCustomerLookupModule();
                 }
 
                 if (typeof renderExpressIntelligenceModule === 'function') {
