@@ -2712,7 +2712,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const targetJob = allJobs.find(j => j.id === jobId);
             const prevSAName = targetJob ? (targetJob.saName || targetJob.handled_by || 'Previous SA') : 'Previous SA';
 
-            await updateJobField(jobId, 'saName', saNameValue);
+            await updateJobField(jobId, 'saName', saNameValue, `Ticket Takeover Handover: ${reason}`);
             
             if (targetJob) {
                 targetJob.saName = saNameValue;
@@ -10976,6 +10976,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const modal = document.getElementById('modal-job-audit-history');
             if (modal) modal.classList.add('hidden');
         }
+        window.openJobAuditHistoryModal = openJobAuditHistoryModal;
+        window.closeJobAuditHistoryModal = closeJobAuditHistoryModal;
 
         // ============================================================
         // 4. DEVELOPER SANDBOX SIMULATION TRIGGERS
