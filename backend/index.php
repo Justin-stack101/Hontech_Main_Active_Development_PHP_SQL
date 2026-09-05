@@ -152,6 +152,10 @@ if ($method === 'POST' && $route === '/auth/ping') {
     AuthController::pingActiveSession();
     exit;
 }
+if ($method === 'PUT' && $route === '/auth/profile/name') {
+    AuthController::updateName();
+    exit;
+}
 if ($method === 'PUT' && $route === '/auth/profile/password') {
     AuthController::updatePassword();
     exit;

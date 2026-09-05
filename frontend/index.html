@@ -3138,14 +3138,17 @@
 
                         <div class="space-y-4">
                             <div>
-                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Full
-                                    Name</span>
-                                <span id="profile-name-display"
-                                    class="font-bold text-gray-900 text-base">Loading...</span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Full Name</span>
+                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mt-1">
+                                    <span id="profile-name-display" class="font-bold text-gray-900 text-base">Loading...</span>
+                                    <button onclick="openNameChangeModal()"
+                                        class="text-xs font-black uppercase tracking-wider text-slate-800 hover:text-black bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg border border-slate-200 transition shadow-xs cursor-pointer">
+                                        Edit Full Name
+                                    </button>
+                                </div>
                             </div>
                             <div>
-                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Access
-                                    Role</span>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Access Role</span>
                                 <span id="profile-role-display"
                                     class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest bg-gray-100 text-gray-700">Loading...</span>
                             </div>
@@ -3467,7 +3470,55 @@
             <!-- Account Settings Section -->
             <div id="section-settings" class="section-content hidden fade-in space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                       <!-- System Personalization -->
+                    <!-- Personal Profile & Identity -->
+                    <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-xl">
+                                <i data-lucide="user-check" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Personal Profile</h3>
+                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Shared display name & credentials</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Full Name</span>
+                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mt-1">
+                                    <span id="settings-profile-fullname" class="font-bold text-gray-900 text-base">Loading...</span>
+                                    <button type="button" onclick="openNameChangeModal()"
+                                        class="text-xs font-black uppercase tracking-wider text-slate-800 hover:text-black bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg border border-slate-200 transition shadow-xs cursor-pointer">
+                                        Edit Full Name
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 pt-2">
+                                <div>
+                                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Access Role</span>
+                                    <span id="settings-profile-role"
+                                        class="inline-block mt-1 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-red-50 text-red-600 border border-red-200">Loading...</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Branch Location</span>
+                                    <span id="settings-profile-branch"
+                                        class="inline-block mt-1 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-700 border border-slate-200">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Work Email Address</span>
+                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mt-1">
+                                    <span id="settings-profile-email" class="font-bold text-gray-700 font-mono text-sm">Loading...</span>
+                                    <button type="button" onclick="openEmailChangeModal()"
+                                        class="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition shadow-sm cursor-pointer">
+                                        Change Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Personalization -->
                     <div class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center gap-4 border-b border-gray-100 pb-4">
                             <div class="p-3 bg-red-50 text-red-600 rounded-xl">
@@ -3882,6 +3933,38 @@
                     class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
                 <button onclick="submitStaffEdit()"
                     class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Name Change Dialog Modal -->
+    <div id="name-change-modal"
+        class="fixed inset-0 z-[600] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                    <i data-lucide="user-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Edit Full Name</h3>
+                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-0.5">Shared across navbar, dropdown & job logs</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Full Legal / Display Name</label>
+                    <input type="text" id="name-change-input"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
+                        placeholder="e.g. Mark Bautista">
+                    <p class="text-[10.5px] text-gray-400 mt-1 font-medium">This name will be displayed on all assigned job logs, claim stubs, and user profile badges.</p>
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button type="button" onclick="closeNameChangeModal()"
+                        class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition cursor-pointer">Cancel</button>
+                    <button type="button" onclick="submitProfileNameChange()"
+                        class="px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-red-600/20 cursor-pointer">Save Changes</button>
+                </div>
             </div>
         </div>
     </div>
@@ -5676,7 +5759,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.01"></script>
+    <script src="js/app.js?v=5.02"></script>
 </body>
 
 </html>

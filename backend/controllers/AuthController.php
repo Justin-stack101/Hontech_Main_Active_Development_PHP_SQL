@@ -378,6 +378,33 @@ class AuthController
     // =============================================
 
     /**
+     * PUT /api/auth/profile/name
+     */
+    public static function updateName(): void
+    {
+        $input = json_decode(file_get_contents('php://input'), true) ?? [];
+        $name  = trim($input['name'] ?? '');
+        $user  = $GLOBALS['user'];
+
+        if (empty($name)) {
+            http_response_code(400);
+            echo json_encode(['message' => 'Full name is required.']);
+            return;
+        }
+
+        try {
+            $db   = Database::getConnection();
+            $stmt = $db->prepare('UPDATE users SET name = ? WHERE id = ?');
+            $stmt->execute([$name, $user['id']]);
+
+            echo json_encode(['message' => 'Full name updated successfully.', 'name' => $name]);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Server error during name update.', 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
      * PUT /api/auth/profile/password
      */
     public static function updatePassword(): void

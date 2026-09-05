@@ -1250,6 +1250,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('sidebar-dropdown-user-role').innerText = userRoleLabel;
             }
 
+            if (document.getElementById('profile-name-display')) {
+                document.getElementById('profile-name-display').innerText = userDisplayName;
+            }
+            if (document.getElementById('settings-profile-fullname')) {
+                document.getElementById('settings-profile-fullname').innerText = userDisplayName;
+            }
+            if (document.getElementById('settings-profile-role')) {
+                document.getElementById('settings-profile-role').innerText = userRoleLabel;
+            }
+            if (document.getElementById('settings-profile-branch')) {
+                document.getElementById('settings-profile-branch').innerText = userBranch;
+            }
+            if (document.getElementById('settings-profile-email')) {
+                document.getElementById('settings-profile-email').innerText = currentUserEmail || 'user@hontech.com';
+            }
+
             // --- RBAC for Security Settings & Bay Capacity ---
             const isOwnerOrAdmin = (role === 'owner' || role === 'admin');
             const isAdmin = (role === 'admin');
@@ -8588,32 +8604,54 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function renderProfileSection(user) {
-            document.getElementById('profile-name-display').innerText = user.name;
-            document.getElementById('profile-role-display').innerText = getRoleLabel(user.role);
-            document.getElementById('profile-email-display').innerText = user.email;
+            if (document.getElementById('profile-name-display')) {
+                document.getElementById('profile-name-display').innerText = user.name;
+            }
+            if (document.getElementById('settings-profile-fullname')) {
+                document.getElementById('settings-profile-fullname').innerText = user.name;
+            }
+            if (document.getElementById('profile-role-display')) {
+                document.getElementById('profile-role-display').innerText = getRoleLabel(user.role);
+            }
+            if (document.getElementById('settings-profile-role')) {
+                document.getElementById('settings-profile-role').innerText = getRoleLabel(user.role);
+            }
+            if (document.getElementById('profile-email-display')) {
+                document.getElementById('profile-email-display').innerText = user.email;
+            }
+            if (document.getElementById('settings-profile-email')) {
+                document.getElementById('settings-profile-email').innerText = user.email;
+            }
+            if (document.getElementById('settings-profile-branch')) {
+                document.getElementById('settings-profile-branch').innerText = user.branch || currentUserBranch || 'Marikina Branch';
+            }
 
             // Backup Recovery Email display
             const backupEmail = user.backupEmail || '';
             const backupEmailDisp = document.getElementById('backup-email-display');
-            if (backupEmail) {
-                backupEmailDisp.innerText = backupEmail;
-                backupEmailDisp.className = 'font-bold text-gray-700 font-mono text-sm';
-            } else {
-                backupEmailDisp.innerText = 'Not Configured';
-                backupEmailDisp.className = 'text-sm text-gray-400 font-semibold italic';
+            if (backupEmailDisp) {
+                if (backupEmail) {
+                    backupEmailDisp.innerText = backupEmail;
+                    backupEmailDisp.className = 'font-bold text-gray-700 font-mono text-sm';
+                } else {
+                    backupEmailDisp.innerText = 'Not Configured';
+                    backupEmailDisp.className = 'text-sm text-gray-400 font-semibold italic';
+                }
             }
 
             // Google account linking display
             const googleStatus = document.getElementById('google-link-status');
             const googleBtnContainer = document.getElementById('google-link-btn-container');
-            if (user.googleLinked) {
-                googleStatus.innerText = `Linked to: ${user.googleEmail || 'Google Account'}`;
-                googleStatus.className = 'font-bold text-green-600 text-sm font-mono';
-                googleBtnContainer.innerHTML = `<button onclick="unlinkGoogleAccount()" class="text-xs font-black uppercase tracking-wider text-gray-500 hover:text-red-600 bg-gray-50 hover:bg-red-50 px-3 py-1.5 rounded-lg border border-gray-200 transition shadow-sm">Unlink Google</button>`;
-            } else {
-                googleStatus.innerText = 'Not Linked';
-                googleStatus.className = 'text-sm text-gray-400 font-semibold italic';
-                googleBtnContainer.innerHTML = `<button onclick="triggerGoogleLink()" class="text-xs font-black uppercase tracking-wider text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition shadow-sm">Link Google</button>`;
+            if (googleStatus && googleBtnContainer) {
+                if (user.googleLinked) {
+                    googleStatus.innerText = `Linked to: ${user.googleEmail || 'Google Account'}`;
+                    googleStatus.className = 'font-bold text-green-600 text-sm font-mono';
+                    googleBtnContainer.innerHTML = `<button onclick="unlinkGoogleAccount()" class="text-xs font-black uppercase tracking-wider text-gray-500 hover:text-red-600 bg-gray-50 hover:bg-red-50 px-3 py-1.5 rounded-lg border border-gray-200 transition shadow-sm">Unlink Google</button>`;
+                } else {
+                    googleStatus.innerText = 'Not Linked';
+                    googleStatus.className = 'text-sm text-gray-400 font-semibold italic';
+                    googleBtnContainer.innerHTML = `<button onclick="triggerGoogleLink()" class="text-xs font-black uppercase tracking-wider text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition shadow-sm">Link Google</button>`;
+                }
             }
 
             // MFA display
@@ -8622,19 +8660,85 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const mfaPanel = document.getElementById('mfa-config-panel');
             const mfaBackupPanel = document.getElementById('mfa-backup-codes-panel');
 
-            if (user.mfaEnabled) {
-                mfaStatus.innerText = 'Enabled';
-                mfaStatus.className = 'font-extrabold text-green-600 text-sm';
-                mfaBtnContainer.innerHTML = `<button onclick="triggerMfaDisable()" class="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition shadow-sm">Disable MFA</button>`;
-                mfaPanel.classList.add('hidden');
-            } else {
-                mfaStatus.innerText = 'Disabled';
-                mfaStatus.className = 'font-extrabold text-red-600 text-sm';
-                mfaBtnContainer.innerHTML = `<button onclick="initiateMfaSetup()" class="text-xs font-black uppercase tracking-wider text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-lg border border-green-200 transition shadow-sm">Setup MFA</button>`;
-                mfaBackupPanel.classList.add('hidden');
+            if (mfaStatus && mfaBtnContainer) {
+                if (user.mfaEnabled) {
+                    mfaStatus.innerText = 'Enabled';
+                    mfaStatus.className = 'font-extrabold text-green-600 text-sm';
+                    mfaBtnContainer.innerHTML = `<button onclick="triggerMfaDisable()" class="text-xs font-black uppercase tracking-wider text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition shadow-sm">Disable MFA</button>`;
+                    if (mfaPanel) mfaPanel.classList.add('hidden');
+                } else {
+                    mfaStatus.innerText = 'Disabled';
+                    mfaStatus.className = 'font-extrabold text-red-600 text-sm';
+                    mfaBtnContainer.innerHTML = `<button onclick="initiateMfaSetup()" class="text-xs font-black uppercase tracking-wider text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-lg border border-green-200 transition shadow-sm">Setup MFA</button>`;
+                    if (mfaBackupPanel) mfaBackupPanel.classList.add('hidden');
+                }
             }
 
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+
+        // --- NAME CHANGE FLOW ---
+        function openNameChangeModal() {
+            const modal = document.getElementById('name-change-modal');
+            const input = document.getElementById('name-change-input');
+            if (input) input.value = currentUserName || '';
+            if (modal) {
+                modal.classList.remove('hidden');
+                if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+            }
+        }
+
+        function closeNameChangeModal() {
+            const modal = document.getElementById('name-change-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function submitProfileNameChange() {
+            const nameInput = document.getElementById('name-change-input');
+            const newName = nameInput ? nameInput.value.trim() : '';
+
+            if (!newName) {
+                return showSystemToast('Full name cannot be blank.', 'error', 'Validation Failed');
+            }
+
+            try {
+                const res = await apiRequest('/api/auth/profile/name', {
+                    method: 'PUT',
+                    body: { name: newName }
+                });
+
+                const updatedName = res.name || newName;
+                currentUserName = updatedName;
+                localStorage.setItem('hontech_user_name', updatedName);
+
+                // Dynamically sync across all UI indicators
+                if (document.getElementById('profile-name-display')) {
+                    document.getElementById('profile-name-display').innerText = updatedName;
+                }
+                if (document.getElementById('settings-profile-fullname')) {
+                    document.getElementById('settings-profile-fullname').innerText = updatedName;
+                }
+                if (document.getElementById('header-user-name')) {
+                    document.getElementById('header-user-name').innerText = updatedName;
+                }
+                if (document.getElementById('dropdown-user-name')) {
+                    document.getElementById('dropdown-user-name').innerText = updatedName;
+                }
+                if (document.getElementById('sidebar-user-name')) {
+                    document.getElementById('sidebar-user-name').innerText = updatedName;
+                }
+                if (document.getElementById('sidebar-dropdown-user-name')) {
+                    document.getElementById('sidebar-dropdown-user-name').innerText = updatedName;
+                }
+                if (document.getElementById('sidebar-menu-user-name')) {
+                    document.getElementById('sidebar-menu-user-name').innerText = updatedName;
+                }
+
+                closeNameChangeModal();
+                showSystemToast(res.message || 'Full name updated successfully.', 'success', 'Profile Updated');
+            } catch (err) {
+                showSystemToast(err.message || 'Failed to update full name.', 'error', 'Update Failed');
+            }
         }
 
         // --- PASSWORD CHANGE FLOW ---

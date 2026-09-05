@@ -23,20 +23,20 @@ echo "=== HonTech Database Seeder ===\n\n";
 // =============================================
 $defaultUsers = [
     // 1. TOP GLOBAL EXECUTIVE
-    ['name' => 'System Owner (Global)',   'role' => 'owner',     'email' => 'owner@hontech.com',      'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Engr. Antonio Honrado',   'role' => 'owner',     'email' => 'owner@hontech.com',      'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
 
     // 2. MARIKINA MAIN BRANCH (Branch 1)
-    ['name' => 'System Admin (Main)',     'role' => 'admin',     'email' => 'admin@hontech.com',      'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Mark (Advisor 1 - Main)', 'role' => 'sa',        'email' => 'sa@hontech.com',         'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
-    ['name' => 'Dayne (Advisor 2 - Main)','role' => 'sa',        'email' => 'sa2@hontech.com',        'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
-    ['name' => 'Jessica (Staff - Main)',  'role' => 'assistant', 'email' => 'staff@hontech.com',      'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Juan (Tech - Main)',      'role' => 'tech',      'email' => 'tech@hontech.com',       'password' => Env::get('TECH_PASSWORD', 'tech123'),   'branch' => 'Marikina Branch'],
+    ['name' => 'Adrian Mendoza',          'role' => 'admin',     'email' => 'admin@hontech.com',      'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Mark Bautista',           'role' => 'sa',        'email' => 'sa@hontech.com',         'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Dayne Ramirez',           'role' => 'sa',        'email' => 'sa2@hontech.com',        'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Jessica Cruz',            'role' => 'assistant', 'email' => 'staff@hontech.com',      'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Juan Santos',             'role' => 'tech',      'email' => 'tech@hontech.com',       'password' => Env::get('TECH_PASSWORD', 'tech123'),   'branch' => 'Marikina Branch'],
 
     // 3. EAST BRANCH (Branch 2 - Other Branch)
-    ['name' => 'Admin (East Branch)',     'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
-    ['name' => 'Alex (Advisor 1 - East)', 'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
-    ['name' => 'Carl (Advisor 2 - East)', 'role' => 'sa',        'email' => 'sa2.east@hontech.com',   'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
-    ['name' => 'Maria (Staff - East)',    'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
+    ['name' => 'Adrian Mendoza',          'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
+    ['name' => 'Alex Valenzuela',         'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
+    ['name' => 'Carl Domingo',            'role' => 'sa',        'email' => 'sa2.east@hontech.com',   'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
+    ['name' => 'Maria Aquino',            'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
 ];
 
 foreach ($defaultUsers as $u) {
@@ -49,9 +49,9 @@ foreach ($defaultUsers as $u) {
         $stmt->execute([$u['name'], $u['email'], $hashed, $u['role'], $u['branch']]);
         echo "[+] Seeded user: {$u['name']} ({$u['email']}) for {$u['branch']}\n";
     } else {
-        $stmt = $db->prepare('UPDATE users SET branch = ?, role = ? WHERE email = ?');
-        $stmt->execute([$u['branch'], $u['role'], $u['email']]);
-        echo "[=] Updated user branch/role: {$u['email']} -> {$u['branch']} ({$u['role']})\n";
+        $stmt = $db->prepare('UPDATE users SET name = ?, branch = ?, role = ? WHERE email = ?');
+        $stmt->execute([$u['name'], $u['branch'], $u['role'], $u['email']]);
+        echo "[=] Updated user branch/role/name: {$u['email']} -> {$u['name']} ({$u['branch']} - {$u['role']})\n";
     }
 }
 
@@ -91,7 +91,7 @@ $defaultJobs = [
         'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
         'parts_available' => 'Pending', 'evaluation' => 'Front Brake Pads Replacement',
         'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 1,
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
@@ -100,7 +100,7 @@ $defaultJobs = [
         'claim_stub' => "{$todayCompact}-002",
         'parts_available' => 'Pending', 'evaluation' => 'Front Bumper Painting & Curing',
         'status' => 'Carry Over', 'promised_date' => $today, 'lane_type' => 'Flexible',
-        'remarks' => 'Paint curing delay', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'remarks' => 'Paint curing delay', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2004', 'source' => 'Walk-in', 'plate' => 'AAA 1111', 'name' => 'Dave Smith',
@@ -109,7 +109,7 @@ $defaultJobs = [
         'arrival' => '08:30', 'departure' => '10:30',
         'claim_stub' => "{$todayCompact}-003", 'evaluation' => '40K Heavy PMS Service Done',
         'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'ONL-1005', 'source' => 'Online', 'plate' => 'BBB 2222', 'name' => 'Elena Rostova',
@@ -118,7 +118,7 @@ $defaultJobs = [
         'arrival' => '10:00', 'departure' => '12:15',
         'claim_stub' => "{$todayCompact}-004", 'evaluation' => 'New Denso Alternator Installed',
         'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2005', 'source' => 'Walk-in', 'plate' => 'NKO 4821', 'name' => 'Carlos Yulo',
@@ -127,7 +127,7 @@ $defaultJobs = [
         'arrival' => '08:15', 'claim_stub' => "{$todayCompact}-005",
         'evaluation' => 'Fully Synthetic Oil Change & Filter',
         'status' => 'Waiting', 'location' => 'None', 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2020', 'source' => 'Walk-in', 'plate' => 'WXY 9012', 'name' => 'Ramon Santos',
@@ -136,7 +136,7 @@ $defaultJobs = [
         'arrival' => '09:30', 'claim_stub' => "{$todayCompact}-006",
         'evaluation' => 'Clutch Disc & Release Bearing Replace',
         'status' => 'In Progress', 'location' => 'Lift 2', 'bay_assigned' => 2,
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2021', 'source' => 'Walk-in', 'plate' => 'NDR 7741', 'name' => 'Maria Clara',
@@ -145,7 +145,7 @@ $defaultJobs = [
         'arrival' => '10:15', 'claim_stub' => "{$todayCompact}-007",
         'evaluation' => 'OBD Diagnostic Scan & HCF-2 Fluid Flush',
         'status' => 'Monitoring', 'location' => 'Lift 3', 'bay_assigned' => 3,
-        'lane_type' => 'Express Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'Express Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2022', 'source' => 'Walk-in', 'plate' => 'ZTB 3319', 'name' => 'Juan Dela Cruz',
@@ -154,7 +154,7 @@ $defaultJobs = [
         'arrival' => '11:00', 'claim_stub' => "{$todayCompact}-008",
         'evaluation' => 'Aircon Leak Test & Freon Recharge Complete',
         'status' => 'Ready to Release', 'location' => 'None',
-        'lane_type' => 'Flexible', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'Flexible', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2023', 'source' => 'Walk-in', 'plate' => 'KGB 8820', 'name' => 'Pedro Penduko',
@@ -163,7 +163,7 @@ $defaultJobs = [
         'arrival' => '11:30', 'claim_stub' => "{$todayCompact}-009",
         'evaluation' => 'Engine Flush & Brake Pad Service',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'Priority Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'Priority Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2024', 'source' => 'Walk-in', 'plate' => 'NXX 1234', 'name' => 'Andres Bonifacio',
@@ -172,7 +172,7 @@ $defaultJobs = [
         'arrival' => '12:00', 'claim_stub' => "{$todayCompact}-010",
         'evaluation' => 'Front Shock Bushing Replace & Calibrate',
         'status' => 'In Progress', 'location' => 'Lift 4', 'bay_assigned' => 4,
-        'lane_type' => 'Special Lane', 'sa_name' => 'Mark (Advisor)', 'branch' => 'Branch A'
+        'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
 
     // BRANCH B — TODAY (Active & Completed)
@@ -183,7 +183,7 @@ $defaultJobs = [
         'arrival' => '08:45', 'claim_stub' => "EAST-{$todayCompact}-001",
         'parts_available' => 'Yes', 'evaluation' => 'Replacing seal',
         'status' => 'In Progress', 'location' => 'Bay 1', 'bay_assigned' => 1,
-        'sa_name' => 'Dave (Advisor B)', 'branch' => 'Branch B'
+        'sa_name' => 'Alex Valenzuela', 'branch' => 'Branch B'
     ],
     [
         'job_id' => 'ONL-3002', 'source' => 'Online', 'plate' => 'EAS 202', 'name' => 'Sophia Loren',
@@ -199,7 +199,7 @@ $defaultJobs = [
         'arrival' => '09:15', 'departure' => '11:00',
         'claim_stub' => "EAST-{$todayCompact}-002",
         'status' => 'Completed', 'date_completed' => $today,
-        'sa_name' => 'Dave (Advisor B)', 'branch' => 'Branch B'
+        'sa_name' => 'Alex Valenzuela', 'branch' => 'Branch B'
     ],
 
         // YESTERDAY
