@@ -3321,7 +3321,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // DAILY INTAKES
             if (!isTech && document.getElementById('container-daily-intakes')) {
-                let activeJobs = allJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
+                let activeJobs = safeJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
                 
                 // Filter by Source
                 if (intakeSourceFilter !== 'all') {
@@ -3331,11 +3331,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 // Filter by Advisor / Responsibility
                 if (intakeAdvisorFilter === 'mine') {
                     const cleanCurrentSA = (currentUserName || '').replace(/\s*\(Advisor\)\s*/i, '').trim().toLowerCase();
+                    const currentParts = cleanCurrentSA.split(/\s+/).filter(Boolean);
                     activeJobs = activeJobs.filter(j => {
                         const rawJobSA = j.saName || j.handled_by || j.sa || '';
                         const cleanJobSA = rawJobSA.replace(/\s*\(Advisor\)\s*/i, '').trim().toLowerCase();
                         if (!cleanJobSA || cleanJobSA === '-' || cleanJobSA === 'front desk sa' || cleanJobSA === 'unassigned') return false;
-                        return cleanJobSA === cleanCurrentSA || rawJobSA.toLowerCase().includes(cleanCurrentSA);
+                        if (cleanJobSA === cleanCurrentSA) return true;
+                        if (cleanJobSA.includes(cleanCurrentSA) || cleanCurrentSA.includes(cleanJobSA)) return true;
+                        return currentParts.some(part => cleanJobSA.includes(part));
                     });
                 } else if (intakeAdvisorFilter === 'unassigned') {
                     activeJobs = activeJobs.filter(j => {
@@ -3424,9 +3427,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         const rawJobSA = job.saName || job.handled_by || job.sa || '';
                         const cleanJobSA = rawJobSA.replace(/\s*\(Advisor\)\s*/i, '').trim();
                         const cleanCurrentSA = (currentUserName || '').replace(/\s*\(Advisor\)\s*/i, '').trim();
+                        const currentParts = cleanCurrentSA.toLowerCase().split(/\s+/).filter(Boolean);
 
                         const isAssignedToMe = isSA && cleanJobSA !== '' && cleanJobSA !== '-' && cleanJobSA !== 'Front Desk SA' && cleanJobSA !== 'Unassigned' && (
                             cleanJobSA.toLowerCase() === cleanCurrentSA.toLowerCase() ||
+                            cleanJobSA.toLowerCase().includes(cleanCurrentSA.toLowerCase()) ||
+                            cleanCurrentSA.toLowerCase().includes(cleanJobSA.toLowerCase()) ||
+                            currentParts.some(part => cleanJobSA.toLowerCase().includes(part)) ||
                             rawJobSA.includes(currentUserName)
                         );
                         const isUnassigned = !rawJobSA || rawJobSA === '-' || rawJobSA === 'Front Desk SA' || rawJobSA === 'Unassigned';
@@ -4386,7 +4393,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (secReports) secReports.classList.remove('hidden');
                 if (btnReports) btnReports.className = activeClass;
                 initReportDatePickers();
-                renderReportDataModule();
+                if (!Array.isArray(allJobs) || allJobs.length === 0) {
+                    loadData().then(() => renderReportDataModule());
+                } else {
+                    renderReportDataModule();
+                }
             } else if (tab === 'express') {
                 if (secExpress) secExpress.classList.remove('hidden');
                 if (btnExpress) btnExpress.className = activeClass;
@@ -4668,9 +4679,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const endInput = document.getElementById('report-filter-end-date');
             
             if (startInput && !startInput.value) {
-                const past7 = new Date();
-                past7.setDate(past7.getDate() - 6);
-                startInput.value = past7.toISOString().split('T')[0];
+                const pastMonth = new Date();
+                pastMonth.setDate(pastMonth.getDate() - 30);
+                startInput.value = pastMonth.toISOString().split('T')[0];
             }
             if (endInput && !endInput.value) {
                 endInput.value = today;
@@ -4721,16 +4732,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const endDateVal = document.getElementById('report-filter-end-date') ? document.getElementById('report-filter-end-date').value : '';
             const searchVal = document.getElementById('report-filter-search') ? document.getElementById('report-filter-search').value.toLowerCase().trim() : '';
 
-            let filtered = [...(allJobs || [])];
+            const safeJobs = (Array.isArray(allJobs) && allJobs.length > 0) ? allJobs : ((Array.isArray(analyticsJobs) && analyticsJobs.length > 0) ? analyticsJobs : (window.allJobs || []));
+            let filtered = [...safeJobs];
 
             if (branchVal !== 'all') {
-                filtered = filtered.filter(j => j.branch === branchVal);
+                filtered = filtered.filter(j => {
+                    const jb = (j.branch || '').toLowerCase();
+                    const fb = branchVal.toLowerCase();
+                    if (fb === 'branch a' || fb === 'marikina branch' || fb === 'marikina') {
+                        return jb.includes('branch a') || jb.includes('marikina') || !j.branch;
+                    }
+                    if (fb === 'branch b' || fb === 'east branch' || fb === 'east') {
+                        return jb.includes('branch b') || jb.includes('east');
+                    }
+                    return jb === fb;
+                });
             }
             if (startDateVal) {
-                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || '') >= startDateVal);
+                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || j.date_received || '') >= startDateVal);
             }
             if (endDateVal) {
-                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || '') <= endDateVal);
+                filtered = filtered.filter(j => (j.dateReceived || j.apptDate || j.date_received || '') <= endDateVal);
             }
             if (searchVal) {
                 filtered = filtered.filter(j => 
