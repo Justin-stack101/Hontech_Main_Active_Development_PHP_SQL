@@ -26,7 +26,7 @@ This implementation plan outlines the two core operational and security features
 2. **The System Watches the Clock**:
    * The system continuously tracks how many minutes have passed since the 24-hour arrival time (`convertTimeTo24Hour()`).
 3. **The 2-Hour Mark is Reached (10:00 AM)**:
-   * If the vehicle is still in progress and 2 hours have passed ($\ge 120\text{ min}$), the system alerts the Service Advisor by showing a calm duration indicator on that vehicle's card in the table (`⏱️ Express: 2h 15m`) along with a `📄 Report Reason` button.
+   * If the vehicle is still in progress and 2 hours have passed (120 minutes or more), the system alerts the Service Advisor by showing a calm duration indicator on that vehicle's card in the table (`⏱️ Express: 2h 15m`) along with a `📄 Report Reason` button.
 4. **The Service Advisor Reports the Delay**:
    * The Service Advisor clicks the **"Report Reason"** button.
    * A modal pops up showing the customer's plate, car model, and total time elapsed (for example, 2 hours and 15 minutes).
