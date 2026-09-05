@@ -5176,6 +5176,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (document.getElementById('express-primary-bottleneck')) document.getElementById('express-primary-bottleneck').innerText = topBottleneck.split(' / ')[0];
             if (document.getElementById('express-primary-bottleneck-sub')) document.getElementById('express-primary-bottleneck-sub').innerText = `${topBottleneckCount} incident(s) (${topBottleneckPct}% share)`;
+            if (document.getElementById('express-bottleneck-pct-badge')) document.getElementById('express-bottleneck-pct-badge').innerText = `${topBottleneckPct}% Share`;
             if (document.getElementById('express-bottleneck-impact-share')) document.getElementById('express-bottleneck-impact-share').innerText = `${topBottleneckPct}%`;
             if (document.getElementById('express-action-status')) {
                 document.getElementById('express-action-status').innerText = overrunCount > 0 ? (topBottleneckPct >= 35 ? 'Attention Required' : 'Active Monitor') : 'Optimal';
@@ -5633,8 +5634,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('insight-express-bar')) document.getElementById('insight-express-bar').style.width = `${expressSuccessRate}%`;
             if (document.getElementById('insight-express-os')) document.getElementById('insight-express-os').innerText = successfulExpress;
             if (document.getElementById('insight-express-of')) document.getElementById('insight-express-of').innerText = failedExpress;
-            if (document.getElementById('express-sla-rate-badge')) document.getElementById('express-sla-rate-badge').innerText = `${expressSuccessRate}% On-Time`;
-            if (document.getElementById('express-unsuccessful-count-badge')) document.getElementById('express-unsuccessful-count-badge').innerText = `${failedExpress} Unsuccessful`;
+            if (document.getElementById('analytics-express-sla-rate-badge')) document.getElementById('analytics-express-sla-rate-badge').innerText = `${expressSuccessRate}% On-Time`;
+            if (document.getElementById('analytics-express-unsuccessful-count-badge')) document.getElementById('analytics-express-unsuccessful-count-badge').innerText = `${failedExpress} Unsuccessful`;
 
             // Aggregate Unsuccessful Delay Reasons for Express Lane
             const failedExpressList = completedExpressJobs.filter(j => calculateGoalStatusForJob(j) === 'Failed');
