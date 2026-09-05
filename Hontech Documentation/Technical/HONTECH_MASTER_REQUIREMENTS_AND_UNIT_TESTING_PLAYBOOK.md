@@ -13,7 +13,7 @@ This playbook provides a **complete, step-by-step testing and verification matri
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ 🎯 8 CORE MODULES TO TEST & VERIFY:                                    │
+│ 🎯 9 CORE MODULES TO TEST & VERIFY:                                    │
 ├────────────────────────────────────────────────────────────────────────┤
 │ 1. Authentication, Google OAuth & Role-Based Access Control (RBAC)     │
 │ 2. Vehicle Intake & Online/Walk-In Booking Workflow                    │
@@ -23,6 +23,7 @@ This playbook provides a **complete, step-by-step testing and verification matri
 │ 6. Customer Waiting Lounge TV Display & Audio Announcement Chime       │
 │ 7. Owner Analytics, Back-Job Intelligence & Excel Reporting            │
 │ 8. Offline Resilience, Error Diagnostics & Network Fallbacks           │
+│ 9. Revisions Checklist, Defect Traceability Matrix & Regressions       │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
