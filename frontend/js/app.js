@@ -4348,7 +4348,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             } else if (tab === 'backjobs') {
                 if (secBackjobs) secBackjobs.classList.remove('hidden');
                 if (btnBackjobs) btnBackjobs.className = activeClass;
-                renderBackJobIntelligenceModule();
+                if (!Array.isArray(allJobs) || allJobs.length === 0) {
+                    loadData().then(() => renderBackJobIntelligenceModule());
+                } else {
+                    renderBackJobIntelligenceModule();
+                }
             } else if (tab === 'audits') {
                 if (secAudits) secAudits.classList.remove('hidden');
                 if (btnAudits) btnAudits.className = activeClass;
@@ -4367,17 +4371,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function renderBackJobIntelligenceModule() {
-            const allJobs = (typeof getAllJobs === 'function' ? getAllJobs() : []) || [];
-            const backJobs = allJobs.filter(j => {
+            const container = document.getElementById('db-tab-backjobs');
+            if (!container || container.classList.contains('hidden')) return;
+
+            const safeJobs = (Array.isArray(allJobs) && allJobs.length > 0) ? allJobs : ((Array.isArray(analyticsJobs) && analyticsJobs.length > 0) ? analyticsJobs : (window.allJobs || []));
+            const backJobs = safeJobs.filter(j => {
                 const cat = (j.category || '').toLowerCase();
                 const evalNotes = (j.evaluation || '').toLowerCase();
                 const remarks = (j.remarks || '').toLowerCase();
+                const concern = (j.concern || '').toLowerCase();
                 return cat.includes('back-job') || cat.includes('backjob') || cat.includes('warranty') || cat.includes('return') ||
                        evalNotes.includes('back-job') || evalNotes.includes('backjob') || evalNotes.includes('warranty return') ||
-                       remarks.includes('back-job') || remarks.includes('backjob') || remarks.includes('warranty return');
+                       remarks.includes('back-job') || remarks.includes('backjob') || remarks.includes('warranty return') ||
+                       concern.includes('back-job') || concern.includes('backjob') || concern.includes('warranty') ||
+                       Boolean(j.isBackJob || j.is_backjob);
             });
 
-            const totalInflow = allJobs.length || 1;
+            const totalInflow = safeJobs.length || 1;
             const backJobCount = backJobs.length;
             const returnRate = ((backJobCount / totalInflow) * 100).toFixed(1);
 
@@ -4390,13 +4400,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const mResolved = document.getElementById('backjob-resolved-count');
             const mPending = document.getElementById('backjob-pending-eval');
             const mCompleted = document.getElementById('backjob-completed-eval');
+            const mTopCat = document.getElementById('backjob-top-category');
 
             if (mTotal) mTotal.innerText = backJobCount.toString();
             if (mTotalBar) mTotalBar.style.width = `${Math.min(100, backJobCount * 10)}%`;
             if (mRate) mRate.innerText = `${returnRate}%`;
             if (mRateBar) mRateBar.style.width = `${Math.min(100, parseFloat(returnRate) * 10)}%`;
-            if (mInflow) mInflow.innerText = `${allJobs.length} cars`;
+            if (mInflow) mInflow.innerText = `${safeJobs.length} cars`;
             if (mRecords) mRecords.innerText = `${backJobCount} Back-Jobs Logged`;
+
+            // Calculate category breakdown
+            const catCounts = {};
+            backJobs.forEach(j => {
+                const c = j.category || 'General Repair';
+                catCounts[c] = (catCounts[c] || 0) + 1;
+            });
+            const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
+            if (mTopCat) mTopCat.innerText = topCat ? `${topCat[0]} (${topCat[1]})` : 'None Logged';
 
             const resolvedJobs = backJobs.filter(j => j.status === 'Released' || j.status === 'Completed').length;
             const pendingJobs = backJobs.filter(j => j.status !== 'Released' && j.status !== 'Completed').length;
@@ -4407,27 +4427,38 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const tableBody = document.getElementById('table-backjobs-analytics-body');
             if (tableBody) {
                 if (backJobs.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="8" class="text-center py-12 text-gray-400 font-medium">No back-job return repairs recorded in current system logs. Quality compliance at 100%.</td></tr>`;
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="8" class="text-center py-12 text-slate-400 font-medium">
+                                <div class="flex flex-col items-center justify-center gap-2">
+                                    <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500"></i>
+                                    <p class="text-xs uppercase font-bold tracking-wider text-slate-700">No Back-Job Return Repairs Recorded</p>
+                                    <p class="text-[11px] text-slate-400 font-normal">All customer repair orders passed quality verification without repeat warranty complaints.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
                 } else {
                     tableBody.innerHTML = backJobs.map(j => {
-                        const plate = j.plate || 'NO-PLATE';
-                        const vehicle = j.vehicle || 'Unknown Model';
-                        const name = j.customer || j.name || 'Customer';
-                        const date = j.dateReceived || j.apptDate || j.date || '--';
+                        const plate = j.plate || j.plateNumber || 'NO-PLATE';
+                        const vehicle = j.vehicle || j.model || 'Unknown Model';
+                        const name = j.name || j.customerName || j.customer || 'Customer';
+                        const date = j.dateReceived || j.apptDate || j.date || (j.createdAt ? j.createdAt.split('T')[0].split(' ')[0] : '--');
                         const branch = j.branch || 'Marikina Branch';
-                        const sa = j.saName || j.sa || 'Assigned SA';
-                        const concern = j.remarks || j.evaluation || j.category || 'Return inspection';
-                        const statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10.5px] font-black uppercase tracking-wider ${j.status === 'Released' || j.status === 'Completed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'}">${j.status || 'In Inspection'}</span>`;
+                        const sa = j.saName || j.handled_by || 'Assigned SA';
+                        const concern = j.concern || j.remarks || j.evaluation || j.category || 'Return inspection';
+                        const isDone = j.status === 'Released' || j.status === 'Completed';
+                        const statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider ${isDone ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-800 border border-slate-200'}">${j.status || 'In Progress'}</span>`;
 
                         return `
-                            <tr class="hover:bg-amber-50/40 transition border-b border-gray-100">
-                                <td class="px-6 py-3.5 font-medium text-gray-600 text-xs">${date}</td>
-                                <td class="px-6 py-3.5"><span class="font-mono font-black text-xs text-gray-900 bg-gray-100 px-2 py-0.5 rounded border border-gray-200">${plate}</span></td>
-                                <td class="px-6 py-3.5 font-bold text-gray-900 text-xs">${vehicle}</td>
-                                <td class="px-6 py-3.5 text-gray-800 font-bold text-xs">${name}</td>
-                                <td class="px-6 py-3.5 text-gray-700 text-xs font-medium max-w-[240px] truncate" title="${concern}">${concern}</td>
-                                <td class="px-6 py-3.5 text-gray-600 text-xs font-semibold">${branch}</td>
-                                <td class="px-6 py-3.5 text-gray-900 font-bold text-xs">${sa}</td>
+                            <tr class="hover:bg-slate-50/70 transition border-b border-gray-100">
+                                <td class="px-6 py-3.5 font-bold text-slate-900 text-xs whitespace-nowrap">${date}</td>
+                                <td class="px-6 py-3.5"><span class="font-mono font-bold text-xs text-slate-800 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">${plate}</span></td>
+                                <td class="px-6 py-3.5 font-medium text-slate-800 text-xs">${vehicle}</td>
+                                <td class="px-6 py-3.5 text-slate-900 font-bold text-xs">${name}</td>
+                                <td class="px-6 py-3.5 text-slate-700 text-xs font-medium max-w-[240px] truncate" title="${concern}">${concern}</td>
+                                <td class="px-6 py-3.5 text-slate-600 text-xs font-semibold">${branch}</td>
+                                <td class="px-6 py-3.5 text-slate-900 font-bold text-xs">${sa}</td>
                                 <td class="px-6 py-3.5 text-center">${statusBadge}</td>
                             </tr>
                         `;
@@ -8491,6 +8522,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (typeof renderExpressIntelligenceModule === 'function') {
                     renderExpressIntelligenceModule();
+                }
+
+                if (typeof renderBackJobIntelligenceModule === 'function') {
+                    renderBackJobIntelligenceModule();
                 }
             } catch (err) {
                 console.error('Failed to load operational data:', err);
