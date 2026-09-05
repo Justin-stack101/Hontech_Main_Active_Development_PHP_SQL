@@ -3,6 +3,37 @@
             window.lucide = { createIcons: function () { } };
         }
 
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+        window.escapeHtml = escapeHtml;
+
+        function formatFieldName(field) {
+            if (!field) return 'System Action';
+            const map = {
+                'departure': 'Departure Time',
+                'arrival': 'Arrival Time',
+                'evaluation': 'Diagnosis / Evaluation',
+                'category': 'Service Category',
+                'laneType': 'Lane Type',
+                'promisedDate': 'Promised Date',
+                'carryOverStatus': 'Carry Over Status',
+                'status': 'Job Status',
+                'remarks': 'Remarks & Notes',
+                'location': 'Workshop Bay',
+                'saName': 'Ticket Handover (SA)',
+                'express_delay_report': 'Express Delay Report'
+            };
+            return map[field] || field;
+        }
+        window.formatFieldName = formatFieldName;
+
         let allJobs = [];
         let staffAccounts = [];
         let currentUserRole = '';
@@ -10488,23 +10519,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // 2. SYSTEM-WIDE REASON-REQUIRED EDIT WORKFLOW
         // ============================================================
         let pendingFieldEdit = null;
-
-        function formatFieldName(field) {
-            const map = {
-                'departure': 'Departure Time',
-                'arrival': 'Arrival Time',
-                'evaluation': 'Diagnosis / Evaluation',
-                'category': 'Service Category',
-                'laneType': 'Lane Type',
-                'promisedDate': 'Promised Date',
-                'carryOverStatus': 'Carry Over Status',
-                'status': 'Job Status',
-                'remarks': 'Remarks & Notes',
-                'location': 'Workshop Bay',
-                'saName': 'Assigned Service Advisor'
-            };
-            return map[field] || field;
-        }
 
         function requestFieldEditWithReason(jobId, field, value, oldValue = null) {
             const job = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
