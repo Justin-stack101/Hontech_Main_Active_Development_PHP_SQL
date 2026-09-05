@@ -1711,109 +1711,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Flow KPI Summary Cards (Plan vs Actual Intakes) - Clean Executive Monochrome Palette -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <!-- 1. Carry-Over Flow Card -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> Carry-Over
-                                </span>
-                                <span id="report-carry-fulfillment-badge" class="text-[10px] font-bold uppercase text-slate-500">100% Flow</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="report-carry-pumasok">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Active Intakes</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="report-carry-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>In Bay: <strong id="report-carry-inbay" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Completed: <strong id="report-carry-released" class="text-slate-700 font-bold">0</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 2. GRS Flow Card -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="cog" class="w-3 h-3 text-slate-500"></i> General Repair
-                                </span>
-                                <span id="report-grs-fulfillment-badge" class="text-[10px] font-bold uppercase text-slate-500">0% Target</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="report-grs-pumasok">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">GRS Intakes</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="report-grs-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>In Bay: <strong id="report-grs-inbay" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Completed: <strong id="report-grs-released" class="text-slate-700 font-bold">0</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 3. PMS Flow Card -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="wrench" class="w-3 h-3 text-slate-500"></i> PMS Maintenance
-                                </span>
-                                <span id="report-pms-fulfillment-badge" class="text-[10px] font-bold uppercase text-slate-500">0% Target</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="report-pms-pumasok">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">PMS Intakes</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="report-pms-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>On-Time: <strong id="report-pms-os" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Delayed: <strong id="report-pms-of" class="text-rose-600 font-bold">0</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 4. Total Daily Intake Card -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="clipboard-check" class="w-3 h-3 text-slate-500"></i> Total Intakes
-                                </span>
-                                <span id="report-total-intakes-badge" class="text-[10px] font-bold uppercase text-slate-500">Period Total</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="report-total-pumasok">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Total Vehicles</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="report-total-bar" class="bg-slate-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Walk-In: <strong id="report-total-walkin" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Online: <strong id="report-total-online" class="text-slate-900 font-bold">0</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SECTION: Category Intakes & Target Fulfillment Matrix (Target vs Actual Intakes + Chart.js) -->
+                    <!-- SECTION: Category Intakes & Workshop Volume Matrix (PMS, GRS, PMS & GRS, Others) -->
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
                             <div>
                                 <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Intakes & Target Fulfillment
+                                    <i data-lucide="layers" class="w-4 h-4 text-red-600"></i> Category Intakes & Workshop Volume Matrix
                                 </h4>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Plan / Scheduled Target vs Actual Intakes across Workshop Service Categories</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Actual Population across 4 Core Workshop Categories (PMS, GRS, PMS & GRS, Others)</p>
                             </div>
                             <div class="flex items-center gap-2 self-start md:self-auto">
                                 <div class="inline-flex bg-gray-100 p-1 rounded-xl border border-gray-200 text-[11px] font-bold">
@@ -1827,18 +1732,16 @@
                                         <i data-lucide="table" class="w-3.5 h-3.5"></i> Table
                                     </button>
                                 </div>
-                                <span id="report-category-matrix-count" class="hidden sm:inline-block text-[10px] font-black uppercase tracking-wider px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full border border-gray-200">5 Categories Tracked</span>
+                                <span id="report-category-matrix-count" class="hidden sm:inline-block text-[10px] font-black uppercase tracking-wider px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full border border-gray-200">4 Categories Tracked</span>
                             </div>
                         </div>
 
-                        <!-- GRAPH CONTAINER (Plan vs Actual Comparison Bar Chart) -->
+                        <!-- GRAPH CONTAINER (Actual Intakes vs Completed Bar Chart) -->
                         <div id="category-inflow-chart-wrapper" class="p-6 border-b border-gray-100 bg-white">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-2">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-300 border border-slate-400"></span>
-                                    <span class="text-[11px] font-bold text-slate-600">Planned Target</span>
-                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-900 ml-3"></span>
-                                    <span class="text-[11px] font-bold text-slate-900">Actual Intakes</span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-slate-900"></span>
+                                    <span class="text-[11px] font-bold text-slate-900">Actual Population (Intakes)</span>
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ml-3"></span>
                                     <span class="text-[11px] font-bold text-emerald-700">Completed & Released</span>
                                 </div>
@@ -1849,16 +1752,16 @@
                             </div>
                         </div>
 
-                        <!-- MATRIX TABLE CONTAINER (Clean Professional Layout) -->
+                        <!-- MATRIX TABLE CONTAINER (Population & Breakdown Only) -->
                         <div id="category-inflow-table-wrapper" class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-gray-50/75 border-b border-gray-200 text-gray-400 text-[10px] font-black uppercase tracking-widest">
+                                    <tr class="bg-gray-50/75 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
                                         <th class="px-6 py-3.5">Service Category</th>
-                                        <th class="px-6 py-3.5">Intake vs Target (Fulfillment)</th>
-                                        <th class="px-6 py-3.5 text-center">Workflow Distribution</th>
-                                        <th class="px-6 py-3.5 text-center">Variance</th>
-                                        <th class="px-6 py-3.5 text-right">Service Type</th>
+                                        <th class="px-6 py-3.5 text-center">Total Population (Intakes)</th>
+                                        <th class="px-6 py-3.5 text-center">In-Bay Active</th>
+                                        <th class="px-6 py-3.5 text-center">Completed & Released</th>
+                                        <th class="px-6 py-3.5 text-right">Intake Share (%)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-category-flow-body" class="divide-y divide-gray-100 text-xs text-gray-700">
@@ -1868,14 +1771,14 @@
                         </div>
                     </div>
 
-                    <!-- TABLE 2: Day-by-Day Daily Intake Breakdown (No. of Intake Per Day) -->
+                    <!-- TABLE 2: Day-by-Day Daily Intake Breakdown (Chronological Log) -->
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/50">
                             <div>
                                 <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                    <i data-lucide="calendar" class="w-4 h-4 text-red-600"></i> Daily Intake Volume History & Breakdown
+                                    <i data-lucide="calendar" class="w-4 h-4 text-red-600"></i> Daily Intake Volume History & Category Log
                                 </h4>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Chronological log of daily vehicle registrations, channel split, and category volume</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Chronological log of daily vehicle registrations and category counts</p>
                             </div>
                             <span id="report-daily-records-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200">0 Days Logged</span>
                         </div>
@@ -1891,10 +1794,8 @@
                                         <th class="px-6 py-4 bg-white text-center">Total Intakes</th>
                                         <th class="px-6 py-4 bg-white text-center">PMS</th>
                                         <th class="px-6 py-4 bg-white text-center">GRS</th>
-                                        <th class="px-6 py-4 bg-white text-center">Carry-Over</th>
-                                        <th class="px-6 py-4 bg-white text-center">Express</th>
-                                        <th class="px-6 py-4 bg-white text-center">Capacity Load</th>
-                                        <th class="px-6 py-4 bg-white text-right">Peak Hour</th>
+                                        <th class="px-6 py-4 bg-white text-center">PMS & GRS</th>
+                                        <th class="px-6 py-4 bg-white text-right">Others</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-daily-intakes-report-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
@@ -1905,7 +1806,7 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: EXPRESS LANE SLA PERFORMANCE & DELAY ROOT CAUSES INTELLIGENCE CENTER -->
+                <!-- TAB 4: EXPRESS LANE & DELAYS INTELLIGENCE CENTER (SIMPLIFIED DIRECT DRAFT) -->
                 <div id="db-tab-express" class="hidden space-y-8">
                     <!-- Executive Filter Bar -->
                     <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -1915,8 +1816,8 @@
                                     <i data-lucide="zap" class="w-5 h-5"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Express Lane & Delay Root Cause Intelligence</h3>
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 60 mins) & Categorized Failure Mode Analytics for Executive Decision-Making</p>
+                                    <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Express Lane & Delays Intelligence</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround SLA Benchmark (≤60m), Failure Modes & Actionable Diagnostic Insights</p>
                                 </div>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
@@ -1964,210 +1865,189 @@
                             </div>
                             <div>
                                 <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Quick Search</label>
-                                <input type="text" id="express-filter-search" oninput="renderExpressIntelligenceModule()" placeholder="Plate, Reason, SA..."
+                                <input type="text" id="express-filter-search" oninput="renderExpressIntelligenceModule()" placeholder="Plate, Cause, Remarks..."
                                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition placeholder-gray-400">
                             </div>
                         </div>
                     </div>
 
-                    <!-- 4 Executive Scorecard Cards -->
+                    <!-- 4 Clean Executive Metric Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <!-- 1. Express SLA Compliance Rate -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                        <!-- 1. Total Express Vehicles -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-2.5 hover:border-slate-300 transition">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="target" class="w-3 h-3 text-slate-500"></i> SLA Compliance (≤60m)
+                                    <i data-lucide="zap" class="w-3 h-3 text-amber-500"></i> Express Volume
                                 </span>
-                                <span id="express-sla-rate-badge" class="text-[10px] font-bold uppercase text-slate-500">Target ≥90%</span>
+                                <span class="text-[10px] font-bold uppercase text-slate-400">Active Period</span>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline gap-2">
+                                    <h4 class="text-3xl font-black text-slate-900" id="express-total-volume">0</h4>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Vehicles</span>
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Avg Time: <strong id="express-avg-turnaround" class="text-slate-900 font-bold">0m</strong></span>
+                                <span>Target: <strong class="text-slate-700 font-bold">≤ 60m</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 2. On-Time Compliance Rate -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-2.5 hover:border-slate-300 transition">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i> SLA Compliance
+                                </span>
+                                <span id="express-sla-rate-badge" class="text-[10px] font-bold uppercase text-emerald-700">0% On-Time</span>
                             </div>
                             <div>
                                 <div class="flex items-baseline gap-2">
                                     <h4 class="text-3xl font-black text-slate-900" id="express-sla-rate">0%</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">On-Time Rate</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-sla-bar" class="bg-slate-900 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Success</span>
                                 </div>
                             </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Successful (≤60m): <strong id="express-sla-successful" class="text-slate-900 font-bold">0</strong></span>
-                                <span>Delayed (>60m): <strong id="express-sla-breached" class="text-rose-600 font-bold">0</strong></span>
+                            <div class="pt-2 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>On-Time: <strong id="express-sla-successful" class="text-emerald-700 font-bold">0</strong></span>
+                                <span>Delayed: <strong id="express-sla-breached" class="text-rose-600 font-bold">0</strong></span>
                             </div>
                         </div>
 
-                        <!-- 2. Average Express Turnaround Time -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                        <!-- 3. Overrun Delay Count & Avg Overrun -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-2.5 hover:border-slate-300 transition">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="timer" class="w-3 h-3 text-slate-500"></i> Turnaround Velocity
+                                    <i data-lucide="alert-triangle" class="w-3 h-3 text-rose-500"></i> Delayed Overruns
                                 </span>
-                                <span class="text-[10px] font-bold uppercase text-slate-500">Standard: 60m</span>
-                            </div>
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <h4 class="text-3xl font-black text-slate-900" id="express-avg-turnaround">0m</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Average Duration</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-avg-bar" class="bg-slate-800 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Fastest Job: <strong id="express-min-duration" class="text-slate-900 font-bold">--</strong></span>
-                                <span>Longest Overrun: <strong id="express-max-duration" class="text-rose-600 font-bold">--</strong></span>
-                            </div>
-                        </div>
-
-                        <!-- 3. Unsuccessful / Delayed Overrun Count -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="alert-triangle" class="w-3 h-3 text-slate-500"></i> SLA Overrun Count
-                                </span>
-                                <span id="express-overrun-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">0% of Express</span>
+                                <span id="express-overrun-pct-badge" class="text-[10px] font-bold uppercase text-rose-600">0% Overruns</span>
                             </div>
                             <div>
                                 <div class="flex items-baseline gap-2">
                                     <h4 class="text-3xl font-black text-slate-900" id="express-overrun-count">0</h4>
-                                    <span class="text-xs text-slate-400 font-semibold uppercase">Breached Vehicles</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                    <div id="express-overrun-bar" class="bg-rose-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                    <span class="text-xs text-slate-400 font-semibold uppercase">Exceeded >60m</span>
                                 </div>
                             </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Avg Overrun Time: <strong id="express-avg-overrun-time" class="text-slate-900 font-bold">+0m</strong></span>
-                                <span>Root Causes Logged: <strong id="express-logged-reasons-count" class="text-slate-700 font-bold">0</strong></span>
+                            <div class="pt-2 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Avg Overrun: <strong id="express-avg-overrun-time" class="text-rose-600 font-bold">+0m</strong></span>
+                                <span>Longest: <strong id="express-max-duration" class="text-slate-900 font-bold">--</strong></span>
                             </div>
                         </div>
 
-                        <!-- 4. Top Primary Bottleneck Factor -->
-                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-3 hover:border-slate-300 transition">
+                        <!-- 4. Leading Friction Point -->
+                        <div class="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs space-y-2.5 hover:border-slate-300 transition">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1.5">
-                                    <i data-lucide="flame" class="w-3 h-3 text-slate-500"></i> Top Root Cause
+                                    <i data-lucide="flame" class="w-3 h-3 text-amber-600"></i> Top Delay Cause
                                 </span>
                                 <span id="express-bottleneck-pct-badge" class="text-[10px] font-bold uppercase text-slate-500">Leading Factor</span>
                             </div>
                             <div>
                                 <div class="flex items-baseline gap-2 truncate">
-                                    <h4 class="text-lg font-black text-slate-900 truncate" id="express-primary-bottleneck">None Logged</h4>
+                                    <h4 class="text-base font-black text-slate-900 truncate" id="express-primary-bottleneck">None Logged</h4>
                                 </div>
-                                <p class="text-xs text-slate-400 font-semibold mt-1" id="express-primary-bottleneck-sub">0 incidents recorded</p>
+                                <p class="text-[11px] text-slate-400 font-semibold mt-0.5 truncate" id="express-primary-bottleneck-sub">0 incidents recorded</p>
                             </div>
-                            <div class="pt-2.5 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
-                                <span>Action Status: <strong id="express-action-status" class="text-slate-900 font-bold">Normal</strong></span>
-                                <span>Impact Share: <strong id="express-bottleneck-impact-share" class="text-slate-700 font-bold">0%</strong></span>
+                            <div class="pt-2 border-t border-slate-100 text-[11px] font-medium text-slate-500 flex justify-between">
+                                <span>Share: <strong id="express-bottleneck-impact-share" class="text-slate-900 font-bold">0%</strong></span>
+                                <span>Action: <strong id="express-action-status" class="text-slate-700 font-bold">Optimal</strong></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 2 Executive Interactive Visual Charts (Chart.js) -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Chart A: Turnaround Time Distribution Histogram -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
-                                <div>
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-amber-500"></i> Turnaround Duration Distribution Curve
-                                    </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Vehicles grouped by completed turnaround duration brackets</p>
-                                </div>
-                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">SLA: ≤60m</span>
-                            </div>
-                            <div class="relative w-full h-[240px]">
-                                <canvas id="chart-express-duration-hist"></canvas>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-gray-500">
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-800"></span> Optimal (&le;45m)</span>
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-400"></span> Warning (46-60m)</span>
-                                <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-rose-600"></span> Breached (>60m)</span>
-                            </div>
-                        </div>
-
-                        <!-- Chart B: Categorized Delay Root Cause Pareto Breakdown -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-100 pb-3">
-                                <div>
-                                    <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="pie-chart" class="w-4 h-4 text-red-600"></i> Delay & Unmet SLA Root Cause Pareto Analysis
-                                    </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Categorized breakdown of operational friction points</p>
-                                </div>
-                                <span id="express-pareto-total-badge" class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">0 Delays</span>
-                            </div>
-                            <div class="relative w-full h-[240px]">
-                                <canvas id="chart-express-delay-pareto"></canvas>
-                            </div>
-                            <div class="mt-3 pt-3 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
-                                Pareto categories rank workshop friction to guide high-ROI executive interventions.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FACTUAL ANALYTICS: EXPRESS CATEGORY SLA BREAKDOWN & ROOT CAUSE IMPACT RANKING -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Table 1: Category SLA Performance Breakdown -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
+                    <!-- DIRECT INSIGHTS & ROOT CAUSES (Clean 2-Column Grid) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Left Column: Root Cause Impact Summary Table (5 cols) -->
+                        <div class="lg:col-span-5 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
                             <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                                 <div>
                                     <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="layers" class="w-4 h-4 text-slate-700"></i> Express Category SLA Performance
+                                        <i data-lucide="clock-alert" class="w-4 h-4 text-red-600"></i> Delay Root Causes Breakdown
                                     </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Turnaround compliance grouped by service category</p>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Frequency & Overrun Time by Friction Factor</p>
                                 </div>
-                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">SLA: ≤60m</span>
+                                <span id="express-pareto-total-badge" class="text-[10px] font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-md border border-rose-200">0 Overruns</span>
                             </div>
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                            <th class="px-5 py-3.5">Category</th>
-                                            <th class="px-4 py-3.5 text-center">Jobs</th>
-                                            <th class="px-4 py-3.5 text-center">Avg Time</th>
-                                            <th class="px-4 py-3.5 text-center">On-Time</th>
-                                            <th class="px-4 py-3.5 text-center">Delayed</th>
-                                            <th class="px-5 py-3.5 text-right">SLA %</th>
+                                            <th class="px-5 py-3">Cause / Category</th>
+                                            <th class="px-3 py-3 text-center">Incidents</th>
+                                            <th class="px-3 py-3 text-center">Share</th>
+                                            <th class="px-5 py-3 text-right">Avg Delay</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="table-express-category-sla-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <tbody id="table-express-delay-summary-body" class="divide-y divide-gray-100 text-xs text-gray-700 font-semibold">
                                         <!-- Populated dynamically by app.js -->
                                     </tbody>
                                 </table>
                             </div>
                             <div class="p-3 bg-gray-50/70 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
-                                Compares quick PMS, GRS, and Express inspections against the standard 60-minute target.
+                                Direct quantitative summary of workshop operational bottlenecks.
                             </div>
                         </div>
 
-                        <!-- Table 2: Root Cause Delay Impact Breakdown -->
-                        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
-                            <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                        <!-- Right Column: Direct Diagnostic Insights & Action Guide (7 cols) -->
+                        <div class="lg:col-span-7 bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex flex-col justify-between">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
                                 <div>
                                     <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
-                                        <i data-lucide="clock-alert" class="w-4 h-4 text-red-600"></i> Delay Root Cause Impact Summary
+                                        <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i> Direct Diagnostic Insights & Observations
                                     </h4>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Frequency count and average overrun duration by factor</p>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Key operational observations and friction remediation guidelines</p>
                                 </div>
-                                <span class="text-[10px] font-bold bg-rose-50 text-rose-700 px-2.5 py-1 rounded-md border border-rose-200">Failure Modes</span>
+                                <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">Management Brief</span>
                             </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                            <th class="px-5 py-3.5">Logged Reason</th>
-                                            <th class="px-4 py-3.5 text-center">Incidents</th>
-                                            <th class="px-4 py-3.5 text-center">Share</th>
-                                            <th class="px-5 py-3.5 text-right">Avg Overrun</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table-express-delay-summary-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
-                                        <!-- Populated dynamically by app.js -->
-                                    </tbody>
-                                </table>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs text-gray-700">
+                                <!-- Insight 1 -->
+                                <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                    <div class="flex items-center gap-2 font-bold text-slate-900">
+                                        <span class="w-2 h-2 rounded-full bg-red-600"></span>
+                                        <span>Parts Stockout & Logistics</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                                        Parts requisition lag is the most common reason for stalled bays. Keep fast-moving filter and oil SKUs pre-staged in the quick lane.
+                                    </p>
+                                </div>
+
+                                <!-- Insight 2 -->
+                                <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                    <div class="flex items-center gap-2 font-bold text-slate-900">
+                                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                        <span>Customer Scope Approvals</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                                        Additional defects discovered during quick inspections require prompt SA phone authorization to avoid exceeding the 60-minute window.
+                                    </p>
+                                </div>
+
+                                <!-- Insight 3 -->
+                                <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                    <div class="flex items-center gap-2 font-bold text-slate-900">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span>Bay & Lift Congestion</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                                        Vehicles remaining on lifts after job completion cause queue blocking. Enforce immediate handover to the outdoor holding area.
+                                    </p>
+                                </div>
+
+                                <!-- Insight 4 -->
+                                <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
+                                    <div class="flex items-center gap-2 font-bold text-slate-900">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        <span>QC & Final Clearance</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                                        Standardizing digital inspection sign-offs ensures rapid vehicle release without unnecessary administrative bottlenecks.
+                                    </p>
+                                </div>
                             </div>
-                            <div class="p-3 bg-gray-50/70 border-t border-gray-100 text-[10px] text-gray-400 font-medium text-center">
-                                Direct quantitative breakdown of operational bottlenecks across the workshop.
+
+                            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+                                <span class="font-medium">Direct reporting guidelines for Service Advisors and Shop Foremen</span>
+                                <span class="font-bold text-slate-900">SLA Standard: 60 Mins</span>
                             </div>
                         </div>
                     </div>
@@ -2179,7 +2059,7 @@
                                 <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
                                     <i data-lucide="clipboard-list" class="w-4 h-4 text-red-600"></i> Delayed & Unmet SLA Services Diagnostic Log
                                 </h4>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Audit log of all services exceeding the 60-minute turnaround benchmark</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Audit log of all express and quick turnaround services exceeding the 60-minute target</p>
                             </div>
                             <span id="express-delay-records-count" class="text-[10px] font-black uppercase tracking-wider px-3 py-1 bg-gray-100 text-gray-700 rounded-full border border-gray-200">0 Overruns Logged</span>
                         </div>
@@ -2193,12 +2073,10 @@
                                         <th class="px-6 py-4 bg-white">Plate No.</th>
                                         <th class="px-6 py-4 bg-white">Vehicle Model</th>
                                         <th class="px-6 py-4 bg-white">Category</th>
-                                        <th class="px-6 py-4 bg-white text-center">Arrival</th>
-                                        <th class="px-6 py-4 bg-white text-center">Departure</th>
                                         <th class="px-6 py-4 bg-white text-center">Duration</th>
                                         <th class="px-6 py-4 bg-white text-center">Overrun</th>
                                         <th class="px-6 py-4 bg-white">Root Cause Category</th>
-                                        <th class="px-6 py-4 bg-white">Diagnostic Remarks</th>
+                                        <th class="px-6 py-4 bg-white">Direct Diagnostic Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-express-delays-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
@@ -5976,7 +5854,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.91"></script>
+    <script src="js/app.js?v=4.92"></script>
 </body>
 
 </html>

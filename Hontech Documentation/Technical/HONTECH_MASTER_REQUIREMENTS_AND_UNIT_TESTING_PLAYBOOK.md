@@ -128,6 +128,7 @@ All client modifications, UI refinements, and feature changes must be logged in 
 | **REV-008 – REV-013** | Workshop Bays & RBAC | Bay capacity scaling (2 to 50), SA single-owner claims, Owner View-Only | Strict role isolation; Owner cannot edit bay capacity; Admin sets ceilings. |
 | **REV-014 – REV-016** | Analytics & Bay State | Back-job intelligence tab, Bay lock when Waiting, live bay status badges | Bay assignment unlocks ONLY on Monitoring; auto-resets on status rollback. |
 | **REV-017 – REV-019** | Ceilings, Audio & Audit Hub | Admin ceiling, Web Speech audio chime, Centralized Audit Logs & Handovers Hub | Clean public TV header; Central Audit Hub with real-time filters and 1-click CSV export. |
+| **REV-020** | Reports & Express Delays | 4 Core Categories (PMS, GRS, PMS & GRS, Others), Express Delays Direct Insights Draft | Strictly 4 categories without target/variance numbers; 4 cards & peak hour removed; clean express delay direct insight deck. |
 
 ---
 
@@ -136,7 +137,7 @@ All client modifications, UI refinements, and feature changes must be logged in 
 Before entering your defense room or client meeting, check off these 6 final items:
 - [ ] **1. Clean Database Seed:** Run `php backend/seed.php` so all demo accounts and sample repair orders are fresh.
 - [ ] **2. 4 Role Logins Verified:** Test 1-click login for Owner, Admin, Service Advisor, and Assistant.
-- [ ] **3. Revisions Traceability Verified:** Run `REV-001` through `REV-019` against [`Revisions checklist.csv`](../../Revisions%20checklist.csv) to confirm 0 regressions.
+- [ ] **3. Revisions Traceability Verified:** Run `REV-001` through `REV-020` against [`Revisions checklist.csv`](../../Revisions%20checklist.csv) to confirm 0 regressions.
 - [ ] **4. TV Display & Audio Verified:** Ensure TV layout and sound chime work on your test monitor/browser.
 - [ ] **5. Documentation Printed / PDF Ready:** Export [`HonTech_Client_Proposal_and_Deployment_Strategy.html`](HonTech_Client_Proposal_and_Deployment_Strategy.html) to PDF.
 - [ ] **6. Git Branch Synced:** Ensure all latest commits are pushed to `origin branch2-Security-Account-Recovery`.

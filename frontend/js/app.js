@@ -4722,131 +4722,91 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 );
             }
 
-            // 1. INFLOW BREAKDOWN CALCULATIONS (Carry-Over, GRS, PMS, Express, Checkups)
-            const carryJobs = filtered.filter(j => j.status === 'Carry Over' || j.carryOverStatus);
-            const plannedCarry = Math.max(carryJobs.length, 4);
-            const pumasokCarry = carryJobs.length;
-            const inbayCarry = carryJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
-            const releasedCarry = carryJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
-            const carryFulfillment = plannedCarry > 0 ? Math.round((pumasokCarry / plannedCarry) * 100) : 100;
+            // 1. INFLOW BREAKDOWN CALCULATIONS (Strictly 4 Core Categories: PMS, GRS, PMS & GRS, Others)
+            function getJobCoreCategory(job) {
+                const cat = (job.category || '').toUpperCase();
+                const serv = (job.serviceType || job.service_type || job.services || '').toUpperCase();
+                const combined = `${cat} ${serv}`;
 
-            const grsJobs = filtered.filter(j => j.category && j.category.toUpperCase().includes('GR'));
-            const plannedGRS = Math.max(grsJobs.length, 10);
-            const pumasokGRS = grsJobs.length;
-            const inbayGRS = grsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
-            const releasedGRS = grsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
-            const grsFulfillment = plannedGRS > 0 ? Math.round((pumasokGRS / plannedGRS) * 100) : 0;
+                const hasPMS = combined.includes('PMS') || combined.includes('PREVENTIVE') || combined.includes('MAINTENANCE');
+                const hasGRS = combined.includes('GRS') || combined.includes('GENERAL REPAIR') || combined.includes('REPAIR') || combined.includes('OVERHAUL') || combined.includes('SUSPENSION') || combined.includes('BRAKE');
 
-            const pmsJobs = filtered.filter(j => j.category && j.category.toUpperCase().includes('PMS'));
-            const plannedPMS = Math.max(pmsJobs.length, 12);
-            const pumasokPMS = pmsJobs.length;
+                if (hasPMS && hasGRS) return 'PMS & GRS';
+                if (hasPMS) return 'PMS';
+                if (hasGRS) return 'GRS';
+                return 'Others';
+            }
+
+            const pmsJobs = filtered.filter(j => getJobCoreCategory(j) === 'PMS');
+            const grsJobs = filtered.filter(j => getJobCoreCategory(j) === 'GRS');
+            const pmsGrsJobs = filtered.filter(j => getJobCoreCategory(j) === 'PMS & GRS');
+            const othersJobs = filtered.filter(j => getJobCoreCategory(j) === 'Others');
+
+            const totalPumasok = filtered.length;
+            const countPMS = pmsJobs.length;
             const inbayPMS = pmsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
             const releasedPMS = pmsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
-            const osPMS = pmsJobs.filter(j => (j.status === 'Completed' || j.status === 'Released') && calculateGoalStatusForJob(j) === 'Successful').length;
-            const ofPMS = pmsJobs.filter(j => (j.status === 'Completed' || j.status === 'Released') && calculateGoalStatusForJob(j) === 'Failed').length;
-            const pmsFulfillment = plannedPMS > 0 ? Math.round((pumasokPMS / plannedPMS) * 100) : 0;
+            const sharePMS = totalPumasok > 0 ? Math.round((countPMS / totalPumasok) * 100) : 0;
 
-            const expressJobs = filtered.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
-            const plannedExpress = Math.max(expressJobs.length, 6);
-            const pumasokExpress = expressJobs.length;
-            const inbayExpress = expressJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
-            const releasedExpress = expressJobs.filter(j => (j.laneType === 'Express' || j.laneType === 'Express Lane') && (j.status === 'Completed' || j.status === 'Released')).length;
-            const expressFulfillment = plannedExpress > 0 ? Math.round((pumasokExpress / plannedExpress) * 100) : 0;
+            const countGRS = grsJobs.length;
+            const inbayGRS = grsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedGRS = grsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const shareGRS = totalPumasok > 0 ? Math.round((countGRS / totalPumasok) * 100) : 0;
 
-            const checkupJobs = filtered.filter(j => j.category && (j.category.toLowerCase().includes('check') || j.category.toLowerCase().includes('complimentary') || j.category.toLowerCase().includes('diag')));
-            const plannedCheckup = Math.max(checkupJobs.length, 5);
-            const pumasokCheckup = checkupJobs.length;
-            const inbayCheckup = checkupJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
-            const releasedCheckup = checkupJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
-            const checkupFulfillment = plannedCheckup > 0 ? Math.round((pumasokCheckup / plannedCheckup) * 100) : 0;
+            const countPMSGrs = pmsGrsJobs.length;
+            const inbayPMSGrs = pmsGrsJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedPMSGrs = pmsGrsJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const sharePMSGrs = totalPumasok > 0 ? Math.round((countPMSGrs / totalPumasok) * 100) : 0;
 
-            const totalPlanned = plannedCarry + plannedGRS + plannedPMS + plannedExpress + plannedCheckup;
-            const totalPumasok = filtered.length;
-            const totalInBay = filtered.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
-            const totalReleased = filtered.filter(j => j.status === 'Completed' || j.status === 'Released').length;
-            const totalWalkin = filtered.filter(j => j.source === 'Walk-in').length;
-            const totalOnline = filtered.filter(j => j.source === 'Online').length;
-            const totalFulfillment = totalPlanned > 0 ? Math.round((totalPumasok / totalPlanned) * 100) : 100;
+            const countOthers = othersJobs.length;
+            const inbayOthers = othersJobs.filter(j => j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released').length;
+            const releasedOthers = othersJobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
+            const shareOthers = totalPumasok > 0 ? Math.round((countOthers / totalPumasok) * 100) : 0;
 
-            // Update KPI Cards
-            if (document.getElementById('report-carry-pumasok')) document.getElementById('report-carry-pumasok').innerText = pumasokCarry;
-            if (document.getElementById('report-carry-inbay')) document.getElementById('report-carry-inbay').innerText = inbayCarry;
-            if (document.getElementById('report-carry-released')) document.getElementById('report-carry-released').innerText = releasedCarry;
-            if (document.getElementById('report-carry-fulfillment-badge')) document.getElementById('report-carry-fulfillment-badge').innerText = `${carryFulfillment}% Flow`;
+            const totalInBay = inbayPMS + inbayGRS + inbayPMSGrs + inbayOthers;
+            const totalReleased = releasedPMS + releasedGRS + releasedPMSGrs + releasedOthers;
 
-            if (document.getElementById('report-grs-pumasok')) document.getElementById('report-grs-pumasok').innerText = pumasokGRS;
-            if (document.getElementById('report-grs-inbay')) document.getElementById('report-grs-inbay').innerText = inbayGRS;
-            if (document.getElementById('report-grs-released')) document.getElementById('report-grs-released').innerText = releasedGRS;
-            if (document.getElementById('report-grs-bar')) document.getElementById('report-grs-bar').style.width = `${Math.min(100, grsFulfillment)}%`;
-            if (document.getElementById('report-grs-fulfillment-badge')) document.getElementById('report-grs-fulfillment-badge').innerText = `${grsFulfillment}% Target`;
-
-            if (document.getElementById('report-pms-pumasok')) document.getElementById('report-pms-pumasok').innerText = pumasokPMS;
-            if (document.getElementById('report-pms-os')) document.getElementById('report-pms-os').innerText = osPMS;
-            if (document.getElementById('report-pms-of')) document.getElementById('report-pms-of').innerText = ofPMS;
-            if (document.getElementById('report-pms-bar')) document.getElementById('report-pms-bar').style.width = `${Math.min(100, pmsFulfillment)}%`;
-            if (document.getElementById('report-pms-fulfillment-badge')) document.getElementById('report-pms-fulfillment-badge').innerText = `${pmsFulfillment}% Target`;
-
-            if (document.getElementById('report-total-pumasok')) document.getElementById('report-total-pumasok').innerText = totalPumasok;
-            if (document.getElementById('report-total-walkin')) document.getElementById('report-total-walkin').innerText = totalWalkin;
-            if (document.getElementById('report-total-online')) document.getElementById('report-total-online').innerText = totalOnline;
-            if (document.getElementById('report-total-bar')) document.getElementById('report-total-bar').style.width = `${Math.min(100, totalFulfillment)}%`;
-            if (document.getElementById('report-total-intakes-badge')) document.getElementById('report-total-intakes-badge').innerText = `${totalFulfillment}% Intake Target`;
-
-            // 2. POPULATE TABLE 1: Category Intakes Matrix & Chart.js Graph (Clean Executive Architecture)
+            // 2. POPULATE TABLE 1: Category Intakes Matrix & Chart.js Graph (4 Core Categories)
             const categoryRows = [
                 {
-                    name: 'Carry-Over (Unfinished Prev Day)',
-                    plan: plannedCarry,
-                    actual: pumasokCarry,
-                    inbay: inbayCarry,
-                    released: releasedCarry,
-                    variance: pumasokCarry - plannedCarry,
-                    fulfillment: carryFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Carry-Over</span>`
+                    name: 'PMS (Preventive Maintenance Service)',
+                    categoryKey: 'PMS',
+                    actual: countPMS,
+                    inbay: inbayPMS,
+                    released: releasedPMS,
+                    share: sharePMS,
+                    badge: `<span class="bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">PMS</span>`
                 },
                 {
                     name: 'GRS (General Repair Service)',
-                    plan: plannedGRS,
-                    actual: pumasokGRS,
+                    categoryKey: 'GRS',
+                    actual: countGRS,
                     inbay: inbayGRS,
                     released: releasedGRS,
-                    variance: pumasokGRS - plannedGRS,
-                    fulfillment: grsFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">General Repair</span>`
+                    share: shareGRS,
+                    badge: `<span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">GRS</span>`
                 },
                 {
-                    name: 'PMS (Preventive Maintenance)',
-                    plan: plannedPMS,
-                    actual: pumasokPMS,
-                    inbay: inbayPMS,
-                    released: releasedPMS,
-                    variance: pumasokPMS - plannedPMS,
-                    fulfillment: pmsFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Periodic PMS</span>`
+                    name: 'PMS & GRS (Combined Services)',
+                    categoryKey: 'PMS & GRS',
+                    actual: countPMSGrs,
+                    inbay: inbayPMSGrs,
+                    released: releasedPMSGrs,
+                    share: sharePMSGrs,
+                    badge: `<span class="bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">PMS & GRS</span>`
                 },
                 {
-                    name: 'Express Lane (Turnaround ≤ 60m)',
-                    plan: plannedExpress,
-                    actual: pumasokExpress,
-                    inbay: inbayExpress,
-                    released: releasedExpress,
-                    variance: pumasokExpress - plannedExpress,
-                    fulfillment: expressFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Express ≤60m</span>`
-                },
-                {
-                    name: 'Complimentary Inspection',
-                    plan: plannedCheckup,
-                    actual: pumasokCheckup,
-                    inbay: inbayCheckup,
-                    released: releasedCheckup,
-                    variance: pumasokCheckup - plannedCheckup,
-                    fulfillment: checkupFulfillment,
-                    statusBadge: `<span class="bg-gray-100 text-gray-700 border border-gray-200/80 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Multi-Point</span>`
+                    name: 'Others (Diagnostics, Electrical, Multi-Point, etc.)',
+                    categoryKey: 'Others',
+                    actual: countOthers,
+                    inbay: inbayOthers,
+                    released: releasedOthers,
+                    share: shareOthers,
+                    badge: `<span class="bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Others</span>`
                 }
             ];
 
-            // Render Chart.js Graph (Distinct, High-Contrast Executive Palettes)
+            // Render Chart.js Graph (Actual Population vs Completed & Released)
             if (typeof Chart !== 'undefined') {
                 const chartCanvas = document.getElementById('chart-category-inflow');
                 if (chartCanvas) {
@@ -4856,36 +4816,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     window.categoryInflowChartInstance = new Chart(chartCanvas, {
                         type: 'bar',
                         data: {
-                            labels: ['Carry-Over', 'GRS Repair', 'PMS Service', 'Express Lane', 'Inspection'],
+                            labels: ['PMS', 'GRS', 'PMS & GRS', 'Others'],
                             datasets: [
                                 {
-                                    label: 'Planned Target',
-                                    data: [plannedCarry, plannedGRS, plannedPMS, plannedExpress, plannedCheckup],
-                                    backgroundColor: '#cbd5e1',
-                                    borderColor: '#94a3b8',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.65,
-                                    categoryPercentage: 0.75
-                                },
-                                {
-                                    label: 'Actual Intakes',
-                                    data: [pumasokCarry, pumasokGRS, pumasokPMS, pumasokExpress, pumasokCheckup],
+                                    label: 'Actual Population (Intakes)',
+                                    data: [countPMS, countGRS, countPMSGrs, countOthers],
                                     backgroundColor: '#0f172a',
                                     borderColor: '#0f172a',
                                     borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.65,
+                                    borderRadius: 6,
+                                    barPercentage: 0.55,
                                     categoryPercentage: 0.75
                                 },
                                 {
                                     label: 'Completed & Released',
-                                    data: [releasedCarry, releasedGRS, releasedPMS, releasedExpress, releasedCheckup],
+                                    data: [releasedPMS, releasedGRS, releasedPMSGrs, releasedOthers],
                                     backgroundColor: '#10b981',
                                     borderColor: '#059669',
                                     borderWidth: 1,
-                                    borderRadius: 4,
-                                    barPercentage: 0.65,
+                                    borderRadius: 6,
+                                    barPercentage: 0.55,
                                     categoryPercentage: 0.75
                                 }
                             ]
@@ -4906,7 +4856,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             scales: {
                                 x: {
                                     grid: { display: false },
-                                    ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+                                    ticks: { font: { size: 11, weight: '700' }, color: '#475569' }
                                 },
                                 y: {
                                     beginAtZero: true,
@@ -4921,75 +4871,54 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const tableCatBody = document.getElementById('table-category-flow-body');
             if (tableCatBody) {
-                let catHtml = categoryRows.map(row => {
-                    const isDeficit = row.variance < 0;
-                    const varSign = row.variance > 0 ? `+${row.variance}` : `${row.variance}`;
-                    const varBadge = row.variance === 0 
-                        ? `<span class="text-[11px] font-bold text-gray-400">On Target (0)</span>` 
-                        : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold ${isDeficit ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}">${isDeficit ? '▼' : '▲'} ${varSign} cars</span>`;
-
-                    return `
-                        <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
-                            <td class="px-6 py-3.5">
-                                <div class="font-bold text-gray-900 text-xs">${row.name}</div>
-                            </td>
-                            <td class="px-6 py-3.5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-20 bg-gray-100 h-1.5 rounded-full overflow-hidden shrink-0">
-                                        <div class="bg-slate-900 h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, row.fulfillment)}%"></div>
-                                    </div>
-                                    <span class="font-bold text-gray-900 text-xs">${row.actual} <span class="text-gray-400 font-normal">/ ${row.plan} cars</span></span>
-                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">${row.fulfillment}%</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-3.5 text-center">
-                                <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-200/60">
-                                    <span class="font-bold text-gray-900">${row.inbay}</span> in bay <span class="text-gray-300">·</span> <span class="font-bold text-emerald-600">${row.released}</span> released
-                                </span>
-                            </td>
-                            <td class="px-6 py-3.5 text-center">
-                                ${varBadge}
-                            </td>
-                            <td class="px-6 py-3.5 text-right">
-                                ${row.statusBadge}
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-
-                const totalVariance = totalPumasok - totalPlanned;
-                const totalVarSign = totalVariance > 0 ? `+${totalVariance}` : `${totalVariance}`;
-                const totalIsDeficit = totalVariance < 0;
+                let catHtml = categoryRows.map(row => `
+                    <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
+                        <td class="px-6 py-4 font-bold text-gray-900 text-xs flex items-center gap-2">
+                            ${row.badge}
+                            <span>${row.name}</span>
+                        </td>
+                        <td class="px-6 py-4 text-center font-black text-gray-900 text-sm">
+                            ${row.actual} <span class="text-xs text-gray-400 font-normal">cars</span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-200">
+                                <strong class="text-gray-900 font-bold">${row.inbay}</strong> in bay
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                                <strong class="text-emerald-700 font-bold">${row.released}</strong> released
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <span class="font-black text-xs text-slate-800 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">${row.share}%</span>
+                        </td>
+                    </tr>
+                `).join('');
 
                 catHtml += `
                     <tr class="bg-gray-100/90 text-gray-900 font-extrabold text-xs border-t-2 border-gray-300">
                         <td class="px-6 py-4 text-gray-950 uppercase tracking-wider font-black">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-red-600"></span>
-                                <span>TOTAL WORKSHOP INTAKES</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                                <span>TOTAL WORKSHOP POPULATION</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-20 bg-gray-200 h-2 rounded-full overflow-hidden shrink-0">
-                                    <div class="bg-gray-900 h-full rounded-full transition-all duration-300" style="width: ${Math.min(100, totalFulfillment)}%"></div>
-                                </div>
-                                <span class="font-black text-gray-950">${totalPumasok} <span class="text-gray-500 font-semibold">/ ${totalPlanned} cars</span></span>
-                                <span class="text-[10px] font-black px-2 py-0.5 rounded bg-gray-200 text-gray-800 border border-gray-300">${totalFulfillment}%</span>
-                            </div>
+                        <td class="px-6 py-4 text-center font-black text-gray-950 text-base">
+                            ${totalPumasok} <span class="text-xs text-gray-500 font-semibold">cars</span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1.5 text-[11px] font-bold text-gray-700 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
-                                <strong class="text-gray-950 font-black">${totalInBay}</strong> in bay <span class="text-gray-300">·</span> <strong class="text-emerald-600 font-black">${totalReleased}</strong> released
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
+                                <strong class="text-gray-950 font-black">${totalInBay}</strong> in bay
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-black ${totalIsDeficit ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
-                                ${totalIsDeficit ? '▼' : '▲'} ${totalVarSign} cars
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-white px-3 py-1 rounded-md border border-gray-200 shadow-2xs">
+                                <strong class="text-emerald-600 font-black">${totalReleased}</strong> released
                             </span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <span class="text-[10px] uppercase font-black tracking-wider text-gray-700 bg-white px-2.5 py-1 rounded-md border border-gray-200 shadow-2xs">ALL LINES</span>
+                            <span class="text-[10px] uppercase font-black tracking-wider text-gray-700 bg-white px-2.5 py-1 rounded-md border border-gray-200 shadow-2xs">100% TOTAL</span>
                         </td>
                     </tr>
                 `;
@@ -5013,7 +4942,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (tableDailyBody) {
                 if (sortedDates.length === 0) {
-                    tableDailyBody.innerHTML = `<tr><td colspan="11" class="text-center py-12 text-gray-400 font-medium">No daily intake records match the selected date range.</td></tr>`;
+                    tableDailyBody.innerHTML = `<tr><td colspan="9" class="text-center py-12 text-gray-400 font-medium">No daily intake records match the selected date range.</td></tr>`;
                 } else {
                     tableDailyBody.innerHTML = sortedDates.map(dateStr => {
                         const dayJobs = dateGroups[dateStr];
@@ -5024,42 +4953,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         const dayOnline = dayJobs.filter(j => j.source === 'Online').length;
                         const dayTotal = dayJobs.length;
 
-                        const dayPMS = dayJobs.filter(j => j.category && j.category.toUpperCase().includes('PMS')).length;
-                        const dayGRS = dayJobs.filter(j => j.category && j.category.toUpperCase().includes('GR')).length;
-                        const dayCarry = dayJobs.filter(j => j.status === 'Carry Over' || j.carryOverStatus).length;
-                        const dayExpress = dayJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').length;
+                        const dayPMS = dayJobs.filter(j => getJobCoreCategory(j) === 'PMS').length;
+                        const dayGRS = dayJobs.filter(j => getJobCoreCategory(j) === 'GRS').length;
+                        const dayPMSGrs = dayJobs.filter(j => getJobCoreCategory(j) === 'PMS & GRS').length;
+                        const dayOthers = dayJobs.filter(j => getJobCoreCategory(j) === 'Others').length;
 
-                        const bayCap = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
-                        const capacityLoad = Math.min(100, Math.round((dayTotal / (bayCap * 3)) * 100));
-
-                        const hourCounts = {};
-                        dayJobs.forEach(j => {
-                            const time = j.arrival || j.apptTime;
-                            if (time && time.includes(':')) {
-                                const hr = parseInt(time.split(':')[0]);
-                                if (!isNaN(hr)) hourCounts[hr] = (hourCounts[hr] || 0) + 1;
-                            }
-                        });
-                        let dayPeakHour = -1;
-                        let maxPeak = 0;
-                        for (const h in hourCounts) {
-                            if (hourCounts[h] > maxPeak) {
-                                maxPeak = hourCounts[h];
-                                dayPeakHour = parseInt(h);
-                            }
-                        }
-                        let peakText = '--';
-                        if (dayPeakHour !== -1) {
-                            const ampm = dayPeakHour >= 12 ? 'PM' : 'AM';
-                            const displayHour = dayPeakHour % 12 === 0 ? 12 : dayPeakHour % 12;
-                            peakText = `${displayHour}:00 ${ampm} (${maxPeak} cars)`;
-                        }
-
-                        // Clean neutral formatting for category columns:
                         const pmsCell = dayPMS > 0 ? `<span class="font-bold text-slate-900">${dayPMS}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
                         const grsCell = dayGRS > 0 ? `<span class="font-bold text-slate-900">${dayGRS}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
-                        const carryCell = dayCarry > 0 ? `<span class="font-bold text-slate-900">${dayCarry}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
-                        const expressCell = dayExpress > 0 ? `<span class="font-bold text-slate-900">${dayExpress}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+                        const pmsGrsCell = dayPMSGrs > 0 ? `<span class="font-bold text-slate-900">${dayPMSGrs}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
+                        const othersCell = dayOthers > 0 ? `<span class="font-bold text-slate-900">${dayOthers}</span>` : `<span class="text-slate-300 font-normal">0</span>`;
 
                         return `
                             <tr class="hover:bg-slate-50/70 transition border-b border-slate-100">
@@ -5070,24 +4972,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <td class="px-6 py-3.5 text-center font-bold text-slate-900 bg-slate-50/80">${dayTotal} cars</td>
                                 <td class="px-6 py-3.5 text-center">${pmsCell}</td>
                                 <td class="px-6 py-3.5 text-center">${grsCell}</td>
-                                <td class="px-6 py-3.5 text-center">${carryCell}</td>
-                                <td class="px-6 py-3.5 text-center">${expressCell}</td>
-                                <td class="px-6 py-3.5 text-center">
-                                    <div class="inline-flex items-center gap-2">
-                                        <div class="w-12 bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                            <div class="bg-slate-800 h-full rounded-full" style="width: ${capacityLoad}%"></div>
-                                        </div>
-                                        <span class="text-xs font-bold text-slate-700">${capacityLoad}%</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-3.5 text-right font-mono text-xs font-semibold text-slate-600">${peakText}</td>
+                                <td class="px-6 py-3.5 text-center">${pmsGrsCell}</td>
+                                <td class="px-6 py-3.5 text-right">${othersCell}</td>
                             </tr>
                         `;
                     }).join('');
                 }
             }
 
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         }
         window.renderReportDataModule = renderReportDataModule;
 
@@ -5099,10 +4992,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('No report records to export.', 'info');
                 return;
             }
-            let csv = "Date,Day of Week,Walk-In,Online,Total Intakes,PMS,GRS,Carry-Over,Express Lane,Capacity Load,Peak Hour\n";
+            let csv = "Date,Day of Week,Walk-In,Online,Total Intakes,PMS,GRS,PMS & GRS,Others\n";
             rows.forEach(tr => {
                 const cols = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""').trim()}"`);
-                if (cols.length >= 11) {
+                if (cols.length >= 9) {
                     csv += cols.join(',') + "\n";
                 }
             });
@@ -5189,13 +5082,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (endDate && jobDate > endDate) return false;
                 if (branchFilter !== 'all' && j.branch && j.branch !== branchFilter) return false;
                 if (searchFilter) {
-                    const matchStr = `${j.claimStub || ''} ${j.plateNumber || ''} ${j.model || ''} ${j.category || ''} ${j.serviceAdvisor || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
+                    const matchStr = `${j.claimStub || ''} ${j.plateNumber || ''} ${j.plate || ''} ${j.model || ''} ${j.vehicle || ''} ${j.category || ''} ${j.saName || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
                     if (!matchStr.includes(searchFilter)) return false;
                 }
                 return true;
             });
 
-            // Focus on Express & PMS Turnaround jobs
+            // Focus on Express & quick turnaround jobs
             const expressJobs = filteredJobs.filter(j => {
                 const cat = (j.category || '').toUpperCase();
                 const lane = (j.laneType || '').toUpperCase();
@@ -5211,20 +5104,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let maxDuration = 0;
             let totalOverrunMins = 0;
 
-            const durationBrackets = {
-                '0-30': 0,
-                '31-45': 0,
-                '46-60': 0,
-                '61-90': 0,
-                '90+': 0
-            };
-
             const delayRootCauses = {
-                'Parts Stockout / Supplier Delay': 0,
+                'Parts Stockout / Supplier Logistics': 0,
                 'Customer Authorization / Scope Lag': 0,
-                'Bay & Lift Congestion': 0,
-                'Mechanical / Electrical Complexity': 0,
-                'QC / Inspection Rework': 0
+                'Bay & Lift Staging Congestion': 0,
+                'Mechanical / Technical Complexity': 0,
+                'QC / Final Sign-Off Delay': 0
             };
 
             const delayedRecords = [];
@@ -5267,13 +5152,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (duration < minDuration) minDuration = duration;
                 if (duration > maxDuration) maxDuration = duration;
 
-                // Bucket distribution
-                if (duration <= 30) durationBrackets['0-30']++;
-                else if (duration <= 45) durationBrackets['31-45']++;
-                else if (duration <= 60) durationBrackets['46-60']++;
-                else if (duration <= 90) durationBrackets['61-90']++;
-                else durationBrackets['90+']++;
-
                 const isOverrun = duration > 60 || j.status === 'Delayed' || j.goalRemarks === 'Failed' || (j.remarks && j.remarks.toLowerCase().includes('delay'));
 
                 if (isOverrun) {
@@ -5283,15 +5161,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                     // Classify root cause
                     const remarks = `${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
-                    let category = 'Parts Stockout / Supplier Delay';
+                    let category = 'Parts Stockout / Supplier Logistics';
                     if (remarks.includes('customer') || remarks.includes('quote') || remarks.includes('approval') || remarks.includes('phone') || remarks.includes('call')) {
                         category = 'Customer Authorization / Scope Lag';
                     } else if (remarks.includes('bay') || remarks.includes('lift') || remarks.includes('congestion') || remarks.includes('line') || remarks.includes('traffic') || remarks.includes('ramp')) {
-                        category = 'Bay & Lift Congestion';
+                        category = 'Bay & Lift Staging Congestion';
                     } else if (remarks.includes('bolt') || remarks.includes('seized') || remarks.includes('wire') || remarks.includes('engine') || remarks.includes('corrosion') || remarks.includes('complex')) {
-                        category = 'Mechanical / Electrical Complexity';
-                    } else if (remarks.includes('qc') || remarks.includes('rework') || remarks.includes('quality') || remarks.includes('inspect') || remarks.includes('retest')) {
-                        category = 'QC / Inspection Rework';
+                        category = 'Mechanical / Technical Complexity';
+                    } else if (remarks.includes('qc') || remarks.includes('rework') || remarks.includes('quality') || remarks.includes('inspect') || remarks.includes('retest') || remarks.includes('sign')) {
+                        category = 'QC / Final Sign-Off Delay';
                     } else {
                         const catKeys = Object.keys(delayRootCauses);
                         category = catKeys[overrunCount % catKeys.length];
@@ -5300,17 +5178,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     delayRootCauses[category] = (delayRootCauses[category] || 0) + 1;
 
                     delayedRecords.push({
-                        date: j.dateReceived || j.date || 'Today',
+                        date: j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0] : 'Today'),
                         claimStub: j.claimStub || `CS-${j.id || '000'}`,
                         plate: j.plateNumber || j.plate || 'N/A',
-                        model: j.model || j.vehicleModel || 'Standard Vehicle',
+                        model: j.model || j.vehicleModel || j.vehicle || 'Standard Vehicle',
                         category: j.category || 'Express PMS',
-                        arrival: j.arrival || j.timeStarted || '08:30 AM',
-                        departure: j.departure || j.timeCompleted || '09:55 AM',
                         duration: duration,
                         overrun: overrunDelta,
                         rootCause: category,
-                        remarks: j.remarks || j.goalRemarks || 'Service duration exceeded 60-minute express target'
+                        remarks: j.remarks || j.goalRemarks || 'Turnaround duration exceeded standard 60-minute target'
                     });
                 } else {
                     successfulCount++;
@@ -5335,195 +5211,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
             const topBottleneckPct = overrunCount > 0 ? Math.round((topBottleneckCount / overrunCount) * 100) : 0;
 
-            // 1. POPULATE SCORECARD CARDS (Defensive DOM checks)
+            // 1. POPULATE SCORECARD METRIC CARDS (Defensive DOM checks)
+            if (document.getElementById('express-total-volume')) document.getElementById('express-total-volume').innerText = totalExpress;
+            if (document.getElementById('express-avg-turnaround')) document.getElementById('express-avg-turnaround').innerText = `${avgDuration}m`;
+            if (document.getElementById('express-max-duration')) document.getElementById('express-max-duration').innerText = maxDuration > 0 ? `${maxDuration}m` : '--';
+
             if (document.getElementById('express-sla-rate')) document.getElementById('express-sla-rate').innerText = `${slaRate}%`;
-            if (document.getElementById('express-sla-bar')) document.getElementById('express-sla-bar').style.width = `${slaRate}%`;
+            if (document.getElementById('express-sla-rate-badge')) document.getElementById('express-sla-rate-badge').innerText = `${slaRate}% On-Time`;
             if (document.getElementById('express-sla-successful')) document.getElementById('express-sla-successful').innerText = successfulCount;
             if (document.getElementById('express-sla-breached')) document.getElementById('express-sla-breached').innerText = overrunCount;
 
-            if (document.getElementById('express-avg-turnaround')) document.getElementById('express-avg-turnaround').innerText = `${avgDuration}m`;
-            if (document.getElementById('express-avg-bar')) document.getElementById('express-avg-bar').style.width = `${Math.min(100, Math.round((avgDuration / 60) * 100))}%`;
-            if (document.getElementById('express-min-duration')) document.getElementById('express-min-duration').innerText = minDuration !== Infinity ? `${minDuration}m` : '--';
-            if (document.getElementById('express-max-duration')) document.getElementById('express-max-duration').innerText = maxDuration > 0 ? `${maxDuration}m` : '--';
-
             if (document.getElementById('express-overrun-count')) document.getElementById('express-overrun-count').innerText = overrunCount;
-            if (document.getElementById('express-overrun-pct-badge')) document.getElementById('express-overrun-pct-badge').innerText = `${overrunPct}% of Express`;
-            if (document.getElementById('express-overrun-bar')) document.getElementById('express-overrun-bar').style.width = `${overrunPct}%`;
+            if (document.getElementById('express-overrun-pct-badge')) document.getElementById('express-overrun-pct-badge').innerText = `${overrunPct}% Overruns`;
             if (document.getElementById('express-avg-overrun-time')) document.getElementById('express-avg-overrun-time').innerText = `+${avgOverrunDelta}m`;
-            if (document.getElementById('express-logged-reasons-count')) document.getElementById('express-logged-reasons-count').innerText = overrunCount;
 
             if (document.getElementById('express-primary-bottleneck')) document.getElementById('express-primary-bottleneck').innerText = topBottleneck.split(' / ')[0];
             if (document.getElementById('express-primary-bottleneck-sub')) document.getElementById('express-primary-bottleneck-sub').innerText = `${topBottleneckCount} incident(s) (${topBottleneckPct}% share)`;
             if (document.getElementById('express-bottleneck-impact-share')) document.getElementById('express-bottleneck-impact-share').innerText = `${topBottleneckPct}%`;
             if (document.getElementById('express-action-status')) {
-                document.getElementById('express-action-status').innerText = overrunCount > 0 ? (topBottleneckPct >= 35 ? 'Critical Review' : 'Active Monitor') : 'Optimal';
-            }
-
-            // 2. RENDER CHART A: Turnaround Distribution Histogram
-            if (typeof Chart !== 'undefined') {
-                const histCanvas = document.getElementById('chart-express-duration-hist');
-                if (histCanvas) {
-                    if (window.expressDurationChartInstance) {
-                        try { window.expressDurationChartInstance.destroy(); } catch (e) {}
-                    }
-                    window.expressDurationChartInstance = new Chart(histCanvas, {
-                        type: 'bar',
-                        data: {
-                            labels: ['0-30 mins', '31-45 mins', '46-60 mins', '61-90 mins', '>90 mins'],
-                            datasets: [{
-                                label: 'Vehicle Volume',
-                                data: [
-                                    durationBrackets['0-30'],
-                                    durationBrackets['31-45'],
-                                    durationBrackets['46-60'],
-                                    durationBrackets['61-90'],
-                                    durationBrackets['90+']
-                                ],
-                                backgroundColor: [
-                                    '#0f172a', // 0-30: Dark carbon
-                                    '#334155', // 31-45: Slate-700
-                                    '#94a3b8', // 46-60: Slate-400 (Warning boundary)
-                                    '#f43f5e', // 61-90: Rose-500 (SLA Breach)
-                                    '#be123c'  // >90: Rose-700 (Critical Breach)
-                                ],
-                                borderWidth: 0,
-                                borderRadius: 6,
-                                barPercentage: 0.65
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#0f172a',
-                                    titleFont: { size: 11, weight: 'bold' },
-                                    bodyFont: { size: 12, weight: 'bold' },
-                                    padding: 10,
-                                    cornerRadius: 8
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: { precision: 0, font: { size: 10, weight: 'bold' }, color: '#94a3b8' },
-                                    grid: { color: '#f1f5f9' }
-                                },
-                                x: {
-                                    ticks: { font: { size: 10, weight: 'bold' }, color: '#64748b' },
-                                    grid: { display: false }
-                                }
-                            }
-                        }
-                    });
-                }
-
-                // 3. RENDER CHART B: Delay Root Causes Pareto Breakdown
-                const paretoCanvas = document.getElementById('chart-express-delay-pareto');
-                if (paretoCanvas) {
-                    if (window.expressParetoChartInstance) {
-                        try { window.expressParetoChartInstance.destroy(); } catch (e) {}
-                    }
-                    const paretoLabels = Object.keys(delayRootCauses).map(k => k.split(' / ')[0]);
-                    const paretoValues = Object.values(delayRootCauses);
-                    window.expressParetoChartInstance = new Chart(paretoCanvas, {
-                        type: 'bar',
-                        data: {
-                            labels: paretoLabels,
-                            datasets: [{
-                                label: 'Delay Incidents',
-                                data: paretoValues,
-                                backgroundColor: '#dc2626',
-                                borderRadius: 6,
-                                barPercentage: 0.55
-                            }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#0f172a',
-                                    padding: 10,
-                                    cornerRadius: 8
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    beginAtZero: true,
-                                    ticks: { precision: 0, font: { size: 10, weight: 'bold' }, color: '#94a3b8' },
-                                    grid: { color: '#f1f5f9' }
-                                },
-                                y: {
-                                    ticks: { font: { size: 10, weight: 'bold' }, color: '#475569' },
-                                    grid: { display: false }
-                                }
-                            }
-                        }
-                    });
-                }
+                document.getElementById('express-action-status').innerText = overrunCount > 0 ? (topBottleneckPct >= 35 ? 'Attention Required' : 'Active Monitor') : 'Optimal';
             }
 
             if (document.getElementById('express-pareto-total-badge')) {
-                document.getElementById('express-pareto-total-badge').innerText = `${overrunCount} Total Overruns`;
+                document.getElementById('express-pareto-total-badge').innerText = `${overrunCount} Overruns`;
             }
 
-            // 4. RENDER FACTUAL TABLE 1: Category SLA Performance Breakdown
-            const catTableBody = document.getElementById('table-express-category-sla-body');
-            if (catTableBody) {
-                const catStats = {};
-                expressJobs.forEach(j => {
-                    const rawCat = j.category || j.service_type || j.serviceType || 'Express PMS';
-                    let catName = 'Express PMS';
-                    if (/grs|repair/i.test(rawCat)) catName = 'Express GRS';
-                    else if (/diag|inspect/i.test(rawCat)) catName = 'Quick Diagnostics';
-                    else if (/brake|under/i.test(rawCat)) catName = 'Brake & Chassis Quick';
-                    else if (/pms|maintenance/i.test(rawCat)) catName = 'Express PMS';
-                    else catName = rawCat;
-
-                    if (!catStats[catName]) {
-                        catStats[catName] = { total: 0, sumDuration: 0, validCount: 0, onTime: 0, delayed: 0 };
-                    }
-                    catStats[catName].total++;
-
-                    const dur = Number(j.duration || j.turnaroundTime || 0);
-                    if (dur > 0) {
-                        catStats[catName].sumDuration += dur;
-                        catStats[catName].validCount++;
-                        if (dur <= 60) catStats[catName].onTime++;
-                        else catStats[catName].delayed++;
-                    } else {
-                        catStats[catName].onTime++;
-                    }
-                });
-
-                if (Object.keys(catStats).length === 0) {
-                    catTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No category records in this timeframe.</td></tr>`;
-                } else {
-                    catTableBody.innerHTML = Object.entries(catStats).map(([cat, s]) => {
-                        const avg = s.validCount > 0 ? Math.round(s.sumDuration / s.validCount) : 0;
-                        const catSla = s.total > 0 ? Math.round((s.onTime / s.total) * 100) : 100;
-                        const slaColor = catSla >= 90 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : (catSla >= 75 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-rose-700 bg-rose-50 border-rose-200');
-                        return `
-                            <tr class="hover:bg-slate-50/70 transition">
-                                <td class="px-5 py-3 font-bold text-slate-900">${cat}</td>
-                                <td class="px-4 py-3 text-center font-bold text-slate-800">${s.total}</td>
-                                <td class="px-4 py-3 text-center font-bold text-slate-700">${avg}m</td>
-                                <td class="px-4 py-3 text-center font-bold text-emerald-600">${s.onTime}</td>
-                                <td class="px-4 py-3 text-center font-bold text-rose-600">${s.delayed}</td>
-                                <td class="px-5 py-3 text-right">
-                                    <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black border ${slaColor}">${catSla}%</span>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            }
-
-            // 5. RENDER FACTUAL TABLE 2: Delay Root Cause Impact Summary
+            // 2. RENDER DELAY ROOT CAUSE BREAKDOWN TABLE
             const delaySummaryBody = document.getElementById('table-express-delay-summary-body');
             if (delaySummaryBody) {
                 const causeEntries = Object.entries(delayRootCauses);
@@ -5549,24 +5262,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <tr class="hover:bg-slate-50/70 transition">
                                 <td class="px-5 py-3 font-bold text-slate-900 flex items-center gap-2">
                                     <span class="w-2 h-2 rounded-full ${count > 0 ? 'bg-rose-500' : 'bg-slate-300'}"></span>
-                                    ${cause}
+                                    <span>${cause}</span>
                                 </td>
-                                <td class="px-4 py-3 text-center font-bold text-slate-800">${count}</td>
-                                <td class="px-4 py-3 text-center font-bold text-slate-600">${sharePct}%</td>
-                                <td class="px-5 py-3 text-right font-black text-rose-600">+${avgOverrun}m</td>
+                                <td class="px-3 py-3 text-center font-bold text-slate-800">${count}</td>
+                                <td class="px-3 py-3 text-center font-bold text-slate-600">${sharePct}%</td>
+                                <td class="px-5 py-3 text-right font-black text-rose-600">${count > 0 ? `+${avgOverrun}m` : '--'}</td>
                             </tr>
                         `;
                     }).join('');
                 }
             }
 
-            // 5. RENDER DIAGNOSTIC AUDIT LOG TABLE
+            // 3. RENDER DIAGNOSTIC AUDIT LOG TABLE
             const delayTableBody = document.getElementById('table-express-delays-body');
             if (delayTableBody) {
                 if (delayedRecords.length === 0) {
                     delayTableBody.innerHTML = `
                         <tr>
-                            <td colspan="11" class="text-center py-12 text-slate-400 font-semibold">
+                            <td colspan="9" class="text-center py-12 text-slate-400 font-semibold">
                                 <div class="flex flex-col items-center justify-center gap-2">
                                     <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500"></i>
                                     <p class="text-xs uppercase font-bold tracking-wider text-slate-600">Zero SLA Breaches Detected in this Period</p>
@@ -5583,8 +5296,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <td class="px-6 py-3.5 font-black text-slate-900">${r.plate}</td>
                             <td class="px-6 py-3.5 font-medium text-slate-700">${r.model}</td>
                             <td class="px-6 py-3.5 font-bold text-slate-800">${r.category}</td>
-                            <td class="px-6 py-3.5 text-center font-medium text-slate-600 whitespace-nowrap">${r.arrival}</td>
-                            <td class="px-6 py-3.5 text-center font-medium text-slate-600 whitespace-nowrap">${r.departure}</td>
                             <td class="px-6 py-3.5 text-center font-black text-slate-900">${r.duration}m</td>
                             <td class="px-6 py-3.5 text-center">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-black bg-rose-50 text-rose-700 border border-rose-200">+${r.overrun}m</span>
@@ -5604,7 +5315,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('express-delay-records-count').innerText = `${delayedRecords.length} Overruns Logged`;
             }
 
-            lucide.createIcons();
+            if (window.lucide) lucide.createIcons();
         }
         window.renderExpressIntelligenceModule = renderExpressIntelligenceModule;
 
@@ -5616,10 +5327,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('No delay records to export.', 'info');
                 return;
             }
-            let csv = "Date,Claim Stub,Plate No,Vehicle Model,Category,Arrival,Departure,Duration (mins),Overrun Delta (mins),Root Cause Category,Diagnostic Remarks\n";
+            let csv = "Date,Claim Stub,Plate No,Vehicle Model,Category,Duration (mins),Overrun Delta (mins),Root Cause Category,Diagnostic Remarks\n";
             rows.forEach(tr => {
                 const cols = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""').trim()}"`);
-                if (cols.length >= 11) {
+                if (cols.length >= 9) {
                     csv += cols.join(',') + "\n";
                 }
             });
