@@ -3388,41 +3388,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         // STRICT SINGLE-OWNER RULE: Only the assigned SA can edit this vehicle's operational fields
                         const isEditable = isAssignedToMe;
 
-                        // Re-evaluate occupied bays for this specific row excluding current job
-                        const rowOccupiedBays = {};
-                        allJobs.forEach(j => {
-                            if (j.id !== job.id && j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')) && j.status !== 'Completed' && j.status !== 'Released') {
-                                const normLoc = j.location.replace(/^Lift/, 'Bay');
-                                rowOccupiedBays[normLoc] = j.plate;
-                            }
-                        });
-
-                        // Calculate Express Lane 2-Hour (120-Min) SLA Duration & Incident State
-                        const arrivalTime24 = convertTimeTo24Hour(job.arrival);
-                        let isExpressOverdue = false;
-                        let expressElapsedMin = 0;
-                        const isExpressLane = (job.laneType === 'Express Lane' || job.lane_type === 'Express Lane' || (job.category && job.category.toUpperCase().includes('EXPRESS')));
-
-                        if (isExpressLane && arrivalTime24 && job.status !== 'Completed' && job.status !== 'Released' && job.status !== 'Ready' && job.status !== 'Ready to Release') {
-                            const [ah, am] = arrivalTime24.split(':').map(Number);
-                            if (!isNaN(ah) && !isNaN(am)) {
-                                const now = new Date();
-                                const currentMin = now.getHours() * 60 + now.getMinutes();
-                                let diff = currentMin - (ah * 60 + am);
-                                if (diff < 0) diff += 1440;
-                                expressElapsedMin = diff;
-                                if (expressElapsedMin >= 120) {
-                                    isExpressOverdue = true;
-                                }
-                            }
-                        }
-
-                        const reportedIssue = (window.reportedExpressIssues && (
-                            window.reportedExpressIssues[job.id] || 
-                            window.reportedExpressIssues[job.job_id] || 
-                            window.reportedExpressIssues[job.plate]
-                        ));
-
                         return `
                         <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
                             <!-- Row Number -->
@@ -3550,29 +3515,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         `}
                                     </div>
                                 </div>
-
-                                <!-- Express Lane Progress / Note Indicator -->
-                                ${isExpressOverdue ? `
-                                <div class="mt-1.5 flex items-center gap-1.5 flex-wrap">
-                                    ${reportedIssue ? `
-                                        <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-2xs" title="${reportedIssue.reason_details || reportedIssue.reason_category}">
-                                            <i data-lucide="file-check" class="w-3 h-3 text-emerald-600"></i>
-                                            <span>Note: ${(reportedIssue.reason_category || 'Logged').replace(/^Others:\s*/i, '')}</span>
-                                        </span>
-                                    ` : `
-                                        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-semibold px-2 py-0.5 rounded-md shadow-2xs">
-                                            <i data-lucide="clock" class="w-3 h-3 text-amber-600"></i>
-                                            <span>Express: ${Math.floor(expressElapsedMin/60)}h ${expressElapsedMin%60}m</span>
-                                        </span>
-                                        ${isAssignedToMe ? `
-                                        <button type="button" onclick="openExpressDelayModal('${job.id}')" class="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border border-slate-300 hover:border-slate-400 px-2 py-0.5 rounded-md shadow-2xs transition cursor-pointer active:scale-95" title="Report technical reason for extended service duration">
-                                            <i data-lucide="file-text" class="w-3 h-3 text-slate-500"></i>
-                                            <span>Report Reason</span>
-                                        </button>
-                                        ` : ''}
-                                    `}
-                                </div>
-                                ` : ''}
                             </td>
                             
                             <!-- Source -->
