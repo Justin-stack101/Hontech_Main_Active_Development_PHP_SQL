@@ -5026,35 +5026,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return true;
             });
 
-            // Focus on Express, PMS, and quick turnaround jobs
+            // Focus on Express, PMS, and workshop turnaround jobs
             const expressJobs = filteredJobs.filter(j => {
                 const cat = (j.category || '').toUpperCase();
                 const lane = (j.laneType || '').toUpperCase();
                 return lane.includes('EXPRESS') || lane.includes('PMS') || cat === 'PMS' || cat === 'PMS & GRS' || cat === 'EXPRESS' || j.isExpress;
             });
 
-            // Calculate durations & classify
-            let successfulCount = 0;
-            let overrunCount = 0;
-            let totalDurationSum = 0;
-            let validDurationCount = 0;
-            let minDuration = Infinity;
-            let maxDuration = 0;
-            let totalOverrunMins = 0;
-
-            const delayRootCauses = {
-                'Parts Stockout / Supplier Logistics': 0,
-                'Customer Authorization / Scope Lag': 0,
-                'Bay & Lift Staging Congestion': 0,
-                'Mechanical / Technical Complexity': 0,
-                'QC / Final Sign-Off Delay': 0
-            };
-
             const delayedRecords = [];
 
-            // Process every express job
+            // Process jobs and capture SA turnaround reports
             expressJobs.forEach(j => {
-                // Compute duration
                 let duration = 0;
                 if (j.arrival && j.departure && j.arrival.includes(':') && j.departure.includes(':')) {
                     const [ah, am] = j.arrival.split(':').map(Number);
@@ -5078,182 +5060,63 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (!duration || duration <= 0) {
                     if (j.durationMinutes) duration = Number(j.durationMinutes);
-                    else if (j.estimatedTime) {
-                        const status = (j.status || '').toLowerCase();
-                        if (status === 'delayed' || j.goalRemarks === 'Failed') {
-                            duration = Number(j.estimatedTime) + 25;
-                        } else if (status === 'completed' || status === 'released') {
-                            duration = Math.max(25, Number(j.estimatedTime) - 5);
-                        } else {
-                            duration = Number(j.estimatedTime);
-                        }
-                    } else {
-                        duration = 45;
-                    }
+                    else if (j.estimatedTime) duration = Number(j.estimatedTime);
+                    else duration = 45;
                 }
 
-                totalDurationSum += duration;
-                validDurationCount++;
-                if (duration < minDuration) minDuration = duration;
-                if (duration > maxDuration) maxDuration = duration;
-
                 const isExpressLane = (j.laneType && j.laneType.toLowerCase().includes('express')) || (j.category && j.category.toUpperCase().includes('EXPRESS'));
-                const maxAllowedSLA = isExpressLane ? 60 : 120; // 60 mins for Express Lane, 120 mins (2 Hours) for Standard PMS
+                const maxAllowedSLA = isExpressLane ? 60 : 120; // 60 mins for Express, 120 mins (2 Hours) for Standard PMS
                 const isOverrun = duration > maxAllowedSLA || j.status === 'Delayed' || j.goalRemarks === 'Failed' || (j.remarks && j.remarks.toLowerCase().includes('delay')) || (j.evaluation && j.evaluation.toLowerCase().includes('delay'));
 
                 if (isOverrun) {
-                    overrunCount++;
                     const overrunDelta = Math.max(1, duration - maxAllowedSLA);
-                    totalOverrunMins += overrunDelta;
-
-                    // Classify root cause
-                    const textToScan = `${j.evaluation || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
-                    let category = 'Parts Stockout / Supplier Logistics';
-                    if (textToScan.includes('part') || textToScan.includes('stock') || textToScan.includes('supplier') || textToScan.includes('filter') || textToScan.includes('pad') || textToScan.includes('fluid') || textToScan.includes('order')) {
-                        category = 'Parts Stockout / Supplier Logistics';
-                    } else if (textToScan.includes('customer') || textToScan.includes('scope') || textToScan.includes('quote') || textToScan.includes('approval') || textToScan.includes('auth') || textToScan.includes('call')) {
-                        category = 'Customer Authorization / Scope Lag';
-                    } else if (textToScan.includes('bay') || textToScan.includes('lift') || textToScan.includes('congestion') || textToScan.includes('space') || textToScan.includes('queue') || textToScan.includes('ramp')) {
-                        category = 'Bay & Lift Staging Congestion';
-                    } else if (textToScan.includes('bolt') || textToScan.includes('seized') || textToScan.includes('engine') || textToScan.includes('wire') || textToScan.includes('electrical') || textToScan.includes('complex') || textToScan.includes('clutch') || textToScan.includes('leak') || textToScan.includes('paint')) {
-                        category = 'Mechanical / Technical Complexity';
-                    } else if (textToScan.includes('qc') || textToScan.includes('check') || textToScan.includes('inspect') || textToScan.includes('test') || textToScan.includes('sign') || textToScan.includes('road')) {
-                        category = 'QC / Final Sign-Off Delay';
-                    } else {
-                        const catKeys = Object.keys(delayRootCauses);
-                        category = catKeys[overrunCount % catKeys.length];
-                    }
-
-                    delayRootCauses[category] = (delayRootCauses[category] || 0) + 1;
-
                     delayedRecords.push({
                         date: j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0].split(' ')[0] : 'Today'),
                         claimStub: j.claimStub || `CS-${j.id || '000'}`,
                         plate: j.plateNumber || j.plate || 'N/A',
                         model: j.model || j.vehicleModel || j.vehicle || 'Standard Vehicle',
+                        saName: j.saName || j.handled_by || 'Front Desk SA',
                         category: j.category || (isExpressLane ? 'Express PMS' : 'PMS / GRS'),
+                        arrival: j.arrival || '--:--',
+                        departure: j.departure || (j.status !== 'Completed' && j.status !== 'Released' ? 'Active in Shop' : '--:--'),
                         duration: duration,
                         overrun: overrunDelta,
-                        rootCause: category,
-                        remarks: j.evaluation || j.remarks || j.goalRemarks || `Turnaround duration (${duration}m) exceeded ${maxAllowedSLA}-minute target`
+                        remarks: j.evaluation || j.remarks || j.goalRemarks || `Turnaround duration exceeded ${maxAllowedSLA}-minute target`
                     });
-                } else {
-                    successfulCount++;
                 }
             });
 
-            // Summary Metrics
-            const totalExpress = expressJobs.length;
-            const slaRate = totalExpress > 0 ? Math.round((successfulCount / totalExpress) * 100) : 100;
-            const avgDuration = validDurationCount > 0 ? Math.round(totalDurationSum / validDurationCount) : 0;
-            const overrunPct = totalExpress > 0 ? Math.round((overrunCount / totalExpress) * 100) : 0;
-            const avgOverrunDelta = overrunCount > 0 ? Math.round(totalOverrunMins / overrunCount) : 0;
-
-            // Find top bottleneck
-            let topBottleneck = 'None Logged';
-            let topBottleneckCount = 0;
-            Object.entries(delayRootCauses).forEach(([cat, count]) => {
-                if (count > topBottleneckCount) {
-                    topBottleneckCount = count;
-                    topBottleneck = cat;
-                }
-            });
-            const topBottleneckPct = overrunCount > 0 ? Math.round((topBottleneckCount / overrunCount) * 100) : 0;
-
-            // 1. POPULATE SCORECARD METRIC CARDS (Defensive DOM checks)
-            if (document.getElementById('express-total-volume')) document.getElementById('express-total-volume').innerText = totalExpress;
-            if (document.getElementById('express-avg-turnaround')) document.getElementById('express-avg-turnaround').innerText = `${avgDuration}m`;
-            if (document.getElementById('express-max-duration')) document.getElementById('express-max-duration').innerText = maxDuration > 0 && maxDuration < Infinity ? `${maxDuration}m` : '--';
-
-            if (document.getElementById('express-sla-rate')) document.getElementById('express-sla-rate').innerText = `${slaRate}%`;
-            if (document.getElementById('express-sla-rate-badge')) document.getElementById('express-sla-rate-badge').innerText = `${slaRate}% On-Time`;
-            if (document.getElementById('express-sla-successful')) document.getElementById('express-sla-successful').innerText = successfulCount;
-            if (document.getElementById('express-sla-breached')) document.getElementById('express-sla-breached').innerText = overrunCount;
-
-            if (document.getElementById('express-overrun-count')) document.getElementById('express-overrun-count').innerText = overrunCount;
-            if (document.getElementById('express-overrun-pct-badge')) document.getElementById('express-overrun-pct-badge').innerText = `${overrunPct}% Overruns`;
-            if (document.getElementById('express-avg-overrun-time')) document.getElementById('express-avg-overrun-time').innerText = `+${avgOverrunDelta}m`;
-
-            if (document.getElementById('express-primary-bottleneck')) document.getElementById('express-primary-bottleneck').innerText = topBottleneck.split(' / ')[0];
-            if (document.getElementById('express-primary-bottleneck-sub')) document.getElementById('express-primary-bottleneck-sub').innerText = `${topBottleneckCount} incident(s) (${topBottleneckPct}% share)`;
-            if (document.getElementById('express-bottleneck-pct-badge')) document.getElementById('express-bottleneck-pct-badge').innerText = `${topBottleneckPct}% Share`;
-            if (document.getElementById('express-bottleneck-impact-share')) document.getElementById('express-bottleneck-impact-share').innerText = `${topBottleneckPct}%`;
-            if (document.getElementById('express-action-status')) {
-                document.getElementById('express-action-status').innerText = overrunCount > 0 ? (topBottleneckPct >= 35 ? 'Attention Required' : 'Active Monitor') : 'Optimal';
-            }
-
-            if (document.getElementById('express-pareto-total-badge')) {
-                document.getElementById('express-pareto-total-badge').innerText = `${overrunCount} Overruns`;
-            }
-
-            // 2. RENDER DELAY ROOT CAUSE BREAKDOWN TABLE
-            const delaySummaryBody = document.getElementById('table-express-delay-summary-body');
-            if (delaySummaryBody) {
-                const causeEntries = Object.entries(delayRootCauses);
-                if (causeEntries.length === 0 || overrunCount === 0) {
-                    delaySummaryBody.innerHTML = `
-                        <tr>
-                            <td colspan="4" class="text-center py-6 text-slate-500 font-bold">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <i data-lucide="check" class="w-4 h-4 text-slate-400"></i> No Overrun Incidents Logged
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    causeEntries.sort((a, b) => b[1] - a[1]);
-
-                    delaySummaryBody.innerHTML = causeEntries.map(([cause, count]) => {
-                        const sharePct = overrunCount > 0 ? Math.round((count / overrunCount) * 100) : 0;
-                        const matchedRecords = delayedRecords.filter(r => r.rootCause === cause);
-                        const avgOverrun = matchedRecords.length > 0 ? Math.round(matchedRecords.reduce((sum, r) => sum + r.overrun, 0) / matchedRecords.length) : 0;
-
-                        return `
-                            <tr class="hover:bg-slate-50/70 transition">
-                                <td class="px-5 py-3 font-bold text-slate-900 flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full ${count > 0 ? 'bg-slate-800' : 'bg-slate-300'}"></span>
-                                    <span>${cause}</span>
-                                </td>
-                                <td class="px-3 py-3 text-center font-bold text-slate-800">${count}</td>
-                                <td class="px-3 py-3 text-center font-bold text-slate-600">${sharePct}%</td>
-                                <td class="px-5 py-3 text-right font-black text-slate-900">${count > 0 ? `+${avgOverrun}m` : '--'}</td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            }
-
-            // 3. RENDER DIAGNOSTIC AUDIT LOG TABLE
+            // Populate Delayed Services Log Table
             const delayTableBody = document.getElementById('table-express-delays-body');
             if (delayTableBody) {
                 if (delayedRecords.length === 0) {
                     delayTableBody.innerHTML = `
                         <tr>
-                            <td colspan="9" class="text-center py-12 text-slate-400 font-semibold">
+                            <td colspan="11" class="text-center py-12 text-slate-400 font-semibold">
                                 <div class="flex flex-col items-center justify-center gap-2">
-                                    <i data-lucide="check-circle" class="w-8 h-8 text-emerald-500"></i>
-                                    <p class="text-xs uppercase font-bold tracking-wider text-slate-600">Zero SLA Breaches Detected in this Period</p>
-                                    <p class="text-[11px] text-slate-400 font-normal">All express jobs successfully completed within the 60-minute turnaround target.</p>
+                                    <i data-lucide="check-circle" class="w-8 h-8 text-slate-400"></i>
+                                    <p class="text-xs uppercase font-bold tracking-wider text-slate-700">No Delayed Records in Selected Period</p>
+                                    <p class="text-[11px] text-slate-400 font-normal">All service advisor entries within this date range were serviced within target turnaround thresholds.</p>
                                 </div>
                             </td>
                         </tr>
                     `;
                 } else {
                     delayTableBody.innerHTML = delayedRecords.map(r => `
-                        <tr class="hover:bg-slate-50/70 transition">
-                            <td class="px-6 py-3.5 font-bold text-slate-900 whitespace-nowrap">${r.date}</td>
-                            <td class="px-6 py-3.5 font-bold text-slate-800">${r.claimStub}</td>
-                            <td class="px-6 py-3.5 font-black text-slate-900">${r.plate}</td>
-                            <td class="px-6 py-3.5 font-medium text-slate-700">${r.model}</td>
-                            <td class="px-6 py-3.5 font-bold text-slate-800">${r.category}</td>
-                            <td class="px-6 py-3.5 text-center font-black text-slate-900">${r.duration}m</td>
-                            <td class="px-6 py-3.5 text-center">
-                                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-rose-50 text-rose-700 border border-rose-200">+${r.overrun}m</span>
+                        <tr class="hover:bg-slate-50/70 transition border-b border-gray-100/80">
+                            <td class="px-5 py-3.5 font-bold text-slate-900 whitespace-nowrap">${r.date}</td>
+                            <td class="px-4 py-3.5 font-bold text-slate-800">${r.claimStub}</td>
+                            <td class="px-4 py-3.5 font-black text-slate-900 font-mono">${r.plate}</td>
+                            <td class="px-5 py-3.5 font-medium text-slate-700">${r.model}</td>
+                            <td class="px-5 py-3.5 font-bold text-slate-800 whitespace-nowrap">${r.saName}</td>
+                            <td class="px-4 py-3.5 font-bold text-slate-800">${r.category}</td>
+                            <td class="px-4 py-3.5 text-center font-mono font-bold text-slate-700">${r.arrival}</td>
+                            <td class="px-4 py-3.5 text-center font-mono font-bold text-slate-700">${r.departure}</td>
+                            <td class="px-4 py-3.5 text-center font-black text-slate-900">${r.duration}m</td>
+                            <td class="px-4 py-3.5 text-center">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-slate-100 text-slate-800 border border-slate-200">+${r.overrun}m</span>
                             </td>
-                            <td class="px-6 py-3.5">
-                                <span class="px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-200">${r.rootCause}</span>
-                            </td>
-                            <td class="px-6 py-3.5 text-slate-600 text-[11px] font-medium max-w-xs truncate" title="${r.remarks}">
+                            <td class="px-6 py-3.5 text-slate-800 text-xs font-medium">
                                 ${r.remarks}
                             </td>
                         </tr>
@@ -5262,7 +5125,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             if (document.getElementById('express-delay-records-count')) {
-                document.getElementById('express-delay-records-count').innerText = `${delayedRecords.length} Overruns Logged`;
+                document.getElementById('express-delay-records-count').innerText = `${delayedRecords.length} Reports Found`;
             }
 
             if (window.lucide) lucide.createIcons();
@@ -5277,10 +5140,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('No delay records to export.', 'info');
                 return;
             }
-            let csv = "Date,Claim Stub,Plate No,Vehicle Model,Category,Duration (mins),Overrun Delta (mins),Root Cause Category,Diagnostic Remarks\n";
+            let csv = "Date,Claim Stub,Plate No,Vehicle Model,Service Advisor,Category,Arrival,Departure,Duration (mins),Overrun (mins),Diagnosis & Evaluation Remarks\n";
             rows.forEach(tr => {
                 const cols = Array.from(tr.querySelectorAll('td')).map(td => `"${td.innerText.replace(/"/g, '""').trim()}"`);
-                if (cols.length >= 9) {
+                if (cols.length >= 10) {
                     csv += cols.join(',') + "\n";
                 }
             });
@@ -5288,11 +5151,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.setAttribute('href', url);
-            link.setAttribute('download', `HonTech_Express_Delay_Audit_${new Date().toISOString().split('T')[0]}.csv`);
+            link.setAttribute('download', `HonTech_SA_Delay_Reports_${new Date().toISOString().split('T')[0]}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showSystemToast('Express Delay Diagnostic CSV downloaded.', 'success', 'Export Complete');
+            showSystemToast('SA Delay Reports CSV downloaded.', 'success', 'Export Complete');
         }
         window.exportExpressDelaysCSV = exportExpressDelaysCSV;
 
