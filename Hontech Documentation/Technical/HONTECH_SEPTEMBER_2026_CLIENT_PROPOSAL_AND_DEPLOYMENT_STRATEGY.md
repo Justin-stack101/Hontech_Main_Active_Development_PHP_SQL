@@ -177,29 +177,19 @@ If HonTech chooses **Local On-Premise Hosting**, a dedicated Server PC must be p
 
 ---
 
-### 💰 4.3 Client Costing & Future Investment Breakdown: Cloud vs. Local
+### 💰 4.3 Simplified Client Investment Summary: Cloud vs. Local Hosting
 
-To ensure total clarity for management, the hardware costs are divided into **(A) Staff Counter Devices** (which run the web browser on either track) and **(B) Central Hosting Infrastructure** (Cloud vs. Local Server):
+Because the HonTech Operations Management System is a lightweight, responsive web application running directly in standard web browsers (Google Chrome / Microsoft Edge), it requires minimal processing power. Standard budget office computers, basic workstations, or HonTech's existing shop PCs are 100% sufficient for all daily intake and queue operations.
 
-#### 🖥️ Part A: Staff Counter Terminals & Waiting Lounge Displays (Both Tracks)
-*These are the computers and screens used by staff on the shop floor to access the web system:*
-
-| Equipment Tier | Hardware Description | Qty for 2 Branches | Total Cost | Strategic Value |
-| :--- | :--- | :---: | :--- | :--- |
-| **🌟 Primary Standard: Existing Shop Hardware** | Use HonTech's existing desktop PCs & laptops | 6 PCs + 2 Smart TVs | **₱0.00** | **Immediate ₱0 Launch:** System runs smoothly in Google Chrome/Edge on existing office computers. |
-| **Optional Future Upgrade: Refurbished Work-Grade PCs** | Core i5 (8th–10th Gen), 8GB/16GB, SSD | 6 PCs (4 SAs + 2 Front Desk) | **₱45,000 – ₱57,000** | Budget expansion option if HonTech ever wishes to add dedicated new counter terminals in the future. |
-| **Optional Future Upgrade: Brand New Workstations** | Core i5 (12th Gen), 16GB RAM, 512GB SSD | 6 PCs (4 SAs + 2 Front Desk) | **₱99,000 – ₱126,000** | Maximum 4+ year durability and speed for heavy morning intake rushes. |
-| **Lounge TV Google Chromecast / Fire Stick** | HDMI Web Streaming Stick | 2 Units (1 per branch) | **₱3,600** *(₱1,800 ea)* | *Needed ONLY if on-site Week 2 audit finds the built-in Smart TV browser slow or unresponsive.* |
-
----
-
-#### 🌐 Part B: Central Server & Hosting Infrastructure (The Decision Point)
-*This is the core difference between choosing Cloud (Track B) vs. Local In-Shop Server (Track A):*
-
-| Hosting Pathway | Central Hardware Required | Upfront Server Cost | Monthly Software Fee | Outage Failover Needed |
-| :--- | :--- | :---: | :---: | :--- |
-| **🌟 Track B: Modern Cloud Solutions**<br>*(RECOMMENDED)* | **None.** Server compute & MariaDB database are hosted in AWS data centers. | **₱0.00** | **₱0.00 / mo**<br>*(Permanent Free Tier)* | **₱999** backup 4G/5G prepaid Wi-Fi router (for ISP fiber cable cuts). |
-| **🖥️ Track A: Local In-Shop Intranet Server**<br>*(ALTERNATIVE)* | **1 Dedicated In-Shop Server PC** (Core i5, 16GB RAM, SSD) + **UPS Battery** + **Gigabit Router** | **₱22,500 – ₱27,000** | **₱0.00 / mo**<br>*(₱350–₱600/mo electricity)* | None (100% immune to internet outages, but requires weekly USB backups). |
+| Investment Category | 🌟 Track B: Modern Cloud (RECOMMENDED) | 🖥️ Track A: Local In-Shop Server (ALTERNATIVE) |
+| :--- | :--- | :--- |
+| **Staff Counter Terminals (4 SAs + 2 Front Desk)** | **₱0.00** *(Runs on HonTech's existing desktop PCs & laptops)* | **₱0.00** *(Runs on HonTech's existing desktop PCs & laptops)* |
+| **Central Server Hardware** | **₱0.00** *(Zero server hardware needed; hosted in AWS Cloud)* | **₱18,500 – ₱23,000** *(1 Basic Standard Server PC: Core i3/i5, 16GB RAM, SSD)* |
+| **Power Protection & Backup** | **₱0.00** *(Cloud data center operates with 99.9% uptime)* | **₱1,800** *(1 UPS Battery Backup with surge protection)* |
+| **Internet Failover / Backup** | **₱999** *(Prepaid 4G/5G Wi-Fi hotspot for fiber line cut safety)* | **₱0.00** *(Runs offline on local shop network)* |
+| **Lounge Smart TV Display** | **₱0.00** *(Shop TVs; ₱1,800 TV stick only if TV browser is slow)* | **₱0.00** *(Shop TVs; ₱1,800 TV stick only if TV browser is slow)* |
+| **Monthly Software Licensing** | **₱0.00 / month** *(100% Academic Capstone Software Grant)* | **₱0.00 / month** *(100% Academic Capstone Software Grant)* |
+| **ESTIMATED TOTAL UPFRONT COST** | **₱0.00** *(Immediate Launch with existing shop equipment)* | **₱20,300 – ₱24,800** *(or ₱0 if repurposing an existing shop PC)* |
 
 ---
 
