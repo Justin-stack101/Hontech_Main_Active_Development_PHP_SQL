@@ -656,11 +656,6 @@
                                         <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-gray-500"></i> Lost Conn
                                     </button>
                                 </div>
-                                <div class="pt-2">
-                                    <button type="button" onclick="openTeamContributorsModal()" class="w-full bg-slate-900 hover:bg-black text-white text-xs font-bold py-2.5 px-3 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-2 shadow-sm">
-                                        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-400"></i> Project Team &amp; Contributors
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -5851,106 +5846,6 @@
         </div>
     </div>
 
-    <!-- 4. PROJECT TEAM & CONTRIBUTORS MODAL -->
-    <div id="modal-team-contributors" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
-        <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] fade-in">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-sm">
-                        <i data-lucide="award" class="w-5 h-5 text-blue-400"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Development Team &amp; Contributors</h3>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">HonTech AutoCenter Capstone Project</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closeTeamContributorsModal()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="p-6 space-y-4 overflow-y-auto custom-scroll">
-                <!-- Project Title Banner -->
-                <div class="bg-slate-900 text-white p-4 rounded-2xl border border-slate-800 shadow-sm">
-                    <span class="text-[9px] font-bold uppercase tracking-widest text-blue-400 block mb-0.5">Official Capstone Initiative</span>
-                    <h4 class="font-black text-xs uppercase tracking-tight text-white leading-snug">Web-Based Vehicle Intake &amp; Queue Monitoring System</h4>
-                    <p class="text-[10px] text-slate-300 mt-1">HonTech AutoCenter Management &amp; Operations Rollout (September 2026)</p>
-                </div>
-
-                <!-- Team Grid -->
-                <div class="space-y-2.5">
-                    <div class="text-[10px] font-black uppercase tracking-wider text-slate-400 px-1">Core Systems Engineering Team</div>
-
-                    <!-- Mary Dayne -->
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center font-black text-xs">
-                                MD
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-xs text-slate-900">Mary Dayne Villas T.</h5>
-                                <p class="text-[10px] font-bold text-purple-700">Lead System Architect &amp; Lead System Designer</p>
-                            </div>
-                        </div>
-                        <span class="text-[9px] font-semibold bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg">Architecture &amp; UX</span>
-                    </div>
-
-                    <!-- Justin Nolasco -->
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs">
-                                JN
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-xs text-slate-900">Justin Nolasco J.</h5>
-                                <p class="text-[10px] font-bold text-blue-700">Lead Systems Developer &amp; Technical Implementation</p>
-                            </div>
-                        </div>
-                        <span class="text-[9px] font-semibold bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg">Full-Stack &amp; Cloud</span>
-                    </div>
-
-                    <!-- Catherine Ramos -->
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs">
-                                CR
-                            </div>
-                            <div>
-                                <h5 class="font-bold text-xs text-slate-900">Catherine Ramos G.</h5>
-                                <p class="text-[10px] font-bold text-emerald-700">Technical Documentation &amp; QA Lead</p>
-                            </div>
-                        </div>
-                        <span class="text-[9px] font-semibold bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-lg">QA &amp; Technical Docs</span>
-                    </div>
-                </div>
-
-                <!-- Mentorship & Stakeholders -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-                    <div class="p-3 bg-amber-50/70 border border-amber-200/80 rounded-2xl">
-                        <span class="text-[9px] font-black uppercase text-amber-800 tracking-wider block mb-0.5">Faculty Capstone Adviser</span>
-                        <h5 class="font-bold text-xs text-slate-900">Mr. Ar-Jay C. Agbayani</h5>
-                        <p class="text-[10px] text-amber-900">Department of Information Technology</p>
-                    </div>
-                    <div class="p-3 bg-blue-50/70 border border-blue-200/80 rounded-2xl">
-                        <span class="text-[9px] font-black uppercase text-blue-800 tracking-wider block mb-0.5">Client Partner Organization</span>
-                        <h5 class="font-bold text-xs text-slate-900">HonTech AutoCenter</h5>
-                        <p class="text-[10px] text-blue-900">Management &amp; Workshop Operations</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-150 flex items-center justify-between shrink-0">
-                <span class="text-[10px] font-bold text-slate-400">Academic Software Grant (₱0.00 License)</span>
-                <button type="button" onclick="closeTeamContributorsModal()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- OFFLINE NETWORK STATUS SCREEN (Guaranteed Fallback Screen for Disconnections) -->
     <div id="offline-network-screen" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[999999] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-gray-100 text-center space-y-5 transform transition-all">
@@ -5973,7 +5868,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.88"></script>
+    <script src="js/app.js?v=4.89"></script>
 </body>
 
 </html>
