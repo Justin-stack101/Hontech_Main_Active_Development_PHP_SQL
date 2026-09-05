@@ -4774,8 +4774,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     actual: countPMS,
                     inbay: inbayPMS,
                     released: releasedPMS,
-                    share: sharePMS,
-                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">PMS</span>`
+                    share: sharePMS
                 },
                 {
                     name: 'GRS (General Repair Service)',
@@ -4783,8 +4782,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     actual: countGRS,
                     inbay: inbayGRS,
                     released: releasedGRS,
-                    share: shareGRS,
-                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">GRS</span>`
+                    share: shareGRS
                 },
                 {
                     name: 'PMS & GRS (Combined Services)',
@@ -4792,8 +4790,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     actual: countPMSGrs,
                     inbay: inbayPMSGrs,
                     released: releasedPMSGrs,
-                    share: sharePMSGrs,
-                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">PMS & GRS</span>`
+                    share: sharePMSGrs
                 },
                 {
                     name: 'Others (Diagnostics, Electrical, Multi-Point, etc.)',
@@ -4801,8 +4798,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     actual: countOthers,
                     inbay: inbayOthers,
                     released: releasedOthers,
-                    share: shareOthers,
-                    badge: `<span class="bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Others</span>`
+                    share: shareOthers
                 }
             ];
 
@@ -4873,9 +4869,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (tableCatBody) {
                 let catHtml = categoryRows.map(row => `
                     <tr class="hover:bg-gray-50/60 transition border-b border-gray-100">
-                        <td class="px-6 py-4 font-bold text-gray-900 text-xs flex items-center gap-2">
-                            ${row.badge}
-                            <span>${row.name}</span>
+                        <td class="px-6 py-4 font-semibold text-gray-900 text-xs">
+                            ${row.name}
                         </td>
                         <td class="px-6 py-4 text-center font-black text-gray-900 text-sm">
                             ${row.actual} <span class="text-xs text-gray-400 font-normal">cars</span>
