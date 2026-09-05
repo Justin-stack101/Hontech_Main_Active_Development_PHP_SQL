@@ -5012,24 +5012,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const branchFilter = document.getElementById('express-filter-branch')?.value || 'all';
             const searchFilter = (document.getElementById('express-filter-search')?.value || '').toLowerCase().trim();
 
-            // Filter jobs in range
+            // Filter jobs in range with robust date parsing
             const filteredJobs = safeJobs.filter(j => {
-                const jobDate = j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0] : '');
-                if (startDate && jobDate < startDate) return false;
-                if (endDate && jobDate > endDate) return false;
+                let jobDate = j.dateReceived || j.apptDate || j.date || (j.createdAt ? j.createdAt.split('T')[0].split(' ')[0] : '');
+                jobDate = (jobDate || '').trim().substring(0, 10);
+                if (startDate && jobDate && jobDate < startDate) return false;
+                if (endDate && jobDate && jobDate > endDate) return false;
                 if (branchFilter !== 'all' && j.branch && j.branch !== branchFilter) return false;
                 if (searchFilter) {
-                    const matchStr = `${j.claimStub || ''} ${j.plateNumber || ''} ${j.plate || ''} ${j.model || ''} ${j.vehicle || ''} ${j.category || ''} ${j.saName || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
+                    const matchStr = `${j.claimStub || ''} ${j.plateNumber || ''} ${j.plate || ''} ${j.model || ''} ${j.vehicle || ''} ${j.category || ''} ${j.saName || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''} ${j.evaluation || ''}`.toLowerCase();
                     if (!matchStr.includes(searchFilter)) return false;
                 }
                 return true;
             });
 
-            // Focus on Express & quick turnaround jobs
+            // Focus on Express, PMS, and quick turnaround jobs
             const expressJobs = filteredJobs.filter(j => {
                 const cat = (j.category || '').toUpperCase();
                 const lane = (j.laneType || '').toUpperCase();
-                return lane.includes('EXPRESS') || cat === 'PMS' || cat === 'EXPRESS' || j.isExpress;
+                return lane.includes('EXPRESS') || lane.includes('PMS') || cat === 'PMS' || cat === 'PMS & GRS' || cat === 'EXPRESS' || j.isExpress;
             });
 
             // Calculate durations & classify
@@ -5055,17 +5056,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             expressJobs.forEach(j => {
                 // Compute duration
                 let duration = 0;
-                if (j.timeStarted && j.timeCompleted) {
+                if (j.arrival && j.departure && j.arrival.includes(':') && j.departure.includes(':')) {
+                    const [ah, am] = j.arrival.split(':').map(Number);
+                    const [dh, dm] = j.departure.split(':').map(Number);
+                    let diff = (dh * 60 + dm) - (ah * 60 + am);
+                    if (diff < 0) diff += 1440;
+                    if (diff > 0) duration = diff;
+                } else if (j.arrival && j.arrival.includes(':') && j.status !== 'Completed' && j.status !== 'Released') {
+                    const [ah, am] = j.arrival.split(':').map(Number);
+                    const now = new Date();
+                    let diff = (now.getHours() * 60 + now.getMinutes()) - (ah * 60 + am);
+                    if (diff < 0) diff += 1440;
+                    if (diff > 0) duration = diff;
+                } else if (j.timeStarted && j.timeCompleted) {
                     const s = new Date(j.timeStarted);
                     const e = new Date(j.timeCompleted);
                     if (!isNaN(s) && !isNaN(e) && e >= s) {
                         duration = Math.round((e - s) / 60000);
                     }
-                } else if (j.arrival && j.departure && j.arrival.includes(':') && j.departure.includes(':')) {
-                    const [ah, am] = j.arrival.split(':').map(Number);
-                    const [dh, dm] = j.departure.split(':').map(Number);
-                    const diff = (dh * 60 + dm) - (ah * 60 + am);
-                    if (diff > 0) duration = diff;
                 }
 
                 if (!duration || duration <= 0) {
@@ -5089,23 +5097,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (duration < minDuration) minDuration = duration;
                 if (duration > maxDuration) maxDuration = duration;
 
-                const isOverrun = duration > 60 || j.status === 'Delayed' || j.goalRemarks === 'Failed' || (j.remarks && j.remarks.toLowerCase().includes('delay'));
+                const isExpressLane = (j.laneType && j.laneType.toLowerCase().includes('express')) || (j.category && j.category.toUpperCase().includes('EXPRESS'));
+                const maxAllowedSLA = isExpressLane ? 60 : 120; // 60 mins for Express Lane, 120 mins (2 Hours) for Standard PMS
+                const isOverrun = duration > maxAllowedSLA || j.status === 'Delayed' || j.goalRemarks === 'Failed' || (j.remarks && j.remarks.toLowerCase().includes('delay')) || (j.evaluation && j.evaluation.toLowerCase().includes('delay'));
 
                 if (isOverrun) {
                     overrunCount++;
-                    const overrunDelta = Math.max(1, duration - 60);
+                    const overrunDelta = Math.max(1, duration - maxAllowedSLA);
                     totalOverrunMins += overrunDelta;
 
                     // Classify root cause
-                    const remarks = `${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
+                    const textToScan = `${j.evaluation || ''} ${j.remarks || ''} ${j.goalRemarks || ''} ${j.delayReason || ''}`.toLowerCase();
                     let category = 'Parts Stockout / Supplier Logistics';
-                    if (remarks.includes('customer') || remarks.includes('quote') || remarks.includes('approval') || remarks.includes('phone') || remarks.includes('call')) {
+                    if (textToScan.includes('part') || textToScan.includes('stock') || textToScan.includes('supplier') || textToScan.includes('filter') || textToScan.includes('pad') || textToScan.includes('fluid') || textToScan.includes('order')) {
+                        category = 'Parts Stockout / Supplier Logistics';
+                    } else if (textToScan.includes('customer') || textToScan.includes('scope') || textToScan.includes('quote') || textToScan.includes('approval') || textToScan.includes('auth') || textToScan.includes('call')) {
                         category = 'Customer Authorization / Scope Lag';
-                    } else if (remarks.includes('bay') || remarks.includes('lift') || remarks.includes('congestion') || remarks.includes('line') || remarks.includes('traffic') || remarks.includes('ramp')) {
+                    } else if (textToScan.includes('bay') || textToScan.includes('lift') || textToScan.includes('congestion') || textToScan.includes('space') || textToScan.includes('queue') || textToScan.includes('ramp')) {
                         category = 'Bay & Lift Staging Congestion';
-                    } else if (remarks.includes('bolt') || remarks.includes('seized') || remarks.includes('wire') || remarks.includes('engine') || remarks.includes('corrosion') || remarks.includes('complex')) {
+                    } else if (textToScan.includes('bolt') || textToScan.includes('seized') || textToScan.includes('engine') || textToScan.includes('wire') || textToScan.includes('electrical') || textToScan.includes('complex') || textToScan.includes('clutch') || textToScan.includes('leak') || textToScan.includes('paint')) {
                         category = 'Mechanical / Technical Complexity';
-                    } else if (remarks.includes('qc') || remarks.includes('rework') || remarks.includes('quality') || remarks.includes('inspect') || remarks.includes('retest') || remarks.includes('sign')) {
+                    } else if (textToScan.includes('qc') || textToScan.includes('check') || textToScan.includes('inspect') || textToScan.includes('test') || textToScan.includes('sign') || textToScan.includes('road')) {
                         category = 'QC / Final Sign-Off Delay';
                     } else {
                         const catKeys = Object.keys(delayRootCauses);
@@ -5115,15 +5127,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     delayRootCauses[category] = (delayRootCauses[category] || 0) + 1;
 
                     delayedRecords.push({
-                        date: j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0] : 'Today'),
+                        date: j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0].split(' ')[0] : 'Today'),
                         claimStub: j.claimStub || `CS-${j.id || '000'}`,
                         plate: j.plateNumber || j.plate || 'N/A',
                         model: j.model || j.vehicleModel || j.vehicle || 'Standard Vehicle',
-                        category: j.category || 'Express PMS',
+                        category: j.category || (isExpressLane ? 'Express PMS' : 'PMS / GRS'),
                         duration: duration,
                         overrun: overrunDelta,
                         rootCause: category,
-                        remarks: j.remarks || j.goalRemarks || 'Turnaround duration exceeded standard 60-minute target'
+                        remarks: j.evaluation || j.remarks || j.goalRemarks || `Turnaround duration (${duration}m) exceeded ${maxAllowedSLA}-minute target`
                     });
                 } else {
                     successfulCount++;
@@ -5151,7 +5163,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // 1. POPULATE SCORECARD METRIC CARDS (Defensive DOM checks)
             if (document.getElementById('express-total-volume')) document.getElementById('express-total-volume').innerText = totalExpress;
             if (document.getElementById('express-avg-turnaround')) document.getElementById('express-avg-turnaround').innerText = `${avgDuration}m`;
-            if (document.getElementById('express-max-duration')) document.getElementById('express-max-duration').innerText = maxDuration > 0 ? `${maxDuration}m` : '--';
+            if (document.getElementById('express-max-duration')) document.getElementById('express-max-duration').innerText = maxDuration > 0 && maxDuration < Infinity ? `${maxDuration}m` : '--';
 
             if (document.getElementById('express-sla-rate')) document.getElementById('express-sla-rate').innerText = `${slaRate}%`;
             if (document.getElementById('express-sla-rate-badge')) document.getElementById('express-sla-rate-badge').innerText = `${slaRate}% On-Time`;
@@ -5180,9 +5192,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (causeEntries.length === 0 || overrunCount === 0) {
                     delaySummaryBody.innerHTML = `
                         <tr>
-                            <td colspan="4" class="text-center py-6 text-emerald-600 font-bold">
+                            <td colspan="4" class="text-center py-6 text-slate-500 font-bold">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <i data-lucide="check" class="w-4 h-4"></i> No Overrun Incidents Logged
+                                    <i data-lucide="check" class="w-4 h-4 text-slate-400"></i> No Overrun Incidents Logged
                                 </div>
                             </td>
                         </tr>
@@ -5198,12 +5210,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         return `
                             <tr class="hover:bg-slate-50/70 transition">
                                 <td class="px-5 py-3 font-bold text-slate-900 flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full ${count > 0 ? 'bg-rose-500' : 'bg-slate-300'}"></span>
+                                    <span class="w-2 h-2 rounded-full ${count > 0 ? 'bg-slate-800' : 'bg-slate-300'}"></span>
                                     <span>${cause}</span>
                                 </td>
                                 <td class="px-3 py-3 text-center font-bold text-slate-800">${count}</td>
                                 <td class="px-3 py-3 text-center font-bold text-slate-600">${sharePct}%</td>
-                                <td class="px-5 py-3 text-right font-black text-rose-600">${count > 0 ? `+${avgOverrun}m` : '--'}</td>
+                                <td class="px-5 py-3 text-right font-black text-slate-900">${count > 0 ? `+${avgOverrun}m` : '--'}</td>
                             </tr>
                         `;
                     }).join('');
@@ -8611,6 +8623,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (isOwnerOrAdmin) {
                     staffAccounts = await apiRequest('/api/auth/staff');
                     populatePeriodicSaFilter();
+                }
+
+                if (typeof renderExpressIntelligenceModule === 'function') {
+                    renderExpressIntelligenceModule();
                 }
             } catch (err) {
                 console.error('Failed to load operational data:', err);
