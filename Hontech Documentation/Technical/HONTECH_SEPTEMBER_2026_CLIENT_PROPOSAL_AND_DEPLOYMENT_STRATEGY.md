@@ -1,11 +1,11 @@
 # HONTECH AUTOCENTER
-## Operations Management & Service Bay Queue System
+## WEB-BASED VEHICLE INTAKE & QUEUE MONITORING
 ### Technical Architecture Evaluation, Deployment Strategy & Implementation Roadmap
 
 ---
 
 **Client Organization:** HonTech AutoCenter (Management & Operations)  
-**Project Initiative:** Enterprise Bay Management & Queue Monitoring Platform  
+**Project Initiative:** Web-Based Vehicle Intake & Queue Monitoring System  
 **Prepared by — HonTech Development Team:**  
 • **Mary Dayne Villas T.** — *System Architect & System Designer*  
 • **Justin Nolasco J.** — *Lead Systems Developer & Technical Implementation*  
@@ -402,11 +402,18 @@ Before retiring traditional whiteboard tracking, the team and HonTech management
 
 #### Part III: Client Acceptance & Authorization (HonTech AutoCenter)
 
-**Company President & Business Owner:** ___________________________  
-**HonTech AutoCenter Management & Ownership**  
-*Signature over Printed Name* | **Title / Designation:** Company President & General Manager  
-
-**Date Approved & Signed:** ___________________________  
 **Selected Deployment Architecture Pathway:**  
-`[  ] Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED`  
-`[  ] Option A: Local Intranet Hosting (On-Premise Server PC)`
+- [ ] **Option B: Modern Cloud Solutions (Vercel + Supabase) — RECOMMENDED**  
+- [ ] **Option A: Local Intranet Hosting (On-Premise Server PC)**  
+
+---
+
+**Authorized Client Signature:** ____________________________________________________  
+**Executive Representative:** *HonTech AutoCenter Management & Ownership*  
+
+**Printed Name:** _________________________________________________________________  
+**Official Title / Designation:** ___________________________________________________  
+**Date Approved & Signed:** _______________________________________________________  
+
+**Client Authorization Directives / Special Notes:**  
+_____________________________________________________________________________________  

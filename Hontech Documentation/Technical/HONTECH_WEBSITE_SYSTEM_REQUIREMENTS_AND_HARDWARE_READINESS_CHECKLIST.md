@@ -1,5 +1,5 @@
 # HONTECH AUTOCENTER
-## Operations Management & Service Bay Queue System
+## WEB-BASED VEHICLE INTAKE & QUEUE MONITORING
 ### Official Website System Requirements & Hardware Readiness Checklist
 
 ---
@@ -21,7 +21,7 @@ Target Scope: Multi-Branch Readiness (Branch 1: Marikina Main & Branch 2: Expans
 
 ## 1. Executive Summary & Purpose of Checklist
 
-This audit document establishes the **official pre-flight hardware and software requirements checklist** for the **HonTech AutoCenter Operations Management & Service Bay Queue Web System**.
+This audit document establishes the **official pre-flight hardware and software requirements checklist** for the **HonTech AutoCenter Web-Based Vehicle Intake & Queue Monitoring System**.
 
 Prior to initiating **Phase 3 Live Customer "Shadow Mode"**, the Developing Team and HonTech Management will conduct an on-site physical walk-through during **Phase 2 (Pre-Flight Readiness Audit)** to verify that all 6 staff computers, 2 lounge display TVs, networking infrastructure, and web browser environments meet these operational criteria.
 

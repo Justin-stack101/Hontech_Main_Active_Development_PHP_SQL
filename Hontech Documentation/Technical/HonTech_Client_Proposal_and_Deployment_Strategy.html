@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HonTech AutoCenter — Technical Proposal & Strategic Deployment Blueprint</title>
+    <title>HonTech AutoCenter — Web-Based Vehicle Intake & Queue Monitoring System</title>
     <!--[if gte mso 9]>
     <xml>
         <w:WordDocument>
@@ -13,35 +13,65 @@
         </w:WordDocument>
     </xml>
     <![endif]-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style id="dynamic-scale-style">
         @page {
             size: letter portrait;
-            margin: 0.35in 0.45in;
+            margin: 0.38in 0.45in;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Calibri, Arial, Helvetica, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 7.8pt;
-            line-height: 1.25;
+            line-height: 1.28;
             color: #1e293b;
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
             margin: 0;
             padding: 0;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
+        code, pre {
+            font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
+        }
+
+        /* Non-Printing Top Action Bar */
         .no-print {
             background: #0f172a;
             color: #ffffff;
-            padding: 8px 18px;
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
+            font-size: 8.5pt;
+        }
+
+        .no-print .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .no-print .version-tag {
+            background: #1e3a8a;
+            color: #93c5fd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 7.5pt;
+            font-weight: 700;
+            border: 1px solid #2563eb;
         }
 
         .no-print .btn-group {
@@ -55,21 +85,28 @@
             align-items: center;
             gap: 4px;
             background: #1e293b;
-            padding: 2px 6px;
+            padding: 3px 6px;
             border-radius: 4px;
             margin-right: 8px;
-            font-size: 8pt;
+            font-size: 7.8pt;
+            border: 1px solid #334155;
         }
 
         .scale-btn {
             background: transparent;
             color: #94a3b8;
             border: 1px solid #475569;
-            padding: 3px 8px;
-            font-size: 7.5pt;
+            padding: 2px 7px;
+            font-size: 7.2pt;
             font-weight: 600;
             border-radius: 3px;
             cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .scale-btn:hover {
+            color: #ffffff;
+            border-color: #94a3b8;
         }
 
         .scale-btn.active {
@@ -81,17 +118,17 @@
         .btn {
             background-color: #2563eb;
             color: #ffffff;
-            border: none;
+            border: 1px solid #1d4ed8;
             padding: 5px 12px;
-            font-size: 8.5pt;
+            font-size: 8pt;
             font-weight: 600;
             border-radius: 4px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: background 0.15s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
 
         .btn:hover {
@@ -99,37 +136,41 @@
         }
 
         .btn-secondary {
-            background-color: #475569;
+            background-color: #334155;
+            border-color: #475569;
         }
 
         .btn-secondary:hover {
-            background-color: #334155;
+            background-color: #1e293b;
         }
 
+        /* Document Wrapper */
         .document-wrapper {
-            max-width: 860px;
-            margin: 10px auto;
+            max-width: 880px;
+            margin: 16px auto;
             background: #ffffff;
-            padding: 20px 30px;
+            padding: 26px 36px;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border-radius: 2px;
         }
 
         /* Typography & Hierarchy */
         h1.doc-title {
-            font-size: 13pt;
+            font-size: 13.5pt;
             font-weight: 800;
             color: #0f172a;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-top: 0;
             margin-bottom: 2px;
             line-height: 1.15;
-            border-bottom: 1.2px solid #0f172a;
-            padding-bottom: 2px;
+            border-bottom: 1.5px solid #0f172a;
+            padding-bottom: 3px;
         }
 
         h2.doc-subtitle {
-            font-size: 9.5pt;
+            font-size: 9.8pt;
             font-weight: 700;
             color: #1e3a8a;
             margin-top: 3px;
@@ -138,7 +179,7 @@
         }
 
         h3.doc-tertiary {
-            font-size: 8pt;
+            font-size: 8.2pt;
             font-weight: 600;
             color: #475569;
             margin-top: 0;
@@ -146,31 +187,37 @@
         }
 
         h2.section-heading {
-            font-size: 9pt;
+            font-size: 9.2pt;
             font-weight: 700;
             color: #0f172a;
             border-bottom: 1px solid #cbd5e1;
             padding-bottom: 2px;
-            margin-top: 11px;
+            margin-top: 12px;
             margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            break-after: avoid;
+            page-break-after: avoid;
         }
 
         h3.subsection-heading {
-            font-size: 8.2pt;
+            font-size: 8.4pt;
             font-weight: 700;
             color: #1e3a8a;
-            margin-top: 7px;
+            margin-top: 8px;
             margin-bottom: 2px;
+            break-after: avoid;
+            page-break-after: avoid;
         }
 
         h4.tier-heading {
-            font-size: 7.8pt;
+            font-size: 7.9pt;
             font-weight: 700;
             color: #334155;
             margin-top: 5px;
             margin-bottom: 1px;
+            break-after: avoid;
+            page-break-after: avoid;
         }
 
         p {
@@ -182,19 +229,21 @@
         /* Metadata Block */
         .meta-card {
             background-color: #f8fafc;
-            border-left: 3px solid #1e3a8a;
+            border-left: 3.5px solid #1e3a8a;
             border-top: 1px solid #e2e8f0;
             border-right: 1px solid #e2e8f0;
             border-bottom: 1px solid #e2e8f0;
-            padding: 5px 8px;
+            padding: 6px 10px;
             margin-bottom: 8px;
             font-size: 7.5pt;
             line-height: 1.25;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .meta-grid {
             display: grid;
-            grid-template-columns: 105px 1fr;
+            grid-template-columns: 110px 1fr;
             row-gap: 2px;
         }
 
@@ -211,22 +260,25 @@
         .toc-card {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 3px;
+            border-radius: 2px;
             padding: 6px 10px;
             margin-bottom: 8px;
             font-size: 7.2pt;
-            line-height: 1.2;
+            line-height: 1.22;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .toc-card h3 {
-            font-size: 7.5pt;
+            font-size: 7.6pt;
             font-weight: 700;
             color: #0f172a;
             margin-top: 0;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             text-transform: uppercase;
             border-bottom: 1px solid #cbd5e1;
             padding-bottom: 1px;
+            letter-spacing: 0.2px;
         }
 
         .toc-list {
@@ -238,16 +290,16 @@
         .toc-list > li {
             font-weight: 600;
             color: #1e3a8a;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .toc-list ul {
             list-style-type: none;
-            padding-left: 12px;
+            padding-left: 14px;
             font-weight: 400;
             color: #475569;
             margin-top: 1px;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .toc-list ul li {
@@ -260,6 +312,7 @@
         }
 
         .toc-list a:hover {
+            color: #2563eb;
             text-decoration: underline;
         }
 
@@ -267,17 +320,18 @@
         table.formal-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 3px;
-            margin-bottom: 6px;
+            margin-top: 4px;
+            margin-bottom: 7px;
             font-size: 7pt;
-            line-height: 1.18;
+            line-height: 1.2;
+            break-inside: avoid;
             page-break-inside: avoid;
         }
 
         table.formal-table th, 
         table.formal-table td {
             border: 1px solid #cbd5e1;
-            padding: 2px 4px;
+            padding: 3px 5px;
             vertical-align: top;
             text-align: left;
         }
@@ -289,7 +343,7 @@
             text-transform: uppercase;
             font-size: 6.8pt;
             letter-spacing: 0.2px;
-            padding: 3px 4px;
+            padding: 3.5px 5px;
         }
 
         table.formal-table tr:nth-child(even) td {
@@ -305,25 +359,29 @@
         th.highlight-col-th {
             background-color: #1e3a8a !important;
             color: #ffffff !important;
+            border-left: 1.2px solid #2563eb !important;
+            border-right: 1.2px solid #2563eb !important;
         }
 
         /* Callout Notes */
         .callout-box {
             background-color: #f0fdf4;
-            border-left: 3px solid #16a34a;
+            border-left: 3.5px solid #16a34a;
             border-top: 1px solid #dcfce7;
             border-right: 1px solid #dcfce7;
             border-bottom: 1px solid #dcfce7;
-            padding: 4px 8px;
+            padding: 5px 8px;
             margin-top: 4px;
             margin-bottom: 6px;
             font-size: 7.2pt;
             line-height: 1.25;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .callout-box.callout-blue {
             background-color: #eff6ff;
-            border-left: 3px solid #2563eb;
+            border-left: 3.5px solid #2563eb;
             border-top: 1px solid #dbeafe;
             border-right: 1px solid #dbeafe;
             border-bottom: 1px solid #dbeafe;
@@ -331,7 +389,7 @@
 
         .callout-box.callout-amber {
             background-color: #fffbeb;
-            border-left: 3px solid #d97706;
+            border-left: 3.5px solid #d97706;
             border-top: 1px solid #fef3c7;
             border-right: 1px solid #fef3c7;
             border-bottom: 1px solid #fef3c7;
@@ -347,6 +405,8 @@
         .checklist-group {
             margin: 4px 0;
             padding-left: 2px;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .check-item {
@@ -370,6 +430,7 @@
         /* Signatures Block */
         .signature-section {
             margin-top: 10px;
+            break-inside: avoid;
             page-break-inside: avoid;
         }
 
@@ -385,6 +446,8 @@
             border: 1px solid #cbd5e1;
             padding: 6px 8px;
             background-color: #ffffff;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .sig-line {
@@ -415,6 +478,8 @@
             background-color: #f8fafc;
             padding: 6px 10px;
             margin-top: 6px;
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         hr.divider {
@@ -437,7 +502,7 @@
             body {
                 background: #ffffff;
                 font-size: 7.2pt;
-                line-height: 1.18;
+                line-height: 1.2;
             }
             .no-print {
                 display: none !important;
@@ -451,14 +516,15 @@
             }
             table.formal-table {
                 font-size: 6.6pt;
-                line-height: 1.15;
+                line-height: 1.16;
             }
             table.formal-table th, table.formal-table td {
-                padding: 1.5px 3px;
+                padding: 2px 3.5px;
             }
             h2.section-heading {
+                break-before: auto;
                 page-break-before: auto;
-                margin-top: 8px;
+                margin-top: 9px;
             }
         }
     </style>
@@ -467,15 +533,16 @@
 
     <!-- Non-Printing Top Action Bar -->
     <div class="no-print">
-        <div>
-            <strong>HonTech Operations System</strong> &mdash; Proposal & Deployment Blueprint (Version 14.0)
+        <div class="doc-badge">
+            <strong>HonTech AutoCenter</strong> &mdash; Web-Based Vehicle Intake &amp; Queue Monitoring System
+            <span class="version-tag">Version 15.0</span>
         </div>
         <div class="btn-group">
             <div class="scale-selector">
                 <span>PDF Density:</span>
-                <button type="button" class="scale-btn active" onclick="setScale('ultra')">Ultra-Dense (Fewest Pages)</button>
-                <button type="button" class="scale-btn" onclick="setScale('medium')">Medium (8.5pt)</button>
-                <button type="button" class="scale-btn" onclick="setScale('standard')">Normal (9.5pt)</button>
+                <button type="button" class="scale-btn active" onclick="setScale('ultra')">Compact (7.8pt)</button>
+                <button type="button" class="scale-btn" onclick="setScale('medium')">Balanced (8.5pt)</button>
+                <button type="button" class="scale-btn" onclick="setScale('standard')">Standard (9.5pt)</button>
             </div>
             <button onclick="window.print()" class="btn">Print / Save as PDF</button>
             <button onclick="exportToWord()" class="btn btn-secondary">Download as Word (.doc)</button>
@@ -487,16 +554,16 @@
 
         <!-- Title Block -->
         <h1 class="doc-title">HONTECH AUTOCENTER</h1>
-        <h2 class="doc-subtitle">Operations Management & Service Bay Queue System</h2>
-        <h3 class="doc-tertiary">Technical Architecture Evaluation, Deployment Strategy & Implementation Roadmap</h3>
+        <h2 class="doc-subtitle">WEB-BASED VEHICLE INTAKE &amp; QUEUE MONITORING</h2>
+        <h3 class="doc-tertiary">Technical Architecture Evaluation, Deployment Strategy &amp; Implementation Roadmap</h3>
 
         <!-- Formal Metadata Card -->
         <div class="meta-card">
             <div class="meta-grid">
                 <div class="meta-label">Client Organization:</div>
-                <div class="meta-value">HonTech AutoCenter (Management & Operations)</div>
+                <div class="meta-value">HonTech AutoCenter (Management &amp; Operations)</div>
                 <div class="meta-label">Project Initiative:</div>
-                <div class="meta-value">Enterprise Bay Management & Queue Monitoring Platform</div>
+                <div class="meta-value">Web-Based Vehicle Intake &amp; Queue Monitoring System</div>
                 <div class="meta-label">Prepared by:</div>
                 <div class="meta-value">
                     <strong>HonTech Development Team:</strong><br>
@@ -509,7 +576,7 @@
                 <div class="meta-label">Target Period:</div>
                 <div class="meta-value">September 2026 Rollout</div>
                 <div class="meta-label">Classification:</div>
-                <div class="meta-value">Official Client Proposal & Strategic Deployment Blueprint (Version 14.0)</div>
+                <div class="meta-value">Official Client Proposal & Strategic Deployment Blueprint (Version 15.0)</div>
             </div>
         </div>
 
@@ -528,21 +595,23 @@
                 <li>3. <a href="#sec-3">Comprehensive Risk Assessment & Mitigation Plan</a>
                     <ul>
                         <li>• Risk 1: Local Hosting Multi-Branch & Wi-Fi Network Traps</li>
-                        <li>• Risk 2: Hardware Budget Constraints (The "Staff Terminals First" Rule)</li>
+                        <li>• Risk 2: Hardware Budget Constraints (Staff Terminals First Rule)</li>
                         <li>• Risk 3: Shop Environment & Electrical Power Spikes</li>
                         <li>• Risk 4: External Internet Outages on Cloud</li>
                     </ul>
                 </li>
                 <li>4. <a href="#sec-4">Hardware Sourcing, Spec Classifications & Realistic 2-Branch Scalability</a>
                     <ul>
-                        <li>• 4.1 Track B: Cloud Deployment Device Requirements (Recommended)</li>
+                        <li>• 4.1 Track B: Modern Cloud Device Requirements (Recommended)</li>
                         <li>• 4.2 Track A: Local Server PC Sourcing & Spec Tiers (Alternative)</li>
-                        <li>• 4.3 Operational Scenario: 2 Branches Over 4 Years</li>
-                        <li>• 4.4 Joint Gilmore Sourcing & Inspection Plan</li>
-                        <li>• 4.5 Customer Waiting Lounge TV</li>
+                        <li>• 4.3 Simplified Client Investment Summary: Cloud vs. Local Hosting</li>
+                        <li>• 4.4 Operational Scenario: 2 Branches Over 4 Years</li>
+                        <li>• 4.5 Joint Gilmore Sourcing & Inspection Plan</li>
+                        <li>• 4.6 Customer Waiting Lounge TV & Audio System</li>
+                        <li>• 4.7 Multi-Branch Website & Hardware Readiness Checklist</li>
                     </ul>
                 </li>
-                <li>5. <a href="#sec-5">Dual Detailed Weekly Execution Roadmaps (September 2026 Rollout)</a>
+                <li>5. <a href="#sec-5">Dual Milestone-Based Phase Execution Roadmaps (Flexible Project Delivery)</a>
                     <ul>
                         <li>• Track B: Modern Cloud Deployment Plan (Recommended)</li>
                         <li>• Track A: Local Intranet Hosting Plan (Alternative)</li>
@@ -564,8 +633,8 @@
                 </li>
                 <li>8. <a href="#sec-8">Handover Deliverables Package & Project Authorization</a>
                     <ul>
-                        <li>• Comprehensive Deliverables Breakdown: Cloud vs. Local</li>
-                        <li>• Formal Project Signatures & Acceptance</li>
+                        <li>• 8.1 Comprehensive Deliverables Breakdown: Cloud vs. Local</li>
+                        <li>• 8.2 Formal Project Review, Endorsement & Authorization</li>
                     </ul>
                 </li>
             </ul>
@@ -574,7 +643,7 @@
         <!-- Section 1 -->
         <h2 class="section-heading" id="sec-1">1. Executive Summary & Project Purpose</h2>
         
-        <p>The <strong>HonTech Operations Management System</strong> is engineered specifically to <strong>solve the operational limitations and bottlenecks of traditional manual workshop whiteboards</strong>, modernize service bay tracking, automate Express PMS 2-Hour turnaround monitoring, and provide transparent waiting lounge queue displays for HonTech AutoCenter.</p>
+        <p>The <strong>HonTech Web-Based Vehicle Intake & Queue Monitoring System</strong> is engineered specifically to <strong>solve the operational limitations and bottlenecks of traditional manual workshop whiteboards</strong>, modernize service bay tracking, automate Express PMS 2-Hour turnaround monitoring, and provide transparent waiting lounge queue displays for HonTech AutoCenter.</p>
 
         <h3 class="subsection-heading">The Core Workshop Problem: The Limitations of Manual Whiteboards</h3>
         <p>For years, auto service centers have relied on manual dry-erase whiteboards and paper clipboards to manage daily vehicle queues. However, as customer volume increases, manual whiteboards introduce critical operational bottlenecks:</p>
@@ -822,13 +891,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>Standard Criteria</strong><br><em>(Single Shop Baseline)</em></td>
+                    <td><strong>Standard Baseline</strong><br><em>(Single Shop Baseline)</em></td>
                     <td>&bull; Core i3 (10th Gen+) / Ryzen 3<br>&bull; 8GB RAM, 256GB NVMe SSD<br>&bull; Windows 10/11 Home/Pro</td>
                     <td><strong>Branch 1 (Marikina Main)</strong><br>&bull; 3&ndash;5 Staff + 1 Lounge TV<br>&bull; ~15&ndash;25 cars / day</td>
                     <td><strong>&#8369;14,500 &ndash; &#8369;17,500</strong><br><em>(or &#8369;0 if repurposing existing PC)</em></td>
                 </tr>
                 <tr>
-                    <td><strong>Work-Grade Class</strong><br><em>(Recommended Standard)</em></td>
+                    <td><strong>Work-Grade Standard</strong><br><em>(Recommended Standard)</em></td>
                     <td>&bull; Core i5 (11th/12th Gen) / Ryzen 5<br>&bull; 16GB RAM, 512GB NVMe SSD<br>&bull; 80+ Bronze Power Supply</td>
                     <td><strong>Both Branches 1 & 2</strong><br>&bull; 6&ndash;10 Staff + 2 Lounge TVs<br>&bull; ~30&ndash;50 cars / day</td>
                     <td><strong>&#8369;18,500 &ndash; &#8369;23,000</strong></td>
@@ -1155,8 +1224,8 @@
             <tbody>
                 <tr>
                     <td><strong>Role-Based Access Control (RBAC)</strong></td>
-                    <td class="highlight-col">&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Cashiers restricted from deleting records</td>
-                    <td>&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Cashiers restricted from deleting records</td>
+                    <td class="highlight-col">&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Assistants restricted from deleting records</td>
+                    <td>&bull; 4 distinct roles: Owner, Admin, SA, Assistant<br>&bull; SAs restricted from viewing revenue reports<br>&bull; Assistants restricted from deleting records</td>
                 </tr>
                 <tr>
                     <td><strong>Tamper-Proof Audit Logging</strong></td>
@@ -1246,7 +1315,7 @@
 
         <p>Upon project completion and sign-off, HonTech AutoCenter management will receive a complete operational handover package tailored to the selected pathway:</p>
 
-        <h3 class="subsection-heading">Comprehensive Deliverables Breakdown: Cloud vs. Local</h3>
+        <h3 class="subsection-heading">8.1 Comprehensive Deliverables Breakdown: Cloud vs. Local</h3>
 
         <table class="formal-table">
             <thead>
@@ -1297,7 +1366,7 @@
 
         <!-- Formal Signatures -->
         <div class="signature-section">
-            <h3 class="subsection-heading">Formal Project Review, Endorsement & Authorization</h3>
+            <h3 class="subsection-heading">8.2 Formal Project Review, Endorsement & Authorization</h3>
 
             <h4 class="tier-heading">Part I: Prepared & Submitted by the Development Team</h4>
             <div class="signature-grid">
@@ -1326,7 +1395,7 @@
                 <div class="sig-line"></div>
                 <div class="sig-name">Mr. Ar-Jay C. Agbayani</div>
                 <div class="sig-title">Faculty Capstone Project Adviser | Department of Information Technology</div>
-                <div style="margin-top: 10px; font-size: 9pt; color: #475569;">
+                <div style="margin-top: 10px; font-size: 8pt; color: #475569;">
                     <strong>Date Reviewed & Verified:</strong> ___________________________<br>
                     <strong>Adviser Notes / Remarks:</strong> __________________________________________________________________
                 </div>
@@ -1334,20 +1403,43 @@
 
             <h4 class="tier-heading">Part III: Client Acceptance & Authorization (HonTech AutoCenter)</h4>
             <div class="decision-block">
-                <div style="margin-bottom: 12px; font-size: 10pt; font-weight: 700; color: #0f172a;">
-                    Selected Deployment Architecture:
+                <div style="margin-bottom: 8px; font-size: 8.5pt; font-weight: 700; color: #0f172a;">
+                    Selected Deployment Architecture Pathway:
                 </div>
-                <div style="margin-bottom: 8px; font-size: 9.5pt;">
-                    <span class="checkbox-box"></span> <strong>Option B: Modern Cloud Solutions (Vercel + Supabase) &mdash; RECOMMENDED</strong>
-                </div>
-                <div style="margin-bottom: 18px; font-size: 9.5pt;">
-                    <span class="checkbox-box"></span> <strong>Option A: Local Intranet Hosting (On-Premise Server PC)</strong>
+                <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 14px; font-size: 8pt;">
+                    <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <span class="checkbox-box"></span> <strong>Option B: Modern Cloud Solutions (Vercel + Supabase) &mdash; RECOMMENDED</strong>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <span class="checkbox-box"></span> <strong>Option A: Local Intranet Hosting (On-Premise Server PC)</strong>
+                    </label>
                 </div>
 
-                <div class="sig-line"></div>
-                <div class="sig-name">Company President / Business Owner</div>
-                <div class="sig-title">HonTech AutoCenter Management & Ownership &bull; Signature over Printed Name</div>
-                <div class="sig-date">Title / Designation: Company President & General Manager &nbsp;|&nbsp; Date Approved & Signed: ___________________________</div>
+                <div style="border-top: 1px dashed #cbd5e1; padding-top: 12px; margin-top: 6px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: flex-end;">
+                        <div>
+                            <div style="height: 44px;"></div>
+                            <div class="sig-line" style="margin-top: 0; margin-bottom: 3px; border-bottom: 1.2px solid #0f172a;"></div>
+                            <div class="sig-name">Authorized Signature</div>
+                            <div class="sig-title">HonTech AutoCenter &bull; Executive Ownership / Management</div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 8px; font-size: 7.8pt; color: #0f172a;">
+                                <strong>Printed Name:</strong> ____________________________________________
+                            </div>
+                            <div style="margin-bottom: 8px; font-size: 7.8pt; color: #0f172a;">
+                                <strong>Title / Designation:</strong> ______________________________________
+                            </div>
+                            <div style="margin-bottom: 4px; font-size: 7.8pt; color: #0f172a;">
+                                <strong>Date Approved &amp; Signed:</strong> __________________________________
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; padding-top: 8px; border-top: 1px dotted #e2e8f0; font-size: 7.5pt; color: #475569;">
+                        <strong>Client Authorization Notes / Special Directives:</strong><br>
+                        ____________________________________________________________________________________________________________________
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1359,55 +1451,54 @@
         function setScale(mode) {
             currentScale = mode;
             document.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('active'));
-            
-            const styleElem = document.getElementById('dynamic-scale-style');
-            if (mode === 'ultra') {
+            if (event && event.target) {
                 event.target.classList.add('active');
+            }
+            
+            if (mode === 'ultra') {
                 document.body.style.fontSize = '7.8pt';
-                document.body.style.lineHeight = '1.25';
+                document.body.style.lineHeight = '1.28';
                 document.querySelectorAll('table.formal-table').forEach(t => t.style.fontSize = '7pt');
                 document.querySelectorAll('p, li').forEach(el => el.style.fontSize = '7.8pt');
             } else if (mode === 'medium') {
-                event.target.classList.add('active');
                 document.body.style.fontSize = '8.5pt';
-                document.body.style.lineHeight = '1.32';
-                document.querySelectorAll('table.formal-table').forEach(t => t.style.fontSize = '7.8pt');
+                document.body.style.lineHeight = '1.34';
+                document.querySelectorAll('table.formal-table').forEach(t => t.style.fontSize = '7.6pt');
                 document.querySelectorAll('p, li').forEach(el => el.style.fontSize = '8.5pt');
             } else if (mode === 'standard') {
-                event.target.classList.add('active');
-                document.body.style.fontSize = '9.5pt';
-                document.body.style.lineHeight = '1.45';
-                document.querySelectorAll('table.formal-table').forEach(t => t.style.fontSize = '8.5pt');
-                document.querySelectorAll('p, li').forEach(el => el.style.fontSize = '9.5pt');
+                document.body.style.fontSize = '9.2pt';
+                document.body.style.lineHeight = '1.42';
+                document.querySelectorAll('table.formal-table').forEach(t => t.style.fontSize = '8.2pt');
+                document.querySelectorAll('p, li').forEach(el => el.style.fontSize = '9.2pt');
             }
         }
 
         function exportToWord() {
-            const fontSz = currentScale === 'ultra' ? '7.8pt' : (currentScale === 'medium' ? '8.5pt' : '9.5pt');
-            const tblSz = currentScale === 'ultra' ? '7pt' : (currentScale === 'medium' ? '7.8pt' : '8.5pt');
+            const fontSz = currentScale === 'ultra' ? '7.8pt' : (currentScale === 'medium' ? '8.5pt' : '9.2pt');
+            const tblSz = currentScale === 'ultra' ? '7pt' : (currentScale === 'medium' ? '7.6pt' : '8.2pt');
             
             const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
                 "xmlns:w='urn:schemas-microsoft-com:office:word' " +
                 "xmlns='http://www.w3.org/TR/REC-html40'>" +
                 "<head><meta charset='utf-8'><title>HonTech Proposal</title>" +
                 "<style>" +
-                "@page { size: letter portrait; margin: 0.35in 0.45in; }" +
-                "body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: " + fontSz + "; line-height: 1.25; color: #1e293b; }" +
-                "table { width: 100%; border-collapse: collapse; margin: 4px 0 6px 0; font-size: " + tblSz + "; line-height: 1.18; }" +
-                "th, td { border: 1px solid #cbd5e1; padding: 2px 4px; vertical-align: top; }" +
-                "th { background-color: #0f172a; color: #ffffff; font-weight: bold; font-size: " + tblSz + "; text-transform: uppercase; padding: 3px 4px; }" +
-                "h1.doc-title { font-size: 13pt; color: #0f172a; border-bottom: 1.2px solid #0f172a; padding-bottom: 2px; margin-bottom: 2px; }" +
-                "h2.doc-subtitle { font-size: 9.5pt; color: #1e3a8a; margin-top: 3px; margin-bottom: 1px; }" +
-                "h3.doc-tertiary { font-size: 8pt; color: #475569; margin-top: 0; margin-bottom: 8px; }" +
-                "h2.section-heading { font-size: 9pt; color: #0f172a; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin-top: 11px; margin-bottom: 4px; text-transform: uppercase; }" +
-                "h3.subsection-heading { font-size: 8.2pt; color: #1e3a8a; margin-top: 7px; margin-bottom: 2px; }" +
-                "h4.tier-heading { font-size: 7.8pt; color: #334155; margin-top: 5px; margin-bottom: 1px; }" +
+                "@page { size: letter portrait; margin: 0.38in 0.45in; }" +
+                "body { font-family: 'Calibri', 'Segoe UI', Arial, sans-serif; font-size: " + fontSz + "; line-height: 1.28; color: #1e293b; }" +
+                "table { width: 100%; border-collapse: collapse; margin: 4px 0 7px 0; font-size: " + tblSz + "; line-height: 1.2; }" +
+                "th, td { border: 1px solid #cbd5e1; padding: 3px 5px; vertical-align: top; }" +
+                "th { background-color: #0f172a; color: #ffffff; font-weight: bold; font-size: " + tblSz + "; text-transform: uppercase; padding: 3.5px 5px; }" +
+                "h1.doc-title { font-size: 13.5pt; color: #0f172a; border-bottom: 1.5px solid #0f172a; padding-bottom: 3px; margin-top: 0; margin-bottom: 2px; }" +
+                "h2.doc-subtitle { font-size: 9.8pt; color: #1e3a8a; margin-top: 3px; margin-bottom: 1px; }" +
+                "h3.doc-tertiary { font-size: 8.2pt; color: #475569; margin-top: 0; margin-bottom: 8px; }" +
+                "h2.section-heading { font-size: 9.2pt; color: #0f172a; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; margin-top: 12px; margin-bottom: 4px; text-transform: uppercase; }" +
+                "h3.subsection-heading { font-size: 8.4pt; color: #1e3a8a; margin-top: 8px; margin-bottom: 2px; }" +
+                "h4.tier-heading { font-size: 7.9pt; color: #334155; margin-top: 5px; margin-bottom: 1px; }" +
                 "p { margin-top: 0; margin-bottom: 4px; text-align: justify; font-size: " + fontSz + "; }" +
                 "ul, ol { margin-top: 0; margin-bottom: 4px; padding-left: 14px; font-size: " + fontSz + "; }" +
                 "li { margin-bottom: 1px; }" +
-                ".meta-card { background: #f8fafc; border-left: 3px solid #1e3a8a; padding: 5px 8px; margin-bottom: 8px; font-size: 7.5pt; }" +
+                ".meta-card { background: #f8fafc; border-left: 3.5px solid #1e3a8a; padding: 6px 10px; margin-bottom: 8px; font-size: 7.5pt; }" +
                 ".toc-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; margin-bottom: 8px; font-size: 7.2pt; }" +
-                ".callout-box { background: #f0fdf4; border-left: 3px solid #16a34a; padding: 4px 8px; margin: 4px 0 6px 0; font-size: 7.2pt; }" +
+                ".callout-box { background: #f0fdf4; border-left: 3.5px solid #16a34a; padding: 5px 8px; margin: 4px 0 6px 0; font-size: 7.2pt; }" +
                 ".sig-line { border-bottom: 1px solid #000; margin-top: 14px; margin-bottom: 1px; }" +
                 ".sig-name { font-weight: bold; font-size: 7.8pt; color: #0f172a; }" +
                 ".sig-title { font-size: 6.8pt; color: #64748b; }" +
@@ -1421,7 +1512,7 @@
             const fileDownload = document.createElement("a");
             document.body.appendChild(fileDownload);
             fileDownload.href = source;
-            fileDownload.download = 'HonTech_September_2026_Client_Proposal_and_Deployment_Strategy.doc';
+            fileDownload.download = 'HonTech_Web-Based_Vehicle_Intake_and_Queue_Monitoring_Proposal_v15.doc';
             fileDownload.click();
             document.body.removeChild(fileDownload);
         }
