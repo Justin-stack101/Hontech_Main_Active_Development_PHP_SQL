@@ -49,12 +49,19 @@
 
 ## 1. Executive Summary & Project Purpose
 
-The **HonTech Operations Management System** is a project designed to eliminate operational bottlenecks, modernize service bay tracking, automate Express PMS turnaround monitoring, and provide customer lounge transparency for HonTech AutoCenter.
+The **HonTech Operations Management System** is engineered specifically to **solve the operational limitations and bottlenecks of traditional manual workshop whiteboards**, modernize service bay tracking, automate Express PMS 2-Hour turnaround monitoring, and provide transparent waiting lounge queue displays for HonTech AutoCenter.
 
-### 🌐 The Core Technological Requirement: Web Delivery & Database Storage
-To operate seamlessly across front desk terminals, Service Advisor desktop computers, and the Customer Waiting Lounge TV, the system requires two foundational technological components:
-1. **Web Delivery & Domain Platform:** The platform that serves the visual interface to staff desktop PCs, laptops, and lounge displays.
-2. **Central Database Storage:** The secure repository that stores vehicle repair orders, customer histories, Express PMS 2-hour SLA turnaround timers, and tamper-proof audit trails.
+### 📋 The Core Workshop Problem: The Limitations of Manual Whiteboards
+For years, auto service centers have relied on manual dry-erase whiteboards and paper clipboards to manage daily vehicle queues. However, as customer volume increases, manual whiteboards introduce critical operational bottlenecks:
+1. **Accidental Erasures & Lost Data:** Handwriting gets smudged or erased, leaving no permanent audit trail or searchable history once the board is wiped clean at the end of the day.
+2. **Unmonitored Turnaround Times:** Manual boards cannot track live elapsed minutes or trigger automated alerts when Express PMS vehicles approach the 2-hour SLA deadline.
+3. **Zero Remote Visibility:** Shop owners and general managers cannot check bay status or daily revenue without physically standing in front of the workshop whiteboard.
+4. **Customer Waiting Lounge Anxiety:** Customers cannot see their repair progress from the lounge, forcing them to repeatedly approach the counter to ask staff for updates.
+
+### 🌐 The Technological Solution: Web Delivery & Central Database
+To replace the vulnerable manual whiteboard and connect front desk terminals, Service Advisor computers, and the Customer Waiting Lounge TV into one synchronized real-time platform, the system requires two foundational technological components:
+1. **Web Delivery & Domain Platform:** The platform that serves the real-time visual interface to staff desktop PCs, laptops, and lounge displays without requiring manual whiteboard markers.
+2. **Central Database Storage:** The secure, permanent digital repository that preserves vehicle repair orders, customer histories, Express PMS 2-hour SLA turnaround timers, and tamper-proof audit trails for years.
 
 This document provides HonTech AutoCenter ownership with a clear, business-minded evaluation of the two viable hosting pathways—**Option A: Local On-Premise Intranet Server** vs. **Option B: Modern Cloud Solutions**—to help management select the ideal operational model for the workshop.
 
