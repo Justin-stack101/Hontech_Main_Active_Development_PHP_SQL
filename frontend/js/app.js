@@ -4339,6 +4339,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const btnExpress = document.getElementById('btn-db-tab-express');
             const btnPeriodic = document.getElementById('btn-db-tab-periodic');
             const btnBackjobs = document.getElementById('btn-db-tab-backjobs');
+            const btnAudits = document.getElementById('btn-db-tab-audits');
 
             const secMonitor = document.getElementById('db-tab-monitor');
             const secAnalytics = document.getElementById('db-tab-analytics');
@@ -4346,6 +4347,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const secExpress = document.getElementById('db-tab-express');
             const secPeriodic = document.getElementById('db-tab-periodic');
             const secBackjobs = document.getElementById('db-tab-backjobs');
+            const secAudits = document.getElementById('db-tab-audits');
             const secSelectors = document.getElementById('db-analytics-selectors');
 
             const activeClass = "px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-xs transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer";
@@ -4358,6 +4360,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (secExpress) secExpress.classList.add('hidden');
             if (secPeriodic) secPeriodic.classList.add('hidden');
             if (secBackjobs) secBackjobs.classList.add('hidden');
+            if (secAudits) secAudits.classList.add('hidden');
             
             // Show/Hide selectors container (only for analytics tab)
             if (secSelectors) {
@@ -4379,6 +4382,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (btnExpress) btnExpress.className = inactiveClass;
             if (btnPeriodic) btnPeriodic.className = inactiveClass;
             if (btnBackjobs) btnBackjobs.className = inactiveClass;
+            if (btnAudits) btnAudits.className = inactiveClass;
 
             if (tab === 'monitor') {
                 if (secMonitor) secMonitor.classList.remove('hidden');
@@ -4403,6 +4407,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (secBackjobs) secBackjobs.classList.remove('hidden');
                 if (btnBackjobs) btnBackjobs.className = activeClass;
                 renderBackJobIntelligenceModule();
+            } else if (tab === 'audits') {
+                if (secAudits) secAudits.classList.remove('hidden');
+                if (btnAudits) btnAudits.className = activeClass;
+                renderCentralAuditLogsModule();
             } else if (tab === 'periodic') {
                 if (secPeriodic) secPeriodic.classList.remove('hidden');
                 if (btnPeriodic) btnPeriodic.className = activeClass;
@@ -4488,6 +4496,151 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
         }
         window.renderBackJobIntelligenceModule = renderBackJobIntelligenceModule;
+
+        let centralAuditLogsCache = [];
+
+        async function renderCentralAuditLogsModule() {
+            const container = document.getElementById('db-tab-audits');
+            if (!container || container.classList.contains('hidden')) return;
+
+            const tbody = document.getElementById('table-central-audit-body');
+            const totalEl = document.getElementById('audit-stat-total');
+            const handoversEl = document.getElementById('audit-stat-handovers');
+            const delaysEl = document.getElementById('audit-stat-delays');
+            const usersEl = document.getElementById('audit-stat-users');
+            const badgeEl = document.getElementById('audit-records-count-badge');
+
+            if (tbody && centralAuditLogsCache.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-10 text-slate-400">
+                            <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-500 mb-2"></i>
+                            <p class="text-xs font-semibold">Loading system audit logs...</p>
+                        </td>
+                    </tr>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+            }
+
+            try {
+                const logs = await apiRequest('/api/audit-logs');
+                centralAuditLogsCache = Array.isArray(logs) ? logs : [];
+            } catch (err) {
+                console.warn('Failed to fetch from /api/audit-logs:', err);
+            }
+
+            const actionFilter = document.getElementById('audit-filter-action')?.value || 'all';
+            const startDate = document.getElementById('audit-filter-start-date')?.value || '';
+            const endDate = document.getElementById('audit-filter-end-date')?.value || '';
+            const query = (document.getElementById('audit-filter-search')?.value || '').toLowerCase().trim();
+
+            let filtered = centralAuditLogsCache.filter(log => {
+                if (actionFilter !== 'all' && log.field_name !== actionFilter) return false;
+                const logDate = log.created_at ? log.created_at.split('T')[0].split(' ')[0] : '';
+                if (startDate && logDate < startDate) return false;
+                if (endDate && logDate > endDate) return false;
+                if (query) {
+                    const str = `${log.plate || ''} ${log.field_name || ''} ${log.old_value || ''} ${log.new_value || ''} ${log.edit_reason || ''} ${log.edited_by_name || ''} ${log.edited_by_role || ''}`.toLowerCase();
+                    if (!str.includes(query)) return false;
+                }
+                return true;
+            });
+
+            // Update Telemetry Metrics
+            const totalEvents = centralAuditLogsCache.length;
+            const handoversCount = centralAuditLogsCache.filter(l => l.field_name === 'saName').length;
+            const delaysCount = centralAuditLogsCache.filter(l => l.field_name === 'express_delay_report').length;
+            const distinctUsers = new Set(centralAuditLogsCache.map(l => l.edited_by_name).filter(Boolean)).size;
+
+            if (totalEl) totalEl.innerText = totalEvents.toString();
+            if (handoversEl) handoversEl.innerText = handoversCount.toString();
+            if (delaysEl) delaysEl.innerText = delaysCount.toString();
+            if (usersEl) usersEl.innerText = distinctUsers.toString();
+            if (badgeEl) badgeEl.innerText = `${filtered.length} Records`;
+
+            if (!tbody) return;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-12 text-slate-400">
+                            <i data-lucide="shield-check" class="w-8 h-8 mx-auto text-emerald-500 mb-2"></i>
+                            <p class="text-xs font-bold text-slate-700">No Audit Events Matching Filter</p>
+                            <p class="text-[11px] text-slate-400 mt-0.5">All operations are pristine or try adjusting your search filters.</p>
+                        </td>
+                    </tr>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            let html = '';
+            filtered.forEach(log => {
+                const formattedDate = log.created_at ? log.created_at.replace('T', ' ').substring(0, 16) : 'Recently';
+                const isHandover = log.field_name === 'saName';
+                const isDelay = log.field_name === 'express_delay_report';
+                const badgeColor = isHandover ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : isDelay ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-slate-100 text-slate-800 border-slate-200';
+
+                html += `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3 px-4 font-mono text-[11px] text-slate-500 whitespace-nowrap">${escapeHtml(formattedDate)}</td>
+                        <td class="py-3 px-4 whitespace-nowrap">
+                            <span class="font-mono font-bold text-xs bg-slate-100 border border-slate-200 text-slate-900 px-2 py-0.5 rounded shadow-2xs">${escapeHtml(log.plate || 'N/A')}</span>
+                        </td>
+                        <td class="py-3 px-4 whitespace-nowrap">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${badgeColor}">
+                                ${escapeHtml(formatFieldName(log.field_name))}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-[11px] text-slate-600 max-w-[140px] truncate" title="${escapeHtml(log.old_value || 'None')}">${escapeHtml(log.old_value || '-')}</td>
+                        <td class="py-3 px-4 font-mono font-bold text-[11px] text-slate-900 max-w-[140px] truncate" title="${escapeHtml(log.new_value || 'None')}">${escapeHtml(log.new_value || '-')}</td>
+                        <td class="py-3 px-4 text-[11px] text-slate-700 italic max-w-[200px] truncate" title="${escapeHtml(log.edit_reason || '-')}">${escapeHtml(log.edit_reason || '-')}</td>
+                        <td class="py-3 px-4 text-right whitespace-nowrap">
+                            <span class="px-2 py-0.5 bg-slate-200/80 text-slate-800 rounded text-[9.5px] font-extrabold uppercase">
+                                ${escapeHtml(log.edited_by_name || 'Staff')} (${escapeHtml(log.edited_by_role || 'SA')})
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            if (window.lucide) window.lucide.createIcons();
+        }
+        window.renderCentralAuditLogsModule = renderCentralAuditLogsModule;
+
+        function exportCentralAuditLogsCSV() {
+            if (!Array.isArray(centralAuditLogsCache) || centralAuditLogsCache.length === 0) {
+                showSystemToast('No audit logs available to export.', 'warning', 'Export Empty');
+                return;
+            }
+
+            let csv = "Created At,Vehicle Plate,Action / Field,Previous Value,Updated Value,Reason / Justification,Modified By Name,Modified By Role\n";
+            centralAuditLogsCache.forEach(log => {
+                const row = [
+                    `"${(log.created_at || '').replace(/"/g, '""')}"`,
+                    `"${(log.plate || '').replace(/"/g, '""')}"`,
+                    `"${(log.field_name || '').replace(/"/g, '""')}"`,
+                    `"${(log.old_value || '').replace(/"/g, '""')}"`,
+                    `"${(log.new_value || '').replace(/"/g, '""')}"`,
+                    `"${(log.edit_reason || '').replace(/"/g, '""')}"`,
+                    `"${(log.edited_by_name || '').replace(/"/g, '""')}"`,
+                    `"${(log.edited_by_role || '').replace(/"/g, '""')}"`
+                ];
+                csv += row.join(',') + "\n";
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `HonTech_Audit_Trail_Handovers_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showSystemToast('Audit trail CSV exported successfully.', 'success', 'Audit Export');
+        }
+        window.exportCentralAuditLogsCSV = exportCentralAuditLogsCSV;
 
         function initReportDatePickers() {
             const today = new Date().toISOString().split('T')[0];

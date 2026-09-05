@@ -1062,6 +1062,10 @@
                             class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
                             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600"></i> QC & Back-Jobs
                         </button>
+                        <button id="btn-db-tab-audits" onclick="switchDashboardTab('audits')"
+                            class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-slate-900 hover:bg-white/80 transition flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i> Audit Logs & Handovers
+                        </button>
                     </div>
                 </div>
 
@@ -2329,6 +2333,110 @@
                                 </thead>
                                 <tbody id="table-backjobs-analytics-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
                                     <!-- Populated dynamically by app.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: CENTRALIZED AUDIT LOGS & OPERATIONAL HANDOVERS -->
+                <div id="db-tab-audits" class="hidden space-y-6">
+                    <!-- Executive Header & Filter Bar -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
+                                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-sm md:text-base font-black uppercase tracking-tight text-gray-900">Operational Handover & System Audit Logs</h3>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Tamper-Proof Audit Trail of Service Advisor Handovers, Bay Changes & Operational Overrides</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="exportCentralAuditLogsCSV()" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-md cursor-pointer">
+                                    <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i> Export Audit Trail (CSV)
+                                </button>
+                                <button onclick="renderCentralAuditLogsModule()" class="bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-black uppercase tracking-wider transition shadow-2xs cursor-pointer">
+                                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-slate-500"></i> Refresh Log
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filters Row -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Action Category</label>
+                                <select id="audit-filter-action" onchange="renderCentralAuditLogsModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                                    <option value="all">All Audit Actions</option>
+                                    <option value="saName">Ticket Handovers / Takeovers (SA)</option>
+                                    <option value="location">Bay Allocations & Movements</option>
+                                    <option value="status">Status Transitions & Releases</option>
+                                    <option value="express_delay_report">Express Delay Reports</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Start Date</label>
+                                <input type="date" id="audit-filter-start-date" onchange="renderCentralAuditLogsModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">End Date</label>
+                                <input type="date" id="audit-filter-end-date" onchange="renderCentralAuditLogsModule()"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-1">Quick Search</label>
+                                <input type="text" id="audit-filter-search" oninput="renderCentralAuditLogsModule()" placeholder="Plate, Staff Name, Reason..."
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-bold text-xs text-gray-900 outline-none focus:border-red-600 focus:bg-white transition placeholder-gray-400">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4 Audit Telemetry KPI Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xs">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Total Logged Events</span>
+                            <span id="audit-stat-total" class="text-2xl font-black text-slate-900">0</span>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xs">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Ticket Takeovers (SA)</span>
+                            <span id="audit-stat-handovers" class="text-2xl font-black text-emerald-600">0</span>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xs">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Express Delay Justifications</span>
+                            <span id="audit-stat-delays" class="text-2xl font-black text-amber-600">0</span>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl shadow-2xs">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Active Modifiers</span>
+                            <span id="audit-stat-users" class="text-2xl font-black text-slate-900">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Audit Log Records Table -->
+                    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-gray-150 flex items-center justify-between">
+                            <h4 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                <i data-lucide="list" class="w-4 h-4 text-slate-600"></i> Immutable Audit Events Log
+                            </h4>
+                            <span id="audit-records-count-badge" class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200">0 Records</span>
+                        </div>
+                        <div class="overflow-x-auto max-h-[500px] overflow-y-auto custom-scroll">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="sticky top-0 z-10 bg-slate-50 border-b border-slate-200 text-[10px] font-black uppercase text-slate-500 tracking-wider">
+                                    <tr>
+                                        <th class="py-3 px-4">Date & Time</th>
+                                        <th class="py-3 px-4">Vehicle Plate</th>
+                                        <th class="py-3 px-4">Action / Field</th>
+                                        <th class="py-3 px-4">Previous Value</th>
+                                        <th class="py-3 px-4">Updated Value</th>
+                                        <th class="py-3 px-4">Reason / Justification</th>
+                                        <th class="py-3 px-4 text-right">Modified By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-central-audit-body" class="divide-y divide-gray-150 text-xs text-gray-700 font-semibold">
+                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -5868,7 +5976,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=4.90"></script>
+    <script src="js/app.js?v=4.91"></script>
 </body>
 
 </html>
