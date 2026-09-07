@@ -3891,7 +3891,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
+                            <div class="overflow-x-auto max-h-[580px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                                 <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>

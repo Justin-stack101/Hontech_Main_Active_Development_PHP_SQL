@@ -192,6 +192,78 @@ $defaultJobs = [
         'status' => 'Monitoring', 'location' => 'Bay 4', 'bay_assigned' => 4,
         'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
+    [
+        'job_id' => 'WLK-2027', 'source' => 'Walk-in', 'plate' => 'NDS 1024', 'name' => 'Mateo Santos',
+        'contact' => '0925-111-2233', 'category' => 'PMS', 'vehicle' => 'Toyota Hilux Conquest',
+        'concern' => '30,000 KM Periodic Maintenance', 'date_received' => $today,
+        'arrival' => '08:45', 'claim_stub' => "{$todayCompact}-013",
+        'evaluation' => '30k KM PMS + Fuel Filter Replacement',
+        'status' => 'Waiting', 'location' => 'None',
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2028', 'source' => 'Walk-in', 'plate' => 'CAR 8841', 'name' => 'Camille Rodriguez',
+        'contact' => '0926-222-3344', 'category' => 'GRS', 'vehicle' => 'Honda City RS',
+        'concern' => 'Front suspension knocking sound', 'date_received' => $today,
+        'arrival' => '09:15', 'claim_stub' => "{$todayCompact}-014",
+        'evaluation' => 'Front Shock Absorber & Stabilizer Link Replacement',
+        'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
+        'lane_type' => 'Flexible Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2029', 'source' => 'Walk-in', 'plate' => 'GBR 7720', 'name' => 'Gabriel Cruz',
+        'contact' => '0927-333-4455', 'category' => 'PMS', 'vehicle' => 'Mitsubishi Xpander Cross',
+        'concern' => '20,000 KM PMS + Brake Cleaning', 'date_received' => $today,
+        'arrival' => '10:00', 'claim_stub' => "{$todayCompact}-015",
+        'evaluation' => '20,000 KM Periodic Maintenance & Brake Service',
+        'status' => 'Waiting', 'location' => 'None',
+        'lane_type' => 'Express Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2030', 'source' => 'Walk-in', 'plate' => 'PAT 3390', 'name' => 'Patricia Lim',
+        'contact' => '0928-444-5566', 'category' => 'Others', 'vehicle' => 'Ford Everest Titanium',
+        'concern' => 'Power steering fluid flush & belt inspection', 'date_received' => $today,
+        'arrival' => '10:30', 'claim_stub' => "{$todayCompact}-016",
+        'evaluation' => 'Power Steering Fluid Flush & Belt Tensioner Adjustment',
+        'status' => 'Monitoring', 'location' => 'Bay 2', 'bay_assigned' => 2,
+        'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2031', 'source' => 'Walk-in', 'plate' => 'ROD 1105', 'name' => 'Rodrigo Roxas',
+        'contact' => '0929-555-6677', 'category' => 'PMS', 'vehicle' => 'Nissan Terra VL',
+        'concern' => '50,000 KM Major PMS & Coolant Drain/Fill', 'date_received' => $today,
+        'arrival' => '11:15', 'claim_stub' => "{$todayCompact}-017",
+        'evaluation' => '50,000 KM Major PMS & Radiator Coolant Flush',
+        'status' => 'Ready to Release', 'location' => 'None',
+        'lane_type' => 'Priority Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2032', 'source' => 'Walk-in', 'plate' => 'BEA 6623', 'name' => 'Beatrice Mendoza',
+        'contact' => '0930-666-7788', 'category' => 'GRS', 'vehicle' => 'Suzuki Jimny 1.5',
+        'concern' => '4WD Transfer Case Fluid Change & Differential Check', 'date_received' => $today,
+        'arrival' => '11:45', 'claim_stub' => "{$todayCompact}-018",
+        'evaluation' => '4WD Transfer Case & Rear Differential Fluid Service',
+        'status' => 'Monitoring', 'location' => 'Bay 3', 'bay_assigned' => 3,
+        'lane_type' => 'Flexible Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2033', 'source' => 'Walk-in', 'plate' => 'JON 4912', 'name' => 'Jonathan Tan',
+        'contact' => '0931-777-8899', 'category' => 'PMS', 'vehicle' => 'Hyundai Staria',
+        'concern' => '15,000 KM PMS + Cabin Air Filter Replacement', 'date_received' => $today,
+        'arrival' => '12:15', 'claim_stub' => "{$todayCompact}-019",
+        'evaluation' => '15,000 KM Periodic Maintenance & AC Filter Replace',
+        'status' => 'Waiting', 'location' => 'None',
+        'lane_type' => 'Express Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2034', 'source' => 'Walk-in', 'plate' => 'CLA 2288', 'name' => 'Clarissa Villanueva',
+        'contact' => '0932-888-9900', 'category' => 'GRS', 'vehicle' => 'Geely Coolray Sport',
+        'concern' => 'Turbo boost check & throttle body cleaning', 'date_received' => $today,
+        'arrival' => '12:45', 'claim_stub' => "{$todayCompact}-020",
+        'evaluation' => 'Turbo Boost Sensor Diagnostics & Throttle Body Cleaning',
+        'status' => 'Waiting', 'location' => 'None',
+        'lane_type' => 'Special Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+    ],
 
     // BRANCH B — TODAY (Active & Completed)
     [
