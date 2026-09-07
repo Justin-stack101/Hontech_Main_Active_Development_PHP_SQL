@@ -8167,7 +8167,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (!isNaN(stored) && stored >= 1 && stored <= 50) {
                 return stored;
             }
-            return 20; // Default facility maximum ceiling
+            return 6; // Standard default facility maximum ceiling (6 bays)
         }
         window.getFacilityMaxBayLimit = getFacilityMaxBayLimit;
 
@@ -8176,12 +8176,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Only Owner and Administrator can configure facility maximum capacity ceiling.', 'warning', 'Higher Authority Required');
                 return;
             }
-            const maxVal = Math.min(50, Math.max(1, parseInt(val, 10) || 20));
+            const maxVal = Math.min(50, Math.max(1, parseInt(val, 10) || 6));
             localStorage.setItem('hontech_max_bay_limit', maxVal.toString());
             
-            // If current active bays exceed new max limit, clamp it down
+            // Set current active bays to the new limit (or clamp if exceeding)
             const currentActive = getWorkshopBayCount();
             if (currentActive > maxVal) {
+                localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
+            } else if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+                // When Admin/Owner sets the ceiling, sync active bays to it
                 localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
             }
 
@@ -8189,9 +8192,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
             if (typeof renderStaffTables === 'function') renderStaffTables();
             if (typeof renderTV === 'function') renderTV();
-            showSystemToast(`Facility capacity ceiling set to ${maxVal} bays for Service Advisor operations.`, 'success', 'Ceiling Configured');
+            if (typeof renderReportDataModule === 'function') renderReportDataModule();
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+
+            showSystemToast(`Facility capacity ceiling set to ${maxVal} bays. Service Advisors can choose between 1 and ${maxVal} bays.`, 'success', 'Ceiling Configured');
         }
         window.setFacilityMaxBayLimit = setFacilityMaxBayLimit;
+        window.handleAdminBayCapacityChange = setFacilityMaxBayLimit;
 
         function promptCustomCeilingLimit() {
             if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
@@ -8217,13 +8224,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (!isNaN(stored) && stored >= 1) {
                 return Math.min(maxLimit, stored);
             }
-            return Math.min(maxLimit, Math.min(4, maxLimit)); // Default up to 4 service bays
+            return Math.min(maxLimit, Math.min(6, maxLimit)); // Default up to 6 service bays
         }
         window.getWorkshopBayCount = getWorkshopBayCount;
 
         function stepWorkshopBayCount(delta) {
             if (currentUserRole === 'assistant') {
                 showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
+                return;
+            }
+            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+                const currentLimit = getFacilityMaxBayLimit();
+                const nextLimit = Math.min(50, Math.max(1, currentLimit + Number(delta || 0)));
+                setFacilityMaxBayLimit(nextLimit);
                 return;
             }
             const current = getWorkshopBayCount();
@@ -8240,6 +8253,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function promptCustomBayCount() {
             if (currentUserRole === 'assistant') {
                 showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
+                return;
+            }
+            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+                promptCustomCeilingLimit();
                 return;
             }
             const maxLimit = getFacilityMaxBayLimit();
@@ -8264,6 +8281,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
                 return;
             }
+            
+            // If Owner or Admin is changing capacity, this configures the facility ceiling rule for SAs!
+            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+                setFacilityMaxBayLimit(newCount);
+                return;
+            }
+
+            // For Service Advisor, active bay selection is strictly bounded by the Owner/Admin ceiling:
             const maxLimit = getFacilityMaxBayLimit();
             const requested = parseInt(newCount, 10) || 1;
             if (requested > maxLimit) {
@@ -8292,11 +8317,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
-            if (currentUserRole === 'sa') {
-                showSystemToast(`Service Advisor set active floor capacity to ${num} bays (within Owner/Admin ceiling of ${maxLimit}).`, 'success', 'Bays Configured');
-            } else {
-                showSystemToast(`Floor active capacity scaled to ${num} service bays (Facility Ceiling: ${maxLimit}).`, 'success', 'Bays Scaled');
-            }
+            showSystemToast(`Service Advisor set active floor capacity to ${num} bays (within Owner/Admin ceiling of ${maxLimit}).`, 'success', 'Bays Configured');
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
 
@@ -8349,26 +8370,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const badge1 = document.getElementById('settings-bay-count-badge');
             if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
 
-            // Admin / Owner Bay Dropdown Selector (Facility Scale)
+            // Admin / Owner Bay Dropdown Selector (Allows selecting standard limits 1 to 20 or custom)
             const selectAdmin = document.getElementById('bays-module-select');
             if (selectAdmin) {
                 let optionsHtml = '';
-                for (let i = 1; i <= maxLimit; i++) {
+                const maxRange = Math.max(20, maxLimit);
+                for (let i = 1; i <= maxRange; i++) {
                     const isCeiling = (i === maxLimit);
-                    const label = (i === 1) ? '1 Bay' : (i === 4 ? '4 Bays (Standard Default)' : (isCeiling ? `${i} Bays (Max Allowed Ceiling)` : `${i} Bays`));
-                    optionsHtml += `<option value="${i}" ${i === bayCount ? 'selected' : ''}>${label}</option>`;
+                    const label = (i === 1) ? '1 Bay' : (i === 6 ? '6 Bays (Standard TV Limit)' : (isCeiling ? `${i} Bays (Current Ceiling)` : `${i} Bays`));
+                    optionsHtml += `<option value="${i}" ${i === maxLimit ? 'selected' : ''}>${label}</option>`;
                 }
                 selectAdmin.innerHTML = optionsHtml;
-                selectAdmin.value = bayCount.toString();
+                selectAdmin.value = maxLimit.toString();
             }
 
-            // Service Advisor Bay Dropdown Selector (Bounded 1 to N)
+            // Service Advisor Bay Dropdown Selector (Strictly bounded 1 to maxLimit ONLY)
             const selectSA = document.getElementById('sa-bays-select');
             if (selectSA) {
                 let saOptionsHtml = '';
                 for (let i = 1; i <= maxLimit; i++) {
                     const isCeiling = (i === maxLimit);
-                    const label = (i === 1) ? '1 Bay' : (isCeiling ? `${i} Bays (Max ${maxLimit})` : `${i} Bays`);
+                    const label = (i === 1) ? '1 Bay' : (isCeiling ? `${i} Bays (Max Allowed Ceiling: ${maxLimit})` : `${i} Bays`);
                     saOptionsHtml += `<option value="${i}" ${i === bayCount ? 'selected' : ''}>${label}</option>`;
                 }
                 selectSA.innerHTML = saOptionsHtml;
@@ -8376,14 +8398,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             const badgeAdmin = document.getElementById('bays-module-count-badge');
-            if (badgeAdmin) badgeAdmin.innerText = `${bayCount} Bays Active`;
+            if (badgeAdmin) badgeAdmin.innerText = `${maxLimit} Bays Ceiling`;
 
             const badgeSA = document.getElementById('sa-bays-module-count-badge');
             if (badgeSA) badgeSA.innerText = `${bayCount} Bays Active`;
 
             const subtextAdmin = document.getElementById('bays-admin-control-card-subtext');
             if (subtextAdmin) {
-                subtextAdmin.innerText = `Choose Active Workshop Bays for Today (1 to ${maxLimit} Bays Allowed by Owner/Admin)`;
+                subtextAdmin.innerText = `Configure Workshop Bay Facility Limit (Current Limit: ${maxLimit} Bays for Service Advisors)`;
             }
 
             const subtextSA = document.getElementById('bays-sa-control-card-subtext');
@@ -8391,22 +8413,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 subtextSA.innerHTML = `Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">${maxLimit}</span> Bays allowed by Owner/Admin)`;
             }
 
-            // Dynamically update quick preset chips visibility in bays-admin-control-card
+            // Presets container in bays-admin-control-card (Full presets 2 to 20 bays for Admin/Owner)
             const presetContainer = document.getElementById('bays-presets-container');
             if (presetContainer) {
-                const presetValues = [2, 4, 6, 8, 10, 12, 16, 20].filter(v => v <= maxLimit);
-                if (!presetValues.includes(maxLimit)) {
+                const presetValues = [2, 4, 6, 8, 10, 12, 16, 20];
+                if (!presetValues.includes(maxLimit) && maxLimit <= 50) {
                     presetValues.push(maxLimit);
                     presetValues.sort((a, b) => a - b);
                 }
-                let chipsHtml = `<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Quick Presets:</span>`;
+                let chipsHtml = `<span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Ceiling Presets:</span>`;
                 presetValues.forEach(pv => {
-                    const isCurrent = (pv === bayCount);
-                    chipsHtml += `<button type="button" onclick="handleWorkshopBayCountChange(${pv})" class="px-3 py-2 rounded-xl ${isCurrent ? 'bg-red-600 text-white shadow-xs font-black' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold'} border border-slate-200 text-xs transition cursor-pointer">${pv} Bays${pv === maxLimit ? ' (Max)' : ''}</button>`;
+                    const isCurrent = (pv === maxLimit);
+                    chipsHtml += `<button type="button" onclick="handleAdminBayCapacityChange(${pv})" class="px-3 py-2 rounded-xl ${isCurrent ? 'bg-red-600 text-white shadow-xs font-black' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold'} border border-slate-200 text-xs transition cursor-pointer">${pv} Bays${isCurrent ? ' (Active Limit)' : ''}</button>`;
                 });
                 chipsHtml += `
-                    <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
-                        <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-slate-300"></i> Custom...
+                    <button type="button" onclick="promptCustomCeilingLimit()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                        <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-slate-300"></i> Custom Limit...
                     </button>
                 `;
                 presetContainer.innerHTML = chipsHtml;
