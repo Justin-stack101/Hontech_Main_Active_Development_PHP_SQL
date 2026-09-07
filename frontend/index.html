@@ -3485,7 +3485,30 @@
                     </div>
                 </div>
 
-                <!-- Workshop Capacity Configuration Card (Owner, Admin & Service Advisor) -->
+                <!-- Service Advisor Bay Capacity Information Banner (Read-Only) -->
+                <div id="bays-sa-readonly-card" class="bg-blue-50/80 border border-blue-200 p-4 md:p-5 rounded-2xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 hidden">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2.5 bg-blue-100 text-blue-700 rounded-xl border border-blue-200 shrink-0">
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-sm font-black uppercase tracking-tight text-blue-950">Workshop Floor Bay Limit</h3>
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-blue-200/70 text-blue-900 border border-blue-300/80 px-2 py-0.5 rounded-md">Configured by Admin / Owner</span>
+                            </div>
+                            <p class="text-xs text-blue-800 font-medium mt-0.5">
+                                Active Capacity: <span id="sa-bays-count-text" class="font-bold text-blue-950">4 Bays Active</span>. You can allocate monitoring vehicles to <span class="font-bold text-blue-950 font-mono">Bay 1</span> through <span class="font-bold text-blue-950 font-mono">Bay <span id="sa-bays-max-text">4</span></span> in Daily Intakes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="self-start sm:self-auto shrink-0">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-800 bg-white border border-blue-200 px-3 py-1.5 rounded-xl shadow-2xs">
+                            <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-600"></i> Fixed by Authority
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Workshop Capacity Configuration Card (Owner & Admin Authority) -->
                 <div id="bays-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
@@ -5918,7 +5941,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.27"></script>
+    <script src="js/app.js?v=5.28"></script>
 </body>
 
 </html>

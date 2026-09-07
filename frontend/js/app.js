@@ -1281,8 +1281,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('bays-control-card')) {
-                // SA and Admin can scale active floor bays; Owner is view-only
-                document.getElementById('bays-control-card').style.display = (role !== 'owner') ? 'block' : 'none';
+                // Owner and Administrator have authority to scale active floor service bays
+                document.getElementById('bays-control-card').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
+            if (document.getElementById('bays-sa-readonly-card')) {
+                // SAs and Assistants see the read-only authority limit banner
+                document.getElementById('bays-sa-readonly-card').style.display = isOwnerOrAdmin ? 'none' : 'flex';
             }
 
             if (role === 'owner') {
@@ -1293,9 +1297,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
-                // Owner: Analytics Only & High-Level Telemetry (Customer Lookup removed per specification)
+                // Owner: Analytics, Workshop Bays (Authority Configuration), Staff Access, Records
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays (View-Only)</button>`;
+                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
@@ -8212,8 +8216,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.getWorkshopBayCount = getWorkshopBayCount;
 
         function stepWorkshopBayCount(delta) {
-            if (currentUserRole === 'owner') {
-                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
+            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
+                showSystemToast('Only Owner and Administrator have the authority to configure the active workshop bay capacity.', 'warning', 'Authority Required');
                 return;
             }
             const current = getWorkshopBayCount();
@@ -8230,8 +8234,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         let tempCustomModalBayCount = 4;
 
         function openCustomBayCapacityModal() {
-            if (currentUserRole === 'owner') {
-                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
+            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
+                showSystemToast('Only Owner and Administrator have the authority to configure the active workshop bay capacity.', 'warning', 'Authority Required');
                 return;
             }
             const maxLimit = getFacilityMaxBayLimit();
@@ -8275,8 +8279,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.applyCustomModalBayCount = applyCustomModalBayCount;
 
         function handleWorkshopBayCountChange(newCount) {
-            if (currentUserRole === 'owner') {
-                showSystemToast('Owner has view-only access to workshop floor bays.', 'info', 'Read Only');
+            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
+                showSystemToast('Only Owner and Administrator have the authority to configure the active workshop bay capacity.', 'warning', 'Authority Required');
                 return;
             }
             const maxLimit = getFacilityMaxBayLimit();
@@ -8340,6 +8344,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             const badge2 = document.getElementById('bays-module-count-badge');
             if (badge2) badge2.innerText = `${bayCount} / ${maxLimit} Bays Active`;
+
+            const saCountText = document.getElementById('sa-bays-count-text');
+            if (saCountText) saCountText.innerText = `${bayCount} Bays Active`;
+            const saMaxText = document.getElementById('sa-bays-max-text');
+            if (saMaxText) saMaxText.innerText = bayCount.toString();
         }
         window.initWorkshopBaySettings = initWorkshopBaySettings;
 
