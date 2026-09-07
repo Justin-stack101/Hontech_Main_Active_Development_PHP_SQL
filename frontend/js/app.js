@@ -3922,7 +3922,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // CARRY OVER BOARD
             if (document.getElementById('table-carry-over')) {
-                const carryOverJobs = allJobs.filter(j => j.status === 'Carry Over');
+                const carryOverJobs = (allJobs || []).filter(j => 
+                    j.status === 'Carry Over' || 
+                    j.status === 'Carry-Over' || 
+                    (j.status && j.status.toLowerCase() === 'carry over') ||
+                    (Boolean(j.carryOverStatus) && j.status !== 'Completed' && j.status !== 'Released' && j.status !== 'Pending')
+                );
                 carryOverJobs.sort((a, b) => {
                     const stubA = a.claimStub || '';
                     const stubB = b.claimStub || '';
@@ -4054,7 +4059,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }).join('') || `<tr><td colspan="10" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
             }
 
-            lucide.createIcons();
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
             applyPeriodicFilters();
         }
 
