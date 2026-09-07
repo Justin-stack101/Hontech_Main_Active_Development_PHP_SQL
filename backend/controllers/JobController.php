@@ -54,6 +54,20 @@ class JobController
     }
 
     /**
+     * Normalize lane type string consistently across the system
+     */
+    public static function normalizeLaneType(?string $lane): string
+    {
+        if (empty($lane)) return 'Flexible Lane';
+        $l = strtolower(trim($lane));
+        if (str_contains($l, 'express')) return 'Express Lane';
+        if (str_contains($l, 'special')) return 'Special Lane';
+        if (str_contains($l, 'priority')) return 'Priority Lane';
+        if (str_contains($l, 'flex') || str_contains($l, 'ordinary') || str_contains($l, 'standard') || str_contains($l, 'pms & grs')) return 'Flexible Lane';
+        return 'Flexible Lane';
+    }
+
+    /**
      * Normalize a job row from snake_case DB columns to camelCase for frontend
      */
     public static function normalizeJob(array $job): array
@@ -68,7 +82,7 @@ class JobController
             'vehicle'            => $job['vehicle'],
             'category'           => $job['category'],
             'concern'            => $job['concern'],
-            'laneType'           => $job['lane_type'],
+            'laneType'           => self::normalizeLaneType($job['lane_type'] ?? null),
             'dateReceived'       => $job['date_received'],
             'arrival'            => $job['arrival'],
             'departure'          => $job['departure'],
@@ -142,7 +156,7 @@ class JobController
         $apptTime     = $input['apptTime'] ?? '';
         $confirmed    = $input['confirmed'] ?? false;
         $branch       = $input['branch'] ?? 'Branch A';
-        $laneType     = $input['laneType'] ?? '';
+        $laneType     = self::normalizeLaneType($input['laneType'] ?? null);
 
         if (empty($plate) || empty($name) || empty($vehicle) || empty($category)) {
             http_response_code(400);
@@ -287,13 +301,13 @@ class JobController
                     $vacateStmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id != ? AND (location = ? OR location = ? OR bay_assigned = ?) AND status NOT IN ('Completed', 'Released')");
                     $vacateStmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}", $bayNum]);
 
-                    $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'In Progress' : $job['status'];
+                    $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'Monitoring' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ?, updated_at = NOW() WHERE id = ?');
                     $stmt->execute([$normalizedLocation, $bayNum, $newStatus, $job['id']]);
                 } else {
-                    $newStatus = ($job['status'] === 'In Progress') ? 'Waiting' : $job['status'];
-                    $stmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, status = ?, updated_at = NOW() WHERE id = ?");
-                    $stmt->execute([$newStatus, $job['id']]);
+                    // Selecting Waiting Area preserves existing status (e.g. Monitoring remains Monitoring)
+                    $stmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id = ?");
+                    $stmt->execute([$job['id']]);
                 }
             } else {
                 $dbCol = $fieldMap[$field] ?? $field;
@@ -303,6 +317,10 @@ class JobController
                     http_response_code(400);
                     echo json_encode(['message' => "Invalid field: {$field}"]);
                     return;
+                }
+
+                if ($field === 'laneType' || $dbCol === 'lane_type') {
+                    $value = self::normalizeLaneType($value);
                 }
 
                 $stmt = $db->prepare("UPDATE jobs SET `{$dbCol}` = ? WHERE id = ?");

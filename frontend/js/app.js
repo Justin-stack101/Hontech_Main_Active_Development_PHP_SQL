@@ -2210,6 +2210,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (preview) preview.value = generateStubNumber();
         }
 
+        function normalizeLaneType(lane) {
+            if (!lane) return 'Flexible Lane';
+            const str = String(lane).trim().toLowerCase();
+            if (str.includes('express')) return 'Express Lane';
+            if (str.includes('special')) return 'Special Lane';
+            if (str.includes('priority')) return 'Priority Lane';
+            if (str.includes('flex') || str.includes('ordinary') || str.includes('pms & grs') || str.includes('standard')) return 'Flexible Lane';
+            return 'Flexible Lane';
+        }
+        window.normalizeLaneType = normalizeLaneType;
+
         function getAvailableLanesForJob(category) {
             return [
                 { value: 'Express Lane', label: 'Express Lane' },
@@ -2229,7 +2240,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             [walkinLaneSelect, bookingLaneSelect].forEach(sel => {
                 if (sel) {
-                    const currentVal = sel.value;
+                    const currentVal = normalizeLaneType(sel.value);
                     sel.innerHTML = html;
                     const hasOption = options.some(opt => opt.value === currentVal);
                     sel.value = hasOption ? currentVal : options[0].value;
@@ -2556,7 +2567,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const min = document.getElementById('intake-arrival-minute')?.value || '00';
                     arrival = `${hour}:${min}`;
                 }
-                laneType = document.getElementById('intake-walkin-lane-type')?.value || 'Flexible Lane';
+                laneType = normalizeLaneType(document.getElementById('intake-walkin-lane-type')?.value);
                 claimStub = document.getElementById('intake-stub-preview')?.value || generateStubNumber();
             } else {
                 apptDate = date;
@@ -2569,7 +2580,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     apptTime = `${hour}:${min}`;
                 }
                 confirmed = document.getElementById('intake-confirmed') ? document.getElementById('intake-confirmed').checked : false;
-                laneType = document.getElementById('intake-lane-type')?.value || 'Flexible Lane';
+                laneType = normalizeLaneType(document.getElementById('intake-lane-type')?.value);
             }
 
             const intakePayload = {
@@ -2599,18 +2610,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         async function updateJobField(jobId, field, value, editReason = null) {
             try {
                 const job = allJobs.find(j => (j.id === jobId || j.job_id === jobId));
-                if (job && field === 'laneType') {
-                    const allowed = getAvailableLanesForJob(job.category).map(l => l.value);
-                    if (!allowed.includes(value)) {
-                        showSystemToast(`Lane "${value}" is not permitted for category "${job.category}". Allowed: ${allowed.join(', ')}`, 'error', 'Invalid Lane');
-                        renderStaffTables();
-                        return;
+                if (field === 'laneType') {
+                    value = normalizeLaneType(value);
+                    if (job) {
+                        const allowed = getAvailableLanesForJob(job.category).map(l => l.value);
+                        if (!allowed.includes(value)) {
+                            showSystemToast(`Lane "${value}" is not permitted for category "${job.category}". Allowed: ${allowed.join(', ')}`, 'error', 'Invalid Lane');
+                            renderStaffTables();
+                            return;
+                        }
                     }
                 }
 
                 if (job && field === 'location' && value && value !== 'None') {
-                    const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
-                    if (!isMonitoringOrActive) {
+                    if (job.status !== 'Monitoring') {
                         showSystemToast(`Vehicle must be set to 'Monitoring' before allocating a workshop bay.`, 'warning', 'Status Locked');
                         renderStaffTables();
                         return;
@@ -2622,9 +2635,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (normalized) value = normalized;
                 }
 
-                if (field === 'location' && typeof value === 'string' && value.toLowerCase().startsWith('bay')) {
-                    playBayDispatchSound();
-                    if (job) announceVehicleMonitoring(job, value);
+                if (field === 'location' && value) {
+                    if (typeof value === 'string' && (value.toLowerCase().startsWith('bay') || value.toLowerCase().startsWith('lift'))) {
+                        playBayDispatchSound();
+                        if (job) announceBayAllocation(job, value.replace(/^lift/i, 'Bay '));
+                    } else if (value === 'None' || value === 'Waiting Area') {
+                        if (job) announceVehicleMonitoring(job, 'Waiting Area');
+                    }
                 }
 
                 const payload = { field, value };
@@ -2687,6 +2704,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             await updateJobField(jobId, 'category', val);
         }
         window.handleTableCategoryChange = handleTableCategoryChange;
+
+        async function handleTableLaneChange(jobId, selectElement) {
+            const val = selectElement.value;
+            await updateJobField(jobId, 'laneType', val);
+        }
+        window.handleTableLaneChange = handleTableLaneChange;
 
         function assignMeToJob(jobId) {
             document.getElementById('assign-job-id').value = jobId;
@@ -2775,7 +2798,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         async function setJobStatus(jobId, newStatus) {
             try {
                 // Auto-calculate goal status if moving to end states
-                const job = allJobs.find(j => j.id === jobId);
+                const job = allJobs.find(j => (j.id === jobId || j.job_id === jobId));
+                const prevStatus = job ? job.status : '';
+
                 if (job && (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed')) {
                     const computed = calculateGoalStatusForJob(job);
                     if (computed !== 'N/A' && job.goalStatus !== computed) {
@@ -2787,14 +2812,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
 
-                if (newStatus === 'In Progress') {
-                    playBayDispatchSound();
-                } else if (newStatus === 'Ready' || newStatus === 'Ready to Release') {
+                if (newStatus === 'Ready' || newStatus === 'Ready to Release') {
                     if (job) announceVehicleReady(job);
                     else playAutomotiveChime();
-                }
-
-                if (newStatus === 'Waiting') {
+                } else if (newStatus === 'Monitoring') {
+                    showSystemToast(`Vehicle moved to Monitoring. You can now assign a workshop bay.`, 'info', 'Status: Monitoring');
+                    if (job) announceVehicleMonitoring(job, job.location || 'Waiting Area');
+                } else if (newStatus === 'Carry Over') {
+                    showSystemToast(`Vehicle moved to Carry Over.`, 'warning', 'Status: Carry Over');
+                    if (job) announceVehicleCarryOver(job);
+                } else if (newStatus === 'Waiting') {
+                    if (prevStatus === 'Carry Over') {
+                        showSystemToast(`Vehicle returned to active service queue.`, 'info', 'Returned to Active');
+                        if (job) announceVehicleReturnActive(job);
+                    }
                     // Reset location back to Waiting Area when vehicle returns to Waiting
                     await apiRequest(`/api/jobs/${jobId}/field`, {
                         method: 'PATCH',
@@ -2807,11 +2838,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     method: 'PATCH',
                     body: { status: newStatus }
                 });
-
-                if (newStatus === 'Monitoring') {
-                    showSystemToast(`Vehicle moved to Monitoring. You can now assign a workshop bay.`, 'info', 'Status: Monitoring');
-                    if (job) announceVehicleMonitoring(job, job.location || 'Monitoring Area');
-                }
 
                 await loadData();
                 renderStaffTables();
@@ -3562,18 +3588,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         ${isEditable ? `
                                         <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-1.5 py-0.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
                                             <i data-lucide="route" class="w-3 h-3 text-red-600 shrink-0 pointer-events-none"></i>
-                                            <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
+                                            <span class="text-[10px] font-bold uppercase text-slate-800 pointer-events-none">${normalizeLaneType(job.laneType).replace(/\s*Lane/i, '')}</span>
                                             <i data-lucide="chevron-down" class="w-2.5 h-2.5 text-slate-400 shrink-0 pointer-events-none"></i>
-                                            <select onchange="requestFieldEditWithReason('${job.id}', 'laneType', this.value, '${job.laneType || ''}')" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
+                                            <select onchange="handleTableLaneChange('${job.id}', this)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" title="Change Lane">
                                                 ${getAvailableLanesForJob(job.category).map(opt => `
-                                                    <option value="${opt.value}" ${job.laneType === opt.value ? 'selected' : ''}>${opt.label}</option>
+                                                    <option value="${opt.value}" ${normalizeLaneType(job.laneType) === opt.value ? 'selected' : ''}>${opt.label}</option>
                                                 `).join('')}
                                             </select>
                                         </div>
                                         ` : `
                                         <div class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-slate-700 bg-slate-50 border border-slate-200 rounded-md px-1.5 py-0.5 shadow-2xs shrink-0">
                                             <i data-lucide="route" class="w-3 h-3 text-red-500 shrink-0"></i>
-                                            <span>${job.laneType ? job.laneType.replace(/\s*Lane/i, '') : 'FLEXIBLE'}</span>
+                                            <span>${normalizeLaneType(job.laneType).replace(/\s*Lane/i, '')}</span>
                                         </div>
                                         `}
                                     </div>
@@ -3715,8 +3741,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <!-- Location -->
                             <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap min-w-[165px]">
                                 ${(() => {
-                                    const isMonitoringOrActive = job.status === 'Monitoring' || job.status === 'In Progress';
-                                    if (isEditable && isMonitoringOrActive) {
+                                    const isMonitoring = job.status === 'Monitoring';
+                                    if (isEditable && isMonitoring) {
                                         return `
                                         <div class="relative group inline-flex items-center justify-between gap-1.5 border rounded-xl px-3 py-1.5 shadow-2xs transition min-w-[155px] max-w-[170px] ${
                                             (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift')))
@@ -3747,7 +3773,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             </select>
                                         </div>
                                         `;
-                                    } else if (isEditable && !isMonitoringOrActive) {
+                                    } else if (isEditable && !isMonitoring) {
                                         return `
                                         <div class="inline-flex items-center justify-between gap-1.5 border border-slate-200 bg-slate-100/90 text-slate-500 rounded-xl px-3 py-1.5 shadow-2xs min-w-[155px] max-w-[170px] cursor-not-allowed select-none opacity-85" 
                                              title="Vehicle is in '${job.status}'. Set Status to 'Monitoring' to assign a workshop bay.">
@@ -4212,6 +4238,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
                 
                 document.getElementById('carryover-modal').classList.add('hidden');
+                const targetJob = (allJobs || []).find(j => (j.id === jobId || j.job_id === jobId));
+                if (targetJob) {
+                    targetJob.carryOverStatus = carryOverStatus;
+                    targetJob.promisedDate = promisedDate;
+                    announceVehicleCarryOver(targetJob);
+                }
                 showSystemToast('Vehicle successfully moved to Carry Over.', 'success', 'Carry-Over Updated');
                 await loadData();
                 renderStaffTables();
@@ -4515,7 +4547,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         const sa = j.saName || j.handled_by || 'Assigned SA';
                         const concern = j.concern || j.remarks || j.evaluation || j.category || 'Return inspection';
                         const isDone = j.status === 'Released' || j.status === 'Completed';
-                        const statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider ${isDone ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-800 border border-slate-200'}">${j.status || 'In Progress'}</span>`;
+                        const statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider ${isDone ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-800 border border-slate-200'}">${j.status || 'Monitoring'}</span>`;
 
                         return `
                             <tr class="hover:bg-slate-50/70 transition border-b border-gray-100">
@@ -7333,29 +7365,79 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         window.toggleTVDevToolbox = toggleDevToolbox;
 
-        function simulateVehicleMonitoringEvent() {
+        function toggleTVDevDrawer(force) {
+            const drawer = document.getElementById('tv-dev-drawer');
+            if (!drawer) return;
+            if (force !== undefined) {
+                if (force) drawer.classList.remove('hidden');
+                else drawer.classList.add('hidden');
+            } else {
+                drawer.classList.toggle('hidden');
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+        window.toggleTVDevDrawer = toggleTVDevDrawer;
+
+        function triggerTVSimulationEvent(eventType, customData = {}) {
+            const inputPlate = (document.getElementById('tv-dev-input-plate')?.value?.trim()) || customData.plate || 'NDO 8492';
+            const inputVehicle = (document.getElementById('tv-dev-input-vehicle')?.value?.trim()) || customData.vehicle || 'Honda Civic RS';
+            const inputCustomer = (document.getElementById('tv-dev-input-customer')?.value?.trim()) || customData.customer || 'Sophia Loren';
+
             const sampleJob = {
-                plate: 'NDO 8492',
-                customer: 'Sophia Loren',
-                location: 'Service Bay 1',
-                claimStub: 'CS-104'
+                plate: inputPlate,
+                customer: inputCustomer,
+                name: inputCustomer,
+                vehicle: inputVehicle,
+                location: customData.location || 'Bay 1',
+                claimStub: customData.claimStub || 'CS-104',
+                carryOverStatus: customData.reason || 'Awaiting Parts'
             };
-            showSystemToast('Simulating: Vehicle Sent to Bay 1', 'info', 'TV Dev Simulator');
-            announceVehicleMonitoring(sampleJob, 'Service Bay 1');
+
+            if (eventType === 'monitoring') {
+                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Monitoring`, 'info', 'TV Dev Simulator');
+                announceVehicleMonitoring(sampleJob, sampleJob.location || 'Workshop Queue');
+            } else if (eventType === 'bay_assigned') {
+                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Bay Allocation`, 'info', 'TV Dev Simulator');
+                announceBayAllocation(sampleJob, sampleJob.location || 'Bay 1');
+            } else if (eventType === 'ready') {
+                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Ready for Release`, 'success', 'TV Dev Simulator');
+                announceVehicleReady(sampleJob);
+            } else if (eventType === 'carryover') {
+                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Carry Over`, 'warning', 'TV Dev Simulator');
+                announceVehicleCarryOver(sampleJob);
+            } else if (eventType === 'return_active') {
+                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Return to Active`, 'info', 'TV Dev Simulator');
+                announceVehicleReturnActive(sampleJob);
+            }
+        }
+        window.triggerTVSimulationEvent = triggerTVSimulationEvent;
+
+        function simulateVehicleMonitoringEvent() {
+            triggerTVSimulationEvent('monitoring');
         }
         window.simulateVehicleMonitoringEvent = simulateVehicleMonitoringEvent;
 
+        function simulateBayAllocationEvent() {
+            triggerTVSimulationEvent('bay_assigned');
+        }
+        window.simulateBayAllocationEvent = simulateBayAllocationEvent;
+
         function simulateVehicleReadyEvent() {
-            const sampleJob = {
-                plate: 'NDO 8492',
-                customer: 'Sophia Loren',
-                location: 'Claim Lounge',
-                claimStub: 'CS-104'
-            };
-            showSystemToast('Simulating: Vehicle Ready for Release', 'success', 'TV Dev Simulator');
-            announceVehicleReady(sampleJob);
+            triggerTVSimulationEvent('ready');
         }
         window.simulateVehicleReadyEvent = simulateVehicleReadyEvent;
+
+        function simulateCarryOverEvent() {
+            triggerTVSimulationEvent('carryover');
+        }
+        window.simulateCarryOverEvent = simulateCarryOverEvent;
+
+        function simulateReturnActiveEvent() {
+            triggerTVSimulationEvent('return_active');
+        }
+        window.simulateReturnActiveEvent = simulateReturnActiveEvent;
 
         function dispatchCustomTVSimulation() {
             const plateInput = document.getElementById('tv-dev-sim-plate');
@@ -7363,23 +7445,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const statusSelect = document.getElementById('tv-dev-sim-status');
 
             const plate = (plateInput && plateInput.value.trim()) || 'NDO 8492';
-            const customer = (customerInput && customerInput.value.trim()) || 'Valued Customer';
+            const customer = (customerInput && customerInput.value.trim()) || 'Sophia Loren';
             const statusType = (statusSelect && statusSelect.value) || 'Monitoring';
 
-            const customJob = {
-                plate: plate,
-                customer: customer,
-                location: statusType === 'Monitoring' ? 'Service Bay 1' : 'Service Counter',
-                claimStub: 'CS-' + Math.floor(100 + Math.random() * 900)
-            };
-
-            if (statusType === 'Ready') {
-                showSystemToast(`Broadcasting Custom Ready Announcement for ${plate}...`, 'success', 'TV Voice Broadcast');
-                announceVehicleReady(customJob);
-            } else {
-                showSystemToast(`Broadcasting Custom Monitoring Announcement for ${plate}...`, 'info', 'TV Voice Broadcast');
-                announceVehicleMonitoring(customJob, 'Service Bay 1');
-            }
+            triggerTVSimulationEvent(statusType.toLowerCase().replace(/\s+/g, '_'), { plate, customer });
         }
         window.dispatchCustomTVSimulation = dispatchCustomTVSimulation;
 
@@ -7433,25 +7502,95 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (!job) return;
             const plateSpoken = formatPlateForSpeech(job.plate);
             const customer = job.customer || job.name || 'valued customer';
-            const loc = locationName || job.location || 'the workshop bay';
+            const loc = locationName || job.location || 'the workshop queue';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
             
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now being monitored in ${loc}.`;
+            const message = `Attention please. Customer ${customer}, vehicle ${plateSpoken}, is now under monitoring in ${loc}.`;
             speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner(`${job.plate || 'Vehicle'} — In ${loc}`);
+            triggerTVSlideAlertBanner({
+                type: 'monitoring',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName,
+                location: loc
+            });
         }
         window.announceVehicleMonitoring = announceVehicleMonitoring;
+
+        function announceBayAllocation(job, bayName) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const bay = bayName || job.location || 'Bay 1';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
+
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is assigned to ${bay}.`;
+            playBayDispatchSound();
+            speakTVAnnouncement(message);
+            triggerTVSlideAlertBanner({
+                type: 'bay_assigned',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName,
+                location: bay
+            });
+        }
+        window.announceBayAllocation = announceBayAllocation;
 
         function announceVehicleReady(job) {
             if (!job) return;
             const plateSpoken = formatPlateForSpeech(job.plate);
             const customer = job.customer || job.name || 'valued customer';
             const stubText = job.claimStub ? `Claim stub ${job.claimStub}.` : '';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
             const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now ready for release. ${stubText} Please proceed to the service counter.`;
             speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner(`${job.plate || 'Vehicle'} — Ready to Claim!`);
+            triggerTVSlideAlertBanner({
+                type: 'ready',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName,
+                claimStub: job.claimStub
+            });
         }
         window.announceVehicleReady = announceVehicleReady;
+
+        function announceVehicleCarryOver(job) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const reason = job.carryOverStatus || job.reason || 'Awaiting Parts';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
+
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been moved to carry over due to ${reason}.`;
+            speakTVAnnouncement(message);
+            triggerTVSlideAlertBanner({
+                type: 'carryover',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName,
+                reason: reason
+            });
+        }
+        window.announceVehicleCarryOver = announceVehicleCarryOver;
+
+        function announceVehicleReturnActive(job) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
+
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has returned to the active service queue.`;
+            speakTVAnnouncement(message);
+            triggerTVSlideAlertBanner({
+                type: 'return_active',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName
+            });
+        }
+        window.announceVehicleReturnActive = announceVehicleReturnActive;
 
         function testTVVoiceAnnouncement() {
             const sampleJob = {
@@ -7694,28 +7833,69 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }, { passive: true });
 
-        function triggerTVSlideAlertBanner(textOrPlate = 'Vehicle') {
+        function triggerTVSlideAlertBanner(eventData = 'Vehicle') {
             const banner = document.getElementById('tv-ready-alert-banner');
-            const text = document.getElementById('tv-ready-alert-text');
             if (!banner) return;
 
-            let msg = String(textOrPlate || 'Vehicle');
-            if (!msg.includes('Ready') && !msg.includes('—') && !msg.includes('Vehicle')) {
-                msg = `Vehicle Ready: ${msg} — Ready to Claim!`;
-            } else if (!msg.startsWith('Vehicle')) {
-                msg = `Vehicle: ${msg}`;
+            let type = 'ready';
+            let plate = 'NDO 8492';
+            let vehicle = 'Honda Civic RS';
+            let statusText = 'READY FOR RELEASE';
+            let iconName = 'bell';
+
+            if (typeof eventData === 'string') {
+                vehicle = eventData.replace(/🔔\s*/g, '').trim();
+            } else if (typeof eventData === 'object' && eventData !== null) {
+                type = eventData.type || 'ready';
+                plate = eventData.plate || 'NDO 8492';
+                vehicle = eventData.vehicle || 'Honda Civic RS';
+
+                if (type === 'monitoring') {
+                    statusText = 'WORKSHOP MONITORING';
+                    iconName = 'radio';
+                } else if (type === 'bay_assigned') {
+                    const bayLoc = eventData.location || 'Bay 1';
+                    statusText = `ALLOCATED · ${bayLoc.toUpperCase()}`;
+                    iconName = 'layout-grid';
+                } else if (type === 'carryover') {
+                    statusText = 'CARRY OVER HOLD';
+                    iconName = 'clock';
+                } else if (type === 'return_active') {
+                    statusText = 'RETURNED TO ACTIVE';
+                    iconName = 'rotate-ccw';
+                } else {
+                    // ready
+                    statusText = 'READY FOR RELEASE';
+                    iconName = 'bell';
+                }
             }
 
-            // Remove bell emoji 🔔 to keep typography bold, clean, and crisp
-            msg = msg.replace(/🔔\s*/g, '').trim();
+            const plateEl = document.getElementById('tv-ready-alert-plate');
+            if (plateEl) plateEl.innerText = plate;
 
-            if (text) text.innerText = msg;
+            const modelEl = document.getElementById('tv-ready-alert-model');
+            if (modelEl) modelEl.innerText = vehicle;
+
+            const statusTextEl = document.getElementById('tv-ready-alert-status-text');
+            if (statusTextEl) statusTextEl.innerText = statusText;
+
+            const headerEl = document.getElementById('tv-ready-alert-header');
+            if (headerEl) {
+                headerEl.className = 'bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700';
+            }
+
+            const iconEl = document.getElementById('tv-ready-alert-icon');
+            if (iconEl) {
+                iconEl.setAttribute('data-lucide', iconName);
+            }
+
             banner.classList.remove('hidden');
 
             if (tvAlertBannerTimeout) clearTimeout(tvAlertBannerTimeout);
             tvAlertBannerTimeout = setTimeout(() => {
                 banner.classList.add('hidden');
-            }, 7000);
+            }, 5000);
+
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
                 window.lucide.createIcons();
             }
@@ -7892,19 +8072,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 tvGRS.innerHTML = baysHTML;
             }
             // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
-            const activeLaneJobs = (allJobs || []).filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
+            const activeLaneJobs = (allJobs || []).filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
                     statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Ready</span>`;
-                } else if (job.status === 'In Progress') {
-                    statusBadge = `<span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">In Progress</span>`;
                 } else if (job.status === 'Waiting') {
                     statusBadge = `<span class="bg-gray-100 text-gray-900 border-2 border-gray-400 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
                 } else {
-                    statusBadge = `<span class="bg-gray-100 text-gray-900 border border-gray-300 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">Monitoring</span>`;
+                    statusBadge = `<span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">Monitoring</span>`;
                 }
                 return `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
@@ -8237,9 +8415,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         if (status === 'Monitoring') {
                             dotColor = 'bg-blue-600';
                             statusBadgeHtml = `<span class="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> MONITORING</span>`;
-                        } else if (status === 'In Progress') {
-                            dotColor = 'bg-indigo-600';
-                            statusBadgeHtml = `<span class="bg-indigo-50 text-indigo-700 border border-indigo-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span> IN PROGRESS</span>`;
                         } else if (status === 'Ready to Release' || status === 'Ready') {
                             dotColor = 'bg-emerald-600';
                             statusBadgeHtml = `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> READY TO RELEASE</span>`;
@@ -8578,6 +8753,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const isOwnerOrAdmin = currentUserRole === 'owner' || currentUserRole === 'admin';
                 const jobsUrl = isTVMode ? '/api/jobs?monitor=true' : (isOwnerOrAdmin ? '/api/jobs?all=true' : '/api/jobs');
                 allJobs = await apiRequest(jobsUrl);
+                if (Array.isArray(allJobs)) {
+                    allJobs.forEach(j => {
+                        j.laneType = normalizeLaneType(j.laneType);
+                    });
+                }
 
                 // Fetch and cache Express Lane Delay Incident Reports
                 try {

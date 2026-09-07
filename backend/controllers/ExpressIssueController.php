@@ -85,7 +85,7 @@ class ExpressIssueController
                 $jobId,
                 $plate,
                 'express_delay_report',
-                'In Progress (2H Limit)',
+                'Monitoring (2H Limit)',
                 "Reported: {$finalReasonCategory}",
                 $reasonDetails ?: "Express 2H limit delay reported by {$user['name']}",
                 $user['id'] ?? 0,

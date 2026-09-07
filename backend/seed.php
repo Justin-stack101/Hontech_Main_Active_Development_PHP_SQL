@@ -90,7 +90,7 @@ $defaultJobs = [
         'concern' => 'Brakes squeaking, check pads', 'date_received' => $today,
         'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
         'parts_available' => 'Pending', 'evaluation' => 'Front Brake Pads Replacement',
-        'status' => 'In Progress', 'location' => 'Lift 1', 'bay_assigned' => 1,
+        'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
         'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
@@ -135,7 +135,7 @@ $defaultJobs = [
         'concern' => 'Clutch slipping, inspect assembly', 'date_received' => $today,
         'arrival' => '09:30', 'claim_stub' => "{$todayCompact}-006",
         'evaluation' => 'Clutch Disc & Release Bearing Replace',
-        'status' => 'In Progress', 'location' => 'Lift 2', 'bay_assigned' => 2,
+        'status' => 'Monitoring', 'location' => 'Bay 2', 'bay_assigned' => 2,
         'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
@@ -144,7 +144,7 @@ $defaultJobs = [
         'concern' => 'Engine check light & CVT fluid change', 'date_received' => $today,
         'arrival' => '10:15', 'claim_stub' => "{$todayCompact}-007",
         'evaluation' => 'OBD Diagnostic Scan & HCF-2 Fluid Flush',
-        'status' => 'Monitoring', 'location' => 'Lift 3', 'bay_assigned' => 3,
+        'status' => 'Monitoring', 'location' => 'Bay 3', 'bay_assigned' => 3,
         'lane_type' => 'Express Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
@@ -171,7 +171,7 @@ $defaultJobs = [
         'concern' => 'Suspension noise & wheel alignment', 'date_received' => $today,
         'arrival' => '12:00', 'claim_stub' => "{$todayCompact}-010",
         'evaluation' => 'Front Shock Bushing Replace & Calibrate',
-        'status' => 'In Progress', 'location' => 'Lift 4', 'bay_assigned' => 4,
+        'status' => 'Monitoring', 'location' => 'Bay 4', 'bay_assigned' => 4,
         'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
 
@@ -182,7 +182,7 @@ $defaultJobs = [
         'concern' => 'Transmission fluid leak check', 'date_received' => $today,
         'arrival' => '08:45', 'claim_stub' => "EAST-{$todayCompact}-001",
         'parts_available' => 'Yes', 'evaluation' => 'Replacing seal',
-        'status' => 'In Progress', 'location' => 'Bay 1', 'bay_assigned' => 1,
+        'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
         'sa_name' => 'Alex Valenzuela', 'branch' => 'Branch B'
     ],
     [
