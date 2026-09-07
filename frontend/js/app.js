@@ -1280,10 +1280,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 // Both Owner and Administrator have authority to configure facility max capacity ceiling
                 document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
-            const canManageActiveBays = (role === 'owner' || role === 'admin' || role === 'sa');
-            if (document.getElementById('bays-control-card')) {
-                // Owner, Admin, and SA can choose active floor service bays (SA bounded by Owner ceiling)
-                document.getElementById('bays-control-card').style.display = canManageActiveBays ? 'block' : 'none';
+            if (document.getElementById('bays-admin-control-card')) {
+                // Owner and Admin see the full capacity configuration interface with presets and custom tools
+                document.getElementById('bays-admin-control-card').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
+            if (document.getElementById('bays-sa-control-card')) {
+                // SAs see only the single Total Active Bays selection bar bounded by Owner/Admin ceiling
+                document.getElementById('bays-sa-control-card').style.display = (role === 'sa') ? 'block' : 'none';
             }
             if (document.getElementById('bays-sa-readonly-card')) {
                 // SAs see the operational policy banner clarifying the ceiling and active selection
@@ -8329,27 +8332,44 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const badge1 = document.getElementById('settings-bay-count-badge');
             if (badge1) badge1.innerText = `${maxLimit} Bays Max Ceiling`;
 
-            const select2 = document.getElementById('bays-module-select');
-            if (select2) {
+            // Admin / Owner Bay Dropdown Selector (Facility Scale)
+            const selectAdmin = document.getElementById('bays-module-select');
+            if (selectAdmin) {
                 let optionsHtml = '';
                 for (let i = 1; i <= maxLimit; i++) {
                     const isCeiling = (i === maxLimit);
-                    const label = (i === 1) ? '1 Bay (Solo Pod)' : (i === 4 ? '4 Bays (Standard Default)' : (isCeiling ? `${i} Bays (Max Allowed Ceiling)` : `${i} Bays`));
+                    const label = (i === 1) ? '1 Bay' : (i === 4 ? '4 Bays (Standard Default)' : (isCeiling ? `${i} Bays (Max Allowed Ceiling)` : `${i} Bays`));
                     optionsHtml += `<option value="${i}" ${i === bayCount ? 'selected' : ''}>${label}</option>`;
                 }
-                select2.innerHTML = optionsHtml;
+                selectAdmin.innerHTML = optionsHtml;
+                selectAdmin.value = bayCount.toString();
             }
-            const badge2 = document.getElementById('bays-module-count-badge');
-            if (badge2) badge2.innerText = `${bayCount} / ${maxLimit} Bays Active`;
 
-            const subtextEl = document.getElementById('bays-control-card-subtext');
+            // Service Advisor Bay Dropdown Selector (Bounded 1 to N)
+            const selectSA = document.getElementById('sa-bays-select');
+            if (selectSA) {
+                let saOptionsHtml = '';
+                for (let i = 1; i <= maxLimit; i++) {
+                    const isCeiling = (i === maxLimit);
+                    const label = (i === 1) ? '1 Bay' : (isCeiling ? `${i} Bays (Max ${maxLimit})` : `${i} Bays`);
+                    saOptionsHtml += `<option value="${i}" ${i === bayCount ? 'selected' : ''}>${label}</option>`;
+                }
+                selectSA.innerHTML = saOptionsHtml;
+                selectSA.value = bayCount.toString();
+            }
+
+            const badgeAdmin = document.getElementById('bays-module-count-badge');
+            if (badgeAdmin) badgeAdmin.innerText = `${bayCount} Bays Active`;
+
+            const badgeSA = document.getElementById('sa-bays-module-count-badge');
+            if (badgeSA) badgeSA.innerText = `${bayCount} Bays Active`;
+
+            const subtextEl = document.getElementById('bays-admin-control-card-subtext');
             if (subtextEl) {
-                subtextEl.innerText = (currentUserRole === 'sa') 
-                    ? `Choose Active Workshop Bays for Today (1 to ${maxLimit} Bays Allowed by Owner/Admin)` 
-                    : `Scale Floor Service Bays (1 to ${maxLimit} Bays · Facility Ceiling: ${maxLimit})`;
+                subtextEl.innerText = `Choose Active Workshop Bays for Today (1 to ${maxLimit} Bays Allowed by Owner/Admin)`;
             }
 
-            // Dynamically update quick preset chips visibility in bays-control-card
+            // Dynamically update quick preset chips visibility in bays-admin-control-card
             const presetContainer = document.getElementById('bays-presets-container');
             if (presetContainer) {
                 const presetValues = [2, 4, 6, 8, 10, 12, 16, 20].filter(v => v <= maxLimit);

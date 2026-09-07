@@ -3553,8 +3553,8 @@
                     </div>
                 </div>
 
-                <!-- Workshop Capacity Configuration Card (Owner, Admin & SA Selection) -->
-                <div id="bays-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
+                <!-- Admin/Owner Floor Capacity Configuration Card (Full Presets & Scaling Controls) -->
+                <div id="bays-admin-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
                             <div class="p-2.5 bg-slate-100 text-slate-700 rounded-xl border border-slate-200">
@@ -3562,7 +3562,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Floor Capacity Configuration</h3>
-                                <p id="bays-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Scale Active Workshop Bays (1 to 20 Bays)</p>
+                                <p id="bays-admin-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Choose Active Workshop Bays for Today (1 to 20 Bays Allowed by Owner/Admin)</p>
                             </div>
                         </div>
                         <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 px-3 py-1 rounded-full">4 Bays Active</span>
@@ -3590,10 +3590,50 @@
                         <!-- Quick Presets Container (Dynamically bounded by Owner/Admin ceiling) -->
                         <div id="bays-presets-container" class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
                             <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Quick Presets:</span>
+                            <button type="button" onclick="handleWorkshopBayCountChange(2)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">2 Bays</button>
                             <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">4 Bays</button>
                             <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">6 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">8 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">10 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">12 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">16 Bays</button>
+                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">20 Bays (Max)</button>
                             <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
                                 <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-slate-300"></i> Custom...
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Advisor Total Active Bays Selection Bar (SA only - bounded strictly by Admin ceiling) -->
+                <div id="bays-sa-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-200">
+                                <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Total Active Bays</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-0.5">Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">6</span> Bays allowed by Owner/Admin)</p>
+                            </div>
+                        </div>
+                        <span id="sa-bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full">4 Bays Active</span>
+                    </div>
+
+                    <div class="max-w-md">
+                        <label class="text-[11px] text-slate-700 font-bold uppercase tracking-wider block mb-2">Total Active Service Bays</label>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="stepWorkshopBayCount(-1)" title="Decrease Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                <i data-lucide="minus" class="w-4 h-4"></i>
+                            </button>
+                            <div class="relative flex-1">
+                                <select id="sa-bays-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-slate-900 focus:border-blue-600 focus:bg-white transition cursor-pointer appearance-none">
+                                    <!-- Dynamically Populated 1 to N (Bounded by Admin ceiling) -->
+                                </select>
+                                <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 pointer-events-none absolute right-4 top-3.5"></i>
+                            </div>
+                            <button type="button" onclick="stepWorkshopBayCount(1)" title="Increase Bay Count" class="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-black text-lg transition cursor-pointer active:scale-95 shadow-2xs">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </div>
@@ -5967,7 +6007,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.30"></script>
+    <script src="js/app.js?v=5.31"></script>
 </body>
 
 </html>
