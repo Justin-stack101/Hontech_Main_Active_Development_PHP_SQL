@@ -3485,26 +3485,71 @@
                     </div>
                 </div>
 
-                <!-- Service Advisor Bay Capacity Information Banner (Read-Only) -->
-                <div id="bays-sa-readonly-card" class="bg-blue-50/80 border border-blue-200 p-4 md:p-5 rounded-2xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 hidden">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2.5 bg-blue-100 text-blue-700 rounded-xl border border-blue-200 shrink-0">
-                            <i data-lucide="shield-check" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="text-sm font-black uppercase tracking-tight text-blue-950">Workshop Floor Bay Limit</h3>
-                                <span class="text-[10px] font-bold uppercase tracking-wider bg-blue-200/70 text-blue-900 border border-blue-300/80 px-2 py-0.5 rounded-md">Configured by Admin / Owner</span>
+                <!-- Service Advisor Bay Operating Rules & Policy Board (Read-Only Authority Enforcement) -->
+                <div id="bays-sa-readonly-card" class="bg-gradient-to-r from-blue-50/95 via-indigo-50/70 to-blue-50/95 border-2 border-blue-200 p-5 md:p-6 rounded-2xl shadow-sm flex flex-col gap-4 hidden">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/80 pb-3.5">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-blue-600 text-white rounded-xl shadow-xs shrink-0">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
                             </div>
-                            <p class="text-xs text-blue-800 font-medium mt-0.5">
-                                Active Capacity: <span id="sa-bays-count-text" class="font-bold text-blue-950">4 Bays Active</span>. You can allocate monitoring vehicles to <span class="font-bold text-blue-950 font-mono">Bay 1</span> through <span class="font-bold text-blue-950 font-mono">Bay <span id="sa-bays-max-text">4</span></span> in Daily Intakes.
-                            </p>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 class="text-base font-black uppercase tracking-tight text-blue-950">Workshop Bay Operating Rules & Policy</h3>
+                                    <span class="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-2xs">Owner / Admin Mandate</span>
+                                </div>
+                                <p class="text-xs text-blue-800 font-medium mt-0.5">
+                                    Floor Capacity Rule: <span id="sa-bays-count-text" class="font-bold text-blue-950">4 Bays Active</span>. Service Advisor allocation is legally restricted to <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300">Bay 1</span> through <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300">Bay <span id="sa-bays-max-text">4</span></span>.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="self-start sm:self-auto shrink-0 flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-blue-900 bg-white border border-blue-200 px-3 py-1.5 rounded-xl shadow-2xs">
+                                <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-600"></i> Locked by Authority
+                            </span>
                         </div>
                     </div>
-                    <div class="self-start sm:self-auto shrink-0">
-                        <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-blue-800 bg-white border border-blue-200 px-3 py-1.5 rounded-xl shadow-2xs">
-                            <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-600"></i> Fixed by Authority
-                        </span>
+
+                    <!-- 4 Rule Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
+                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
+                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
+                                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
+                                <span>Rule 1: Capacity Ceiling</span>
+                            </div>
+                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                Only the <strong>Owner & Administrator</strong> have legal authority to scale the active bay count (e.g. 6 bays for today).
+                            </p>
+                        </div>
+
+                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
+                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
+                                <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600"></i>
+                                <span>Rule 2: SA Boundary</span>
+                            </div>
+                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                Service Advisors on site must strictly allocate within the configured <strong>Bay 1 to Bay <span class="sa-bays-max-rule-num">4</span></strong> rule.
+                            </p>
+                        </div>
+
+                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
+                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
+                                <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                <span>Rule 3: Daily Intakes Sync</span>
+                            </div>
+                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                Daily Intakes Location selector automatically locks options strictly to <strong>Bay 1 to Bay <span class="sa-bays-max-rule-num">4</span></strong>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
+                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
+                                <i data-lucide="tv" class="w-3.5 h-3.5 text-purple-600"></i>
+                                <span>Rule 4: Live TV Broadcast</span>
+                            </div>
+                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                All bay assignments made by SAs immediately broadcast live to the TV Service Monitor and customer displays.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -5941,7 +5986,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.28"></script>
+    <script src="js/app.js?v=5.29"></script>
 </body>
 
 </html>

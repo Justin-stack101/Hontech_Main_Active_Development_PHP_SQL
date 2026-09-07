@@ -2626,11 +2626,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
 
-                if (job && field === 'location' && value && value !== 'None') {
+                if (job && field === 'location' && value && value !== 'None' && value !== 'Waiting Area') {
                     if (job.status !== 'Monitoring') {
                         showSystemToast(`Vehicle must be set to 'Monitoring' before allocating a workshop bay.`, 'warning', 'Status Locked');
                         renderStaffTables();
                         return;
+                    }
+                    const bayMatch = String(value).match(/(?:Bay|Lift)\s*(\d+)/i);
+                    if (bayMatch) {
+                        const bayNum = parseInt(bayMatch[1], 10);
+                        const maxLimit = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+                        if (bayNum > maxLimit) {
+                            showSystemToast(`Bay ${bayNum} is outside the authorized active capacity (Bay 1 - Bay ${maxLimit}) configured by Owner/Admin.`, 'error', 'Bay Rule Enforced');
+                            renderStaffTables();
+                            return;
+                        }
                     }
                 }
 
@@ -3822,15 +3832,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const selectionStart = searchInputActive ? document.activeElement.selectionStart : null;
                     const selectionEnd = searchInputActive ? document.activeElement.selectionEnd : null;
 
+                    const activeBayCount = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
                     dailyIntakesEl.innerHTML = `
                         <div class="space-y-4">
-                            <div class="flex items-center justify-between mb-1">
+                            <div class="flex flex-wrap items-center justify-between gap-3 mb-1">
                                 <div class="flex items-center gap-2.5">
                                     <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-4 h-4"></i></div>
                                     <div>
                                         <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
                                         <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
+                                </div>
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold text-xs shadow-2xs">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-blue-600 shrink-0"></i>
+                                    <span>Authorized Bay Rule: <strong class="text-blue-950 font-black font-mono">Bay 1 – Bay ${activeBayCount}</strong> Active <span class="text-[10px] text-blue-700 font-semibold">(Configured by Admin/Owner)</span></span>
                                 </div>
                             </div>
                             
@@ -8349,6 +8364,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (saCountText) saCountText.innerText = `${bayCount} Bays Active`;
             const saMaxText = document.getElementById('sa-bays-max-text');
             if (saMaxText) saMaxText.innerText = bayCount.toString();
+            document.querySelectorAll('.sa-bays-max-rule-num').forEach(el => {
+                el.innerText = bayCount.toString();
+            });
         }
         window.initWorkshopBaySettings = initWorkshopBaySettings;
 
@@ -8532,6 +8550,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.renderWorkshopBaysModule = renderWorkshopBaysModule;
 
         function openBayAllocationModal(bayNumber) {
+            const maxLimit = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+            if (bayNumber > maxLimit) {
+                showSystemToast(`Bay ${bayNumber} is outside the active workshop capacity (1 to ${maxLimit}) set by Admin/Owner.`, 'error', 'Bay Rule Enforced');
+                return;
+            }
             const padBay = String(bayNumber).padStart(2, '0');
             const targetBay = `Bay ${bayNumber}`;
             const modal = document.getElementById('modal-bay-allocation');
