@@ -3485,74 +3485,6 @@
                     </div>
                 </div>
 
-                <!-- Service Advisor Bay Operating Rules & Policy Board (Authority & SA Role Clarity) -->
-                <div id="bays-sa-readonly-card" class="bg-gradient-to-r from-blue-50/95 via-indigo-50/70 to-blue-50/95 border-2 border-blue-200 p-5 md:p-6 rounded-2xl shadow-sm flex flex-col gap-4 hidden">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/80 pb-3.5">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2.5 bg-blue-600 text-white rounded-xl shadow-xs shrink-0">
-                                <i data-lucide="shield-check" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <h3 class="text-base font-black uppercase tracking-tight text-blue-950">Workshop Bay Operating Rules & Policy</h3>
-                                    <span class="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-2xs">Owner / Admin Mandate</span>
-                                </div>
-                                <p class="text-xs text-blue-800 font-medium mt-0.5">
-                                    Facility Ceiling: <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300"><span id="sa-bays-max-text">6</span> Bays Max</span> (Set by Owner/Admin). Current Active Floor: <span id="sa-bays-count-text" class="font-bold text-blue-950">6 Bays Active</span>.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="self-start sm:self-auto shrink-0 flex items-center gap-2">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-blue-900 bg-white border border-blue-200 px-3 py-1.5 rounded-xl shadow-2xs">
-                                <i data-lucide="sliders" class="w-3.5 h-3.5 text-blue-600"></i> SA Scalable (1 to <span class="sa-bays-max-rule-num">6</span> Bays)
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- 4 Rule Cards Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
-                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
-                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
-                                <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
-                                <span>Rule 1: Ceiling Authority</span>
-                            </div>
-                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                The <strong>Owner & Administrator</strong> configure the facility ceiling (e.g. 6 bays). SAs cannot exceed this ceiling.
-                            </p>
-                        </div>
-
-                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
-                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
-                                <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600"></i>
-                                <span>Rule 2: SA Daily Choice</span>
-                            </div>
-                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                SAs can freely select active bays between <strong>1 and <span class="sa-bays-max-rule-num">6</span> Bays</strong> using the controls below.
-                            </p>
-                        </div>
-
-                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
-                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
-                                <i data-lucide="list-todo" class="w-3.5 h-3.5 text-emerald-600"></i>
-                                <span>Rule 3: Daily Intakes Sync</span>
-                            </div>
-                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                Daily Intakes Location selector automatically follows the active bay count chosen by the SA on duty.
-                            </p>
-                        </div>
-
-                        <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
-                            <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
-                                <i data-lucide="tv" class="w-3.5 h-3.5 text-purple-600"></i>
-                                <span>Rule 4: Live TV Broadcast</span>
-                            </div>
-                            <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                The TV Service Monitor immediately adjusts its display grid to match the active bays chosen for today.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Admin/Owner Floor Capacity Configuration Card (Full Presets & Scaling Controls) -->
                 <div id="bays-admin-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
@@ -3606,7 +3538,7 @@
                 </div>
 
                 <!-- Service Advisor Total Active Bays Selection Bar (SA only - bounded strictly by Admin ceiling) -->
-                <div id="bays-sa-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4 hidden">
+                <div id="bays-sa-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
                             <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl border border-blue-200">
@@ -3614,16 +3546,10 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Total Active Bays</h3>
-                                <p class="text-xs text-slate-500 font-medium mt-0.5">Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">6</span> Bays allowed by Owner/Admin)</p>
+                                <p id="bays-sa-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">6</span> Bays allowed by Owner/Admin)</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold text-xs shadow-2xs">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-blue-600 shrink-0"></i>
-                                <span>Authorized Bay Rule: <strong id="sa-bays-rule-pill-range" class="text-blue-950 font-black font-mono">Bay 1 – Bay 4</strong> Active <span class="text-[10px] text-blue-700 font-semibold">(Max Ceiling: <span id="sa-bays-rule-pill-ceiling">20</span> set by Admin/Owner)</span></span>
-                            </div>
-                            <span id="sa-bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full">4 Bays Active</span>
-                        </div>
+                        <span id="sa-bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full">4 Bays Active</span>
                     </div>
 
                     <div class="max-w-md">
@@ -6013,7 +5939,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.32"></script>
+    <script src="js/app.js?v=5.33"></script>
 </body>
 
 </html>

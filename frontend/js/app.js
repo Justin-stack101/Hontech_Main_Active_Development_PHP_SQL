@@ -1280,18 +1280,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 // Both Owner and Administrator have authority to configure facility max capacity ceiling
                 document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
-            if (document.getElementById('bays-admin-control-card')) {
-                // Owner and Admin see the full capacity configuration interface with presets and custom tools
-                document.getElementById('bays-admin-control-card').style.display = isOwnerOrAdmin ? 'block' : 'none';
-            }
-            if (document.getElementById('bays-sa-control-card')) {
-                // SAs see only the single Total Active Bays selection bar bounded by Owner/Admin ceiling
-                document.getElementById('bays-sa-control-card').style.display = (role === 'sa') ? 'block' : 'none';
-            }
-            if (document.getElementById('bays-sa-readonly-card')) {
-                // SAs see the operational policy banner clarifying the ceiling and active selection
-                document.getElementById('bays-sa-readonly-card').style.display = (role === 'sa') ? 'flex' : 'none';
-            }
+            updateBayControlsVisibility(role);
 
             if (role === 'owner') {
                 if (document.getElementById('sidebar-user-role')) {
@@ -1766,6 +1755,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 })();
             }
             if (id === 'bays') {
+                updateBayControlsVisibility();
+                initWorkshopBaySettings();
                 (async () => {
                     try {
                         await loadData();
@@ -8309,9 +8300,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
 
+        function updateBayControlsVisibility(role) {
+            const currentRole = role || currentUserRole;
+            const isOwnerOrAdmin = (currentRole === 'owner' || currentRole === 'admin');
+            const isSA = (currentRole === 'sa');
+
+            const adminCard = document.getElementById('bays-admin-control-card');
+            if (adminCard) {
+                if (isOwnerOrAdmin) {
+                    adminCard.classList.remove('hidden');
+                    adminCard.style.display = 'block';
+                } else {
+                    adminCard.classList.add('hidden');
+                    adminCard.style.display = 'none';
+                }
+            }
+
+            const saCard = document.getElementById('bays-sa-control-card');
+            if (saCard) {
+                if (isSA) {
+                    saCard.classList.remove('hidden');
+                    saCard.style.display = 'block';
+                } else {
+                    saCard.classList.add('hidden');
+                    saCard.style.display = 'none';
+                }
+            }
+        }
+        window.updateBayControlsVisibility = updateBayControlsVisibility;
+
         function initWorkshopBaySettings() {
             const maxLimit = getFacilityMaxBayLimit();
             const bayCount = getWorkshopBayCount();
+
+            updateBayControlsVisibility();
 
             const settingMaxSelect = document.getElementById('settings-facility-max-bays');
             if (settingMaxSelect) {
@@ -8359,9 +8381,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const badgeSA = document.getElementById('sa-bays-module-count-badge');
             if (badgeSA) badgeSA.innerText = `${bayCount} Bays Active`;
 
-            const subtextEl = document.getElementById('bays-admin-control-card-subtext');
-            if (subtextEl) {
-                subtextEl.innerText = `Choose Active Workshop Bays for Today (1 to ${maxLimit} Bays Allowed by Owner/Admin)`;
+            const subtextAdmin = document.getElementById('bays-admin-control-card-subtext');
+            if (subtextAdmin) {
+                subtextAdmin.innerText = `Choose Active Workshop Bays for Today (1 to ${maxLimit} Bays Allowed by Owner/Admin)`;
+            }
+
+            const subtextSA = document.getElementById('bays-sa-control-card-subtext');
+            if (subtextSA) {
+                subtextSA.innerHTML = `Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">${maxLimit}</span> Bays allowed by Owner/Admin)`;
             }
 
             // Dynamically update quick preset chips visibility in bays-admin-control-card
@@ -8389,10 +8416,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (saCountText) saCountText.innerText = `${bayCount} Bays Active`;
             const saMaxText = document.getElementById('sa-bays-max-text');
             if (saMaxText) saMaxText.innerText = maxLimit.toString();
-            const saRulePillRange = document.getElementById('sa-bays-rule-pill-range');
-            if (saRulePillRange) saRulePillRange.innerText = `Bay 1 – Bay ${bayCount}`;
-            const saRulePillCeiling = document.getElementById('sa-bays-rule-pill-ceiling');
-            if (saRulePillCeiling) saRulePillCeiling.innerText = maxLimit.toString();
             document.querySelectorAll('.sa-bays-max-rule-num').forEach(el => {
                 el.innerText = maxLimit.toString();
             });
@@ -8428,11 +8451,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const bayCount = getWorkshopBayCount();
             
+            // Sync role visibility and settings
+            initWorkshopBaySettings();
+            updateBayControlsVisibility();
+
             // Sync capacity selectors and badges
             const moduleSelect = document.getElementById('bays-module-select');
             if (moduleSelect) moduleSelect.value = bayCount.toString();
             const moduleBadge = document.getElementById('bays-module-count-badge');
             if (moduleBadge) moduleBadge.innerText = `${bayCount} Bays Active`;
+
+            const saSelect = document.getElementById('sa-bays-select');
+            if (saSelect) saSelect.value = bayCount.toString();
+            const saBadge = document.getElementById('sa-bays-module-count-badge');
+            if (saBadge) saBadge.innerText = `${bayCount} Bays Active`;
 
             // Calculate occupied bays by unique active bay numbers (capped at bayCount)
             const occupiedBaySet = new Set();
