@@ -3485,12 +3485,12 @@
                     </div>
                 </div>
 
-                <!-- Service Advisor Bay Operating Rules & Policy Board (Read-Only Authority Enforcement) -->
+                <!-- Service Advisor Bay Operating Rules & Policy Board (Authority & SA Role Clarity) -->
                 <div id="bays-sa-readonly-card" class="bg-gradient-to-r from-blue-50/95 via-indigo-50/70 to-blue-50/95 border-2 border-blue-200 p-5 md:p-6 rounded-2xl shadow-sm flex flex-col gap-4 hidden">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-blue-200/80 pb-3.5">
                         <div class="flex items-center gap-3">
                             <div class="p-2.5 bg-blue-600 text-white rounded-xl shadow-xs shrink-0">
-                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2 flex-wrap">
@@ -3498,13 +3498,13 @@
                                     <span class="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2.5 py-0.5 rounded-full shadow-2xs">Owner / Admin Mandate</span>
                                 </div>
                                 <p class="text-xs text-blue-800 font-medium mt-0.5">
-                                    Floor Capacity Rule: <span id="sa-bays-count-text" class="font-bold text-blue-950">4 Bays Active</span>. Service Advisor allocation is legally restricted to <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300">Bay 1</span> through <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300">Bay <span id="sa-bays-max-text">4</span></span>.
+                                    Facility Ceiling: <span class="font-black text-blue-950 font-mono bg-blue-100 px-1.5 py-0.5 rounded border border-blue-300"><span id="sa-bays-max-text">6</span> Bays Max</span> (Set by Owner/Admin). Current Active Floor: <span id="sa-bays-count-text" class="font-bold text-blue-950">6 Bays Active</span>.
                                 </p>
                             </div>
                         </div>
                         <div class="self-start sm:self-auto shrink-0 flex items-center gap-2">
                             <span class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-blue-900 bg-white border border-blue-200 px-3 py-1.5 rounded-xl shadow-2xs">
-                                <i data-lucide="lock" class="w-3.5 h-3.5 text-blue-600"></i> Locked by Authority
+                                <i data-lucide="sliders" class="w-3.5 h-3.5 text-blue-600"></i> SA Scalable (1 to <span class="sa-bays-max-rule-num">6</span> Bays)
                             </span>
                         </div>
                     </div>
@@ -3514,30 +3514,30 @@
                         <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
                             <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
                                 <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-500"></i>
-                                <span>Rule 1: Capacity Ceiling</span>
+                                <span>Rule 1: Ceiling Authority</span>
                             </div>
                             <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                Only the <strong>Owner & Administrator</strong> have legal authority to scale the active bay count (e.g. 6 bays for today).
+                                The <strong>Owner & Administrator</strong> configure the facility ceiling (e.g. 6 bays). SAs cannot exceed this ceiling.
                             </p>
                         </div>
 
                         <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
                             <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
                                 <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600"></i>
-                                <span>Rule 2: SA Boundary</span>
+                                <span>Rule 2: SA Daily Choice</span>
                             </div>
                             <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                Service Advisors on site must strictly allocate within the configured <strong>Bay 1 to Bay <span class="sa-bays-max-rule-num">4</span></strong> rule.
+                                SAs can freely select active bays between <strong>1 and <span class="sa-bays-max-rule-num">6</span> Bays</strong> using the controls below.
                             </p>
                         </div>
 
                         <div class="bg-white/90 border border-blue-200/90 rounded-xl p-3 shadow-2xs space-y-1">
                             <div class="flex items-center gap-1.5 text-blue-900 font-black text-xs uppercase">
-                                <i data-lucide="sliders" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                <i data-lucide="list-todo" class="w-3.5 h-3.5 text-emerald-600"></i>
                                 <span>Rule 3: Daily Intakes Sync</span>
                             </div>
                             <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                Daily Intakes Location selector automatically locks options strictly to <strong>Bay 1 to Bay <span class="sa-bays-max-rule-num">4</span></strong>.
+                                Daily Intakes Location selector automatically follows the active bay count chosen by the SA on duty.
                             </p>
                         </div>
 
@@ -3547,13 +3547,13 @@
                                 <span>Rule 4: Live TV Broadcast</span>
                             </div>
                             <p class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                All bay assignments made by SAs immediately broadcast live to the TV Service Monitor and customer displays.
+                                The TV Service Monitor immediately adjusts its display grid to match the active bays chosen for today.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Workshop Capacity Configuration Card (Owner & Admin Authority) -->
+                <!-- Workshop Capacity Configuration Card (Owner, Admin & SA Selection) -->
                 <div id="bays-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
@@ -3561,8 +3561,8 @@
                                 <i data-lucide="sliders-horizontal" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Capacity Configuration</h3>
-                                <p class="text-xs text-slate-500 font-medium mt-0.5">Scale Floor Service Bays (2 to 20 Bays)</p>
+                                <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Floor Capacity Configuration</h3>
+                                <p id="bays-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Scale Active Workshop Bays (1 to 20 Bays)</p>
                             </div>
                         </div>
                         <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 px-3 py-1 rounded-full">4 Bays Active</span>
@@ -3577,21 +3577,7 @@
                                 </button>
                                 <div class="relative flex-1">
                                     <select id="bays-module-select" onchange="handleWorkshopBayCountChange(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none font-bold text-xs text-slate-900 focus:border-slate-900 focus:bg-white transition cursor-pointer appearance-none">
-                                        <option value="2">2 Bays (Express Pod)</option>
-                                        <option value="3">3 Bays</option>
-                                        <option value="4">4 Bays (Standard Default)</option>
-                                        <option value="5">5 Bays</option>
-                                        <option value="6">6 Bays</option>
-                                        <option value="7">7 Bays</option>
-                                        <option value="8">8 Bays</option>
-                                        <option value="9">9 Bays</option>
-                                        <option value="10">10 Bays</option>
-                                        <option value="11">11 Bays</option>
-                                        <option value="12">12 Bays (Medium Branch)</option>
-                                        <option value="14">14 Bays</option>
-                                        <option value="16">16 Bays (Large Branch)</option>
-                                        <option value="18">18 Bays</option>
-                                        <option value="20">20 Bays (Master Hub Max)</option>
+                                        <!-- Dynamically Populated up to Owner/Admin Facility Ceiling -->
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 pointer-events-none absolute right-4 top-3.5"></i>
                                 </div>
@@ -3601,16 +3587,11 @@
                             </div>
                         </div>
 
-                        <!-- Quick Presets -->
-                        <div class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
+                        <!-- Quick Presets Container (Dynamically bounded by Owner/Admin ceiling) -->
+                        <div id="bays-presets-container" class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
                             <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Quick Presets:</span>
                             <button type="button" onclick="handleWorkshopBayCountChange(4)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">4 Bays</button>
                             <button type="button" onclick="handleWorkshopBayCountChange(6)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">6 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(8)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">8 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(10)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">10 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(12)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">12 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(16)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">16 Bays</button>
-                            <button type="button" onclick="handleWorkshopBayCountChange(20)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">20 Bays</button>
                             <button type="button" onclick="promptCustomBayCount()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
                                 <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-slate-300"></i> Custom...
                             </button>
@@ -5986,7 +5967,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.29"></script>
+    <script src="js/app.js?v=5.30"></script>
 </body>
 
 </html>
