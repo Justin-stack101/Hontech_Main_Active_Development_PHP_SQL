@@ -3837,7 +3837,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const selectionEnd = searchInputActive ? document.activeElement.selectionEnd : null;
 
                     const activeBayCount = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
-                    const maxFacilityCeiling = (typeof getFacilityMaxBayLimit === 'function') ? getFacilityMaxBayLimit() : 20;
                     dailyIntakesEl.innerHTML = `
                         <div class="space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-3 mb-1">
@@ -3847,10 +3846,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
                                         <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
-                                </div>
-                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold text-xs shadow-2xs">
-                                    <i data-lucide="shield-check" class="w-4 h-4 text-blue-600 shrink-0"></i>
-                                    <span>Authorized Bay Rule: <strong class="text-blue-950 font-black font-mono">Bay 1 – Bay ${activeBayCount}</strong> Active <span class="text-[10px] text-blue-700 font-semibold">(Max Ceiling: ${maxFacilityCeiling} set by Admin/Owner)</span></span>
                                 </div>
                             </div>
                             
@@ -8394,6 +8389,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (saCountText) saCountText.innerText = `${bayCount} Bays Active`;
             const saMaxText = document.getElementById('sa-bays-max-text');
             if (saMaxText) saMaxText.innerText = maxLimit.toString();
+            const saRulePillRange = document.getElementById('sa-bays-rule-pill-range');
+            if (saRulePillRange) saRulePillRange.innerText = `Bay 1 – Bay ${bayCount}`;
+            const saRulePillCeiling = document.getElementById('sa-bays-rule-pill-ceiling');
+            if (saRulePillCeiling) saRulePillCeiling.innerText = maxLimit.toString();
             document.querySelectorAll('.sa-bays-max-rule-num').forEach(el => {
                 el.innerText = maxLimit.toString();
             });
