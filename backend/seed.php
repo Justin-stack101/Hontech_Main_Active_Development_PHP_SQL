@@ -98,9 +98,27 @@ $defaultJobs = [
         'contact' => '0912-555-5555', 'category' => 'Others', 'vehicle' => 'Nissan Navara',
         'concern' => 'Scratch on front bumper & alignment', 'date_received' => $today,
         'claim_stub' => "{$todayCompact}-002",
-        'parts_available' => 'Pending', 'evaluation' => 'Front Bumper Painting & Curing',
-        'status' => 'Carry Over', 'promised_date' => $today, 'lane_type' => 'Flexible',
+        'parts_available' => 'No', 'evaluation' => 'Front Bumper Painting & Curing',
+        'status' => 'Carry Over', 'carry_over_status' => 'Awaiting Parts', 'promised_date' => $today, 'lane_type' => 'Flexible',
         'remarks' => 'Paint curing delay', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2025', 'source' => 'Walk-in', 'plate' => 'NDH 5521', 'name' => 'Diana Prince',
+        'contact' => '0917-888-0001', 'category' => 'GRS', 'vehicle' => 'Mazda CX-5',
+        'concern' => 'Intermittent engine stalling & wiring harness check', 'date_received' => $today,
+        'claim_stub' => "{$todayCompact}-011",
+        'parts_available' => 'Yes', 'evaluation' => 'ECU Diagnostic & Harness Rewiring',
+        'status' => 'Carry Over', 'carry_over_status' => 'Extended Repair', 'promised_date' => $today, 'lane_type' => 'Flexible',
+        'remarks' => 'Extended diagnostic trace required', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+    ],
+    [
+        'job_id' => 'WLK-2026', 'source' => 'Walk-in', 'plate' => 'BAT 999', 'name' => 'Bruce Wayne',
+        'contact' => '0918-999-0002', 'category' => 'Others', 'vehicle' => 'Porsche Macan',
+        'concern' => 'Custom brake upgrade kit installation', 'date_received' => $today,
+        'claim_stub' => "{$todayCompact}-012",
+        'parts_available' => 'No', 'evaluation' => 'Brembo Calipers & Rotors Import Pending',
+        'status' => 'Carry Over', 'carry_over_status' => 'Awaiting Parts', 'promised_date' => $today, 'lane_type' => 'Special Lane',
+        'remarks' => 'Custom parts arrival pending courier', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2004', 'source' => 'Walk-in', 'plate' => 'AAA 1111', 'name' => 'Dave Smith',
@@ -282,7 +300,7 @@ $defaultJobs = [
     ];
 
     $insertStmt = $db->prepare(
-        'INSERT INTO jobs (job_id, source, plate, name, contact, vehicle, category, concern, lane_type, date_received, arrival, departure, appt_date, appt_time, confirmed, claim_stub, parts_available, evaluation, status, location, branch, bay_assigned, promised_date, remarks, sa_name, date_completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        'INSERT INTO jobs (job_id, source, plate, name, contact, vehicle, category, concern, lane_type, date_received, arrival, departure, appt_date, appt_time, confirmed, claim_stub, parts_available, evaluation, status, location, branch, bay_assigned, promised_date, carry_over_status, remarks, sa_name, date_completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     );
 
     foreach ($defaultJobs as $i => $job) {
@@ -314,6 +332,7 @@ $defaultJobs = [
             $branch,
             $job['bay_assigned'] ?? null,
             $job['promised_date'] ?? null,
+            $job['carry_over_status'] ?? '',
             $job['remarks'] ?? '',
             $job['sa_name'] ?? '',
             $job['date_completed'] ?? null,

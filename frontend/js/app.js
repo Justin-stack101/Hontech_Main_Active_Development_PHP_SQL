@@ -4009,6 +4009,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             `}
                             `}
                         </td>
+                        <!-- Service Advisor -->
+                        <td class="px-3 py-2.5 align-middle whitespace-nowrap">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg shadow-2xs">
+                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-slate-500"></i>
+                                ${job.saName || 'Mark Bautista'}
+                            </span>
+                        </td>
                         <td class="px-3 py-2.5 align-middle min-w-[220px]">
                             ${isEditable ? `
                             <div class="eval-field-card">
