@@ -35,13 +35,14 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Added quick presets for PMS 10K, Brakes Overhaul, and Aircon Service.
 * **Status**: 🟢 Delivered & Verified
 
-### 🚀 Revision REV-PROTO-004 (September 8, 2026)
-* **Goal**: High-Fidelity Print Styling & Workshop Bay Handover.
+### 🚀 Revision REV-PROTO-005 (September 8, 2026)
+* **Goal**: Embedded Live jsPDF Viewer Iframe, Live Binary Blob Synchronizer & Dual-View Switcher.
 * **Branch**: `prototype_process`
 * **Changes Delivered**:
-  - Implemented `@media print` rules in `frontend/css/main.css` isolating the 1:1 physical sheet and perforated claim stub for crisp paper output.
-  - Built `Push to Bay Queue` handover registering jobs into `/api/jobs` and seamlessly transitioning to active workshop bay monitoring.
-  - Maintained 100% zero-regression compliance with legacy intakes and tables.
+  - Embedded real PDF viewer `<iframe>` powered by offline `jsPDF` (`v=5.36`) that dynamically re-compiles and replaces the rendered PDF binary in real-time.
+  - Implemented dual-view tab switcher (`📑 Live PDF Viewer` vs `⚡ Keystroke Sheet`).
+  - Added standalone `Download PDF` action exporting `HonTech_Form13_JO-XXXX.pdf`.
+  - Added debounced auto-sync re-rendering on SA keystrokes and one-click presets.
 * **Status**: 🟢 Delivered & Verified
 
 ---
@@ -54,4 +55,5 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-002` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Split-screen Studio view & real-time keystroke synchronizer. | `ef06bbb` | 🟢 Verified |
 | `REV-PROTO-003` | `2026-09-08` | `frontend/js/app.js` | Parts & Materials auto-math calculation engine & dynamic repeater. | `ef06bbb` | 🟢 Verified |
 | `REV-PROTO-004` | `2026-09-08` | `frontend/css/main.css`, `frontend/js/app.js` | `@media print` styles and Workshop Bay Queue handover integration. | `ef06bbb` | 🟢 Verified |
+| `REV-PROTO-005` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Embedded live jsPDF viewer iframe, dual view switcher & download engine. | *Pending* | 🟢 Verified |
 

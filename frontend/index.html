@@ -2843,21 +2843,34 @@
                     <div id="form13-canvas-pane" class="xl:col-span-6 space-y-3">
                         
                         <!-- Canvas Control Toolbar (Hidden in Print) -->
-                        <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between text-xs">
+                        <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
-                                <span class="font-extrabold text-gray-900 uppercase tracking-tight">HonTech Physical Document Canvas</span>
-                                <span class="text-[10px] text-gray-400 hidden sm:inline">(Exact 1:1 Print Preview)</span>
+                                <div class="flex items-center bg-gray-100 p-1 rounded-xl border border-gray-200 gap-1">
+                                    <button type="button" id="btn-f13-tab-pdf" onclick="switchForm13View('pdf')" class="px-3 py-1 rounded-lg font-bold text-xs bg-red-600 text-white shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="file-check" class="w-3.5 h-3.5"></i> Live PDF Viewer
+                                    </button>
+                                    <button type="button" id="btn-f13-tab-html" onclick="switchForm13View('html')" class="px-3 py-1 rounded-lg font-bold text-xs bg-transparent hover:bg-gray-200 text-gray-700 transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="layout-template" class="w-3.5 h-3.5"></i> Keystroke Sheet
+                                    </button>
+                                </div>
                             </div>
                             <div class="flex items-center gap-2">
+                                <button type="button" onclick="generateForm13PDF(true)" class="px-3 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+                                </button>
                                 <button type="button" onclick="printForm13()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Physical Form 1/3 White Document Sheet -->
-                        <div class="bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
+                        <!-- 1. Real PDF Viewer Iframe Container (Active by default) -->
+                        <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border border-gray-300 overflow-hidden shadow-sm relative h-[860px]">
+                            <iframe id="f13-pdf-iframe" class="w-full h-full border-0 rounded-2xl bg-white" src="about:blank" title="HonTech Form 1/3 PDF Viewer"></iframe>
+                        </div>
+
+                        <!-- 2. Physical Form 1/3 White Document Sheet (Keystroke Mode) -->
+                        <div id="f13-html-canvas-wrap" class="hidden bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
                             <div id="form13-canvas-sheet" class="form13-sheet form13-paper-shadow mx-auto bg-white border border-black p-5 max-w-[760px] text-[10px] select-text">
                                 
                                 <!-- Document Header -->
@@ -6485,7 +6498,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.35"></script>
+    <script src="js/app.js?v=5.36"></script>
 </body>
 
 </html>
