@@ -563,8 +563,10 @@ td .eval-text-truncated {
   #app-sidebar,
   #app-header,
   header,
+  nav,
   #dashboard-header,
   div#dashboard-header,
+  .no-print,
   #header-actions,
   #form13-editor-pane,
   #form13-canvas-toolbar,
@@ -579,10 +581,14 @@ td .eval-text-truncated {
   #section-form13 > .grid > div:first-child,
   #sidebar-user-dropdown,
   .system-toast-container,
-  button,
-  .no-print {
+  button {
     display: none !important;
     visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
   }
 
   #section-form13 {

@@ -42,11 +42,18 @@ if ($uri !== '/') {
             header('Content-Type: ' . (mime_content_type($filePath) ?: 'application/octet-stream'));
         }
 
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+
         readfile($filePath);
         exit;
     }
 }
 
 // 3. Fallback to serving the main SPA frontend
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 include __DIR__ . '/frontend/index.html';
 exit;

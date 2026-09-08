@@ -12188,19 +12188,33 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return;
                 }
 
-                // Method 1: Try opening a clean isolated print popup window
-                const printWin = window.open('', '_blank', 'width=950,height=1100');
-                if (printWin) {
-                    printWin.document.open();
-                    printWin.document.write(`<!DOCTYPE html>
+                // Dedicated isolated hidden iframe print engine (100% immune to popup blockers & zero chrome leaks)
+                let printFrame = document.getElementById('f13-isolated-print-frame');
+                if (!printFrame) {
+                    printFrame = document.createElement('iframe');
+                    printFrame.id = 'f13-isolated-print-frame';
+                    printFrame.style.position = 'fixed';
+                    printFrame.style.right = '100%';
+                    printFrame.style.bottom = '100%';
+                    printFrame.style.width = '0px';
+                    printFrame.style.height = '0px';
+                    printFrame.style.border = '0';
+                    printFrame.style.visibility = 'hidden';
+                    document.body.appendChild(printFrame);
+                }
+
+                const pDoc = printFrame.contentWindow.document;
+                pDoc.open();
+                pDoc.write(`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>HonTech Auto Center - Form 1/3 Job Order</title>
-    <link rel="stylesheet" href="css/main.css?v=4.75">
+    <script src="js/tailwind.cdn.js"><\/script>
+    <link rel="stylesheet" href="css/main.css?v=4.76">
     <style>
         @page {
-            size: portrait;
+            size: A4 portrait;
             margin: 4mm 6mm;
         }
         * {
@@ -12211,66 +12225,58 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         body {
             background: #ffffff !important;
             margin: 0 !important;
-            padding: 8px !important;
+            padding: 4px !important;
             color: #000000 !important;
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
         .form13-sheet {
             width: 100% !important;
             max-width: 100% !important;
             margin: 0 auto !important;
-            padding: 12px !important;
-            border: 1px solid #000000 !important;
+            padding: 8px !important;
+            border: 1.5px solid #000000 !important;
             box-shadow: none !important;
+            background: #ffffff !important;
         }
         .header-band {
             background-color: #d1d5db !important;
+            color: #000000 !important;
+            font-weight: 800;
+            text-align: center;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-color: #000000 !important;
+        }
+        .form13-perforated-border {
+            border-top: 2px dashed #dc2626 !important;
+            margin: 8px 0;
+            text-align: center;
+            position: relative;
         }
     </style>
 </head>
 <body>
     ${sheet.outerHTML}
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                window.focus();
-                window.print();
-            }, 300);
-        });
-        setTimeout(function() {
-            window.focus();
-            window.print();
-        }, 600);
-    <\/script>
 </body>
 </html>`);
-                    printWin.document.close();
-                    return;
-                }
+                pDoc.close();
 
-                // Method 2 (Fallback if popups blocked): Direct window.print() with bulletproof @media print
-                const pdfWrap = document.getElementById('f13-pdf-viewer-wrap');
-                const htmlWrap = document.getElementById('f13-html-canvas-wrap');
-                const prevPdfDisplay = pdfWrap ? pdfWrap.style.display : '';
-                const prevHtmlDisplay = htmlWrap ? htmlWrap.style.display : '';
-
-                if (pdfWrap) pdfWrap.style.setProperty('display', 'none', 'important');
-                if (htmlWrap) {
-                    htmlWrap.classList.remove('hidden');
-                    htmlWrap.style.setProperty('display', 'block', 'important');
-                }
-
-                window.print();
-
+                // Wait for styles and DOM to hydrate in the isolated frame, then trigger print
                 setTimeout(() => {
-                    if (pdfWrap) pdfWrap.style.display = prevPdfDisplay;
-                    if (htmlWrap) {
-                        htmlWrap.style.display = prevHtmlDisplay;
-                        if (currentForm13View === 'pdf') {
-                            htmlWrap.classList.add('hidden');
-                        }
+                    try {
+                        printFrame.contentWindow.focus();
+                        printFrame.contentWindow.print();
+                    } catch (e) {
+                        console.error('Frame print invocation error, falling back to window.print():', e);
+                        window.print();
                     }
-                }, 1000);
+                }, 300);
 
             } catch (err) {
                 console.error('Error during printForm13:', err);
