@@ -11246,6 +11246,84 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         let currentForm13View = 'pdf';
         let form13PdfDebounceTimer = null;
         let currentForm13PdfBlobUrl = null;
+        let isForm13DocHidden = false;
+
+        function toggleForm13DocumentPane() {
+            isForm13DocHidden = !isForm13DocHidden;
+            const editorPane = document.getElementById('form13-editor-pane');
+            const canvasPane = document.getElementById('form13-canvas-pane');
+            const toggleBtns = document.querySelectorAll('.btn-f13-toggle-doc');
+
+            if (isForm13DocHidden) {
+                if (canvasPane) canvasPane.classList.add('hidden');
+                if (editorPane) {
+                    editorPane.classList.remove('xl:col-span-6');
+                    editorPane.classList.add('xl:col-span-12');
+                }
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = `<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Document Preview`;
+                    btn.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
+                    btn.classList.remove('bg-gray-100', 'text-gray-700');
+                });
+                showSystemToast('Document preview hidden. Editor expanded to full screen width.', 'info', 'Focus Mode');
+            } else {
+                if (canvasPane) canvasPane.classList.remove('hidden');
+                if (editorPane) {
+                    editorPane.classList.remove('xl:col-span-12');
+                    editorPane.classList.add('xl:col-span-6');
+                }
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = `<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview`;
+                    btn.classList.remove('bg-red-50', 'text-red-700', 'border-red-200');
+                    btn.classList.add('bg-gray-100', 'text-gray-700');
+                });
+                if (currentForm13View === 'pdf') {
+                    generateForm13PDF(false);
+                } else {
+                    syncForm13Canvas();
+                }
+            }
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        window.toggleForm13DocumentPane = toggleForm13DocumentPane;
+
+        function openForm13EnlargeModal() {
+            const modal = document.getElementById('modal-f13-enlarge');
+            const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
+            const jobNo = document.getElementById('f13-input-job-no')?.value || 'HT-JO-0001';
+            
+            if (document.getElementById('f13-enlarge-title-jo')) {
+                document.getElementById('f13-enlarge-title-jo').innerText = jobNo;
+            }
+
+            if (enlargeIframe && currentForm13PdfBlobUrl) {
+                enlargeIframe.src = currentForm13PdfBlobUrl;
+            }
+
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        window.openForm13EnlargeModal = openForm13EnlargeModal;
+
+        function closeForm13EnlargeModal() {
+            const modal = document.getElementById('modal-f13-enlarge');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+        window.closeForm13EnlargeModal = closeForm13EnlargeModal;
+
+        // Listen for ESC to close enlarge modal
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                const modal = document.getElementById('modal-f13-enlarge');
+                if (modal && !modal.classList.contains('hidden')) {
+                    closeForm13EnlargeModal();
+                }
+            }
+        });
 
         function switchForm13View(mode) {
             currentForm13View = mode;
@@ -11842,6 +11920,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const iframe = document.getElementById('f13-pdf-iframe');
                     if (iframe) {
                         iframe.src = currentForm13PdfBlobUrl;
+                    }
+                    const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
+                    if (enlargeIframe) {
+                        enlargeIframe.src = currentForm13PdfBlobUrl;
                     }
                 }
             } catch (err) {
