@@ -51,7 +51,7 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | Revision ID | Date | Target Component | Change Summary | Commit Hash | Verification Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `REV-PROTO-001` | `2026-09-08` | `Hontech Documentation/Prototype/` | Created Prototype Hub specifications, layout blueprints, and testing playbook. | *Initial* | 🟢 Verified |
-| `REV-PROTO-002` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Split-screen Studio view & real-time keystroke synchronizer. | *Committed* | 🟢 Verified |
-| `REV-PROTO-003` | `2026-09-08` | `frontend/js/app.js` | Parts & Materials auto-math calculation engine & dynamic repeater. | *Committed* | 🟢 Verified |
-| `REV-PROTO-004` | `2026-09-08` | `frontend/css/main.css`, `frontend/js/app.js` | `@media print` styles and Workshop Bay Queue handover integration. | *Committed* | 🟢 Verified |
+| `REV-PROTO-002` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Split-screen Studio view & real-time keystroke synchronizer. | `ef06bbb` | 🟢 Verified |
+| `REV-PROTO-003` | `2026-09-08` | `frontend/js/app.js` | Parts & Materials auto-math calculation engine & dynamic repeater. | `ef06bbb` | 🟢 Verified |
+| `REV-PROTO-004` | `2026-09-08` | `frontend/css/main.css`, `frontend/js/app.js` | `@media print` styles and Workshop Bay Queue handover integration. | `ef06bbb` | 🟢 Verified |
 
