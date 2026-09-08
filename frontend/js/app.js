@@ -12178,64 +12178,95 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.appendConcernPreset = appendConcernPreset;
 
-        async function printForm13() {
+        function printForm13() {
             try {
-                // If in HTML Keystroke mode, use native window.print with @media print rules
-                if (currentForm13View === 'html') {
-                    syncForm13Canvas();
+                syncForm13Canvas();
+
+                const sheet = document.getElementById('form13-canvas-sheet');
+                if (!sheet) {
                     window.print();
                     return;
                 }
 
-                // In Live PDF mode, make sure PDF is compiled and trigger clean PDF print
-                showSystemToast('Preparing high-definition Form 1/3 for printing...', 'info', 'Print Dispatch');
-                await generateForm13PDF(false);
+                // Remove existing print frame if any
+                const existingFrame = document.getElementById('f13-dedicated-print-frame');
+                if (existingFrame) existingFrame.remove();
 
-                if (!currentForm13PdfBlobUrl) {
-                    syncForm13Canvas();
-                    window.print();
-                    return;
-                }
+                const printFrame = document.createElement('iframe');
+                printFrame.id = 'f13-dedicated-print-frame';
+                printFrame.style.position = 'fixed';
+                printFrame.style.top = '-9999px';
+                printFrame.style.left = '-9999px';
+                printFrame.style.width = '1024px';
+                printFrame.style.height = '1400px';
+                printFrame.style.border = '0';
+                document.body.appendChild(printFrame);
 
-                // Create dedicated temporary hidden iframe to trigger PDF print dialog
-                const printIframe = document.createElement('iframe');
-                printIframe.style.position = 'fixed';
-                printIframe.style.right = '0';
-                printIframe.style.bottom = '0';
-                printIframe.style.width = '0';
-                printIframe.style.height = '0';
-                printIframe.style.border = '0';
-                printIframe.src = currentForm13PdfBlobUrl;
-                document.body.appendChild(printIframe);
+                const frameDoc = printFrame.contentWindow.document;
+                frameDoc.open();
+                frameDoc.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>HonTech Auto Center - Form 1/3 Print</title>
+                        <script src="js/tailwind.cdn.js"><\/script>
+                        <link rel="stylesheet" href="css/main.css?v=4.74">
+                        <style>
+                            @page {
+                                size: portrait;
+                                margin: 4mm 6mm;
+                            }
+                            * {
+                                -webkit-print-color-adjust: exact !important;
+                                print-color-adjust: exact !important;
+                            }
+                            body {
+                                background: #ffffff !important;
+                                margin: 0 !important;
+                                padding: 0 !important;
+                                color: #000000 !important;
+                                font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+                            }
+                            #form13-canvas-sheet {
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin: 0 auto !important;
+                                padding: 12px !important;
+                                border: 1.5px solid #000000 !important;
+                                box-shadow: none !important;
+                            }
+                            .header-band {
+                                background-color: #d1d5db !important;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div style="padding: 2px;">
+                            ${sheet.outerHTML}
+                        </div>
+                    </body>
+                    </html>
+                `);
+                frameDoc.close();
 
-                let printTriggered = false;
-                const executePrint = () => {
-                    if (printTriggered) return;
-                    printTriggered = true;
+                // Allow styles and tailwind to compute layout
+                setTimeout(() => {
                     try {
-                        printIframe.contentWindow.focus();
-                        printIframe.contentWindow.print();
+                        printFrame.contentWindow.focus();
+                        printFrame.contentWindow.print();
                     } catch (e) {
-                        console.warn('Iframe print intercepted by sandbox, launching direct print tab:', e);
-                        const printWin = window.open(currentForm13PdfBlobUrl, '_blank');
-                        if (printWin) {
-                            printWin.focus();
-                        }
+                        console.warn('Dedicated print frame failed, falling back to window.print():', e);
+                        window.print();
                     }
                     setTimeout(() => {
-                        try { document.body.removeChild(printIframe); } catch (err) {}
-                    }, 5000);
-                };
+                        try { printFrame.remove(); } catch (err) {}
+                    }, 60000);
+                }, 400);
 
-                printIframe.onload = () => {
-                    setTimeout(executePrint, 350);
-                };
-                // Fallback timeout in case iframe onload does not fire for application/pdf Blob
-                setTimeout(executePrint, 900);
             } catch (err) {
                 console.error('Error during printForm13:', err);
-                showSystemToast('Printing error. Opening document download stream.', 'warning', 'Print Fallback');
-                generateForm13PDF(true);
+                window.print();
             }
         }
         window.printForm13 = printForm13;
