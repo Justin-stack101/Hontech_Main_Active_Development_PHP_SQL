@@ -11665,19 +11665,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.syncForm13Canvas = syncForm13Canvas;
 
-        function generateForm13PDF(shouldDownload = false) {
+        let form13TemplateArrayBuffer = null;
+
+        async function getForm13TemplateBuffer() {
+            if (form13TemplateArrayBuffer) return form13TemplateArrayBuffer;
             try {
-                if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
-                    console.warn('jsPDF library is not loaded');
+                const response = await fetch('assets/form13_template.pdf');
+                form13TemplateArrayBuffer = await response.arrayBuffer();
+                return form13TemplateArrayBuffer;
+            } catch (e) {
+                console.error('Failed to load Form 1/3 official template:', e);
+                return null;
+            }
+        }
+
+        async function generateForm13PDF(shouldDownload = false) {
+            try {
+                const templateBuffer = await getForm13TemplateBuffer();
+                if (!templateBuffer || typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
+                    console.warn('PDFLib or Form 1/3 template not ready');
                     return;
                 }
 
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
+                const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+                // Create a clone of the original template so the base stays clean
+                const doc = await PDFDocument.load(templateBuffer);
+                const page = doc.getPages()[0];
+                const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
+                const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
                 const getVal = id => (document.getElementById(id)?.value || '').trim();
                 const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
@@ -11700,404 +11715,126 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
                 const manager = getVal('f13-input-manager') || 'General Manager';
 
-                // ==========================================
-                // 1. TOP HEADER & BRANDING (EXACT SCAN REPLICA)
-                // ==========================================
-                // Red badge for "HONTECH"
-                doc.setFillColor(220, 38, 38);
-                doc.roundedRect(10, 7, 24, 5.5, 1, 1, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(9);
-                doc.text('HONTECH', 12, 11);
-
-                doc.setTextColor(20, 20, 20);
-                doc.setFontSize(9.5);
-                doc.text('AUTO CENTER', 36, 11);
-
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(6.5);
-                doc.setTextColor(60, 60, 60);
-                doc.text('Hontech Auto Center', 10, 15);
-                doc.text('70 Bayan Bayanan Ave cor Narra St. Marikina Heights, Marikina City', 10, 18);
-                doc.text('fb.com/hontechautocenter | 85644550/ 71219124/ 09458757441/ 09525065084- VIBER', 10, 21);
-
-                // Right Header: Form 1/3, Job Order No, Date Box
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(7.5);
-                doc.setTextColor(80, 80, 80);
-                doc.text('Form 1/3', 200, 9, { align: 'right' });
-
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(11);
-                doc.setTextColor(20, 20, 20);
-                doc.text('JOB ORDER NO.', 135, 15);
-                doc.setFont('helvetica', 'bold');
-                doc.setTextColor(220, 38, 38);
-                doc.text(jobNo, 172, 15);
-                doc.setDrawColor(0, 0, 0);
-                doc.setLineWidth(0.3);
-                doc.line(170, 16, 200, 16);
-
-                // Date Box
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(7.5);
-                doc.setTextColor(20, 20, 20);
-                doc.text('DATE:', 160, 20.5);
-                doc.rect(172, 17.5, 28, 4.5, 'S');
-                doc.setFont('helvetica', 'normal');
-                doc.text(intakeDate, 186, 20.5, { align: 'center' });
-
-                // ==========================================
-                // 2. CUSTOMER DETAILS SECTION
-                // ==========================================
-                let curY = 23.5;
-                doc.setFillColor(180, 185, 190);
-                doc.rect(10, curY, 190, 4, 'F');
-                doc.rect(10, curY, 190, 4, 'S');
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(7.5);
-                doc.setTextColor(20, 20, 20);
-                doc.text('CUSTOMER DETAILS', 105, curY + 2.8, { align: 'center' });
-
-                curY += 4;
-                const gridHeight = 16;
-                doc.rect(10, curY, 190, gridHeight, 'S');
-
-                // 3 columns layout with labels and dynamic values
-                doc.setFontSize(6.5);
-
-                // Row 1
-                doc.setFont('helvetica', 'bold'); doc.text('Name :', 12, curY + 3.5);
-                doc.setFont('helvetica', 'normal'); doc.text(name, 25, curY + 3.5);
-                doc.setFont('helvetica', 'bold'); doc.text('Year/Model :', 80, curY + 3.5);
-                doc.setFont('helvetica', 'normal'); doc.text(model, 100, curY + 3.5);
-                doc.setFont('helvetica', 'bold'); doc.text('Plate No :', 145, curY + 3.5);
-                doc.setFont('helvetica', 'bold'); doc.text(plate, 165, curY + 3.5);
-
-                // Row 2
-                doc.setFont('helvetica', 'bold'); doc.text('Address :', 12, curY + 7.5);
-                doc.setFont('helvetica', 'normal'); doc.text(doc.splitTextToSize(address, 50)[0] || '', 25, curY + 7.5);
-                doc.setFont('helvetica', 'bold'); doc.text('KM Reading :', 80, curY + 7.5);
-                doc.setFont('helvetica', 'normal'); doc.text(km, 100, curY + 7.5);
-                doc.setFont('helvetica', 'bold'); doc.text('Intake Date :', 145, curY + 7.5);
-                doc.setFont('helvetica', 'normal'); doc.text(intakeDate, 165, curY + 7.5);
-
-                // Row 3
-                doc.setFont('helvetica', 'bold'); doc.text('Contact No. :', 12, curY + 11.5);
-                doc.setFont('helvetica', 'normal'); doc.text(contact, 28, curY + 11.5);
-                doc.setFont('helvetica', 'bold'); doc.text('Engine No :', 80, curY + 11.5);
-                doc.setFont('helvetica', 'normal'); doc.text(engine, 100, curY + 11.5);
-                doc.setFont('helvetica', 'bold'); doc.text('Promise Date :', 145, curY + 11.5);
-                doc.setFont('helvetica', 'normal'); doc.text(promiseDate, 165, curY + 11.5);
-
-                // Row 4
-                doc.setFont('helvetica', 'bold'); doc.text('E-Mail Add. :', 12, curY + 15);
-                doc.setFont('helvetica', 'normal'); doc.text(email, 28, curY + 15);
-                doc.setFont('helvetica', 'bold'); doc.text('Chassis No. :', 80, curY + 15);
-                doc.setFont('helvetica', 'normal'); doc.text(chassis, 100, curY + 15);
-                doc.setFont('helvetica', 'bold'); doc.text('Color :', 145, curY + 15);
-                doc.setFont('helvetica', 'normal'); doc.text(color, 165, curY + 15);
-
-                // ==========================================
-                // 3. SERVICE CONCERN BOX & SURCHARGE DISCLAIMER
-                // ==========================================
-                curY += gridHeight + 1.5;
-                doc.setFillColor(210, 215, 220);
-                doc.rect(10, curY, 190, 3.8, 'F');
-                doc.rect(10, curY, 190, 3.8, 'S');
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.5);
-                doc.text("CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN (To be filled out by Service Advisor)", 105, curY + 2.7, { align: 'center' });
-
-                curY += 3.8;
-                const concernBoxH = 10;
-                doc.rect(10, curY, 190, concernBoxH, 'S');
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(6.2);
-                const splitConcern = doc.splitTextToSize(concern || '( No service concern noted. )', 186);
-                doc.text(splitConcern.slice(0, 3), 12, curY + 3.2);
-
-                // Surcharge Disclaimer
-                curY += concernBoxH + 1.2;
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(5.2);
-                doc.setTextColor(30, 30, 30);
-                doc.text('NOTE: To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied. The cost of the item/s shall be the current price of Hontech Auto Center, Inc.', 10, curY + 1.5, { maxWidth: 190 });
-
-                // Interviewed by & Authorization
-                curY += 3.8;
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.5);
-                doc.setTextColor(20, 20, 20);
-                doc.text('Interviewed by: ', 12, curY + 4);
-                doc.setFont('helvetica', 'bold');
-                doc.text(sa, 32, curY + 4);
-                doc.line(30, curY + 4.5, 75, curY + 4.5);
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(5.5);
-                doc.setTextColor(80, 80, 80);
-                doc.text('Service Advisor', 42, curY + 7);
-
-                // Authorization Box
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.2);
-                doc.setTextColor(20, 20, 20);
-                doc.text('AUTHORIZATION', 145, curY + 1.5, { align: 'center' });
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(5.2);
-                doc.text('I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.', 145, curY + 4, { align: 'center' });
-                doc.line(115, curY + 8, 175, curY + 8);
-                doc.setFontSize(5.2);
-                doc.text('Customer Name and Signature', 145, curY + 10, { align: 'center' });
-
-                // ==========================================
-                // 4. DIAGNOSTIC RESULT & PARTS / MATERIALS MATRIX (18 ROWS)
-                // ==========================================
-                curY += 12;
-
-                let partsTotal = 0;
-                window.form13Parts.forEach(p => { partsTotal += (Number(p.qty) || 0) * (Number(p.price) || 0); });
-
-                let matsTotal = 0;
-                window.form13Materials.forEach(m => { matsTotal += (Number(m.qty) || 0) * (Number(m.price) || 0); });
-
-                const grandTotal = partsTotal + matsTotal;
-                const totalRows = Math.max(16, Math.max(window.form13Parts.length, window.form13Materials.length));
-                const tableBody = [];
-
-                for (let i = 0; i < totalRows; i++) {
-                    const p = window.form13Parts[i] || null;
-                    const m = window.form13Materials[i] || null;
-
-                    const row = [];
-                    if (i === 0) {
-                        row.push({
-                            content: diagnostic ? diagnostic : '( Pending mechanical diagnostic inspection. )',
-                            rowSpan: totalRows,
-                            styles: { valign: 'top', fontSize: 5.5, fontStyle: 'normal', fillColor: [255, 255, 255] }
-                        });
-                    }
-
-                    // Parts
-                    row.push(p ? p.desc : '');
-                    row.push(p ? String(p.qty) : '');
-                    row.push(p ? Number(p.price).toFixed(2) : '');
-                    row.push(p ? (Number(p.qty) * Number(p.price)).toFixed(2) : '0.00');
-
-                    // Materials
-                    row.push(m ? m.desc : '');
-                    row.push(m ? String(m.qty) : '');
-                    row.push(m ? Number(m.price).toFixed(2) : '');
-                    row.push(m ? (Number(m.qty) * Number(m.price)).toFixed(2) : '0.00');
-
-                    tableBody.push(row);
-                }
-
-                if (typeof doc.autoTable === 'function') {
-                    doc.autoTable({
-                        startY: curY,
-                        margin: { left: 10, right: 10 },
-                        theme: 'grid',
-                        styles: {
-                            fontSize: 5.5,
-                            cellPadding: 0.6,
-                            lineColor: [0, 0, 0],
-                            lineWidth: 0.15,
-                            textColor: [20, 20, 20]
-                        },
-                        headStyles: {
-                            fillColor: [225, 228, 232],
-                            textColor: [0, 0, 0],
-                            fontStyle: 'bold',
-                            halign: 'center',
-                            fontSize: 5.5
-                        },
-                        head: [
-                            [
-                                { content: 'DIAGNOSTIC RESULT', styles: { halign: 'center', fillColor: [210, 215, 220] } },
-                                { content: 'PARTS', colSpan: 4, styles: { halign: 'center', fillColor: [230, 233, 238] } },
-                                { content: 'MATERIALS', colSpan: 4, styles: { halign: 'center', fillColor: [230, 233, 238] } }
-                            ],
-                            [
-                                { content: '', styles: { halign: 'center' } },
-                                { content: 'DESCRIPTION', styles: { halign: 'left' } },
-                                { content: 'QTY', styles: { halign: 'center' } },
-                                { content: 'UNIT PRICE', styles: { halign: 'right' } },
-                                { content: 'AMOUNT', styles: { halign: 'right' } },
-                                { content: 'DESCRIPTION', styles: { halign: 'left' } },
-                                { content: 'QTY', styles: { halign: 'center' } },
-                                { content: 'UNIT PRICE', styles: { halign: 'right' } },
-                                { content: 'AMOUNT', styles: { halign: 'right' } }
-                            ]
-                        ],
-                        body: tableBody,
-                        foot: [
-                            [
-                                { content: '', styles: { border: [0,0,0,0] } },
-                                { content: 'PARTS:', styles: { halign: 'right', fontStyle: 'bold' } },
-                                { content: Number(partsTotal).toFixed(2), colSpan: 3, styles: { halign: 'right', fontStyle: 'bold' } },
-                                { content: 'MATERIALS: TOTAL', styles: { halign: 'right', fontStyle: 'bold' } },
-                                { content: Number(matsTotal).toFixed(2), colSpan: 3, styles: { halign: 'right', fontStyle: 'bold' } }
-                            ]
-                        ],
-                        columnStyles: {
-                            0: { cellWidth: 40 },
-                            1: { cellWidth: 40 },
-                            2: { cellWidth: 7, halign: 'center' },
-                            3: { cellWidth: 14, halign: 'right' },
-                            4: { cellWidth: 14, halign: 'right' },
-                            5: { cellWidth: 38 },
-                            6: { cellWidth: 7, halign: 'center' },
-                            7: { cellWidth: 14, halign: 'right' },
-                            8: { cellWidth: 16, halign: 'right' }
-                        }
+                const draw = (text, x, y, size = 6.5, isBold = false, color = rgb(0, 0, 0)) => {
+                    if (!text && text !== 0) return;
+                    page.drawText(String(text), {
+                        x, y, size,
+                        font: isBold ? fontBold : fontNorm,
+                        color
                     });
+                };
 
-                    curY = doc.lastAutoTable.finalY + 2.5;
+                // 1. Header (Job Order No & Date)
+                draw(jobNo, 472, 804, 9, true, rgb(0.85, 0.1, 0.1));
+                draw(intakeDate, 484, 781, 7, false);
+
+                // 2. Customer Details Matrix (y ~ 735 down to 696)
+                // Row 1: Name, Year/Model, Plate No
+                draw(name, 125, 735, 6.8, true);
+                draw(model, 285, 735, 6.8, false);
+                draw(plate, 445, 735, 7.5, true);
+
+                // Row 2: Address, KM Reading, Intake Date
+                draw(address, 125, 722, 6.2, false);
+                draw(km, 285, 722, 6.8, false);
+                draw(intakeDate, 445, 722, 6.8, false);
+
+                // Row 3: Contact No, Engine No, Promise Date
+                draw(contact, 125, 709, 6.8, false);
+                draw(engine, 285, 709, 6.8, false);
+                draw(promiseDate, 445, 709, 6.8, false);
+
+                // Row 4: E-Mail Add, Chassis No, Color
+                draw(email, 125, 696, 6.2, false);
+                draw(chassis, 285, 696, 6.8, false);
+                draw(color, 445, 696, 6.8, false);
+
+                // 3. Customer Concern Box (y ~ 662)
+                if (concern) {
+                    page.drawText(concern, {
+                        x: 75, y: 662, size: 6.2, font: fontNorm, maxWidth: 440, lineHeight: 8.5
+                    });
                 }
 
-                // ==========================================
-                // 5. SIGNATORIES & CERTIFICATE OF COMPLETION
-                // ==========================================
-                doc.setFontSize(6);
-                doc.setFont('helvetica', 'bold');
-                doc.text('Diagnosed by:', 12, curY + 2);
-                doc.line(30, curY + 2.5, 75, curY + 2.5);
-                doc.setFont('helvetica', 'normal');
-                doc.text(mechanic, 52, curY + 2, { align: 'center' });
-                doc.text('Auto Mechanic', 52, curY + 5, { align: 'center' });
+                // 4. Interviewed by (SA) (y ~ 604)
+                draw(sa, 160, 604, 7, true);
 
-                doc.setFont('helvetica', 'bold');
-                doc.text('Assessed by:', 115, curY + 2);
-                doc.line(135, curY + 2.5, 185, curY + 2.5);
-                doc.setFont('helvetica', 'normal');
-                doc.text(assessor, 160, curY + 2, { align: 'center' });
-                doc.text('Parts/Materials Controller', 160, curY + 5, { align: 'center' });
+                // 5. Diagnostic Result (spans left box of matrix, y from 525 down to 330)
+                if (diagnostic) {
+                    page.drawText(diagnostic, {
+                        x: 75, y: 520, size: 5.5, font: fontNorm, maxWidth: 105, lineHeight: 7.5
+                    });
+                }
 
-                curY += 7.5;
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.5);
-                doc.text('CERTIFICATE OF COMPLETION/ACCEPTANCE', 105, curY, { align: 'center' });
-                curY += 2.5;
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(5.2);
-                doc.text('This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer', 105, curY, { align: 'center', maxWidth: 185 });
+                // 6. Matrix Rows (23 rows on original template)
+                const startY = 527.5;
+                const rowStep = 9.2;
+                let partsTotal = 0;
+                let matsTotal = 0;
 
-                curY += 4;
-                // Signatures 2x2
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(5.8);
-                doc.text('Recommending Approval:', 12, curY);
-                doc.text('Approved by:', 115, curY);
+                (window.form13Parts || []).forEach((p, i) => {
+                    const rowY = startY - (i * rowStep);
+                    const qty = Number(p.qty) || 0;
+                    const price = Number(p.price) || 0;
+                    const amount = qty * price;
+                    partsTotal += amount;
 
-                curY += 3.5;
-                doc.setFont('helvetica', 'normal');
-                doc.text(sa, 35, curY, { align: 'center' });
-                doc.line(15, curY + 0.8, 55, curY + 0.8);
-                doc.text('Chief, Auto Mechanic / Authorized AM', 145, curY, { align: 'center' });
-                doc.line(120, curY + 0.8, 175, curY + 0.8);
+                    draw(p.desc, 185, rowY, 5.2, false);
+                    draw(String(qty), 237, rowY, 5.5, false);
+                    draw(price.toFixed(2), 256, rowY, 5.5, false);
+                    draw(amount.toFixed(2), 304, rowY, 5.5, true);
+                });
 
-                curY += 3;
-                doc.text('Service Advisor', 35, curY, { align: 'center' });
+                (window.form13Materials || []).forEach((m, i) => {
+                    const rowY = startY - (i * rowStep);
+                    const qty = Number(m.qty) || 0;
+                    const price = Number(m.price) || 0;
+                    const amount = qty * price;
+                    matsTotal += amount;
 
-                curY += 3.5;
-                doc.setFont('helvetica', 'bold');
-                doc.text('CONFORME:', 12, curY);
-                doc.text('Concurred by:', 115, curY);
+                    draw(m.desc, 348, rowY, 5.2, false);
+                    draw(String(qty), 400, rowY, 5.5, false);
+                    draw(price.toFixed(2), 420, rowY, 5.5, false);
+                    draw(amount.toFixed(2), 468, rowY, 5.5, true);
+                });
 
-                curY += 3.5;
-                doc.line(15, curY + 0.8, 55, curY + 0.8);
-                doc.line(120, curY + 0.8, 175, curY + 0.8);
+                // Subtotals (y ~ 316)
+                if (partsTotal > 0) draw(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 295, 316, 6, true);
+                if (matsTotal > 0) draw(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 458, 316, 6, true);
 
-                curY += 3;
-                doc.setFont('helvetica', 'normal');
-                doc.text("Customer's Name & Signature", 35, curY, { align: 'center' });
-                doc.text('General Manager', 145, curY, { align: 'center' });
+                // 7. Middle Signatures (y ~ 290)
+                draw(mechanic, 160, 290, 6.5, false);
+                draw(assessor, 430, 290, 6.5, false);
 
-                // ==========================================
-                // 6. FILIPINO CLAIM STUB (RED HEADER & EXACT TEXT)
-                // ==========================================
-                curY += 5;
-                doc.setLineDashPattern([1.5, 1.5], 0);
-                doc.setDrawColor(220, 38, 38);
-                doc.line(10, curY, 200, curY);
-                doc.setLineDashPattern([], 0);
+                // 8. Certificate of Completion Signatories (y ~ 238 down to 202)
+                draw(sa, 160, 238, 7, true);
+                draw('Chief, Auto Mechanic / Authorized AM', 420, 238, 6.5, true);
+                draw(manager, 430, 202, 7, true);
 
-                curY += 3;
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.2);
-                doc.setTextColor(220, 38, 38);
-                doc.text('Mahal Naming Mga Kustomer,', 10, curY);
-
-                curY += 3;
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(5.2);
-                doc.text('Para sa inyong seguridad at kapakinabangan ng lahat, pinapayuhan po namin kayong kuni ang lahat ng mahahalagang gamit mula sa inyong sasakyan bago ito ipagkatiwala sa aming mga kawani. Malaki po ang maitutulong ng inyong kooperasyon upang masiguro namin ang mahusay na serbisyo.', 10, curY, { maxWidth: 190 });
-
-                curY += 5;
-                doc.text('Maraming salamat po sa inyong patuloy na suporta.', 10, curY);
-                curY += 2.5;
-                doc.setFont('helvetica', 'bold');
-                doc.text('Ang Pamunuan', 10, curY);
-
-                curY += 4;
-                doc.setTextColor(20, 20, 20);
-                doc.setFontSize(5.8);
-                // Stub Details
-                doc.setFont('helvetica', 'bold'); doc.text('Name :', 10, curY);
-                doc.setFont('helvetica', 'normal'); doc.text(name, 22, curY);
-                doc.line(20, curY + 0.6, 90, curY + 0.6);
-
-                doc.setFont('helvetica', 'bold'); doc.text('Plate No./Year/Model :', 100, curY);
+                // 9. Filipino Claim Stub (y ~ 102 down to 76)
+                draw(name, 130, 102, 6.5, true);
                 const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-                doc.setFont('helvetica', 'normal'); doc.text(combinedVehicle, 130, curY);
-                doc.line(128, curY + 0.6, 195, curY + 0.6);
-
-                curY += 4;
-                doc.setFont('helvetica', 'bold'); doc.text('Service Advisor :', 10, curY);
-                doc.setFont('helvetica', 'normal'); doc.text(sa, 32, curY);
-                doc.line(30, curY + 0.6, 90, curY + 0.6);
-
-                doc.setFont('helvetica', 'bold'); doc.text('Contact :', 100, curY);
-                doc.setFont('helvetica', 'normal'); doc.text('09458757441/ 09525065084- VIBER', 115, curY);
-                doc.line(112, curY + 0.6, 195, curY + 0.6);
-
-                curY += 4;
-                doc.setFont('helvetica', 'bold'); doc.text('Date:', 10, curY);
-                doc.setFont('helvetica', 'normal'); doc.text(intakeDate, 20, curY);
-                doc.line(18, curY + 0.6, 90, curY + 0.6);
-
-                doc.setFont('helvetica', 'bold'); doc.text('Claim Stub :', 100, curY);
+                draw(combinedVehicle, 345, 102, 6.5, true);
+                draw(sa, 150, 89, 6.5, false);
+                draw(intakeDate, 130, 76, 6.5, false);
                 const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
-                doc.setFont('helvetica', 'bold'); doc.setTextColor(220, 38, 38); doc.text(stubId, 120, curY);
-                doc.setTextColor(20, 20, 20);
-                doc.line(118, curY + 0.6, 195, curY + 0.6);
+                draw(stubId, 345, 76, 7.5, true, rgb(0.85, 0.1, 0.1));
 
-                curY += 4.5;
-                doc.setFont('helvetica', 'italic');
-                doc.setFontSize(5);
-                doc.text('(Please present this to our Service Advisor to claim required documents for the release of your vehicle)', 105, curY, { align: 'center' });
+                // Save binary
+                const pdfBytes = await doc.save();
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
 
-                curY += 3;
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(6.2);
-                doc.text('THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!', 105, curY, { align: 'center' });
-
-                curY += 3;
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(4.8);
-                doc.setTextColor(80, 80, 80);
-                doc.text('Hontech Auto Center, Inc  |  70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City  |  Tel #: (8)564-4550/ 71219124', 105, curY, { align: 'center' });
-
-                // ==========================================
-                // 7. OUTPUT HANDLING (DOWNLOAD vs EMBEDDED IFRAME)
-                // ==========================================
                 if (shouldDownload) {
-                    doc.save(`HonTech_Form13_${jobNo}.pdf`);
-                    showSystemToast(`Exported Form 1/3 PDF for Job Order ${jobNo}`, 'success', 'PDF Downloaded');
+                    const downloadUrl = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `HonTech_Form13_${jobNo}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    showSystemToast(`Exported original Form 1/3 PDF for Job Order ${jobNo}`, 'success', 'PDF Downloaded');
                 } else {
-                    const pdfBlob = doc.output('blob');
                     if (currentForm13PdfBlobUrl) {
                         URL.revokeObjectURL(currentForm13PdfBlobUrl);
                     }
@@ -12108,7 +11845,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
             } catch (err) {
-                console.error('Error generating Form 1/3 PDF:', err);
+                console.error('Error in Form 1/3 template overlay generator:', err);
             }
         }
         window.generateForm13PDF = generateForm13PDF;
