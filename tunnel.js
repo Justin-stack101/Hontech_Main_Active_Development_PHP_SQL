@@ -16,6 +16,7 @@ async function startTunnel() {
 
         tunnel.on('error', (err) => {
             console.error('[Tunnel] Error:', err.message);
+            setTimeout(startTunnel, 3000);
         });
 
     } catch (err) {
@@ -24,4 +25,13 @@ async function startTunnel() {
     }
 }
 
+process.on('uncaughtException', (err) => {
+    console.error('[Tunnel] Uncaught exception:', err.message);
+    setTimeout(startTunnel, 3000);
+});
+
 startTunnel();
+
+// Keep process active
+setInterval(() => {}, 1000 * 60 * 60);
+
