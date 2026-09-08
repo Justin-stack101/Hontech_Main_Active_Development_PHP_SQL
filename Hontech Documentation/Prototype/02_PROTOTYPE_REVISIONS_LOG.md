@@ -35,14 +35,27 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Added quick presets for PMS 10K, Brakes Overhaul, and Aircon Service.
 * **Status**: 🟢 Delivered & Verified
 
-### 🚀 Revision REV-PROTO-005 (September 8, 2026)
-* **Goal**: Embedded Live jsPDF Viewer Iframe, Live Binary Blob Synchronizer & Dual-View Switcher.
+### 🚀 Revision REV-PROTO-006 (September 8, 2026)
+* **Goal**: Official Original Blank Template Restoration (`form13_template.pdf` / `2025 BLANK JOB ORDER.pdf`).
 * **Branch**: `prototype_process`
 * **Changes Delivered**:
-  - Embedded real PDF viewer `<iframe>` powered by offline `jsPDF` (`v=5.36`) that dynamically re-compiles and replaces the rendered PDF binary in real-time.
-  - Implemented dual-view tab switcher (`📑 Live PDF Viewer` vs `⚡ Keystroke Sheet`).
-  - Added standalone `Download PDF` action exporting `HonTech_Form13_JO-XXXX.pdf`.
-  - Added debounced auto-sync re-rendering on SA keystrokes and one-click presets.
+  - Restored exact physical blank template (`frontend/assets/form13_template.pdf`, 96,794 bytes) as the immutable background vector document.
+  - Replaced synthesized line generation with a pure vector overlay pattern powered by `pdf-lib`.
+  - Guaranteed 100% preservation of original HonTech logos, headers, warranty surcharge clauses, and Filipino customer notice.
+* **Status**: 🟢 Delivered & Verified
+
+### 🚀 Revision REV-PROTO-007 (September 8, 2026)
+* **Goal**: Pixel-Perfect Coordinate Calibration & Dynamic Auto-Fit Engine on Original Template.
+* **Branch**: `prototype_process`
+* **Changes Delivered**:
+  - Extracted exact 0.1 pt vector coordinates from physical template via PDF.js inspection.
+  - Calibrated Date Box ($x: 505, y: 767.6$) and eliminated border cut-off.
+  - Aligned Customer Details grid ($y: 723.3, 715.2, 707.1, 698.9$) after colons ($x: 134, 348, 472$).
+  - Built `drawTextFit()` dynamically auto-scaling long vehicle models, customer names, and addresses.
+  - Implemented exact 23-row Parts & Materials matrix ($y = 494.4, \text{step: } 8.1\text{ pt}$) with cell boundary protection, centered quantities, right-aligned prices, and surgical white-out of default `0.00` amounts.
+  - Centered signatories above printed lines, preserving solid underlines.
+  - Aligned bottom Filipino tear-off claim stub with sequential `CS-XXXX` identifiers.
+  - Incremented cache-buster script tag to `js/app.js?v=5.46` in `frontend/index.html`.
 * **Status**: 🟢 Delivered & Verified
 
 ---
@@ -55,5 +68,8 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-002` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Split-screen Studio view & real-time keystroke synchronizer. | `ef06bbb` | 🟢 Verified |
 | `REV-PROTO-003` | `2026-09-08` | `frontend/js/app.js` | Parts & Materials auto-math calculation engine & dynamic repeater. | `ef06bbb` | 🟢 Verified |
 | `REV-PROTO-004` | `2026-09-08` | `frontend/css/main.css`, `frontend/js/app.js` | `@media print` styles and Workshop Bay Queue handover integration. | `ef06bbb` | 🟢 Verified |
-| `REV-PROTO-005` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Embedded live jsPDF viewer iframe, dual view switcher & download engine. | *Pending* | 🟢 Verified |
+| `REV-PROTO-005` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Embedded live jsPDF viewer iframe, dual view switcher & download engine. | `42ce6f1` | 🟢 Verified |
+| `REV-PROTO-006` | `2026-09-08` | `frontend/assets/form13_template.pdf` | Official physical blank template restoration and vector fidelity enforcement. | `42ce6f1` | 🟢 Verified |
+| `REV-PROTO-007` | `2026-09-08` | `frontend/js/app.js`, `frontend/index.html` | Pixel-perfect coordinate calibration, dynamic auto-fit, and cache version `v=5.46`. | `5756e28` | 🟢 Verified |
+
 

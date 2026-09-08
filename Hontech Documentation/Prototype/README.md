@@ -9,9 +9,10 @@ Welcome to the **HonTech Prototype Hub**. This folder contains all dedicated spe
 
 | Document | Purpose |
 | :--- | :--- |
-| 📄 **[`01_FORM_1_3_SPECIFICATION.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Prototype/01_FORM_1_3_SPECIFICATION.md)** | Technical layout, field mappings, real-time keystroke bindings, auto-math engine, and bottom Claim Stub structure. |
-| 📋 **[`02_PROTOTYPE_REVISIONS_LOG.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Prototype/02_PROTOTYPE_REVISIONS_LOG.md)** | Chronological log of all prototype changes, revision IDs, git commit hashes, and implementation milestones. |
-| 🧪 **[`03_QA_TESTING_PLAYBOOK.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development_Branch2-Security-Account-Recovery/CapstoneOfficial2_Development_Part-2-Hontech_Main_Active_Development/Hontech%20Documentation/Prototype/03_QA_TESTING_PLAYBOOK.md)** | Step-by-step test matrix covering keystroke latency, math precision, `@media print` fidelity, and bay monitoring handoff. |
+| 📄 **[`01_FORM_1_3_SPECIFICATION.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/01_FORM_1_3_SPECIFICATION.md)** | Technical layout, field mappings, real-time keystroke bindings, auto-math engine, and bottom Claim Stub structure. |
+| 📋 **[`02_PROTOTYPE_REVISIONS_LOG.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/02_PROTOTYPE_REVISIONS_LOG.md)** | Chronological log of all prototype changes, revision IDs, git commit hashes, and implementation milestones. |
+| 🧪 **[`03_QA_TESTING_PLAYBOOK.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/03_QA_TESTING_PLAYBOOK.md)** | Step-by-step test matrix covering keystroke latency, math precision, `@media print` fidelity, and bay monitoring handoff. |
+| 📐 **[`04_FORM_1_3_ORIGINAL_TEMPLATE_CALIBRATION.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/04_FORM_1_3_ORIGINAL_TEMPLATE_CALIBRATION.md)** | Detailed mathematical baseline coordinates, cell boundary protection, auto-fit algorithms, and original template overlay rules. |
 
 ---
 
