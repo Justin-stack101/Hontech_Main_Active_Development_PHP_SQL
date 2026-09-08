@@ -11759,18 +11759,49 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         async function generateForm13PDF(shouldDownload = false) {
             try {
-                const templateBuffer = await getForm13TemplateBuffer();
-                if (!templateBuffer || typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
-                    console.warn('PDFLib or Form 1/3 template not ready');
+                if (typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
+                    console.warn('PDFLib not ready');
                     return;
                 }
 
                 const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
-                // Create a clone of the original template so the base stays clean
-                const doc = await PDFDocument.load(templateBuffer);
-                const page = doc.getPages()[0];
+                const doc = await PDFDocument.create();
+                const page = doc.addPage([595.28, 841.89]);
+
                 const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
                 const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
+                const fontOblique = await doc.embedFont(StandardFonts.HelveticaOblique);
+
+                const black = rgb(0, 0, 0);
+                const white = rgb(1, 1, 1);
+                const grayBg = rgb(0.88, 0.88, 0.88);
+                const grayLight = rgb(0.96, 0.96, 0.96);
+                const darkRed = rgb(0.82, 0.1, 0.1);
+
+                const line = (x1, y1, x2, y2, thickness = 0.5, dashArray = null) => {
+                    const opts = { start: { x: x1, y: y1 }, end: { x: x2, y: y2 }, thickness, color: black };
+                    if (dashArray) opts.dashArray = dashArray;
+                    page.drawLine(opts);
+                };
+
+                const rect = (x, y, w, h, fill = null, stroke = null, thickness = 0.5) => {
+                    const opts = { x, y, width: w, height: h };
+                    if (fill) opts.color = fill;
+                    if (stroke) {
+                        opts.borderColor = stroke;
+                        opts.borderWidth = thickness;
+                    }
+                    page.drawRectangle(opts);
+                };
+
+                const text = (str, x, y, size = 7, isBold = false, color = black, isItalic = false) => {
+                    if (!str && str !== 0) return;
+                    page.drawText(String(str), {
+                        x, y, size,
+                        font: isItalic ? fontOblique : (isBold ? fontBold : fontNorm),
+                        color
+                    });
+                };
 
                 const getVal = id => (document.getElementById(id)?.value || '').trim();
                 const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
@@ -11793,110 +11824,236 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
                 const manager = getVal('f13-input-manager') || 'General Manager';
 
-                const draw = (text, x, y, size = 6.5, isBold = false, color = rgb(0, 0, 0)) => {
-                    if (!text && text !== 0) return;
-                    page.drawText(String(text), {
-                        x, y, size,
-                        font: isBold ? fontBold : fontNorm,
-                        color
-                    });
-                };
+                // 1. Outer Page Border
+                rect(28, 24, 539, 794, null, black, 1);
 
-                // 1. Header (Job Order No & Date)
-                draw(jobNo, 472, 804, 9, true, rgb(0.85, 0.1, 0.1));
-                draw(intakeDate, 484, 781, 7, false);
+                // 2. Header
+                rect(36, 786, 68, 16, darkRed);
+                text('HONTECH', 44, 791, 10, true, white);
+                text('Auto Center', 110, 791, 11, true, black);
+                text('70 Bayan Bayanan Ave cor Narra St.', 36, 774, 7, true);
+                text('Marikina Heights, Marikina City', 36, 764, 6.5, false);
+                text('fb.com/hontechautocenter', 36, 755, 6.5, false);
+                text('85644550 / 71219124 / 09458757441 / 09525065084 - VIBER', 36, 746, 6.5, true);
 
-                // 2. Customer Details Matrix (y ~ 735 down to 696)
-                // Row 1: Name, Year/Model, Plate No
-                draw(name, 125, 735, 6.8, true);
-                draw(model, 285, 735, 6.8, false);
-                draw(plate, 445, 735, 7.5, true);
+                text('Form 1/3', 525, 804, 7.5, true);
+                text('JOB ORDER NO.', 405, 788, 9, true);
+                text(jobNo, 492, 788, 10, true, darkRed);
+                line(488, 785, 558, 785, 1);
+                text('DATE:', 450, 768, 7.5, true);
+                rect(485, 762, 73, 15, null, black, 0.5);
+                text(intakeDate, 496, 767, 7.5, true);
 
-                // Row 2: Address, KM Reading, Intake Date
-                draw(address, 125, 722, 6.2, false);
-                draw(km, 285, 722, 6.8, false);
-                draw(intakeDate, 445, 722, 6.8, false);
+                line(28, 738, 567, 738, 1);
 
-                // Row 3: Contact No, Engine No, Promise Date
-                draw(contact, 125, 709, 6.8, false);
-                draw(engine, 285, 709, 6.8, false);
-                draw(promiseDate, 445, 709, 6.8, false);
+                // 3. Customer Details Matrix
+                rect(28, 726, 539, 12, grayBg, black, 0.5);
+                text('CUSTOMER DETAILS', 242, 729, 7.5, true);
+                rect(28, 668, 539, 58, null, black, 0.5);
+                line(245, 668, 245, 726, 0.5);
+                line(415, 668, 415, 726, 0.5);
 
-                // Row 4: E-Mail Add, Chassis No, Color
-                draw(email, 125, 696, 6.2, false);
-                draw(chassis, 285, 696, 6.8, false);
-                draw(color, 445, 696, 6.8, false);
+                // Col 1
+                text('Name :', 34, 712, 7, true);
+                text(name, 72, 712, 7, false);
+                text('Address :', 34, 699, 7, true);
+                text(address, 75, 699, 6.5, false);
+                text('Contact No. :', 34, 686, 7, true);
+                text(contact, 85, 686, 7, false);
+                text('E-Mail Add. :', 34, 673, 7, true);
+                text(email, 85, 673, 6.5, false);
 
-                // 3. Customer Concern Box (y ~ 662)
+                // Col 2
+                text('Year/Model :', 252, 712, 7, true);
+                text(model, 305, 712, 7, false);
+                text('KM Reading :', 252, 699, 7, true);
+                text(km, 305, 699, 7, false);
+                text('Engine No :', 252, 686, 7, true);
+                text(engine, 305, 686, 7, false);
+                text('Chassis No. :', 252, 673, 7, true);
+                text(chassis, 305, 673, 7, false);
+
+                // Col 3
+                text('Plate No :', 422, 712, 7, true);
+                text(plate, 470, 712, 8.5, true);
+                text('Intake Date :', 422, 699, 7, true);
+                text(intakeDate, 475, 699, 7, false);
+                text('Promise Date :', 422, 686, 7, true);
+                text(promiseDate, 482, 686, 7, false);
+                text('Color :', 422, 673, 7, true);
+                text(color, 455, 673, 7, false);
+
+                // 4. Concern Box
+                rect(28, 650, 539, 12, grayBg, black, 0.5);
+                text("CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN (To be filled out by Service Advisor)", 80, 653, 6.8, true);
+                rect(28, 598, 539, 52, null, black, 0.5);
                 if (concern) {
-                    page.drawText(concern, {
-                        x: 75, y: 662, size: 6.2, font: fontNorm, maxWidth: 440, lineHeight: 8.5
-                    });
+                    page.drawText(concern, { x: 34, y: 638, size: 6.5, font: fontNorm, maxWidth: 525, lineHeight: 9 });
                 }
 
-                // 4. Interviewed by (SA) (y ~ 604)
-                draw(sa, 160, 604, 7, true);
+                // Surcharge Disclaimer
+                text("NOTE: To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied.", 30, 588, 5.5, false, black, true);
 
-                // 5. Diagnostic Result (spans left box of matrix, y from 525 down to 330)
+                // Interviewed by & Authorization
+                text("Interviewed by:", 32, 572, 6.8, true);
+                text(sa, 95, 572, 7, true);
+                line(92, 569, 220, 569, 0.5);
+                text("Service Advisor", 130, 561, 5.5, false);
+
+                rect(240, 548, 327, 36, null, black, 0.5);
+                text("AUTHORIZATION", 370, 574, 6.5, true);
+                text("I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.", 246, 566, 5.2, false);
+                line(310, 556, 500, 556, 0.5);
+                text("Customer Name and Signature", 355, 550, 5.5, true);
+
+                // 5. Diagnostic Result | Parts | Materials Matrix
+                rect(28, 308, 539, 234, null, black, 0.5);
+                rect(28, 530, 539, 12, grayBg, black, 0.5);
+                text("DIAGNOSTIC RESULT", 60, 533, 6.5, true);
+                text("PARTS", 265, 533, 6.5, true);
+                text("MATERIALS", 445, 533, 6.5, true);
+
+                line(155, 308, 155, 542, 0.5);
+                line(360, 308, 360, 542, 0.5);
+
+                // Subheader row
+                rect(28, 518, 539, 12, grayLight, black, 0.5);
+                text("DESCRIPTION", 160, 521, 6, true);
+                text("QTY", 265, 521, 6, true);
+                text("PRICE", 288, 521, 6, true);
+                text("AMOUNT", 324, 521, 6, true);
+
+                text("DESCRIPTION", 365, 521, 6, true);
+                text("QTY", 470, 521, 6, true);
+                text("PRICE", 493, 521, 6, true);
+                text("AMOUNT", 529, 521, 6, true);
+
+                line(260, 320, 260, 530, 0.5);
+                line(282, 320, 282, 530, 0.5);
+                line(320, 320, 320, 530, 0.5);
+
+                line(465, 320, 465, 530, 0.5);
+                line(487, 320, 487, 530, 0.5);
+                line(525, 320, 525, 530, 0.5);
+
+                // Diagnostic text
                 if (diagnostic) {
-                    page.drawText(diagnostic, {
-                        x: 75, y: 520, size: 5.5, font: fontNorm, maxWidth: 105, lineHeight: 7.5
-                    });
+                    page.drawText(diagnostic, { x: 32, y: 508, size: 5.5, font: fontNorm, maxWidth: 120, lineHeight: 7.5 });
                 }
 
-                // 6. Matrix Rows (23 rows on original template)
-                const startY = 527.5;
-                const rowStep = 9.2;
+                // Draw 20 grid rows
+                const startY = 509;
+                const rowStep = 9.5;
+                for (let r = 0; r < 20; r++) {
+                    const ry = startY - (r * rowStep);
+                    line(28, ry, 567, ry, 0.25);
+                }
+
                 let partsTotal = 0;
                 let matsTotal = 0;
 
                 (window.form13Parts || []).forEach((p, i) => {
-                    const rowY = startY - (i * rowStep);
+                    const ry = startY - 7 - (i * rowStep);
                     const qty = Number(p.qty) || 0;
                     const price = Number(p.price) || 0;
-                    const amount = qty * price;
-                    partsTotal += amount;
+                    const amt = qty * price;
+                    partsTotal += amt;
 
-                    draw(p.desc, 185, rowY, 5.2, false);
-                    draw(String(qty), 237, rowY, 5.5, false);
-                    draw(price.toFixed(2), 256, rowY, 5.5, false);
-                    draw(amount.toFixed(2), 304, rowY, 5.5, true);
+                    text(p.desc, 158, ry, 5.2, false);
+                    text(String(qty), 268, ry, 5.5, false);
+                    text(price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 286, ry, 5.5, false);
+                    text(amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 323, ry, 5.5, true);
                 });
 
                 (window.form13Materials || []).forEach((m, i) => {
-                    const rowY = startY - (i * rowStep);
+                    const ry = startY - 7 - (i * rowStep);
                     const qty = Number(m.qty) || 0;
                     const price = Number(m.price) || 0;
-                    const amount = qty * price;
-                    matsTotal += amount;
+                    const amt = qty * price;
+                    matsTotal += amt;
 
-                    draw(m.desc, 348, rowY, 5.2, false);
-                    draw(String(qty), 400, rowY, 5.5, false);
-                    draw(price.toFixed(2), 420, rowY, 5.5, false);
-                    draw(amount.toFixed(2), 468, rowY, 5.5, true);
+                    text(m.desc, 363, ry, 5.2, false);
+                    text(String(qty), 473, ry, 5.5, false);
+                    text(price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 491, ry, 5.5, false);
+                    text(amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 528, ry, 5.5, true);
                 });
 
-                // Subtotals (y ~ 316)
-                if (partsTotal > 0) draw(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 295, 316, 6, true);
-                if (matsTotal > 0) draw(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 458, 316, 6, true);
+                // Subtotals
+                rect(28, 308, 539, 12, grayLight, black, 0.5);
+                text("SUBTOTALS", 65, 311, 6, true);
+                text("PARTS:", 228, 311, 6, true);
+                text(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 323, 311, 6, true);
+                text("MATERIALS:", 428, 311, 6, true);
+                text(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 528, 311, 6, true);
 
-                // 7. Middle Signatures (y ~ 290)
-                draw(mechanic, 160, 290, 6.5, false);
-                draw(assessor, 430, 290, 6.5, false);
+                // Estimated Total
+                const grandTotal = partsTotal + matsTotal;
+                rect(28, 292, 539, 14, grayBg, black, 0.5);
+                text("ESTIMATED TOTAL:", 390, 296, 7.5, true);
+                text('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 480, 296, 8.5, true, darkRed);
 
-                // 8. Certificate of Completion Signatories (y ~ 238 down to 202)
-                draw(sa, 160, 238, 7, true);
-                draw('Chief, Auto Mechanic / Authorized AM', 420, 238, 6.5, true);
-                draw(manager, 430, 202, 7, true);
+                // Diagnosed & Assessed
+                text("Diagnosed by:", 32, 276, 6.5, true);
+                text(mechanic, 95, 276, 6.5, false);
+                line(92, 273, 220, 273, 0.5);
 
-                // 9. Filipino Claim Stub (y ~ 102 down to 76)
-                draw(name, 130, 102, 6.5, true);
-                const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-                draw(combinedVehicle, 345, 102, 6.5, true);
-                draw(sa, 150, 89, 6.5, false);
-                draw(intakeDate, 130, 76, 6.5, false);
+                text("Assessed by:", 340, 276, 6.5, true);
+                text(assessor, 405, 276, 6.5, false);
+                line(400, 273, 555, 273, 0.5);
+
+                // 6. Certificate of Completion/Acceptance
+                rect(28, 140, 539, 124, null, black, 0.5);
+                text("CERTIFICATE OF COMPLETION/ACCEPTANCE", 205, 252, 7.5, true);
+                text("This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer", 40, 242, 5.2, false, black, true);
+
+                // 4 Signatures
+                text("Recommending Approval:", 36, 224, 6.5, true);
+                text(sa, 45, 206, 6.8, true);
+                line(36, 202, 210, 202, 0.5);
+                text("Service Advisor", 95, 194, 5.5, false);
+
+                text("Approved by:", 320, 224, 6.5, true);
+                text("Chief, Auto Mechanic / Authorized AM", 330, 206, 6.8, true);
+                line(320, 202, 545, 202, 0.5);
+                text("Chief, Auto Mechanic / Authorized AM", 355, 194, 5.5, false);
+
+                text("CONFORME:", 36, 174, 6.5, true);
+                line(36, 154, 210, 154, 0.5);
+                text("Customer's Name & Signature", 75, 146, 5.5, false);
+
+                text("Noted by:", 320, 174, 6.5, true);
+                text(manager, 380, 158, 6.8, true);
+                line(320, 154, 545, 154, 0.5);
+                text("General Manager", 395, 146, 5.5, false);
+
+                // 7. Tear-off perforated line
+                line(28, 132, 567, 132, 0.75, [4, 3]);
+                text("TEAR OFF CUSTOMER CLAIM STUB", 225, 130, 5.5, true);
+
+                // 8. Filipino Claim Stub
+                rect(28, 26, 539, 98, null, black, 0.5);
+                text("HONTECH AUTO CENTER - CUSTOMER CLAIM STUB", 34, 112, 7.5, true, darkRed);
                 const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
-                draw(stubId, 345, 76, 7.5, true, rgb(0.85, 0.1, 0.1));
+                text(stubId, 505, 112, 8.5, true, darkRed);
+
+                text("Customer Name:", 34, 98, 6.5, true);
+                text(name, 100, 98, 6.8, true);
+
+                text("Vehicle / Plate:", 34, 86, 6.5, true);
+                const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
+                text(combinedVehicle, 95, 86, 6.8, true);
+
+                text("Service Advisor:", 34, 74, 6.5, true);
+                text(sa, 95, 74, 6.5, false);
+
+                text("Intake Date:", 34, 62, 6.5, true);
+                text(intakeDate, 85, 62, 6.5, false);
+
+                // Tagalog Policy Box
+                rect(280, 32, 280, 72, grayLight, black, 0.5);
+                text("PAUNAWA SA SUKI:", 286, 94, 6.5, true);
+                const tagalogNotice = "1. Ipakita ang stub na ito kapag kukunin na ang sasakyan.\n2. Ang HonTech Auto Center ay hindi mananagot sa anumang gamit na naiwan sa loob ng sasakyan nang walang kaukulang deklarasyon.\n3. Salamat sa inyong patuloy na pagtitiwala!";
+                page.drawText(tagalogNotice, { x: 286, y: 82, size: 5.5, font: fontNorm, maxWidth: 268, lineHeight: 8 });
 
                 // Save binary
                 const pdfBytes = await doc.save();
@@ -11927,7 +12084,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 }
             } catch (err) {
-                console.error('Error in Form 1/3 template overlay generator:', err);
+                console.error('Error in Form 1/3 vector generator:', err);
             }
         }
         window.generateForm13PDF = generateForm13PDF;

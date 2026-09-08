@@ -32,7 +32,8 @@ if ($uri !== '/') {
             'woff'  => 'font/woff',
             'woff2' => 'font/woff2',
             'ttf'   => 'font/ttf',
-            'json'  => 'application/json'
+            'json'  => 'application/json',
+            'pdf'   => 'application/pdf'
         ];
 
         if (isset($mimeTypes[$ext])) {
