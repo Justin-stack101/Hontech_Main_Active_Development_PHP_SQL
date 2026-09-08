@@ -559,14 +559,19 @@ td .eval-text-truncated {
     font-size: 10px !important;
   }
 
-  /* Hide entire application shell, navigation, modals, overlays and PDF iframe plugin */
+  /* Hide entire application shell, navigation, modals, overlays, dashboard header and PDF iframe plugin */
   #app-sidebar,
   #app-header,
   header,
+  #dashboard-header,
+  div#dashboard-header,
   #header-actions,
   #form13-editor-pane,
   #form13-canvas-toolbar,
   #f13-pdf-viewer-wrap,
+  div#f13-pdf-viewer-wrap,
+  iframe#f13-pdf-iframe,
+  iframe#f13-enlarge-pdf-iframe,
   #app-preloader,
   #developer-error-overlay,
   .modal,
@@ -577,6 +582,7 @@ td .eval-text-truncated {
   button,
   .no-print {
     display: none !important;
+    visibility: hidden !important;
   }
 
   #section-form13 {
@@ -602,8 +608,11 @@ td .eval-text-truncated {
     background: #ffffff !important;
   }
 
+  div#f13-html-canvas-wrap.hidden,
+  #f13-html-canvas-wrap.hidden,
   #f13-html-canvas-wrap {
     display: block !important;
+    visibility: visible !important;
     background: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;

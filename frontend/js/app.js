@@ -12188,81 +12188,89 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return;
                 }
 
-                // Remove existing print frame if any
-                const existingFrame = document.getElementById('f13-dedicated-print-frame');
-                if (existingFrame) existingFrame.remove();
+                // Method 1: Try opening a clean isolated print popup window
+                const printWin = window.open('', '_blank', 'width=950,height=1100');
+                if (printWin) {
+                    printWin.document.open();
+                    printWin.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HonTech Auto Center - Form 1/3 Job Order</title>
+    <link rel="stylesheet" href="css/main.css?v=4.75">
+    <style>
+        @page {
+            size: portrait;
+            margin: 4mm 6mm;
+        }
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            box-sizing: border-box;
+        }
+        body {
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 8px !important;
+            color: #000000 !important;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .form13-sheet {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            padding: 12px !important;
+            border: 1px solid #000000 !important;
+            box-shadow: none !important;
+        }
+        .header-band {
+            background-color: #d1d5db !important;
+        }
+    </style>
+</head>
+<body>
+    ${sheet.outerHTML}
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                window.focus();
+                window.print();
+            }, 300);
+        });
+        setTimeout(function() {
+            window.focus();
+            window.print();
+        }, 600);
+    <\/script>
+</body>
+</html>`);
+                    printWin.document.close();
+                    return;
+                }
 
-                const printFrame = document.createElement('iframe');
-                printFrame.id = 'f13-dedicated-print-frame';
-                printFrame.style.position = 'fixed';
-                printFrame.style.top = '-9999px';
-                printFrame.style.left = '-9999px';
-                printFrame.style.width = '1024px';
-                printFrame.style.height = '1400px';
-                printFrame.style.border = '0';
-                document.body.appendChild(printFrame);
+                // Method 2 (Fallback if popups blocked): Direct window.print() with bulletproof @media print
+                const pdfWrap = document.getElementById('f13-pdf-viewer-wrap');
+                const htmlWrap = document.getElementById('f13-html-canvas-wrap');
+                const prevPdfDisplay = pdfWrap ? pdfWrap.style.display : '';
+                const prevHtmlDisplay = htmlWrap ? htmlWrap.style.display : '';
 
-                const frameDoc = printFrame.contentWindow.document;
-                frameDoc.open();
-                frameDoc.write(`
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <title>HonTech Auto Center - Form 1/3 Print</title>
-                        <script src="js/tailwind.cdn.js"><\/script>
-                        <link rel="stylesheet" href="css/main.css?v=4.74">
-                        <style>
-                            @page {
-                                size: portrait;
-                                margin: 4mm 6mm;
-                            }
-                            * {
-                                -webkit-print-color-adjust: exact !important;
-                                print-color-adjust: exact !important;
-                            }
-                            body {
-                                background: #ffffff !important;
-                                margin: 0 !important;
-                                padding: 0 !important;
-                                color: #000000 !important;
-                                font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
-                            }
-                            #form13-canvas-sheet {
-                                width: 100% !important;
-                                max-width: 100% !important;
-                                margin: 0 auto !important;
-                                padding: 12px !important;
-                                border: 1.5px solid #000000 !important;
-                                box-shadow: none !important;
-                            }
-                            .header-band {
-                                background-color: #d1d5db !important;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div style="padding: 2px;">
-                            ${sheet.outerHTML}
-                        </div>
-                    </body>
-                    </html>
-                `);
-                frameDoc.close();
+                if (pdfWrap) pdfWrap.style.setProperty('display', 'none', 'important');
+                if (htmlWrap) {
+                    htmlWrap.classList.remove('hidden');
+                    htmlWrap.style.setProperty('display', 'block', 'important');
+                }
 
-                // Allow styles and tailwind to compute layout
+                window.print();
+
                 setTimeout(() => {
-                    try {
-                        printFrame.contentWindow.focus();
-                        printFrame.contentWindow.print();
-                    } catch (e) {
-                        console.warn('Dedicated print frame failed, falling back to window.print():', e);
-                        window.print();
+                    if (pdfWrap) pdfWrap.style.display = prevPdfDisplay;
+                    if (htmlWrap) {
+                        htmlWrap.style.display = prevHtmlDisplay;
+                        if (currentForm13View === 'pdf') {
+                            htmlWrap.classList.add('hidden');
+                        }
                     }
-                    setTimeout(() => {
-                        try { printFrame.remove(); } catch (err) {}
-                    }, 60000);
-                }, 400);
+                }, 1000);
 
             } catch (err) {
                 console.error('Error during printForm13:', err);
