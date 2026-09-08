@@ -41,7 +41,7 @@
     <script src="js/vendor/jspdf.umd.min.js"></script>
     <script src="js/vendor/jspdf.plugin.autotable.min.js"></script>
     <script src="js/vendor/chart.min.js"></script>
-    <link rel="stylesheet" href="css/main.css?v=4.72">
+    <link rel="stylesheet" href="css/main.css?v=4.73">
     <style>
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -2542,9 +2542,549 @@
                                 <div id="dossier-history-timeline" class="space-y-3 max-h-[400px] overflow-y-auto custom-scroll pr-1">
                                     <!-- Dynamically populated historical job cards -->
                                 </div>
+            <!-- FORM 1/3 INTERACTIVE JOB ORDER STUDIO & LIVE PDF SYNCHRONIZER (PROTOTYPE) -->
+            <div id="section-form13" class="section-content hidden fade-in py-1">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                    <!-- ==========================================
+                         LEFT COLUMN: SA SMART INTERACTIVE EDITOR
+                         ========================================== -->
+                    <div id="form13-editor-pane" class="xl:col-span-6 space-y-5">
+                        
+                        <!-- Studio Header & Quick Preset Bar -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
+                                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Form 1/3 Job Order Studio</h2>
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live 1:1 Sync
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 font-medium">Interactive Service Advisor Editor & Physical Form Synchronizer</p>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Presets -->
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="applyForm13Preset('pms')" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 rounded-lg transition active:scale-95" title="Apply 10k PMS Preset">⚡ PMS 10K</button>
+                                    <button type="button" onclick="applyForm13Preset('brakes')" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 rounded-lg transition active:scale-95" title="Apply Brakes Overhaul Preset">⚡ Brakes</button>
+                                    <button type="button" onclick="applyForm13Preset('aircon')" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 rounded-lg transition active:scale-95" title="Apply Aircon Service Preset">⚡ Aircon</button>
+                                </div>
+                            </div>
+
+                            <!-- Timing & Job Header Fields -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order No.</label>
+                                    <input type="text" id="f13-input-job-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-red-500 outline-none transition" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Intake Date</label>
+                                    <input type="date" id="f13-input-intake-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Promise Date</label>
+                                    <input type="date" id="f13-input-promise-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Service Category</label>
+                                    <select id="f13-input-category" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                        <option value="PMS">PMS (Periodic)</option>
+                                        <option value="Brakes">Brake System</option>
+                                        <option value="Underchassis">Underchassis / Suspension</option>
+                                        <option value="Aircon">Aircon & Climate</option>
+                                        <option value="Electrical">Electrical & Wiring</option>
+                                        <option value="Engine Overhaul">Engine Repair / Overhaul</option>
+                                        <option value="Body & Paint">Body & Paint</option>
+                                        <option value="Diagnostic">Computer Diagnostic</option>
+                                        <option value="Others">General Repair</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Customer Details Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                    <i data-lucide="user" class="w-4 h-4 text-red-500"></i> Customer Dossier
+                                </span>
+                                <span class="text-[10.5px] text-gray-400 font-medium">Official Contact & Billing</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Full Name <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact No. / Viber</label>
+                                    <input type="text" id="f13-input-contact" placeholder="e.g. 0917-123-4567" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
+                                    <input type="text" id="f13-input-address" placeholder="e.g. 123 Narra St., Marikina Heights, Marikina City" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">E-Mail Address</label>
+                                    <input type="email" id="f13-input-email" placeholder="e.g. juandelacruz@gmail.com" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vehicle Specification Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                    <i data-lucide="car" class="w-4 h-4 text-red-500"></i> Vehicle Technical Specifications
+                                </span>
+                                <span class="text-[10.5px] text-gray-400 font-medium">Physical Identifiers</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-plate" placeholder="ABC-1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Model <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-model" placeholder="e.g. 2021 Toyota Vios" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
+                                    <input type="text" id="f13-input-color" placeholder="e.g. Super Red" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">KM Reading (Odometer)</label>
+                                    <input type="text" id="f13-input-km" placeholder="e.g. 45,210 km" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Engine Number</label>
+                                    <input type="text" id="f13-input-engine" placeholder="e.g. 1NZ-FE-987654" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Chassis No. (VIN)</label>
+                                    <input type="text" id="f13-input-chassis" placeholder="e.g. NCP150-123456" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service Concern & Diagnostic Findings -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i data-lucide="clipboard" class="w-4 h-4 text-red-500"></i> Customer's Description of Concern
+                                    </label>
+                                    <span class="text-[10px] text-gray-400">Filled by Service Advisor</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5 mb-2">
+                                    <button type="button" onclick="appendConcernPreset('PMS 10k standard checkup & change oil.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ PMS Checkup</button>
+                                    <button type="button" onclick="appendConcernPreset('Brake squealing noise upon deceleration.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ Brake Squeal</button>
+                                    <button type="button" onclick="appendConcernPreset('Aircon not cooling during idle/traffic.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ AC Weak</button>
+                                    <button type="button" onclick="appendConcernPreset('Knocking vibration on front underchassis.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ Suspension</button>
+                                </div>
+                                <textarea id="f13-input-concern" rows="2" placeholder="Describe customer's requested services, issues, or specific complaints..." class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs font-medium text-gray-900 focus:border-red-500 outline-none transition custom-scroll"></textarea>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <label class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
+                                        <i data-lucide="wrench" class="w-4 h-4 text-red-500"></i> Diagnostic Result & Mechanic Notes
+                                    </label>
+                                    <span class="text-[10px] text-gray-400">Filled by Chief Mechanic</span>
+                                </div>
+                                <textarea id="f13-input-diagnostic" rows="2" placeholder="Initial diagnostic findings, mechanical inspection notes, and recommended solutions..." class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs font-medium text-gray-900 focus:border-red-500 outline-none transition custom-scroll"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Parts Repeater Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <div>
+                                    <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                        <i data-lucide="package" class="w-4 h-4 text-red-500"></i> Parts Repeater Table
+                                    </span>
+                                    <p class="text-[10.5px] text-gray-400 font-medium">Replaced components & mechanical parts</p>
+                                </div>
+                                <button type="button" onclick="addForm13PartRow()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Part Item
+                                </button>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs text-left">
+                                    <thead>
+                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
+                                            <th class="py-2 px-2.5 rounded-l-lg">Description</th>
+                                            <th class="py-2 px-2 w-16 text-center">Qty</th>
+                                            <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
+                                            <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
+                                            <th class="py-2 px-2 w-10 text-center rounded-r-lg"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="f13-parts-table-body" class="divide-y divide-gray-100">
+                                        <!-- Dynamically generated part rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="flex justify-end pt-1">
+                                <div class="text-right text-xs">
+                                    <span class="font-bold text-gray-500 uppercase tracking-wider">Parts Subtotal: </span>
+                                    <span id="f13-editor-parts-total" class="font-mono font-black text-gray-900 text-sm ml-2">₱ 0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Materials Repeater Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <div>
+                                    <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                        <i data-lucide="layers" class="w-4 h-4 text-red-500"></i> Materials & Consumables Repeater
+                                    </span>
+                                    <p class="text-[10.5px] text-gray-400 font-medium">Fluids, cleaners, oils, and consumables</p>
+                                </div>
+                                <button type="button" onclick="addForm13MaterialRow()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Material Item
+                                </button>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs text-left">
+                                    <thead>
+                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
+                                            <th class="py-2 px-2.5 rounded-l-lg">Description</th>
+                                            <th class="py-2 px-2 w-16 text-center">Qty</th>
+                                            <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
+                                            <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
+                                            <th class="py-2 px-2 w-10 text-center rounded-r-lg"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="f13-materials-table-body" class="divide-y divide-gray-100">
+                                        <!-- Dynamically generated material rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="flex justify-end pt-1">
+                                <div class="text-right text-xs">
+                                    <span class="font-bold text-gray-500 uppercase tracking-wider">Materials Subtotal: </span>
+                                    <span id="f13-editor-materials-total" class="font-mono font-black text-gray-900 text-sm ml-2">₱ 0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grand Total & Signatories Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <!-- Grand Total Banner -->
+                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-4 text-white flex items-center justify-between shadow-sm">
+                                <div>
+                                    <span class="text-[11px] uppercase font-bold tracking-widest text-slate-300">Estimated Job Order Total</span>
+                                    <p class="text-[11px] text-slate-400 mt-0.5">Parts + Materials Live Summary</p>
+                                </div>
+                                <div class="text-right">
+                                    <span id="f13-editor-grand-total" class="text-2xl font-black font-mono tracking-tight text-white">₱ 0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Signatories Input Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Service Advisor (Interviewed By)</label>
+                                    <input type="text" id="f13-input-sa" placeholder="e.g. Roman Sarol" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Diagnosed By (Auto Mechanic)</label>
+                                    <input type="text" id="f13-input-mechanic" placeholder="e.g. Chief Mechanic" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Assessed By (Parts Controller)</label>
+                                    <input type="text" id="f13-input-assessor" placeholder="e.g. Parts Controller" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Approved By (Branch Manager)</label>
+                                    <input type="text" id="f13-input-manager" placeholder="e.g. General Manager" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Studio Action Toolbar -->
+                        <div class="sticky bottom-3 bg-white/95 backdrop-blur-md border border-gray-200 rounded-2xl p-3.5 shadow-lg flex flex-wrap items-center justify-between gap-3 z-30">
+                            <button type="button" onclick="resetForm13Studio()" class="px-4 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
+                            </button>
+                            
+                            <div class="flex items-center gap-2.5">
+                                <button type="button" onclick="printForm13()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-2 shadow-xs cursor-pointer active:scale-95">
+                                    <i data-lucide="printer" class="w-4 h-4"></i> Print Form 1/3 & Claim Stub
+                                </button>
+                                <button type="button" id="f13-btn-push-bay" onclick="pushToBayQueueFromStudio()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider transition flex items-center gap-2 shadow-md shadow-red-600/30 cursor-pointer active:scale-95">
+                                    <i data-lucide="send" class="w-4 h-4"></i> Push to Bay Queue
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <!-- ==========================================
+                         RIGHT COLUMN: 1:1 LIVE FORM 1/3 CANVAS SHEET
+                         ========================================== -->
+                    <div id="form13-canvas-pane" class="xl:col-span-6 space-y-3">
+                        
+                        <!-- Canvas Control Toolbar (Hidden in Print) -->
+                        <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+                                <span class="font-extrabold text-gray-900 uppercase tracking-tight">HonTech Physical Document Canvas</span>
+                                <span class="text-[10px] text-gray-400 hidden sm:inline">(Exact 1:1 Print Preview)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="printForm13()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Physical Form 1/3 White Document Sheet -->
+                        <div class="bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
+                            <div id="form13-canvas-sheet" class="form13-sheet form13-paper-shadow mx-auto bg-white border border-black p-5 max-w-[760px] text-[10px] select-text">
+                                
+                                <!-- Document Header -->
+                                <div class="flex items-start justify-between pb-2 border-b border-black">
+                                    <!-- Left: HonTech Brand Info -->
+                                    <div class="space-y-0.5">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <div class="bg-red-600 text-white font-black italic px-2 py-0.5 rounded text-[11px] tracking-wider uppercase inline-block">
+                                                HONTECH
+                                            </div>
+                                            <span class="font-black text-xs uppercase tracking-tight text-gray-900">Auto Center</span>
+                                        </div>
+                                        <div class="font-semibold leading-tight text-gray-800">70 Bayan Bayanan Ave cor Narra St.</div>
+                                        <div class="leading-tight text-gray-700">Marikina Heights, Marikina City</div>
+                                        <div class="leading-tight text-gray-600">fb.com/hontechautocenter</div>
+                                        <div class="leading-tight text-gray-800 font-medium">85644550 / 71219124 / 09458757441 / 09525065084 - VIBER</div>
+                                    </div>
+
+                                    <!-- Right: Form 1/3, Job Order No, Date -->
+                                    <div class="text-right space-y-1">
+                                        <div class="font-bold text-[10px] text-gray-600">Form 1/3</div>
+                                        <div class="flex items-baseline justify-end gap-1.5">
+                                            <span class="font-black text-sm uppercase tracking-tight">JOB ORDER NO.</span>
+                                            <span id="f13-live-job-no" class="font-mono font-black text-sm border-b-2 border-black min-w-[110px] inline-block text-center text-red-700">HT-JO-0001</span>
+                                        </div>
+                                        <div class="flex items-center justify-end gap-1.5 pt-0.5">
+                                            <span class="font-bold text-[10px] uppercase">DATE:</span>
+                                            <div class="border border-black px-2 py-0.5 font-bold min-w-[90px] text-center" id="f13-live-date">2026-09-08</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CUSTOMER DETAILS SECTION -->
+                                <div class="mt-2 border border-black">
+                                    <div class="header-band uppercase font-black text-center text-[10px] tracking-widest bg-gray-300 py-0.5 border-b border-black">
+                                        CUSTOMER DETAILS
+                                    </div>
+                                    <div class="grid grid-cols-12 text-[9.5px] divide-x divide-black">
+                                        <!-- Col 1 -->
+                                        <div class="col-span-5 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Name :</span> <span id="f13-live-name" class="font-semibold"></span></div>
+                                            <div><span class="font-bold">Address :</span> <span id="f13-live-address" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Contact No. :</span> <span id="f13-live-contact" class="font-semibold font-mono"></span></div>
+                                            <div><span class="font-bold">E-Mail Add. :</span> <span id="f13-live-email" class="font-medium"></span></div>
+                                        </div>
+                                        <!-- Col 2 -->
+                                        <div class="col-span-4 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Year/Model :</span> <span id="f13-live-model" class="font-semibold"></span></div>
+                                            <div><span class="font-bold">KM Reading :</span> <span id="f13-live-km" class="font-semibold font-mono"></span></div>
+                                            <div><span class="font-bold">Engine No :</span> <span id="f13-live-engine" class="font-mono"></span></div>
+                                            <div><span class="font-bold">Chassis No. :</span> <span id="f13-live-chassis" class="font-mono"></span></div>
+                                        </div>
+                                        <!-- Col 3 -->
+                                        <div class="col-span-3 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Plate No :</span> <span id="f13-live-plate" class="font-black font-mono text-[10.5px]"></span></div>
+                                            <div><span class="font-bold">Intake Date :</span> <span id="f13-live-intake-date" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Promise Date :</span> <span id="f13-live-promise-date" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Color :</span> <span id="f13-live-color" class="font-medium"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN -->
+                                <div class="mt-2 border border-black">
+                                    <div class="header-band uppercase font-bold text-center text-[9.5px] tracking-wide bg-gray-200 py-0.5 border-b border-black">
+                                        CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN <span class="font-normal text-[8.5px] italic">(To be filled out by Service Advisor)</span>
+                                    </div>
+                                    <div id="f13-live-concern" class="p-2 min-h-[42px] text-[10px] leading-relaxed whitespace-pre-wrap font-medium"></div>
+                                </div>
+
+                                <!-- NOTE Surcharge Disclaimer -->
+                                <div class="mt-1 text-[8px] text-gray-800 leading-tight italic px-1">
+                                    <strong>NOTE:</strong> To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied. The cost of the item/s shall be the current price of Hontech Auto Center, Inc.
+                                </div>
+
+                                <!-- Interviewed By & Authorization Grid -->
+                                <div class="mt-2 grid grid-cols-12 gap-3 items-end text-[9px]">
+                                    <div class="col-span-5 space-y-0.5">
+                                        <div><span class="font-bold">Interviewed by:</span> <span id="f13-live-sa-name" class="font-bold border-b border-black min-w-[120px] inline-block text-center">Roman Sarol</span></div>
+                                        <div class="text-[8px] text-gray-600 pl-20">Service Advisor</div>
+                                    </div>
+                                    <div class="col-span-7 border border-black p-1.5 text-center">
+                                        <div class="font-bold uppercase tracking-wider text-[8.5px]">AUTHORIZATION</div>
+                                        <div class="text-[7.5px] leading-tight text-gray-700 mt-0.5">I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.</div>
+                                        <div class="mt-3 border-t border-black w-48 mx-auto"></div>
+                                        <div class="text-[7.5px] font-bold mt-0.5">Customer Name and Signature</div>
+                                    </div>
+                                </div>
+
+                                <!-- DIAGNOSTIC RESULT | PARTS | MATERIALS MATRIX -->
+                                <div class="mt-2 border border-black">
+                                    <table class="w-full text-[8.5px] border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-200 border-b border-black text-center font-bold">
+                                                <th class="border-r border-black p-1 w-[26%] uppercase">DIAGNOSTIC RESULT</th>
+                                                <th colspan="4" class="border-r border-black p-1 uppercase">PARTS</th>
+                                                <th colspan="4" class="p-1 uppercase">MATERIALS</th>
+                                            </tr>
+                                            <tr class="bg-gray-100 border-b border-black text-center font-semibold text-[8px]">
+                                                <th class="border-r border-black p-0.5"></th>
+                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
+                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
+                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
+                                                <th class="border-r border-black p-0.5 w-14">AMOUNT</th>
+                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
+                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
+                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
+                                                <th class="p-0.5 w-14">AMOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="f13-live-matrix-body">
+                                            <!-- Dynamically rendered 15-20 rows matching scanned grid -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="border-t border-black font-bold text-[9px] bg-gray-100">
+                                                <td class="border-r border-black p-1 text-center font-bold uppercase text-[8px]">SUBTOTALS</td>
+                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">PARTS:</td>
+                                                <td class="border-r border-black p-1 text-right font-mono" id="f13-live-parts-total">0.00</td>
+                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">MATERIALS:</td>
+                                                <td class="p-1 text-right font-mono" id="f13-live-materials-total">0.00</td>
+                                            </tr>
+                                            <tr class="border-t border-black font-black text-[9.5px] bg-gray-200">
+                                                <td colspan="7" class="border-r border-black p-1 text-right uppercase tracking-wider">ESTIMATED TOTAL:</td>
+                                                <td colspan="2" class="p-1 text-right font-mono text-[10.5px] font-black" id="f13-live-grand-total">₱ 0.00</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <!-- Middle Sign-off: Diagnosed by & Assessed by -->
+                                <div class="mt-2 grid grid-cols-2 gap-4 text-[9px]">
+                                    <div>
+                                        <span class="font-bold">Diagnosed by:</span>
+                                        <span id="f13-live-mechanic" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Auto Mechanic</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="font-bold">Assessed by:</span>
+                                        <span id="f13-live-assessor" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Parts/Materials Controller</span>
+                                    </div>
+                                </div>
+
+                                <!-- CERTIFICATE OF COMPLETION/ACCEPTANCE -->
+                                <div class="mt-2 border border-black p-2">
+                                    <div class="text-center font-black uppercase text-[9.5px] tracking-wide">
+                                        CERTIFICATE OF COMPLETION/ACCEPTANCE
+                                    </div>
+                                    <div class="text-[8px] text-center italic text-gray-800 leading-snug mt-0.5">
+                                        This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4 mt-3 text-[8.5px]">
+                                        <!-- Left Column -->
+                                        <div class="space-y-3">
+                                            <div>
+                                                <div class="font-bold">Recommending Approval:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-sa-name2">Roman Sarol</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Service Advisor</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">CONFORME:</div>
+                                                <div class="mt-3 border-b border-black w-44"></div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Customer's Name & Signature</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right Column -->
+                                        <div class="space-y-3">
+                                            <div>
+                                                <div class="font-bold">Approved by:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-approved-by">Chief, Auto Mechanic / Authorized AM</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Chief, Auto Mechanic / Authorized AM</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">Concurred by:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-manager">General Manager</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">General Manager</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PERFORATED TEAR-OFF DIVIDER -->
+                                <div class="my-3 form13-perforated-border text-center">
+                                    <span class="bg-white px-2 text-[8px] font-bold text-red-600 uppercase tracking-widest">
+                                        Gupitin Dito / Perforated Customer Claim Stub
+                                    </span>
+                                </div>
+
+                                <!-- CUSTOMER CLAIM STUB IN FILIPINO (Bottom Section) -->
+                                <div class="p-2 border border-red-300 rounded bg-red-50/20 text-[9px] space-y-1.5">
+                                    <div class="text-red-600 font-bold leading-tight">
+                                        <div class="text-[10px] font-black uppercase tracking-tight">Mahal Naming Mga Kustomer,</div>
+                                        <div class="text-[8px] font-normal leading-snug text-red-700 mt-0.5">
+                                            Para sa inyong seguridad at kapakinabangan ng lahat, pinapayuhan po namin kayong kunin ang lahat ng mahahalagang gamit mula sa inyong sasakyan bago ito ipagkatiwala sa aming mga kawani. Malaki po ang maitutulong ng inyong kooperasyon upang masiguro namin ang mahusay na serbisyo.
+                                        </div>
+                                        <div class="text-[8px] font-normal mt-0.5 text-red-700">Maraming salamat po sa inyong patuloy na suporta.</div>
+                                        <div class="text-[8.5px] font-black mt-0.5 text-red-800">Ang Pamunuan</div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3 pt-1 border-t border-red-200">
+                                        <div class="space-y-1">
+                                            <div><span class="font-bold">Name :</span> <span id="f13-stub-live-name" class="font-semibold underline"></span></div>
+                                            <div><span class="font-bold">Service Advisor :</span> <span id="f13-stub-live-sa" class="font-semibold underline">Manny Sarol</span></div>
+                                            <div><span class="font-bold">Date:</span> <span id="f13-stub-live-date" class="font-semibold underline">2026-09-08</span></div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <div><span class="font-bold">Plate No./Year/Model :</span> <span id="f13-stub-live-plate-model" class="font-bold underline font-mono"></span></div>
+                                            <div><span class="font-bold">Contact :</span> <span class="font-semibold">09458757441 / 09525065084 - VIBER</span></div>
+                                            <div><span class="font-bold text-red-600">Claim Stub :</span> <span id="f13-stub-live-id" class="font-mono font-black text-red-600 underline">CS-8821</span></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center italic text-[7.5px] text-gray-600 pt-0.5">
+                                        (Please present this to our Service Advisor to claim required documents for the release of your vehicle)
+                                    </div>
+
+                                    <div class="flex items-center justify-between pt-1 border-t border-gray-200">
+                                        <div class="font-black text-[8px] uppercase tracking-wider text-gray-800">
+                                            THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!
+                                        </div>
+                                        <div class="text-right text-[7.5px] text-gray-700 leading-tight">
+                                            <div class="font-bold">Hontech Auto Center, Inc</div>
+                                            <div>70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City</div>
+                                            <div>Tel #: (8)564-4550 / 71219124</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
 
@@ -5939,7 +6479,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.34"></script>
+    <script src="js/app.js?v=5.35"></script>
 </body>
 
 </html>

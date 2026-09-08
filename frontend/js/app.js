@@ -1290,13 +1290,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
-                // Owner: Analytics, Workshop Bays (Authority Configuration), Staff Access, Records
+                // Owner: Analytics, Form 1/3 Studio, Workshop Bays (Authority Configuration), Staff Access, Records
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
@@ -1312,12 +1314,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
@@ -1355,13 +1359,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Service Advisor Order: 1. Walk-In Form, 2. Daily Intakes / Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
+                // Service Advisor Order: 1. Form 1/3 Studio, 2. Walk-In Form, 3. Daily Intakes / Master Queue, 4. Customer Lookup, 5. Bay Status, 6. TV Monitor
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
@@ -1369,7 +1375,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('sa');
-                defaultView = 'intake';
+                defaultView = 'form13';
             }
 
             // Append Profile button for all roles
@@ -1714,6 +1720,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const titles = {
                 'dashboard': 'Analytics Overview',
+                'form13': 'Form 1/3 Interactive Job Order Studio & Live Canvas',
                 'bays': 'Workshop Capacity & Bay Management',
                 'staff': 'Staff & Access Management',
                 'lookup': 'Customer History & Back-Job Lookup',
@@ -1726,6 +1733,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             };
             if (titles[id]) document.getElementById('view-title').innerText = titles[id];
             
+            if (id === 'form13') {
+                if (typeof initForm13Studio === 'function') {
+                    initForm13Studio();
+                }
+            }
 
             if (id === 'tv') {
                 (async () => {
@@ -11198,7 +11210,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 await loadData();
                 renderStaffTables();
                 if (typeof renderExpressIntelligenceModule === 'function') {
-                    renderExpressIntelligenceModule();
+                renderExpressIntelligenceModule();
                 }
                 showSystemToast(res.message || 'Audit logs and express delay reports cleared.', 'success', 'Logs Purged');
             } catch (err) {
@@ -11225,5 +11237,568 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         };
 
+        // ==========================================================================
+        // 5. FORM 1/3 INTERACTIVE JOB ORDER STUDIO & LIVE PDF SYNCHRONIZER
+        // ==========================================================================
+        window.form13Parts = [];
+        window.form13Materials = [];
+        window.form13Initialized = false;
 
+        function initForm13Studio() {
+            const today = new Date().toISOString().split('T')[0];
 
+            // Header & Job Order Defaults
+            const jobNoInput = document.getElementById('f13-input-job-no');
+            if (jobNoInput && (!jobNoInput.value || jobNoInput.value === '')) {
+                const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
+                jobNoInput.value = `HT-JO-${randSuffix}`;
+            }
+
+            const intakeDateInput = document.getElementById('f13-input-intake-date');
+            if (intakeDateInput && !intakeDateInput.value) intakeDateInput.value = today;
+
+            const promiseDateInput = document.getElementById('f13-input-promise-date');
+            if (promiseDateInput && !promiseDateInput.value) promiseDateInput.value = today;
+
+            // Default signatories
+            const saInput = document.getElementById('f13-input-sa');
+            if (saInput && !saInput.value) saInput.value = currentUserName || 'Roman Sarol';
+
+            const mechInput = document.getElementById('f13-input-mechanic');
+            if (mechInput && !mechInput.value) mechInput.value = 'Auto Mechanic';
+
+            const assessorInput = document.getElementById('f13-input-assessor');
+            if (assessorInput && !assessorInput.value) assessorInput.value = 'Parts Controller';
+
+            const managerInput = document.getElementById('f13-input-manager');
+            if (managerInput && !managerInput.value) managerInput.value = 'General Manager';
+
+            // Seed initial rows if empty
+            if (window.form13Parts.length === 0 && window.form13Materials.length === 0 && !window.form13Initialized) {
+                window.form13Parts = [
+                    { id: 1, desc: 'Engine Oil Filter (OEM)', qty: 1, price: 450.00 },
+                    { id: 2, desc: 'Fully Synthetic Motor Oil (5W-30 / 4L)', qty: 1, price: 1850.00 }
+                ];
+                window.form13Materials = [
+                    { id: 101, desc: 'Brake & Parts Cleaner Spray (500ml)', qty: 1, price: 350.00 },
+                    { id: 102, desc: 'Engine Flush Treatment (300ml)', qty: 1, price: 480.00 }
+                ];
+            }
+
+            // Bind reactive input listeners for instant zero-latency mirroring
+            const inputIds = [
+                'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
+                'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
+                'f13-input-engine', 'f13-input-chassis', 'f13-input-intake-date', 'f13-input-promise-date',
+                'f13-input-category', 'f13-input-concern', 'f13-input-diagnostic',
+                'f13-input-sa', 'f13-input-mechanic', 'f13-input-assessor', 'f13-input-manager'
+            ];
+
+            inputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.dataset.f13Bound) {
+                    el.addEventListener('input', syncForm13Canvas);
+                    el.addEventListener('change', syncForm13Canvas);
+                    el.dataset.f13Bound = 'true';
+                }
+            });
+
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+
+            window.form13Initialized = true;
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+        window.initForm13Studio = initForm13Studio;
+
+        function addForm13PartRow(desc = '', qty = 1, price = 0) {
+            window.form13Parts.push({
+                id: Date.now() + Math.random(),
+                desc: desc,
+                qty: Number(qty) || 1,
+                price: Number(price) || 0
+            });
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.addForm13PartRow = addForm13PartRow;
+
+        function addForm13MaterialRow(desc = '', qty = 1, price = 0) {
+            window.form13Materials.push({
+                id: Date.now() + Math.random(),
+                desc: desc,
+                qty: Number(qty) || 1,
+                price: Number(price) || 0
+            });
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.addForm13MaterialRow = addForm13MaterialRow;
+
+        function removeForm13PartRow(index) {
+            window.form13Parts.splice(index, 1);
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.removeForm13PartRow = removeForm13PartRow;
+
+        function removeForm13MaterialRow(index) {
+            window.form13Materials.splice(index, 1);
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.removeForm13MaterialRow = removeForm13MaterialRow;
+
+        function updateForm13PartField(index, field, value) {
+            if (!window.form13Parts[index]) return;
+            if (field === 'qty' || field === 'price') {
+                window.form13Parts[index][field] = Number(value) || 0;
+            } else {
+                window.form13Parts[index][field] = value;
+            }
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.updateForm13PartField = updateForm13PartField;
+
+        function updateForm13MaterialField(index, field, value) {
+            if (!window.form13Materials[index]) return;
+            if (field === 'qty' || field === 'price') {
+                window.form13Materials[index][field] = Number(value) || 0;
+            } else {
+                window.form13Materials[index][field] = value;
+            }
+            calcForm13Totals();
+            syncForm13Canvas();
+        }
+        window.updateForm13MaterialField = updateForm13MaterialField;
+
+        function renderForm13Rows() {
+            // Render Parts Table Body in Editor
+            const partsBody = document.getElementById('f13-parts-table-body');
+            if (partsBody) {
+                if (window.form13Parts.length === 0) {
+                    partsBody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-gray-400 italic text-[11px]">No parts added. Click "+ Add Part Item" to begin.</td></tr>`;
+                } else {
+                    partsBody.innerHTML = window.form13Parts.map((part, idx) => {
+                        const amount = (Number(part.qty || 0) * Number(part.price || 0)).toFixed(2);
+                        return `
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="py-1.5 px-2">
+                                    <input type="text" value="${escapeHtml(part.desc || '')}" oninput="updateForm13PartField(${idx}, 'desc', this.value)" placeholder="Part Description..." class="w-full bg-transparent border-b border-gray-200 focus:border-red-500 font-semibold text-gray-800 outline-none text-xs py-0.5">
+                                </td>
+                                <td class="py-1.5 px-2 text-center">
+                                    <input type="number" min="1" step="1" value="${part.qty}" oninput="updateForm13PartField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                </td>
+                                <td class="py-1.5 px-2 text-right">
+                                    <input type="number" min="0" step="0.01" value="${part.price}" oninput="updateForm13PartField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                </td>
+                                <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
+                                    ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </td>
+                                <td class="py-1.5 px-2 text-center">
+                                    <button type="button" onclick="removeForm13PartRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 rounded transition cursor-pointer" title="Remove Item">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // Render Materials Table Body in Editor
+            const matsBody = document.getElementById('f13-materials-table-body');
+            if (matsBody) {
+                if (window.form13Materials.length === 0) {
+                    matsBody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-gray-400 italic text-[11px]">No materials added. Click "+ Add Material Item" to begin.</td></tr>`;
+                } else {
+                    matsBody.innerHTML = window.form13Materials.map((mat, idx) => {
+                        const amount = (Number(mat.qty || 0) * Number(mat.price || 0)).toFixed(2);
+                        return `
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="py-1.5 px-2">
+                                    <input type="text" value="${escapeHtml(mat.desc || '')}" oninput="updateForm13MaterialField(${idx}, 'desc', this.value)" placeholder="Material / Consumable..." class="w-full bg-transparent border-b border-gray-200 focus:border-red-500 font-semibold text-gray-800 outline-none text-xs py-0.5">
+                                </td>
+                                <td class="py-1.5 px-2 text-center">
+                                    <input type="number" min="1" step="1" value="${mat.qty}" oninput="updateForm13MaterialField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                </td>
+                                <td class="py-1.5 px-2 text-right">
+                                    <input type="number" min="0" step="0.01" value="${mat.price}" oninput="updateForm13MaterialField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                </td>
+                                <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
+                                    ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                </td>
+                                <td class="py-1.5 px-2 text-center">
+                                    <button type="button" onclick="removeForm13MaterialRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 rounded transition cursor-pointer" title="Remove Item">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+
+        function calcForm13Totals() {
+            let partsTotal = 0;
+            window.form13Parts.forEach(p => {
+                const qty = Number(p.qty) || 0;
+                const price = Number(p.price) || 0;
+                partsTotal += (qty * price);
+            });
+
+            let matsTotal = 0;
+            window.form13Materials.forEach(m => {
+                const qty = Number(m.qty) || 0;
+                const price = Number(m.price) || 0;
+                matsTotal += (qty * price);
+            });
+
+            const grandTotal = partsTotal + matsTotal;
+
+            const formatMoney = num => '₱ ' + Number(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const formatRawMoney = num => Number(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Update Editor totals
+            if (document.getElementById('f13-editor-parts-total')) {
+                document.getElementById('f13-editor-parts-total').innerText = formatMoney(partsTotal);
+            }
+            if (document.getElementById('f13-editor-materials-total')) {
+                document.getElementById('f13-editor-materials-total').innerText = formatMoney(matsTotal);
+            }
+            if (document.getElementById('f13-editor-grand-total')) {
+                document.getElementById('f13-editor-grand-total').innerText = formatMoney(grandTotal);
+            }
+
+            // Update Canvas totals
+            if (document.getElementById('f13-live-parts-total')) {
+                document.getElementById('f13-live-parts-total').innerText = formatRawMoney(partsTotal);
+            }
+            if (document.getElementById('f13-live-materials-total')) {
+                document.getElementById('f13-live-materials-total').innerText = formatRawMoney(matsTotal);
+            }
+            if (document.getElementById('f13-live-grand-total')) {
+                document.getElementById('f13-live-grand-total').innerText = formatMoney(grandTotal);
+            }
+        }
+        window.calcForm13Totals = calcForm13Totals;
+
+        function syncForm13Canvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+
+            const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+            const intakeDate = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+            const promiseDate = getVal('f13-input-promise-date') || intakeDate;
+            const name = getVal('f13-input-name') || '';
+            const address = getVal('f13-input-address') || '';
+            const contact = getVal('f13-input-contact') || '';
+            const email = getVal('f13-input-email') || '';
+            const plate = (getVal('f13-input-plate') || '').toUpperCase();
+            const model = getVal('f13-input-model') || '';
+            const color = getVal('f13-input-color') || '';
+            const km = getVal('f13-input-km') || '';
+            const engine = getVal('f13-input-engine') || '';
+            const chassis = getVal('f13-input-chassis') || '';
+            const concern = getVal('f13-input-concern') || '';
+            const diagnostic = getVal('f13-input-diagnostic') || '';
+            const sa = getVal('f13-input-sa') || currentUserName || 'Roman Sarol';
+            const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
+            const assessor = getVal('f13-input-assessor') || 'Parts Controller';
+            const manager = getVal('f13-input-manager') || 'General Manager';
+
+            // Top Header Sync
+            if (document.getElementById('f13-live-job-no')) document.getElementById('f13-live-job-no').innerText = jobNo;
+            if (document.getElementById('f13-live-date')) document.getElementById('f13-live-date').innerText = intakeDate;
+
+            // Customer Details Matrix
+            if (document.getElementById('f13-live-name')) document.getElementById('f13-live-name').innerText = name;
+            if (document.getElementById('f13-live-address')) document.getElementById('f13-live-address').innerText = address;
+            if (document.getElementById('f13-live-contact')) document.getElementById('f13-live-contact').innerText = contact;
+            if (document.getElementById('f13-live-email')) document.getElementById('f13-live-email').innerText = email;
+
+            if (document.getElementById('f13-live-model')) document.getElementById('f13-live-model').innerText = model;
+            if (document.getElementById('f13-live-km')) document.getElementById('f13-live-km').innerText = km;
+            if (document.getElementById('f13-live-engine')) document.getElementById('f13-live-engine').innerText = engine;
+            if (document.getElementById('f13-live-chassis')) document.getElementById('f13-live-chassis').innerText = chassis;
+
+            if (document.getElementById('f13-live-plate')) document.getElementById('f13-live-plate').innerText = plate;
+            if (document.getElementById('f13-live-intake-date')) document.getElementById('f13-live-intake-date').innerText = intakeDate;
+            if (document.getElementById('f13-live-promise-date')) document.getElementById('f13-live-promise-date').innerText = promiseDate;
+            if (document.getElementById('f13-live-color')) document.getElementById('f13-live-color').innerText = color;
+
+            // Concern & Diagnostics
+            if (document.getElementById('f13-live-concern')) {
+                document.getElementById('f13-live-concern').innerText = concern || '( No service concern noted. )';
+            }
+
+            // Signatories
+            if (document.getElementById('f13-live-sa-name')) document.getElementById('f13-live-sa-name').innerText = sa;
+            if (document.getElementById('f13-live-sa-name2')) document.getElementById('f13-live-sa-name2').innerText = sa;
+            if (document.getElementById('f13-live-mechanic')) document.getElementById('f13-live-mechanic').innerText = mechanic;
+            if (document.getElementById('f13-live-assessor')) document.getElementById('f13-live-assessor').innerText = assessor;
+            if (document.getElementById('f13-live-approved-by')) document.getElementById('f13-live-approved-by').innerText = 'Chief, Auto Mechanic / Authorized AM';
+            if (document.getElementById('f13-live-manager')) document.getElementById('f13-live-manager').innerText = manager;
+
+            // Render 1:1 Live Matrix Table (Exact Physical Match with 18 Scan Rows)
+            const matrixBody = document.getElementById('f13-live-matrix-body');
+            if (matrixBody) {
+                const totalScanRows = Math.max(16, Math.max(window.form13Parts.length, window.form13Materials.length));
+                let matrixHTML = '';
+
+                for (let i = 0; i < totalScanRows; i++) {
+                    const part = window.form13Parts[i] || null;
+                    const mat = window.form13Materials[i] || null;
+
+                    const partDesc = part ? escapeHtml(part.desc) : '&nbsp;';
+                    const partQty = part ? part.qty : '';
+                    const partPrice = part ? Number(part.price).toFixed(2) : '';
+                    const partAmt = part ? (Number(part.qty) * Number(part.price)).toFixed(2) : '0.00';
+
+                    const matDesc = mat ? escapeHtml(mat.desc) : '&nbsp;';
+                    const matQty = mat ? mat.qty : '';
+                    const matPrice = mat ? Number(mat.price).toFixed(2) : '';
+                    const matAmt = mat ? (Number(mat.qty) * Number(mat.price)).toFixed(2) : '0.00';
+
+                    matrixHTML += `<tr class="h-4 border-b border-gray-200 leading-none">`;
+
+                    // Rowspan for Diagnostic Result on the first row
+                    if (i === 0) {
+                        matrixHTML += `
+                            <td rowspan="${totalScanRows}" class="border-r border-black p-1.5 align-top text-[8.5px] leading-snug bg-white" style="vertical-align: top;">
+                                <div class="font-bold text-gray-600 uppercase text-[7.5px] mb-1">Chief Mechanic Assessment:</div>
+                                <div class="text-gray-900 whitespace-pre-wrap font-medium">${escapeHtml(diagnostic || '( Pending mechanical diagnostic inspection. )')}</div>
+                            </td>
+                        `;
+                    }
+
+                    // PARTS columns
+                    matrixHTML += `
+                        <td class="border-r border-black px-1 text-left truncate max-w-[110px]">${partDesc}</td>
+                        <td class="border-r border-black px-0.5 text-center font-mono">${partQty}</td>
+                        <td class="border-r border-black px-1 text-right font-mono">${partPrice}</td>
+                        <td class="border-r border-black px-1 text-right font-mono text-gray-700">${partAmt}</td>
+                    `;
+
+                    // MATERIALS columns
+                    matrixHTML += `
+                        <td class="border-r border-black px-1 text-left truncate max-w-[110px]">${matDesc}</td>
+                        <td class="border-r border-black px-0.5 text-center font-mono">${matQty}</td>
+                        <td class="border-r border-black px-1 text-right font-mono">${matPrice}</td>
+                        <td class="px-1 text-right font-mono text-gray-700">${matAmt}</td>
+                    `;
+
+                    matrixHTML += `</tr>`;
+                }
+
+                matrixBody.innerHTML = matrixHTML;
+            }
+
+            // Bottom Filipino Customer Claim Stub Sync
+            const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
+            if (document.getElementById('f13-stub-live-name')) document.getElementById('f13-stub-live-name').innerText = name || '____________________';
+            if (document.getElementById('f13-stub-live-sa')) document.getElementById('f13-stub-live-sa').innerText = sa;
+            if (document.getElementById('f13-stub-live-date')) document.getElementById('f13-stub-live-date').innerText = intakeDate;
+            if (document.getElementById('f13-stub-live-plate-model')) {
+                const combined = [plate, model].filter(Boolean).join(' / ');
+                document.getElementById('f13-stub-live-plate-model').innerText = combined || '____________________';
+            }
+            if (document.getElementById('f13-stub-live-id')) document.getElementById('f13-stub-live-id').innerText = stubId;
+
+            calcForm13Totals();
+        }
+        window.syncForm13Canvas = syncForm13Canvas;
+
+        function applyForm13Preset(presetType) {
+            const today = new Date().toISOString().split('T')[0];
+            const nameEl = document.getElementById('f13-input-name');
+            const plateEl = document.getElementById('f13-input-plate');
+            const modelEl = document.getElementById('f13-input-model');
+            const kmEl = document.getElementById('f13-input-km');
+            const concernEl = document.getElementById('f13-input-concern');
+            const diagEl = document.getElementById('f13-input-diagnostic');
+            const catEl = document.getElementById('f13-input-category');
+
+            if (presetType === 'pms') {
+                if (catEl) catEl.value = 'PMS';
+                if (!nameEl.value) nameEl.value = 'Juan Dela Cruz';
+                if (!plateEl.value) plateEl.value = 'ABC-1234';
+                if (!modelEl.value) modelEl.value = '2021 Toyota Vios 1.3 XLE';
+                if (!kmEl.value) kmEl.value = '40,000 km';
+                if (concernEl) concernEl.value = 'Periodic Maintenance Service (40K KM interval). Customer requests oil change, spark plug replacement, brake cleaning, and multi-point safety inspection.';
+                if (diagEl) diagEl.value = 'Completed engine compression check: OK. Brake pad thickness at 65% front, 70% rear. Suspension bushings intact. Recommend synthetic motor oil renewal and engine filter replacement.';
+                
+                window.form13Parts = [
+                    { id: 1, desc: 'Fully Synthetic Motor Oil (5W-30 / 4L)', qty: 1, price: 1850.00 },
+                    { id: 2, desc: 'OEM Engine Oil Filter', qty: 1, price: 450.00 },
+                    { id: 3, desc: 'Iridium Spark Plugs (Set of 4)', qty: 1, price: 1600.00 },
+                    { id: 4, desc: 'Cabin Air Filter', qty: 1, price: 550.00 }
+                ];
+                window.form13Materials = [
+                    { id: 101, desc: 'Engine Flush Treatment (300ml)', qty: 1, price: 480.00 },
+                    { id: 102, desc: 'Brake Cleaner Spray (500ml)', qty: 1, price: 350.00 },
+                    { id: 103, desc: 'Windshield Washer Fluid', qty: 1, price: 120.00 }
+                ];
+            } else if (presetType === 'brakes') {
+                if (catEl) catEl.value = 'Brakes';
+                if (!nameEl.value) nameEl.value = 'Maria Santos';
+                if (!plateEl.value) plateEl.value = 'XYZ-7890';
+                if (!modelEl.value) modelEl.value = '2020 Honda City 1.5 CVT';
+                if (!kmEl.value) kmEl.value = '55,400 km';
+                if (concernEl) concernEl.value = 'High-pitch squealing noise from front wheels during braking. Minor vibration felt on steering wheel upon heavy deceleration.';
+                if (diagEl) diagEl.value = 'Front brake pads worn down to 2.5mm (critical). Front brake rotors have minor scoring and runout. Recommend rotor resurfacing and ceramic brake pad replacement.';
+
+                window.form13Parts = [
+                    { id: 1, desc: 'Ceramic Front Brake Pads (Set)', qty: 1, price: 2400.00 },
+                    { id: 2, desc: 'Rear Brake Shoe Set', qty: 1, price: 1650.00 }
+                ];
+                window.form13Materials = [
+                    { id: 101, desc: 'Brake Fluid DOT 4 (1L)', qty: 1, price: 520.00 },
+                    { id: 102, desc: 'Brake Caliper High-Temp Grease', qty: 1, price: 280.00 },
+                    { id: 103, desc: 'Brake Cleaner Aerosol (500ml)', qty: 2, price: 350.00 }
+                ];
+            } else if (presetType === 'aircon') {
+                if (catEl) catEl.value = 'Aircon';
+                if (!nameEl.value) nameEl.value = 'Antonio Luna';
+                if (!plateEl.value) plateEl.value = 'NHK-4521';
+                if (!modelEl.value) modelEl.value = '2019 Mitsubishi Mirage G4';
+                if (!kmEl.value) kmEl.value = '68,200 km';
+                if (concernEl) concernEl.value = 'Air conditioning blowing warm air during traffic idling. Musty odor detected from blower vents upon startup.';
+                if (diagEl) diagEl.value = 'Low refrigerant pressure detected (25 psi low side). Evaporator core has minor dirt buildup. Expansion valve and condenser functioning normally. Recommend full AC flush, vacuum, and recharge.';
+
+                window.form13Parts = [
+                    { id: 1, desc: 'Cabin AC Charcoal Filter', qty: 1, price: 650.00 },
+                    { id: 2, desc: 'AC Compressor O-Ring Seal Kit', qty: 1, price: 380.00 }
+                ];
+                window.form13Materials = [
+                    { id: 101, desc: 'R134a Refrigerant Gas Recharge (1kg)', qty: 1, price: 1250.00 },
+                    { id: 102, desc: 'PAG 46 Compressor Oil (250ml)', qty: 1, price: 450.00 },
+                    { id: 103, desc: 'Evaporator Disinfectant Treatment', qty: 1, price: 420.00 }
+                ];
+            }
+
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+            showSystemToast(`Applied ${presetType.toUpperCase()} preset dossier to Form 1/3 Studio.`, 'info', 'Preset Applied');
+        }
+        window.applyForm13Preset = applyForm13Preset;
+
+        function appendConcernPreset(text) {
+            const concernEl = document.getElementById('f13-input-concern');
+            if (concernEl) {
+                if (concernEl.value.trim().length > 0) {
+                    concernEl.value += ' ' + text;
+                } else {
+                    concernEl.value = text;
+                }
+                syncForm13Canvas();
+            }
+        }
+        window.appendConcernPreset = appendConcernPreset;
+
+        function printForm13() {
+            syncForm13Canvas();
+            window.print();
+        }
+        window.printForm13 = printForm13;
+
+        async function pushToBayQueueFromStudio() {
+            const plate = (document.getElementById('f13-input-plate')?.value || '').toUpperCase().trim();
+            const name = (document.getElementById('f13-input-name')?.value || '').trim();
+            const vehicle = (document.getElementById('f13-input-model')?.value || '').trim();
+            const contact = (document.getElementById('f13-input-contact')?.value || '').trim();
+            const category = document.getElementById('f13-input-category')?.value || 'PMS';
+            const concern = document.getElementById('f13-input-concern')?.value || '';
+            const intakeDate = document.getElementById('f13-input-intake-date')?.value || new Date().toISOString().split('T')[0];
+
+            if (!plate) return showSystemToast('Plate Number is required to push to Bay Queue.', 'error');
+            if (!name) return showSystemToast('Customer Full Name is required.', 'error');
+            if (!vehicle) return showSystemToast('Vehicle Model is required.', 'error');
+
+            const pushBtn = document.getElementById('f13-btn-push-bay');
+            if (pushBtn) {
+                pushBtn.disabled = true;
+                pushBtn.classList.add('opacity-50', 'pointer-events-none');
+            }
+
+            try {
+                const arrivalTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                
+                const payload = {
+                    plate: plate,
+                    name: name,
+                    contact: contact,
+                    vehicle: vehicle,
+                    category: category,
+                    concern: concern,
+                    dateReceived: intakeDate,
+                    arrival: arrivalTime,
+                    source: 'Walk-in',
+                    laneType: 'Regular'
+                };
+
+                const createdJob = await apiRequest('/api/jobs', {
+                    method: 'POST',
+                    body: payload
+                });
+
+                await loadData();
+                renderStaffTables();
+
+                showSystemToast(`Job Order created! Vehicle ${plate} registered into Workshop Queue.`, 'success', 'Queue Handover Success');
+
+                // Switch to Workshop Bays or Daily Intakes queue view
+                if (currentUserRole === 'sa' || currentUserRole === 'admin' || currentUserRole === 'owner') {
+                    showSection('bays');
+                } else {
+                    showSection('queue');
+                }
+            } catch (err) {
+                console.error('Push to bay queue failed:', err);
+                showSystemToast(err.message || 'Failed to push vehicle into bay queue.', 'error');
+            } finally {
+                if (pushBtn) {
+                    pushBtn.disabled = false;
+                    pushBtn.classList.remove('opacity-50', 'pointer-events-none');
+                }
+            }
+        }
+        window.pushToBayQueueFromStudio = pushToBayQueueFromStudio;
+
+        function resetForm13Studio() {
+            if (!confirm('Are you sure you want to reset all Form 1/3 Studio fields?')) return;
+            
+            ['f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
+             'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
+             'f13-input-engine', 'f13-input-chassis', 'f13-input-concern', 'f13-input-diagnostic'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
+            const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
+            const jobNoInput = document.getElementById('f13-input-job-no');
+            if (jobNoInput) jobNoInput.value = `HT-JO-${randSuffix}`;
+
+            window.form13Parts = [];
+            window.form13Materials = [];
+
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+            showSystemToast('Form 1/3 Studio reset to blank template.', 'info', 'Studio Cleared');
+        }
+        window.resetForm13Studio = resetForm13Studio;
