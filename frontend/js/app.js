@@ -11788,6 +11788,39 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
             };
 
+            const drawTextRight = (str, rightX, y, size = 6, isBold = false, color = black) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: rightX - w, y, size, font: f, color });
+            };
+
+            const drawTextCenter = (str, centerX, y, size = 6, isBold = false, color = black) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: centerX - (w / 2), y, size, font: f, color });
+            };
+
+            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = black, minSize = 4.8) => {
+                if (!str && str !== 0) return;
+                let s = String(str);
+                let size = initialSize;
+                const f = isBold ? fontBold : fontNorm;
+                while (size > minSize && f.widthOfTextAtSize(s, size) > maxWidth) {
+                    size -= 0.2;
+                }
+                if (f.widthOfTextAtSize(s, size) > maxWidth) {
+                    while (s.length > 3 && f.widthOfTextAtSize(s + '...', size) > maxWidth) {
+                        s = s.slice(0, -1);
+                    }
+                    s += '...';
+                }
+                page.drawText(s, { x, y, size, font: f, color });
+            };
+
             const whiteOut = (x, y, w, h) => {
                 page.drawRectangle({ x, y, width: w, height: h, color: white });
             };
@@ -11814,115 +11847,115 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const manager = getVal('f13-input-manager') || 'General Manager';
 
             // 1. Header
-            drawText(jobNo, 480, 794, 9.5, true, red);
-            drawText(intakeDate, 475, 763, 7.5, true, black);
+            drawText(jobNo, 478, 794, 9.5, true, red);
+            drawTextCenter(intakeDate, 505, 767.6, 7.5, true, black);
 
             // 2. Customer Details
-            drawText(name, 80, 725, 7.5, true);
-            drawText(address, 85, 712, 7);
-            drawText(contact, 105, 699, 7.5);
-            drawText(email, 105, 686, 7);
+            drawTextFit(name, 134, 723.3, 140, 7.5, true);
+            drawTextFit(model, 348, 723.3, 72, 7.5, false, black, 4.5);
+            drawTextFit(plate, 472, 723.3, 48, 8, true);
 
-            drawText(model, 325, 725, 7.5);
-            drawText(km, 325, 712, 7.5);
-            drawText(engine, 325, 699, 7);
-            drawText(chassis, 325, 686, 7);
+            drawTextFit(address, 134, 715.2, 140, 7, false);
+            drawTextFit(km, 348, 715.2, 72, 7.5, false);
+            drawTextFit(intakeDate, 472, 715.2, 48, 7, false);
 
-            drawText(plate, 495, 725, 8, true);
-            drawText(intakeDate, 495, 712, 7);
-            drawText(promiseDate, 495, 699, 7);
-            drawText(color, 495, 686, 7);
+            drawTextFit(contact, 134, 707.1, 140, 7.5, false);
+            drawTextFit(engine, 348, 707.1, 72, 7, false);
+            drawTextFit(promiseDate, 472, 707.1, 48, 7, false);
 
-            // 3. Concern
+            drawTextFit(email, 136, 698.9, 138, 7, false);
+            drawTextFit(chassis, 348, 698.9, 72, 7, false);
+            drawTextFit(color, 475, 698.9, 46, 7, false, black, 4.5);
+
+            // 3. Concern Box
             if (concern) {
                 page.drawText(concern, {
-                    x: 35, y: 648, size: 7, font: fontNorm, maxWidth: 520, lineHeight: 9.5
+                    x: 82, y: 658, size: 7, font: fontNorm, maxWidth: 430, lineHeight: 9.5
                 });
             }
 
-            // 4. Interviewed by (cover placeholder Roman Sarol)
-            whiteOut(90, 583, 130, 11);
-            drawText(sa, 115, 585, 7.5, true);
+            // 4. Interviewed by (cover placeholder Roman Sarol and center name above Service Advisor)
+            whiteOut(145, 582.8, 80, 7);
+            drawTextCenter(sa, 184, 583.5, 7.5, true);
 
             // 5. Diagnostics
             if (diagnostic) {
                 page.drawText(diagnostic, {
-                    x: 35, y: 505, size: 6, font: fontNorm, maxWidth: 115, lineHeight: 8
+                    x: 81, y: 498, size: 6, font: fontNorm, maxWidth: 100, lineHeight: 8.5
                 });
             }
 
-            // 6. Parts & Materials (20 rows, startY: 496, step: 9.0)
-            const startY = 496;
-            const step = 9.0;
+            // 6. Parts & Materials (Exact match with original vector grid rows)
+            const ROW_Y = [494.4, 486.3, 478.2, 470.1, 462.0, 453.8, 445.7, 437.6, 429.5, 421.4, 413.3, 405.2, 397.1, 389.0, 380.9, 372.8, 364.7, 356.6, 348.5, 340.4, 332.2, 324.1, 317.0];
             let partsTotal = 0;
             let matsTotal = 0;
 
             (window.form13Parts || []).forEach((p, i) => {
-                if (i >= 20) return;
-                const ry = startY - (i * step);
+                if (i >= ROW_Y.length) return;
+                const ry = ROW_Y[i];
                 const qty = Number(p.qty) || 0;
                 const price = Number(p.price) || 0;
                 const amt = qty * price;
                 partsTotal += amt;
 
-                whiteOut(300, ry - 1, 42, 8);
-                drawText((p.desc || '').substring(0, 22), 158, ry, 5.5);
-                drawText(String(qty), 242, ry, 6);
-                drawText(price.toFixed(2), 265, ry, 6);
-                drawText(amt.toFixed(2), 308, ry, 6, true);
+                whiteOut(297, ry - 1.5, 55, 7.5);
+                drawTextFit((p.desc || ''), 190.5, ry, 41, 5.2);
+                drawTextCenter(String(qty), 245, ry, 6);
+                drawTextRight(price.toFixed(2), 293, ry, 6);
+                drawTextRight(amt.toFixed(2), 350, ry, 6, true);
             });
 
             (window.form13Materials || []).forEach((m, i) => {
-                if (i >= 20) return;
-                const ry = startY - (i * step);
+                if (i >= ROW_Y.length) return;
+                const ry = ROW_Y[i];
                 const qty = Number(m.qty) || 0;
                 const price = Number(m.price) || 0;
                 const amt = qty * price;
                 matsTotal += amt;
 
-                whiteOut(490, ry - 1, 42, 8);
-                drawText((m.desc || '').substring(0, 20), 348, ry, 5.5);
-                drawText(String(qty), 432, ry, 6);
-                drawText(price.toFixed(2), 455, ry, 6);
-                drawText(amt.toFixed(2), 498, ry, 6, true);
+                whiteOut(475, ry - 1.5, 46, 7.5);
+                drawTextFit((m.desc || ''), 355.5, ry, 46, 5.2);
+                drawTextCenter(String(qty), 415, ry, 6);
+                drawTextRight(price.toFixed(2), 471, ry, 6);
+                drawTextRight(amt.toFixed(2), 520, ry, 6, true);
             });
 
             // Subtotals & Total
             if (partsTotal > 0) {
-                whiteOut(280, 314, 45, 9);
-                drawText(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 285, 316, 6.5, true);
+                whiteOut(293, 305, 54, 8);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 6.5, true);
             }
 
             if (matsTotal > 0) {
-                whiteOut(445, 314, 45, 9);
-                drawText(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 450, 316, 6.5, true);
+                whiteOut(479, 304, 38, 8);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 6.5, true);
             }
 
             const grandTotal = partsTotal + matsTotal;
             if (grandTotal > 0) {
-                whiteOut(505, 301, 55, 11);
-                drawText('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 508, 303, 7.5, true, red);
+                whiteOut(455, 294, 66, 10);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 514, 297.5, 7.5, true, red);
             }
 
             // Signatures
-            drawText(mechanic, 130, 280, 6.5, true);
-            drawText(assessor, 395, 280, 6.5, true);
+            drawTextCenter(mechanic, 184, 279.8, 6.5, true);
+            drawTextCenter(assessor, 462, 279.8, 6.5, true);
 
-            whiteOut(125, 225, 110, 12);
-            drawText(sa, 135, 227, 7, true);
-            drawText('Chief, Auto Mechanic', 390, 227, 7, true);
-            drawText(name, 135, 194, 7, true);
-            drawText(manager, 390, 194, 7, true);
+            whiteOut(150, 204, 70, 9);
+            drawTextCenter(sa, 184, 206, 7, true);
+            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7, true);
+            drawTextCenter(name, 184, 169.5, 7, true);
+            drawTextCenter(manager, 413, 169.5, 7, true);
 
             // 7. Filipino Claim stub
-            drawText(name, 80, 103, 7, true);
+            drawTextFit(name, 134, 77.6, 140, 7, true);
             const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-            drawText(combinedVehicle, 335, 103, 7, true);
-            whiteOut(105, 87, 85, 10);
-            drawText(sa, 110, 89, 7, true);
-            drawText(intakeDate, 80, 77, 7);
+            drawTextFit(combinedVehicle, 355, 77.6, 160, 7, true);
+            whiteOut(170, 68, 80, 8);
+            drawTextFit(sa, 175, 69.1, 100, 7, true);
+            drawText(intakeDate, 95, 59, 7);
             const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
-            drawText(stubId, 315, 77, 8, true, red);
+            drawText(stubId, 355, 59, 8, true, red);
 
             return await doc.save();
         }
