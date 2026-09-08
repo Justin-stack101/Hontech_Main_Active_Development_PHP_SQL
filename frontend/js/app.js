@@ -12021,9 +12021,65 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.appendConcernPreset = appendConcernPreset;
 
-        function printForm13() {
-            syncForm13Canvas();
-            window.print();
+        async function printForm13() {
+            try {
+                // If in HTML Keystroke mode, use native window.print with @media print rules
+                if (currentForm13View === 'html') {
+                    syncForm13Canvas();
+                    window.print();
+                    return;
+                }
+
+                // In Live PDF mode, make sure PDF is compiled and trigger clean PDF print
+                showSystemToast('Preparing high-definition Form 1/3 for printing...', 'info', 'Print Dispatch');
+                await generateForm13PDF(false);
+
+                if (!currentForm13PdfBlobUrl) {
+                    syncForm13Canvas();
+                    window.print();
+                    return;
+                }
+
+                // Create dedicated temporary hidden iframe to trigger PDF print dialog
+                const printIframe = document.createElement('iframe');
+                printIframe.style.position = 'fixed';
+                printIframe.style.right = '0';
+                printIframe.style.bottom = '0';
+                printIframe.style.width = '0';
+                printIframe.style.height = '0';
+                printIframe.style.border = '0';
+                printIframe.src = currentForm13PdfBlobUrl;
+                document.body.appendChild(printIframe);
+
+                let printTriggered = false;
+                const executePrint = () => {
+                    if (printTriggered) return;
+                    printTriggered = true;
+                    try {
+                        printIframe.contentWindow.focus();
+                        printIframe.contentWindow.print();
+                    } catch (e) {
+                        console.warn('Iframe print intercepted by sandbox, launching direct print tab:', e);
+                        const printWin = window.open(currentForm13PdfBlobUrl, '_blank');
+                        if (printWin) {
+                            printWin.focus();
+                        }
+                    }
+                    setTimeout(() => {
+                        try { document.body.removeChild(printIframe); } catch (err) {}
+                    }, 5000);
+                };
+
+                printIframe.onload = () => {
+                    setTimeout(executePrint, 350);
+                };
+                // Fallback timeout in case iframe onload does not fire for application/pdf Blob
+                setTimeout(executePrint, 900);
+            } catch (err) {
+                console.error('Error during printForm13:', err);
+                showSystemToast('Printing error. Opening document download stream.', 'warning', 'Print Fallback');
+                generateForm13PDF(true);
+            }
         }
         window.printForm13 = printForm13;
 

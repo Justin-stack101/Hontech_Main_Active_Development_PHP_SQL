@@ -556,20 +556,26 @@ td .eval-text-truncated {
     margin: 0 !important;
     overflow: visible !important;
     height: auto !important;
+    font-size: 10px !important;
   }
 
-  /* Hide entire application shell and non-canvas UI */
+  /* Hide entire application shell, navigation, modals, overlays and PDF iframe plugin */
   #app-sidebar,
+  #app-header,
   header,
   #header-actions,
   #form13-editor-pane,
   #form13-canvas-toolbar,
+  #f13-pdf-viewer-wrap,
   #app-preloader,
+  #developer-error-overlay,
   .modal,
   .section-content:not(#section-form13),
   #section-form13 > .grid > div:first-child,
   #sidebar-user-dropdown,
-  .system-toast-container {
+  .system-toast-container,
+  button,
+  .no-print {
     display: none !important;
   }
 
@@ -587,6 +593,7 @@ td .eval-text-truncated {
   }
 
   #form13-canvas-pane {
+    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
     padding: 0 !important;
@@ -595,12 +602,21 @@ td .eval-text-truncated {
     background: #ffffff !important;
   }
 
+  #f13-html-canvas-wrap {
+    display: block !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
   #form13-canvas-sheet {
     width: 100% !important;
     max-width: 100% !important;
     box-shadow: none !important;
-    border: none !important;
-    padding: 0 !important;
+    border: 1px solid #111827 !important;
+    padding: 14px !important;
     margin: 0 auto !important;
     page-break-after: avoid;
     break-after: avoid;
@@ -610,7 +626,7 @@ td .eval-text-truncated {
 
   @page {
     size: portrait;
-    margin: 4mm 6mm;
+    margin: 6mm 8mm;
   }
 }
 
