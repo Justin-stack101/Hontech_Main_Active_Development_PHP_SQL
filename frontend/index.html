@@ -3503,75 +3503,119 @@
                 </div> <!-- /view-sheet-form23 -->
 
                 <!-- ====================================================
-                     EXCEL-STYLE WORKBOOK BOTTOM SHEET NAVIGATION BAR
+                     EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
                      ==================================================== -->
-                <div id="form-sheet-tab-bar" class="w-full mt-6 bg-slate-900/95 backdrop-blur-md text-white border border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 select-none">
-                    <!-- Left: Navigation Controls & Excel-Style Sheet Tabs -->
-                    <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-                        <!-- Workbook Title & Scroll Nav Buttons -->
-                        <div class="flex items-center gap-1.5 shrink-0 pr-2 border-r border-slate-800">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-800/80 text-[11px] font-black uppercase tracking-wider">
-                                <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400"></i>
-                                <span class="hidden sm:inline">Workbook</span>
-                            </span>
-                            <button type="button" onclick="scrollSheetTabs('left')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95" title="Scroll Tabs Left">
-                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                <div id="form-sheet-tab-bar" class="w-full mt-6 bg-[#f8fafd] border border-gray-300 rounded-xl px-2 py-1.5 shadow-sm flex items-center justify-between gap-1 select-none overflow-hidden relative text-gray-700">
+                    <!-- Left: Plus, All Sheets Hamburger, Divider, and Horizontally Scrollable Sheet Tabs -->
+                    <div class="flex items-center gap-1 min-w-0 flex-1 overflow-hidden">
+                        <!-- Google Sheets + Button -->
+                        <button type="button" onclick="promptAddNewFormSheet()" class="p-1 hover:bg-gray-200 rounded-md text-gray-700 transition cursor-pointer shrink-0 flex items-center justify-center w-7 h-7" title="Add sheet">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
+
+                        <!-- Google Sheets All Sheets (≡) Menu -->
+                        <div class="relative inline-block shrink-0">
+                            <button type="button" onclick="toggleAllSheetsMenu(event)" class="p-1 hover:bg-gray-200 rounded-md text-gray-700 transition cursor-pointer flex items-center justify-center w-7 h-7" title="All sheets">
+                                <i data-lucide="menu" class="w-4 h-4"></i>
                             </button>
-                            <button type="button" onclick="scrollSheetTabs('right')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95" title="Scroll Tabs Right">
-                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                            </button>
+                            <!-- Dropdown for All Sheets -->
+                            <div id="dropdown-all-sheets" class="hidden absolute left-0 bottom-[calc(100%+8px)] w-64 bg-white border border-gray-200 rounded-xl shadow-2xl py-1.5 z-50 text-xs text-gray-800">
+                                <div class="px-3 py-1.5 font-black text-gray-400 uppercase tracking-wider text-[10px] border-b border-gray-100 flex items-center justify-between">
+                                    <span>All Workbook Sheets</span>
+                                    <span class="text-blue-600 font-mono">12 Sheets</span>
+                                </div>
+                                <div class="max-h-64 overflow-y-auto custom-scroll py-1" id="all-sheets-menu-list">
+                                    <!-- Populated in app.js -->
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Scrollable Sheets Strip -->
-                        <div id="form-sheet-tabs-scroll" class="flex items-center gap-2 overflow-x-auto py-1 scroll-smooth no-scrollbar">
-                            <!-- Sheet 1: Form 1/3 (Active by default) -->
-                            <button type="button" id="tab-sheet-form13" onclick="switchFormStudioSheet('form13')" class="whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer ring-2 ring-red-400/40 active:scale-95">
-                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold">1</span>
-                                <i data-lucide="file-text" class="w-4 h-4"></i>
-                                <span>Sheet 1: Form 1/3 (Job Order & Stub)</span>
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Synchronized"></span>
+                        <div class="h-4 w-px bg-gray-300 mx-1 shrink-0"></div>
+
+                        <!-- Scrollable Tab Strip -->
+                        <div id="form-sheet-tabs-scroll" class="flex items-center gap-1 overflow-x-auto py-0.5 scroll-smooth no-scrollbar">
+                            <!-- Job_Order -->
+                            <button type="button" id="tab-sheet-joborder" onclick="switchFormStudioSheet('form13')" class="px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>Job_Order</span>
+                                <span class="text-[10px] text-blue-600 leading-none">▾</span>
                             </button>
 
-                            <!-- Sheet 2: Form 2/3 (Quotation) -->
-                            <button type="button" id="tab-sheet-form23" onclick="switchFormStudioSheet('form23')" class="whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95">
-                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold">2</span>
-                                <i data-lucide="calculator" class="w-4 h-4"></i>
-                                <span>Sheet 2: Form 2/3 (Quotation Studio)</span>
-                                <span class="text-[9.5px] px-1.5 py-0.2 rounded bg-amber-950/80 text-amber-300 border border-amber-800/80 font-mono">12% VAT</span>
+                            <!-- Sheet2 -->
+                            <button type="button" id="tab-sheet-sheet2" onclick="handleCustomSheetClick('Sheet2')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>Sheet2</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
 
-                            <!-- Sheet 3: Form 3/3 (Invoice) -->
-                            <button type="button" id="tab-sheet-form33" onclick="showForm33PreviewToast()" class="whitespace-nowrap shrink-0 px-3 py-2 rounded-xl text-xs font-bold text-slate-400 bg-slate-800/40 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 flex items-center gap-2 transition cursor-pointer" title="Form 3/3 Billing & Official Invoice (Upcoming Stage)">
-                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold text-slate-400">3</span>
-                                <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
-                                <span>Sheet 3: Form 3/3 (Invoice)</span>
-                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono">Next</span>
+                            <!-- Sheet1 -->
+                            <button type="button" id="tab-sheet-sheet1" onclick="handleCustomSheetClick('Sheet1')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>Sheet1</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
 
-                            <!-- Add New Sheet Button (+) -->
-                            <button type="button" onclick="promptAddNewFormSheet()" class="whitespace-nowrap shrink-0 w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition cursor-pointer active:scale-95" title="Add Custom Form or Attachment Sheet">
-                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            <!-- QUOTE -->
+                            <button type="button" id="tab-sheet-quote" onclick="switchFormStudioSheet('form23')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>QUOTE</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- BILLING (Form 3/3 Invoice) -->
+                            <button type="button" id="tab-sheet-billing" onclick="switchFormStudioSheet('billing')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>BILLING</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- BILLING 2 -->
+                            <button type="button" id="tab-sheet-billing2" onclick="handleCustomSheetClick('BILLING 2')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>BILLING 2</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- CHECKLIST -->
+                            <button type="button" id="tab-sheet-checklist" onclick="handleCustomSheetClick('CHECKLIST')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>CHECKLIST</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- CASH AD -->
+                            <button type="button" id="tab-sheet-cashad" onclick="handleCustomSheetClick('CASH AD')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>CASH AD</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- OEF -->
+                            <button type="button" id="tab-sheet-oef" onclick="handleCustomSheetClick('OEF')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>OEF</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- Acknowledgement -->
+                            <button type="button" id="tab-sheet-acknowledgement" onclick="handleCustomSheetClick('Acknowledgement')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>Acknowledgement</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- LIQUIDATION -->
+                            <button type="button" id="tab-sheet-liquidation" onclick="handleCustomSheetClick('LIQUIDATION')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>LIQUIDATION</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
+                            </button>
+
+                            <!-- Daily Summary -->
+                            <button type="button" id="tab-sheet-daily" onclick="handleCustomSheetClick('Daily Summary')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                                <span>Daily Summary</span>
+                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Right: Multi-Form Shared Dossier Status & Quick Navigation -->
-                    <div class="flex items-center gap-2.5 shrink-0">
-                        <div class="hidden sm:flex items-center gap-2 text-xs">
-                            <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400 font-bold bg-emerald-950/70 border border-emerald-800/70 px-3 py-1.5 rounded-xl whitespace-nowrap">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span>Shared Dossier:</span>
-                                <span id="sheet-bar-dossier-summary" class="font-mono text-white text-[11px] font-bold">HT-JO-0001</span>
-                            </span>
-                        </div>
-
-                        <!-- Dropdown for Fast Sheet Jump -->
-                        <div class="relative inline-block">
-                            <select id="sheet-quick-jump-select" onchange="switchFormStudioSheet(this.value)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500 transition cursor-pointer">
-                                <option value="form13">Jump to: Sheet 1 (Job Order)</option>
-                                <option value="form23">Jump to: Sheet 2 (Quotation)</option>
-                            </select>
-                        </div>
+                    <!-- Right: Google Sheets < and > Scroll Arrows -->
+                    <div class="flex items-center gap-0.5 shrink-0 pl-1 border-l border-gray-200 ml-1">
+                        <button type="button" onclick="scrollSheetTabs('left')" class="p-1 hover:bg-gray-200 rounded text-gray-600 hover:text-gray-900 transition cursor-pointer shrink-0 flex items-center justify-center w-6 h-6" title="Scroll left">
+                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button type="button" onclick="scrollSheetTabs('right')" class="p-1 hover:bg-gray-200 rounded text-gray-600 hover:text-gray-900 transition cursor-pointer shrink-0 flex items-center justify-center w-6 h-6" title="Scroll right">
+                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -7008,7 +7052,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.48"></script>
+    <script src="js/app.js?v=5.49"></script>
 </body>
 
 </html>

@@ -12244,76 +12244,197 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             { id: 4, desc: 'Brake Cleaner Aerosol Spray', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 200.00 }
         ];
 
+        const allFormWorkbookSheets = [
+            { key: 'form13', id: 'tab-sheet-joborder', label: 'Job_Order' },
+            { key: 'sheet2', id: 'tab-sheet-sheet2', label: 'Sheet2' },
+            { key: 'sheet1', id: 'tab-sheet-sheet1', label: 'Sheet1' },
+            { key: 'form23', id: 'tab-sheet-quote', label: 'QUOTE' },
+            { key: 'billing', id: 'tab-sheet-billing', label: 'BILLING' },
+            { key: 'billing2', id: 'tab-sheet-billing2', label: 'BILLING 2' },
+            { key: 'checklist', id: 'tab-sheet-checklist', label: 'CHECKLIST' },
+            { key: 'cashad', id: 'tab-sheet-cashad', label: 'CASH AD' },
+            { key: 'oef', id: 'tab-sheet-oef', label: 'OEF' },
+            { key: 'acknowledgement', id: 'tab-sheet-acknowledgement', label: 'Acknowledgement' },
+            { key: 'liquidation', id: 'tab-sheet-liquidation', label: 'LIQUIDATION' },
+            { key: 'daily', id: 'tab-sheet-daily', label: 'Daily Summary' }
+        ];
+        window.allFormWorkbookSheets = allFormWorkbookSheets;
+
         function switchFormStudioSheet(sheetKey) {
             currentFormStudioActiveSheet = sheetKey;
             const view13 = document.getElementById('view-sheet-form13');
             const view23 = document.getElementById('view-sheet-form23');
-            const tab13 = document.getElementById('tab-sheet-form13');
-            const tab23 = document.getElementById('tab-sheet-form23');
-            const jumpSelect = document.getElementById('sheet-quick-jump-select');
 
-            if (jumpSelect) jumpSelect.value = sheetKey;
-
-            const activeClass13 = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer ring-2 ring-red-400/40 active:scale-95';
-            const activeClass23 = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-amber-600 text-white shadow-md cursor-pointer ring-2 ring-amber-400/40 active:scale-95';
-            const inactiveClass = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
+            // Reset all tabs to inactive Google Sheets style and highlight active
+            allFormWorkbookSheets.forEach(s => {
+                const btn = document.getElementById(s.id);
+                if (btn) {
+                    const isTarget = (s.key === sheetKey) || (sheetKey === 'form13' && s.key === 'form13') || (sheetKey === 'form23' && s.key === 'form23') || (sheetKey === 'billing' && s.key === 'billing');
+                    if (isTarget) {
+                        btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+                        const caret = btn.querySelector('span:last-child');
+                        if (caret) caret.className = 'text-[10px] text-blue-600 leading-none';
+                    } else {
+                        btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
+                        const caret = btn.querySelector('span:last-child');
+                        if (caret) caret.className = 'text-[10px] text-gray-400 leading-none';
+                    }
+                }
+            });
 
             if (sheetKey === 'form13') {
                 if (view13) view13.classList.remove('hidden');
                 if (view23) view23.classList.add('hidden');
-                
-                if (tab13) tab13.className = activeClass13;
-                if (tab23) tab23.className = inactiveClass;
 
                 syncForm13Canvas();
-                updateSheetBarDossierSummary();
-                showSystemToast('Switched to Sheet 1: Form 1/3 (Job Order & Claim Stub)', 'info', 'Sheet 1 Active');
+                showSystemToast('Switched to Job_Order (Form 1/3 Job Order & Claim Stub)', 'info', 'Job_Order Active');
             } else if (sheetKey === 'form23') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.remove('hidden');
-
-                if (tab23) tab23.className = activeClass23;
-                if (tab13) tab13.className = inactiveClass;
 
                 // Sync shared dossier from Form 1/3 into Form 2/3
                 syncDossierToForm23();
                 renderForm23Rows();
                 calculateForm23Totals();
                 syncForm23Canvas();
-                updateSheetBarDossierSummary();
-                showSystemToast('Switched to Sheet 2: Form 2/3 (Quotation Studio)', 'info', 'Sheet 2 Active');
+                showSystemToast('Switched to QUOTE (Form 2/3 Quotation Studio)', 'info', 'QUOTE Active');
+            } else if (sheetKey === 'billing') {
+                showSystemToast('Switched to BILLING (Official Billing & Cashier Invoice)', 'info', 'BILLING Active');
+            }
+
+            const activeBtnId = sheetKey === 'form13' ? 'tab-sheet-joborder' : (sheetKey === 'form23' ? 'tab-sheet-quote' : `tab-sheet-${sheetKey}`);
+            const activeBtn = document.getElementById(activeBtnId);
+            if (activeBtn) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         window.switchFormStudioSheet = switchFormStudioSheet;
 
+        function handleCustomSheetClick(sheetName) {
+            const sheetMap = {
+                'Sheet2': 'sheet2',
+                'Sheet1': 'sheet1',
+                'BILLING 2': 'billing2',
+                'CHECKLIST': 'checklist',
+                'CASH AD': 'cashad',
+                'OEF': 'oef',
+                'Acknowledgement': 'acknowledgement',
+                'LIQUIDATION': 'liquidation',
+                'Daily Summary': 'daily'
+            };
+            const key = sheetMap[sheetName] || sheetName.toLowerCase().replace(/\s+/g, '');
+            
+            allFormWorkbookSheets.forEach(s => {
+                const btn = document.getElementById(s.id);
+                if (btn) {
+                    if (s.label === sheetName || s.key === key) {
+                        btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+                        const caret = btn.querySelector('span:last-child');
+                        if (caret) caret.className = 'text-[10px] text-blue-600 leading-none';
+                    } else {
+                        btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
+                        const caret = btn.querySelector('span:last-child');
+                        if (caret) caret.className = 'text-[10px] text-gray-400 leading-none';
+                    }
+                }
+            });
+
+            if (sheetName === 'CHECKLIST') {
+                showSystemToast('Switched to CHECKLIST: Vehicle Intake Inspection Checklist & Multi-Point Inspection.', 'info', 'CHECKLIST Active');
+            } else if (sheetName === 'CASH AD') {
+                showSystemToast('Switched to CASH AD: Cash Advance & Mechanic Emergency Parts Disbursal Form.', 'info', 'CASH AD Active');
+            } else if (sheetName === 'OEF') {
+                showSystemToast('Switched to OEF: Operating / Official Expense Form & Workshop Receipts.', 'info', 'OEF Active');
+            } else if (sheetName === 'Acknowledgement') {
+                showSystemToast('Switched to Acknowledgement: Vehicle Release & Customer Acknowledgement Receipt.', 'info', 'Acknowledgement Active');
+            } else if (sheetName === 'LIQUIDATION') {
+                showSystemToast('Switched to LIQUIDATION: Service Job Liquidation & Parts Cost Reconciliation.', 'info', 'LIQUIDATION Active');
+            } else {
+                showSystemToast(`Switched to workbook sheet: ${sheetName}`, 'info', `${sheetName} Active`);
+            }
+        }
+        window.handleCustomSheetClick = handleCustomSheetClick;
+
         function scrollSheetTabs(direction) {
             const strip = document.getElementById('form-sheet-tabs-scroll');
             if (!strip) return;
-            const offset = direction === 'left' ? -220 : 220;
+            const offset = direction === 'left' ? -180 : 180;
             strip.scrollBy({ left: offset, behavior: 'smooth' });
         }
         window.scrollSheetTabs = scrollSheetTabs;
 
-        function showForm33PreviewToast() {
-            showSystemToast('Sheet 3: Form 3/3 (Official Billing & Cashier Invoice) is queued for the next release milestone.', 'info', 'Upcoming Feature');
+        function toggleAllSheetsMenu(e) {
+            if (e) e.stopPropagation();
+            const menu = document.getElementById('dropdown-all-sheets');
+            if (!menu) return;
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                renderAllSheetsMenuList();
+                menu.classList.remove('hidden');
+                const closeMenu = (ev) => {
+                    if (!menu.contains(ev.target)) {
+                        menu.classList.add('hidden');
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+                setTimeout(() => document.addEventListener('click', closeMenu), 50);
+            } else {
+                menu.classList.add('hidden');
+            }
         }
-        window.showForm33PreviewToast = showForm33PreviewToast;
+        window.toggleAllSheetsMenu = toggleAllSheetsMenu;
+
+        function renderAllSheetsMenuList() {
+            const listEl = document.getElementById('all-sheets-menu-list');
+            if (!listEl) return;
+            listEl.innerHTML = allFormWorkbookSheets.map((s, idx) => `
+                <button type="button" onclick="handleAllSheetsSelect('${s.key}', '${s.label}')" class="w-full text-left px-3 py-1.5 hover:bg-blue-50 hover:text-blue-700 flex items-center justify-between text-xs transition cursor-pointer">
+                    <span class="flex items-center gap-2">
+                        <span class="w-5 text-gray-400 font-mono text-[10px]">${idx + 1}.</span>
+                        <span class="font-medium text-gray-800">${s.label}</span>
+                    </span>
+                    <span class="text-[10px] font-mono text-gray-400">Sheet</span>
+                </button>
+            `).join('');
+        }
+
+        function handleAllSheetsSelect(key, label) {
+            const menu = document.getElementById('dropdown-all-sheets');
+            if (menu) menu.classList.add('hidden');
+            if (key === 'form13') {
+                switchFormStudioSheet('form13');
+            } else if (key === 'form23') {
+                switchFormStudioSheet('form23');
+            } else if (key === 'billing') {
+                switchFormStudioSheet('billing');
+            } else {
+                handleCustomSheetClick(label);
+            }
+        }
+        window.handleAllSheetsSelect = handleAllSheetsSelect;
 
         function promptAddNewFormSheet() {
-            showSystemToast('HonTech Studio supports extensible sheets: Additional modules (Parts Requisition, Bay Checklist, Customer Release Voucher) can be docked to this workbook.', 'info', 'Multi-Sheet Architecture');
+            const name = prompt('Enter new sheet tab name (e.g. Parts_Return, Warranty_Claim):');
+            if (!name || !name.trim()) return;
+            const cleanName = name.trim();
+            const key = cleanName.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            allFormWorkbookSheets.push({ key, id: `tab-sheet-${key}`, label: cleanName });
+            
+            const strip = document.getElementById('form-sheet-tabs-scroll');
+            if (strip) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `tab-sheet-${key}`;
+                btn.onclick = () => handleCustomSheetClick(cleanName);
+                btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
+                btn.innerHTML = `<span>${cleanName}</span><span class="text-[10px] text-gray-400 leading-none">▾</span>`;
+                strip.appendChild(btn);
+                handleCustomSheetClick(cleanName);
+            }
+            showSystemToast(`Added new sheet "${cleanName}" to workbook!`, 'success', 'Sheet Added');
         }
         window.promptAddNewFormSheet = promptAddNewFormSheet;
-
-        function updateSheetBarDossierSummary() {
-            const el = document.getElementById('sheet-bar-dossier-summary');
-            if (!el) return;
-            const jobNo = document.getElementById('f13-input-job-no')?.value || 'HT-JO-0001';
-            const customer = document.getElementById('f13-input-name')?.value || '';
-            const plate = document.getElementById('f13-input-plate')?.value || '';
-            el.innerText = customer ? `${jobNo} • ${customer}${plate ? ' (' + plate + ')' : ''}` : jobNo;
-        }
-        window.updateSheetBarDossierSummary = updateSheetBarDossierSummary;
 
         function syncDossierToForm23() {
             const mappings = [
