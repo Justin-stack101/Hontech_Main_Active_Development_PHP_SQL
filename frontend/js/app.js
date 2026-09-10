@@ -12262,12 +12262,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const view13 = document.getElementById('view-sheet-form13');
             const view23 = document.getElementById('view-sheet-form23');
             const viewBilling = document.getElementById('view-sheet-billing');
+            const viewChecklist = document.getElementById('view-sheet-checklist');
 
             // Reset all tabs to inactive Google Sheets style and highlight active
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
                 if (btn) {
-                    const isTarget = (s.key === sheetKey) || (sheetKey === 'form13' && s.key === 'form13') || (sheetKey === 'form23' && s.key === 'form23') || (sheetKey === 'billing' && s.key === 'billing');
+                    const isTarget = (s.key === sheetKey) || (sheetKey === 'form13' && s.key === 'form13') || (sheetKey === 'form23' && s.key === 'form23') || (sheetKey === 'billing' && s.key === 'billing') || (sheetKey === 'checklist' && s.key === 'checklist');
                     if (isTarget) {
                         btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
                         const caret = btn.querySelector('span:last-child');
@@ -12284,6 +12285,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view13) view13.classList.remove('hidden');
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
+                if (viewChecklist) viewChecklist.classList.add('hidden');
 
                 syncForm13Canvas();
                 showSystemToast('Switched to Job_Order (Form 1/3 Job Order & Claim Stub)', 'info', 'Job_Order Active');
@@ -12291,6 +12293,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.remove('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
+                if (viewChecklist) viewChecklist.classList.add('hidden');
 
                 // Sync shared dossier from Form 1/3 into Form 2/3
                 syncDossierToForm23();
@@ -12302,6 +12305,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.remove('hidden');
+                if (viewChecklist) viewChecklist.classList.add('hidden');
 
                 // Sync shared dossier from Form 1/3 & Form 2/3 into Form 3/3
                 syncDossierToForm33();
@@ -12309,10 +12313,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 calculateForm33Totals();
                 syncForm33Canvas();
                 showSystemToast('Switched to BILLING (Form 3/3 Official Billing & Cashier Invoice)', 'info', 'BILLING Active');
+            } else if (sheetKey === 'checklist') {
+                if (view13) view13.classList.add('hidden');
+                if (view23) view23.classList.add('hidden');
+                if (viewBilling) viewBilling.classList.add('hidden');
+                if (viewChecklist) viewChecklist.classList.remove('hidden');
+
+                syncDossierToChecklist();
+                renderChecklistEditor();
+                syncChecklistCanvas();
+                showSystemToast('Switched to CHECKLIST (Vehicle Intake Multi-Point Inspection)', 'info', 'CHECKLIST Active');
             } else {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
+                if (viewChecklist) viewChecklist.classList.add('hidden');
             }
 
             const activeBtnId = sheetKey === 'form13' ? 'tab-sheet-joborder' : (sheetKey === 'form23' ? 'tab-sheet-quote' : `tab-sheet-${sheetKey}`);
@@ -12325,6 +12340,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.switchFormStudioSheet = switchFormStudioSheet;
 
         function handleCustomSheetClick(sheetName) {
+            if (sheetName === 'CHECKLIST') {
+                switchFormStudioSheet('checklist');
+                return;
+            }
+
             const sheetMap = {
                 'Sheet2': 'sheet2',
                 'Sheet1': 'sheet1',
@@ -12341,9 +12361,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const view13 = document.getElementById('view-sheet-form13');
             const view23 = document.getElementById('view-sheet-form23');
             const viewBilling = document.getElementById('view-sheet-billing');
+            const viewChecklist = document.getElementById('view-sheet-checklist');
             if (view13) view13.classList.add('hidden');
             if (view23) view23.classList.add('hidden');
             if (viewBilling) viewBilling.classList.add('hidden');
+            if (viewChecklist) viewChecklist.classList.add('hidden');
 
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
@@ -12360,9 +12382,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
-            if (sheetName === 'CHECKLIST') {
-                showSystemToast('Switched to CHECKLIST: Vehicle Intake Inspection Checklist & Multi-Point Inspection.', 'info', 'CHECKLIST Active');
-            } else if (sheetName === 'CASH AD') {
+            if (sheetName === 'CASH AD') {
                 showSystemToast('Switched to CASH AD: Cash Advance & Mechanic Emergency Parts Disbursal Form.', 'info', 'CASH AD Active');
             } else if (sheetName === 'OEF') {
                 showSystemToast('Switched to OEF: Operating / Official Expense Form & Workshop Receipts.', 'info', 'OEF Active');
@@ -13176,33 +13196,491 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.printForm33 = printForm33;
 
-        // Auto-wire shared dossier listeners between Form 1/3, Form 2/3, and Form 3/3
-        function initFormStudioMultiSheetSync() {
-            const syncTriplets = [
-                ['f13-input-name', 'f23-input-name', 'f33-input-name'],
-                ['f13-input-contact', 'f23-input-contact', 'f33-input-contact'],
-                ['f13-input-address', 'f23-input-address', 'f33-input-address'],
-                ['f13-input-plate', 'f23-input-plate', 'f33-input-plate'],
-                ['f13-input-model', 'f23-input-model', 'f33-input-model'],
-                ['f13-input-color', 'f23-input-color', 'f33-input-color'],
-                ['f13-input-job-no', 'f23-input-job-no', 'f33-input-job-no']
+        // =========================================================================
+        // FORM 4 (VEHICLE INTAKE MULTI-POINT INSPECTION CHECKLIST) STUDIO ENGINE
+        // =========================================================================
+        window.checklistData = {
+            interior: [
+                { id: 'int_lights', desc: 'Headlights (check high and low beams)/Taillights/Brake lights/Hazard warning lights/Turn signals/Exterior lamps', rating: 'green' },
+                { id: 'int_cabin_light', desc: 'Interior light', rating: 'green' },
+                { id: 'int_washer', desc: 'Windshield washer spray/Wiper operation/Wiper blades/Windshield condition', rating: 'green' },
+                { id: 'int_parking_brake', desc: 'Parking brake', rating: 'green' },
+                { id: 'int_horn', desc: 'Horn operation', rating: 'green' },
+                { id: 'int_clutch', desc: 'Clutch operation (if applicable)', rating: 'green' },
+                { id: 'int_cabin_filter', desc: 'Micron cabin filter**', rating: 'yellow' }
+            ],
+            battery: [
+                { id: 'bat_good', desc: 'Good', rating: 'green' },
+                { id: 'bat_replace', desc: 'Replace', rating: null }
+            ],
+            hood: [
+                { id: 'hood_fluids', desc: 'Check fluid levels: Oil/Coolant/Power steering fluid/Brake fluid*/Windshield washer fluid/Automatic transmission fluid', rating: 'green' },
+                { id: 'hood_air_filter', desc: 'Air filter condition**', rating: 'yellow' },
+                { id: 'hood_belts', desc: 'External drive belts and radiator hoses', rating: 'green' },
+                { id: 'hood_clutch_fluid', desc: 'Hydraulic clutch reservoir fluid (M/T vehicles)', rating: 'green' }
+            ],
+            under: [
+                { id: 'und_brake_lines', desc: 'Brake lines/Hoses/Parking brake cable', rating: 'green' },
+                { id: 'und_suspension', desc: 'Shock absorbers/Struts/Suspension/Tie rod ends and boots/Steering gear and dust seals', rating: 'green' },
+                { id: 'und_exhaust', desc: 'Exhaust system', rating: 'green' },
+                { id: 'und_leaks', desc: 'Engine oil and/or fluid leaks', rating: 'yellow' },
+                { id: 'und_shaft_boots', desc: 'Drive shaft boots/Constant velocity boots and bands', rating: 'green' }
+            ],
+            tires: {
+                lf: { tread: 8, pattern: 'Normal' },
+                rf: { tread: 8, pattern: 'Normal' },
+                lr: { tread: 7, pattern: 'Normal' },
+                rr: { tread: 7, pattern: 'Normal' },
+                spare: { tread: 9, pattern: 'Normal' },
+                frontPsi: 32,
+                rearPsi: 32
+            },
+            brakes: {
+                lf: 8.0,
+                rf: 8.0,
+                lr: 6.5,
+                rr: 6.5,
+                exempt: false
+            },
+            damagePins: [
+                { id: 1, x: 200, y: 50, type: 'S', desc: 'Front bumper scratch' }
+            ],
+            comments: 'Vehicle inspected during intake. Minor front bumper clear-coat scratch noted. Cabin and air filter replacement recommended.'
+        };
+
+        function syncDossierToChecklist() {
+            const getSrcVal = (id1, id2, id3) => {
+                const el1 = document.getElementById(id1);
+                const el2 = document.getElementById(id2);
+                const el3 = document.getElementById(id3);
+                return (el1?.value || el2?.value || el3?.value || '').trim();
+            };
+
+            const chkName = document.getElementById('chk-input-name');
+            if (chkName && !chkName.value) {
+                chkName.value = getSrcVal('f13-input-name', 'f23-input-name', 'f33-input-name') || 'Juan Dela Cruz';
+            }
+
+            const chkPlate = document.getElementById('chk-input-plate');
+            if (chkPlate && !chkPlate.value) {
+                chkPlate.value = getSrcVal('f13-input-plate', 'f23-input-plate', 'f33-input-plate') || 'ABC 1234';
+            }
+
+            const chkModel = document.getElementById('chk-input-model');
+            if (chkModel && !chkModel.value) {
+                chkModel.value = getSrcVal('f13-input-model', 'f23-input-model', 'f33-input-model') || 'Honda Civic 2022';
+            }
+
+            const chkDate = document.getElementById('chk-input-date');
+            if (chkDate && !chkDate.value) {
+                chkDate.value = new Date().toISOString().split('T')[0];
+            }
+
+            const chkComments = document.getElementById('chk-input-comments');
+            if (chkComments && !chkComments.value && window.checklistData.comments) {
+                chkComments.value = window.checklistData.comments;
+            }
+
+            // Sync tire inputs
+            const t = window.checklistData.tires;
+            if (document.getElementById('chk-tire-lf-tread')) document.getElementById('chk-tire-lf-tread').value = t.lf.tread;
+            if (document.getElementById('chk-tire-rf-tread')) document.getElementById('chk-tire-rf-tread').value = t.rf.tread;
+            if (document.getElementById('chk-tire-lr-tread')) document.getElementById('chk-tire-lr-tread').value = t.lr.tread;
+            if (document.getElementById('chk-tire-rr-tread')) document.getElementById('chk-tire-rr-tread').value = t.rr.tread;
+            if (document.getElementById('chk-tire-spare-tread')) document.getElementById('chk-tire-spare-tread').value = t.spare.tread;
+            if (document.getElementById('chk-tire-front-psi')) document.getElementById('chk-tire-front-psi').value = t.frontPsi;
+            if (document.getElementById('chk-tire-rear-psi')) document.getElementById('chk-tire-rear-psi').value = t.rearPsi;
+
+            // Sync brake inputs
+            const b = window.checklistData.brakes;
+            if (document.getElementById('chk-brake-lf')) document.getElementById('chk-brake-lf').value = b.lf;
+            if (document.getElementById('chk-brake-rf')) document.getElementById('chk-brake-rf').value = b.rf;
+            if (document.getElementById('chk-brake-lr')) document.getElementById('chk-brake-lr').value = b.lr;
+            if (document.getElementById('chk-brake-rr')) document.getElementById('chk-brake-rr').value = b.rr;
+            if (document.getElementById('chk-input-brakes-exempt')) document.getElementById('chk-input-brakes-exempt').checked = b.exempt;
+        }
+        window.syncDossierToChecklist = syncDossierToChecklist;
+
+        function renderChecklistEditor() {
+            const categories = [
+                { key: 'interior', containerId: 'chk-editor-interior' },
+                { key: 'battery', containerId: 'chk-editor-battery' },
+                { key: 'hood', containerId: 'chk-editor-hood' },
+                { key: 'under', containerId: 'chk-editor-under' }
             ];
 
-            syncTriplets.forEach(([id13, id23, id33]) => {
+            let greenCount = 0;
+            let yellowCount = 0;
+            let redCount = 0;
+
+            categories.forEach(cat => {
+                const container = document.getElementById(cat.containerId);
+                if (!container) return;
+
+                const items = window.checklistData[cat.key] || [];
+                container.innerHTML = items.map((item, idx) => {
+                    if (item.rating === 'green') greenCount++;
+                    else if (item.rating === 'yellow') yellowCount++;
+                    else if (item.rating === 'red') redCount++;
+
+                    const isGreen = item.rating === 'green';
+                    const isYellow = item.rating === 'yellow';
+                    const isRed = item.rating === 'red';
+
+                    const greenClass = isGreen 
+                        ? 'bg-emerald-500 text-white font-black shadow-xs' 
+                        : 'bg-gray-100 text-gray-500 hover:bg-emerald-50 hover:text-emerald-700';
+                    const yellowClass = isYellow 
+                        ? 'bg-amber-400 text-amber-950 font-black shadow-xs' 
+                        : 'bg-gray-100 text-gray-500 hover:bg-amber-50 hover:text-amber-700';
+                    const redClass = isRed 
+                        ? 'bg-rose-500 text-white font-black shadow-xs' 
+                        : 'bg-gray-100 text-gray-500 hover:bg-rose-50 hover:text-rose-700';
+
+                    return `
+                        <div class="p-2.5 bg-gray-50/70 hover:bg-gray-100/70 border border-gray-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2 transition">
+                            <span class="text-xs font-semibold text-gray-800 flex-1">${escapeHtml(item.desc)}</span>
+                            <div class="inline-flex rounded-lg p-0.5 bg-gray-200/80 gap-1 shrink-0 self-end sm:self-auto text-[11px]">
+                                <button type="button" onclick="setChecklistRating('${cat.key}', ${idx}, 'green')" class="px-2 py-0.5 rounded-md transition cursor-pointer ${greenClass}">
+                                    🟢 OK
+                                </button>
+                                <button type="button" onclick="setChecklistRating('${cat.key}', ${idx}, 'yellow')" class="px-2 py-0.5 rounded-md transition cursor-pointer ${yellowClass}">
+                                    🟡 ATTN
+                                </button>
+                                <button type="button" onclick="setChecklistRating('${cat.key}', ${idx}, 'red')" class="px-2 py-0.5 rounded-md transition cursor-pointer ${redClass}">
+                                    🔴 REQ
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+
+            // Update scoreboard counters
+            if (document.getElementById('chk-stat-green')) document.getElementById('chk-stat-green').innerText = greenCount;
+            if (document.getElementById('chk-stat-yellow')) document.getElementById('chk-stat-yellow').innerText = yellowCount;
+            if (document.getElementById('chk-stat-red')) document.getElementById('chk-stat-red').innerText = redCount;
+
+            renderChecklistDamagePins();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.renderChecklistEditor = renderChecklistEditor;
+
+        function setChecklistRating(category, index, rating) {
+            if (!window.checklistData[category] || !window.checklistData[category][index]) return;
+            const current = window.checklistData[category][index].rating;
+            // Toggle off if clicked again
+            window.checklistData[category][index].rating = (current === rating) ? null : rating;
+            renderChecklistEditor();
+            syncChecklistCanvas();
+        }
+        window.setChecklistRating = setChecklistRating;
+
+        function setAllChecklistRatings(rating) {
+            ['interior', 'battery', 'hood', 'under'].forEach(cat => {
+                (window.checklistData[cat] || []).forEach(item => {
+                    item.rating = rating;
+                });
+            });
+            renderChecklistEditor();
+            syncChecklistCanvas();
+            showSystemToast(`All inspection items marked as ${rating.toUpperCase()}.`, 'success', 'Batch Updated');
+        }
+        window.setAllChecklistRatings = setAllChecklistRatings;
+
+        function toggleBrakeExemption(isExempt) {
+            window.checklistData.brakes.exempt = isExempt;
+            const grid = document.getElementById('chk-brakes-inputs-grid');
+            if (grid) {
+                grid.style.opacity = isExempt ? '0.4' : '1';
+                grid.style.pointerEvents = isExempt ? 'none' : 'auto';
+            }
+            syncChecklistCanvas();
+        }
+        window.toggleBrakeExemption = toggleBrakeExemption;
+
+        function handleChecklistDiagramClick(event) {
+            const wrapper = document.getElementById('chk-editor-damage-wrapper');
+            if (!wrapper) return;
+            const rect = wrapper.getBoundingClientRect();
+            
+            // Map click to viewBox 400x320
+            const clickX = event.clientX - rect.left;
+            const clickY = event.clientY - rect.top;
+            const svgX = Math.round((clickX / rect.width) * 400);
+            const svgY = Math.round((clickY / rect.height) * 320);
+
+            const selector = document.getElementById('chk-damage-type-selector');
+            const type = selector?.value || 'D';
+
+            const typeNames = { D: 'Dent', S: 'Scratch', P: 'Paint Chip', C: 'Crack' };
+            const desc = `${typeNames[type] || 'Damage'} at (${svgX}, ${svgY})`;
+
+            if (!Array.isArray(window.checklistData.damagePins)) {
+                window.checklistData.damagePins = [];
+            }
+            window.checklistData.damagePins.push({
+                id: Date.now(),
+                x: svgX,
+                y: svgY,
+                type: type,
+                desc: desc
+            });
+
+            renderChecklistDamagePins();
+            syncChecklistCanvas();
+            showSystemToast(`Pinned ${typeNames[type]} on vehicle diagram.`, 'info', 'Damage Marked');
+        }
+        window.handleChecklistDiagramClick = handleChecklistDiagramClick;
+
+        function clearChecklistDamagePins() {
+            window.checklistData.damagePins = [];
+            renderChecklistDamagePins();
+            syncChecklistCanvas();
+            showSystemToast('Vehicle damage pins cleared.', 'info', 'Pins Cleared');
+        }
+        window.clearChecklistDamagePins = clearChecklistDamagePins;
+
+        function renderChecklistDamagePins() {
+            const pins = window.checklistData.damagePins || [];
+            const editorPinsGroup = document.getElementById('chk-editor-damage-pins');
+            const canvasPinsGroup = document.getElementById('chk-canvas-damage-pins');
+
+            const makeSvgPins = () => pins.map((p, i) => `
+                <g transform="translate(${p.x}, ${p.y})">
+                    <circle cx="0" cy="0" r="7" fill="#ef4444" stroke="#ffffff" stroke-width="1.5" />
+                    <text x="0" y="2.5" font-size="7" font-weight="900" fill="#ffffff" text-anchor="middle" font-family="sans-serif">${p.type}</text>
+                </g>
+            `).join('');
+
+            if (editorPinsGroup) editorPinsGroup.innerHTML = makeSvgPins();
+            if (canvasPinsGroup) canvasPinsGroup.innerHTML = makeSvgPins();
+
+            const textList = document.getElementById('chk-pins-list-text');
+            if (textList) {
+                if (pins.length === 0) {
+                    textList.innerText = 'No external damages pinned yet.';
+                } else {
+                    const typeLabels = { D: 'Dent', S: 'Scratch', P: 'Paint Chip', C: 'Crack' };
+                    textList.innerHTML = pins.map((p, idx) => 
+                        `<span class="inline-block bg-rose-50 text-rose-700 border border-rose-200 rounded px-1.5 py-0.5 mr-1 mb-1 font-bold text-[10px]">#${idx+1}: ${typeLabels[p.type] || p.type} (${p.x}, ${p.y})</span>`
+                    ).join('');
+                }
+            }
+        }
+
+        function syncChecklistCanvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+
+            // Header metadata
+            const name = getVal('chk-input-name') || 'Juan Dela Cruz';
+            const plate = getVal('chk-input-plate') || 'ABC 1234';
+            const model = getVal('chk-input-model') || 'Honda Civic 2022';
+            const date = getVal('chk-input-date') || new Date().toISOString().split('T')[0];
+
+            if (document.getElementById('chk-live-name')) document.getElementById('chk-live-name').innerText = name;
+            if (document.getElementById('chk-live-plate')) document.getElementById('chk-live-plate').innerText = plate;
+            if (document.getElementById('chk-live-model')) document.getElementById('chk-live-model').innerText = model;
+            if (document.getElementById('chk-live-date')) document.getElementById('chk-live-date').innerText = date;
+
+            // Render 1:1 colored status boxes for physical tables
+            const renderTableRows = (catKey, tableId) => {
+                const table = document.getElementById(tableId);
+                if (!table) return;
+                const items = window.checklistData[catKey] || [];
+
+                table.innerHTML = items.map(it => {
+                    const isGreen = it.rating === 'green';
+                    const isYellow = it.rating === 'yellow';
+                    const isRed = it.rating === 'red';
+
+                    const greenBg = isGreen ? 'background-color: #22c55e !important;' : '';
+                    const yellowBg = isYellow ? 'background-color: #facc15 !important;' : '';
+                    const redBg = isRed ? 'background-color: #ef4444 !important;' : '';
+
+                    return `
+                        <tr class="border-b border-black h-[13px] leading-tight">
+                            <td class="border-r border-black px-1 text-left truncate max-w-[155px] font-sans text-[7px]">${escapeHtml(it.desc)}</td>
+                            <td class="border-r border-black w-3 text-center" style="${greenBg}">&nbsp;</td>
+                            <td class="border-r border-black w-3 text-center" style="${yellowBg}">&nbsp;</td>
+                            <td class="w-3 text-center" style="${redBg}">&nbsp;</td>
+                        </tr>
+                    `;
+                }).join('');
+            };
+
+            renderTableRows('interior', 'chk-live-table-interior');
+            renderTableRows('battery', 'chk-live-table-battery');
+            renderTableRows('hood', 'chk-live-table-hood');
+            renderTableRows('under', 'chk-live-table-under');
+
+            // Tires sync
+            const lfTr = getVal('chk-tire-lf-tread') || '8';
+            const rfTr = getVal('chk-tire-rf-tread') || '8';
+            const lrTr = getVal('chk-tire-lr-tread') || '7';
+            const rrTr = getVal('chk-tire-rr-tread') || '7';
+            const spTr = getVal('chk-tire-spare-tread') || '9';
+
+            const lfPat = document.getElementById('chk-tire-lf-pattern')?.value || 'Normal';
+            const rfPat = document.getElementById('chk-tire-rf-pattern')?.value || 'Normal';
+            const lrPat = document.getElementById('chk-tire-lr-pattern')?.value || 'Normal';
+            const rrPat = document.getElementById('chk-tire-rr-pattern')?.value || 'Normal';
+
+            const fPsi = getVal('chk-tire-front-psi') || '32';
+            const rPsi = getVal('chk-tire-rear-psi') || '32';
+
+            if (document.getElementById('chk-live-tire-lf-tr')) document.getElementById('chk-live-tire-lf-tr').innerText = lfTr;
+            if (document.getElementById('chk-live-tire-rf-tr')) document.getElementById('chk-live-tire-rf-tr').innerText = rfTr;
+            if (document.getElementById('chk-live-tire-lr-tr')) document.getElementById('chk-live-tire-lr-tr').innerText = lrTr;
+            if (document.getElementById('chk-live-tire-rr-tr')) document.getElementById('chk-live-tire-rr-tr').innerText = rrTr;
+            if (document.getElementById('chk-live-tire-sp-tr')) document.getElementById('chk-live-tire-sp-tr').innerText = spTr;
+
+            if (document.getElementById('chk-live-tire-lf-pat')) document.getElementById('chk-live-tire-lf-pat').innerText = lfPat;
+            if (document.getElementById('chk-live-tire-rf-pat')) document.getElementById('chk-live-tire-rf-pat').innerText = rfPat;
+            if (document.getElementById('chk-live-tire-lr-pat')) document.getElementById('chk-live-tire-lr-pat').innerText = lrPat;
+            if (document.getElementById('chk-live-tire-rr-pat')) document.getElementById('chk-live-tire-rr-pat').innerText = rrPat;
+
+            if (document.getElementById('chk-live-tire-f-psi')) document.getElementById('chk-live-tire-f-psi').innerText = fPsi;
+            if (document.getElementById('chk-live-tire-r-psi')) document.getElementById('chk-live-tire-r-psi').innerText = rPsi;
+
+            // Brakes sync
+            const lfBr = getVal('chk-brake-lf') || '8.0';
+            const rfBr = getVal('chk-brake-rf') || '8.0';
+            const lrBr = getVal('chk-brake-lr') || '6.5';
+            const rrBr = getVal('chk-brake-rr') || '6.5';
+            const isExempt = document.getElementById('chk-input-brakes-exempt')?.checked || false;
+
+            if (document.getElementById('chk-live-brake-lf')) document.getElementById('chk-live-brake-lf').innerText = isExempt ? '--' : lfBr;
+            if (document.getElementById('chk-live-brake-rf')) document.getElementById('chk-live-brake-rf').innerText = isExempt ? '--' : rfBr;
+            if (document.getElementById('chk-live-brake-lr')) document.getElementById('chk-live-brake-lr').innerText = isExempt ? '--' : lrBr;
+            if (document.getElementById('chk-live-brake-rr')) document.getElementById('chk-live-brake-rr').innerText = isExempt ? '--' : rrBr;
+
+            const exemptBox = document.getElementById('chk-live-brakes-exempt-box');
+            if (exemptBox) exemptBox.innerText = isExempt ? '✓' : '';
+
+            // Comments sync
+            const commentsText = getVal('chk-input-comments') || 'Vehicle inspected during intake. No major mechanical issues flagged.';
+            const commentsContainer = document.getElementById('chk-live-comments-area');
+            if (commentsContainer) {
+                const lines = commentsText.split('\n').filter(l => l.trim().length > 0);
+                let html = '';
+                for (let i = 0; i < 3; i++) {
+                    const txt = lines[i] || (i === 0 ? commentsText : '&nbsp;');
+                    html += `<div class="border-b border-gray-300 pb-0.5 min-h-[14px] text-[7.5px]">${escapeHtml(txt)}</div>`;
+                }
+                commentsContainer.innerHTML = html;
+            }
+
+            // Signatures
+            const techName = (window.currentUser?.fullName || window.currentUser?.name || 'Roman Sarol');
+            if (document.getElementById('chk-live-tech-name')) document.getElementById('chk-live-tech-name').innerText = techName;
+
+            renderChecklistDamagePins();
+        }
+        window.syncChecklistCanvas = syncChecklistCanvas;
+
+        function toggleChecklistDocumentPane() {
+            const canvasPane = document.getElementById('checklist-canvas-pane');
+            const editorPane = document.getElementById('checklist-editor-pane');
+            const toggleBtns = document.querySelectorAll('.btn-chk-toggle-doc');
+            if (!canvasPane || !editorPane) return;
+
+            const isHidden = canvasPane.classList.contains('hidden');
+            if (isHidden) {
+                canvasPane.classList.remove('hidden');
+                editorPane.className = 'xl:col-span-6 space-y-5';
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview';
+                });
+            } else {
+                canvasPane.classList.add('hidden');
+                editorPane.className = 'xl:col-span-12 space-y-5';
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Preview';
+                });
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.toggleChecklistDocumentPane = toggleChecklistDocumentPane;
+
+        function printChecklist() {
+            syncChecklistCanvas();
+            const sheet = document.getElementById('checklist-document-sheet');
+            if (!sheet) return showSystemToast('Checklist document sheet element not found.', 'error');
+
+            let printFrame = document.getElementById('chk-print-frame');
+            if (!printFrame) {
+                printFrame = document.createElement('iframe');
+                printFrame.id = 'chk-print-frame';
+                printFrame.style.position = 'fixed';
+                printFrame.style.right = '100%';
+                printFrame.style.bottom = '100%';
+                printFrame.style.width = '0px';
+                printFrame.style.height = '0px';
+                printFrame.style.border = '0';
+                printFrame.style.visibility = 'hidden';
+                document.body.appendChild(printFrame);
+            }
+
+            const doc = printFrame.contentWindow.document;
+            doc.open();
+            doc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>HonTech Multi-Point Vehicle Inspection Checklist</title>
+                    <link rel="stylesheet" href="css/main.css">
+                    <style>
+                        @page { size: A4 portrait; margin: 8mm; }
+                        body { margin: 0; padding: 0; background: white; font-family: sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                        #checklist-document-sheet { width: 100% !important; max-width: 100% !important; border: 1px solid black !important; box-shadow: none !important; padding: 10px !important; }
+                    </style>
+                </head>
+                <body>
+                    ${sheet.outerHTML}
+                </body>
+                </html>
+            `);
+            doc.close();
+
+            setTimeout(() => {
+                try {
+                    printFrame.contentWindow.focus();
+                    printFrame.contentWindow.print();
+                } catch (e) {
+                    console.warn('Iframe print failed, falling back:', e);
+                    window.print();
+                }
+            }, 400);
+        }
+        window.printChecklist = printChecklist;
+
+        // Auto-wire shared dossier listeners between Form 1/3, Form 2/3, Form 3/3, and Form 4 Checklist
+        function initFormStudioMultiSheetSync() {
+            const syncQuads = [
+                ['f13-input-name', 'f23-input-name', 'f33-input-name', 'chk-input-name'],
+                ['f13-input-plate', 'f23-input-plate', 'f33-input-plate', 'chk-input-plate'],
+                ['f13-input-model', 'f23-input-model', 'f33-input-model', 'chk-input-model']
+            ];
+
+            syncQuads.forEach(([id13, id23, id33, idChk]) => {
                 const el13 = document.getElementById(id13);
                 const el23 = document.getElementById(id23);
                 const el33 = document.getElementById(id33);
+                const elChk = document.getElementById(idChk);
 
                 if (el13) {
                     el13.addEventListener('input', () => {
                         if (el23 && el23.value !== el13.value) { el23.value = el13.value; syncForm23Canvas(); }
                         if (el33 && el33.value !== el13.value) { el33.value = el13.value; syncForm33Canvas(); }
+                        if (elChk && elChk.value !== el13.value) { elChk.value = el13.value; syncChecklistCanvas(); }
                     });
                 }
                 if (el23) {
                     el23.addEventListener('input', () => {
                         if (el13 && el13.value !== el23.value) { el13.value = el23.value; syncForm13Canvas(); }
                         if (el33 && el33.value !== el23.value) { el33.value = el23.value; syncForm33Canvas(); }
+                        if (elChk && elChk.value !== el23.value) { elChk.value = el23.value; syncChecklistCanvas(); }
                         syncForm23Canvas();
                     });
                 }
@@ -13210,7 +13688,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el33.addEventListener('input', () => {
                         if (el13 && el13.value !== el33.value) { el13.value = el33.value; syncForm13Canvas(); }
                         if (el23 && el23.value !== el33.value) { el23.value = el33.value; syncForm23Canvas(); }
+                        if (elChk && elChk.value !== el33.value) { elChk.value = el33.value; syncChecklistCanvas(); }
                         syncForm33Canvas();
+                    });
+                }
+                if (elChk) {
+                    elChk.addEventListener('input', () => {
+                        if (el13 && el13.value !== elChk.value) { el13.value = elChk.value; syncForm13Canvas(); }
+                        if (el23 && el23.value !== elChk.value) { el23.value = elChk.value; syncForm23Canvas(); }
+                        if (el33 && el33.value !== elChk.value) { el33.value = elChk.value; syncForm33Canvas(); }
+                        syncChecklistCanvas();
                     });
                 }
             });
@@ -13230,6 +13717,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.addEventListener('input', syncForm33Canvas);
                 }
             });
+
+            // Extra Checklist specific field inputs
+            ['chk-input-date', 'chk-input-comments'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', syncChecklistCanvas);
+                }
+            });
         }
 
         // Initialize on DOM ready
@@ -13244,6 +13739,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderForm33Rows();
                 calculateForm33Totals();
                 syncForm33Canvas();
+
+                syncDossierToChecklist();
+                renderChecklistEditor();
+                syncChecklistCanvas();
             });
         } else {
             initFormStudioMultiSheetSync();
@@ -13255,5 +13754,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm33Rows();
             calculateForm33Totals();
             syncForm33Canvas();
+
+            syncDossierToChecklist();
+            renderChecklistEditor();
+            syncChecklistCanvas();
         }
 

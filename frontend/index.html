@@ -3848,6 +3848,655 @@
                     </div>
                 </div> <!-- /view-sheet-billing -->
 
+                <!-- SHEET 4: MULTI-POINT VEHICLE INTAKE INSPECTION CHECKLIST STUDIO -->
+                <div id="view-sheet-checklist" class="hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                        <!-- ==========================================
+                             LEFT COLUMN: SA / TECH SMART CHECKLIST EDITOR
+                             ========================================== -->
+                        <div id="checklist-editor-pane" class="xl:col-span-6 space-y-5">
+                            
+                            <!-- Checklist Header & Quick Controls -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center shrink-0">
+                                            <i data-lucide="clipboard-check" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Multi-Point Vehicle Inspection Studio</h2>
+                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Intake Safety Audit
+                                                </span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 font-medium">3-Tier Safety Rating, Tire/Brake Diagnostics & Visual Damage Mapping</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Actions -->
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <button type="button" onclick="setAllChecklistRatings('green')" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs" title="Mark all items as Satisfactory (Green)">
+                                            <i data-lucide="check-check" class="w-3.5 h-3.5"></i> All Satisfactory
+                                        </button>
+                                        <button type="button" onclick="toggleChecklistDocumentPane()" class="btn-chk-toggle-doc px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Hide or show document preview">
+                                            <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Vehicle & Customer Intake Dossier (Auto-synced) -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
+                                        <input type="text" id="chk-input-name" placeholder="Juan Dela Cruz" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-emerald-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
+                                        <input type="text" id="chk-input-plate" placeholder="ABC 1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-emerald-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Vehicle Year / Model</label>
+                                        <input type="text" id="chk-input-model" placeholder="Honda Civic 2022" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-emerald-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Inspection Date</label>
+                                        <input type="date" id="chk-input-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-emerald-500 outline-none transition">
+                                    </div>
+                                </div>
+
+                                <!-- Dynamic Summary Scoreboard -->
+                                <div class="grid grid-cols-3 gap-3 pt-1">
+                                    <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">Satisfactory</span>
+                                            <span class="text-xs text-emerald-600 font-medium">Within safety specs</span>
+                                        </div>
+                                        <span id="chk-stat-green" class="text-xl font-black text-emerald-700 font-mono">0</span>
+                                    </div>
+                                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-800 block">Future Attention</span>
+                                            <span class="text-xs text-amber-600 font-medium">Moderate wear / low</span>
+                                        </div>
+                                        <span id="chk-stat-yellow" class="text-xl font-black text-amber-700 font-mono">0</span>
+                                    </div>
+                                    <div class="bg-rose-50 border border-rose-200 rounded-xl p-2.5 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-rose-800 block">Immediate Attn</span>
+                                            <span class="text-xs text-rose-600 font-medium">Urgent safety action</span>
+                                        </div>
+                                        <span id="chk-stat-red" class="text-xl font-black text-rose-700 font-mono">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Inspection Sections Repeater Container -->
+                            <div class="space-y-4 max-h-[560px] overflow-y-auto custom-scroll pr-1">
+                                
+                                <!-- 1. Interior / Exterior Inspection Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="gauge" class="w-4 h-4 text-emerald-600"></i> 1. Interior / Exterior Inspection (7 Items)
+                                        </h3>
+                                        <span class="text-[10.5px] text-gray-400">Click ratings to toggle</span>
+                                    </div>
+                                    <div id="chk-editor-interior" class="space-y-2">
+                                        <!-- Injected via app.js -->
+                                    </div>
+                                </div>
+
+                                <!-- 2. Battery Performance Inspection Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="battery-charging" class="w-4 h-4 text-emerald-600"></i> 2. Battery Performance (ED-18 Printout)
+                                        </h3>
+                                        <span class="text-[10.5px] text-gray-400">Voltage & Health Test</span>
+                                    </div>
+                                    <div id="chk-editor-battery" class="space-y-2">
+                                        <!-- Injected via app.js -->
+                                    </div>
+                                </div>
+
+                                <!-- 3. Under Hood Inspection Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="wrench" class="w-4 h-4 text-emerald-600"></i> 3. Under Hood Inspection (4 Items)
+                                        </h3>
+                                        <span class="text-[10.5px] text-gray-400">Fluids, Filters & Belts</span>
+                                    </div>
+                                    <div id="chk-editor-hood" class="space-y-2">
+                                        <!-- Injected via app.js -->
+                                    </div>
+                                </div>
+
+                                <!-- 4. Under Vehicle Inspection Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="car" class="w-4 h-4 text-emerald-600"></i> 4. Under Vehicle Inspection (5 Items)
+                                        </h3>
+                                        <span class="text-[10.5px] text-gray-400">Suspension, Leaks & Exhaust</span>
+                                    </div>
+                                    <div id="chk-editor-under" class="space-y-2">
+                                        <!-- Injected via app.js -->
+                                    </div>
+                                </div>
+
+                                <!-- 5. Tire Condition & Inflation Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="disc" class="w-4 h-4 text-emerald-600"></i> 5. Tire Condition & Tread Depth (32nds)
+                                        </h3>
+                                        <span class="text-[10.5px] text-gray-400">5 Wheels + Inflation PSI</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5">
+                                            <span class="font-bold text-gray-800 block text-[11px]">Left Front</span>
+                                            <input type="number" id="chk-tire-lf-tread" placeholder="Tread (32nds)" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            <select id="chk-tire-lf-pattern" onchange="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-1.5 py-1 text-[11px] outline-none">
+                                                <option value="Normal">Normal Wear</option>
+                                                <option value="Feathering">Feathering</option>
+                                                <option value="Cupping">Cupping</option>
+                                                <option value="Shoulder">Shoulder Wear</option>
+                                            </select>
+                                        </div>
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5">
+                                            <span class="font-bold text-gray-800 block text-[11px]">Right Front</span>
+                                            <input type="number" id="chk-tire-rf-tread" placeholder="Tread (32nds)" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            <select id="chk-tire-rf-pattern" onchange="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-1.5 py-1 text-[11px] outline-none">
+                                                <option value="Normal">Normal Wear</option>
+                                                <option value="Feathering">Feathering</option>
+                                                <option value="Cupping">Cupping</option>
+                                                <option value="Shoulder">Shoulder Wear</option>
+                                            </select>
+                                        </div>
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5">
+                                            <span class="font-bold text-gray-800 block text-[11px]">Left Rear</span>
+                                            <input type="number" id="chk-tire-lr-tread" placeholder="Tread (32nds)" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            <select id="chk-tire-lr-pattern" onchange="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-1.5 py-1 text-[11px] outline-none">
+                                                <option value="Normal">Normal Wear</option>
+                                                <option value="Feathering">Feathering</option>
+                                                <option value="Cupping">Cupping</option>
+                                                <option value="Shoulder">Shoulder Wear</option>
+                                            </select>
+                                        </div>
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5">
+                                            <span class="font-bold text-gray-800 block text-[11px]">Right Rear</span>
+                                            <input type="number" id="chk-tire-rr-tread" placeholder="Tread (32nds)" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            <select id="chk-tire-rr-pattern" onchange="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-1.5 py-1 text-[11px] outline-none">
+                                                <option value="Normal">Normal Wear</option>
+                                                <option value="Feathering">Feathering</option>
+                                                <option value="Cupping">Cupping</option>
+                                                <option value="Shoulder">Shoulder Wear</option>
+                                            </select>
+                                        </div>
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5 col-span-2">
+                                            <span class="font-bold text-gray-800 block text-[11px]">Spare Tire</span>
+                                            <input type="number" id="chk-tire-spare-tread" placeholder="Spare Tread (32nds)" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                        </div>
+                                        <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5 col-span-2 flex items-center gap-2">
+                                            <div class="flex-1">
+                                                <label class="block text-[10px] font-bold text-gray-600">Front Inflation (psi)</label>
+                                                <input type="number" id="chk-tire-front-psi" placeholder="32" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            </div>
+                                            <div class="flex-1">
+                                                <label class="block text-[10px] font-bold text-gray-600">Rear Inflation (psi)</label>
+                                                <input type="number" id="chk-tire-rear-psi" placeholder="32" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs outline-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 6. Brake Condition Card -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="shield-alert" class="w-4 h-4 text-emerald-600"></i> 6. Brake Condition & Pad Thickness (mms)
+                                        </h3>
+                                        <label class="flex items-center gap-1.5 text-xs font-bold text-gray-700 cursor-pointer">
+                                            <input type="checkbox" id="chk-input-brakes-exempt" onchange="toggleBrakeExemption(this.checked)" class="rounded text-emerald-600">
+                                            <span>Not inspected this visit</span>
+                                        </label>
+                                    </div>
+                                    <div id="chk-brakes-inputs-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 mb-1">Left Front (mms)</label>
+                                            <input type="number" step="0.5" id="chk-brake-lf" placeholder="8.0" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-2.5 py-1.5 font-mono text-center outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 mb-1">Right Front (mms)</label>
+                                            <input type="number" step="0.5" id="chk-brake-rf" placeholder="8.0" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-2.5 py-1.5 font-mono text-center outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 mb-1">Left Rear (mms)</label>
+                                            <input type="number" step="0.5" id="chk-brake-lr" placeholder="6.0" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-2.5 py-1.5 font-mono text-center outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-gray-600 mb-1">Right Rear (mms)</label>
+                                            <input type="number" step="0.5" id="chk-brake-rr" placeholder="6.0" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-2.5 py-1.5 font-mono text-center outline-none">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 7. Interactive Vehicle Exterior Damage Marker -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-3">
+                                    <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+                                        <div>
+                                            <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                                <i data-lucide="map-pin" class="w-4 h-4 text-emerald-600"></i> 7. Areas of External Damage or Wear
+                                            </h3>
+                                            <p class="text-[10.5px] text-gray-500">Click anywhere on the vehicle body to pinpoint damages</p>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <select id="chk-damage-type-selector" class="text-xs bg-white border border-gray-200 rounded-lg px-2 py-1 font-bold outline-none">
+                                                <option value="D">Dent (D)</option>
+                                                <option value="S">Scratch (S)</option>
+                                                <option value="P">Paint Chip (P)</option>
+                                                <option value="C">Crack (C)</option>
+                                            </select>
+                                            <button type="button" onclick="clearChecklistDamagePins()" class="px-2 py-1 text-xs text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg font-bold transition cursor-pointer">
+                                                Clear Pins
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Clickable SVG Canvas in Editor -->
+                                    <div class="relative bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-center justify-center select-none cursor-crosshair" id="chk-editor-damage-wrapper" onclick="handleChecklistDiagramClick(event)">
+                                        <!-- SVG Vehicle Wireframe matching the template -->
+                                        <svg viewBox="0 0 400 320" class="w-full max-w-[380px] h-auto pointer-events-none" id="chk-editor-svg">
+                                            <!-- Top View Outline (Center) -->
+                                            <rect x="150" y="30" width="100" height="260" rx="20" fill="none" stroke="#111827" stroke-width="2"/>
+                                            <!-- Front Windshield -->
+                                            <path d="M 160 85 Q 200 75 240 85 L 235 120 Q 200 115 165 120 Z" fill="none" stroke="#374151" stroke-width="1.5"/>
+                                            <!-- Roof -->
+                                            <rect x="165" y="125" width="70" height="85" rx="5" fill="none" stroke="#6b7280" stroke-width="1"/>
+                                            <!-- Rear Window -->
+                                            <path d="M 165 215 Q 200 218 235 215 L 240 240 Q 200 245 160 240 Z" fill="none" stroke="#374151" stroke-width="1.5"/>
+                                            <!-- Side Mirrors -->
+                                            <path d="M 148 100 Q 140 100 142 110 Q 148 112 150 106 Z" fill="#374151"/>
+                                            <path d="M 252 100 Q 260 100 258 110 Q 252 112 250 106 Z" fill="#374151"/>
+                                            <!-- Center Labels -->
+                                            <text x="200" y="55" font-size="8" font-weight="bold" fill="#6b7280" text-anchor="middle">FRONT</text>
+                                            <text x="200" y="275" font-size="8" font-weight="bold" fill="#6b7280" text-anchor="middle">REAR</text>
+
+                                            <!-- Left Side View Car Outline -->
+                                            <g transform="translate(10, 30)">
+                                                <path d="M 10 100 Q 20 40 50 30 Q 80 20 100 60 L 105 180 Q 90 230 60 250 Q 30 260 10 210 Z" fill="none" stroke="#111827" stroke-width="1.5"/>
+                                                <circle cx="20" cy="75" r="16" fill="none" stroke="#111827" stroke-width="4"/>
+                                                <circle cx="20" cy="215" r="16" fill="none" stroke="#111827" stroke-width="4"/>
+                                                <text x="40" y="140" font-size="8" font-weight="bold" fill="#6b7280" text-anchor="middle">LEFT SIDE</text>
+                                            </g>
+
+                                            <!-- Right Side View Car Outline -->
+                                            <g transform="translate(275, 30)">
+                                                <path d="M 105 100 Q 95 40 65 30 Q 35 20 15 60 L 10 180 Q 25 230 55 250 Q 85 260 105 210 Z" fill="none" stroke="#111827" stroke-width="1.5"/>
+                                                <circle cx="95" cy="75" r="16" fill="none" stroke="#111827" stroke-width="4"/>
+                                                <circle cx="95" cy="215" r="16" fill="none" stroke="#111827" stroke-width="4"/>
+                                                <text x="75" y="140" font-size="8" font-weight="bold" fill="#6b7280" text-anchor="middle">RIGHT SIDE</text>
+                                            </g>
+
+                                            <!-- Dynamic Damage Pins Container -->
+                                            <g id="chk-editor-damage-pins"></g>
+                                        </svg>
+                                    </div>
+                                    <div id="chk-pins-list-text" class="text-[11px] text-gray-500 font-mono italic">
+                                        No external damages pinned yet.
+                                    </div>
+                                </div>
+
+                                <!-- 8. Technician Comments -->
+                                <div class="bg-white border border-gray-200 rounded-2xl p-4 shadow-xs space-y-2">
+                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                        <i data-lucide="message-square" class="w-4 h-4 text-emerald-600"></i> 8. Technician Comments & Diagnostic Notes
+                                    </h3>
+                                    <textarea id="chk-input-comments" rows="3" placeholder="Enter technician observations, recommended repairs, or intake notes..." oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs outline-none focus:border-emerald-500 transition custom-scroll"></textarea>
+                                </div>
+
+                            </div>
+
+                            <!-- Actions Row -->
+                            <div class="flex flex-wrap items-center gap-3 pt-2">
+                                <button type="button" onclick="printChecklist()" class="flex-1 min-h-[46px] bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                                    <i data-lucide="printer" class="w-4 h-4"></i> Print Official Checklist Document
+                                </button>
+                                <button type="button" onclick="showSystemToast('Vehicle inspection saved! Ready for customer sign-off & claim stub.', 'success', 'Inspection Saved')" class="min-h-[46px] bg-slate-900 hover:bg-black text-white py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> Save Inspection
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- ==========================================
+                             RIGHT COLUMN: 1:1 PHYSICAL LIVE CANVAS PANE
+                             ========================================== -->
+                        <div id="checklist-canvas-pane" class="xl:col-span-6 space-y-3">
+                            
+                            <!-- Canvas Control Toolbar -->
+                            <div id="checklist-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1.5 font-black text-gray-800 uppercase tracking-tight text-xs">
+                                        <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i> Physical Inspection Sheet Preview (1:1)
+                                    </span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="printChecklist()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Document
+                                    </button>
+                                    <button type="button" onclick="toggleChecklistDocumentPane()" class="p-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-800 transition flex items-center cursor-pointer" title="Hide Document Preview">
+                                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 1:1 Physical Form White Sheet -->
+                            <div id="checklist-canvas-wrapper" class="bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
+                                <div id="checklist-document-sheet" class="checklist-sheet mx-auto bg-white border border-black p-4 max-w-[760px] text-[8.5px] select-text shadow-sm space-y-2 font-sans leading-tight">
+                                    
+                                    <!-- Header: Logo, Title, and Metadata Box -->
+                                    <div class="space-y-1.5 pb-1">
+                                        <!-- Top Centered Logo with Silhouette -->
+                                        <div class="text-center space-y-0.5">
+                                            <div class="inline-flex items-center justify-center gap-1.5">
+                                                <span class="text-red-600 font-black italic text-base">H</span>
+                                                <span class="font-black italic text-base tracking-wider text-black">ONTECH</span>
+                                            </div>
+                                            <div class="text-[7.5px] font-black tracking-widest text-gray-700 uppercase">Auto Center Inc.</div>
+                                        </div>
+
+                                        <!-- Subheader 3-column grid matching official template -->
+                                        <div class="grid grid-cols-12 gap-1 items-end pt-1 border-b border-black pb-1.5">
+                                            <!-- Left: Customer Name, Plate, Model -->
+                                            <div class="col-span-5 space-y-0.5 text-[8px]">
+                                                <div><span class="font-bold">CUSTOMER NAME:</span> <span id="chk-live-name" class="font-bold underline">Juan Dela Cruz</span></div>
+                                                <div><span class="font-bold">PLATE NUMBER:</span> <span id="chk-live-plate" class="font-mono font-bold">ABC 1234</span></div>
+                                                <div><span class="font-bold">VEHICLE YEAR MODEL:</span> <span id="chk-live-model">Honda Civic 2022</span></div>
+                                            </div>
+                                            <!-- Center: CHECKLIST RESULT -->
+                                            <div class="col-span-4 text-center">
+                                                <h1 class="text-sm font-black uppercase tracking-tight text-gray-900">CHECKLIST RESULT</h1>
+                                            </div>
+                                            <!-- Right: DATE -->
+                                            <div class="col-span-3 text-right text-[8px]">
+                                                <span class="font-bold">DATE:</span> <span id="chk-live-date" class="font-mono font-semibold">2026-09-10</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Three-Tier Color Legend Bar -->
+                                    <div class="flex items-center justify-center gap-6 py-1 bg-gray-50 border border-black text-[8px] font-bold">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-3.5 h-3.5 bg-emerald-500 border border-black inline-block"></span>
+                                            <span>Satisfactory</span>
+                                        </div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-3.5 h-3.5 bg-amber-400 border border-black inline-block"></span>
+                                            <span>May Require Future Attention</span>
+                                        </div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-3.5 h-3.5 bg-rose-500 border border-black inline-block"></span>
+                                            <span>Requires Immediate Attention</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Main Symmetrical 2-Column Inspection Grid -->
+                                    <div class="grid grid-cols-2 gap-2 items-start">
+                                        
+                                        <!-- ==========================================
+                                             LEFT COLUMN OF PHYSICAL SHEET
+                                             ========================================== -->
+                                        <div class="space-y-2">
+                                            
+                                            <!-- Section 1: Interior/Exterior -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black flex items-center justify-between">
+                                                    <span>Interior/Exterior</span>
+                                                    <div class="flex gap-1 text-[6.5px]">
+                                                        <span class="w-3 text-center">OK</span>
+                                                        <span class="w-3 text-center">ATTN</span>
+                                                        <span class="w-3 text-center">REQ</span>
+                                                    </div>
+                                                </div>
+                                                <table class="w-full text-[7.5px] border-collapse" id="chk-live-table-interior">
+                                                    <!-- Dynamic rows with 3 colored status cells -->
+                                                </table>
+                                            </div>
+
+                                            <!-- Section 2: Battery Performance -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black flex items-center justify-between">
+                                                    <span>Battery Performance <span class="font-normal lowercase text-[6.5px]">(see attached ED-18 printout)</span></span>
+                                                    <div class="flex gap-1 text-[6.5px]">
+                                                        <span class="w-3 text-center">OK</span>
+                                                        <span class="w-3 text-center">ATTN</span>
+                                                        <span class="w-3 text-center">REQ</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center justify-between">
+                                                    <table class="w-full text-[7.5px] border-collapse flex-1" id="chk-live-table-battery">
+                                                        <!-- Battery rows -->
+                                                    </table>
+                                                    <!-- Battery Graphic illustration -->
+                                                    <div class="w-10 text-center border-l border-black p-1 shrink-0">
+                                                        <i data-lucide="battery" class="w-5 h-5 mx-auto text-gray-800"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Section 3: Under Hood -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black flex items-center justify-between">
+                                                    <span>Under Hood</span>
+                                                    <div class="flex gap-1 text-[6.5px]">
+                                                        <span class="w-3 text-center">OK</span>
+                                                        <span class="w-3 text-center">ATTN</span>
+                                                        <span class="w-3 text-center">REQ</span>
+                                                    </div>
+                                                </div>
+                                                <table class="w-full text-[7.5px] border-collapse" id="chk-live-table-hood">
+                                                    <!-- Under Hood rows -->
+                                                </table>
+                                            </div>
+
+                                            <!-- Section 4: Under Vehicle -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black flex items-center justify-between">
+                                                    <span>Under Vehicle</span>
+                                                    <div class="flex gap-1 text-[6.5px]">
+                                                        <span class="w-3 text-center">OK</span>
+                                                        <span class="w-3 text-center">ATTN</span>
+                                                        <span class="w-3 text-center">REQ</span>
+                                                    </div>
+                                                </div>
+                                                <table class="w-full text-[7.5px] border-collapse" id="chk-live-table-under">
+                                                    <!-- Under Vehicle rows -->
+                                                </table>
+                                            </div>
+
+                                            <!-- Section 5: Ruled Comments Box -->
+                                            <div class="border border-black p-1.5 space-y-1">
+                                                <div class="bg-gray-200 px-1 py-0.5 font-bold uppercase text-[7.5px] border-b border-black">
+                                                    Comments
+                                                </div>
+                                                <div id="chk-live-comments-area" class="min-h-[44px] text-[7.5px] leading-relaxed text-gray-800 space-y-1">
+                                                    <div class="border-b border-gray-300 pb-0.5 min-h-[14px]">No issues flagged during intake inspection.</div>
+                                                    <div class="border-b border-gray-300 pb-0.5 min-h-[14px]">&nbsp;</div>
+                                                    <div class="border-b border-gray-300 pb-0.5 min-h-[14px]">&nbsp;</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- ==========================================
+                                             RIGHT COLUMN OF PHYSICAL SHEET
+                                             ========================================== -->
+                                        <div class="space-y-2">
+                                            
+                                            <!-- Section 6: Tire Condition -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black text-center">
+                                                    Tire Condition
+                                                </div>
+                                                <div class="p-1 space-y-1 text-[7.5px]">
+                                                    <!-- Front Row -->
+                                                    <div class="grid grid-cols-2 gap-1 border-b border-gray-300 pb-1">
+                                                        <div>
+                                                            <span class="font-bold">Left Front</span>
+                                                            <div class="flex items-center gap-1 text-[7px]">
+                                                                <span>Pattern: <span id="chk-live-tire-lf-pat" class="font-mono">Normal</span></span>
+                                                                <span class="ml-auto">Tread: <span id="chk-live-tire-lf-tr" class="font-mono font-bold">8</span> 32nds</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="border-l border-gray-300 pl-1">
+                                                            <span class="font-bold">Right Front</span>
+                                                            <div class="flex items-center gap-1 text-[7px]">
+                                                                <span>Pattern: <span id="chk-live-tire-rf-pat" class="font-mono">Normal</span></span>
+                                                                <span class="ml-auto">Tread: <span id="chk-live-tire-rf-tr" class="font-mono font-bold">8</span> 32nds</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Rear Row -->
+                                                    <div class="grid grid-cols-2 gap-1 border-b border-gray-300 pb-1">
+                                                        <div>
+                                                            <span class="font-bold">Left Rear</span>
+                                                            <div class="flex items-center gap-1 text-[7px]">
+                                                                <span>Pattern: <span id="chk-live-tire-lr-pat" class="font-mono">Normal</span></span>
+                                                                <span class="ml-auto">Tread: <span id="chk-live-tire-lr-tr" class="font-mono font-bold">7</span> 32nds</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="border-l border-gray-300 pl-1">
+                                                            <span class="font-bold">Right Rear</span>
+                                                            <div class="flex items-center gap-1 text-[7px]">
+                                                                <span>Pattern: <span id="chk-live-tire-rr-pat" class="font-mono">Normal</span></span>
+                                                                <span class="ml-auto">Tread: <span id="chk-live-tire-rr-tr" class="font-mono font-bold">7</span> 32nds</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Spare & Inflation Row -->
+                                                    <div class="grid grid-cols-2 gap-1 pt-0.5 text-[7px]">
+                                                        <div>
+                                                            <span class="font-bold">Spare:</span>
+                                                            <span>Tread: <span id="chk-live-tire-sp-tr" class="font-mono font-bold">9</span> 32nds</span>
+                                                        </div>
+                                                        <div class="border-l border-gray-300 pl-1 space-y-0.5">
+                                                            <div>Front tire inflation set to <span id="chk-live-tire-f-psi" class="font-mono font-bold">32</span> psi</div>
+                                                            <div>Rear tire inflation set to <span id="chk-live-tire-r-psi" class="font-mono font-bold">32</span> psi</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Section 7: Brake Condition -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black text-center">
+                                                    Brake Condition
+                                                </div>
+                                                <div class="p-1 space-y-1 text-[7.5px]">
+                                                    <div class="grid grid-cols-2 gap-2 border-b border-gray-300 pb-1">
+                                                        <div class="flex items-center justify-between">
+                                                            <span class="font-bold">Left Front:</span>
+                                                            <span class="font-mono"><span id="chk-live-brake-lf" class="font-bold">8.0</span> mms</span>
+                                                        </div>
+                                                        <div class="flex items-center justify-between border-l border-gray-300 pl-1.5">
+                                                            <span class="font-bold">Right Front:</span>
+                                                            <span class="font-mono"><span id="chk-live-brake-rf" class="font-bold">8.0</span> mms</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="grid grid-cols-2 gap-2 border-b border-gray-300 pb-1">
+                                                        <div class="flex items-center justify-between">
+                                                            <span class="font-bold">Left Rear:</span>
+                                                            <span class="font-mono"><span id="chk-live-brake-lr" class="font-bold">6.5</span> mms</span>
+                                                        </div>
+                                                        <div class="flex items-center justify-between border-l border-gray-300 pl-1.5">
+                                                            <span class="font-bold">Right Rear:</span>
+                                                            <span class="font-mono"><span id="chk-live-brake-rr" class="font-bold">6.5</span> mms</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pt-0.5 flex items-center gap-1.5 text-[7px]">
+                                                        <span id="chk-live-brakes-exempt-box" class="w-3 h-3 border border-black inline-flex items-center justify-center font-bold"></span>
+                                                        <span>Brakes not inspected on this visit</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Section 8: Areas of External Damage or Wear (Vehicle Diagram) -->
+                                            <div class="border border-black overflow-hidden">
+                                                <div class="bg-gray-200 px-1.5 py-0.5 font-bold uppercase text-[7.5px] border-b border-black text-center">
+                                                    Please Indicate Areas of External Damage or Wear
+                                                </div>
+                                                <div class="p-2 flex items-center justify-center">
+                                                    <svg viewBox="0 0 400 320" class="w-full max-w-[280px] h-auto" id="chk-canvas-svg">
+                                                        <!-- Top View Outline (Center) -->
+                                                        <rect x="150" y="30" width="100" height="260" rx="20" fill="none" stroke="#000" stroke-width="2"/>
+                                                        <!-- Front Windshield -->
+                                                        <path d="M 160 85 Q 200 75 240 85 L 235 120 Q 200 115 165 120 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+                                                        <!-- Roof -->
+                                                        <rect x="165" y="125" width="70" height="85" rx="5" fill="none" stroke="#000" stroke-width="1"/>
+                                                        <!-- Rear Window -->
+                                                        <path d="M 165 215 Q 200 218 235 215 L 240 240 Q 200 245 160 240 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+                                                        <!-- Side Mirrors -->
+                                                        <path d="M 148 100 Q 140 100 142 110 Q 148 112 150 106 Z" fill="#000"/>
+                                                        <path d="M 252 100 Q 260 100 258 110 Q 252 112 250 106 Z" fill="#000"/>
+
+                                                        <!-- Left Side View Car Outline -->
+                                                        <g transform="translate(10, 30)">
+                                                            <path d="M 10 100 Q 20 40 50 30 Q 80 20 100 60 L 105 180 Q 90 230 60 250 Q 30 260 10 210 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+                                                            <circle cx="20" cy="75" r="16" fill="none" stroke="#000" stroke-width="4"/>
+                                                            <circle cx="20" cy="215" r="16" fill="none" stroke="#000" stroke-width="4"/>
+                                                        </g>
+
+                                                        <!-- Right Side View Car Outline -->
+                                                        <g transform="translate(275, 30)">
+                                                            <path d="M 105 100 Q 95 40 65 30 Q 35 20 15 60 L 10 180 Q 25 230 55 250 Q 85 260 105 210 Z" fill="none" stroke="#000" stroke-width="1.5"/>
+                                                            <circle cx="95" cy="75" r="16" fill="none" stroke="#000" stroke-width="4"/>
+                                                            <circle cx="95" cy="215" r="16" fill="none" stroke="#000" stroke-width="4"/>
+                                                        </g>
+
+                                                        <!-- Dynamic Damage Pins Container in Canvas -->
+                                                        <g id="chk-canvas-damage-pins"></g>
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Bottom Footnotes -->
+                                    <div class="text-[7px] text-gray-700 italic space-y-0.5 pt-1 border-t border-black">
+                                        <div>*Note: Brake fluid NOT filled - fluid level indicate pad wear</div>
+                                        <div>**Refer to maintenance schedule</div>
+                                    </div>
+
+                                    <!-- Dual Signatures Row -->
+                                    <div class="grid grid-cols-2 gap-6 pt-3 text-[8px]">
+                                        <div>
+                                            <div class="flex items-baseline gap-1">
+                                                <span class="font-bold">TECHNICIAN NAME:</span>
+                                                <span id="chk-live-tech-name" class="border-b border-black flex-1 text-center font-bold">Roman Sarol</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-baseline gap-1">
+                                                <span class="font-bold">CUSTOMER SIGNATURE:</span>
+                                                <span class="border-b border-black flex-1 text-center italic text-gray-500">[ Signature on File ]</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div> <!-- /view-sheet-checklist -->
+
                 <!-- ====================================================
                      EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
                      ==================================================== -->
@@ -3899,7 +4548,7 @@
                             </button>
 
                             <!-- CHECKLIST -->
-                            <button type="button" id="tab-sheet-checklist" onclick="handleCustomSheetClick('CHECKLIST')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                            <button type="button" id="tab-sheet-checklist" onclick="switchFormStudioSheet('checklist')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
                                 <span>CHECKLIST</span>
                                 <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
@@ -7380,7 +8029,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.51"></script>
+    <script src="js/app.js?v=5.52"></script>
 </body>
 
 </html>
