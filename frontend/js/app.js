@@ -12261,6 +12261,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             currentFormStudioActiveSheet = sheetKey;
             const view13 = document.getElementById('view-sheet-form13');
             const view23 = document.getElementById('view-sheet-form23');
+            const viewBilling = document.getElementById('view-sheet-billing');
 
             // Reset all tabs to inactive Google Sheets style and highlight active
             allFormWorkbookSheets.forEach(s => {
@@ -12282,12 +12283,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (sheetKey === 'form13') {
                 if (view13) view13.classList.remove('hidden');
                 if (view23) view23.classList.add('hidden');
+                if (viewBilling) viewBilling.classList.add('hidden');
 
                 syncForm13Canvas();
                 showSystemToast('Switched to Job_Order (Form 1/3 Job Order & Claim Stub)', 'info', 'Job_Order Active');
             } else if (sheetKey === 'form23') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.remove('hidden');
+                if (viewBilling) viewBilling.classList.add('hidden');
 
                 // Sync shared dossier from Form 1/3 into Form 2/3
                 syncDossierToForm23();
@@ -12296,7 +12299,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncForm23Canvas();
                 showSystemToast('Switched to QUOTE (Form 2/3 Quotation Studio)', 'info', 'QUOTE Active');
             } else if (sheetKey === 'billing') {
-                showSystemToast('Switched to BILLING (Official Billing & Cashier Invoice)', 'info', 'BILLING Active');
+                if (view13) view13.classList.add('hidden');
+                if (view23) view23.classList.add('hidden');
+                if (viewBilling) viewBilling.classList.remove('hidden');
+
+                // Sync shared dossier from Form 1/3 & Form 2/3 into Form 3/3
+                syncDossierToForm33();
+                renderForm33Rows();
+                calculateForm33Totals();
+                syncForm33Canvas();
+                showSystemToast('Switched to BILLING (Form 3/3 Official Billing & Cashier Invoice)', 'info', 'BILLING Active');
+            } else {
+                if (view13) view13.classList.add('hidden');
+                if (view23) view23.classList.add('hidden');
+                if (viewBilling) viewBilling.classList.add('hidden');
             }
 
             const activeBtnId = sheetKey === 'form13' ? 'tab-sheet-joborder' : (sheetKey === 'form23' ? 'tab-sheet-quote' : `tab-sheet-${sheetKey}`);
@@ -12322,6 +12338,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             };
             const key = sheetMap[sheetName] || sheetName.toLowerCase().replace(/\s+/g, '');
             
+            const view13 = document.getElementById('view-sheet-form13');
+            const view23 = document.getElementById('view-sheet-form23');
+            const viewBilling = document.getElementById('view-sheet-billing');
+            if (view13) view13.classList.add('hidden');
+            if (view23) view23.classList.add('hidden');
+            if (viewBilling) viewBilling.classList.add('hidden');
+
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
                 if (btn) {
@@ -12766,38 +12789,428 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.resetForm23Studio = resetForm23Studio;
 
-        // Auto-wire shared dossier listeners between Form 1/3 and Form 2/3
-        function initFormStudioMultiSheetSync() {
-            const syncPairs = [
-                ['f13-input-name', 'f23-input-name'],
-                ['f13-input-contact', 'f23-input-contact'],
-                ['f13-input-address', 'f23-input-address'],
-                ['f13-input-plate', 'f23-input-plate'],
-                ['f13-input-model', 'f23-input-model'],
-                ['f13-input-color', 'f23-input-color'],
-                ['f13-input-job-no', 'f23-input-job-no'],
-                ['f13-input-promise-date', 'f23-input-promise-date']
+        // =========================================================================
+        // FORM 3/3 (BILLING & CASHIER INVOICE) STUDIO ENGINE
+        // =========================================================================
+        window.form33Items = [
+            { id: 1, desc: 'Fully Synthetic Motor Oil 5W-30 (4L)', qty: 1, frt: 0.5, labor: 350.00, parts: 1850.00, materials: 0.00 },
+            { id: 2, desc: 'OEM Engine Oil Filter Element', qty: 1, frt: 0.2, labor: 150.00, parts: 450.00, materials: 0.00 },
+            { id: 3, desc: 'Engine Flush Treatment (300ml)', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 250.00 },
+            { id: 4, desc: 'Brake Cleaner Aerosol Spray', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 200.00 }
+        ];
+
+        function copyQuoteToBilling() {
+            if (Array.isArray(window.form23Items) && window.form23Items.length > 0) {
+                window.form33Items = JSON.parse(JSON.stringify(window.form23Items));
+            } else {
+                window.form33Items = [];
+            }
+            
+            // Sync Quotation reference if available
+            const quoteRef = document.getElementById('f23-input-quotation-no')?.value;
+            const bQuoteInput = document.getElementById('f33-input-quote-no');
+            if (quoteRef && bQuoteInput) {
+                bQuoteInput.value = quoteRef;
+            }
+
+            syncDossierToForm33();
+            renderForm33Rows();
+            calculateForm33Totals();
+            syncForm33Canvas();
+            showSystemToast('Imported all line items and quote reference into Billing Studio.', 'success', 'Quotation Imported');
+        }
+        window.copyQuoteToBilling = copyQuoteToBilling;
+
+        function syncDossierToForm33() {
+            const getSrcVal = (id1, id2) => {
+                const el1 = document.getElementById(id1);
+                const el2 = document.getElementById(id2);
+                return (el1?.value || el2?.value || '').trim();
+            };
+
+            // Generate Billing No if empty
+            const bNoInput = document.getElementById('f33-input-billing-no');
+            if (bNoInput && !bNoInput.value) {
+                const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
+                bNoInput.value = `HT-BIL-${randSuffix}`;
+            }
+
+            // Date default
+            const bDate = document.getElementById('f33-input-date');
+            if (bDate && !bDate.value) {
+                bDate.value = new Date().toISOString().split('T')[0];
+            }
+
+            // Job No & Quote No
+            const bJobNo = document.getElementById('f33-input-job-no');
+            if (bJobNo && !bJobNo.value) {
+                bJobNo.value = getSrcVal('f13-input-job-no', 'f23-input-job-no') || 'HT-JO-1001';
+            }
+
+            const bQuoteNo = document.getElementById('f33-input-quote-no');
+            if (bQuoteNo && !bQuoteNo.value) {
+                bQuoteNo.value = (document.getElementById('f23-input-quotation-no')?.value || 'HT-QT-1001').trim();
+            }
+
+            // Customer dossier mappings
+            const mappings = [
+                ['f33-input-name', getSrcVal('f13-input-name', 'f23-input-name')],
+                ['f33-input-contact', getSrcVal('f13-input-contact', 'f23-input-contact')],
+                ['f33-input-address', getSrcVal('f13-input-address', 'f23-input-address')],
+                ['f33-input-plate', getSrcVal('f13-input-plate', 'f23-input-plate')],
+                ['f33-input-model', getSrcVal('f13-input-model', 'f23-input-model')],
+                ['f33-input-color', getSrcVal('f13-input-color', 'f23-input-color')],
+                ['f33-input-km', (document.getElementById('f13-input-mileage')?.value || '42,500 km').trim()],
+                ['f33-input-email', (document.getElementById('f13-input-email')?.value || 'customer@gmail.com').trim()]
             ];
 
-            syncPairs.forEach(([id13, id23]) => {
+            mappings.forEach(([targetId, val]) => {
+                const el = document.getElementById(targetId);
+                if (el && val && !el.value) {
+                    el.value = val;
+                }
+            });
+        }
+        window.syncDossierToForm33 = syncDossierToForm33;
+
+        function renderForm33Rows() {
+            // 1. Render Editor Cards in #form33-items-editor-list
+            const editorContainer = document.getElementById('form33-items-editor-list');
+            if (editorContainer) {
+                if (!Array.isArray(window.form33Items) || window.form33Items.length === 0) {
+                    editorContainer.innerHTML = `
+                        <div class="text-center py-6 text-gray-400 bg-gray-50 border border-dashed border-gray-200 rounded-xl space-y-2">
+                            <i data-lucide="inbox" class="w-7 h-7 mx-auto opacity-50"></i>
+                            <p class="text-xs italic">No billable items added yet. Click "+ Add Line Item" or "Copy from Quote".</p>
+                        </div>
+                    `;
+                } else {
+                    editorContainer.innerHTML = window.form33Items.map((item, index) => {
+                        const labor = Number(item.labor) || 0;
+                        const parts = Number(item.parts) || 0;
+                        const materials = Number(item.materials) || 0;
+                        const rowAmt = labor + parts + materials;
+
+                        return `
+                            <div class="p-3 bg-gray-50/80 hover:bg-blue-50/30 border border-gray-200 rounded-xl space-y-2 transition">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-[11px] font-black text-blue-700 bg-blue-100/70 border border-blue-200 px-2 py-0.5 rounded-md font-mono">
+                                        #${index + 1}
+                                    </span>
+                                    <div class="flex-1">
+                                        <input type="text" value="${escapeHtml(item.desc || '')}" oninput="updateForm33Item(${index}, 'desc', this.value)" placeholder="Parts / Material Description (e.g. Engine Oil, Brake Caliper)" class="w-full bg-white border border-gray-200 rounded-lg px-2.5 py-1 text-xs font-semibold focus:border-blue-500 outline-none">
+                                    </div>
+                                    <button type="button" onclick="removeForm33Item(${index})" class="text-gray-400 hover:text-red-600 transition p-1 cursor-pointer shrink-0" title="Delete row">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs">
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-gray-500 uppercase">Qty</label>
+                                        <input type="number" min="1" value="${item.qty ?? 1}" oninput="updateForm33Item(${index}, 'qty', this.value)" class="w-full text-center bg-white border border-gray-200 rounded-lg py-1 text-xs font-bold focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-gray-500 uppercase">FRT</label>
+                                        <input type="number" step="0.1" min="0" value="${item.frt ?? 0}" oninput="updateForm33Item(${index}, 'frt', this.value)" class="w-full text-center bg-white border border-gray-200 rounded-lg py-1 text-xs font-mono focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-gray-500 uppercase">Labor</label>
+                                        <input type="number" step="10" min="0" value="${labor}" oninput="updateForm33Item(${index}, 'labor', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-gray-500 uppercase">Parts</label>
+                                        <input type="number" step="10" min="0" value="${parts}" oninput="updateForm33Item(${index}, 'parts', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-gray-500 uppercase">Materials</label>
+                                        <input type="number" step="10" min="0" value="${materials}" oninput="updateForm33Item(${index}, 'materials', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-blue-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[9.5px] font-bold text-blue-700 uppercase">Row Total</label>
+                                        <div class="bg-blue-50/70 border border-blue-200 text-blue-800 rounded-lg py-1 px-1.5 text-right font-mono font-black text-xs">
+                                            ₱ ${rowAmt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // 2. Render Exact 35 Rows on 1:1 Live Physical Canvas (#f33-live-rows)
+            const canvasTableBody = document.getElementById('f33-live-rows');
+            if (canvasTableBody) {
+                const fmtRaw = num => (num > 0) ? num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
+                const items = window.form33Items || [];
+                let html = '';
+
+                for (let i = 0; i < 35; i++) {
+                    const it = items[i];
+                    const isPopulated = Boolean(it && (it.desc || it.labor || it.parts || it.materials));
+
+                    const desc = isPopulated ? escapeHtml(it.desc || '') : '&nbsp;';
+                    const qty = (isPopulated && it.qty) ? it.qty : '';
+                    const frt = (isPopulated && it.frt) ? it.frt : '';
+                    const labor = isPopulated ? (it.labor > 0 ? fmtRaw(it.labor) : '0.00') : '0.00';
+                    const parts = isPopulated ? fmtRaw(it.parts) : '';
+                    const materials = isPopulated ? fmtRaw(it.materials) : '';
+
+                    const rowAmt = isPopulated
+                        ? ((Number(it.labor) || 0) + (Number(it.parts) || 0) + (Number(it.materials) || 0))
+                        : 0;
+                    const amtStr = isPopulated ? (rowAmt > 0 ? fmtRaw(rowAmt) : '0.00') : '0.00';
+
+                    html += `
+                        <tr class="h-[13px] leading-tight">
+                            <td class="border-r border-black px-1 text-left truncate max-w-[170px]">${desc}</td>
+                            <td class="border-r border-black px-0.5 text-center">${qty}</td>
+                            <td class="border-r border-black px-0.5 text-center">${frt}</td>
+                            <td class="border-r border-black px-1 text-right font-mono">${labor}</td>
+                            <td class="border-r border-black px-1 text-right font-mono">${parts}</td>
+                            <td class="border-r border-black px-1 text-right font-mono">${materials}</td>
+                            <td class="px-1 text-right font-mono font-bold">${amtStr}</td>
+                        </tr>
+                    `;
+                }
+                canvasTableBody.innerHTML = html;
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.renderForm33Rows = renderForm33Rows;
+
+        function updateForm33Item(index, key, value) {
+            if (!window.form33Items[index]) return;
+            if (key === 'desc') {
+                window.form33Items[index].desc = value;
+            } else {
+                window.form33Items[index][key] = Number(value) || 0;
+            }
+            calculateForm33Totals();
+            syncForm33Canvas();
+        }
+        window.updateForm33Item = updateForm33Item;
+
+        function addForm33Item() {
+            if (!Array.isArray(window.form33Items)) window.form33Items = [];
+            if (window.form33Items.length >= 35) {
+                showSystemToast('Maximum 35 line items reached for Form 3/3 single-page standard.', 'warning', 'Limit Reached');
+                return;
+            }
+            window.form33Items.push({
+                id: Date.now(),
+                desc: '',
+                qty: 1,
+                frt: 0,
+                labor: 0,
+                parts: 0,
+                materials: 0
+            });
+            renderForm33Rows();
+            calculateForm33Totals();
+            syncForm33Canvas();
+        }
+        window.addForm33Item = addForm33Item;
+
+        function removeForm33Item(index) {
+            if (!Array.isArray(window.form33Items)) return;
+            window.form33Items.splice(index, 1);
+            renderForm33Rows();
+            calculateForm33Totals();
+            syncForm33Canvas();
+        }
+        window.removeForm33Item = removeForm33Item;
+
+        function calculateForm33Totals() {
+            let totalLabor = 0;
+            let totalParts = 0;
+            let totalMaterials = 0;
+
+            (window.form33Items || []).forEach(item => {
+                totalLabor += Number(item.labor) || 0;
+                totalParts += Number(item.parts) || 0;
+                totalMaterials += Number(item.materials) || 0;
+            });
+
+            const netSubtotal = totalLabor + totalParts + totalMaterials;
+            const vat12 = netSubtotal * 0.12;
+            const grandTotal = netSubtotal + vat12;
+
+            const fmt = num => '₱ ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmtRaw = num => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Editor Banner Displays
+            if (document.getElementById('f33-stat-labor')) document.getElementById('f33-stat-labor').innerText = fmt(totalLabor);
+            if (document.getElementById('f33-stat-parts')) document.getElementById('f33-stat-parts').innerText = fmt(totalParts);
+            if (document.getElementById('f33-stat-materials')) document.getElementById('f33-stat-materials').innerText = fmt(totalMaterials);
+            if (document.getElementById('f33-stat-vat')) document.getElementById('f33-stat-vat').innerText = fmt(vat12);
+            if (document.getElementById('f33-stat-total')) document.getElementById('f33-stat-total').innerText = fmt(grandTotal);
+
+            // Canvas Displays
+            if (document.getElementById('f33-live-sentence-amount')) document.getElementById('f33-live-sentence-amount').innerText = fmt(grandTotal);
+            if (document.getElementById('f33-live-labor')) document.getElementById('f33-live-labor').innerText = fmtRaw(totalLabor);
+            if (document.getElementById('f33-live-vat')) document.getElementById('f33-live-vat').innerText = fmtRaw(vat12);
+            if (document.getElementById('f33-live-materials')) document.getElementById('f33-live-materials').innerText = fmtRaw(totalMaterials);
+            if (document.getElementById('f33-live-parts')) document.getElementById('f33-live-parts').innerText = fmtRaw(totalParts);
+            if (document.getElementById('f33-live-total')) document.getElementById('f33-live-total').innerText = fmtRaw(grandTotal);
+
+            return { totalLabor, totalParts, totalMaterials, netSubtotal, vat12, grandTotal };
+        }
+        window.calculateForm33Totals = calculateForm33Totals;
+
+        function syncForm33Canvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+
+            const billingNo = getVal('f33-input-billing-no') || 'HT-BIL-0001';
+            const dateVal = getVal('f33-input-date') || new Date().toISOString().split('T')[0];
+            const jobNo = getVal('f33-input-job-no') || 'HT-JO-0001';
+            const quoteNo = getVal('f33-input-quote-no') || 'HT-QT-0001';
+
+            const name = getVal('f33-input-name') || 'Juan Dela Cruz';
+            const address = getVal('f33-input-address') || '123 Narra St., Marikina Heights';
+            const contact = getVal('f33-input-contact') || '0917-123-4567';
+            const email = getVal('f33-input-email') || 'juandelacruz@gmail.com';
+
+            const plate = getVal('f33-input-plate') || 'ABC 1234';
+            const model = getVal('f33-input-model') || 'Honda Civic 2022';
+            const color = getVal('f33-input-color') || 'Modern Steel Gray';
+            const km = getVal('f33-input-km') || '42,500 km';
+
+            // Canvas header & grid
+            if (document.getElementById('f33-live-billing-no')) document.getElementById('f33-live-billing-no').innerText = billingNo;
+            if (document.getElementById('f33-live-date')) document.getElementById('f33-live-date').innerText = dateVal;
+            if (document.getElementById('f33-live-job-no')) document.getElementById('f33-live-job-no').innerText = jobNo;
+            if (document.getElementById('f33-live-quote-no')) document.getElementById('f33-live-quote-no').innerText = quoteNo;
+
+            // Customer details matrix
+            if (document.getElementById('f33-live-name')) document.getElementById('f33-live-name').innerText = name;
+            if (document.getElementById('f33-live-address')) document.getElementById('f33-live-address').innerText = address;
+            if (document.getElementById('f33-live-contact')) document.getElementById('f33-live-contact').innerText = contact;
+            if (document.getElementById('f33-live-email')) document.getElementById('f33-live-email').innerText = email;
+
+            if (document.getElementById('f33-live-plate')) document.getElementById('f33-live-plate').innerText = plate;
+            if (document.getElementById('f33-live-model')) document.getElementById('f33-live-model').innerText = model;
+            if (document.getElementById('f33-live-color')) document.getElementById('f33-live-color').innerText = color;
+            if (document.getElementById('f33-live-km')) document.getElementById('f33-live-km').innerText = km;
+
+            // SA signatory
+            const saName = (window.currentUser?.fullName || window.currentUser?.name || 'Roman Sarol');
+            if (document.getElementById('f33-live-sa-name')) document.getElementById('f33-live-sa-name').innerText = saName;
+        }
+        window.syncForm33Canvas = syncForm33Canvas;
+
+        function toggleForm33DocumentPane() {
+            const canvasPane = document.getElementById('form33-canvas-pane');
+            const editorPane = document.getElementById('form33-editor-pane');
+            const toggleBtns = document.querySelectorAll('.btn-f33-toggle-doc');
+            if (!canvasPane || !editorPane) return;
+
+            const isHidden = canvasPane.classList.contains('hidden');
+            if (isHidden) {
+                canvasPane.classList.remove('hidden');
+                editorPane.className = 'xl:col-span-6 space-y-5';
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview';
+                });
+            } else {
+                canvasPane.classList.add('hidden');
+                editorPane.className = 'xl:col-span-12 space-y-5';
+                toggleBtns.forEach(btn => {
+                    btn.innerHTML = '<i data-lucide="eye" class="w-3.5 h-3.5"></i> Show Preview';
+                });
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.toggleForm33DocumentPane = toggleForm33DocumentPane;
+
+        function printForm33() {
+            syncForm33Canvas();
+            const sheet = document.getElementById('form33-document-sheet');
+            if (!sheet) return showSystemToast('Billing document sheet element not found.', 'error');
+
+            let printFrame = document.getElementById('f33-print-frame');
+            if (!printFrame) {
+                printFrame = document.createElement('iframe');
+                printFrame.id = 'f33-print-frame';
+                printFrame.style.position = 'fixed';
+                printFrame.style.right = '100%';
+                printFrame.style.bottom = '100%';
+                printFrame.style.width = '0px';
+                printFrame.style.height = '0px';
+                printFrame.style.border = '0';
+                printFrame.style.visibility = 'hidden';
+                document.body.appendChild(printFrame);
+            }
+
+            const doc = printFrame.contentWindow.document;
+            doc.open();
+            doc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>HonTech Billing Statement Form 3/3</title>
+                    <link rel="stylesheet" href="css/main.css">
+                    <style>
+                        @page { size: A4 portrait; margin: 8mm; }
+                        body { margin: 0; padding: 0; background: white; font-family: sans-serif; }
+                        #form33-document-sheet { width: 100% !important; max-width: 100% !important; border: 1px solid black !important; box-shadow: none !important; padding: 12px !important; }
+                    </style>
+                </head>
+                <body>
+                    ${sheet.outerHTML}
+                </body>
+                </html>
+            `);
+            doc.close();
+
+            setTimeout(() => {
+                try {
+                    printFrame.contentWindow.focus();
+                    printFrame.contentWindow.print();
+                } catch (e) {
+                    console.warn('Iframe print failed, falling back:', e);
+                    window.print();
+                }
+            }, 400);
+        }
+        window.printForm33 = printForm33;
+
+        // Auto-wire shared dossier listeners between Form 1/3, Form 2/3, and Form 3/3
+        function initFormStudioMultiSheetSync() {
+            const syncTriplets = [
+                ['f13-input-name', 'f23-input-name', 'f33-input-name'],
+                ['f13-input-contact', 'f23-input-contact', 'f33-input-contact'],
+                ['f13-input-address', 'f23-input-address', 'f33-input-address'],
+                ['f13-input-plate', 'f23-input-plate', 'f33-input-plate'],
+                ['f13-input-model', 'f23-input-model', 'f33-input-model'],
+                ['f13-input-color', 'f23-input-color', 'f33-input-color'],
+                ['f13-input-job-no', 'f23-input-job-no', 'f33-input-job-no']
+            ];
+
+            syncTriplets.forEach(([id13, id23, id33]) => {
                 const el13 = document.getElementById(id13);
                 const el23 = document.getElementById(id23);
+                const el33 = document.getElementById(id33);
 
                 if (el13) {
                     el13.addEventListener('input', () => {
-                        if (el23 && el23.value !== el13.value) {
-                            el23.value = el13.value;
-                            syncForm23Canvas();
-                        }
+                        if (el23 && el23.value !== el13.value) { el23.value = el13.value; syncForm23Canvas(); }
+                        if (el33 && el33.value !== el13.value) { el33.value = el13.value; syncForm33Canvas(); }
                     });
                 }
                 if (el23) {
                     el23.addEventListener('input', () => {
-                        if (el13 && el13.value !== el23.value) {
-                            el13.value = el23.value;
-                            syncForm13Canvas();
-                        }
+                        if (el13 && el13.value !== el23.value) { el13.value = el23.value; syncForm13Canvas(); }
+                        if (el33 && el33.value !== el23.value) { el33.value = el23.value; syncForm33Canvas(); }
                         syncForm23Canvas();
+                    });
+                }
+                if (el33) {
+                    el33.addEventListener('input', () => {
+                        if (el13 && el13.value !== el33.value) { el13.value = el33.value; syncForm13Canvas(); }
+                        if (el23 && el23.value !== el33.value) { el23.value = el33.value; syncForm23Canvas(); }
+                        syncForm33Canvas();
                     });
                 }
             });
@@ -12809,6 +13222,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.addEventListener('input', syncForm23Canvas);
                 }
             });
+
+            // Extra Form 3/3 specific field inputs
+            ['f33-input-billing-no', 'f33-input-date', 'f33-input-job-no', 'f33-input-quote-no', 'f33-input-email', 'f33-input-km'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', syncForm33Canvas);
+                }
+            });
         }
 
         // Initialize on DOM ready
@@ -12818,11 +13239,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderForm23Rows();
                 calculateForm23Totals();
                 syncForm23Canvas();
+
+                syncDossierToForm33();
+                renderForm33Rows();
+                calculateForm33Totals();
+                syncForm33Canvas();
             });
         } else {
             initFormStudioMultiSheetSync();
             renderForm23Rows();
             calculateForm23Totals();
             syncForm23Canvas();
+
+            syncDossierToForm33();
+            renderForm33Rows();
+            calculateForm33Totals();
+            syncForm33Canvas();
         }
 

@@ -170,6 +170,33 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Incremented cache-buster script tag to `js/app.js?v=5.50` in `frontend/index.html`.
 * **Status**: 🟢 Delivered & Verified
 
+### 🚀 Revision REV-PROTO-012 (September 10, 2026)
+* **Goal**: 100% Physical Replication of Form 3/3 (Official Billing & Cashier Invoice) Studio & Integration into Google Sheets Workbook.
+* **Branch**: `prototype_process`
+* **Changes Delivered**:
+  - Authored full engineering specification in `Hontech Documentation/Prototype/07_FORM_3_3_BILLING_SPECIFICATION.md`.
+  - Built split-screen Form 3/3 Studio (`#view-sheet-billing`) in `frontend/index.html`:
+    - Left Column (`#form33-editor-pane`): SA Billing Smart Editor with "Copy from Quote" 1-click import, Customer & Vehicle Dossier with 3-way synchronization across Form 1/3, Form 2/3, and Form 3/3, 35-row line items repeater with dynamic row amounts, tax & summary breakdown card, and cashier clearance actions.
+    - Right Column (`#form33-canvas-pane`): 1:1 Physical Document Canvas matching uploaded physical template (`media_1789011886131.pdf`):
+      - Header: HONTECH "Building Trust", company info, `Form 3/3`, `BILLING NO.` with underlined sequential ID, and 3-row boxed grid (`DATE`, `JOB ORDER NO.`, `QUOTATION NO.`).
+      - Boxed `CUSTOMER DETAILS` matrix (Name, Address, Contact, Email, Plate, Model/Year, Color, Km Reading).
+      - Formal declaration sentence: *"This is to bill you in the amount of [ TOTAL ] with the following details described below:"*.
+      - Exact 35-row calculation matrix table (`PARTS/MATERIAL`, `QTY`, `FRT`, `LABOR`, `PARTS`, `MATERALS`, `AMOUNT`), with empty rows displaying authentic `0.00`.
+      - Bottom Block: `TERMS & CONDITIONS` box with storage fee and 30-day parts disposal notice, `HONTECH MANGEMENT:` Service Advisor signature line, and right-side totals table (`LABOR`, `VAT 12%`, `MATERIALS`, `PARTS`, `TOTAL`).
+      - Centered footer: `Thank you for trusting us!`.
+  - Built Form 3/3 JavaScript Engine in `frontend/js/app.js`:
+    - `window.form33Items` state management.
+    - `copyQuoteToBilling()`: 1-click clone from Form 2/3 with quotation reference propagation.
+    - `syncDossierToForm33()`: Automatic data inheritance from Form 1/3 and Form 2/3.
+    - `renderForm33Rows()`: Renders interactive editor cards and exact 35 physical rows on canvas.
+    - `calculateForm33Totals()`: Computes Labor Subtotal, Parts Subtotal, Materials Subtotal, 12% BIR VAT ($(\text{Subtotal}) \times 0.12$), and Grand Total.
+    - `syncForm33Canvas()`: Real-time live canvas synchronization.
+    - `printForm33()`: Isolated single-page iframe print engine with A4 print CSS.
+    - 3-way real-time keystroke synchronization between all 3 forms.
+    - `switchFormStudioSheet()` update for seamless Google Sheets tab navigation.
+  - Incremented cache-buster script tag to `js/app.js?v=5.51` in `frontend/index.html`.
+* **Status**: 🟢 Delivered & Verified
+
 ---
 
 ## 📋 Tracking Table
@@ -186,4 +213,6 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-008` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Form 2/3 Quotation Studio with 30-row matrix, BIR 12% VAT & shared dossier sync. | `ada0356` | 🟢 Verified |
 | `REV-PROTO-009` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Excel sheet tab bar UI layout fix, responsive controls & full-width restoration. | `865c157` | 🟢 Verified |
 | `REV-PROTO-010` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | 100% Google Sheets bottom workbook bar replication (Job_Order, QUOTE, BILLING, etc.). | `7970d2e` | 🟢 Verified |
-| `REV-PROTO-011` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Purged temporary sheets (`Sheet1`, `Sheet2`, `BILLING 2`); locked 9 operational sheets. | `HEAD` | 🟢 Verified |
+| `REV-PROTO-011` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Purged temporary sheets (`Sheet1`, `Sheet2`, `BILLING 2`); locked 9 operational sheets. | `7e59b20` | 🟢 Verified |
+| `REV-PROTO-012` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Form 3/3 Billing Studio with 35-row matrix, BIR 12% VAT & Google Sheets tab integration. | `HEAD` | 🟢 Verified |
+

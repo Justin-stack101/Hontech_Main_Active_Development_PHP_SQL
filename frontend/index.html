@@ -3502,6 +3502,352 @@
                     </div>
                 </div> <!-- /view-sheet-form23 -->
 
+                <!-- SHEET 3: FORM 3/3 (OFFICIAL BILLING & CASHIER INVOICE STUDIO) -->
+                <div id="view-sheet-billing" class="hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                        <!-- ==========================================
+                             LEFT COLUMN: SA BILLING SMART EDITOR
+                             ========================================== -->
+                        <div id="form33-editor-pane" class="xl:col-span-6 space-y-5">
+                            
+                            <!-- Billing Studio Header & Controls -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center shrink-0">
+                                            <i data-lucide="receipt" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Form 3/3 Billing & Invoice Studio</h2>
+                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Settlement & Release
+                                                </span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 font-medium">Final Cashier Invoice, 35-Row Matrix & 12% BIR VAT Engine</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Actions -->
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <button type="button" onclick="copyQuoteToBilling()" class="px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-300 border border-blue-200 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs" title="Import all line items directly from Form 2/3 Quotation">
+                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy from Quote
+                                        </button>
+                                        <button type="button" onclick="toggleForm33DocumentPane()" class="btn-f33-toggle-doc px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer" title="Hide or show document preview">
+                                            <i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Header Fields: Billing No, Date, Linked JO, Linked Quote -->
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing No.</label>
+                                        <input type="text" id="f33-input-billing-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-blue-700 focus:bg-white focus:border-blue-500 outline-none transition" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Date</label>
+                                        <input type="date" id="f33-input-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref.</label>
+                                        <input type="text" id="f33-input-job-no" placeholder="HT-JO-XXXX" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Ref.</label>
+                                        <input type="text" id="f33-input-quote-no" placeholder="HT-QT-XXXX" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer & Vehicle Dossier Card (Shared 3-Way Synchronization) -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                    <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                        <i data-lucide="user" class="w-4 h-4 text-blue-600"></i> Customer & Vehicle Dossier
+                                    </span>
+                                    <span class="text-[10.5px] text-gray-400 font-medium">Auto-Synced from Form 1/3 & Form 2/3</span>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name <span class="text-red-500">*</span></label>
+                                        <input type="text" id="f33-input-name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact No. / Viber</label>
+                                        <input type="text" id="f33-input-contact" placeholder="e.g. 0917-123-4567" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
+                                        <input type="text" id="f33-input-address" placeholder="e.g. 123 Narra St., Marikina Heights" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">E-Mail Address</label>
+                                        <input type="email" id="f33-input-email" placeholder="customer@gmail.com" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number <span class="text-red-500">*</span></label>
+                                        <input type="text" id="f33-input-plate" placeholder="e.g. ABC 1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Model / Year</label>
+                                        <input type="text" id="f33-input-model" placeholder="e.g. Honda Civic 2022" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
+                                        <input type="text" id="f33-input-color" placeholder="e.g. Modern Steel Gray" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Km Reading</label>
+                                        <input type="text" id="f33-input-km" placeholder="e.g. 42,500 km" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 35-Row Billing Items Repeater -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <div>
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                            <i data-lucide="list" class="w-4 h-4 text-blue-600"></i> Finalized Billable Items (35-Row Matrix)
+                                        </h3>
+                                        <p class="text-[11px] text-gray-500">Auto-calculated: Labor + Parts + Materials = Line Item Amount</p>
+                                    </div>
+                                    <button type="button" onclick="addForm33Item()" class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
+                                    </button>
+                                </div>
+
+                                <!-- Dynamic Editor Item Cards Container -->
+                                <div id="form33-items-editor-list" class="space-y-3 max-h-[420px] overflow-y-auto custom-scroll pr-1">
+                                    <!-- Injected dynamically by app.js -->
+                                </div>
+                            </div>
+
+                            <!-- Tax & Grand Total Summary Banner -->
+                            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white rounded-2xl p-5 shadow-lg space-y-3">
+                                <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
+                                    <span class="text-xs font-black uppercase tracking-wider text-blue-300 flex items-center gap-2">
+                                        <i data-lucide="badge-check" class="w-4 h-4"></i> Final Billing Settlement Breakdown
+                                    </span>
+                                    <span class="text-[10px] font-mono bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded-full font-bold">12% BIR VAT</span>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50">
+                                        <span class="text-[10px] text-slate-400 font-semibold uppercase block">Labor Subtotal</span>
+                                        <span id="f33-stat-labor" class="text-sm font-black text-white font-mono">₱ 0.00</span>
+                                    </div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50">
+                                        <span class="text-[10px] text-slate-400 font-semibold uppercase block">Parts Subtotal</span>
+                                        <span id="f33-stat-parts" class="text-sm font-black text-white font-mono">₱ 0.00</span>
+                                    </div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50">
+                                        <span class="text-[10px] text-slate-400 font-semibold uppercase block">Materials Subtotal</span>
+                                        <span id="f33-stat-materials" class="text-sm font-black text-white font-mono">₱ 0.00</span>
+                                    </div>
+                                    <div class="bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50">
+                                        <span class="text-[10px] text-blue-300 font-semibold uppercase block">VAT 12%</span>
+                                        <span id="f33-stat-vat" class="text-sm font-black text-blue-300 font-mono">₱ 0.00</span>
+                                    </div>
+                                </div>
+                                <div class="pt-2 flex items-center justify-between border-t border-slate-700/60">
+                                    <span class="text-xs font-black uppercase tracking-wider text-slate-300">Total Amount Due</span>
+                                    <span id="f33-stat-total" class="text-xl font-black text-emerald-400 font-mono">₱ 0.00</span>
+                                </div>
+                            </div>
+
+                            <!-- Actions Row -->
+                            <div class="flex flex-wrap items-center gap-3 pt-2">
+                                <button type="button" onclick="printForm33()" class="flex-1 min-h-[46px] bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-md shadow-blue-600/30 flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                                    <i data-lucide="printer" class="w-4 h-4"></i> Print Form 3/3 Billing Statement
+                                </button>
+                                <button type="button" onclick="showSystemToast('Vehicle clearance verified! Account marked ready for cashier release.', 'success', 'Cleared for Release')" class="min-h-[46px] bg-slate-900 hover:bg-black text-white py-2.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Cashier Clearance
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- ==========================================
+                             RIGHT COLUMN: 1:1 PHYSICAL LIVE CANVAS PANE
+                             ========================================== -->
+                        <div id="form33-canvas-pane" class="xl:col-span-6 space-y-3">
+                            
+                            <!-- Canvas Control Toolbar -->
+                            <div id="form33-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center gap-1.5 font-black text-gray-800 uppercase tracking-tight text-xs">
+                                        <i data-lucide="file-check-2" class="w-4 h-4 text-blue-600"></i> Official Billing Document Preview
+                                    </span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="printForm33()" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Document
+                                    </button>
+                                    <button type="button" onclick="toggleForm33DocumentPane()" class="p-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-800 transition flex items-center cursor-pointer" title="Hide Document Preview">
+                                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 1:1 Physical Form 3/3 White Sheet -->
+                            <div id="form33-canvas-wrapper" class="bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
+                                <div id="form33-document-sheet" class="form33-sheet mx-auto bg-white border border-black p-5 max-w-[760px] text-[9.5px] select-text shadow-sm space-y-3 font-sans leading-tight">
+                                    
+                                    <!-- Header Row: Brand Info (Left) and Billing Title / Ref Grid (Right) -->
+                                    <div class="flex items-start justify-between pb-1">
+                                        <!-- Left Brand Info -->
+                                        <div class="space-y-0.5">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <div class="bg-black text-white px-2 py-0.5 rounded font-black italic tracking-wider uppercase text-[11px] inline-flex items-center gap-1">
+                                                    <span class="text-red-600 font-black">H</span><span class="text-white">ONTECH</span>
+                                                </div>
+                                            </div>
+                                            <div class="italic text-[8.5px] text-gray-600">"Building Trust"</div>
+                                            <div class="font-black text-[11px] text-gray-900 uppercase">Hontech Auto Center</div>
+                                            <div class="text-[8.5px] text-gray-700">70 Bayan Bayanan Ave cor Narra St.</div>
+                                            <div class="text-[8.5px] text-gray-700">Marikina Heights, Marikina City</div>
+                                            <div class="text-[8.5px] text-gray-600">fb.com/hontechautocenter</div>
+                                            <div class="text-[8px] text-gray-800 font-medium">85644550/ 71219124/ 09458757441/ 09525065084- VIBER</div>
+                                        </div>
+
+                                        <!-- Right Header: Form 3/3, BILLING NO, and 3-row Reference Box -->
+                                        <div class="text-right space-y-1.5">
+                                            <div class="text-[10px] font-bold text-gray-700">Form 3/3</div>
+                                            <div class="flex items-baseline justify-end gap-1.5">
+                                                <span class="font-black text-base uppercase tracking-tight">BILLING NO.</span>
+                                                <span id="f33-live-billing-no" class="font-mono font-black text-sm border-b-2 border-black min-w-[130px] inline-block text-center text-blue-700">HT-BIL-0001</span>
+                                            </div>
+
+                                            <!-- 3-Row Bordered Reference Box -->
+                                            <div class="border border-black text-[8.5px] text-left font-sans mt-1 w-[200px] ml-auto">
+                                                <div class="border-b border-black px-2 py-0.5 flex items-center justify-between">
+                                                    <span class="font-bold">DATE:</span>
+                                                    <span id="f33-live-date" class="font-mono font-semibold">2026-09-10</span>
+                                                </div>
+                                                <div class="border-b border-black px-2 py-0.5 flex items-center justify-between">
+                                                    <span class="font-bold">JOB ORDER NO.:</span>
+                                                    <span id="f33-live-job-no" class="font-mono font-bold">HT-JO-0001</span>
+                                                </div>
+                                                <div class="px-2 py-0.5 flex items-center justify-between">
+                                                    <span class="font-bold">QUOTATION NO.:</span>
+                                                    <span id="f33-live-quote-no" class="font-mono font-bold">HT-QT-0001</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Customer Details Box (Matching Uploaded Template) -->
+                                    <div class="border border-black">
+                                        <div class="bg-gray-100 text-center font-black text-[8.5px] uppercase tracking-wider py-0.5 border-b border-black">
+                                            CUSTOMER DETAILS
+                                        </div>
+                                        <div class="grid grid-cols-2 text-[8.5px] leading-tight">
+                                            <!-- Left 4 rows -->
+                                            <div class="border-r border-black p-1.5 space-y-1">
+                                                <div><span class="font-bold inline-block w-20">Name :</span> <span id="f33-live-name" class="font-bold underline">Juan Dela Cruz</span></div>
+                                                <div><span class="font-bold inline-block w-20">Address :</span> <span id="f33-live-address">123 Narra St., Marikina Heights</span></div>
+                                                <div><span class="font-bold inline-block w-20">Contact No:</span> <span id="f33-live-contact">0917-123-4567</span></div>
+                                                <div><span class="font-bold inline-block w-20">E-Mail Add :</span> <span id="f33-live-email">juandelacruz@gmail.com</span></div>
+                                            </div>
+                                            <!-- Right 4 rows -->
+                                            <div class="p-1.5 space-y-1">
+                                                <div><span class="font-bold inline-block w-24">Plate No:</span> <span id="f33-live-plate" class="font-mono font-bold">ABC 1234</span></div>
+                                                <div><span class="font-bold inline-block w-24">Model/Year:</span> <span id="f33-live-model">Honda Civic 2022</span></div>
+                                                <div><span class="font-bold inline-block w-24">Color:</span> <span id="f33-live-color">Modern Steel Gray</span></div>
+                                                <div><span class="font-bold inline-block w-24">Km Reading:</span> <span id="f33-live-km">42,500 km</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Formal Billing Sentence -->
+                                    <div class="text-[9px] text-gray-800 font-medium">
+                                        This is to bill you in the amount of <span id="f33-live-sentence-amount" class="font-black underline px-2 font-mono text-gray-900 text-[10px]">₱ 0.00</span> with the following details described below:
+                                    </div>
+
+                                    <!-- 35-Row Calculation Matrix Table -->
+                                    <div class="border border-black overflow-hidden">
+                                        <table class="w-full border-collapse text-[8px] font-sans">
+                                            <thead>
+                                                <tr class="bg-gray-100 border-b border-black font-black uppercase text-center text-[7.5px]">
+                                                    <th class="border-r border-black py-1 px-1.5 text-left w-[36%]">PARTS/MATERIAL</th>
+                                                    <th class="border-r border-black py-1 px-1 w-[7%]">QTY</th>
+                                                    <th class="border-r border-black py-1 px-1 w-[7%]">FRT</th>
+                                                    <th class="border-r border-black py-1 px-1 w-[12%]">LABOR</th>
+                                                    <th class="border-r border-black py-1 px-1 w-[12%]">PARTS</th>
+                                                    <th class="border-r border-black py-1 px-1 w-[12%]">MATERALS</th>
+                                                    <th class="py-1 px-1.5 text-right w-[14%]">AMOUNT</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="f33-live-rows" class="divide-y divide-gray-300">
+                                                <!-- 35 Rows rendered dynamically by app.js -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Bottom Block: Terms & Signatory (Left) and Tax & Totals Box (Right) -->
+                                    <div class="grid grid-cols-12 gap-3 pt-1 items-start">
+                                        
+                                        <!-- Left Column: Terms and Signatory -->
+                                        <div class="col-span-8 space-y-3">
+                                            <!-- Terms & Conditions Box -->
+                                            <div class="border border-black p-1.5 text-[7.5px] leading-snug">
+                                                <div class="font-black uppercase tracking-tight text-[8px] mb-0.5">TERMS & CONDITIONS</div>
+                                                <div class="text-gray-800">
+                                                    Failure to claim vehicle within the prescribed period shall bear a corresponding storage fee. Replaced items/parts/materials from the vehicle within 30 days shall be disposed of without prior notice.
+                                                </div>
+                                            </div>
+
+                                            <!-- Signatory Row -->
+                                            <div class="pt-1 text-[8.5px]">
+                                                <div class="font-bold text-[8px] uppercase tracking-wider mb-2">HONTECH MANGEMENT:</div>
+                                                <div class="border-b border-black w-48 text-center font-bold pb-0.5" id="f33-live-sa-name">
+                                                    Roman Sarol
+                                                </div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-48">Service Advisor</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right Column: Tax & Totals Box (LABOR, VAT 12%, MATERIALS, PARTS, TOTAL) -->
+                                        <div class="col-span-4 border border-black text-[8.5px]">
+                                            <div class="border-b border-black px-2 py-1 flex items-center justify-between font-bold">
+                                                <span>LABOR</span>
+                                                <span id="f33-live-labor" class="font-mono">0.00</span>
+                                            </div>
+                                            <div class="border-b border-black px-2 py-1 flex items-center justify-between font-bold">
+                                                <span>VAT 12%</span>
+                                                <span id="f33-live-vat" class="font-mono">0.00</span>
+                                            </div>
+                                            <div class="border-b border-black px-2 py-1 flex items-center justify-between font-bold">
+                                                <span>MATERIALS</span>
+                                                <span id="f33-live-materials" class="font-mono">0.00</span>
+                                            </div>
+                                            <div class="border-b border-black px-2 py-1 flex items-center justify-between font-bold">
+                                                <span>PARTS</span>
+                                                <span id="f33-live-parts" class="font-mono">0.00</span>
+                                            </div>
+                                            <div class="px-2 py-1.5 flex items-center justify-between font-black bg-gray-100 text-[9.5px]">
+                                                <span>TOTAL</span>
+                                                <span id="f33-live-total" class="font-mono text-red-600 text-[10.5px]">0.00</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Centered Thank You Footer -->
+                                    <div class="text-center font-black text-[9px] uppercase tracking-wider text-gray-900 border-t border-black pt-1">
+                                        Thank you for trusting us!
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div> <!-- /view-sheet-billing -->
+
                 <!-- ====================================================
                      EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
                      ==================================================== -->
@@ -7034,7 +7380,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.50"></script>
+    <script src="js/app.js?v=5.51"></script>
 </body>
 
 </html>
