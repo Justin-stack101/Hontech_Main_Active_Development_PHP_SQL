@@ -71,6 +71,18 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Incremented cache-buster script tag to `js/app.js?v=5.47` in `frontend/index.html`.
 * **Status**: 🟢 Delivered & Verified
 
+### 🚀 Revision REV-PROTO-009 (September 10, 2026)
+* **Goal**: Excel-Style Workbook Sheet Tab Bar UI Layout Polish, DOM Container Boundary Fix, and Responsive Architecture.
+* **Branch**: `prototype_process`
+* **Changes Delivered**:
+  - Resolved root-cause HTML DOM nesting bug: closed unclosed `<div class="grid xl:grid-cols-12">` in `view-sheet-form13` which previously caused the bottom tab bar to be squished into a 100px grid column.
+  - Redesigned `#form-sheet-tab-bar` into a full-width (1519px) automotive executive slate container with responsive horizontal scroll handling and `whitespace-nowrap shrink-0` on all tab elements.
+  - Added Excel-style workbook navigation controls: `<` and `>` scroll arrows, Sheet 1 (Form 1/3), Sheet 2 (Form 2/3 with 12% VAT tag), Sheet 3 (Invoice - Next), and `+` Add Sheet button.
+  - Added live Shared Dossier pill displaying active Job Order No. and Customer Name, plus a quick-jump select dropdown.
+  - Upgraded `switchFormStudioSheet()` in `frontend/js/app.js` with active/inactive style transitions, live dossier sync, and tab scrolling.
+  - Incremented cache-buster script tag to `js/app.js?v=5.48` in `frontend/index.html`.
+* **Status**: 🟢 Delivered & Verified
+
 ---
 
 ## 📋 Tracking Table
@@ -83,8 +95,6 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-004` | `2026-09-08` | `frontend/css/main.css`, `frontend/js/app.js` | `@media print` styles and Workshop Bay Queue handover integration. | `ef06bbb` | 🟢 Verified |
 | `REV-PROTO-005` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Embedded live jsPDF viewer iframe, dual view switcher & download engine. | `42ce6f1` | 🟢 Verified |
 | `REV-PROTO-006` | `2026-09-08` | `frontend/assets/form13_template.pdf` | Official physical blank template restoration and vector fidelity enforcement. | `42ce6f1` | 🟢 Verified |
-| `REV-PROTO-007` | `2026-09-08` | `frontend/js/app.js`, `frontend/index.html` | Pixel-perfect coordinate calibration, dynamic auto-fit, and cache version `v=5.46`. | `5756e28` | 🟢 Verified |
-| `REV-PROTO-008` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Excel multi-sheet tab bar, Form 2/3 Quotation studio, 12% VAT engine, and shared dossier sync. | Pending | 🟢 Verified |
-
-
-
+| `REV-PROTO-007` | `2026-09-09` | `frontend/js/app.js` | Form 1/3 Vector PDF rendering engine & 23-row matrix layout alignment. | `b084931` | 🟢 Verified |
+| `REV-PROTO-008` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Form 2/3 Quotation Studio with 30-row matrix, BIR 12% VAT & shared dossier sync. | `ada0356` | 🟢 Verified |
+| `REV-PROTO-009` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Excel sheet tab bar UI layout fix, responsive controls & full-width restoration. | `HEAD` | 🟢 Verified |

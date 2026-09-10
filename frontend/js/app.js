@@ -11733,6 +11733,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             calcForm13Totals();
 
+            // Update Excel Workbook Sheet Bar Dossier Status
+            if (typeof updateSheetBarDossierSummary === 'function') {
+                updateSheetBarDossierSummary();
+            }
+
             // Debounced Live PDF generation
             if (form13PdfDebounceTimer) clearTimeout(form13PdfDebounceTimer);
             form13PdfDebounceTimer = setTimeout(() => {
@@ -12245,41 +12250,70 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const view23 = document.getElementById('view-sheet-form23');
             const tab13 = document.getElementById('tab-sheet-form13');
             const tab23 = document.getElementById('tab-sheet-form23');
+            const jumpSelect = document.getElementById('sheet-quick-jump-select');
+
+            if (jumpSelect) jumpSelect.value = sheetKey;
+
+            const activeClass13 = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer ring-2 ring-red-400/40 active:scale-95';
+            const activeClass23 = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-amber-600 text-white shadow-md cursor-pointer ring-2 ring-amber-400/40 active:scale-95';
+            const inactiveClass = 'whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
 
             if (sheetKey === 'form13') {
                 if (view13) view13.classList.remove('hidden');
                 if (view23) view23.classList.add('hidden');
                 
-                if (tab13) {
-                    tab13.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer active:scale-95';
-                }
-                if (tab23) {
-                    tab23.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
-                }
+                if (tab13) tab13.className = activeClass13;
+                if (tab23) tab23.className = inactiveClass;
 
                 syncForm13Canvas();
+                updateSheetBarDossierSummary();
                 showSystemToast('Switched to Sheet 1: Form 1/3 (Job Order & Claim Stub)', 'info', 'Sheet 1 Active');
             } else if (sheetKey === 'form23') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.remove('hidden');
 
-                if (tab23) {
-                    tab23.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 bg-amber-600 text-white shadow-md cursor-pointer active:scale-95';
-                }
-                if (tab13) {
-                    tab13.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
-                }
+                if (tab23) tab23.className = activeClass23;
+                if (tab13) tab13.className = inactiveClass;
 
                 // Sync shared dossier from Form 1/3 into Form 2/3
                 syncDossierToForm23();
                 renderForm23Rows();
                 calculateForm23Totals();
                 syncForm23Canvas();
+                updateSheetBarDossierSummary();
                 showSystemToast('Switched to Sheet 2: Form 2/3 (Quotation Studio)', 'info', 'Sheet 2 Active');
             }
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         window.switchFormStudioSheet = switchFormStudioSheet;
+
+        function scrollSheetTabs(direction) {
+            const strip = document.getElementById('form-sheet-tabs-scroll');
+            if (!strip) return;
+            const offset = direction === 'left' ? -220 : 220;
+            strip.scrollBy({ left: offset, behavior: 'smooth' });
+        }
+        window.scrollSheetTabs = scrollSheetTabs;
+
+        function showForm33PreviewToast() {
+            showSystemToast('Sheet 3: Form 3/3 (Official Billing & Cashier Invoice) is queued for the next release milestone.', 'info', 'Upcoming Feature');
+        }
+        window.showForm33PreviewToast = showForm33PreviewToast;
+
+        function promptAddNewFormSheet() {
+            showSystemToast('HonTech Studio supports extensible sheets: Additional modules (Parts Requisition, Bay Checklist, Customer Release Voucher) can be docked to this workbook.', 'info', 'Multi-Sheet Architecture');
+        }
+        window.promptAddNewFormSheet = promptAddNewFormSheet;
+
+        function updateSheetBarDossierSummary() {
+            const el = document.getElementById('sheet-bar-dossier-summary');
+            if (!el) return;
+            const jobNo = document.getElementById('f13-input-job-no')?.value || 'HT-JO-0001';
+            const customer = document.getElementById('f13-input-name')?.value || '';
+            const plate = document.getElementById('f13-input-plate')?.value || '';
+            el.innerText = customer ? `${jobNo} • ${customer}${plate ? ' (' + plate + ')' : ''}` : jobNo;
+        }
+        window.updateSheetBarDossierSummary = updateSheetBarDossierSummary;
 
         function syncDossierToForm23() {
             const mappings = [

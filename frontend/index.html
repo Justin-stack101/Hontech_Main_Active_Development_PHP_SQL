@@ -3114,8 +3114,9 @@
 
                             </div>
                         </div>
-
-                </div> <!-- /view-sheet-form13 -->
+                    </div> <!-- /form13-canvas-pane -->
+                </div> <!-- /grid (Form 1/3) -->
+            </div> <!-- /view-sheet-form13 -->
 
                 <!-- SHEET 2: FORM 2/3 (QUOTATION & ESTIMATION STUDIO) -->
                 <div id="view-sheet-form23" class="hidden">
@@ -3504,23 +3505,73 @@
                 <!-- ====================================================
                      EXCEL-STYLE WORKBOOK BOTTOM SHEET NAVIGATION BAR
                      ==================================================== -->
-                <div id="form-sheet-tab-bar" class="mt-4 bg-slate-900 text-white border border-slate-800 rounded-2xl p-2.5 shadow-2xl flex flex-wrap items-center justify-between gap-3 select-none">
-                    <div class="flex items-center gap-2 overflow-x-auto py-0.5">
-                        <button type="button" id="tab-sheet-form13" onclick="switchFormStudioSheet('form13')" class="px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer active:scale-95">
-                            <i data-lucide="file-text" class="w-4 h-4"></i> Sheet 1: Form 1/3 (Job Order & Stub)
-                        </button>
-                        <button type="button" id="tab-sheet-form23" onclick="switchFormStudioSheet('form23')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95">
-                            <i data-lucide="calculator" class="w-4 h-4"></i> Sheet 2: Form 2/3 (Quotation)
-                        </button>
-                        <button type="button" class="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-800/40 border border-slate-800/50 cursor-not-allowed flex items-center gap-1.5 opacity-60" title="Form 3/3 Billing & Invoice (Upcoming Feature)">
-                            <i data-lucide="receipt" class="w-3.5 h-3.5"></i> Sheet 3: Form 3/3 (Invoice)
-                            <span class="text-[9px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 font-mono">Soon</span>
-                        </button>
+                <div id="form-sheet-tab-bar" class="w-full mt-6 bg-slate-900/95 backdrop-blur-md text-white border border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 select-none">
+                    <!-- Left: Navigation Controls & Excel-Style Sheet Tabs -->
+                    <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                        <!-- Workbook Title & Scroll Nav Buttons -->
+                        <div class="flex items-center gap-1.5 shrink-0 pr-2 border-r border-slate-800">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-800/80 text-[11px] font-black uppercase tracking-wider">
+                                <i data-lucide="layers" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span class="hidden sm:inline">Workbook</span>
+                            </span>
+                            <button type="button" onclick="scrollSheetTabs('left')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95" title="Scroll Tabs Left">
+                                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            </button>
+                            <button type="button" onclick="scrollSheetTabs('right')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer shrink-0 active:scale-95" title="Scroll Tabs Right">
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Scrollable Sheets Strip -->
+                        <div id="form-sheet-tabs-scroll" class="flex items-center gap-2 overflow-x-auto py-1 scroll-smooth no-scrollbar">
+                            <!-- Sheet 1: Form 1/3 (Active by default) -->
+                            <button type="button" id="tab-sheet-form13" onclick="switchFormStudioSheet('form13')" class="whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer ring-2 ring-red-400/40 active:scale-95">
+                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold">1</span>
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                <span>Sheet 1: Form 1/3 (Job Order & Stub)</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="Synchronized"></span>
+                            </button>
+
+                            <!-- Sheet 2: Form 2/3 (Quotation) -->
+                            <button type="button" id="tab-sheet-form23" onclick="switchFormStudioSheet('form23')" class="whitespace-nowrap shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-slate-800 hover:bg-slate-750 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95">
+                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold">2</span>
+                                <i data-lucide="calculator" class="w-4 h-4"></i>
+                                <span>Sheet 2: Form 2/3 (Quotation Studio)</span>
+                                <span class="text-[9.5px] px-1.5 py-0.2 rounded bg-amber-950/80 text-amber-300 border border-amber-800/80 font-mono">12% VAT</span>
+                            </button>
+
+                            <!-- Sheet 3: Form 3/3 (Invoice) -->
+                            <button type="button" id="tab-sheet-form33" onclick="showForm33PreviewToast()" class="whitespace-nowrap shrink-0 px-3 py-2 rounded-xl text-xs font-bold text-slate-400 bg-slate-800/40 hover:bg-slate-800 hover:text-slate-200 border border-slate-800 flex items-center gap-2 transition cursor-pointer" title="Form 3/3 Billing & Official Invoice (Upcoming Stage)">
+                                <span class="px-1.5 py-0.5 rounded bg-black/30 text-[10px] font-mono font-bold text-slate-400">3</span>
+                                <i data-lucide="receipt" class="w-3.5 h-3.5"></i>
+                                <span>Sheet 3: Form 3/3 (Invoice)</span>
+                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono">Next</span>
+                            </button>
+
+                            <!-- Add New Sheet Button (+) -->
+                            <button type="button" onclick="promptAddNewFormSheet()" class="whitespace-nowrap shrink-0 w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition cursor-pointer active:scale-95" title="Add Custom Form or Attachment Sheet">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="hidden sm:flex items-center gap-3 text-xs text-slate-400 pr-2">
-                        <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-full">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Shared Multi-Form Dossier
-                        </span>
+
+                    <!-- Right: Multi-Form Shared Dossier Status & Quick Navigation -->
+                    <div class="flex items-center gap-2.5 shrink-0">
+                        <div class="hidden sm:flex items-center gap-2 text-xs">
+                            <span class="inline-flex items-center gap-1.5 text-[11px] text-emerald-400 font-bold bg-emerald-950/70 border border-emerald-800/70 px-3 py-1.5 rounded-xl whitespace-nowrap">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span>Shared Dossier:</span>
+                                <span id="sheet-bar-dossier-summary" class="font-mono text-white text-[11px] font-bold">HT-JO-0001</span>
+                            </span>
+                        </div>
+
+                        <!-- Dropdown for Fast Sheet Jump -->
+                        <div class="relative inline-block">
+                            <select id="sheet-quick-jump-select" onchange="switchFormStudioSheet(this.value)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-1.5 px-2.5 rounded-xl border border-slate-700 focus:outline-none focus:border-red-500 transition cursor-pointer">
+                                <option value="form13">Jump to: Sheet 1 (Job Order)</option>
+                                <option value="form23">Jump to: Sheet 2 (Quotation)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -6957,7 +7008,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.47"></script>
+    <script src="js/app.js?v=5.48"></script>
 </body>
 
 </html>
