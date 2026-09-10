@@ -13,6 +13,7 @@ Welcome to the **HonTech Prototype Hub**. This folder contains all dedicated spe
 | 📋 **[`02_PROTOTYPE_REVISIONS_LOG.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/02_PROTOTYPE_REVISIONS_LOG.md)** | Chronological log of all prototype changes, revision IDs, git commit hashes, and implementation milestones. |
 | 🧪 **[`03_QA_TESTING_PLAYBOOK.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/03_QA_TESTING_PLAYBOOK.md)** | Step-by-step test matrix covering keystroke latency, math precision, `@media print` fidelity, and bay monitoring handoff. |
 | 📐 **[`04_FORM_1_3_ORIGINAL_TEMPLATE_CALIBRATION.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/04_FORM_1_3_ORIGINAL_TEMPLATE_CALIBRATION.md)** | Detailed mathematical baseline coordinates, cell boundary protection, auto-fit algorithms, and original template overlay rules. |
+| 🗺️ **[`05_MASTER_IMPLEMENTATION_PLAN.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Prototype/05_MASTER_IMPLEMENTATION_PLAN.md)** | Living Master Implementation Plan, 9-module QA test matrix, Excel-style multi-sheet switcher, and Form 2/3 (Quotation) specification. |
 
 ---
 
