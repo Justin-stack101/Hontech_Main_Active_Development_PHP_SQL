@@ -12246,11 +12246,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         const allFormWorkbookSheets = [
             { key: 'form13', id: 'tab-sheet-joborder', label: 'Job_Order' },
-            { key: 'sheet2', id: 'tab-sheet-sheet2', label: 'Sheet2' },
-            { key: 'sheet1', id: 'tab-sheet-sheet1', label: 'Sheet1' },
             { key: 'form23', id: 'tab-sheet-quote', label: 'QUOTE' },
             { key: 'billing', id: 'tab-sheet-billing', label: 'BILLING' },
-            { key: 'billing2', id: 'tab-sheet-billing2', label: 'BILLING 2' },
             { key: 'checklist', id: 'tab-sheet-checklist', label: 'CHECKLIST' },
             { key: 'cashad', id: 'tab-sheet-cashad', label: 'CASH AD' },
             { key: 'oef', id: 'tab-sheet-oef', label: 'OEF' },

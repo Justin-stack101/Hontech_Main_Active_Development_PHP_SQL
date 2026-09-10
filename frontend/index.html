@@ -3522,7 +3522,7 @@
                             <div id="dropdown-all-sheets" class="hidden absolute left-0 bottom-[calc(100%+8px)] w-64 bg-white border border-gray-200 rounded-xl shadow-2xl py-1.5 z-50 text-xs text-gray-800">
                                 <div class="px-3 py-1.5 font-black text-gray-400 uppercase tracking-wider text-[10px] border-b border-gray-100 flex items-center justify-between">
                                     <span>All Workbook Sheets</span>
-                                    <span class="text-blue-600 font-mono">12 Sheets</span>
+                                    <span class="text-blue-600 font-mono">9 Sheets</span>
                                 </div>
                                 <div class="max-h-64 overflow-y-auto custom-scroll py-1" id="all-sheets-menu-list">
                                     <!-- Populated in app.js -->
@@ -3540,18 +3540,6 @@
                                 <span class="text-[10px] text-blue-600 leading-none">▾</span>
                             </button>
 
-                            <!-- Sheet2 -->
-                            <button type="button" id="tab-sheet-sheet2" onclick="handleCustomSheetClick('Sheet2')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
-                                <span>Sheet2</span>
-                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
-                            </button>
-
-                            <!-- Sheet1 -->
-                            <button type="button" id="tab-sheet-sheet1" onclick="handleCustomSheetClick('Sheet1')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
-                                <span>Sheet1</span>
-                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
-                            </button>
-
                             <!-- QUOTE -->
                             <button type="button" id="tab-sheet-quote" onclick="switchFormStudioSheet('form23')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
                                 <span>QUOTE</span>
@@ -3561,12 +3549,6 @@
                             <!-- BILLING (Form 3/3 Invoice) -->
                             <button type="button" id="tab-sheet-billing" onclick="switchFormStudioSheet('billing')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
                                 <span>BILLING</span>
-                                <span class="text-[10px] text-gray-400 leading-none">▾</span>
-                            </button>
-
-                            <!-- BILLING 2 -->
-                            <button type="button" id="tab-sheet-billing2" onclick="handleCustomSheetClick('BILLING 2')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
-                                <span>BILLING 2</span>
                                 <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
 
@@ -7052,7 +7034,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.49"></script>
+    <script src="js/app.js?v=5.50"></script>
 </body>
 
 </html>
