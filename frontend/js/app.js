@@ -12264,6 +12264,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const viewBilling = document.getElementById('view-sheet-billing');
             const viewChecklist = document.getElementById('view-sheet-checklist');
             const viewCashAd = document.getElementById('view-sheet-cashad');
+            const viewCustom = document.getElementById('view-sheet-custom');
+            if (viewCustom) viewCustom.classList.add('hidden');
 
             // Reset all tabs to inactive Google Sheets style and highlight active
             allFormWorkbookSheets.forEach(s => {
@@ -12357,41 +12359,160 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.switchFormStudioSheet = switchFormStudioSheet;
 
+        window.currentCustomSheetType = 'OEF';
+        window.customSheetDataStore = {
+            'OEF': {
+                badge: 'OFFICIAL EXPENSE',
+                icon: 'receipt',
+                color: 'blue',
+                title: 'OEF Studio - Operating Expense Form',
+                desc: 'Official Operations & Workshop Petty Expense Receipts Ledger',
+                banner: 'OFFICIAL OPERATING EXPENSE FORM (OEF)',
+                refPrefix: 'HT-OEF-2026-001',
+                columns: [
+                    { key: 'date', label: 'Date', width: 'w-24' },
+                    { key: 'payee', label: 'Payee / Supplier', width: 'w-36' },
+                    { key: 'desc', label: 'Particulars / Description', width: 'flex-1' },
+                    { key: 'ref', label: 'Receipt / OR #', width: 'w-28' },
+                    { key: 'amount', label: 'Amount (₱)', width: 'w-28', align: 'right', isNumber: true }
+                ],
+                kpi2Label: 'TOTAL DISBURSED',
+                kpi3Label: 'AUDIT STATUS',
+                rows: [
+                    { date: '2026-09-08', payee: 'Shell San Isidro', desc: 'Shop Diesel fuel for test run & cleaner', ref: 'OR-94821', amount: 850.00 },
+                    { date: '2026-09-09', payee: 'Hardware Depot', desc: 'Heavy-duty degreaser & rags bundle', ref: 'INV-4410', amount: 620.00 },
+                    { date: '2026-09-09', payee: 'Fast Courier', desc: 'Rush delivery for Honda Civic steering boot', ref: 'WB-8831', amount: 350.00 },
+                    { date: '2026-09-10', payee: 'Auto Supply Pampanga', desc: 'Brake cleaner cans & copper anti-seize paste', ref: 'SI-7291', amount: 980.00 }
+                ],
+                notes: 'All items substantiated with official receipts. Reconciled under weekly workshop operating budget.'
+            },
+            'Acknowledgement': {
+                badge: 'RELEASE & SIGN-OFF',
+                icon: 'file-check-2',
+                color: 'emerald',
+                title: 'Acknowledgement Studio - Vehicle Release Receipt',
+                desc: 'Customer Handover Sign-off, Item Inventory & Acceptance Certificate',
+                banner: 'VEHICLE RELEASE & CUSTOMER ACKNOWLEDGEMENT RECEIPT',
+                refPrefix: 'HT-ACK-2026-001',
+                columns: [
+                    { key: 'category', label: 'Category', width: 'w-32' },
+                    { key: 'desc', label: 'Inspected Property / Item Description', width: 'flex-1' },
+                    { key: 'condition', label: 'Condition / Status', width: 'w-32' },
+                    { key: 'released', label: 'Handed Over', width: 'w-28' },
+                    { key: 'remarks', label: 'Remarks', width: 'w-36' }
+                ],
+                kpi2Label: 'TOTAL ITEMS RELEASED',
+                kpi3Label: 'HANDOVER STATUS',
+                rows: [
+                    { category: 'Keys & Remotes', desc: 'Master ignition key & alarm transponder', condition: 'Working / Good', released: 'YES', remarks: 'Tested by owner' },
+                    { category: 'Tools & Spare', desc: 'Spare tire, scissor jack, lug wrench & rod', condition: 'Complete & intact', released: 'YES', remarks: 'Trunk verified' },
+                    { category: 'Replaced Parts', desc: 'Old brake pads, engine belt & worn spark plugs', condition: 'Replaced / Worn', released: 'YES', remarks: 'Customer inspected' },
+                    { category: 'Vehicle Road Test', desc: 'Post-service road trial conducted with SA', condition: 'Operational / OK', released: 'YES', remarks: 'Signed release' },
+                    { category: 'Valuables & Dashcam', desc: 'Dashcam micro-SD card & interior accessories', condition: 'Undamaged', released: 'YES', remarks: 'Owner cleared' }
+                ],
+                notes: 'Owner certifies that all work listed on Job Order was executed satisfactorily and the vehicle has been received in clean and complete condition.'
+            },
+            'LIQUIDATION': {
+                badge: 'EXPENSE RECONCILIATION',
+                icon: 'scale',
+                color: 'purple',
+                title: 'Liquidation Studio - Job Expense Reconciliation',
+                desc: 'Cash Advance Reconciliation, Parts Incurred vs Returned Balance',
+                banner: 'SERVICE JOB EXPENSE LIQUIDATION & RECONCILIATION REPORT',
+                refPrefix: 'HT-LIQ-2026-001',
+                columns: [
+                    { key: 'ref', label: 'Receipt / Voucher #', width: 'w-32' },
+                    { key: 'desc', label: 'Procured Item / Service Particulars', width: 'flex-1' },
+                    { key: 'allocated', label: 'Advance Budget (₱)', width: 'w-32', align: 'right', isNumber: true },
+                    { key: 'actual', label: 'Actual Spent (₱)', width: 'w-32', align: 'right', isNumber: true },
+                    { key: 'variance', label: 'Variance / Refund (₱)', width: 'w-32', align: 'right', isNumber: true }
+                ],
+                kpi2Label: 'TOTAL EXPENSES SPENT',
+                kpi3Label: 'NET RECONCILIATION',
+                rows: [
+                    { ref: 'OR-5510', desc: 'OEM Front Brake Pad Set (Brembo Spec)', allocated: 3500.00, actual: 3250.00, variance: 250.00 },
+                    { ref: 'OR-5512', desc: 'Rear Caliper Repair Kit & Guide Pins', allocated: 1200.00, actual: 1150.00, variance: 50.00 },
+                    { ref: 'OR-5519', desc: 'DOT 4 High-Temp Brake Fluid (1L bottle)', allocated: 650.00, actual: 650.00, variance: 0.00 },
+                    { ref: 'OR-5525', desc: 'Machine Shop Rotor Disc Resurfacing (2 pcs)', allocated: 1800.00, actual: 1600.00, variance: 200.00 }
+                ],
+                notes: 'Total advance allocated: ₱7,150.00. Total actual expense: ₱6,650.00. Net surplus refunded to Cashier: ₱500.00.'
+            },
+            'Daily Summary': {
+                badge: 'DAILY OPERATIONS REPORT',
+                icon: 'bar-chart-3',
+                color: 'teal',
+                title: 'Daily Summary Studio - Workshop Service Log',
+                desc: 'Daily Finished Vehicles, Assigned Technicians & Revenue Intake',
+                banner: 'DAILY WORKSHOP SERVICE LOG & REVENUE SUMMARY',
+                refPrefix: 'HT-DAY-2026-001',
+                columns: [
+                    { key: 'job', label: 'Job Order #', width: 'w-24' },
+                    { key: 'plate', label: 'Plate #', width: 'w-24' },
+                    { key: 'client', label: 'Customer / Vehicle', width: 'w-36' },
+                    { key: 'service', label: 'Primary Service Done', width: 'flex-1' },
+                    { key: 'tech', label: 'Mechanic', width: 'w-24' },
+                    { key: 'status', label: 'Status', width: 'w-24' },
+                    { key: 'total', label: 'Total (₱)', width: 'w-28', align: 'right', isNumber: true }
+                ],
+                kpi2Label: 'TOTAL DAILY REVENUE',
+                kpi3Label: 'JOBS COMPLETED',
+                rows: [
+                    { job: 'WLK-2026', plate: 'NDG 4721', client: 'Justin / Honda Civic', service: 'Brake Overhaul & PMS Package', tech: 'VIC', status: 'PAID', total: 6850.00 },
+                    { job: 'JOB-2026-08', plate: 'ZAA 3391', client: 'Roberto / Toyota Vios', service: 'Alternator Replacement & Belt', tech: 'MARLON', status: 'RELEASED', total: 4200.00 },
+                    { job: 'JOB-2026-09', plate: 'NCY 1822', client: 'Maria / Mitsubishi Mirage', service: 'Aircon System Flushing & Cabin Filter', tech: 'VIC', status: 'PAID', total: 3150.00 },
+                    { job: 'JOB-2026-10', plate: 'TAB 5928', client: 'Carlos / Nissan Navara', service: 'Suspension Bushing & Alignment', tech: 'EDWIN', status: 'RELEASED', total: 5400.00 }
+                ],
+                notes: 'All vehicles logged above completed quality inspection test run. Cash & online receipts reconciled with cashier drawer.'
+            }
+        };
+
         function handleCustomSheetClick(sheetName) {
             if (sheetName === 'CHECKLIST') {
                 switchFormStudioSheet('checklist');
                 return;
             }
+            if (sheetName === 'CASH AD') {
+                switchFormStudioSheet('cashad');
+                return;
+            }
 
             const sheetMap = {
-                'Sheet2': 'sheet2',
-                'Sheet1': 'sheet1',
-                'BILLING 2': 'billing2',
-                'CHECKLIST': 'checklist',
-                'CASH AD': 'cashad',
-                'OEF': 'oef',
-                'Acknowledgement': 'acknowledgement',
-                'LIQUIDATION': 'liquidation',
-                'Daily Summary': 'daily'
+                'OEF': 'OEF',
+                'oef': 'OEF',
+                'Acknowledgement': 'Acknowledgement',
+                'acknowledgement': 'Acknowledgement',
+                'LIQUIDATION': 'LIQUIDATION',
+                'liquidation': 'LIQUIDATION',
+                'Daily Summary': 'Daily Summary',
+                'daily': 'Daily Summary'
             };
-            const key = sheetMap[sheetName] || sheetName.toLowerCase().replace(/\s+/g, '');
-            
+            const activeSheetKey = sheetMap[sheetName] || sheetName;
+            window.currentCustomSheetType = activeSheetKey;
+
             const view13 = document.getElementById('view-sheet-form13');
             const view23 = document.getElementById('view-sheet-form23');
             const viewBilling = document.getElementById('view-sheet-billing');
             const viewChecklist = document.getElementById('view-sheet-checklist');
+            const viewCashAd = document.getElementById('view-sheet-cashad');
+            const viewCustom = document.getElementById('view-sheet-custom');
+
             if (view13) view13.classList.add('hidden');
             if (view23) view23.classList.add('hidden');
             if (viewBilling) viewBilling.classList.add('hidden');
             if (viewChecklist) viewChecklist.classList.add('hidden');
+            if (viewCashAd) viewCashAd.classList.add('hidden');
+            if (viewCustom) viewCustom.classList.remove('hidden');
 
+            // Reset tab highlights and activate selected
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
                 if (btn) {
-                    if (s.label === sheetName || s.key === key) {
+                    const isTarget = (s.label === sheetName || s.key === sheetName.toLowerCase() || s.label.toLowerCase() === sheetName.toLowerCase());
+                    if (isTarget) {
                         btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
                         const caret = btn.querySelector('span:last-child');
                         if (caret) caret.className = 'text-[10px] text-blue-600 leading-none';
+                        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                     } else {
                         btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
                         const caret = btn.querySelector('span:last-child');
@@ -12400,19 +12521,419 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
-            if (sheetName === 'CASH AD') {
-                showSystemToast('Switched to CASH AD: Cash Advance & Mechanic Emergency Parts Disbursal Form.', 'info', 'CASH AD Active');
-            } else if (sheetName === 'OEF') {
+            renderCustomSheet(activeSheetKey);
+
+            if (sheetName === 'OEF') {
                 showSystemToast('Switched to OEF: Operating / Official Expense Form & Workshop Receipts.', 'info', 'OEF Active');
             } else if (sheetName === 'Acknowledgement') {
-                showSystemToast('Switched to Acknowledgement: Vehicle Release & Customer Acknowledgement Receipt.', 'info', 'Acknowledgement Active');
+                showSystemToast('Switched to Acknowledgement: Vehicle Release & Customer Handover Receipt.', 'info', 'Acknowledgement Active');
             } else if (sheetName === 'LIQUIDATION') {
                 showSystemToast('Switched to LIQUIDATION: Service Job Liquidation & Parts Cost Reconciliation.', 'info', 'LIQUIDATION Active');
+            } else if (sheetName === 'Daily Summary') {
+                showSystemToast('Switched to Daily Summary: Workshop Operations & Revenue Log.', 'info', 'Daily Summary Active');
             } else {
                 showSystemToast(`Switched to workbook sheet: ${sheetName}`, 'info', `${sheetName} Active`);
             }
         }
         window.handleCustomSheetClick = handleCustomSheetClick;
+
+        function renderCustomSheet(sheetKey) {
+            let conf = window.customSheetDataStore[sheetKey];
+            if (!conf) {
+                // Generate standard generic config for dynamic user-added sheet
+                conf = {
+                    badge: 'CUSTOM SHEET',
+                    icon: 'file-spreadsheet',
+                    color: 'blue',
+                    title: `${sheetKey} Studio`,
+                    desc: 'Custom Operations & Data Ledger',
+                    banner: `OFFICIAL ${sheetKey.toUpperCase()} RECORD`,
+                    refPrefix: `HT-${sheetKey.substring(0, 3).toUpperCase()}-2026-001`,
+                    columns: [
+                        { key: 'date', label: 'Date', width: 'w-24' },
+                        { key: 'particulars', label: 'Particulars / Description', width: 'flex-1' },
+                        { key: 'category', label: 'Category', width: 'w-32' },
+                        { key: 'ref', label: 'Reference #', width: 'w-28' },
+                        { key: 'amount', label: 'Amount (₱)', width: 'w-28', align: 'right', isNumber: true }
+                    ],
+                    kpi2Label: 'TOTAL AMOUNT',
+                    kpi3Label: 'STATUS',
+                    rows: [
+                        { date: '2026-09-10', particulars: 'Initial custom sheet entry record', category: 'General', ref: 'REC-01', amount: 1500.00 }
+                    ],
+                    notes: 'Custom record maintained in HonTech Auto Center workbook system.'
+                };
+                window.customSheetDataStore[sheetKey] = conf;
+            }
+
+            // Sync Header & Controls
+            const titleEl = document.getElementById('custom-sheet-studio-title');
+            const badgeEl = document.getElementById('custom-sheet-badge');
+            const descEl = document.getElementById('custom-sheet-studio-desc');
+            const canvasDocTag = document.getElementById('custom-canvas-doc-tag');
+            const canvasBanner = document.getElementById('custom-canvas-title-banner');
+
+            if (titleEl) titleEl.textContent = conf.title;
+            if (badgeEl) badgeEl.textContent = conf.badge;
+            if (descEl) descEl.textContent = conf.desc;
+            if (canvasDocTag) canvasDocTag.textContent = sheetKey.toUpperCase();
+            if (canvasBanner) canvasBanner.textContent = conf.banner;
+
+            // Inputs
+            const inputRef = document.getElementById('custom-input-ref');
+            const inputDate = document.getElementById('custom-input-date');
+            const inputJob = document.getElementById('custom-input-job');
+            const inputOfficer = document.getElementById('custom-input-officer');
+            const inputNotes = document.getElementById('custom-input-notes');
+
+            if (inputRef && !inputRef.value) inputRef.value = conf.refPrefix;
+            if (inputDate && !inputDate.value) inputDate.value = new Date().toISOString().split('T')[0];
+            if (inputNotes) inputNotes.value = conf.notes || '';
+
+            // Render Table Head in Editor
+            const editorHead = document.getElementById('custom-editor-table-head');
+            if (editorHead) {
+                let ths = '<tr class="border-b border-gray-200">';
+                ths += '<th class="p-2 text-center w-10 font-bold">#</th>';
+                conf.columns.forEach(col => {
+                    ths += `<th class="p-2 text-${col.align || 'left'} ${col.width} font-bold text-gray-700 uppercase tracking-wider text-[10px]">${col.label}</th>`;
+                });
+                ths += '<th class="p-2 text-center w-12 font-bold">Act</th></tr>';
+                editorHead.innerHTML = ths;
+            }
+
+            // Render Table Body in Editor
+            const editorBody = document.getElementById('custom-editor-table-body');
+            if (editorBody) {
+                if (!conf.rows || conf.rows.length === 0) {
+                    editorBody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-400 italic">No entries recorded yet. Click "Add Row" or "Sample Data" to start.</td></tr>';
+                } else {
+                    editorBody.innerHTML = conf.rows.map((row, idx) => {
+                        let rowHtml = `<tr class="hover:bg-gray-50/80 transition border-b border-gray-100">
+                            <td class="p-2 text-center font-bold text-gray-400 font-mono text-[10px]">${idx + 1}</td>`;
+                        conf.columns.forEach(col => {
+                            const val = row[col.key] !== undefined ? row[col.key] : '';
+                            if (col.isNumber) {
+                                rowHtml += `<td class="p-1.5">
+                                    <input type="number" step="0.01" value="${val}" oninput="handleCustomSheetRowInput(${idx}, '${col.key}', this.value)" class="w-full bg-gray-50 border border-gray-200 rounded px-2 py-1 text-right font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none">
+                                </td>`;
+                            } else {
+                                rowHtml += `<td class="p-1.5">
+                                    <input type="text" value="${escapeHtml(String(val))}" oninput="handleCustomSheetRowInput(${idx}, '${col.key}', this.value)" class="w-full bg-gray-50 border border-gray-200 rounded px-2 py-1 font-medium text-gray-800 focus:bg-white focus:border-blue-500 outline-none text-[11px]">
+                                </td>`;
+                            }
+                        });
+                        rowHtml += `<td class="p-1.5 text-center">
+                            <button type="button" onclick="removeCustomSheetRow(${idx})" class="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition cursor-pointer" title="Remove row">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </td></tr>`;
+                        return rowHtml;
+                    }).join('');
+                }
+            }
+
+            // Sync Right 1:1 Physical Document Canvas
+            syncCustomSheetCanvas(sheetKey);
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.renderCustomSheet = renderCustomSheet;
+
+        function syncCustomSheetCanvas(sheetKey) {
+            const conf = window.customSheetDataStore[sheetKey];
+            if (!conf) return;
+
+            const inputRef = document.getElementById('custom-input-ref');
+            const inputDate = document.getElementById('custom-input-date');
+            const inputJob = document.getElementById('custom-input-job');
+            const inputOfficer = document.getElementById('custom-input-officer');
+            const inputNotes = document.getElementById('custom-input-notes');
+
+            const refVal = inputRef?.value || conf.refPrefix;
+            const dateVal = inputDate?.value || new Date().toISOString().split('T')[0];
+            const jobVal = inputJob?.value || 'WLK-2026';
+            const officerVal = inputOfficer?.value || 'JUSTIN / SA';
+            const notesVal = inputNotes?.value || conf.notes || '';
+
+            // Header elements
+            const headerRef = document.getElementById('custom-canvas-header-ref');
+            const headerDate = document.getElementById('custom-canvas-header-date');
+            const metaRef = document.getElementById('custom-canvas-meta-ref');
+            const metaJob = document.getElementById('custom-canvas-meta-job');
+            const metaOfficer = document.getElementById('custom-canvas-meta-officer');
+            const notesDisplay = document.getElementById('custom-canvas-notes-display');
+            const sigPrep = document.getElementById('custom-canvas-sig-prep');
+
+            if (headerRef) headerRef.textContent = refVal;
+            if (headerDate) headerDate.textContent = `DATE: ${dateVal}`;
+            if (metaRef) metaRef.textContent = refVal;
+            if (metaJob) metaJob.textContent = jobVal;
+            if (metaOfficer) metaOfficer.textContent = officerVal;
+            if (notesDisplay) notesDisplay.textContent = notesVal || 'No additional remarks.';
+            if (sigPrep) sigPrep.textContent = officerVal;
+
+            // Canvas Table Head
+            const canvasHead = document.getElementById('custom-canvas-table-head');
+            if (canvasHead) {
+                let ths = '<tr class="border-b border-black text-black">';
+                ths += '<th class="p-1.5 text-center border-r border-black w-8 font-black">#</th>';
+                conf.columns.forEach((col, idx) => {
+                    const isLast = (idx === conf.columns.length - 1);
+                    ths += `<th class="p-1.5 text-${col.align || 'left'} font-black uppercase text-[8.5px] ${!isLast ? 'border-r border-black' : ''}">${col.label}</th>`;
+                });
+                ths += '</tr>';
+                canvasHead.innerHTML = ths;
+            }
+
+            // Canvas Table Body & Calculation
+            const canvasBody = document.getElementById('custom-canvas-table-body');
+            let sumNumber = 0;
+            let rowsHtml = '';
+            const rows = conf.rows || [];
+
+            rows.forEach((row, idx) => {
+                rowsHtml += '<tr class="border-b border-gray-300 font-sans">';
+                rowsHtml += `<td class="p-1.5 text-center border-r border-black font-mono font-bold text-[9px]">${idx + 1}</td>`;
+                conf.columns.forEach((col, cIdx) => {
+                    const isLast = (cIdx === conf.columns.length - 1);
+                    const val = row[col.key] !== undefined ? row[col.key] : '';
+                    if (col.isNumber) {
+                        const numVal = parseFloat(val) || 0;
+                        if (col.key === 'amount' || col.key === 'actual' || col.key === 'total') {
+                            sumNumber += numVal;
+                        }
+                        rowsHtml += `<td class="p-1.5 text-right font-mono font-bold ${!isLast ? 'border-r border-black' : ''}">₱${numVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>`;
+                    } else {
+                        rowsHtml += `<td class="p-1.5 text-${col.align || 'left'} font-medium ${!isLast ? 'border-r border-black' : ''}">${escapeHtml(String(val))}</td>`;
+                    }
+                });
+                rowsHtml += '</tr>';
+            });
+
+            // Blank filler rows so it always looks authentic
+            const totalDisplayRows = Math.max(rows.length, 6);
+            for (let i = rows.length; i < totalDisplayRows; i++) {
+                rowsHtml += '<tr class="border-b border-gray-200 h-6">';
+                rowsHtml += `<td class="p-1.5 text-center border-r border-black font-mono text-gray-300 text-[8px]">${i + 1}</td>`;
+                conf.columns.forEach((col, cIdx) => {
+                    const isLast = (cIdx === conf.columns.length - 1);
+                    rowsHtml += `<td class="p-1.5 ${!isLast ? 'border-r border-black' : ''}">&nbsp;</td>`;
+                });
+                rowsHtml += '</tr>';
+            }
+            if (canvasBody) canvasBody.innerHTML = rowsHtml;
+
+            // Update Total Bar & KPI Cards
+            const totalRecordsEl = document.getElementById('custom-canvas-total-records');
+            const totalLabelEl = document.getElementById('custom-canvas-total-label');
+            const totalValEl = document.getElementById('custom-canvas-total-val');
+
+            const kpiEntries = document.getElementById('custom-kpi-entries');
+            const kpiLabel2 = document.getElementById('custom-kpi-label-2');
+            const kpiVal2 = document.getElementById('custom-kpi-val-2');
+            const kpiSub2 = document.getElementById('custom-kpi-sub-2');
+            const kpiLabel3 = document.getElementById('custom-kpi-label-3');
+            const kpiVal3 = document.getElementById('custom-kpi-val-3');
+
+            if (totalRecordsEl) totalRecordsEl.textContent = `Total Entries: ${rows.length}`;
+            if (kpiEntries) kpiEntries.textContent = rows.length;
+
+            if (conf.columns.some(c => c.isNumber)) {
+                const formattedSum = `₱${sumNumber.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                if (totalLabelEl) totalLabelEl.textContent = 'GRAND TOTAL:';
+                if (totalValEl) totalValEl.textContent = formattedSum;
+
+                if (kpiLabel2) kpiLabel2.textContent = conf.kpi2Label || 'TOTAL AMOUNT';
+                if (kpiVal2) kpiVal2.textContent = formattedSum;
+                if (kpiSub2) kpiSub2.textContent = 'Calculated Ledger Sum';
+            } else {
+                if (totalLabelEl) totalLabelEl.textContent = 'ITEMS RECORDED:';
+                if (totalValEl) totalValEl.textContent = `${rows.length} ITEMS`;
+
+                if (kpiLabel2) kpiLabel2.textContent = conf.kpi2Label || 'TOTAL ITEMS';
+                if (kpiVal2) kpiVal2.textContent = `${rows.length} Items`;
+                if (kpiSub2) kpiSub2.textContent = 'Completed Inventory Count';
+            }
+
+            if (kpiLabel3) kpiLabel3.textContent = conf.kpi3Label || 'AUDIT STATUS';
+            if (kpiVal3) kpiVal3.textContent = 'VERIFIED';
+        }
+        window.syncCustomSheetCanvas = syncCustomSheetCanvas;
+
+        function handleCustomSheetMetaChange() {
+            syncCustomSheetCanvas(window.currentCustomSheetType || 'OEF');
+        }
+        window.handleCustomSheetMetaChange = handleCustomSheetMetaChange;
+
+        function handleCustomSheetRowInput(index, field, value) {
+            const sheetKey = window.currentCustomSheetType || 'OEF';
+            const conf = window.customSheetDataStore[sheetKey];
+            if (!conf || !conf.rows || !conf.rows[index]) return;
+
+            const col = conf.columns.find(c => c.key === field);
+            if (col && col.isNumber) {
+                conf.rows[index][field] = parseFloat(value) || 0;
+                // Auto calculate variance if liquidation
+                if (sheetKey === 'LIQUIDATION') {
+                    const alloc = parseFloat(conf.rows[index].allocated) || 0;
+                    const act = parseFloat(conf.rows[index].actual) || 0;
+                    conf.rows[index].variance = Math.max(0, alloc - act);
+                }
+            } else {
+                conf.rows[index][field] = value;
+            }
+
+            syncCustomSheetCanvas(sheetKey);
+        }
+        window.handleCustomSheetRowInput = handleCustomSheetRowInput;
+
+        function addCustomSheetRow() {
+            const sheetKey = window.currentCustomSheetType || 'OEF';
+            const conf = window.customSheetDataStore[sheetKey];
+            if (!conf) return;
+
+            const newRow = {};
+            conf.columns.forEach(col => {
+                if (col.isNumber) newRow[col.key] = 0;
+                else if (col.key === 'date') newRow[col.key] = new Date().toISOString().split('T')[0];
+                else newRow[col.key] = '';
+            });
+
+            if (!conf.rows) conf.rows = [];
+            conf.rows.push(newRow);
+
+            renderCustomSheet(sheetKey);
+            showSystemToast(`Added new entry row to ${sheetKey}!`, 'success', 'Row Added');
+        }
+        window.addCustomSheetRow = addCustomSheetRow;
+
+        function removeCustomSheetRow(index) {
+            const sheetKey = window.currentCustomSheetType || 'OEF';
+            const conf = window.customSheetDataStore[sheetKey];
+            if (!conf || !conf.rows) return;
+
+            conf.rows.splice(index, 1);
+            renderCustomSheet(sheetKey);
+            showSystemToast(`Removed row #${index + 1} from ${sheetKey}`, 'info', 'Row Removed');
+        }
+        window.removeCustomSheetRow = removeCustomSheetRow;
+
+        function resetCustomSheetForm() {
+            const sheetKey = window.currentCustomSheetType || 'OEF';
+            const conf = window.customSheetDataStore[sheetKey];
+            if (!conf) return;
+
+            conf.rows = [];
+            conf.notes = '';
+            renderCustomSheet(sheetKey);
+            showSystemToast(`Cleared ${sheetKey} entries to blank sheet.`, 'info', 'Sheet Cleared');
+        }
+        window.resetCustomSheetForm = resetCustomSheetForm;
+
+        function loadCustomSheetSample() {
+            const sheetKey = window.currentCustomSheetType || 'OEF';
+            // Reload default sample data
+            if (sheetKey === 'OEF') {
+                window.customSheetDataStore['OEF'].rows = [
+                    { date: '2026-09-08', payee: 'Shell San Isidro', desc: 'Shop Diesel fuel for test run & cleaner', ref: 'OR-94821', amount: 850.00 },
+                    { date: '2026-09-09', payee: 'Hardware Depot', desc: 'Heavy-duty degreaser & rags bundle', ref: 'INV-4410', amount: 620.00 },
+                    { date: '2026-09-09', payee: 'Fast Courier', desc: 'Rush delivery for Honda Civic steering boot', ref: 'WB-8831', amount: 350.00 },
+                    { date: '2026-09-10', payee: 'Auto Supply Pampanga', desc: 'Brake cleaner cans & copper anti-seize paste', ref: 'SI-7291', amount: 980.00 }
+                ];
+                window.customSheetDataStore['OEF'].notes = 'All items substantiated with official receipts. Reconciled under weekly workshop operating budget.';
+            } else if (sheetKey === 'Acknowledgement') {
+                window.customSheetDataStore['Acknowledgement'].rows = [
+                    { category: 'Keys & Remotes', desc: 'Master ignition key & alarm transponder', condition: 'Working / Good', released: 'YES', remarks: 'Tested by owner' },
+                    { category: 'Tools & Spare', desc: 'Spare tire, scissor jack, lug wrench & rod', condition: 'Complete & intact', released: 'YES', remarks: 'Trunk verified' },
+                    { category: 'Replaced Parts', desc: 'Old brake pads, engine belt & worn spark plugs', condition: 'Replaced / Worn', released: 'YES', remarks: 'Customer inspected' },
+                    { category: 'Vehicle Road Test', desc: 'Post-service road trial conducted with SA', condition: 'Operational / OK', released: 'YES', remarks: 'Signed release' },
+                    { category: 'Valuables & Dashcam', desc: 'Dashcam micro-SD card & interior accessories', condition: 'Undamaged', released: 'YES', remarks: 'Owner cleared' }
+                ];
+                window.customSheetDataStore['Acknowledgement'].notes = 'Owner certifies that all work listed on Job Order was executed satisfactorily and the vehicle has been received in clean and complete condition.';
+            } else if (sheetKey === 'LIQUIDATION') {
+                window.customSheetDataStore['LIQUIDATION'].rows = [
+                    { ref: 'OR-5510', desc: 'OEM Front Brake Pad Set (Brembo Spec)', allocated: 3500.00, actual: 3250.00, variance: 250.00 },
+                    { ref: 'OR-5512', desc: 'Rear Caliper Repair Kit & Guide Pins', allocated: 1200.00, actual: 1150.00, variance: 50.00 },
+                    { ref: 'OR-5519', desc: 'DOT 4 High-Temp Brake Fluid (1L bottle)', allocated: 650.00, actual: 650.00, variance: 0.00 },
+                    { ref: 'OR-5525', desc: 'Machine Shop Rotor Disc Resurfacing (2 pcs)', allocated: 1800.00, actual: 1600.00, variance: 200.00 }
+                ];
+                window.customSheetDataStore['LIQUIDATION'].notes = 'Total advance allocated: ₱7,150.00. Total actual expense: ₱6,650.00. Net surplus refunded to Cashier: ₱500.00.';
+            } else if (sheetKey === 'Daily Summary') {
+                window.customSheetDataStore['Daily Summary'].rows = [
+                    { job: 'WLK-2026', plate: 'NDG 4721', client: 'Justin / Honda Civic', service: 'Brake Overhaul & PMS Package', tech: 'VIC', status: 'PAID', total: 6850.00 },
+                    { job: 'JOB-2026-08', plate: 'ZAA 3391', client: 'Roberto / Toyota Vios', service: 'Alternator Replacement & Belt', tech: 'MARLON', status: 'RELEASED', total: 4200.00 },
+                    { job: 'JOB-2026-09', plate: 'NCY 1822', client: 'Maria / Mitsubishi Mirage', service: 'Aircon System Flushing & Cabin Filter', tech: 'VIC', status: 'PAID', total: 3150.00 },
+                    { job: 'JOB-2026-10', plate: 'TAB 5928', client: 'Carlos / Nissan Navara', service: 'Suspension Bushing & Alignment', tech: 'EDWIN', status: 'RELEASED', total: 5400.00 }
+                ];
+                window.customSheetDataStore['Daily Summary'].notes = 'All vehicles logged above completed quality inspection test run. Cash & online receipts reconciled with cashier drawer.';
+            }
+            renderCustomSheet(sheetKey);
+            showSystemToast(`Loaded official sample records for ${sheetKey}!`, 'success', 'Sample Data Loaded');
+        }
+        window.loadCustomSheetSample = loadCustomSheetSample;
+
+        function printCustomSheet() {
+            const sheet = document.getElementById('custom-document-sheet');
+            if (!sheet) {
+                showSystemToast('Error: Sheet document not found for printing', 'error', 'Print Failed');
+                return;
+            }
+
+            let printIframe = document.getElementById('custom-print-frame');
+            if (!printIframe) {
+                printIframe = document.createElement('iframe');
+                printIframe.id = 'custom-print-frame';
+                printIframe.style.position = 'fixed';
+                printIframe.style.right = '0';
+                printIframe.style.bottom = '0';
+                printIframe.style.width = '0';
+                printIframe.style.height = '0';
+                printIframe.style.border = '0';
+                document.body.appendChild(printIframe);
+            }
+
+            const activeTitle = window.customSheetDataStore[window.currentCustomSheetType]?.banner || 'HonTech Sheet';
+            const frameDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${activeTitle} - HonTech Auto Center</title>
+                    <meta charset="utf-8">
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 8mm;
+                        }
+                        body {
+                            background: white !important;
+                            color: black !important;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                            font-family: Arial, Helvetica, sans-serif !important;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div style="width: 100%; max-width: 100%;">
+                        ${sheet.outerHTML}
+                    </div>
+                </body>
+                </html>
+            `);
+            frameDoc.close();
+
+            setTimeout(() => {
+                printIframe.contentWindow.focus();
+                printIframe.contentWindow.print();
+            }, 600);
+        }
+        window.printCustomSheet = printCustomSheet;
 
         function scrollSheetTabs(direction) {
             const strip = document.getElementById('form-sheet-tabs-scroll');
@@ -12466,6 +12987,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 switchFormStudioSheet('form23');
             } else if (key === 'billing') {
                 switchFormStudioSheet('billing');
+            } else if (key === 'checklist') {
+                switchFormStudioSheet('checklist');
+            } else if (key === 'cashad') {
+                switchFormStudioSheet('cashad');
             } else {
                 handleCustomSheetClick(label);
             }

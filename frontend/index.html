@@ -4490,11 +4490,10 @@
                                     </div>
 
                                 </div> <!-- /checklist-document-sheet -->
-                            </div> <!-- /checklist-canvas-pane -->
-                        </div> <!-- /grid -->
-                    </div> <!-- /view-sheet-checklist -->
-                </div>
-            </div>
+                            </div> <!-- /checklist-canvas-wrapper -->
+                        </div> <!-- /checklist-canvas-pane -->
+                    </div> <!-- /grid -->
+                </div> <!-- /view-sheet-checklist -->
 
             <!-- SHEET 5: CASH ADVANCE VOUCHER & LEDGER STUDIO -->
             <div id="view-sheet-cashad" class="hidden">
@@ -4745,7 +4744,249 @@
 
                     </div>
                 </div> <!-- /view-sheet-cashad -->
-            </div>
+
+            <!-- SHEET 6+: CUSTOM WORKBOOK SHEETS STUDIO (OEF, Acknowledgement, LIQUIDATION, Daily Summary) -->
+            <div id="view-sheet-custom" class="hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                    <!-- ==========================================
+                         LEFT COLUMN: CUSTOM SHEET SMART EDITOR
+                         ========================================== -->
+                    <div id="custom-sheet-editor-pane" class="xl:col-span-6 space-y-5">
+
+                        <!-- Sheet Control & Metadata Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div id="custom-sheet-icon-wrap" class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center shrink-0">
+                                        <i id="custom-sheet-icon" data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h3 id="custom-sheet-studio-title" class="text-sm font-black text-gray-900 tracking-tight">OEF Studio</h3>
+                                            <span id="custom-sheet-badge" class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-800 rounded-md">LIVE SHEET</span>
+                                        </div>
+                                        <p id="custom-sheet-studio-desc" class="text-xs text-gray-500">Official Operations &amp; Ledger Studio</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="loadCustomSheetSample()" class="px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition cursor-pointer flex items-center gap-1">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                                        <span>Sample Data</span>
+                                    </button>
+                                    <button type="button" onclick="addCustomSheetRow()" class="px-2.5 py-1 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition cursor-pointer shadow-xs flex items-center gap-1">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        <span>Add Row</span>
+                                    </button>
+                                    <button type="button" onclick="resetCustomSheetForm()" class="px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-gray-100 border border-gray-200 rounded-lg transition cursor-pointer">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Sheet Meta Inputs -->
+                            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Doc / Ref No.</label>
+                                    <input type="text" id="custom-input-ref" value="OEF-2026-001" oninput="handleCustomSheetMetaChange()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-mono font-bold text-blue-700 focus:bg-white focus:border-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Date</label>
+                                    <input type="date" id="custom-input-date" value="2026-09-10" oninput="handleCustomSheetMetaChange()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-medium text-gray-800 focus:bg-white focus:border-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Linked Job / Target</label>
+                                    <input type="text" id="custom-input-job" value="WLK-2026" oninput="handleCustomSheetMetaChange()" placeholder="e.g. WLK-2026" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Custodian / Officer</label>
+                                    <input type="text" id="custom-input-officer" value="JUSTIN / SA" oninput="handleCustomSheetMetaChange()" placeholder="Officer name" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Executive Summary Cards -->
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-xs">
+                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Total Entries</div>
+                                <div id="custom-kpi-entries" class="text-lg font-black text-gray-900 font-mono">0</div>
+                                <div class="text-[10px] text-gray-500">Active Records</div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-xs">
+                                <div id="custom-kpi-label-2" class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1">Total Amount</div>
+                                <div id="custom-kpi-val-2" class="text-lg font-black text-blue-700 font-mono">₱0.00</div>
+                                <div id="custom-kpi-sub-2" class="text-[10px] text-gray-500">Calculated Sum</div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-xl p-3.5 shadow-xs">
+                                <div id="custom-kpi-label-3" class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-1">Status</div>
+                                <div id="custom-kpi-val-3" class="text-sm font-bold text-emerald-700">VERIFIED</div>
+                                <div class="text-[10px] text-gray-500">Audit Ready</div>
+                            </div>
+                        </div>
+
+                        <!-- Spreadsheet Interactive Table Editor Card -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider">Spreadsheet Data Entries</h4>
+                                    <p class="text-[11px] text-gray-500">Edit fields below to immediately reflect on the 1:1 physical sheet document canvas.</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="addCustomSheetRow()" class="text-xs text-blue-600 hover:text-blue-800 font-bold flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                        <span>Add Line</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto custom-scroll border border-gray-200 rounded-xl">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead class="bg-gray-50 text-gray-700 border-b border-gray-200 font-semibold" id="custom-editor-table-head">
+                                        <!-- Injected via JS -->
+                                    </thead>
+                                    <tbody id="custom-editor-table-body" class="divide-y divide-gray-100 font-mono text-[11px]">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Notes & Remarks -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Official Notes / Remarks</label>
+                                <textarea id="custom-input-notes" rows="2" oninput="handleCustomSheetMetaChange()" placeholder="Enter internal audit remarks, liquidation status notes, or special instructions..." class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs text-gray-800 focus:bg-white focus:border-blue-500 outline-none resize-none"></textarea>
+                            </div>
+                        </div>
+
+                    </div> <!-- /custom-sheet-editor-pane -->
+
+                    <!-- ==========================================
+                         RIGHT COLUMN: 1:1 PHYSICAL SHEET DOCUMENT CANVAS
+                         ========================================== -->
+                    <div id="custom-sheet-canvas-pane" class="xl:col-span-6 space-y-3 sticky top-4">
+
+                        <!-- Canvas Top Toolbar -->
+                        <div class="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-2.5 shadow-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="text-xs font-bold text-gray-800">1:1 Physical Sheet Document Canvas</span>
+                                <span id="custom-canvas-doc-tag" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-gray-100 text-gray-700 rounded border border-gray-200">OEF</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="printCustomSheet()" class="px-3 py-1.5 text-xs font-bold text-white bg-gray-900 hover:bg-black rounded-lg transition cursor-pointer flex items-center gap-1.5 shadow-xs">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                    <span>Print Sheet (A4)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 1:1 Physical Document Container -->
+                        <div id="custom-canvas-wrapper" class="bg-gray-100/80 p-3 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll flex justify-center">
+                            
+                            <div id="custom-document-sheet" class="bg-white text-black p-6 sm:p-7 shadow-lg rounded-sm w-full max-w-[760px] text-[10.5px] leading-tight font-sans border border-gray-300 select-text">
+
+                                <!-- HonTech Header -->
+                                <div class="border-b-2 border-black pb-3 mb-3">
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center font-black text-white text-xl tracking-tighter shadow-sm border border-red-700 shrink-0">
+                                                HT
+                                            </div>
+                                            <div>
+                                                <h1 class="text-base sm:text-lg font-black tracking-tight text-black leading-none mb-0.5">HONTECH AUTO CENTER</h1>
+                                                <p class="text-[9px] font-semibold text-gray-700">SPECIALIZED HONDA, TOYOTA, MITSUBISHI, NISSAN &amp; GENERAL AUTO REPAIR</p>
+                                                <p class="text-[8.5px] text-gray-600">Brgy. San Isidro, City of San Fernando, Pampanga | Mobile: 0917-824-2178 / 0922-835-1440</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right shrink-0 border-l-2 border-black pl-3">
+                                            <div class="text-[8px] font-bold text-gray-500 uppercase tracking-wider">DOCUMENT CODE</div>
+                                            <div id="custom-canvas-header-ref" class="text-xs font-black font-mono text-black">OEF-2026-001</div>
+                                            <div class="text-[8px] text-gray-600" id="custom-canvas-header-date">DATE: Sep 10, 2026</div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-center bg-gray-900 text-white font-black py-1 px-2 rounded-xs tracking-wider text-xs uppercase" id="custom-canvas-title-banner">
+                                        OFFICIAL OPERATING EXPENSE FORM (OEF)
+                                    </div>
+                                </div>
+
+                                <!-- Metadata Strip -->
+                                <div class="grid grid-cols-4 gap-2 border border-black p-2 mb-3 text-[9.5px] bg-gray-50/50">
+                                    <div>
+                                        <span class="font-bold text-gray-600 block text-[8px] uppercase">REFERENCE NO:</span>
+                                        <span id="custom-canvas-meta-ref" class="font-black font-mono">OEF-2026-001</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-gray-600 block text-[8px] uppercase">LINKED JOB ORDER:</span>
+                                        <span id="custom-canvas-meta-job" class="font-bold font-mono">WLK-2026</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-gray-600 block text-[8px] uppercase">OFFICER / CUSTODIAN:</span>
+                                        <span id="custom-canvas-meta-officer" class="font-bold">JUSTIN / SA</span>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-gray-600 block text-[8px] uppercase">DOCUMENT STATUS:</span>
+                                        <span id="custom-canvas-meta-status" class="font-bold text-emerald-800">OFFICIALLY RECORDED</span>
+                                    </div>
+                                </div>
+
+                                <!-- Physical Document Table -->
+                                <div class="border border-black mb-3 overflow-hidden">
+                                    <table class="w-full border-collapse text-[9.5px]">
+                                        <thead class="bg-gray-200 border-b border-black text-black font-bold" id="custom-canvas-table-head">
+                                            <!-- Rendered via JS -->
+                                        </thead>
+                                        <tbody id="custom-canvas-table-body" class="divide-y divide-gray-300">
+                                            <!-- Rendered via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Total Bar -->
+                                <div class="flex justify-between items-center bg-gray-100 border border-black p-2 mb-3">
+                                    <div class="text-[9px] font-bold text-gray-700">
+                                        <span id="custom-canvas-total-records">Total Entries: 0</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span id="custom-canvas-total-label" class="font-bold text-[10px] uppercase">GRAND TOTAL:</span>
+                                        <span id="custom-canvas-total-val" class="font-black font-mono text-sm">₱0.00</span>
+                                    </div>
+                                </div>
+
+                                <!-- Notes Section -->
+                                <div class="border border-black p-2 mb-4 text-[9px]">
+                                    <span class="font-bold block text-[8px] uppercase text-gray-600">OFFICIAL REMARKS &amp; AUDIT NOTES:</span>
+                                    <div id="custom-canvas-notes-display" class="italic text-gray-800 pt-0.5">
+                                        Verified and reconciled according to HonTech standard workshop operations.
+                                    </div>
+                                </div>
+
+                                <!-- Signatures Block -->
+                                <div class="grid grid-cols-3 gap-4 pt-3 border-t border-black text-[8.5px]">
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">PREPARED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5" id="custom-canvas-sig-prep">OFFICER / CUSTODIAN</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">Signature over Printed Name</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">CHECKED / AUDITED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5" id="custom-canvas-sig-chk">SERVICE ADVISOR / HEAD</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">Audit &amp; Operations</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">APPROVED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5" id="custom-canvas-sig-app">MANAGEMENT / OWNER</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">HonTech Management</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div> <!-- /custom-sheet-canvas-pane -->
+
+                </div>
+            </div> <!-- /view-sheet-custom -->
+
 
             <!-- ====================================================
                  EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
@@ -8279,7 +8520,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.53"></script>
+    <script src="js/app.js?v=5.54"></script>
 </body>
 
 </html>
