@@ -58,6 +58,19 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Incremented cache-buster script tag to `js/app.js?v=5.46` in `frontend/index.html`.
 * **Status**: 🟢 Delivered & Verified
 
+### 🚀 Revision REV-PROTO-008 (September 10, 2026)
+* **Goal**: Excel-Style Multi-Sheet Navigation Bar & Form 2/3 (Quotation) Interactive Studio.
+* **Branch**: `prototype_process`
+* **Changes Delivered**:
+  - Implemented Excel-style bottom sheet tab strip (`#form-sheet-tab-bar`) with Sheet 1 (Form 1/3) and Sheet 2 (Form 2/3) dynamic switching.
+  - Built Form 2/3 Smart Quotation Editor (`#form23-editor-pane`) with dynamic 30-row line items repeater for Parts/Materials, Qty, FRT, Labor, Parts, and Materials.
+  - Implemented BIR 12% VAT tax calculation engine: $\text{Labor} + \text{Parts} + \text{Materials} + \text{VAT 12\%} = \text{Grand Total}$.
+  - Replicated 100% exact physical Form 2/3 document sheet matching client template, with 30-row matrix, default `0.00` suppression/display, 4 official Terms & Conditions, and signatories.
+  - Integrated shared in-memory dossier synchronizer linking Customer Name, Contact, Address, Plate, Model, Color, Job Order #, and Dates across sheets.
+  - Built dedicated isolated iframe single-page print engine (`printForm23()`).
+  - Incremented cache-buster script tag to `js/app.js?v=5.47` in `frontend/index.html`.
+* **Status**: 🟢 Delivered & Verified
+
 ---
 
 ## 📋 Tracking Table
@@ -71,5 +84,7 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-005` | `2026-09-08` | `frontend/index.html`, `frontend/js/app.js` | Embedded live jsPDF viewer iframe, dual view switcher & download engine. | `42ce6f1` | 🟢 Verified |
 | `REV-PROTO-006` | `2026-09-08` | `frontend/assets/form13_template.pdf` | Official physical blank template restoration and vector fidelity enforcement. | `42ce6f1` | 🟢 Verified |
 | `REV-PROTO-007` | `2026-09-08` | `frontend/js/app.js`, `frontend/index.html` | Pixel-perfect coordinate calibration, dynamic auto-fit, and cache version `v=5.46`. | `5756e28` | 🟢 Verified |
+| `REV-PROTO-008` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Excel multi-sheet tab bar, Form 2/3 Quotation studio, 12% VAT engine, and shared dossier sync. | Pending | 🟢 Verified |
+
 
 

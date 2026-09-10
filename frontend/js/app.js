@@ -12227,3 +12227,450 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSystemToast('Form 1/3 Studio reset to blank template.', 'info', 'Studio Cleared');
         }
         window.resetForm13Studio = resetForm13Studio;
+
+        // =========================================================================
+        // FORM 2/3 (QUOTATION) STUDIO & EXCEL-STYLE WORKBOOK MULTI-SHEET ENGINE
+        // =========================================================================
+        let currentFormStudioActiveSheet = 'form13';
+        window.form23Items = [
+            { id: 1, desc: 'Fully Synthetic Motor Oil 5W-30 (4L)', qty: 1, frt: 0.5, labor: 350.00, parts: 1850.00, materials: 0.00 },
+            { id: 2, desc: 'OEM Engine Oil Filter Element', qty: 1, frt: 0.2, labor: 150.00, parts: 450.00, materials: 0.00 },
+            { id: 3, desc: 'Engine Flush Treatment (300ml)', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 250.00 },
+            { id: 4, desc: 'Brake Cleaner Aerosol Spray', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 200.00 }
+        ];
+
+        function switchFormStudioSheet(sheetKey) {
+            currentFormStudioActiveSheet = sheetKey;
+            const view13 = document.getElementById('view-sheet-form13');
+            const view23 = document.getElementById('view-sheet-form23');
+            const tab13 = document.getElementById('tab-sheet-form13');
+            const tab23 = document.getElementById('tab-sheet-form23');
+
+            if (sheetKey === 'form13') {
+                if (view13) view13.classList.remove('hidden');
+                if (view23) view23.classList.add('hidden');
+                
+                if (tab13) {
+                    tab13.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 bg-red-600 text-white shadow-md cursor-pointer active:scale-95';
+                }
+                if (tab23) {
+                    tab23.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
+                }
+
+                syncForm13Canvas();
+                showSystemToast('Switched to Sheet 1: Form 1/3 (Job Order & Claim Stub)', 'info', 'Sheet 1 Active');
+            } else if (sheetKey === 'form23') {
+                if (view13) view13.classList.add('hidden');
+                if (view23) view23.classList.remove('hidden');
+
+                if (tab23) {
+                    tab23.className = 'px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-2 bg-amber-600 text-white shadow-md cursor-pointer active:scale-95';
+                }
+                if (tab13) {
+                    tab13.className = 'px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 cursor-pointer active:scale-95';
+                }
+
+                // Sync shared dossier from Form 1/3 into Form 2/3
+                syncDossierToForm23();
+                renderForm23Rows();
+                calculateForm23Totals();
+                syncForm23Canvas();
+                showSystemToast('Switched to Sheet 2: Form 2/3 (Quotation Studio)', 'info', 'Sheet 2 Active');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.switchFormStudioSheet = switchFormStudioSheet;
+
+        function syncDossierToForm23() {
+            const mappings = [
+                ['f13-input-name', 'f23-input-name'],
+                ['f13-input-contact', 'f23-input-contact'],
+                ['f13-input-address', 'f23-input-address'],
+                ['f13-input-plate', 'f23-input-plate'],
+                ['f13-input-model', 'f23-input-model'],
+                ['f13-input-color', 'f23-input-color'],
+                ['f13-input-job-no', 'f23-input-job-no'],
+                ['f13-input-promise-date', 'f23-input-promise-date']
+            ];
+            mappings.forEach(([src, target]) => {
+                const sEl = document.getElementById(src);
+                const tEl = document.getElementById(target);
+                if (sEl && tEl && sEl.value && !tEl.value) {
+                    tEl.value = sEl.value;
+                }
+            });
+            const dEl = document.getElementById('f23-input-date');
+            if (dEl && !dEl.value) {
+                dEl.value = new Date().toISOString().split('T')[0];
+            }
+        }
+        window.syncDossierToForm23 = syncDossierToForm23;
+
+        function renderForm23Rows() {
+            const tbody = document.getElementById('f23-items-table-body');
+            if (!tbody) return;
+            if (!Array.isArray(window.form23Items) || window.form23Items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-400 italic">No line items added yet. Click "+ Add Line Item" above or apply a preset.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            window.form23Items.forEach((item, index) => {
+                const labor = Number(item.labor) || 0;
+                const parts = Number(item.parts) || 0;
+                const materials = Number(item.materials) || 0;
+                const rowAmt = labor + parts + materials;
+
+                html += `
+                    <tr class="hover:bg-amber-50/40 transition">
+                        <td class="py-1.5 px-2">
+                            <input type="text" value="${escapeHtml(item.desc || '')}" oninput="updateForm23Item(${index}, 'desc', this.value)" placeholder="Part / Material Description" class="w-full bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-semibold focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-1 text-center">
+                            <input type="number" min="1" value="${item.qty ?? 1}" oninput="updateForm23Item(${index}, 'qty', this.value)" class="w-12 text-center bg-white border border-gray-200 rounded-lg py-1 text-xs font-bold focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-1 text-center">
+                            <input type="number" step="0.1" min="0" value="${item.frt ?? 0}" oninput="updateForm23Item(${index}, 'frt', this.value)" class="w-12 text-center bg-white border border-gray-200 rounded-lg py-1 text-xs font-mono focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-2 text-right">
+                            <input type="number" step="10" min="0" value="${labor}" oninput="updateForm23Item(${index}, 'labor', this.value)" class="w-20 text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-2 text-right">
+                            <input type="number" step="10" min="0" value="${parts}" oninput="updateForm23Item(${index}, 'parts', this.value)" class="w-20 text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-2 text-right">
+                            <input type="number" step="10" min="0" value="${materials}" oninput="updateForm23Item(${index}, 'materials', this.value)" class="w-20 text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                        </td>
+                        <td class="py-1.5 px-2 text-right font-mono font-black text-amber-700">
+                            ₱ ${rowAmt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </td>
+                        <td class="py-1.5 px-1 text-center">
+                            <button type="button" onclick="removeForm23Row(${index})" class="text-gray-400 hover:text-red-600 transition p-1 cursor-pointer" title="Remove item">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.renderForm23Rows = renderForm23Rows;
+
+        function updateForm23Item(index, key, value) {
+            if (!window.form23Items[index]) return;
+            if (key === 'desc') {
+                window.form23Items[index].desc = value;
+            } else {
+                window.form23Items[index][key] = Number(value) || 0;
+            }
+            calculateForm23Totals();
+            syncForm23Canvas();
+        }
+        window.updateForm23Item = updateForm23Item;
+
+        function addForm23Row() {
+            if (!Array.isArray(window.form23Items)) window.form23Items = [];
+            window.form23Items.push({
+                id: Date.now(),
+                desc: '',
+                qty: 1,
+                frt: 0,
+                labor: 0,
+                parts: 0,
+                materials: 0
+            });
+            renderForm23Rows();
+            calculateForm23Totals();
+            syncForm23Canvas();
+        }
+        window.addForm23Row = addForm23Row;
+
+        function removeForm23Row(index) {
+            if (!Array.isArray(window.form23Items)) return;
+            window.form23Items.splice(index, 1);
+            renderForm23Rows();
+            calculateForm23Totals();
+            syncForm23Canvas();
+        }
+        window.removeForm23Row = removeForm23Row;
+
+        function calculateForm23Totals() {
+            let totalLabor = 0;
+            let totalParts = 0;
+            let totalMaterials = 0;
+
+            (window.form23Items || []).forEach(item => {
+                totalLabor += Number(item.labor) || 0;
+                totalParts += Number(item.parts) || 0;
+                totalMaterials += Number(item.materials) || 0;
+            });
+
+            const netSubtotal = totalLabor + totalParts + totalMaterials;
+            const vat12 = netSubtotal * 0.12;
+            const grandTotal = netSubtotal + vat12;
+
+            const fmt = num => '₱ ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmtRaw = num => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Editor displays
+            if (document.getElementById('f23-calc-labor')) document.getElementById('f23-calc-labor').innerText = fmt(totalLabor);
+            if (document.getElementById('f23-calc-parts')) document.getElementById('f23-calc-parts').innerText = fmt(totalParts);
+            if (document.getElementById('f23-calc-materials')) document.getElementById('f23-calc-materials').innerText = fmt(totalMaterials);
+            if (document.getElementById('f23-calc-vat')) document.getElementById('f23-calc-vat').innerText = fmt(vat12);
+            if (document.getElementById('f23-calc-grand-total')) document.getElementById('f23-calc-grand-total').innerText = fmt(grandTotal);
+
+            // Live canvas displays
+            if (document.getElementById('f23-live-labor')) document.getElementById('f23-live-labor').innerText = fmtRaw(totalLabor);
+            if (document.getElementById('f23-live-vat')) document.getElementById('f23-live-vat').innerText = fmtRaw(vat12);
+            if (document.getElementById('f23-live-materials')) document.getElementById('f23-live-materials').innerText = fmtRaw(totalMaterials);
+            if (document.getElementById('f23-live-parts')) document.getElementById('f23-live-parts').innerText = fmtRaw(totalParts);
+            if (document.getElementById('f23-live-total')) document.getElementById('f23-live-total').innerText = fmtRaw(grandTotal);
+
+            return { totalLabor, totalParts, totalMaterials, netSubtotal, vat12, grandTotal };
+        }
+        window.calculateForm23Totals = calculateForm23Totals;
+
+        function syncForm23Canvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+
+            const quotationNo = getVal('f23-input-quotation-no') || 'QTN-2026-001';
+            const dateIssued = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
+            const jobNo = getVal('f23-input-job-no') || getVal('f13-input-job-no') || 'WLK-2026-001';
+            const promiseDate = getVal('f23-input-promise-date') || getVal('f13-input-promise-date') || '';
+            const name = getVal('f23-input-name') || getVal('f13-input-name') || '';
+            const plate = getVal('f23-input-plate') || getVal('f13-input-plate') || '';
+            const model = getVal('f23-input-model') || getVal('f13-input-model') || '';
+            const address = getVal('f23-input-address') || getVal('f13-input-address') || '';
+            const contact = getVal('f23-input-contact') || getVal('f13-input-contact') || '';
+            const color = getVal('f23-input-color') || getVal('f13-input-color') || '';
+            const sa = getVal('f23-input-sa') || 'Roman Sarol';
+            const gm = getVal('f23-input-gm') || 'GENERAL MANAGER / AUTHORIZED OFFICER';
+
+            // Header elements
+            if (document.getElementById('f23-live-quotation-no')) document.getElementById('f23-live-quotation-no').innerText = quotationNo;
+            if (document.getElementById('f23-live-date')) document.getElementById('f23-live-date').innerText = dateIssued;
+            if (document.getElementById('f23-live-job-no')) document.getElementById('f23-live-job-no').innerText = jobNo;
+            if (document.getElementById('f23-live-promise-date')) document.getElementById('f23-live-promise-date').innerText = promiseDate || 'Pending';
+
+            // Customer details
+            if (document.getElementById('f23-live-name')) document.getElementById('f23-live-name').innerText = name || '____________________';
+            if (document.getElementById('f23-live-plate')) document.getElementById('f23-live-plate').innerText = plate || '_______';
+            if (document.getElementById('f23-live-address')) document.getElementById('f23-live-address').innerText = address || '____________________';
+            if (document.getElementById('f23-live-model')) document.getElementById('f23-live-model').innerText = model || '____________________';
+            if (document.getElementById('f23-live-contact')) document.getElementById('f23-live-contact').innerText = contact || '____________________';
+            if (document.getElementById('f23-live-color')) document.getElementById('f23-live-color').innerText = color || '_______';
+
+            // Signatures
+            if (document.getElementById('f23-live-sa')) document.getElementById('f23-live-sa').innerText = sa;
+            if (document.getElementById('f23-live-gm')) document.getElementById('f23-live-gm').innerText = gm;
+            if (document.getElementById('f23-live-customer')) document.getElementById('f23-live-customer').innerText = name || 'Customer Name and Signature';
+
+            // 30-Row Table Rendering (matching the physical Form 2/3 paper)
+            const tableBody = document.getElementById('f23-live-table-body');
+            if (tableBody) {
+                const fmtRaw = num => (num > 0) ? num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
+                const items = window.form23Items || [];
+                let html = '';
+
+                for (let i = 0; i < 30; i++) {
+                    const it = items[i];
+                    const isPopulated = Boolean(it && (it.desc || it.labor || it.parts || it.materials));
+                    
+                    const desc = isPopulated ? escapeHtml(it.desc || '') : '&nbsp;';
+                    const qty = (isPopulated && it.qty) ? it.qty : '';
+                    const frt = (isPopulated && it.frt) ? it.frt : '';
+                    const labor = isPopulated ? (it.labor > 0 ? fmtRaw(it.labor) : '0.00') : '0.00';
+                    const parts = isPopulated ? fmtRaw(it.parts) : '';
+                    const materials = isPopulated ? fmtRaw(it.materials) : '';
+                    
+                    const rowAmt = isPopulated 
+                        ? ((Number(it.labor) || 0) + (Number(it.parts) || 0) + (Number(it.materials) || 0))
+                        : 0;
+                    const amtStr = isPopulated ? fmtRaw(rowAmt) : '0.00';
+
+                    html += `
+                        <tr class="border-b border-black h-[14px] leading-tight">
+                            <td class="border-r border-black px-1 text-left truncate max-w-[140px]">${desc}</td>
+                            <td class="border-r border-black px-0.5 text-center">${qty}</td>
+                            <td class="border-r border-black px-0.5 text-center">${frt}</td>
+                            <td class="border-r border-black px-1 text-right">${labor}</td>
+                            <td class="border-r border-black px-1 text-right">${parts}</td>
+                            <td class="border-r border-black px-1 text-right">${materials}</td>
+                            <td class="px-1 text-right font-bold">${amtStr}</td>
+                        </tr>
+                    `;
+                }
+                tableBody.innerHTML = html;
+            }
+        }
+        window.syncForm23Canvas = syncForm23Canvas;
+
+        function applyForm23Preset(presetKey) {
+            if (presetKey === 'pms') {
+                window.form23Items = [
+                    { id: 1, desc: 'Fully Synthetic Motor Oil 5W-30 (4L)', qty: 1, frt: 0.5, labor: 350.00, parts: 1850.00, materials: 0.00 },
+                    { id: 2, desc: 'OEM Engine Oil Filter Element', qty: 1, frt: 0.2, labor: 150.00, parts: 450.00, materials: 0.00 },
+                    { id: 3, desc: 'Engine Flush Treatment (300ml)', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 250.00 },
+                    { id: 4, desc: 'Brake Cleaner Aerosol Spray', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 200.00 },
+                    { id: 5, desc: 'PMS 40K Multi-Point Inspection & Labor', qty: 1, frt: 1.5, labor: 1200.00, parts: 0.00, materials: 0.00 }
+                ];
+            } else if (presetKey === 'brakes') {
+                window.form23Items = [
+                    { id: 1, desc: 'Front Ceramic Brake Pads (Set of 4)', qty: 1, frt: 0.8, labor: 450.00, parts: 2400.00, materials: 0.00 },
+                    { id: 2, desc: 'Rear Brake Shoes Set', qty: 1, frt: 0.8, labor: 450.00, parts: 1650.00, materials: 0.00 },
+                    { id: 3, desc: 'Brake Fluid DOT 4 (1L Bottle)', qty: 1, frt: 0.2, labor: 200.00, parts: 0.00, materials: 520.00 },
+                    { id: 4, desc: 'Brake Rotor Resurfacing & Cleaning', qty: 2, frt: 1.0, labor: 900.00, parts: 0.00, materials: 250.00 }
+                ];
+            } else if (presetKey === 'aircon') {
+                window.form23Items = [
+                    { id: 1, desc: 'R134a Refrigerant Gas Recharge (1kg)', qty: 1, frt: 1.0, labor: 600.00, parts: 0.00, materials: 1250.00 },
+                    { id: 2, desc: 'PAG 46 High-Viscosity Compressor Oil', qty: 1, frt: 0.2, labor: 150.00, parts: 0.00, materials: 450.00 },
+                    { id: 3, desc: 'Cabin AC Charcoal Filter Element', qty: 1, frt: 0.3, labor: 150.00, parts: 650.00, materials: 0.00 },
+                    { id: 4, desc: 'Full Evaporator Core Disinfection', qty: 1, frt: 0.5, labor: 350.00, parts: 0.00, materials: 420.00 }
+                ];
+            }
+            renderForm23Rows();
+            calculateForm23Totals();
+            syncForm23Canvas();
+            showSystemToast(`Applied ${presetKey.toUpperCase()} Quotation Preset to Form 2/3.`, 'info', 'Quotation Loaded');
+        }
+        window.applyForm23Preset = applyForm23Preset;
+
+        function printForm23() {
+            syncForm23Canvas();
+            const sheet = document.getElementById('form23-document-sheet');
+            if (!sheet) return showSystemToast('Quotation sheet element not found.', 'error');
+
+            let printFrame = document.getElementById('f23-print-frame');
+            if (!printFrame) {
+                printFrame = document.createElement('iframe');
+                printFrame.id = 'f23-print-frame';
+                printFrame.style.position = 'fixed';
+                printFrame.style.right = '100%';
+                printFrame.style.bottom = '100%';
+                printFrame.style.width = '0px';
+                printFrame.style.height = '0px';
+                printFrame.style.border = '0';
+                printFrame.style.visibility = 'hidden';
+                document.body.appendChild(printFrame);
+            }
+
+            const doc = printFrame.contentWindow.document;
+            doc.open();
+            doc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>HonTech Quotation Form 2/3</title>
+                    <link rel="stylesheet" href="css/main.css">
+                    <style>
+                        @page { size: A4 portrait; margin: 10mm; }
+                        body { margin: 0; padding: 0; background: white; font-family: sans-serif; }
+                        #form23-document-sheet { width: 100% !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+                    </style>
+                </head>
+                <body>
+                    ${sheet.outerHTML}
+                </body>
+                </html>
+            `);
+            doc.close();
+
+            setTimeout(() => {
+                try {
+                    printFrame.contentWindow.focus();
+                    printFrame.contentWindow.print();
+                } catch (e) {
+                    console.warn('Iframe print failed, falling back:', e);
+                    window.print();
+                }
+            }, 400);
+        }
+        window.printForm23 = printForm23;
+
+        function toggleForm23DocumentPane() {
+            const canvasPane = document.getElementById('form23-canvas-pane');
+            const editorPane = document.getElementById('form23-editor-pane');
+            if (!canvasPane || !editorPane) return;
+            const isHidden = canvasPane.classList.contains('hidden');
+            if (isHidden) {
+                canvasPane.classList.remove('hidden');
+                editorPane.className = 'xl:col-span-6 space-y-5';
+            } else {
+                canvasPane.classList.add('hidden');
+                editorPane.className = 'xl:col-span-12 space-y-5';
+            }
+        }
+        window.toggleForm23DocumentPane = toggleForm23DocumentPane;
+
+        function resetForm23Studio() {
+            if (!confirm('Are you sure you want to reset Form 2/3 Quotation fields?')) return;
+            window.form23Items = [];
+            renderForm23Rows();
+            calculateForm23Totals();
+            syncForm23Canvas();
+            showSystemToast('Quotation Studio cleared.', 'info', 'Reset Complete');
+        }
+        window.resetForm23Studio = resetForm23Studio;
+
+        // Auto-wire shared dossier listeners between Form 1/3 and Form 2/3
+        function initFormStudioMultiSheetSync() {
+            const syncPairs = [
+                ['f13-input-name', 'f23-input-name'],
+                ['f13-input-contact', 'f23-input-contact'],
+                ['f13-input-address', 'f23-input-address'],
+                ['f13-input-plate', 'f23-input-plate'],
+                ['f13-input-model', 'f23-input-model'],
+                ['f13-input-color', 'f23-input-color'],
+                ['f13-input-job-no', 'f23-input-job-no'],
+                ['f13-input-promise-date', 'f23-input-promise-date']
+            ];
+
+            syncPairs.forEach(([id13, id23]) => {
+                const el13 = document.getElementById(id13);
+                const el23 = document.getElementById(id23);
+
+                if (el13) {
+                    el13.addEventListener('input', () => {
+                        if (el23 && el23.value !== el13.value) {
+                            el23.value = el13.value;
+                            syncForm23Canvas();
+                        }
+                    });
+                }
+                if (el23) {
+                    el23.addEventListener('input', () => {
+                        if (el13 && el13.value !== el23.value) {
+                            el13.value = el23.value;
+                            syncForm13Canvas();
+                        }
+                        syncForm23Canvas();
+                    });
+                }
+            });
+
+            // Extra Form 2/3 specific field inputs
+            ['f23-input-quotation-no', 'f23-input-date', 'f23-input-sa', 'f23-input-gm'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', syncForm23Canvas);
+                }
+            });
+        }
+
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initFormStudioMultiSheetSync();
+                renderForm23Rows();
+                calculateForm23Totals();
+                syncForm23Canvas();
+            });
+        } else {
+            initFormStudioMultiSheetSync();
+            renderForm23Rows();
+            calculateForm23Totals();
+            syncForm23Canvas();
+        }
+
