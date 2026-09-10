@@ -4489,18 +4489,268 @@
                                         </div>
                                     </div>
 
+                                </div> <!-- /checklist-document-sheet -->
+                            </div> <!-- /checklist-canvas-pane -->
+                        </div> <!-- /grid -->
+                    </div> <!-- /view-sheet-checklist -->
+                </div>
+            </div>
+
+            <!-- SHEET 5: CASH ADVANCE VOUCHER & LEDGER STUDIO -->
+            <div id="view-sheet-cashad" class="hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                        <!-- ==========================================
+                             LEFT COLUMN: CASH ADVANCE SMART EDITOR
+                             ========================================== -->
+                        <div id="cashad-editor-pane" class="xl:col-span-6 space-y-5">
+
+                            <!-- Voucher Header & Control Card -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center shrink-0">
+                                            <i data-lucide="wallet" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-black text-gray-900 tracking-tight">Cash Advance Voucher Studio</h3>
+                                            <p class="text-xs text-gray-500">Official Disbursal Ledger, Receipt Reconciler & Running Balance</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" onclick="loadSampleCashAdvance()" class="px-2.5 py-1 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition cursor-pointer">
+                                            Sample (Vic ₱50k)
+                                        </button>
+                                        <button type="button" onclick="resetCashAdvanceForm()" class="px-2.5 py-1 text-xs font-semibold text-gray-600 hover:bg-gray-100 border border-gray-200 rounded-lg transition cursor-pointer">
+                                            Reset
+                                        </button>
+                                    </div>
                                 </div>
+
+                                <!-- Voucher Meta Inputs -->
+                                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">CA No.</label>
+                                        <input type="text" id="ca-input-no" value="HT-CA-2026-001" oninput="syncCashAdvanceMeta()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-mono font-bold text-amber-700 focus:bg-white focus:border-amber-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Date</label>
+                                        <input type="date" id="ca-input-date" value="2026-09-10" oninput="syncCashAdvanceMeta()" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-medium text-gray-800 focus:bg-white focus:border-amber-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Linked Job Order</label>
+                                        <input type="text" id="ca-input-job" value="WLK-2026" oninput="syncCashAdvanceMeta()" placeholder="e.g. WLK-2026" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-bold text-gray-800 focus:bg-white focus:border-amber-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Default Custodian</label>
+                                        <input type="text" id="ca-input-by" value="VIC" oninput="syncCashAdvanceMeta()" placeholder="e.g. VIC" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 font-bold text-gray-800 focus:bg-white focus:border-amber-500 outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Executive Financial Scoreboard -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 text-white shadow-xs">
+                                    <div class="flex items-center justify-between text-xs text-emerald-100 font-medium mb-1">
+                                        <span>Total Cash Received</span>
+                                        <i data-lucide="arrow-down-left" class="w-4 h-4"></i>
+                                    </div>
+                                    <div id="ca-score-total-rec" class="text-xl font-black tracking-tight font-mono">₱50,000.00</div>
+                                    <div class="text-[10px] text-emerald-100/90 mt-1">Rec'd + Carried Over</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl p-4 text-white shadow-xs">
+                                    <div class="flex items-center justify-between text-xs text-rose-100 font-medium mb-1">
+                                        <span>Expenses Incurred</span>
+                                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                                    </div>
+                                    <div id="ca-score-total-exp" class="text-xl font-black tracking-tight font-mono">₱0.00</div>
+                                    <div class="text-[10px] text-rose-100/90 mt-1">Receipts &amp; Disbursements</div>
+                                </div>
+                                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-4 text-white shadow-xs">
+                                    <div class="flex items-center justify-between text-xs text-blue-100 font-medium mb-1">
+                                        <span>Cash Balance On Hand</span>
+                                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                    </div>
+                                    <div id="ca-score-balance" class="text-xl font-black tracking-tight font-mono">₱50,000.00</div>
+                                    <div class="text-[10px] text-blue-100/90 mt-1">Liquid Funds Remaining</div>
+                                </div>
+                            </div>
+
+                            <!-- Transaction Items Repeater -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                        <h4 class="text-xs font-black text-gray-800 uppercase tracking-wider">Disbursement &amp; Expense Entries</h4>
+                                    </div>
+                                    <button type="button" onclick="addCashAdvanceItem()" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        <span>Add Entry</span>
+                                    </button>
+                                </div>
+
+                                <!-- Transaction Cards Container -->
+                                <div id="ca-editor-items-container" class="space-y-3">
+                                    <!-- Populated dynamically via renderCashAdvanceEditor() -->
+                                </div>
+                            </div>
+
+                            <!-- Auditing Reminders & Compliance Policy Card -->
+                            <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2 text-xs text-amber-950">
+                                <div class="flex items-center gap-2 font-black tracking-wider uppercase text-[11px] text-amber-800">
+                                    <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600"></i>
+                                    <span>Auditing &amp; Accounting Reminders (Page 2)</span>
+                                </div>
+                                <div class="space-y-1 text-[11.5px] leading-relaxed text-amber-900">
+                                    <div class="flex items-start gap-1.5">
+                                        <span class="font-bold">1.</span>
+                                        <span>To ensure proper accounting and auditing, always support your expenditures with official receipts or reimbursement expense receipts (RER) and liquidation documents. No proof of transaction is not allowed.</span>
+                                    </div>
+                                    <div class="flex items-start gap-1.5">
+                                        <span class="font-bold">2.</span>
+                                        <span>Always record your transaction everytime you make purchases/services related to the approved job order.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Bar -->
+                            <div class="flex items-center justify-end gap-3 pt-2">
+                                <button type="button" onclick="printCashAdvance()" class="px-5 py-2.5 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-sm cursor-pointer">
+                                    <i data-lucide="printer" class="w-4 h-4"></i>
+                                    <span>Print Cash Advance (A4)</span>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- ==========================================
+                             RIGHT COLUMN: 1:1 LIVE PHYSICAL CANVAS
+                             ========================================== -->
+                        <div id="cashad-canvas-pane" class="xl:col-span-6 flex flex-col items-center">
+                            
+                            <!-- Canvas Sticky Header -->
+                            <div class="w-full max-w-[620px] mb-3 flex items-center justify-between text-xs text-gray-500 px-1">
+                                <span class="font-semibold flex items-center gap-1.5 text-gray-700">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span>1:1 Live Physical Cash Advance Ledger</span>
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[11px] font-mono">A4 Portrait</span>
+                                    <button type="button" onclick="printCashAdvance()" class="hover:text-blue-600 transition flex items-center gap-1 cursor-pointer" title="Print document">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                                        <span>Print</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 1:1 Physical Ledger Document Sheet -->
+                            <div id="cashad-document-sheet" class="w-full max-w-[620px] bg-white border border-gray-400 p-6 shadow-xl text-black font-sans text-[10px] space-y-3">
+                                
+                                <!-- Centered Header matching uploaded PDF -->
+                                <div class="text-center space-y-1">
+                                    <div class="flex items-center justify-center gap-1.5">
+                                        <span class="text-rose-600 font-black tracking-widest text-base font-sans">HONTECH</span>
+                                    </div>
+                                    <div class="font-bold text-[11px] tracking-tight">Hontech Auto Center</div>
+                                    <div class="text-[9px] text-gray-700">25 Bayan-bayanan Avenue Concepcion Uno, Marikina City</div>
+                                    
+                                    <div class="pt-2">
+                                        <h1 class="text-lg font-black tracking-wider uppercase font-sans">CASH ADVANCE</h1>
+                                    </div>
+                                </div>
+
+                                <!-- CA NO. Block (Right Aligned) -->
+                                <div class="flex justify-end pt-1">
+                                    <div class="flex items-baseline gap-1 text-xs font-bold">
+                                        <span>CA NO.:</span>
+                                        <span id="ca-live-cano" class="border-b border-black font-mono px-3 min-w-[110px] text-center font-bold">HT-CA-2026-001</span>
+                                    </div>
+                                </div>
+
+                                <!-- Authentic Multi-Column Ledger Table -->
+                                <div class="overflow-x-auto border-t border-l border-black">
+                                    <table class="w-full border-collapse text-[8.5px] leading-tight text-center">
+                                        <thead>
+                                            <!-- Row 1 Main Headers -->
+                                            <tr class="bg-gray-50">
+                                                <th rowspan="2" class="border-r border-b border-black p-1 font-bold w-7">
+                                                    ITE<br>M<br>NO.
+                                                </th>
+                                                <th colspan="2" class="border-r border-b border-black p-1 font-bold">
+                                                    CASH ISSUED
+                                                </th>
+                                                <th colspan="3" class="border-r border-b border-black p-1 font-bold">
+                                                    AMOUNT
+                                                </th>
+                                                <th rowspan="2" class="border-r border-b border-black p-1 font-bold w-16">
+                                                    EXPENSES<br>INCURRED
+                                                </th>
+                                                <th rowspan="2" class="border-r border-b border-black p-1 font-bold w-18">
+                                                    BALANCE/<br>CASH ON<br>HAND
+                                                </th>
+                                                <th rowspan="2" class="border-r border-b border-black p-1 font-bold min-w-[80px]">
+                                                    REMARKS
+                                                </th>
+                                            </tr>
+                                            <!-- Row 2 Sub-Headers -->
+                                            <tr class="bg-gray-50">
+                                                <th class="border-r border-b border-black p-0.5 font-bold w-14">DATE</th>
+                                                <th class="border-r border-b border-black p-0.5 font-bold w-10">BY</th>
+                                                <th class="border-r border-b border-black p-0.5 font-bold w-14">REC'D</th>
+                                                <th class="border-r border-b border-black p-0.5 font-bold w-14">CARRIED OVER</th>
+                                                <th class="border-r border-b border-black p-0.5 font-bold w-14">TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ca-live-table-rows">
+                                            <!-- Populated dynamically (up to 30 rows) -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Official Reminders Box matching Page 2 -->
+                                <div class="border border-black p-2.5 text-[8.5px] space-y-1">
+                                    <div class="font-bold tracking-wider uppercase text-[9px]">REMINDERS:</div>
+                                    <div class="flex items-start gap-1.5">
+                                        <span class="font-bold">1</span>
+                                        <span>To ensure proper accounting and auditing, always support your expenditures with official receipts or reimbursement expense receipts (RER) and liquidation documents. No proof of transaction is not allowed</span>
+                                    </div>
+                                    <div class="flex items-start gap-1.5">
+                                        <span class="font-bold">2</span>
+                                        <span>Always record your transaction everytime you make purchases/services related to the approved job order.</span>
+                                    </div>
+                                </div>
+
+                                <!-- Signatures / Custodian Matrix -->
+                                <div class="grid grid-cols-3 gap-4 pt-3 text-[8.5px]">
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">RECEIVED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5" id="ca-live-sig-rec">VIC / CUSTODIAN</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">Signature over Printed Name</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">ISSUED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5" id="ca-live-sig-issued">AUTHORIZED CASHIER</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">Disbursing Officer</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-gray-600 mb-6 font-bold">APPROVED / AUDITED BY:</div>
+                                        <div class="border-b border-black text-center font-bold pb-0.5">MANAGEMENT</div>
+                                        <div class="text-[7.5px] text-gray-500 text-center mt-0.5">Audit &amp; Finance</div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
 
                     </div>
-                </div> <!-- /view-sheet-checklist -->
+                </div> <!-- /view-sheet-cashad -->
+            </div>
 
-                <!-- ====================================================
-                     EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
-                     ==================================================== -->
-                <div id="form-sheet-tab-bar" class="w-full mt-6 bg-[#f8fafd] border border-gray-300 rounded-xl px-2 py-1.5 shadow-sm flex items-center justify-between gap-1 select-none overflow-hidden relative text-gray-700">
+            <!-- ====================================================
+                 EXACT GOOGLE SHEETS WORKBOOK BOTTOM TAB BAR
+                 ==================================================== -->
+            <div id="form-sheet-tab-bar" class="w-full mt-6 bg-[#f8fafd] border border-gray-300 rounded-xl px-2 py-1.5 shadow-sm flex items-center justify-between gap-1 select-none overflow-hidden relative text-gray-700">
                     <!-- Left: Plus, All Sheets Hamburger, Divider, and Horizontally Scrollable Sheet Tabs -->
                     <div class="flex items-center gap-1 min-w-0 flex-1 overflow-hidden">
                         <!-- Google Sheets + Button -->
@@ -4554,7 +4804,7 @@
                             </button>
 
                             <!-- CASH AD -->
-                            <button type="button" id="tab-sheet-cashad" onclick="handleCustomSheetClick('CASH AD')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
+                            <button type="button" id="tab-sheet-cashad" onclick="switchFormStudioSheet('cashad')" class="px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer">
                                 <span>CASH AD</span>
                                 <span class="text-[10px] text-gray-400 leading-none">▾</span>
                             </button>
@@ -8029,7 +8279,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.52"></script>
+    <script src="js/app.js?v=5.53"></script>
 </body>
 
 </html>

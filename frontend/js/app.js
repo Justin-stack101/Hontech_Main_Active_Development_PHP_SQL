@@ -12263,12 +12263,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const view23 = document.getElementById('view-sheet-form23');
             const viewBilling = document.getElementById('view-sheet-billing');
             const viewChecklist = document.getElementById('view-sheet-checklist');
+            const viewCashAd = document.getElementById('view-sheet-cashad');
 
             // Reset all tabs to inactive Google Sheets style and highlight active
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
                 if (btn) {
-                    const isTarget = (s.key === sheetKey) || (sheetKey === 'form13' && s.key === 'form13') || (sheetKey === 'form23' && s.key === 'form23') || (sheetKey === 'billing' && s.key === 'billing') || (sheetKey === 'checklist' && s.key === 'checklist');
+                    const isTarget = (s.key === sheetKey);
                     if (isTarget) {
                         btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
                         const caret = btn.querySelector('span:last-child');
@@ -12286,6 +12287,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
                 if (viewChecklist) viewChecklist.classList.add('hidden');
+                if (viewCashAd) viewCashAd.classList.add('hidden');
 
                 syncForm13Canvas();
                 showSystemToast('Switched to Job_Order (Form 1/3 Job Order & Claim Stub)', 'info', 'Job_Order Active');
@@ -12294,6 +12296,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view23) view23.classList.remove('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
                 if (viewChecklist) viewChecklist.classList.add('hidden');
+                if (viewCashAd) viewCashAd.classList.add('hidden');
 
                 // Sync shared dossier from Form 1/3 into Form 2/3
                 syncDossierToForm23();
@@ -12306,6 +12309,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.remove('hidden');
                 if (viewChecklist) viewChecklist.classList.add('hidden');
+                if (viewCashAd) viewCashAd.classList.add('hidden');
 
                 // Sync shared dossier from Form 1/3 & Form 2/3 into Form 3/3
                 syncDossierToForm33();
@@ -12318,16 +12322,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
                 if (viewChecklist) viewChecklist.classList.remove('hidden');
+                if (viewCashAd) viewCashAd.classList.add('hidden');
 
                 syncDossierToChecklist();
                 renderChecklistEditor();
                 syncChecklistCanvas();
                 showSystemToast('Switched to CHECKLIST (Vehicle Intake Multi-Point Inspection)', 'info', 'CHECKLIST Active');
+            } else if (sheetKey === 'cashad') {
+                if (view13) view13.classList.add('hidden');
+                if (view23) view23.classList.add('hidden');
+                if (viewBilling) viewBilling.classList.add('hidden');
+                if (viewChecklist) viewChecklist.classList.add('hidden');
+                if (viewCashAd) viewCashAd.classList.remove('hidden');
+
+                syncCashAdvanceMeta();
+                renderCashAdvanceEditor();
+                calculateCashAdvanceTotals();
+                syncCashAdvanceCanvas();
+                showSystemToast('Switched to CASH AD (Cash Advance & Disbursement Ledger)', 'info', 'CASH AD Active');
             } else {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
                 if (viewBilling) viewBilling.classList.add('hidden');
                 if (viewChecklist) viewChecklist.classList.add('hidden');
+                if (viewCashAd) viewCashAd.classList.add('hidden');
             }
 
             const activeBtnId = sheetKey === 'form13' ? 'tab-sheet-joborder' : (sheetKey === 'form23' ? 'tab-sheet-quote' : `tab-sheet-${sheetKey}`);
@@ -13727,6 +13745,325 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
         }
 
+        // =========================================================================
+        // FORM 5: CASH ADVANCE VOUCHER & LEDGER ENGINE
+        // =========================================================================
+        const formatCaCurrency = (num) => '₱' + (Number(num) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formatCaRaw = (num) => (Number(num) > 0) ? Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
+
+        window.cashAdvanceData = {
+            caNo: 'HT-CA-2026-001',
+            date: '2026-09-10',
+            jobNo: 'WLK-2026',
+            by: 'VIC',
+            items: [
+                {
+                    date: '2026-09-10',
+                    by: 'VIC',
+                    recd: 50000,
+                    carriedOver: 0,
+                    expenses: 0,
+                    remarks: 'Initial cash advance for vehicle parts & materials'
+                }
+            ]
+        };
+
+        function syncCashAdvanceMeta() {
+            const no = document.getElementById('ca-input-no')?.value || 'HT-CA-2026-001';
+            const date = document.getElementById('ca-input-date')?.value || '';
+            const job = document.getElementById('ca-input-job')?.value || '';
+            const by = document.getElementById('ca-input-by')?.value || 'VIC';
+
+            window.cashAdvanceData.caNo = no;
+            window.cashAdvanceData.date = date;
+            window.cashAdvanceData.jobNo = job;
+            window.cashAdvanceData.by = by;
+
+            if (document.getElementById('ca-live-cano')) document.getElementById('ca-live-cano').innerText = no;
+            if (document.getElementById('ca-live-sig-rec')) document.getElementById('ca-live-sig-rec').innerText = (by || 'VIC').toUpperCase() + ' / CUSTODIAN';
+
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+        }
+        window.syncCashAdvanceMeta = syncCashAdvanceMeta;
+
+        function renderCashAdvanceEditor() {
+            const container = document.getElementById('ca-editor-items-container');
+            if (!container) return;
+
+            const items = window.cashAdvanceData.items || [];
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-6 text-xs text-gray-400 border border-dashed border-gray-200 rounded-xl">
+                        No transactions entered. Click "Add Entry" or "Sample (Vic ₱50k)" to get started.
+                    </div>
+                `;
+                return;
+            }
+
+            let cumulativeBalance = 0;
+
+            container.innerHTML = items.map((item, idx) => {
+                const recd = Number(item.recd) || 0;
+                const carriedOver = Number(item.carriedOver) || 0;
+                const totalCash = recd + carriedOver;
+                const expenses = Number(item.expenses) || 0;
+                cumulativeBalance += (totalCash - expenses);
+
+                return `
+                    <div class="p-3 bg-gray-50/80 hover:bg-amber-50/20 border border-gray-200 rounded-xl space-y-2.5 transition">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[11px] font-black text-amber-800 bg-amber-100 border border-amber-200 px-2 py-0.5 rounded-md font-mono">
+                                #${idx + 1}
+                            </span>
+                            <div class="flex-1 flex items-center gap-2">
+                                <input type="text" value="${escapeHtml(item.remarks || '')}" oninput="updateCashAdvanceItem(${idx}, 'remarks', this.value)" placeholder="Remarks / Purpose (e.g. Parts purchase, machine shop, oil filter)" class="w-full bg-white border border-gray-200 rounded-lg px-2.5 py-1 text-xs font-semibold focus:border-amber-500 outline-none">
+                            </div>
+                            <button type="button" onclick="removeCashAdvanceItem(${idx})" class="text-gray-400 hover:text-rose-600 transition p-1 cursor-pointer shrink-0" title="Delete entry">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs">
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-gray-500 uppercase">Date</label>
+                                <input type="date" value="${item.date || ''}" oninput="updateCashAdvanceItem(${idx}, 'date', this.value)" class="w-full bg-white border border-gray-200 rounded-lg py-1 px-1.5 text-xs text-center focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-gray-500 uppercase">By</label>
+                                <input type="text" value="${escapeHtml(item.by || '')}" oninput="updateCashAdvanceItem(${idx}, 'by', this.value)" placeholder="VIC" class="w-full bg-white border border-gray-200 rounded-lg py-1 px-1.5 text-xs font-bold text-center focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-emerald-700 uppercase">Rec'd (₱)</label>
+                                <input type="number" step="100" min="0" value="${recd}" oninput="updateCashAdvanceItem(${idx}, 'recd', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-teal-700 uppercase">Carried Over (₱)</label>
+                                <input type="number" step="100" min="0" value="${carriedOver}" oninput="updateCashAdvanceItem(${idx}, 'carriedOver', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-rose-700 uppercase">Expenses (₱)</label>
+                                <input type="number" step="10" min="0" value="${expenses}" oninput="updateCashAdvanceItem(${idx}, 'expenses', this.value)" class="w-full text-right bg-white border border-gray-200 rounded-lg px-2 py-1 text-xs font-mono font-bold focus:border-amber-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[9.5px] font-bold text-blue-700 uppercase">Balance (₱)</label>
+                                <div class="w-full bg-blue-50/80 border border-blue-200 rounded-lg py-1 px-2 text-xs font-mono font-black text-blue-900 text-right">
+                                    ${formatCaCurrency(cumulativeBalance)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        window.renderCashAdvanceEditor = renderCashAdvanceEditor;
+
+        function addCashAdvanceItem() {
+            const defaultBy = document.getElementById('ca-input-by')?.value || 'VIC';
+            const defaultDate = document.getElementById('ca-input-date')?.value || new Date().toISOString().split('T')[0];
+            
+            window.cashAdvanceData.items.push({
+                date: defaultDate,
+                by: defaultBy,
+                recd: 0,
+                carriedOver: 0,
+                expenses: 0,
+                remarks: ''
+            });
+
+            renderCashAdvanceEditor();
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+        }
+        window.addCashAdvanceItem = addCashAdvanceItem;
+
+        function removeCashAdvanceItem(index) {
+            if (!window.cashAdvanceData.items[index]) return;
+            window.cashAdvanceData.items.splice(index, 1);
+            renderCashAdvanceEditor();
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+        }
+        window.removeCashAdvanceItem = removeCashAdvanceItem;
+
+        function updateCashAdvanceItem(index, field, value) {
+            if (!window.cashAdvanceData.items[index]) return;
+            window.cashAdvanceData.items[index][field] = value;
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+        }
+        window.updateCashAdvanceItem = updateCashAdvanceItem;
+
+        function calculateCashAdvanceTotals() {
+            const items = window.cashAdvanceData.items || [];
+            let totalRecd = 0;
+            let totalCarriedOver = 0;
+            let totalExpenses = 0;
+
+            items.forEach(it => {
+                totalRecd += Number(it.recd) || 0;
+                totalCarriedOver += Number(it.carriedOver) || 0;
+                totalExpenses += Number(it.expenses) || 0;
+            });
+
+            const totalAvailableCash = totalRecd + totalCarriedOver;
+            const netBalance = totalAvailableCash - totalExpenses;
+
+            if (document.getElementById('ca-score-total-rec')) document.getElementById('ca-score-total-rec').innerText = formatCaCurrency(totalAvailableCash);
+            if (document.getElementById('ca-score-total-exp')) document.getElementById('ca-score-total-exp').innerText = formatCaCurrency(totalExpenses);
+            if (document.getElementById('ca-score-balance')) document.getElementById('ca-score-balance').innerText = formatCaCurrency(netBalance);
+
+            return { totalRecd, totalCarriedOver, totalAvailableCash, totalExpenses, netBalance };
+        }
+        window.calculateCashAdvanceTotals = calculateCashAdvanceTotals;
+
+        function syncCashAdvanceCanvas() {
+            const tbody = document.getElementById('ca-live-table-rows');
+            if (!tbody) return;
+
+            const items = window.cashAdvanceData.items || [];
+            const TOTAL_ROWS = 30; // Match physical voucher template rows
+            let rowsHtml = '';
+            let cumulativeCanvasBalance = 0;
+
+            for (let i = 0; i < TOTAL_ROWS; i++) {
+                const item = items[i];
+                if (item) {
+                    const recd = Number(item.recd) || 0;
+                    const carriedOver = Number(item.carriedOver) || 0;
+                    const totalCash = recd + carriedOver;
+                    const expenses = Number(item.expenses) || 0;
+                    cumulativeCanvasBalance += (totalCash - expenses);
+
+                    const balanceDisplay = (totalCash > 0 || expenses > 0)
+                        ? (cumulativeCanvasBalance >= 0 ? formatCaRaw(cumulativeCanvasBalance) : ('-' + formatCaRaw(Math.abs(cumulativeCanvasBalance))))
+                        : '';
+
+                    rowsHtml += `
+                        <tr class="border-b border-black h-[18px] leading-tight">
+                            <td class="border-r border-black px-1 font-bold text-center">${i + 1}</td>
+                            <td class="border-r border-black px-1 text-center truncate max-w-[65px] font-mono">${escapeHtml(item.date || '')}</td>
+                            <td class="border-r border-black px-1 text-center font-bold truncate max-w-[50px]">${escapeHtml(item.by || '')}</td>
+                            <td class="border-r border-black px-1 text-right font-mono">${recd > 0 ? formatCaRaw(recd) : ''}</td>
+                            <td class="border-r border-black px-1 text-right font-mono">${carriedOver > 0 ? formatCaRaw(carriedOver) : ''}</td>
+                            <td class="border-r border-black px-1 text-right font-mono font-bold">${totalCash > 0 ? formatCaRaw(totalCash) : ''}</td>
+                            <td class="border-r border-black px-1 text-right font-mono text-rose-700">${expenses > 0 ? formatCaRaw(expenses) : ''}</td>
+                            <td class="border-r border-black px-1 text-right font-mono font-black text-blue-900">${balanceDisplay}</td>
+                            <td class="border-r border-black px-1 text-left truncate max-w-[140px]">${escapeHtml(item.remarks || '')}</td>
+                        </tr>
+                    `;
+                } else {
+                    // Blank row matching template
+                    rowsHtml += `
+                        <tr class="border-b border-black h-[18px] leading-tight">
+                            <td class="border-r border-black px-1 text-center text-gray-300">${i + 1}</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                            <td class="border-r border-black px-1">&nbsp;</td>
+                        </tr>
+                    `;
+                }
+            }
+
+            tbody.innerHTML = rowsHtml;
+        }
+        window.syncCashAdvanceCanvas = syncCashAdvanceCanvas;
+
+        function loadSampleCashAdvance() {
+            window.cashAdvanceData.items = [
+                {
+                    date: '2026-09-10',
+                    by: 'VIC',
+                    recd: 50000,
+                    carriedOver: 0,
+                    expenses: 0,
+                    remarks: 'Initial cash advance for vehicle parts & materials'
+                }
+            ];
+            renderCashAdvanceEditor();
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+            showSystemToast('Loaded Vic ₱50,000.00 cash advance sample', 'success', 'Sample Loaded');
+        }
+        window.loadSampleCashAdvance = loadSampleCashAdvance;
+
+        function resetCashAdvanceForm() {
+            window.cashAdvanceData.items = [];
+            renderCashAdvanceEditor();
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
+            showSystemToast('Cash advance ledger cleared to blank sheet', 'info', 'Ledger Reset');
+        }
+        window.resetCashAdvanceForm = resetCashAdvanceForm;
+
+        function printCashAdvance() {
+            const sheet = document.getElementById('cashad-document-sheet');
+            if (!sheet) {
+                showSystemToast('Error: Cash advance sheet not found', 'error', 'Print Failed');
+                return;
+            }
+
+            let printIframe = document.getElementById('cashad-print-frame');
+            if (!printIframe) {
+                printIframe = document.createElement('iframe');
+                printIframe.id = 'cashad-print-frame';
+                printIframe.style.position = 'fixed';
+                printIframe.style.right = '0';
+                printIframe.style.bottom = '0';
+                printIframe.style.width = '0';
+                printIframe.style.height = '0';
+                printIframe.style.border = '0';
+                document.body.appendChild(printIframe);
+            }
+
+            const frameDoc = printIframe.contentDocument || printIframe.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>HonTech Cash Advance Voucher - ${escapeHtml(window.cashAdvanceData.caNo || 'CA')}</title>
+                    <meta charset="utf-8">
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <style>
+                        @page {
+                            size: A4 portrait;
+                            margin: 8mm;
+                        }
+                        body {
+                            background: white !important;
+                            color: black !important;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                            font-family: Arial, Helvetica, sans-serif !important;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div style="width: 100%; max-width: 100%;">
+                        ${sheet.outerHTML}
+                    </div>
+                </body>
+                </html>
+            `);
+            frameDoc.close();
+
+            setTimeout(() => {
+                printIframe.contentWindow.focus();
+                printIframe.contentWindow.print();
+            }, 600);
+        }
+        window.printCashAdvance = printCashAdvance;
+
         // Initialize on DOM ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
@@ -13743,6 +14080,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncDossierToChecklist();
                 renderChecklistEditor();
                 syncChecklistCanvas();
+
+                renderCashAdvanceEditor();
+                calculateCashAdvanceTotals();
+                syncCashAdvanceCanvas();
             });
         } else {
             initFormStudioMultiSheetSync();
@@ -13758,5 +14099,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             syncDossierToChecklist();
             renderChecklistEditor();
             syncChecklistCanvas();
+
+            renderCashAdvanceEditor();
+            calculateCashAdvanceTotals();
+            syncCashAdvanceCanvas();
         }
 

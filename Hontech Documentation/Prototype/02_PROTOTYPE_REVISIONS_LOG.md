@@ -231,6 +231,34 @@ This log tracks all iterations, architectural changes, UI additions, and commits
   - Incremented cache-buster script tag to `js/app.js?v=5.52` in `frontend/index.html`.
 * **Status**: 🟢 Delivered & Verified
 
+### 📌 `REV-PROTO-014` (2026-09-10) — Form 5 Cash Advance Voucher & Ledger Studio (`CASH ADVANCE`)
+* **Branch**: `prototype_process`
+* **Target Components**: `frontend/index.html`, `frontend/js/app.js`, `Hontech Documentation/Prototype/09_CASH_ADVANCE_VOUCHER_SPECIFICATION.md`
+* **Trigger/Context**: Replicate the shop's official physical Cash Advance voucher ledger (`media_1789014865631.pdf`) 1:1, integrated into the 5th tab of the Google Sheets bottom workbook bar under **`CASH AD ▾`**, featuring multi-row transaction tracking, running cumulative balance calculations, auditing reminders, and an isolated A4 print engine.
+* **Technical Scope**:
+  - Created functional specification: `09_CASH_ADVANCE_VOUCHER_SPECIFICATION.md`.
+  - Built Split-Screen Cash Advance Studio (`#view-sheet-cashad`):
+    - Left Column (`#cashad-editor-pane`): Smart Voucher & Disbursement Editor:
+      - Header & Meta card: `CA NO.`, Date, Linked Job Order, and Custodian (`VIC`).
+      - Executive Financial Scoreboard cards: Total Cash Received, Expenses Incurred, and Net Cash Balance on Hand.
+      - Dynamic Transaction Repeater: Add Row, Delete Row, auto-calculated running balance, and quick load sample data.
+      - Auditing & Compliance policy card (Page 2 rules enforcing receipts/RER and Job Order references).
+      - Action controls: Print Cash Advance (A4) and Reset.
+    - Right Column (`#cashad-canvas-pane`): 1:1 Physical Document Canvas matching uploaded template:
+      - Centered HonTech Auto Center header, address, and uppercase `CASH ADVANCE` title.
+      - Right-aligned underlined `CA NO.:` reference.
+      - Exact multi-column ledger table: `ITEM NO.` | `CASH ISSUED` (`DATE`, `BY`) | `AMOUNT` (`REC'D`, `CARRIED OVER`, `TOTAL`) | `EXPENSES INCURRED` | `BALANCE/CASH ON HAND` | `REMARKS`.
+      - Authentic 30-row ledger grid with live entered rows and lined blank rows.
+      - Official `REMINDERS:` box matching Page 2 of the PDF.
+      - 3-column Signatory verification matrix (`Received By`, `Issued By`, `Approved/Audited By`).
+  - Built Cash Advance JavaScript Engine in `frontend/js/app.js`:
+    - `window.cashAdvanceData` state store.
+    - `switchFormStudioSheet('cashad')`: Active tab styling (`#e8f0fe` soft blue background, `#1967d2` bold text).
+    - `syncCashAdvanceMeta()`, `renderCashAdvanceEditor()`, `addCashAdvanceItem()`, `removeCashAdvanceItem()`, `updateCashAdvanceItem()`, `calculateCashAdvanceTotals()`, `syncCashAdvanceCanvas()`.
+    - `printCashAdvance()`: Dedicated isolated iframe print engine with A4 print CSS.
+  - Incremented cache-buster script tag to `js/app.js?v=5.53` in `frontend/index.html`.
+* **Status**: 🟢 Delivered & Verified
+
 ---
 
 ## 📋 Tracking Table
@@ -249,5 +277,6 @@ This log tracks all iterations, architectural changes, UI additions, and commits
 | `REV-PROTO-010` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | 100% Google Sheets bottom workbook bar replication (Job_Order, QUOTE, BILLING, etc.). | `7970d2e` | 🟢 Verified |
 | `REV-PROTO-011` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Purged temporary sheets (`Sheet1`, `Sheet2`, `BILLING 2`); locked 9 operational sheets. | `7e59b20` | 🟢 Verified |
 | `REV-PROTO-012` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Form 3/3 Billing Studio with 35-row matrix, BIR 12% VAT & Google Sheets tab integration. | `4041d8e` | 🟢 Verified |
-| `REV-PROTO-013` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Multi-Point Vehicle Intake Inspection Checklist Studio (`CHECKLIST RESULT`) & 1:1 Live Physical Canvas. | `HEAD` | 🟢 Verified |
+| `REV-PROTO-013` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Multi-Point Vehicle Intake Inspection Checklist Studio (`CHECKLIST RESULT`) & 1:1 Live Physical Canvas. | `e8039bd` | 🟢 Verified |
+| `REV-PROTO-014` | `2026-09-10` | `frontend/index.html`, `frontend/js/app.js` | Form 5 Cash Advance Voucher & Ledger Studio (`CASH ADVANCE`) with running balance & Google Sheets tab. | `HEAD` | 🟢 Verified |
 
