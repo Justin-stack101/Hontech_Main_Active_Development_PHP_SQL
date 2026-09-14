@@ -140,7 +140,7 @@ $tvSessionFile = __DIR__ . '/tv_session.json';
 
 if ($method === 'GET' && $route === '/tv/session') {
     $session = [
-        'active'        => true,
+        'active'        => false,
         'pin'           => '8492',
         'branch'        => 'Marikina Main Branch',
         'updated_at'    => date('Y-m-d H:i:s')
@@ -158,7 +158,7 @@ if ($method === 'GET' && $route === '/tv/session') {
 if ($method === 'POST' && $route === '/tv/session') {
     $input = json_decode(file_get_contents('php://input'), true) ?? [];
     $session = [
-        'active'        => true,
+        'active'        => false,
         'pin'           => '8492',
         'branch'        => 'Marikina Main Branch',
         'updated_at'    => date('Y-m-d H:i:s')
@@ -192,7 +192,7 @@ if ($method === 'POST' && $route === '/tv/verify-pin') {
     $submittedPin = trim((string)($input['pin'] ?? ''));
 
     $session = [
-        'active'        => true,
+        'active'        => false,
         'pin'           => '8492',
         'branch'        => 'Marikina Main Branch'
     ];

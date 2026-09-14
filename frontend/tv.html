@@ -526,10 +526,50 @@
             showScreen('auth');
         }
 
+        let standbyPollInterval = null;
+
+        function startStandbyPolling() {
+            if (standbyPollInterval) return;
+            standbyPollInterval = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/tv/session');
+                    const session = await res.json();
+                    if (session && session.active) {
+                        clearInterval(standbyPollInterval);
+                        standbyPollInterval = null;
+                        const savedPin = localStorage.getItem('hontech_tv_pin');
+                        if (savedPin) {
+                            await submitPinAuthentication(savedPin);
+                        } else {
+                            showScreen('auth');
+                            const errEl = document.getElementById('auth-error-msg');
+                            if (errEl) errEl.innerText = '';
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Standby poll error:', e);
+                }
+            }, 3000);
+        }
+
+        function stopStandbyPolling() {
+            if (standbyPollInterval) {
+                clearInterval(standbyPollInterval);
+                standbyPollInterval = null;
+            }
+        }
+
         function showScreen(screen) {
             document.getElementById('screen-auth').classList.toggle('hidden', screen !== 'auth');
             document.getElementById('screen-standby').classList.toggle('hidden', screen !== 'standby');
             document.getElementById('screen-active-tv').classList.toggle('hidden', screen !== 'active');
+            
+            if (screen === 'standby') {
+                startStandbyPolling();
+            } else {
+                stopStandbyPolling();
+            }
+
             if (window.lucide) lucide.createIcons();
         }
 

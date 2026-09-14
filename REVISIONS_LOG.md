@@ -66,6 +66,26 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **Direct URL Query Handling**: Added automatic redirect in `app.js` routing `index.html?mode=tv` directly to `tv.html`.
 * **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.58`.
 
+### 📺 Staff TV Live Activation & Manual TV Opening Flow (REV-058 / v5.60)
+* **Physical Workshop Process Alignment**: Tailored the TV Monitor operational flow to reflect the physical workshop environment:
+  1. The TV starts in an **Offline / Standby** state by default.
+  2. A staff member (SA, Assistant, Owner, Admin) clicks **"Make TV Live Now"** on their workstation or mobile dashboard.
+  3. The module activates the broadcast session and reveals the generated **Smart TV Browser Link** (`http://<IP>:8000/tv.html`) and the **4-digit Password / PIN** (`8492`).
+  4. The staff manually opens the built-in browser on the Smart TV (Samsung, LG, Sony, etc.), types in the link, and enters the password using the TV remote.
+* **Staff TV Broadcast Hub Two-State UI (`#modal-tv-broadcast-hub`)**:
+  - **State 1: Offline (`#tv-hub-state-offline`)**: Displays when the broadcast is offline. Features a prominent call-to-action button: `🔴 Make TV Live Now (Generate Link & Password)` with clear guidance that no HDMI cables are needed.
+  - **State 2: Live (`#tv-hub-state-live`)**: Reveals the generated TV Link with 1-click copy, the 4-digit Password with 1-click rotation, auto-login link for bookmarks, dynamic QR code, and a 3-step manual setup checklist. Includes a `⏹️ Stop Live` control to power down the broadcast.
+* **Broadcast Manager Methods (`HontechTVBroadcastManager`)**:
+  - `startLiveBroadcast()`: Activates the session (`active: true`), generates link & PIN, updates the modal UI to Live state, and alerts staff via toast feedback.
+  - `stopLiveBroadcast()`: Pauses the session (`active: false`), updates the modal UI to Offline state, and places connected TVs into standby mode.
+  - `updateUI()`: Toggles `#tv-hub-state-offline` and `#tv-hub-state-live` with defensive element guards.
+* **Smart TV Auto-Standby & Wakeup Engine (`frontend/tv.html`)**:
+  - Added `startStandbyPolling()` and `stopStandbyPolling()`: When in standby, the TV checks `/api/tv/session` every 3 seconds. The moment staff activates the broadcast, the TV automatically authenticates and transitions to active monitoring.
+* **Backend API & Response Guard**:
+  - Ensured `GET /tv/session` and `POST /tv/verify-pin` strictly default to `active: false` until staff activation.
+  - Added `ApiResponse::badRequest()` helper method in `backend/utils/ApiResponse.php`.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.60`.
+
 ---
 
 

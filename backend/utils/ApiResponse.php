@@ -55,6 +55,14 @@ class ApiResponse
     }
 
     /**
+     * 400 Bad Request Response
+     */
+    public static function badRequest(string $message = 'Bad request.', mixed $details = null): void
+    {
+        self::error($message, 400, $details);
+    }
+
+    /**
      * 401 Unauthorized Response
      */
     public static function unauthorized(string $message = 'Authentication required. Access denied.'): void

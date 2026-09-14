@@ -7761,6 +7761,36 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     console.warn('Could not load TV broadcast session:', e);
                 }
             },
+            async startLiveBroadcast() {
+                try {
+                    const res = await apiRequest('/api/tv/session', {
+                        method: 'POST',
+                        body: { active: true }
+                    });
+                    if (res && res.session) {
+                        this.session = res.session;
+                        this.updateUI();
+                        showSystemToast('🟢 TV is now LIVE! Link and password generated.', 'success', 'TV Broadcast');
+                    }
+                } catch (e) {
+                    showSystemToast('Error activating TV broadcast.', 'error');
+                }
+            },
+            async stopLiveBroadcast() {
+                try {
+                    const res = await apiRequest('/api/tv/session', {
+                        method: 'POST',
+                        body: { active: false }
+                    });
+                    if (res && res.session) {
+                        this.session = res.session;
+                        this.updateUI();
+                        showSystemToast('🔴 TV broadcast turned OFF. Connected TVs are on standby.', 'info', 'TV Broadcast');
+                    }
+                } catch (e) {
+                    showSystemToast('Error stopping TV broadcast.', 'error');
+                }
+            },
             async toggleBroadcast() {
                 const newActive = !this.session.active;
                 try {
@@ -7810,7 +7840,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             updateUI() {
                 const { directUrl, autoLoginUrl } = this.getTVUrls();
 
-                // 1. Update status badges & buttons
+                // 1. Two-State Display: Offline vs Live
+                const offlineStateEl = document.getElementById('tv-hub-state-offline');
+                const liveStateEl = document.getElementById('tv-hub-state-live');
+
+                // 2. Update status badges & buttons
                 const headerBadge = document.getElementById('tv-hub-header-badge');
                 const navBadge = document.getElementById('badge-tv-broadcast-status');
                 const toggleIconWrap = document.getElementById('tv-hub-toggle-icon-wrap');
@@ -7819,26 +7853,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const toggleBtnText = document.getElementById('btn-toggle-tv-broadcast-text');
 
                 if (this.session.active) {
+                    if (offlineStateEl) offlineStateEl.classList.add('hidden');
+                    if (liveStateEl) liveStateEl.classList.remove('hidden');
+
                     if (headerBadge) {
                         headerBadge.className = 'text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-                        headerBadge.innerText = 'Active';
+                        headerBadge.innerText = 'Live';
                     }
                     if (navBadge) {
                         navBadge.className = 'px-1.5 py-0.2 rounded-md bg-emerald-500/30 text-emerald-300 text-[8.5px] font-mono uppercase tracking-wider';
-                        navBadge.innerText = 'Active';
+                        navBadge.innerText = 'Live';
                     }
                     if (toggleIconWrap) toggleIconWrap.className = 'w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center';
                     if (toggleDesc) toggleDesc.innerText = 'Broadcasting live workshop queue and bay monitoring';
                     if (toggleBtn) toggleBtn.className = 'px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-md shadow-emerald-600/20 flex items-center gap-1.5';
                     if (toggleBtnText) toggleBtnText.innerText = 'Broadcast: ON';
                 } else {
+                    if (offlineStateEl) offlineStateEl.classList.remove('hidden');
+                    if (liveStateEl) liveStateEl.classList.add('hidden');
+
                     if (headerBadge) {
                         headerBadge.className = 'text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30';
-                        headerBadge.innerText = 'Paused';
+                        headerBadge.innerText = 'Offline';
                     }
                     if (navBadge) {
                         navBadge.className = 'px-1.5 py-0.2 rounded-md bg-gray-700 text-gray-400 text-[8.5px] font-mono uppercase tracking-wider';
-                        navBadge.innerText = 'Standby';
+                        navBadge.innerText = 'Offline';
                     }
                     if (toggleIconWrap) toggleIconWrap.className = 'w-10 h-10 rounded-xl bg-gray-800 text-gray-500 border border-gray-700 flex items-center justify-center';
                     if (toggleDesc) toggleDesc.innerText = 'Broadcast is PAUSED. Connected TVs display standby screen.';
@@ -7846,7 +7886,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (toggleBtnText) toggleBtnText.innerText = 'Broadcast: OFF';
                 }
 
-                // 2. Update Link & PIN inputs
+                // 3. Update Link & PIN inputs
                 const displayUrlInput = document.getElementById('tv-hub-display-url');
                 if (displayUrlInput) displayUrlInput.value = directUrl;
 
@@ -7859,7 +7899,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const openTabBtn = document.getElementById('tv-hub-open-tab-btn');
                 if (openTabBtn) openTabBtn.href = autoLoginUrl;
 
-                // 3. Update QR Code
+                // 4. Update QR Code
                 const qrImg = document.getElementById('tv-hub-qr-img');
                 if (qrImg) {
                     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(autoLoginUrl)}`;

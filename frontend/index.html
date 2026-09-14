@@ -6976,6 +6976,181 @@
                         <option value="Technician Unavailable">Technician Unavailable</option>
                         <option value="WCA">WCA</option>
                         <option value="Others">Others</option>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-end pt-2">
+                    <button onclick="closeBackupEmailModal()"
+                        class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl text-xs uppercase tracking-wider transition">Cancel</button>
+                    <button onclick="submitBackupEmailVerify()"
+                        class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-green-600/10">Verify
+                        & Configure</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Auth Simulation Dialog -->
+    <div id="google-sim-modal"
+        class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8 border border-gray-100 text-center space-y-6">
+            <div
+                class="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto text-red-600 border border-red-100">
+                <i data-lucide="shield-check" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-black text-gray-900 tracking-tight">Google Account Sandbox</h3>
+                <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">Simulated Google Auth Service
+                </p>
+            </div>
+            <p class="text-sm text-gray-600 leading-relaxed font-semibold">
+                Since Google Client ID is not configured in `.env`, we are using the secure sandbox simulation to test
+                the login/recovery flow.
+            </p>
+            <div class="space-y-4 pt-2 text-left">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1.5 block font-black">Select Seeded Account</label>
+                    <select id="google-sim-select" onchange="document.getElementById('google-sim-custom-email').value = this.value" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition cursor-pointer">
+                        <option value="owner@hontech.com">System Owner (owner@hontech.com)</option>
+                        <option value="admin@hontech.com">System Admin (admin@hontech.com)</option>
+                        <option value="staff@hontech.com">Front Desk A (staff@hontech.com)</option>
+                        <option value="sa@hontech.com">Service Advisor A (sa@hontech.com)</option>
+                        <option value="staff.east@hontech.com">Front Desk B (staff.east@hontech.com)</option>
+                        <option value="sa.east@hontech.com">Service Advisor B (sa.east@hontech.com)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1.5 block font-black">Or Custom Google Email</label>
+                    <input type="email" id="google-sim-custom-email" value="owner@hontech.com" placeholder="email@google.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition">
+                </div>
+                <button onclick="submitGoogleSim()"
+                    class="w-full py-3.5 bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Authenticate via Google
+                </button>
+            </div>
+            <button onclick="closeGoogleSim()"
+                class="text-xs font-bold text-gray-400 hover:text-gray-600 transition uppercase tracking-widest pt-2 block mx-auto">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Beautiful Custom Delete Confirmation Modal -->
+    <div id="delete-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 select-none">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 border border-slate-200 text-center space-y-4">
+            <div class="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center mx-auto text-rose-600 border border-rose-100 shadow-2xs">
+                <i data-lucide="trash-2" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900 tracking-tight">Confirm Deletion</h3>
+                <p class="text-xs text-slate-500 font-medium">This action cannot be undone</p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs text-slate-700 font-medium leading-relaxed text-center" id="delete-confirm-message">
+                Are you sure you want to permanently delete this booking record?
+            </div>
+            <input type="hidden" id="delete-confirm-job-id">
+            <div class="flex items-center gap-2.5 pt-1">
+                <button type="button" onclick="closeDeleteConfirmModal()"
+                    class="flex-1 py-2.5 px-3 bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs rounded-xl border border-slate-300 hover:border-slate-400 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmDeleteJob()"
+                    class="flex-1 py-2.5 px-3 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Beautiful Custom Release Confirmation Modal -->
+    <div id="release-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 select-none">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 border border-slate-200 text-center space-y-4">
+            <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto text-emerald-600 border border-emerald-100 shadow-2xs">
+                <i data-lucide="check-circle" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900 tracking-tight">Finalize Release</h3>
+                <p class="text-xs text-slate-500 font-medium">Archiving vehicle record to history</p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs text-slate-700 font-medium leading-relaxed text-center" id="release-confirm-message">
+                Are you sure you want to finalize the release? This will remove the vehicle from the active workshop view.
+            </div>
+            <input type="hidden" id="release-confirm-job-id">
+            <div class="flex items-center gap-2.5 pt-1">
+                <button type="button" onclick="closeReleaseConfirmModal()"
+                    class="flex-1 py-2.5 px-3 bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs rounded-xl border border-slate-300 hover:border-slate-400 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmReleaseJob()"
+                    class="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                    <span>Release</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign Confirm Modal -->
+    <div id="assign-confirm-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full border border-gray-200 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 pb-3">
+                <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="user-check" class="w-6 h-6"></i></div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Take Job</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Assign to yourself</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed">
+                Are you sure you want to assign this vehicle to yourself?
+            </p>
+            <input type="hidden" id="assign-job-id">
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="document.getElementById('assign-confirm-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="confirmAssignJob()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-blue-500/10">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carry-Over Details Modal -->
+    <div id="carryover-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-gray-200 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 border-b border-gray-150 pb-3">
+                <div class="p-2.5 bg-orange-50 text-orange-655 rounded-xl"><i data-lucide="calendar-off" class="w-6 h-6 text-orange-600"></i></div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Carry-Over Details</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Specify promised date and status</p>
+                </div>
+            </div>
+            <input type="hidden" id="carryover-job-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Promised Completion Date <span class="text-red-500">*</span></label>
+                    <input type="date" id="carryover-promised-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm focus:border-orange-500 transition">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Parts & Materials Available? <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer border border-gray-200 hover:border-emerald-500 rounded-xl p-3 flex items-center justify-between transition bg-gray-50 has-checked:bg-emerald-50 has-checked:border-emerald-500 has-checked:text-emerald-900 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> YES</span>
+                            <input type="radio" name="carryover-parts-available" value="Yes" class="accent-emerald-600 w-4 h-4 cursor-pointer">
+                        </label>
+                        <label class="cursor-pointer border border-gray-200 hover:border-rose-500 rounded-xl p-3 flex items-center justify-between transition bg-gray-50 has-checked:bg-rose-50 has-checked:border-rose-500 has-checked:text-rose-900 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> NO</span>
+                            <input type="radio" name="carryover-parts-available" value="No" checked class="accent-rose-600 w-4 h-4 cursor-pointer">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
+                    <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
+                        <option value="Awaiting Parts">Awaiting Parts</option>
+                        <option value="Extended Repair">Extended Repair</option>
+                        <option value="Technician Unavailable">Technician Unavailable</option>
+                        <option value="WCA">WCA</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
             </div>
@@ -6987,20 +7162,20 @@
     </div>
 
     <!-- WIRELESS SMART TV BROADCAST HUB MODAL (HDMI-Free Access via Link & PIN) -->
-    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 select-none">
         <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
+                    <div id="tv-hub-header-icon-wrap" class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
                         <i data-lucide="tv" class="w-5 h-5"></i>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h3 class="text-base font-black uppercase tracking-wider text-white">TV Monitor Launch & Control Hub</h3>
-                            <span id="tv-hub-header-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Active</span>
+                            <h3 class="text-base font-black uppercase tracking-wider text-white">Smart TV Wireless Monitor Hub</h3>
+                            <span id="tv-hub-header-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30">Offline</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-semibold">Select your display flow: Launch locally on this PC or connect Smart TVs wirelessly over Wi-Fi</p>
+                        <p class="text-[11px] text-gray-400 font-semibold">Make TV Live to generate the access link and password for your Smart TV</p>
                     </div>
                 </div>
                 <button onclick="closeTVBroadcastHubModal()" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
@@ -7011,90 +7186,103 @@
             <!-- Modal Body -->
             <div class="p-6 space-y-5 max-h-[82vh] overflow-y-auto custom-scroll">
 
-                <!-- FLOW PATH 1: Open TV Kiosk On This PC / Local Display -->
-                <div class="p-4 bg-gradient-to-br from-gray-900 via-gray-900 to-gray-850 border border-gray-750 rounded-2xl space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-md bg-red-600 text-white text-[9px] font-black uppercase tracking-wider">Option 1</span>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Display on this PC / Local Monitor</span>
+                <!-- ========================================================= -->
+                <!-- STATE 1: TV IS OFFLINE (Staff must click 'Make TV Live')   -->
+                <!-- ========================================================= -->
+                <div id="tv-hub-state-offline" class="p-6 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 border border-gray-800 rounded-3xl text-center space-y-5">
+                    <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full bg-red-600/10 animate-ping"></div>
+                        <div class="w-16 h-16 rounded-2xl bg-gray-950 border-2 border-red-500/30 flex items-center justify-center text-red-500 shadow-xl relative z-10">
+                            <i data-lucide="radio" class="w-8 h-8 text-red-400"></i>
                         </div>
-                        <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Ready
-                        </span>
-                    </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">
-                        Open the live borderless cinema display in a dedicated browser tab right now, with automatic PIN sign-in.
-                    </p>
-                    <button type="button" onclick="HontechTVBroadcastManager.launchDirectKiosk()" class="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black text-xs uppercase tracking-wider rounded-xl transition cursor-pointer shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 active:scale-[0.99]">
-                        <i data-lucide="external-link" class="w-4 h-4"></i>
-                        <span>Launch TV Cinema Kiosk (New Tab)</span>
-                    </button>
-                </div>
-
-                <!-- FLOW PATH 2: Wireless Smart TV Connection (No HDMI Cables) -->
-                <div class="p-4 bg-gray-900/90 border border-gray-800 rounded-2xl space-y-4">
-                    <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded-md bg-blue-600 text-white text-[9px] font-black uppercase tracking-wider">Option 2</span>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Connect Actual Smart TV Wirelessly</span>
-                        </div>
-                        <span class="text-[10px] text-gray-400 font-medium">No HDMI Cables Required</span>
                     </div>
 
-                    <!-- Master Broadcast Power Switch -->
-                    <div class="p-3 bg-gray-950 border border-gray-800 rounded-xl flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center gap-2.5">
-                            <div id="tv-hub-toggle-icon-wrap" class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
-                                <i data-lucide="power" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <span class="text-xs font-bold text-white block">TV Broadcast Stream Power</span>
-                                <span id="tv-hub-toggle-desc" class="text-[10px] text-gray-400">Broadcasting live workshop queue and bay monitoring</span>
-                            </div>
-                        </div>
-                        <button type="button" id="btn-toggle-tv-broadcast" onclick="HontechTVBroadcastManager.toggleBroadcast()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-md shadow-emerald-600/20 flex items-center gap-1.5">
-                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
-                            <span id="btn-toggle-tv-broadcast-text">Broadcast: ON</span>
+                    <div class="space-y-1.5 max-w-md mx-auto">
+                        <h4 class="text-lg font-black uppercase tracking-wide text-white">TV Service Monitor is Offline</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            The TV in the customer lounge or workshop is currently waiting. To open the system on the TV, click below to make the broadcast live and generate the active link and password.
+                        </p>
+                    </div>
+
+                    <div class="pt-2 max-w-md mx-auto">
+                        <button type="button" onclick="HontechTVBroadcastManager.startLiveBroadcast()" class="w-full py-4 px-6 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-95 group">
+                            <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
+                            <span>Make TV Live Now (Generate Link & Password)</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
                         </button>
                     </div>
 
-                    <!-- 2-Column Info Deck: Link & PIN on left, QR Code on right -->
+                    <div class="p-3 bg-gray-950 border border-gray-850 rounded-xl text-[10.5px] text-gray-400 max-w-md mx-auto flex items-center justify-center gap-2">
+                        <i data-lucide="info" class="w-4 h-4 text-red-400 shrink-0"></i>
+                        <span>No HDMI cables needed — works on any Smart TV browser over Wi-Fi.</span>
+                    </div>
+                </div>
+
+                <!-- ========================================================= -->
+                <!-- STATE 2: TV IS LIVE (Link and Password provided to Staff)  -->
+                <!-- ========================================================= -->
+                <div id="tv-hub-state-live" class="hidden space-y-4">
+                    
+                    <!-- Live Banner Card -->
+                    <div class="p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
+                            <div>
+                                <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block">TV Broadcast is LIVE!</span>
+                                <span class="text-[11px] text-gray-300">Open the link below on the Smart TV and enter the password:</span>
+                            </div>
+                        </div>
+                        <button type="button" onclick="HontechTVBroadcastManager.stopLiveBroadcast()" class="px-3 py-1.5 bg-gray-900 hover:bg-red-950/80 text-rose-300 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl border border-rose-500/30 transition cursor-pointer flex items-center gap-1.5 shadow-sm">
+                            <i data-lucide="power" class="w-3.5 h-3.5"></i> Stop Live
+                        </button>
+                    </div>
+
+                    <!-- 2-Column Info Deck: Link & Password on left, QR on right -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         
-                        <!-- Left: TV Access Link & PIN (2 cols) -->
-                        <div class="md:col-span-2 space-y-2.5">
-                            <!-- TV Link Box -->
-                            <div class="p-3 bg-gray-950 border border-gray-800 rounded-xl">
-                                <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">1. Smart TV Browser Link:</label>
-                                <div class="flex items-center gap-1.5">
-                                    <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-900 border border-gray-700 text-red-400 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none select-all">
-                                    <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Link">
-                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        <!-- Left: TV Access Link & Password (2 cols) -->
+                        <div class="md:col-span-2 space-y-3">
+                            <!-- 1. TV Link Box -->
+                            <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
+                                <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block mb-1 flex items-center gap-1.5">
+                                    <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">1</span>
+                                    Open this Link on the Smart TV Browser:
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-950 border border-gray-700 text-red-400 font-mono font-bold text-xs px-3 py-2 rounded-xl outline-none select-all">
+                                    <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Copy Link">
+                                        <i data-lucide="copy" class="w-4 h-4"></i>
                                     </button>
                                 </div>
+                                <p class="text-[9.5px] text-gray-500 mt-1">Type this address in Samsung Internet, LG Web Browser, Sony Chrome, etc.</p>
                             </div>
 
-                            <!-- TV Access PIN Box -->
-                            <div class="p-3 bg-gray-950 border border-gray-800 rounded-xl flex items-center justify-between">
+                            <!-- 2. TV Access Password / PIN Box -->
+                            <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-between">
                                 <div>
-                                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block">2. TV Security PIN:</label>
-                                    <p class="text-[10px] text-gray-400">Enter via TV remote:</p>
+                                    <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block flex items-center gap-1.5">
+                                        <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">2</span>
+                                        TV Access Password:
+                                    </label>
+                                    <p class="text-[10px] text-gray-400 mt-0.5">Enter this 4-digit code using your TV remote:</p>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span id="tv-hub-display-pin" class="px-3.5 py-1 bg-red-600/20 border border-red-500/40 text-red-400 text-lg font-mono font-black rounded-lg tracking-widest">
+                                    <span id="tv-hub-display-pin" class="px-4 py-1.5 bg-red-600/20 border-2 border-red-500/40 text-red-400 text-xl font-mono font-black rounded-xl tracking-widest">
                                         8492
                                     </span>
-                                    <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg transition cursor-pointer" title="Generate New PIN">
-                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                    <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition cursor-pointer" title="Generate New Password">
+                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Auto-Login Link (Bookmark Ready) -->
-                            <div class="p-3 bg-gray-950 border border-gray-800 rounded-xl">
-                                <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">3. 1-Click Auto-Login (Save to TV Bookmarks):</label>
+                            <!-- 3. Optional 1-Click Bookmark URL -->
+                            <div class="p-3 bg-gray-900/60 border border-gray-800 rounded-2xl">
+                                <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">
+                                    Save to TV Bookmarks (Auto-Login Link):
+                                </label>
                                 <div class="flex items-center gap-1.5">
-                                    <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-900 border border-gray-700 text-emerald-400 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none select-all">
+                                    <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-950 border border-gray-750 text-emerald-400 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none select-all">
                                     <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 active:bg-emerald-600 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
                                         <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                                     </button>
@@ -7103,39 +7291,47 @@
                         </div>
 
                         <!-- Right: QR Code Card (1 col) -->
-                        <div class="bg-gray-950 border border-gray-800 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-                            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">Scan via Phone/TV</span>
+                        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">Scan with Phone / TV</span>
                             <div class="p-2 bg-white rounded-xl shadow-md mb-2">
-                                <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-24 h-24 object-contain">
+                                <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-28 h-28 object-contain">
                             </div>
-                            <p class="text-[9.5px] text-gray-400 font-medium leading-tight">Instant TV login</p>
+                            <p class="text-[9.5px] text-gray-400 font-medium leading-tight">Scan camera to open TV monitor instantly</p>
                         </div>
                     </div>
 
-                    <!-- Simple 3-Step TV Setup Guide -->
-                    <div class="p-3 bg-gray-950 border border-gray-800 rounded-xl">
+                    <!-- Setup Checklist Guide -->
+                    <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
                         <span class="text-[9.5px] font-black uppercase tracking-wider text-red-400 flex items-center gap-1.5 mb-2">
-                            <i data-lucide="info" class="w-3.5 h-3.5"></i> 3-Step Setup for Any Smart TV (Samsung, LG, Sony, Android TV)
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Manual Setup on the Smart TV:
                         </span>
-                        <ol class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10px] text-gray-400">
-                            <li class="p-2 rounded-lg bg-gray-900 border border-gray-850">
-                                <strong class="text-white block mb-0.5">1. Connect Wi-Fi</strong>
-                                TV and PC must be on the same shop Wi-Fi network.
+                        <ol class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[10.5px] text-gray-400">
+                            <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
+                                <strong class="text-white block mb-0.5">1. Open Browser</strong>
+                                On your Smart TV, launch the built-in browser and type the link above.
                             </li>
-                            <li class="p-2 rounded-lg bg-gray-900 border border-gray-850">
-                                <strong class="text-white block mb-0.5">2. Open TV Browser</strong>
-                                Open browser, enter link, or bookmark the 1-click URL.
+                            <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
+                                <strong class="text-white block mb-0.5">2. Enter Password</strong>
+                                Use your TV remote to enter the 4-digit code shown above.
                             </li>
-                            <li class="p-2 rounded-lg bg-gray-900 border border-gray-850">
-                                <strong class="text-white block mb-0.5">3. Enter PIN & Fullscreen</strong>
-                                Type the 4-digit PIN. Click Fullscreen for borderless mode.
+                            <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
+                                <strong class="text-white block mb-0.5">3. Fullscreen</strong>
+                                Click the on-screen Fullscreen button for a borderless cinema display.
                             </li>
                         </ol>
+                    </div>
+
+                    <!-- Preview On This Device -->
+                    <div class="pt-2 flex items-center justify-between text-xs border-t border-gray-800">
+                        <button type="button" onclick="HontechTVBroadcastManager.launchDirectKiosk()" class="text-gray-400 hover:text-white underline transition flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Test / Open TV monitor on this computer
+                        </button>
                     </div>
 
                 </div>
 
             </div>
+        </div>
     </div>
 
     <!-- UNIFIED DEVELOPER TOOLBOX MODAL (Triggered exclusively via Ctrl + D) -->
@@ -8843,7 +9039,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.58"></script>
+    <script src="js/app.js?v=5.60"></script>
 </body>
 
 </html>
