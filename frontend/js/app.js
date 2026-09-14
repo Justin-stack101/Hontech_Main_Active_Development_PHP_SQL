@@ -176,12 +176,25 @@
             if (statusBadge) {
                 if (simulatedSystemDate) {
                     statusBadge.innerText = 'SIMULATED: ' + simulatedSystemDate;
-                    statusBadge.className = 'px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50';
+                    statusBadge.className = 'px-2 py-0.5 text-[8.5px] font-black uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50';
                 } else {
                     statusBadge.innerText = 'Real-Time Mode';
-                    statusBadge.className = 'px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                    statusBadge.className = 'px-2 py-0.5 text-[8.5px] font-black uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
                 }
             }
+
+            // Sync Queue view alert banner
+            const simBanner = document.getElementById('dev-sim-active-banner');
+            const simBannerDate = document.getElementById('dev-sim-banner-date');
+            if (simBanner) {
+                if (simulatedSystemDate) {
+                    simBanner.classList.remove('hidden');
+                    if (simBannerDate) simBannerDate.innerText = simulatedSystemDate;
+                } else {
+                    simBanner.classList.add('hidden');
+                }
+            }
+
             const baseDate = new Date(getEffectiveQueueDate());
             const yest = new Date(baseDate);
             yest.setDate(yest.getDate() - 1);
@@ -207,13 +220,13 @@
             if (msgEl) {
                 if (currentQueueDate === todayStr) {
                     msgEl.innerText = 'Viewing Today (Active Workshop)';
-                    msgEl.className = 'text-[9.5px] text-emerald-300 truncate font-mono text-center';
+                    msgEl.className = 'text-[9px] text-emerald-300 truncate font-mono text-center mt-1 font-semibold';
                 } else if (currentQueueDate > todayStr) {
                     msgEl.innerText = `Viewing Future/Tomorrow (${currentQueueDate}) - Clean Reset Active`;
-                    msgEl.className = 'text-[9.5px] text-blue-300 truncate font-mono text-center';
+                    msgEl.className = 'text-[9px] text-blue-300 truncate font-mono text-center mt-1 font-semibold';
                 } else {
                     msgEl.innerText = `Viewing Past Date (${currentQueueDate}) - Historical Recall Active`;
-                    msgEl.className = 'text-[9.5px] text-amber-300 truncate font-mono text-center';
+                    msgEl.className = 'text-[9px] text-amber-300 truncate font-mono text-center mt-1 font-semibold';
                 }
             }
         }
@@ -1288,6 +1301,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (shouldShow) {
                 modal.classList.remove('hidden');
+                if (typeof updateDevSimulationTelemetry === 'function') {
+                    updateDevSimulationTelemetry();
+                }
                 showSystemToast('🛠️ Developer Toolbox active (Press Ctrl + D to toggle)', 'info', 'Developer Sandbox');
             } else {
                 modal.classList.add('hidden');
