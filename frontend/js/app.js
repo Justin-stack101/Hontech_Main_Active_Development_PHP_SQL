@@ -7929,9 +7929,66 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const { autoLoginUrl } = this.getTVUrls();
                 window.open(autoLoginUrl, '_blank');
             },
+            async launchHDMIKiosk() {
+                try {
+                    // Ensure broadcast session is active so kiosk loads live data
+                    if (!this.session.active) {
+                        const res = await apiRequest('/api/tv/session', {
+                            method: 'POST',
+                            body: { active: true }
+                        });
+                        if (res && res.session) {
+                            this.session = res.session;
+                            this.updateUI();
+                        }
+                    }
+                    const { autoLoginUrl } = this.getTVUrls();
+                    const hdmiUrl = `${autoLoginUrl}&kiosk=true`;
+                    window.open(hdmiUrl, '_blank');
+                    showSystemToast('📺 HDMI Cinema Kiosk opened. Drag window to TV screen and press F11!', 'success', 'HDMI Output');
+                } catch (e) {
+                    showSystemToast('Error opening HDMI kiosk.', 'error');
+                }
+            },
             viewInAppMonitor() {
                 closeTVBroadcastHubModal();
                 showSection('tv');
+            },
+            activeMethod: 'live',
+            switchMethod(method) {
+                this.activeMethod = method || 'live';
+                try {
+                    localStorage.setItem('hontech_tv_hub_method', this.activeMethod);
+                } catch (e) {}
+
+                const btnLive = document.getElementById('tab-tv-method-live');
+                const btnHdmi = document.getElementById('tab-tv-method-hdmi');
+                const panelLive = document.getElementById('panel-tv-method-live');
+                const panelHdmi = document.getElementById('panel-tv-method-hdmi');
+
+                if (this.activeMethod === 'live') {
+                    if (btnLive) {
+                        btnLive.className = 'p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-red-600/15 border-red-500/40 text-white shadow-sm';
+                    }
+                    if (btnHdmi) {
+                        btnHdmi.className = 'p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white';
+                    }
+                    if (panelLive) panelLive.classList.remove('hidden');
+                    if (panelHdmi) panelHdmi.classList.add('hidden');
+                } else {
+                    if (btnLive) {
+                        btnLive.className = 'p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white';
+                    }
+                    if (btnHdmi) {
+                        btnHdmi.className = 'p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-amber-500/15 border-amber-500/40 text-white shadow-sm';
+                    }
+                    if (panelLive) panelLive.classList.add('hidden');
+                    if (panelHdmi) panelHdmi.classList.remove('hidden');
+                }
+
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
             }
         };
         window.HontechTVBroadcastManager = HontechTVBroadcastManager;
@@ -7940,6 +7997,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const modal = document.getElementById('modal-tv-broadcast-hub');
             if (modal) {
                 modal.classList.remove('hidden');
+                const savedMethod = localStorage.getItem('hontech_tv_hub_method') || 'live';
+                HontechTVBroadcastManager.switchMethod(savedMethod);
                 HontechTVBroadcastManager.loadSession();
                 if (window.lucide && typeof window.lucide.createIcons === 'function') {
                     window.lucide.createIcons();

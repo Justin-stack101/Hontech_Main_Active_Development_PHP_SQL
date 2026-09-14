@@ -84,7 +84,24 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **Backend API & Response Guard**:
   - Ensured `GET /tv/session` and `POST /tv/verify-pin` strictly default to `active: false` until staff activation.
   - Added `ApiResponse::badRequest()` helper method in `backend/utils/ApiResponse.php`.
-* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.60`.
+### 📺 Unified TV Display Hub: Two-Method Flow (Live Stream vs HDMI Cable) (REV-059 / v5.61)
+* **Unified User Flow Popup**: When a user clicks **"TV Monitor"** in the top navigation bar or sidebar across any role (**Owner**, **Admin**, **Service Advisor**, **Assistant**), a modal popup (`#modal-tv-broadcast-hub`) appears presenting two connection methods:
+  - **Method Option 1: Live Wireless Smart TV (`#tab-tv-method-live`)**:
+    - **Step 1**: Staff clicks **"Make TV Live Now"** when TV is offline.
+    - **Step 2**: The module generates and reveals the active **Smart TV Browser Link** (`http://<IP>:8000/tv.html`) and the **4-digit Password / PIN** (`8492`).
+    - **Step 3**: Staff manually opens the built-in browser on the Smart TV (Samsung, LG, Sony, etc.) and enters the 4-digit password using the TV remote control.
+    - Includes auto-login bookmark URL, dynamic QR code, and 1-click password re-generation.
+  - **Method Option 2: Direct HDMI Cable Mode (`#tab-tv-method-hdmi`)**:
+    - **Step 1: Plug Cable**: Connect an HDMI cable directly from the computer to the TV monitor port.
+    - **Step 2: Extend Screen**: Press <kbd>Win + P</kbd> on the keyboard and select **"Extend"** to configure the TV as a secondary display.
+    - **Step 3: Launch Kiosk**: Click **"Launch HDMI Cinema Kiosk (New Window)"** to launch the borderless monitor on the TV screen without requiring password entry.
+    - Includes **"Open In-App"** preview to view the monitor without opening a new window.
+* **Broadcast Manager Methods (`HontechTVBroadcastManager`)**:
+  - `switchMethod(method)`: Switches active selection and toggles `#panel-tv-method-live` vs `#panel-tv-method-hdmi` with persistent choice in `localStorage`.
+  - `launchHDMIKiosk()`: Ensures broadcast session is active and opens `tv.html?pin=XXXX&kiosk=true` in a new window ready to drag to the TV.
+* **Standalone Kiosk App (`frontend/tv.html`)**:
+  - Added `kiosk=true` query parameter detection on startup to automatically request fullscreen for HDMI secondary monitors.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.61`.
 
 ---
 

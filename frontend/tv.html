@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+22<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -889,10 +889,16 @@
             // 1. Check for URL parameter auto-login (?pin=XXXX)
             const urlParams = new URLSearchParams(window.location.search);
             const queryPin = urlParams.get('pin');
+            const isKiosk = urlParams.get('kiosk') === 'true';
             if (queryPin) {
                 currentPin = queryPin;
                 updatePinDots();
                 await submitPinAuthentication(queryPin);
+                if (isKiosk) {
+                    try {
+                        toggleFullscreen();
+                    } catch (e) {}
+                }
                 return;
             }
 
