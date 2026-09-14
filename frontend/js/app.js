@@ -61,6 +61,388 @@
         let intakeSortOrder = 'desc';
         let carryOverSortOrder = 'desc';
 
+        // Queue Calendar Filter & Simulation globals
+        let simulatedSystemDate = null; // null = real today, or 'YYYY-MM-DD'
+        function getEffectiveQueueDate() {
+            if (simulatedSystemDate) return simulatedSystemDate;
+            return new Date().toISOString().split('T')[0];
+        }
+        let currentQueueDate = getEffectiveQueueDate();
+        let isShowingAllQueueDates = false;
+        let onlineQueueFilterMode = 'selected'; // 'selected' or 'all'
+        let carryOverFilterMode = 'active'; // 'active', 'promised', 'received'
+        let carryOverFilterDate = getEffectiveQueueDate();
+        let includeCarryOverInDailyIntakes = false;
+        let generatedDevTestJobIds = [];
+
+        function getJobDate(job) {
+            if (!job) return '';
+            const raw = job.dateReceived || job.apptDate || job.date || (job.created_at ? String(job.created_at).split('T')[0].split(' ')[0] : '');
+            return raw ? String(raw).trim() : '';
+        }
+        window.getJobDate = getJobDate;
+
+        window.setQueueDate = function(dateVal) {
+            if (!dateVal) return;
+            currentQueueDate = dateVal;
+            isShowingAllQueueDates = false;
+            renderStaffTables();
+            updateDevSimulationTelemetry();
+        };
+
+        window.shiftQueueDate = function(days) {
+            const d = new Date(currentQueueDate || getEffectiveQueueDate());
+            d.setDate(d.getDate() + days);
+            currentQueueDate = d.toISOString().split('T')[0];
+            isShowingAllQueueDates = false;
+            renderStaffTables();
+            updateDevSimulationTelemetry();
+        };
+
+        window.resetQueueDateToToday = function() {
+            currentQueueDate = getEffectiveQueueDate();
+            isShowingAllQueueDates = false;
+            renderStaffTables();
+            updateDevSimulationTelemetry();
+        };
+
+        window.toggleQueueDateShowAll = function() {
+            isShowingAllQueueDates = !isShowingAllQueueDates;
+            renderStaffTables();
+            updateDevSimulationTelemetry();
+        };
+
+        window.toggleIncludeCarryOver = function(checked) {
+            includeCarryOverInDailyIntakes = Boolean(checked);
+            renderStaffTables();
+        };
+
+        window.handleOnlineDateFilterChange = function(val) {
+            if (!val) return;
+            currentQueueDate = val;
+            onlineQueueFilterMode = 'selected';
+            renderStaffTables();
+            updateDevSimulationTelemetry();
+        };
+
+        window.toggleOnlineDateFilterMode = function() {
+            onlineQueueFilterMode = (onlineQueueFilterMode === 'selected') ? 'all' : 'selected';
+            renderStaffTables();
+        };
+
+        window.setCarryOverFilterMode = function(mode) {
+            carryOverFilterMode = mode;
+            const pickerWrap = document.getElementById('co-date-picker-wrap');
+            if (pickerWrap) {
+                pickerWrap.style.display = (mode === 'active') ? 'none' : 'flex';
+            }
+            const btnActive = document.getElementById('btn-co-filter-active');
+            const btnPromised = document.getElementById('btn-co-filter-promised');
+            const btnReceived = document.getElementById('btn-co-filter-received');
+            if (btnActive) btnActive.className = `px-2.5 py-1 rounded-md transition ${mode === 'active' ? 'bg-white text-orange-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900'}`;
+            if (btnPromised) btnPromised.className = `px-2.5 py-1 rounded-md transition ${mode === 'promised' ? 'bg-white text-orange-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900'}`;
+            if (btnReceived) btnReceived.className = `px-2.5 py-1 rounded-md transition ${mode === 'received' ? 'bg-white text-orange-700 shadow-2xs font-black' : 'text-slate-600 hover:text-slate-900'}`;
+            renderStaffTables();
+        };
+
+        window.setCarryOverFilterDate = function(val) {
+            if (!val) return;
+            carryOverFilterDate = val;
+            renderStaffTables();
+        };
+
+        window.toggleDevSimulationPanelCollapse = function() {
+            const body = document.getElementById('dev-sim-controls-body');
+            const text = document.getElementById('dev-sim-collapse-text');
+            const icon = document.getElementById('dev-sim-collapse-icon');
+            if (!body) return;
+            const isHidden = body.classList.contains('hidden');
+            body.classList.toggle('hidden', !isHidden);
+            if (text) text.innerText = isHidden ? 'Collapse' : 'Expand';
+            if (icon) icon.setAttribute('data-lucide', isHidden ? 'chevron-up' : 'chevron-down');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        };
+
+        function updateDevSimulationTelemetry() {
+            const activeDateEl = document.getElementById('dev-sim-active-date');
+            if (activeDateEl) {
+                activeDateEl.innerText = currentQueueDate;
+            }
+            const directDateEl = document.getElementById('dev-sim-direct-date');
+            if (directDateEl) {
+                directDateEl.value = currentQueueDate;
+            }
+            const statusBadge = document.getElementById('dev-sim-status-badge');
+            if (statusBadge) {
+                if (simulatedSystemDate) {
+                    statusBadge.innerText = 'SIMULATED: ' + simulatedSystemDate;
+                    statusBadge.className = 'px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/50';
+                } else {
+                    statusBadge.innerText = 'Real-Time Mode';
+                    statusBadge.className = 'px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                }
+            }
+            const baseDate = new Date(getEffectiveQueueDate());
+            const yest = new Date(baseDate);
+            yest.setDate(yest.getDate() - 1);
+            const yestStr = yest.toISOString().split('T')[0];
+            const todayStr = baseDate.toISOString().split('T')[0];
+            const tomo = new Date(baseDate);
+            tomo.setDate(tomo.getDate() + 1);
+            const tomoStr = tomo.toISOString().split('T')[0];
+
+            const safeJobs = Array.isArray(allJobs) ? allJobs : [];
+            const countYest = safeJobs.filter(j => getJobDate(j) === yestStr).length;
+            const countToday = safeJobs.filter(j => getJobDate(j) === todayStr).length;
+            const countTomo = safeJobs.filter(j => getJobDate(j) === tomoStr).length;
+
+            const countYestEl = document.getElementById('dev-sim-count-yesterday');
+            if (countYestEl) countYestEl.innerText = countYest;
+            const countTodayEl = document.getElementById('dev-sim-count-today');
+            if (countTodayEl) countTodayEl.innerText = countToday;
+            const countTomoEl = document.getElementById('dev-sim-count-tomorrow');
+            if (countTomoEl) countTomoEl.innerText = countTomo;
+
+            const msgEl = document.getElementById('dev-sim-message');
+            if (msgEl) {
+                if (currentQueueDate === todayStr) {
+                    msgEl.innerText = 'Viewing Today (Active Workshop)';
+                    msgEl.className = 'text-[9.5px] text-emerald-300 truncate font-mono text-center';
+                } else if (currentQueueDate > todayStr) {
+                    msgEl.innerText = `Viewing Future/Tomorrow (${currentQueueDate}) - Clean Reset Active`;
+                    msgEl.className = 'text-[9.5px] text-blue-300 truncate font-mono text-center';
+                } else {
+                    msgEl.innerText = `Viewing Past Date (${currentQueueDate}) - Historical Recall Active`;
+                    msgEl.className = 'text-[9.5px] text-amber-300 truncate font-mono text-center';
+                }
+            }
+        }
+        window.updateDevSimulationTelemetry = updateDevSimulationTelemetry;
+
+        const HontechDevDateSimulator = {
+            simulateDate(dateStr) {
+                simulatedSystemDate = dateStr;
+                currentQueueDate = dateStr;
+                carryOverFilterDate = dateStr;
+                isShowingAllQueueDates = false;
+                renderStaffTables();
+                updateDevSimulationTelemetry();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast(`Simulated system date shifted to ${dateStr}`, 'info', 'Dev Simulator');
+                }
+            },
+            nextDay() {
+                const cur = new Date(currentQueueDate || getEffectiveQueueDate());
+                cur.setDate(cur.getDate() + 1);
+                const nextStr = cur.toISOString().split('T')[0];
+                this.simulateDate(nextStr);
+            },
+            prevDay() {
+                const cur = new Date(currentQueueDate || getEffectiveQueueDate());
+                cur.setDate(cur.getDate() - 1);
+                const prevStr = cur.toISOString().split('T')[0];
+                this.simulateDate(prevStr);
+            },
+            reset() {
+                simulatedSystemDate = null;
+                currentQueueDate = new Date().toISOString().split('T')[0];
+                carryOverFilterDate = currentQueueDate;
+                isShowingAllQueueDates = false;
+                renderStaffTables();
+                updateDevSimulationTelemetry();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast('Simulated system date restored to Real-Time', 'success', 'Dev Simulator');
+                }
+            },
+            seedMultiDaySuite() {
+                const baseDate = new Date(getEffectiveQueueDate());
+                const yest = new Date(baseDate);
+                yest.setDate(yest.getDate() - 1);
+                const yestStr = yest.toISOString().split('T')[0];
+                const todayStr = baseDate.toISOString().split('T')[0];
+                const tomo = new Date(baseDate);
+                tomo.setDate(tomo.getDate() + 1);
+                const tomoStr = tomo.toISOString().split('T')[0];
+
+                this.clearTestData(false);
+
+                const testJobs = [
+                    // Yesterday's records (for testing historical recall)
+                    {
+                        id: 'DEV-YEST-01',
+                        claimStub: 'YEST-001',
+                        plate: 'DEV-901',
+                        name: 'Robert Tan (Test)',
+                        contact: '09171112222',
+                        vehicle: 'Toyota Vios 2021',
+                        category: 'PMS',
+                        source: 'Walk-in',
+                        status: 'Completed',
+                        arrival: '08:30',
+                        departure: '10:00',
+                        dateReceived: yestStr,
+                        apptDate: yestStr,
+                        evaluation: 'Historical Completed PMS Service 10k km',
+                        saName: 'Mark Bautista',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+                    {
+                        id: 'DEV-YEST-02',
+                        claimStub: 'YEST-002',
+                        plate: 'DEV-902',
+                        name: 'Maria Santos (Test)',
+                        contact: '09182223333',
+                        vehicle: 'Honda City 2020',
+                        category: 'GRS',
+                        source: 'Walk-in',
+                        status: 'Waiting',
+                        arrival: '14:00',
+                        departure: '16:00',
+                        dateReceived: yestStr,
+                        apptDate: yestStr,
+                        evaluation: 'Yesterday intake awaiting diagnostic check',
+                        saName: 'Front Desk SA',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+                    {
+                        id: 'DEV-YEST-03',
+                        claimStub: 'YEST-003',
+                        plate: 'DEV-903',
+                        name: 'Carlos Cruz (Test)',
+                        contact: '09193334444',
+                        vehicle: 'Ford Everest 2022',
+                        category: 'PMS & GRS',
+                        source: 'Walk-in',
+                        status: 'Carry Over',
+                        carryOverStatus: 'Waiting for Parts',
+                        partsAvailable: 'No',
+                        arrival: '15:30',
+                        dateReceived: yestStr,
+                        promisedDate: todayStr,
+                        evaluation: 'Awaiting alternator parts delivery',
+                        saName: 'Mark Bautista',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+
+                    // Today's records (for active queue verification)
+                    {
+                        id: 'DEV-TODAY-01',
+                        claimStub: 'TODAY-001',
+                        plate: 'DEV-101',
+                        name: 'Juan Dela Cruz (Test)',
+                        contact: '09170001111',
+                        vehicle: 'Mitsubishi Mirage G4',
+                        category: 'PMS',
+                        source: 'Walk-in',
+                        status: 'Monitoring',
+                        location: 'Bay 1',
+                        arrival: '08:15',
+                        departure: '09:45',
+                        dateReceived: todayStr,
+                        apptDate: todayStr,
+                        evaluation: 'Routine 20k check in Bay 1',
+                        saName: 'Mark Bautista',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+                    {
+                        id: 'DEV-TODAY-02',
+                        claimStub: 'TODAY-002',
+                        plate: 'DEV-102',
+                        name: 'Elena Ramos (Test)',
+                        contact: '09180002222',
+                        vehicle: 'Toyota Fortuner 2023',
+                        category: 'GRS',
+                        source: 'Walk-in',
+                        status: 'Waiting',
+                        arrival: '09:00',
+                        departure: '11:00',
+                        dateReceived: todayStr,
+                        apptDate: todayStr,
+                        evaluation: 'Brake pad replacement diagnostic',
+                        saName: 'Mark Bautista',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+                    {
+                        id: 'DEV-TODAY-03',
+                        claimStub: 'TODAY-003',
+                        plate: 'DEV-103',
+                        name: 'Grace Lim (Test)',
+                        contact: '09190003333',
+                        vehicle: 'Hyundai Tucson 2021',
+                        category: 'PMS',
+                        source: 'Online',
+                        laneType: 'Express Lane',
+                        status: 'Pending',
+                        apptDate: todayStr,
+                        dateReceived: todayStr,
+                        evaluation: 'Online express lane appointment for today',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+
+                    // Tomorrow's records (for testing next-day auto reset & future scheduling)
+                    {
+                        id: 'DEV-TOMO-01',
+                        claimStub: 'TOMO-001',
+                        plate: 'DEV-201',
+                        name: 'Patrick Garcia (Test)',
+                        contact: '09201114444',
+                        vehicle: 'Nissan Navara 2022',
+                        category: 'PMS',
+                        source: 'Online',
+                        laneType: 'Express Lane',
+                        status: 'Pending',
+                        apptDate: tomoStr,
+                        dateReceived: tomoStr,
+                        evaluation: 'Advance scheduled online appointment for tomorrow',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    },
+                    {
+                        id: 'DEV-TOMO-02',
+                        claimStub: 'TOMO-002',
+                        plate: 'DEV-202',
+                        name: 'Sarah Villareal (Test)',
+                        contact: '09212225555',
+                        vehicle: 'Honda Civic RS 2023',
+                        category: 'GRS',
+                        source: 'Online',
+                        laneType: 'Priority Lane',
+                        status: 'Pending',
+                        apptDate: tomoStr,
+                        dateReceived: tomoStr,
+                        evaluation: 'Suspension check scheduled tomorrow',
+                        branch: currentUserBranch || 'Marikina Branch'
+                    }
+                ];
+
+                generatedDevTestJobIds = testJobs.map(j => j.id);
+                allJobs = [...testJobs, ...allJobs];
+                renderStaffTables();
+                updateDevSimulationTelemetry();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast('Multi-Day Test Dataset injected (3 Yesterday, 3 Today, 2 Tomorrow)!', 'success', 'Dev Simulator');
+                }
+            },
+            clearTestData(showToast = true) {
+                if (generatedDevTestJobIds.length > 0) {
+                    allJobs = allJobs.filter(j => !generatedDevTestJobIds.includes(j.id) && !String(j.id).startsWith('DEV-'));
+                    generatedDevTestJobIds = [];
+                    renderStaffTables();
+                    updateDevSimulationTelemetry();
+                    if (showToast && typeof showSystemToast === 'function') {
+                        showSystemToast('Multi-day test dataset purged cleanly.', 'info', 'Dev Simulator');
+                    }
+                } else {
+                    allJobs = allJobs.filter(j => !String(j.id).startsWith('DEV-'));
+                    renderStaffTables();
+                    updateDevSimulationTelemetry();
+                    if (showToast && typeof showSystemToast === 'function') {
+                        showSystemToast('No active test records to purge.', 'info', 'Dev Simulator');
+                    }
+                }
+            }
+        };
+        window.HontechDevDateSimulator = HontechDevDateSimulator;
+
         // Auto-enforce 30 minutes default inactivity timeout across all roles
         if (!localStorage.getItem('hontech-idle-timeout') || localStorage.getItem('hontech-idle-timeout') === '15') {
             localStorage.setItem('hontech-idle-timeout', '30');
@@ -3222,7 +3604,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const canViewOnline = isAsst || isOwner || isAdmin || isSA;
 
             const safeJobs = Array.isArray(allJobs) ? allJobs : [];
-            const pendingOnline = safeJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
+
+            // Sync Online Queue Date Filter UI controls if present
+            const onlineFilterEl = document.getElementById('online-date-filter');
+            if (onlineFilterEl && (!onlineFilterEl.value || onlineFilterEl.value !== currentQueueDate)) {
+                onlineFilterEl.value = currentQueueDate;
+            }
+            const onlineToggleBtn = document.getElementById('btn-online-filter-toggle');
+            if (onlineToggleBtn) {
+                onlineToggleBtn.innerText = onlineQueueFilterMode === 'selected' ? 'All Inquiries' : 'Filter by Date';
+                onlineToggleBtn.className = onlineQueueFilterMode === 'selected'
+                    ? 'px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wider rounded-lg border border-gray-250 bg-white hover:bg-gray-100 text-gray-700 transition cursor-pointer shadow-2xs'
+                    : 'px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wider rounded-lg border border-slate-900 bg-slate-900 text-white transition cursor-pointer shadow-2xs';
+            }
+
+            let pendingOnline = safeJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
+            if (onlineQueueFilterMode === 'selected') {
+                pendingOnline = pendingOnline.filter(j => {
+                    const jDate = getJobDate(j);
+                    return !jDate || jDate === currentQueueDate;
+                });
+            }
 
             const rowOccupiedBays = {};
             safeJobs.forEach(j => {
@@ -3372,12 +3774,36 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
+                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings ${onlineQueueFilterMode === 'selected' ? `scheduled for ${currentQueueDate}` : ''}.</td></tr>`;
             }
 
             // DAILY INTAKES
             if (!isTech && document.getElementById('container-daily-intakes')) {
-                let activeJobs = safeJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
+                const effectiveToday = getEffectiveQueueDate();
+                const isViewingToday = (currentQueueDate === effectiveToday && !isShowingAllQueueDates);
+                const isViewingPast = (currentQueueDate < effectiveToday && !isShowingAllQueueDates);
+
+                let activeJobs = safeJobs.filter(j => {
+                    if (j.status === 'Pending') return false;
+
+                    const isCO = (j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
+                    if (isCO && !includeCarryOverInDailyIntakes) return false;
+
+                    // Date filter
+                    if (!isShowingAllQueueDates) {
+                        const jDate = getJobDate(j);
+                        if (jDate && jDate !== currentQueueDate) {
+                            return false;
+                        }
+                    }
+
+                    // For today or future dates, hide completed/released jobs
+                    if (!isViewingPast) {
+                        if (j.status === 'Completed' || j.status === 'Released') return false;
+                    }
+
+                    return true;
+                });
                 
                 // Filter by Source
                 if (intakeSourceFilter !== 'all') {
@@ -3840,8 +4266,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const selectionEnd = searchInputActive ? document.activeElement.selectionEnd : null;
 
                     const activeBayCount = (typeof getWorkshopBayCount === 'function') ? getWorkshopBayCount() : 4;
+                    const dateStatusBadgeText = isShowingAllQueueDates 
+                        ? `All Dates (${filteredActiveJobs.length} Intakes)`
+                        : isViewingToday 
+                            ? `Today (${currentQueueDate}) • ${filteredActiveJobs.length} Intakes`
+                            : isViewingPast
+                                ? `Historical: ${currentQueueDate} • ${filteredActiveJobs.length} Intakes`
+                                : `Future: ${currentQueueDate} • ${filteredActiveJobs.length} Scheduled`;
+
                     dailyIntakesEl.innerHTML = `
-                        <div class="space-y-4">
+                        <div class="space-y-3">
                             <div class="flex flex-wrap items-center justify-between gap-3 mb-1">
                                 <div class="flex items-center gap-2.5">
                                     <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-4 h-4"></i></div>
@@ -3849,6 +4283,37 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
                                         <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Calendar Date Filter Toolbar Row (Modeled after prototype_skipped.html) -->
+                            <div class="flex flex-wrap items-center justify-between gap-2.5 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-[11px] text-slate-700 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                        <i data-lucide="calendar" class="w-4 h-4 text-red-600"></i> Intake Calendar:
+                                    </span>
+                                    <div class="flex items-center bg-slate-50 border border-slate-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2.5 py-1 transition shadow-2xs">
+                                        <input type="date" id="intake-date-filter" value="${currentQueueDate}" onchange="setQueueDate(this.value)" class="text-xs font-bold font-mono text-slate-900 bg-transparent outline-none cursor-pointer">
+                                    </div>
+                                    <!-- Stepper Buttons -->
+                                    <div class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 overflow-hidden shadow-2xs text-xs font-bold">
+                                        <button type="button" onclick="shiftQueueDate(-1)" class="px-2.5 py-1 hover:bg-slate-200 text-slate-700 transition cursor-pointer" title="Previous Day">‹</button>
+                                        <button type="button" onclick="resetQueueDateToToday()" class="px-3 py-1 hover:bg-slate-200 text-slate-800 transition border-x border-slate-200 cursor-pointer ${isViewingToday ? 'bg-red-50 text-red-700 font-black' : ''}">Today</button>
+                                        <button type="button" onclick="shiftQueueDate(1)" class="px-2.5 py-1 hover:bg-slate-200 text-slate-700 transition cursor-pointer" title="Next Day">›</button>
+                                    </div>
+                                    <button type="button" onclick="toggleQueueDateShowAll()" class="px-3 py-1 rounded-lg text-xs font-bold uppercase transition border ${isShowingAllQueueDates ? 'bg-slate-900 text-white border-slate-900' : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300'} shadow-2xs cursor-pointer">
+                                        ${isShowingAllQueueDates ? 'Filtered by Date' : 'Show All Dates'}
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <span class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full ${isViewingToday ? 'bg-emerald-500 animate-pulse' : isViewingPast ? 'bg-amber-500' : 'bg-blue-500'}"></span>
+                                        ${dateStatusBadgeText}
+                                    </span>
+                                    <label class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg">
+                                        <input type="checkbox" id="intake-include-carryover" ${includeCarryOverInDailyIntakes ? 'checked' : ''} onchange="toggleIncludeCarryOver(this.checked)" class="w-3.5 h-3.5 text-red-600 rounded cursor-pointer">
+                                        <span>Include Carry-Overs</span>
+                                    </label>
                                 </div>
                             </div>
                             
@@ -3917,7 +4382,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in queue for ${isShowingAllQueueDates ? 'any date' : currentQueueDate}.</td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
@@ -3944,17 +4409,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // CARRY OVER BOARD
             if (document.getElementById('table-carry-over')) {
-                const carryOverJobs = (allJobs || []).filter(j => 
+                let carryOverJobs = (allJobs || []).filter(j => 
                     j.status === 'Carry Over' || 
                     j.status === 'Carry-Over' || 
                     (j.status && j.status.toLowerCase() === 'carry over') ||
                     (Boolean(j.carryOverStatus) && j.status !== 'Completed' && j.status !== 'Released' && j.status !== 'Pending')
                 );
+
+                // Date Filtering on Carry-Over Table
+                if (carryOverFilterMode === 'promised') {
+                    carryOverJobs = carryOverJobs.filter(j => j.promisedDate === carryOverFilterDate);
+                } else if (carryOverFilterMode === 'received') {
+                    carryOverJobs = carryOverJobs.filter(j => getJobDate(j) === carryOverFilterDate);
+                }
+
                 carryOverJobs.sort((a, b) => {
                     const stubA = a.claimStub || '';
                     const stubB = b.claimStub || '';
                     return carryOverSortOrder === 'desc' ? stubB.localeCompare(stubA) : stubA.localeCompare(stubB);
                 });
+
+                const coDateInput = document.getElementById('co-date-filter');
+                if (coDateInput) {
+                    coDateInput.value = carryOverFilterDate;
+                }
+                const coPickerWrap = document.getElementById('co-date-picker-wrap');
+                if (coPickerWrap) {
+                    coPickerWrap.style.display = (carryOverFilterMode === 'active') ? 'none' : 'flex';
+                }
 
                 document.getElementById('table-carry-over').innerHTML = carryOverJobs.map((job, idx) => {
                     const isEditable = isSA;
@@ -4048,7 +4530,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)">
+                                <input type="text" id="co-evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')">
                             </div>
                             ` : `
                             <div class="eval-badge-static">
@@ -4085,11 +4567,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="10" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+                }).join('') || `<tr><td colspan="10" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles ${carryOverFilterMode !== 'active' ? `for ${carryOverFilterDate}` : ''}.</td></tr>`;
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
                 window.lucide.createIcons();
+            }
+            if (typeof updateDevSimulationTelemetry === 'function') {
+                updateDevSimulationTelemetry();
             }
             applyPeriodicFilters();
         }
