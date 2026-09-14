@@ -177,10 +177,10 @@
     <!-- ================================================================= -->
     <!-- 3. LIVE TV SERVICE MONITOR (Active Display View)                   -->
     <!-- ================================================================= -->
-    <div id="screen-active-tv" class="hidden flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-gray-950">
+    <div id="screen-active-tv" class="hidden flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-gray-900">
         
         <!-- Live Multi-Event TV Notification Plaque (Signature Red-White-Red Automotive Plaque) -->
-        <div id="tv-ready-alert-banner" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[100] tv-plaque-animate select-none transition-all duration-300">
+        <div id="tv-ready-alert-banner" class="hidden absolute top-8 md:top-12 left-1/2 transform -translate-x-1/2 z-[100] tv-broadcast-banner-active select-none transition-all duration-300">
             <div class="bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_4px_rgba(185,28,28,1)] border-2 border-red-700 flex flex-col min-w-[380px] sm:min-w-[480px] md:min-w-[580px] max-w-[95vw]">
                 <!-- Top Red Header Strip -->
                 <div id="tv-ready-alert-header" class="bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700">
@@ -206,175 +206,240 @@
             </div>
         </div>
 
-        <!-- Cinema Header Bar -->
-        <header class="flex items-center justify-between px-6 py-3.5 border-b border-gray-800/80 bg-gray-900/60 backdrop-blur-md shrink-0">
-            <!-- Left Branding -->
-            <div class="flex items-center gap-3.5">
-                <div class="p-2 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
-                    <i data-lucide="monitor" class="w-6 h-6"></i>
+        <!-- TV Header Bar Matching Original User Screenshot -->
+        <header class="flex justify-between items-end mb-4 border-b border-gray-800 pt-4 pb-4 shrink-0 z-20 relative px-6 bg-gray-900">
+            <div>
+                <div class="flex items-center gap-3">
+                    <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
+                        <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
+                    </h1>
+                    <span class="text-[11px] not-italic font-black uppercase tracking-wider bg-red-600/30 text-red-300 border border-red-500/50 px-3 py-1 rounded-full shadow-inner flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        📍 Marikina Main Branch
+                    </span>
                 </div>
-                <div>
-                    <div class="flex items-center gap-2.5">
-                        <h1 class="text-xl md:text-2xl font-black uppercase italic tracking-tight text-white flex items-center gap-2">
-                            HonTech <span class="text-red-500">AutoCenter</span>
-                        </h1>
-                        <span class="text-[10px] not-italic font-black uppercase tracking-wider bg-red-600/25 text-red-300 border border-red-500/40 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-inner">
-                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                            Live Service Monitor
-                        </span>
-                    </div>
-                    <p id="tv-date-display" class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Sunday, June 21, 2026</p>
-                </div>
+                <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
             </div>
+            <div class="flex items-center gap-3 text-right">
+                <!-- Voice / Audio Controls -->
+                <button type="button" onclick="toggleTVAudio()" id="btn-tv-audio" class="flex items-center gap-1.5 px-3.5 py-2 bg-gray-800/90 hover:bg-gray-750 text-gray-200 hover:text-white border border-gray-700 hover:border-red-500/50 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md" title="Toggle Chimes & Voice">
+                    <i id="icon-tv-audio" data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i> <span id="text-tv-audio">Voice: ON</span>
+                </button>
 
-            <!-- Right Telemetry & Controls -->
-            <div class="flex items-center gap-4">
+                <!-- Fullscreen Toggle -->
+                <button type="button" onclick="toggleFullscreen()" class="flex items-center gap-1.5 px-3.5 py-2 bg-gray-800/90 hover:bg-gray-750 text-gray-200 hover:text-white border border-gray-700 hover:border-red-500/50 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md" title="Toggle Fullscreen">
+                    <i data-lucide="maximize" class="w-4 h-4 text-gray-300"></i> Fullscreen
+                </button>
+
+                <!-- TV Dev Tools Toggle Button -->
+                <button onclick="toggleTVDevDrawer()" id="tv-btn-dev-drawer" class="flex items-center gap-1.5 px-3.5 py-2 bg-gray-800/90 hover:bg-gray-750 text-gray-200 hover:text-white border border-gray-700 hover:border-red-500/50 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md">
+                    <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i> TV Dev Tools
+                </button>
+
                 <!-- Weather Widget -->
-                <div class="flex items-center gap-2.5 bg-gray-800/50 border border-gray-700/60 px-3.5 py-1.5 rounded-xl">
-                    <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
+                    <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
+                        <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                    </span>
                     <div class="text-left leading-none">
-                        <p class="text-sm font-black text-white">32°C</p>
-                        <p class="text-[8.5px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Marikina</p>
+                        <p id="tv-temp-display" class="text-lg font-black text-white">32°C</p>
+                        <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
                     </div>
                 </div>
-
-                <!-- Live Digital Clock -->
-                <div class="text-right">
-                    <p id="tv-clock-display" class="text-2xl md:text-3xl font-black text-gray-200 tabular-nums font-mono leading-none">00:00:00</p>
+                
+                <div>
+                    <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none font-mono">00:00</p>
+                    <div class="flex gap-2 justify-end mt-2">
+                        <span onclick="jumpToSlide(0)" id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 cursor-pointer transition-all" title="Slide 1: Bay Monitoring"></span>
+                        <span onclick="jumpToSlide(1)" id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Queue & Release"></span>
+                        <span onclick="jumpToSlide(2)" id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></span>
+                    </div>
                 </div>
-
-                <!-- Slide Indicator Dots -->
-                <div class="flex items-center gap-1.5 pl-2 border-l border-gray-800">
-                    <button type="button" onclick="jumpToSlide(0)" id="dot-slide-0" class="w-2.5 h-2.5 rounded-full bg-red-600 transition-all cursor-pointer" title="Slide 1: Bay Monitoring"></button>
-                    <button type="button" onclick="jumpToSlide(1)" id="dot-slide-1" class="w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer" title="Slide 2: Queue & Release"></button>
-                    <button type="button" onclick="jumpToSlide(2)" id="dot-slide-2" class="w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer" title="Slide 3: Service Lanes"></button>
-                </div>
-
-                <!-- Fullscreen & Audio Controls -->
-                <button type="button" onclick="toggleTVAudio()" id="btn-tv-audio" class="p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer" title="Toggle Chimes & Voice">
-                    <i id="icon-tv-audio" data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
-                </button>
-                <button type="button" onclick="toggleFullscreen()" class="p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer" title="Toggle Fullscreen">
-                    <i data-lucide="maximize" class="w-4 h-4"></i>
-                </button>
             </div>
         </header>
 
-        <!-- Main Display Slide Container -->
-        <main class="flex-1 relative overflow-hidden p-4 md:p-6">
-            
-            <!-- SLIDE 1: WORKSHOP BAY MONITORING -->
-            <section id="tv-slide-0" class="absolute inset-4 md:inset-6 flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
-                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
-                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Real-Time Bay Allocations & Floor Telemetry — Marikina Main Branch</p>
-                    </div>
-                    <span id="tv-slide1-bay-count" class="text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black/20 border border-white/20">6 Active Bays</span>
+        <!-- TV DEVELOPER SIMULATION TOOLBAR -->
+        <div id="tv-dev-drawer" class="hidden mb-4 mx-6 bg-slate-950 text-white border-2 border-slate-800 rounded-2xl shadow-2xl z-30 relative animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden p-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-white">TV Module Announcement Simulator</h4>
                 </div>
-                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden">
-                    <div id="tv-bays-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 h-full"></div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleTVDevDrawer(false)" class="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer" title="Close">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
                 </div>
-            </section>
+            </div>
 
-            <!-- SLIDE 2: QUEUE & RELEASE STATUS -->
-            <section id="tv-slide-1" class="absolute inset-4 md:inset-6 hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
-                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
+            <!-- Target Vehicle Parameters + 5 Event Triggers -->
+            <div class="mt-3 flex flex-col lg:flex-row items-center gap-3">
+                <div class="flex items-center gap-2 w-full lg:w-auto shrink-0">
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
-                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Service Queue, Claiming, & Carry-Over Vehicles</p>
+                        <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Plate</label>
+                        <input type="text" id="tv-dev-input-plate" value="NDO 8492" class="w-24 bg-slate-900 border border-slate-700 text-white font-mono font-black text-xs px-2.5 py-1.5 rounded-lg uppercase outline-none focus:border-red-500">
+                    </div>
+                    <div>
+                        <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Car Model</label>
+                        <input type="text" id="tv-dev-input-vehicle" value="Honda Civic RS" class="w-32 bg-slate-900 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500">
+                    </div>
+                    <div>
+                        <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Customer</label>
+                        <input type="text" id="tv-dev-input-customer" value="Sophia Loren" class="w-32 bg-slate-900 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500">
                     </div>
                 </div>
-                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden flex flex-col gap-4">
-                    <!-- Top Row: Service Queue & Ready for Release Side-by-Side -->
-                    <div class="flex-1 grid grid-cols-2 gap-4 min-h-0">
-                        <!-- Service Queue -->
+
+                <!-- 5 Event Buttons -->
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full flex-1">
+                    <button onclick="triggerTVSimulationEvent('monitoring')" class="p-2.5 bg-slate-900 hover:bg-blue-950/80 border border-slate-800 hover:border-blue-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
+                        <span class="text-[9px] font-mono font-black text-blue-400 mb-1">01 · MONITOR</span>
+                        <span class="text-xs font-black uppercase group-hover:text-blue-300">Monitoring</span>
+                    </button>
+                    <button onclick="triggerTVSimulationEvent('bay_assigned')" class="p-2.5 bg-slate-900 hover:bg-amber-950/80 border border-slate-800 hover:border-amber-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
+                        <span class="text-[9px] font-mono font-black text-amber-400 mb-1">02 · BAY LOC</span>
+                        <span class="text-xs font-black uppercase group-hover:text-amber-300">Bay Assign</span>
+                    </button>
+                    <button onclick="triggerTVSimulationEvent('ready')" class="p-2.5 bg-slate-900 hover:bg-emerald-950/80 border border-slate-800 hover:border-emerald-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
+                        <span class="text-[9px] font-mono font-black text-emerald-400 mb-1">03 · RELEASE</span>
+                        <span class="text-xs font-black uppercase group-hover:text-emerald-300">Ready Claim</span>
+                    </button>
+                    <button onclick="triggerTVSimulationEvent('carryover')" class="p-2.5 bg-slate-900 hover:bg-purple-950/80 border border-slate-800 hover:border-purple-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
+                        <span class="text-[9px] font-mono font-black text-purple-400 mb-1">04 · HOLD</span>
+                        <span class="text-xs font-black uppercase group-hover:text-purple-300">Carry Over</span>
+                    </button>
+                    <button onclick="triggerTVSimulationEvent('return_active')" class="p-2.5 bg-slate-900 hover:bg-cyan-950/80 border border-slate-800 hover:border-cyan-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group col-span-2 sm:col-span-1">
+                        <span class="text-[9px] font-mono font-black text-cyan-400 mb-1">05 · RETURN</span>
+                        <span class="text-xs font-black uppercase group-hover:text-cyan-300">Back Active</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Display Slide Container (Exact 1:1 In-App Layout) -->
+        <main class="flex-1 relative min-h-0 px-6 pb-6">
+            
+            <!-- SLIDE 1: ACTIVE BAY MONITORING (4-10 BAYS) -->
+            <div id="tv-slide-1"
+                class="absolute inset-x-6 top-0 bottom-6 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-300">
+                <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
+                    <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
+                    <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays & Real-Time Allocations — Marikina Main Floor</p>
+                </div>
+                <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden">
+                    <div id="tv-grs-list" class="grid grid-cols-2 gap-5 h-full"></div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: SERVICE QUEUE (WAITING LIST), READY & CARRY-OVER (Clean Black, Red & White TV Design - Matches User Screenshot) -->
+            <div id="tv-slide-2"
+                class="absolute inset-x-6 top-0 bottom-6 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-300">
+                <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
+                    <h2 class="text-4xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
+                    <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Queue & Turnaround Status — Marikina Main Branch</p>
+                </div>
+                
+                <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden flex flex-col gap-5 min-h-0">
+                    <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
+                    <div class="flex-1 grid grid-cols-2 gap-5 min-h-0">
+                        <!-- Service Queue (Waiting List) -->
                         <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
-                            <div class="bg-gray-950 py-2.5 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                            <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                    <h3 class="text-sm md:text-base font-black uppercase tracking-widest">Service Queue (Waiting List)</h3>
+                                    <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue (Waiting List)</h3>
                                 </div>
-                                <span id="tv-count-waiting" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white">0</span>
+                                <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
                             </div>
-                            <div id="tv-list-waiting" class="p-3 bg-white flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                            <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
+                                <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
+                            </div>
                         </div>
 
-                        <!-- Ready for Release -->
+                        <!-- Ready for Release (Completed / For Claiming) -->
                         <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
-                            <div class="bg-gray-950 py-2.5 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                            <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                                    <h3 class="text-sm md:text-base font-black uppercase tracking-widest">Ready for Release (Claiming)</h3>
+                                    <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Ready for Release (Claiming)</h3>
                                 </div>
-                                <span id="tv-count-ready" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-600 text-white">0</span>
+                                <span class="text-xs font-black px-3 py-0.5 rounded-full bg-emerald-600 text-white" id="tv-all-released-count">0</span>
                             </div>
-                            <div id="tv-list-ready" class="p-3 bg-white flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                            <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
+                                <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Bottom Row: Carry-Over Grid -->
-                    <div class="h-40 flex flex-col shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-gray-900">
-                        <div class="bg-gray-950 py-2 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                    <!-- Bottom Row: Carry-Over (Full Width Grid) -->
+                    <div class="h-44 flex flex-col shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-gray-900">
+                        <div class="bg-gray-950 py-2.5 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                                <h3 class="text-xs md:text-sm font-black uppercase tracking-widest">Carry-Over Vehicles (Extended Stay)</h3>
+                                <h3 class="text-sm font-black uppercase tracking-widest text-white">Carry-Over Vehicles (Awaiting Parts / Extended Stay)</h3>
                             </div>
-                            <span id="tv-count-carryover" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200">0</span>
+                            <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-all-carryover-count">0</span>
                         </div>
-                        <div id="tv-list-carryover" class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll grid grid-cols-3 gap-2"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SLIDE 3: WORKSHOP SERVICE LANES -->
-            <section id="tv-slide-2" class="absolute inset-4 md:inset-6 hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
-                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
-                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Express, Flexible, Priority & Special Service Lanes</p>
-                    </div>
-                </div>
-                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-full">
-                        <!-- Express Lane -->
-                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-red-600 shadow-sm">
-                            <div class="bg-red-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
-                                <span>Express Lane (2H)</span>
-                                <span id="tv-lane-express-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
-                            </div>
-                            <div id="tv-lane-express-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
-                        </div>
-
-                        <!-- Flexible Lane -->
-                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-blue-600 shadow-sm">
-                            <div class="bg-blue-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
-                                <span>Flexible Lane</span>
-                                <span id="tv-lane-flexible-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
-                            </div>
-                            <div id="tv-lane-flexible-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
-                        </div>
-
-                        <!-- Priority Lane -->
-                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-purple-600 shadow-sm">
-                            <div class="bg-purple-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
-                                <span>Priority Lane</span>
-                                <span id="tv-lane-priority-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
-                            </div>
-                            <div id="tv-lane-priority-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
-                        </div>
-
-                        <!-- Special Lane -->
-                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-emerald-600 shadow-sm">
-                            <div class="bg-emerald-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
-                                <span>Special Lane</span>
-                                <span id="tv-lane-special-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
-                            </div>
-                            <div id="tv-lane-special-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll">
+                            <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-2.5"></div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+            
+            <!-- SLIDE 3: WORKSHOP LANES MONITORING (Clean Black, Red & White TV Design) -->
+            <div id="tv-slide-3"
+                class="absolute inset-x-6 top-0 bottom-6 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-300">
+                <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
+                    <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
+                    <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification — Marikina Workshop</p>
+                </div>
+                <div class="flex-1 p-5 lg:p-6 overflow-hidden bg-slate-100/60 flex gap-4 min-h-0">
+                    <!-- Express Lane Column -->
+                    <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
+                        <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0"></span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Express (PMS ≤ 60m)</h3>
+                            </div>
+                            <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white shrink-0 ml-1.5" id="tv-express-lane-count">0</span>
+                        </div>
+                        <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-express-lane-list"></div>
+                    </div>
+                    <!-- Flexible Lane Column -->
+                    <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
+                        <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Flexible Lane (GRS)</h3>
+                            </div>
+                            <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-flexible-lane-count">0</span>
+                        </div>
+                        <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-flexible-lane-list"></div>
+                    </div>
+                    <!-- Special Lane Column -->
+                    <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
+                        <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Specialty (Heavy Work)</h3>
+                            </div>
+                            <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-special-lane-count">0</span>
+                        </div>
+                        <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-special-lane-list"></div>
+                    </div>
+                    <!-- Priority Lane Column -->
+                    <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
+                        <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
+                            <div class="flex items-center gap-2 min-w-0">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Priority (Senior / Elders)</h3>
+                            </div>
+                            <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-gray-950 shrink-0 ml-1.5" id="tv-priority-lane-count">0</span>
+                        </div>
+                        <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-priority-lane-list"></div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -596,6 +661,7 @@
             if (!isSessionActive) return;
 
             showScreen('active');
+            jumpToSlide(currentSlide);
             playChime();
 
             // Load data immediately
@@ -619,17 +685,92 @@
             }, 5000);
         }
 
-        // Slide management
+        // TV Developer Simulation Toolbar Toggle
+        function toggleTVDevDrawer(force) {
+            const drawer = document.getElementById('tv-dev-drawer');
+            if (!drawer) return;
+            if (typeof force === 'boolean') {
+                drawer.classList.toggle('hidden', !force);
+            } else {
+                drawer.classList.toggle('hidden');
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        function triggerTVSimulationEvent(eventType) {
+            const plateInput = document.getElementById('tv-dev-input-plate');
+            const vehicleInput = document.getElementById('tv-dev-input-vehicle');
+            const customerInput = document.getElementById('tv-dev-input-customer');
+
+            const plate = plateInput ? plateInput.value.trim().toUpperCase() : 'NDO 8492';
+            const vehicle = vehicleInput ? vehicleInput.value.trim() : 'Honda Civic RS';
+            const customer = customerInput ? customerInput.value.trim() : 'Sophia Loren';
+
+            const mockJob = {
+                plate: plate,
+                vehicle: vehicle,
+                customer: customer,
+                location: 'Bay 1',
+                claimStub: '0907-001'
+            };
+
+            if (eventType === 'ready') {
+                triggerTVAlertPlaque({
+                    statusText: 'READY FOR RELEASE',
+                    plate: mockJob.plate,
+                    model: mockJob.vehicle,
+                    speechText: `Customer ${mockJob.customer}, vehicle ${mockJob.plate} is now ready for release. Please proceed to cashier.`
+                });
+            } else if (eventType === 'monitoring') {
+                triggerTVAlertPlaque({
+                    statusText: 'WORKSHOP MONITORING',
+                    plate: mockJob.plate,
+                    model: mockJob.vehicle,
+                    speechText: `Vehicle ${mockJob.plate} is now under workshop monitoring in reception.`
+                });
+            } else if (eventType === 'bay_assigned') {
+                triggerTVAlertPlaque({
+                    statusText: 'ALLOCATED: BAY-01',
+                    plate: mockJob.plate,
+                    model: mockJob.vehicle,
+                    speechText: `Vehicle ${mockJob.plate} has been allocated to Workshop Bay 1.`
+                });
+            } else if (eventType === 'carryover') {
+                triggerTVAlertPlaque({
+                    statusText: 'CARRY-OVER VEHICLE',
+                    plate: mockJob.plate,
+                    model: mockJob.vehicle,
+                    speechText: `Vehicle ${mockJob.plate} has been logged as carry over awaiting parts or extended service.`
+                });
+            } else if (eventType === 'return_active') {
+                triggerTVAlertPlaque({
+                    statusText: 'ACTIVE INTAKE',
+                    plate: mockJob.plate,
+                    model: mockJob.vehicle,
+                    speechText: `Vehicle ${mockJob.plate} returned to active workshop service.`
+                });
+            }
+        }
+
+        // Slide management (1-indexed matching index.html / User Screenshot)
         function jumpToSlide(idx) {
             currentSlide = idx;
+            if (slideInterval) {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(rotateSlides, 12000);
+            }
             for (let i = 0; i < 3; i++) {
-                const slideEl = document.getElementById(`tv-slide-${i}`);
-                const dotEl = document.getElementById(`dot-slide-${i}`);
+                const slideEl = document.getElementById(`tv-slide-${i + 1}`);
+                const dotEl = document.getElementById(`tv-dot-${i}`);
                 if (slideEl) slideEl.classList.toggle('hidden', i !== currentSlide);
                 if (dotEl) {
-                    dotEl.className = (i === currentSlide)
-                        ? 'w-3 h-3 rounded-full bg-red-600 scale-125 transition-all shadow-sm cursor-pointer'
-                        : 'w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer';
+                    if (i === currentSlide) {
+                        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-red-500 scale-125 cursor-pointer transition-all shadow-sm';
+                    } else {
+                        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all';
+                    }
                 }
             }
         }
@@ -653,147 +794,207 @@
             }
         }
 
-        // Render all TV slides
+        // Render all TV slides (Exact Match to app.js lines 8760-8980 & User Screenshot)
         function renderTVDisplay(jobs) {
-            const activeJobs = jobs.filter(j => j.status !== 'Completed' && j.status !== 'Released');
-            const monitoringJobs = jobs.filter(j => j.status === 'Monitoring');
-            const waitingJobs = jobs.filter(j => j.status === 'Waiting');
-            const readyJobs = jobs.filter(j => j.status === 'Ready');
-            const carryOverJobs = jobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
+            const allJobs = Array.isArray(jobs) ? jobs : [];
+            
+            // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
+            const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');
+            // Group 2: Released (Ready, Ready to Release)
+            const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
+            // Group 3: Carry Over (Carry Over)
+            const carryOverAll = allJobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
 
-            // 1. Render Slide 1: Bays Grid (Supports 4 to 10 bays)
-            renderBaysGrid(monitoringJobs);
+            // Detect newly ready vehicles to trigger Chime and Voice
+            detectAndBroadcastAlerts(waitingJobs, releasedAll);
 
-            // 2. Render Slide 2: Queue & Release
-            renderQueueAndRelease(waitingJobs, readyJobs, carryOverJobs);
-
-            // 3. Render Slide 3: Service Lanes
-            renderServiceLanes(activeJobs);
-
-            // Check for new announcements
-            detectAndBroadcastAlerts(monitoringJobs, readyJobs);
-
-            if (window.lucide) lucide.createIcons();
-        }
-
-        function renderBaysGrid(monitoringJobs) {
-            const gridEl = document.getElementById('tv-bays-grid');
-            if (!gridEl) return;
-
-            // Default to 6 bays, adaptive up to 10
-            const maxBays = Math.max(6, monitoringJobs.length);
-            let html = '';
-
-            for (let i = 1; i <= maxBays; i++) {
-                const bayName = `Bay ${i}`;
-                const matchedJob = monitoringJobs.find(j => (j.location || '').toLowerCase() === bayName.toLowerCase());
-
-                if (matchedJob) {
-                    html += `
-                    <div class="bg-white border-2 border-red-600 rounded-2xl p-4 flex flex-col justify-between shadow-md relative overflow-hidden">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-red-600 text-white font-black text-xs uppercase tracking-wider rounded-lg">${bayName}</span>
-                            <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> IN SERVICE
+            // =========================================================
+            // SLIDE 2: UPCOMING QUEUE, READY TO CLAIM, & CARRY OVER
+            // (Exact styling matching the Original User Screenshot)
+            // =========================================================
+            const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');
+            const tvAllUpcomingCount = document.getElementById('tv-all-upcoming-count');
+            if (tvAllUpcomingCount) tvAllUpcomingCount.innerText = waitingJobs.length;
+            if (tvAllUpcoming) {
+                tvAllUpcoming.innerHTML = waitingJobs.map(job => `
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
+                        <div class="flex flex-col text-left">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                                <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200">${job.laneType || 'Flexible Lane'}</span>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5">${job.vehicle} · <span class="text-gray-900 font-extrabold">${job.customer || job.name || 'Customer'}</span></span>
+                        </div>
+                        <div class="flex flex-col items-end gap-1">
+                            <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
+                                ${job.category || 'General Service'}
                             </span>
+                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">In Reception</span>
                         </div>
-                        <div class="my-2">
-                            <h3 class="text-2xl md:text-3xl font-mono font-black text-slate-900 tracking-wider">${matchedJob.plate || 'NO PLATE'}</h3>
-                            <p class="text-sm font-extrabold uppercase text-slate-700 truncate mt-0.5">${matchedJob.vehicle || matchedJob.model || 'HONDA VEHICLE'}</p>
-                            <p class="text-xs font-semibold text-slate-500 truncate mt-0.5">Owner: ${matchedJob.customer || matchedJob.name || 'Customer'}</p>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-bold">
-                            <span>SA: ${matchedJob.sa || matchedJob.serviceAdvisor || 'Floor SA'}</span>
-                            <span class="text-red-600 font-mono">${matchedJob.arrival ? `In: ${matchedJob.arrival}` : 'In Service'}</span>
-                        </div>
-                    </div>`;
-                } else {
-                    html += `
-                    <div class="bg-white/80 border-2 border-dashed border-slate-300 rounded-2xl p-4 flex flex-col justify-between shadow-xs">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 bg-slate-200 text-slate-700 font-black text-xs uppercase tracking-wider rounded-lg">${bayName}</span>
-                            <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">VACANT</span>
-                        </div>
-                        <div class="my-auto py-4 text-center">
-                            <i data-lucide="wrench" class="w-8 h-8 text-slate-300 mx-auto mb-1"></i>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ready for Next Intake</p>
-                        </div>
-                        <div class="pt-2 border-t border-slate-100 text-[10px] text-slate-400 font-semibold text-center">
-                            Available Bay
-                        </div>
-                    </div>`;
-                }
+                    </div>
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Queue</div>`;
             }
 
-            gridEl.innerHTML = html;
-        }
-
-        function renderQueueAndRelease(waitingJobs, readyJobs, carryOverJobs) {
-            document.getElementById('tv-count-waiting').innerText = waitingJobs.length;
-            document.getElementById('tv-count-ready').innerText = readyJobs.length;
-            document.getElementById('tv-count-carryover').innerText = carryOverJobs.length;
-
-            // Waiting list
-            const waitEl = document.getElementById('tv-list-waiting');
-            waitEl.innerHTML = waitingJobs.map(j => `
-                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
-                    <div>
-                        <span class="text-sm font-mono font-black text-slate-900">${j.plate}</span>
-                        <span class="text-xs font-bold text-slate-700 ml-2">${j.vehicle || j.model}</span>
+            // Slide 2 Released List (High Visibility Ready for Release)
+            const tvAllReleased = document.getElementById('tv-all-released-list');
+            const tvAllReleasedCount = document.getElementById('tv-all-released-count');
+            if (tvAllReleasedCount) tvAllReleasedCount.innerText = releasedAll.length;
+            if (tvAllReleased) {
+                tvAllReleased.innerHTML = releasedAll.map(job => `
+                    <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
+                        <div class="flex flex-col text-left">
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-emerald-300">Stub: ${job.claimStub || 'N/A'}</span>
+                            </div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 mt-0.5">${job.vehicle} · <span class="font-extrabold text-emerald-950">${job.customer || job.name || 'Customer'}</span></span>
+                        </div>
+                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm">
+                            Ready to Claim
+                        </span>
                     </div>
-                    <span class="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">${j.arrival || 'Waiting'}</span>
-                </div>
-            `).join('') || '<p class="text-center py-6 text-xs text-slate-400 font-semibold">No vehicles currently waiting.</p>';
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
+            }
 
-            // Ready list
-            const readyEl = document.getElementById('tv-list-ready');
-            readyEl.innerHTML = readyJobs.map(j => `
-                <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center justify-between">
-                    <div>
-                        <span class="text-sm font-mono font-black text-emerald-950">${j.plate}</span>
-                        <span class="text-xs font-bold text-emerald-800 ml-2">${j.vehicle || j.model}</span>
+            // Slide 2 Carry Over List (Clean Grid with Full Vehicle Info)
+            const tvAllCarry = document.getElementById('tv-all-carryover-list');
+            const tvAllCarryCount = document.getElementById('tv-all-carryover-count');
+            if (tvAllCarryCount) tvAllCarryCount.innerText = carryOverAll.length;
+            if (tvAllCarry) {
+                tvAllCarry.innerHTML = carryOverAll.map(job => `
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
+                        <div class="flex flex-col text-left">
+                            <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-gray-900 truncate max-w-[180px]">${job.vehicle}</span>
+                            <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${job.category || 'General Repair'} · SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
+                        </div>
+                        <span class="bg-amber-100 text-amber-950 border-2 border-amber-400 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
+                            Carry Over
+                        </span>
                     </div>
-                    <span class="text-[10px] font-black uppercase text-emerald-700 bg-white px-2.5 py-0.5 rounded-full border border-emerald-300">FOR RELEASE</span>
-                </div>
-            `).join('') || '<p class="text-center py-6 text-xs text-slate-400 font-semibold">No vehicles pending release.</p>';
+                `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-500 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
+            }
 
-            // Carryover list
-            const coEl = document.getElementById('tv-list-carryover');
-            coEl.innerHTML = carryOverJobs.map(j => `
-                <div class="p-2 rounded-lg bg-amber-50/80 border border-amber-200 text-xs">
-                    <div class="font-mono font-black text-amber-950">${j.plate}</div>
-                    <div class="text-[11px] text-amber-800 truncate">${j.vehicle || j.model}</div>
-                </div>
-            `).join('') || '<p class="text-center col-span-3 py-4 text-xs text-slate-400 font-semibold">No carry over vehicles.</p>';
-        }
+            // =========================================================
+            // SLIDE 1: WORKSHOP BAY MONITORING (6 Active Bays)
+            // =========================================================
+            const tvGRS = document.getElementById('tv-grs-list');
+            const bayCount = 6;
+            if (tvGRS) {
+                let baysHTML = '';
+                for (let i = 1; i <= bayCount; i++) {
+                    const padBay = String(i).padStart(2, '0');
+                    const job = allJobs.find(j => {
+                        if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
+                        if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
+                        if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
+                        const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
+                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}` || cleanLoc === `bay${padBay}`;
+                    });
 
-        function renderServiceLanes(jobs) {
-            const lanes = {
-                express: jobs.filter(j => (j.laneType || '').toLowerCase().includes('express')),
-                flexible: jobs.filter(j => (j.laneType || '').toLowerCase().includes('flexible')),
-                priority: jobs.filter(j => (j.laneType || '').toLowerCase().includes('priority')),
-                special: jobs.filter(j => (j.laneType || '').toLowerCase().includes('special'))
+                    if (job) {
+                        baysHTML += `
+                            <div class="bg-white border-2 border-slate-900 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-md">
+                                <div class="w-full flex items-center justify-between">
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-900">BAY-${padBay}</span>
+                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">IN SERVICE</span>
+                                </div>
+                                <div class="flex flex-col items-center my-auto text-center">
+                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
+                                    <span class="text-sm font-black uppercase tracking-wider text-slate-900 mt-1">${job.vehicle}</span>
+                                    <span class="text-xs font-extrabold uppercase text-slate-700 mt-0.5">${job.customer || job.name || 'Customer'}</span>
+                                </div>
+                                <div class="w-full pt-2.5 border-t-2 border-slate-200 flex items-center justify-between text-xs font-black text-slate-900 uppercase">
+                                    <span>${job.category || 'General Service'}</span>
+                                    <span class="text-slate-800 font-mono text-[10px] font-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300">${job.laneType || 'FLEXIBLE'}</span>
+                                </div>
+                            </div>`;
+                    } else {
+                        baysHTML += `
+                            <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-2xs">
+                                <div class="w-full flex items-center justify-between">
+                                    <span class="text-xs font-black uppercase tracking-widest text-slate-700">BAY-${padBay}</span>
+                                    <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">AVAILABLE</span>
+                                </div>
+                                <div class="my-auto flex flex-col items-center">
+                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-700 tracking-wider">EMPTY</span>
+                                    <span class="text-xs font-black uppercase text-slate-600 mt-1 tracking-wide">Ready for Allocation</span>
+                                </div>
+                                <div class="h-3"></div>
+                            </div>`;
+                    }
+                }
+                tvGRS.innerHTML = baysHTML;
+            }
+
+            // =========================================================
+            // SLIDE 3: WORKSHOP SERVICE LANES MONITORING
+            // =========================================================
+            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
+            const renderLaneJobCard = (job) => {
+                let statusBadge = '';
+                if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
+                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
+                } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
+                    statusBadge = `<span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Ready</span>`;
+                } else if (job.status === 'Waiting') {
+                    statusBadge = `<span class="bg-gray-100 text-gray-900 border-2 border-gray-400 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
+                } else {
+                    statusBadge = `<span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">Monitoring</span>`;
+                }
+                return `
+                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-gray-900 font-black uppercase tracking-wider">
+                            <span class="truncate max-w-[150px]">${job.vehicle}</span>
+                            <span class="text-gray-950 font-black">${job.category || 'General'}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-gray-700 font-bold border-t border-gray-200 pt-1.5">
+                            <span>SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
+                            <span class="font-extrabold text-gray-900">${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
+                        </div>
+                    </div>
+                `;
             };
 
-            const renderLaneList = (list) => list.map(j => `
-                <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
-                    <div class="font-mono font-black text-xs text-slate-900">${j.plate}</div>
-                    <div class="text-[10.5px] font-bold text-slate-700 truncate">${j.vehicle || j.model}</div>
-                    <div class="text-[9.5px] text-slate-500 mt-0.5">${j.status}</div>
-                </div>
-            `).join('') || '<p class="text-center py-4 text-xs text-slate-400">Clear</p>';
+            const expressLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
+            const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane');
+            const priorityLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane');
+            const flexibleLaneJobs = activeLaneJobs.filter(j => !['Express', 'Express Lane', 'Special', 'Specialty', 'Special Lane', 'Priority', 'Priority Lane'].includes(j.laneType));
 
-            document.getElementById('tv-lane-express-count').innerText = lanes.express.length;
-            document.getElementById('tv-lane-express-list').innerHTML = renderLaneList(lanes.express);
+            const expressCount = document.getElementById('tv-express-lane-count');
+            if (expressCount) expressCount.innerText = expressLaneJobs.length;
+            const flexibleCount = document.getElementById('tv-flexible-lane-count');
+            if (flexibleCount) flexibleCount.innerText = flexibleLaneJobs.length;
+            const specialCount = document.getElementById('tv-special-lane-count');
+            if (specialCount) specialCount.innerText = specialLaneJobs.length;
+            const priorityCount = document.getElementById('tv-priority-lane-count');
+            if (priorityCount) priorityCount.innerText = priorityLaneJobs.length;
 
-            document.getElementById('tv-lane-flexible-count').innerText = lanes.flexible.length;
-            document.getElementById('tv-lane-flexible-list').innerHTML = renderLaneList(lanes.flexible);
+            const expressList = document.getElementById('tv-express-lane-list');
+            const flexibleList = document.getElementById('tv-flexible-lane-list');
+            const specialList = document.getElementById('tv-special-lane-list');
+            const priorityList = document.getElementById('tv-priority-lane-list');
 
-            document.getElementById('tv-lane-priority-count').innerText = lanes.priority.length;
-            document.getElementById('tv-lane-priority-list').innerHTML = renderLaneList(lanes.priority);
+            if (expressList) {
+                expressList.innerHTML = expressLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
+            }
+            if (flexibleList) {
+                flexibleList.innerHTML = flexibleLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
+            }
+            if (specialList) {
+                specialList.innerHTML = specialLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
+            }
+            if (priorityList) {
+                priorityList.innerHTML = priorityLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
+            }
 
-            document.getElementById('tv-lane-special-count').innerText = lanes.special.length;
-            document.getElementById('tv-lane-special-list').innerHTML = renderLaneList(lanes.special);
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
         }
 
         // Live Plaque Alert Detection
@@ -806,7 +1007,6 @@
                 readyJobs.forEach(job => {
                     if (job.plate && !previousReadyPlates.has(job.plate)) {
                         triggerTVAlertPlaque({
-                            type: 'ready',
                             statusText: 'READY FOR RELEASE',
                             plate: job.plate,
                             model: job.vehicle || job.model || 'HONDA VEHICLE',
@@ -819,7 +1019,6 @@
                 monitoringJobs.forEach(job => {
                     if (job.plate && !previousMonitoringPlates.has(job.plate)) {
                         triggerTVAlertPlaque({
-                            type: 'monitoring',
                             statusText: 'WORKSHOP MONITORING',
                             plate: job.plate,
                             model: job.vehicle || job.model || 'HONDA VEHICLE',
@@ -836,6 +1035,7 @@
 
         function triggerTVAlertPlaque({ statusText, plate, model, speechText }) {
             const banner = document.getElementById('tv-ready-alert-banner');
+            if (!banner) return;
             document.getElementById('tv-ready-alert-status-text').innerText = statusText;
             document.getElementById('tv-ready-alert-plate').innerText = plate;
             document.getElementById('tv-ready-alert-model').innerText = model;
@@ -851,7 +1051,7 @@
             }, 9000);
         }
 
-        // Live Clock & Date Update
+        // Live Clock & Date Update (Matches Uppercase 24h HH:mm format from User Screenshot)
         function startLiveClock() {
             const updateTime = () => {
                 const now = new Date();
@@ -859,10 +1059,10 @@
                 const dateEl = document.getElementById('tv-date-display');
                 
                 if (clockEl) {
-                    clockEl.innerText = now.toLocaleTimeString('en-US', { hour12: false });
+                    clockEl.innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                 }
                 if (dateEl) {
-                    dateEl.innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                    dateEl.innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
                 }
             };
             updateTime();
@@ -873,6 +1073,16 @@
         window.addEventListener('DOMContentLoaded', async () => {
             startLiveClock();
             if (window.lucide) lucide.createIcons();
+
+            // Check if specific slide requested via URL param (0-indexed: 0, 1, 2)
+            const urlParams = new URLSearchParams(window.location.search);
+            const reqSlide = urlParams.get('slide');
+            if (reqSlide !== null) {
+                const parsed = parseInt(reqSlide, 10);
+                if (!isNaN(parsed) && parsed >= 0 && parsed <= 2) {
+                    currentSlide = parsed;
+                }
+            }
 
             // Keyboard listener for remote control / physical keyboard
             window.addEventListener('keydown', (e) => {
@@ -887,13 +1097,15 @@
             });
 
             // 1. Check for URL parameter auto-login (?pin=XXXX)
-            const urlParams = new URLSearchParams(window.location.search);
             const queryPin = urlParams.get('pin');
             const isKiosk = urlParams.get('kiosk') === 'true';
             if (queryPin) {
                 currentPin = queryPin;
                 updatePinDots();
                 await submitPinAuthentication(queryPin);
+                if (reqSlide !== null) {
+                    jumpToSlide(currentSlide);
+                }
                 if (isKiosk) {
                     try {
                         toggleFullscreen();
@@ -908,6 +1120,9 @@
                 currentPin = savedPin;
                 updatePinDots();
                 await submitPinAuthentication(savedPin);
+                if (reqSlide !== null) {
+                    jumpToSlide(currentSlide);
+                }
             } else {
                 showScreen('auth');
             }
