@@ -5761,46 +5761,46 @@
                     <!-- METHOD 3 & LIVE DISPLAY CANVAS (Real-Time In-App Slides) -->
                     <div id="panel-tv-method-preview" class="space-y-4 pt-1">
                         
-                        <!-- Top Canvas Control Bar -->
-                        <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gray-900 text-white rounded-xl">
+                        <!-- Top Canvas Control Bar (Clean Industry Standard) -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gray-50 border border-gray-200 text-gray-900 rounded-xl shadow-2xs">
                             <div class="flex items-center gap-3">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                                    <span class="text-xs font-bold uppercase tracking-wider text-gray-200">Interactive Display Canvas</span>
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                                    <span class="text-xs font-black uppercase tracking-wider text-gray-900">Interactive Display Canvas</span>
                                 </div>
-                                <span class="text-gray-500 text-xs font-mono">|</span>
-                                <p id="tv-date-display" class="text-xs text-gray-400 font-mono uppercase">Sunday, June 21, 2026</p>
+                                <span class="text-gray-300 text-xs font-mono">|</span>
+                                <p id="tv-date-display" class="text-xs text-gray-500 font-mono uppercase">Sunday, June 21, 2026</p>
                             </div>
 
                             <div class="flex items-center gap-4">
                                 <!-- Slide Switcher Dots -->
                                 <div class="flex items-center gap-2">
-                                    <span class="text-[10px] uppercase font-bold text-gray-400 mr-1">Slides:</span>
-                                    <button type="button" onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-3 h-3 rounded-full bg-red-500 cursor-pointer transition-all" title="Slide 1: Workshop Bay Allocations"></button>
-                                    <button type="button" onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Service Queue & Ready"></button>
-                                    <button type="button" onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></button>
+                                    <span class="text-[10px] uppercase font-bold text-gray-500 mr-1">Slides:</span>
+                                    <button type="button" onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-3 h-3 rounded-full bg-red-600 cursor-pointer transition-all" title="Slide 1: Workshop Bay Allocations"></button>
+                                    <button type="button" onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Service Queue & Ready"></button>
+                                    <button type="button" onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></button>
                                 </div>
 
                                 <!-- Weather & Clock -->
-                                <div class="flex items-center gap-3 pl-3 border-l border-gray-800">
+                                <div class="flex items-center gap-3 pl-3 border-l border-gray-200">
                                     <div class="flex items-center gap-1.5">
-                                        <span id="tv-weather-icon-wrap"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></span>
-                                        <span id="tv-temp-display" class="text-xs font-bold text-white">32°C</span>
-                                        <span id="tv-weather-text" class="text-[9px] text-gray-400 uppercase">Sunny</span>
+                                        <span id="tv-weather-icon-wrap"><i data-lucide="sun" class="w-4 h-4 text-amber-500"></i></span>
+                                        <span id="tv-temp-display" class="text-xs font-black text-gray-900">32°C</span>
+                                        <span id="tv-weather-text" class="text-[9px] text-gray-500 uppercase font-medium">Sunny</span>
                                     </div>
-                                    <span id="tv-clock-display" class="text-base font-black font-mono text-gray-200 tabular-nums">00:00</span>
+                                    <span id="tv-clock-display" class="text-base font-black font-mono text-gray-900 tabular-nums">00:00</span>
                                 </div>
 
                                 <!-- Voice Synthesis Toggle -->
-                                <button type="button" onclick="toggleTVVoice()" id="tv-dev-toggle-voice-btn" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold rounded-lg transition cursor-pointer flex items-center gap-1.5 border border-gray-700">
-                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gray-400"></i>
+                                <button type="button" onclick="toggleTVVoice()" id="tv-dev-toggle-voice-btn" class="px-2.5 py-1 bg-white hover:bg-gray-100 text-gray-800 text-xs font-bold rounded-lg transition cursor-pointer flex items-center gap-1.5 border border-gray-300 shadow-2xs">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gray-600"></i>
                                     <span>Voice: ON</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Canvas Frame Container (16:9 Aspect Ratio) -->
-                        <div class="relative bg-gray-950 rounded-2xl border-2 border-gray-900 shadow-xl overflow-hidden min-h-[580px] flex flex-col">
+                        <div class="relative bg-slate-900 rounded-2xl border-2 border-gray-200 shadow-xl overflow-hidden min-h-[580px] flex flex-col">
                             
                             <!-- Live Multi-Event TV Notification Banner (Automotive Plaque) -->
                             <div id="tv-ready-alert-banner" class="hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-[100] tv-broadcast-banner-active select-none transition-all duration-300">
@@ -7305,114 +7305,115 @@
     </div>
 
     <!-- UNIFIED DEVELOPER TOOLBOX MODAL (Triggered exclusively via Ctrl + D) -->
-    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 select-none">
-        <div class="bg-slate-950 text-slate-100 rounded-2xl shadow-2xl w-full max-w-5xl md:max-w-6xl overflow-hidden border border-slate-800 flex flex-col fade-in animate-in zoom-in-95 duration-150">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/95">
+    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-gray-900/60 backdrop-blur-xs flex items-center justify-center p-4 md:p-6 select-none fade-in">
+        <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl md:max-w-6xl overflow-hidden border border-gray-200 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-150">
+            
+            <!-- Clean Industry-Standard Header Bar (Modeled after Runtime Exception Modal) -->
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300">
-                        <i data-lucide="terminal" class="w-5 h-5"></i>
-                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0"></span>
                     <div>
-                        <div class="flex items-center gap-2.5">
-                            <h3 class="text-sm md:text-base font-bold uppercase tracking-wider text-slate-100">System Diagnostics & Developer Suite</h3>
-                            <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Ctrl + D</span>
-                            <span class="text-[10px] font-mono font-normal uppercase px-2 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/60">Branch 2 · Security & Recovery</span>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="text-sm md:text-base font-black uppercase tracking-wider text-gray-900">Developer Diagnostics & Control Suite</h3>
+                            <span class="text-xs font-mono text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200 font-medium">Ctrl + D</span>
+                            <span class="text-xs font-mono text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md border border-gray-200 font-medium">Branch 2 · Security & Recovery</span>
                         </div>
-                        <p class="text-xs text-slate-400 font-normal mt-0.5">HonTech AutoCenter Operations · Runtime Diagnostics, Hardware Emulation & Test Controls</p>
+                        <p class="text-xs text-gray-500 font-normal mt-0.5">HonTech AutoCenter Operations · Runtime Diagnostics, Hardware Emulation & Test Controls</p>
                     </div>
                 </div>
-                <button type="button" onclick="toggleDevToolbox(false)" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer" title="Close (Esc)">
+                <button type="button" onclick="toggleDevToolbox(false)" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition cursor-pointer" title="Dismiss (Esc)">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Scrollable Content Grid (2 Columns: Left = Simulation & Hardware, Right = System Tools & Resilience) -->
-            <div class="p-6 space-y-5 max-h-[78vh] overflow-y-auto custom-scroll bg-slate-950">
+            <div class="p-6 space-y-5 max-h-[76vh] overflow-y-auto custom-scroll bg-gray-50/50 select-text">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     
                     <!-- LEFT COLUMN: TIME TRAVEL SIMULATION & TV SIGNAGE (7 Cols) -->
                     <div class="lg:col-span-7 space-y-5">
                         
                         <!-- PANEL 1: QUEUE DATE TIME MACHINE & MULTI-DAY RESET SIMULATOR -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3.5">
-                            <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-2.5">
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-5 space-y-3.5 shadow-2xs">
+                            <div class="flex items-center justify-between gap-3 border-b border-gray-100 pb-2.5">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
-                                        <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                                    <div class="p-2 rounded-lg bg-gray-100 text-gray-700 border border-gray-200">
+                                        <i data-lucide="calendar-clock" class="w-4 h-4 text-red-600"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Queue Date Simulator & Daily Reset</span>
-                                            <span id="dev-sim-status-badge" class="px-2 py-0.5 text-[9px] font-mono uppercase font-bold rounded bg-slate-800 text-slate-300 border border-slate-700">Real-Time Mode</span>
+                                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Queue Date Simulator & Daily Reset</span>
+                                            <span id="dev-sim-status-badge" class="px-2.5 py-0.5 text-[10px] font-mono uppercase font-bold rounded-md bg-gray-100 text-gray-700 border border-gray-200">Real-Time Mode</span>
                                         </div>
-                                        <p class="text-[11px] text-slate-400 font-normal">Test morning queue reset, carry-over ticket retention & historical recall.</p>
+                                        <p class="text-xs text-gray-500 font-normal mt-0.5">Test automated morning queue reset, carry-over ticket retention & historical recall.</p>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <span class="text-[9px] text-slate-400 uppercase font-bold block">Active Date</span>
-                                    <span id="dev-sim-active-date" class="text-xs font-mono font-bold text-slate-200">2026-09-14</span>
+                                <div class="text-right shrink-0">
+                                    <span class="text-[10px] text-gray-400 uppercase font-bold block">Active Date</span>
+                                    <span id="dev-sim-active-date" class="text-xs font-mono font-bold text-gray-900">2026-09-14</span>
                                 </div>
                             </div>
 
                             <!-- Calendar Steppers & Jump Date -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="bg-slate-950 border border-slate-800 p-3 rounded-lg space-y-2">
-                                    <span class="text-[9.5px] font-bold uppercase tracking-wider text-slate-400 block">Date Shift Controls</span>
+                                <div class="bg-gray-50/80 border border-gray-200 p-3.5 rounded-xl space-y-2">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">Date Shift Controls</span>
                                     <div class="grid grid-cols-3 gap-1.5">
-                                        <button type="button" onclick="HontechDevDateSimulator.prevDay()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-center transition cursor-pointer text-xs font-semibold">
+                                        <button type="button" onclick="HontechDevDateSimulator.prevDay()" class="p-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 rounded-lg text-center transition cursor-pointer text-xs font-bold shadow-2xs">
                                             -1 Day
                                         </button>
-                                        <button type="button" onclick="HontechDevDateSimulator.reset()" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded-lg text-center transition cursor-pointer text-xs font-bold">
+                                        <button type="button" onclick="HontechDevDateSimulator.reset()" class="p-2 bg-gray-900 hover:bg-black border border-gray-800 text-white rounded-lg text-center transition cursor-pointer text-xs font-bold shadow-xs">
                                             Today
                                         </button>
-                                        <button type="button" onclick="HontechDevDateSimulator.nextDay()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-center transition cursor-pointer text-xs font-semibold">
+                                        <button type="button" onclick="HontechDevDateSimulator.nextDay()" class="p-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 rounded-lg text-center transition cursor-pointer text-xs font-bold shadow-2xs">
                                             +1 Day
                                         </button>
                                     </div>
                                     <div class="flex items-center gap-2 pt-1">
-                                        <label for="dev-sim-direct-date" class="text-[9.5px] font-bold uppercase text-slate-400 whitespace-nowrap">Direct Jump:</label>
-                                        <input type="date" id="dev-sim-direct-date" onchange="HontechDevDateSimulator.simulateDate(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 font-mono text-xs px-2 py-1 rounded outline-none cursor-pointer">
+                                        <label for="dev-sim-direct-date" class="text-[10px] font-bold uppercase text-gray-500 whitespace-nowrap">Direct Jump:</label>
+                                        <input type="date" id="dev-sim-direct-date" onchange="HontechDevDateSimulator.simulateDate(this.value)" class="w-full bg-white border border-gray-300 text-gray-900 font-mono text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 cursor-pointer shadow-2xs">
                                     </div>
                                 </div>
 
                                 <!-- Test Suite Dataset & Record Distribution -->
-                                <div class="bg-slate-950 border border-slate-800 p-3 rounded-lg space-y-2 flex flex-col justify-between">
+                                <div class="bg-gray-50/80 border border-gray-200 p-3.5 rounded-xl space-y-2.5 flex flex-col justify-between">
                                     <div>
-                                        <span class="text-[9.5px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Test Suite Dataset</span>
+                                        <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1.5">Test Suite Dataset</span>
                                         <div class="grid grid-cols-2 gap-1.5">
-                                            <button type="button" onclick="HontechDevDateSimulator.seedMultiDaySuite()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-left transition cursor-pointer text-xs font-semibold">
-                                                Seed 8 Records
+                                            <button type="button" onclick="HontechDevDateSimulator.seedMultiDaySuite()" class="p-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 rounded-lg text-left transition cursor-pointer text-xs font-bold shadow-2xs flex items-center justify-between">
+                                                <span>Seed 8 Jobs</span>
+                                                <i data-lucide="plus" class="w-3.5 h-3.5 text-gray-500"></i>
                                             </button>
-                                            <button type="button" onclick="HontechDevDateSimulator.clearTestData()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-300 hover:text-white rounded-lg text-left transition cursor-pointer text-xs font-semibold">
-                                                Purge Seed
+                                            <button type="button" onclick="HontechDevDateSimulator.clearTestData()" class="p-2 bg-white hover:bg-rose-50 border border-rose-200 text-rose-700 rounded-lg text-left transition cursor-pointer text-xs font-bold shadow-2xs flex items-center justify-between">
+                                                <span>Purge Seed</span>
+                                                <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-500"></i>
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div class="bg-slate-900 border border-slate-800 p-2 rounded-lg">
+                                    <div class="bg-white border border-gray-200 p-2.5 rounded-lg shadow-2xs">
                                         <div class="grid grid-cols-3 gap-1 text-center font-mono">
                                             <div>
-                                                <span class="text-[8px] text-slate-400 block uppercase">Yesterday</span>
-                                                <span id="dev-sim-count-yesterday" class="text-xs font-bold text-slate-300">0</span>
+                                                <span class="text-[9px] text-gray-400 block uppercase font-medium">Yesterday</span>
+                                                <span id="dev-sim-count-yesterday" class="text-xs font-bold text-gray-700">0</span>
                                             </div>
                                             <div>
-                                                <span class="text-[8px] text-slate-400 block uppercase">Today</span>
-                                                <span id="dev-sim-count-today" class="text-xs font-bold text-slate-100">0</span>
+                                                <span class="text-[9px] text-gray-400 block uppercase font-medium">Today</span>
+                                                <span id="dev-sim-count-today" class="text-xs font-bold text-gray-900">0</span>
                                             </div>
                                             <div>
-                                                <span class="text-[8px] text-slate-400 block uppercase">Tomorrow</span>
-                                                <span id="dev-sim-count-tomorrow" class="text-xs font-bold text-slate-300">0</span>
+                                                <span class="text-[9px] text-gray-400 block uppercase font-medium">Tomorrow</span>
+                                                <span id="dev-sim-count-tomorrow" class="text-xs font-bold text-gray-700">0</span>
                                             </div>
                                         </div>
-                                        <div id="dev-sim-message" class="text-[9px] text-slate-400 truncate font-mono text-center mt-1">Ready for testing</div>
+                                        <div id="dev-sim-message" class="text-[10px] text-gray-500 truncate font-mono text-center mt-1">Ready for testing</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex items-center justify-between pt-1 border-t border-slate-800 text-[11px] text-slate-400">
-                                <span>Inspect changes in Table 1 (Bookings), Table 2 (Intakes), Table 3 (Carry-Overs):</span>
-                                <button type="button" onclick="toggleDevToolbox(false); showSection('queue');" class="text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1 cursor-pointer">
+                            <div class="flex items-center justify-between pt-1 border-t border-gray-100 text-xs text-gray-500">
+                                <span>Inspect changes across Table 1 (Bookings), Table 2 (Intakes), Table 3 (Carry-Overs):</span>
+                                <button type="button" onclick="toggleDevToolbox(false); showSection('queue');" class="text-xs font-bold text-gray-800 hover:text-red-600 transition flex items-center gap-1 cursor-pointer">
                                     <span>Go to Records</span>
                                     <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                                 </button>
@@ -7420,71 +7421,71 @@
                         </div>
 
                         <!-- PANEL 2: TV SIGNAGE & ANNOUNCEMENT SIMULATOR -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3.5">
-                            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                                <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                                    <i data-lucide="volume-2" class="w-4 h-4 text-slate-400"></i>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-5 space-y-3.5 shadow-2xs">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <span class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2">
+                                    <i data-lucide="volume-2" class="w-4 h-4 text-red-600"></i>
                                     <span>TV Signage & Voice Announcement Simulator</span>
                                 </span>
-                                <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-800 px-2 py-0.5 rounded border border-slate-700">5 Events</span>
+                                <span class="text-[10px] font-mono text-gray-600 uppercase bg-gray-100 px-2.5 py-0.5 rounded border border-gray-200 font-medium">5 Events</span>
                             </div>
 
                             <!-- Vehicle parameter inputs -->
-                            <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                            <div class="grid grid-cols-3 gap-2.5 bg-gray-50/80 p-3 rounded-xl border border-gray-200">
                                 <div>
-                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Plate</label>
-                                    <input type="text" id="dev-sim-modal-plate" value="NDO 8492" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-mono font-bold text-xs px-2 py-1 rounded uppercase outline-none">
+                                    <label class="text-[10px] font-bold uppercase text-gray-500 block mb-1">Plate Number</label>
+                                    <input type="text" id="dev-sim-modal-plate" value="NDO 8492" class="w-full bg-white border border-gray-300 text-gray-900 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg uppercase outline-none focus:border-red-500 shadow-2xs">
                                 </div>
                                 <div>
-                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Car Model</label>
-                                    <input type="text" id="dev-sim-modal-vehicle" value="Honda Civic RS" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-bold text-xs px-2 py-1 rounded outline-none">
+                                    <label class="text-[10px] font-bold uppercase text-gray-500 block mb-1">Car Model</label>
+                                    <input type="text" id="dev-sim-modal-vehicle" value="Honda Civic RS" class="w-full bg-white border border-gray-300 text-gray-900 font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 shadow-2xs">
                                 </div>
                                 <div>
-                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Customer Name</label>
-                                    <input type="text" id="dev-sim-modal-customer" value="Sophia Loren" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-bold text-xs px-2 py-1 rounded outline-none">
+                                    <label class="text-[10px] font-bold uppercase text-gray-500 block mb-1">Customer Name</label>
+                                    <input type="text" id="dev-sim-modal-customer" value="Sophia Loren" class="w-full bg-white border border-gray-300 text-gray-900 font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 shadow-2xs">
                                 </div>
                             </div>
 
-                            <!-- 5 Events (Professional Dark Slate Styling) -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <button type="button" onclick="triggerTVSimulationEvent('monitoring', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                            <!-- 5 Events (Clean White Card Design) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <button type="button" onclick="triggerTVSimulationEvent('monitoring', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-gray-900 flex items-center justify-between">
                                         <span>01 · Monitoring Reception</span>
-                                        <span class="text-[9px] font-mono text-slate-400">Audio/Plaque</span>
+                                        <span class="text-[9.5px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">Audio Chime</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Intake telemetry broadcast to waiting lounge</p>
+                                    <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">Intake telemetry broadcast to customer waiting lounge</p>
                                 </button>
 
-                                <button type="button" onclick="triggerTVSimulationEvent('bay_assigned', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                <button type="button" onclick="triggerTVSimulationEvent('bay_assigned', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-gray-900 flex items-center justify-between">
                                         <span>02 · Bay Allocation</span>
-                                        <span class="text-[9px] font-mono text-slate-400">Dispatch</span>
+                                        <span class="text-[9.5px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">Dispatch</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Mechanical bay assignment & technician chime</p>
+                                    <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">Mechanical bay assignment & technician floor chime</p>
                                 </button>
 
-                                <button type="button" onclick="triggerTVSimulationEvent('ready', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                <button type="button" onclick="triggerTVSimulationEvent('ready', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-emerald-50/40 hover:bg-emerald-50 border border-emerald-200 hover:border-emerald-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-emerald-900 flex items-center justify-between">
                                         <span>03 · Ready for Release</span>
-                                        <span class="text-[9px] font-mono text-slate-400">Cashier Call</span>
+                                        <span class="text-[9.5px] font-mono text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded border border-emerald-300">Cashier Call</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Vehicle completion announcement & cashier callout</p>
+                                    <p class="text-[11px] text-emerald-700 mt-1 leading-relaxed">Vehicle completion announcement & cashier callout</p>
                                 </button>
 
-                                <button type="button" onclick="triggerTVSimulationEvent('carryover', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                <button type="button" onclick="triggerTVSimulationEvent('carryover', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-gray-900 flex items-center justify-between">
                                         <span>04 · Carry-Over Hold</span>
-                                        <span class="text-[9px] font-mono text-slate-400">Extended</span>
+                                        <span class="text-[9.5px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">Extended</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Overnight parts hold & customer notification notice</p>
+                                    <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">Overnight parts hold & customer notification notice</p>
                                 </button>
 
-                                <button type="button" onclick="triggerTVSimulationEvent('return_active', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer sm:col-span-2">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                <button type="button" onclick="triggerTVSimulationEvent('return_active', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs sm:col-span-2">
+                                    <div class="text-xs font-black uppercase text-gray-900 flex items-center justify-between">
                                         <span>05 · Return to Active Service</span>
-                                        <span class="text-[9px] font-mono text-slate-400">Re-activate</span>
+                                        <span class="text-[9.5px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">Re-activate</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">Re-activates vehicle back into workshop floor queue</p>
+                                    <p class="text-[11px] text-gray-500 mt-1 leading-relaxed">Re-activates vehicle back into workshop floor queue</p>
                                 </button>
                             </div>
                         </div>
@@ -7494,107 +7495,107 @@
                     <!-- RIGHT COLUMN: SYSTEM TOOLS, RESILIENCE & DATABASE (5 Cols) -->
                     <div class="lg:col-span-5 space-y-5">
                         
-                        <!-- PANEL 3: DATABASE & SEED STATE -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
-                                <i data-lucide="database" class="w-4 h-4 text-slate-400"></i>
+                        <!-- PANEL 3: DATABASE & SEED STATE (Matches Error Modal Reset DB Design) -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-5 space-y-3.5 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-2.5">
+                                <i data-lucide="database" class="w-4 h-4 text-red-600"></i>
                                 <span>Database & Record Management</span>
                             </span>
                             
                             <div class="space-y-2.5">
-                                <button type="button" onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-left transition cursor-pointer flex items-center justify-between group">
+                                <button type="button" onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3.5 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 hover:border-emerald-300 rounded-xl text-left transition cursor-pointer flex items-center justify-between group shadow-2xs">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                                        <div class="p-2 rounded-lg bg-emerald-100 border border-emerald-300 text-emerald-800">
                                             <i data-lucide="database-backup" class="w-4 h-4"></i>
                                         </div>
                                         <div>
-                                            <span class="text-xs font-bold uppercase text-slate-200 block">Reset & Seed MariaDB Database</span>
-                                            <span class="text-[10px] text-slate-400 font-normal">Re-initializes demo accounts & 8 queue records</span>
+                                            <span class="text-xs font-black uppercase text-emerald-900 block">Reset & Seed MariaDB Database</span>
+                                            <span class="text-[11px] text-emerald-700 font-normal leading-tight">Reconstructs clean schema with demo staff & 8 queue records</span>
                                         </div>
                                     </div>
-                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-1 rounded border border-slate-800">MariaDB</span>
+                                    <span class="text-[9.5px] font-mono font-bold text-emerald-800 uppercase bg-emerald-100 px-2.5 py-1 rounded-md border border-emerald-300">MariaDB</span>
                                 </button>
 
-                                <button type="button" onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="w-full p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-left transition cursor-pointer flex items-center justify-between group">
+                                <button type="button" onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="w-full p-3.5 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer flex items-center justify-between group shadow-2xs">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                                        <div class="p-2 rounded-lg bg-gray-100 border border-gray-200 text-gray-700">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </div>
                                         <div>
-                                            <span class="text-xs font-bold uppercase text-slate-200 block">Clear Audit & Incident Logs</span>
-                                            <span class="text-[10px] text-slate-400 font-normal">Purges historical delay records & audit trail clean</span>
+                                            <span class="text-xs font-black uppercase text-gray-900 block">Clear Audit & Incident Logs</span>
+                                            <span class="text-[11px] text-gray-500 font-normal leading-tight">Purges historical delay records & audit trail clean</span>
                                         </div>
                                     </div>
-                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-1 rounded border border-slate-800">Logs</span>
+                                    <span class="text-[9.5px] font-mono text-gray-600 uppercase bg-gray-100 px-2 py-1 rounded-md border border-gray-200">Logs</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- PANEL 4: FAULT INJECTION & RESILIENCE TESTING -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-5 space-y-3.5 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-2.5">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-red-600"></i>
                                 <span>Fault Injection & Resilience</span>
                             </span>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <button type="button" onclick="toggleDevMailbox(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
-                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <button type="button" onclick="toggleDevMailbox(); toggleDevToolbox(false);" class="p-2.5 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-gray-800 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-gray-500"></i>
                                         <span>Dev Mailbox</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400">OTP code sandboxes</p>
+                                    <p class="text-[10px] text-gray-500 leading-tight">OTP code sandboxes</p>
                                 </button>
 
-                                <button type="button" onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
-                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <button type="button" onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" class="p-2.5 bg-white hover:bg-amber-50/60 border border-amber-200 hover:border-amber-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-amber-900 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-amber-600"></i>
                                         <span>Offline Outage</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400">Simulate network drop</p>
+                                    <p class="text-[10px] text-amber-700 leading-tight">Simulate network drop</p>
                                 </button>
 
-                                <button type="button" onclick="window.triggerTestCrash(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
-                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-slate-400"></i>
+                                <button type="button" onclick="window.triggerTestCrash(); toggleDevToolbox(false);" class="p-2.5 bg-white hover:bg-rose-50/60 border border-rose-200 hover:border-rose-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                    <div class="text-xs font-black uppercase text-rose-900 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-600"></i>
                                         <span>Crash Test</span>
                                     </div>
-                                    <p class="text-[10px] text-slate-400">Diagnostic exception</p>
+                                    <p class="text-[10px] text-rose-700 leading-tight">Diagnostic exception</p>
                                 </button>
                             </div>
                         </div>
 
                         <!-- PANEL 5: SLA PERFORMANCE & THEMES -->
-                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
-                                <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-5 space-y-3.5 shadow-2xs">
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900 flex items-center gap-2 border-b border-gray-100 pb-2.5">
+                                <i data-lucide="sliders" class="w-4 h-4 text-red-600"></i>
                                 <span>Turnaround SLA & UI Themes</span>
                             </span>
 
-                            <div class="space-y-2">
-                                <button type="button" onclick="window.triggerSimulateExpressOverdue(); toggleDevToolbox(false);" class="w-full p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer flex items-center justify-between">
+                            <div class="space-y-2.5">
+                                <button type="button" onclick="window.triggerSimulateExpressOverdue(); toggleDevToolbox(false);" class="w-full p-3 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer flex items-center justify-between shadow-2xs">
                                     <div>
-                                        <span class="text-xs font-bold uppercase text-slate-200 block">Simulate 2H Express Overdue SLA</span>
-                                        <span class="text-[10px] text-slate-400">Spawns 2h 15m overdue job to test escalation status</span>
+                                        <span class="text-xs font-black uppercase text-gray-900 block">Simulate 2H Express Overdue SLA</span>
+                                        <span class="text-[11px] text-gray-500 leading-tight">Spawns 2h 15m overdue job to test escalation status</span>
                                     </div>
-                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-0.5 rounded border border-slate-800">SLA Test</span>
+                                    <span class="text-[9.5px] font-mono text-gray-600 uppercase bg-gray-100 px-2 py-0.5 rounded border border-gray-200">SLA Test</span>
                                 </button>
 
                                 <div class="grid grid-cols-2 gap-2 pt-0.5">
-                                    <button type="button" onclick="openLoaderThemeModal(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                        <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-0.5">
-                                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-slate-400"></i>
+                                    <button type="button" onclick="openLoaderThemeModal(); toggleDevToolbox(false);" class="p-2.5 bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                        <div class="text-xs font-black uppercase text-gray-800 flex items-center gap-1.5 mb-1">
+                                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gray-500"></i>
                                             <span>Preloader Themes</span>
                                         </div>
-                                        <p class="text-[10px] text-slate-400">5 animation styles</p>
+                                        <p class="text-[10px] text-gray-500">5 animation styles</p>
                                     </button>
 
-                                    <button type="button" onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
-                                        <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-0.5">
-                                            <i data-lucide="loader-2" class="w-3.5 h-3.5 text-slate-400"></i>
+                                    <button type="button" onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" class="p-2.5 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 rounded-xl text-left transition cursor-pointer shadow-2xs">
+                                        <div class="text-xs font-black uppercase text-gray-800 flex items-center gap-1.5 mb-1">
+                                            <i data-lucide="loader-2" class="w-3.5 h-3.5 text-gray-600"></i>
                                             <span>Test Preloader</span>
                                         </div>
-                                        <p class="text-[10px] text-slate-400">Render active theme</p>
+                                        <p class="text-[10px] text-gray-500">Render active theme</p>
                                     </button>
                                 </div>
                             </div>
@@ -7603,105 +7604,126 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Clean Industry-Standard Action Bar (Modeled after Runtime Exception Modal) -->
+            <div class="bg-gray-50 px-6 py-3.5 border-t border-gray-200 flex items-center justify-between gap-3 shrink-0 select-none">
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="px-3.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-semibold rounded-lg transition cursor-pointer flex items-center gap-1.5 shadow-2xs">
+                        <i data-lucide="database" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <span>Reset DB</span>
+                    </button>
+                    <button type="button" onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="px-3.5 py-1.5 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg transition shadow-2xs cursor-pointer flex items-center gap-1.5">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5 text-gray-500"></i>
+                        <span>Purge Logs</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="toggleDevToolbox(false)" class="px-4 py-1.5 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg transition shadow-2xs cursor-pointer">
+                        Dismiss (ESC)
+                    </button>
+                    <button type="button" onclick="toggleDevToolbox(false); showSection('queue');" class="px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-lg transition shadow-2xs cursor-pointer flex items-center gap-1.5">
+                        <i data-lucide="layout-list" class="w-3.5 h-3.5 text-white"></i>
+                        <span>Go to Records</span>
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Dev Loader UI Theme Selector Modal -->
-    <div id="loader-theme-modal" class="fixed inset-0 z-[1000] hidden bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 select-none">
-        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-800 flex flex-col fade-in">
+    <!-- Dev Loader UI Theme Selector Modal (Industry-Standard Light Theme) -->
+    <div id="loader-theme-modal" class="fixed inset-0 z-[1000] hidden bg-gray-900/60 backdrop-blur-xs flex items-center justify-center p-4 md:p-8 select-none fade-in">
+        <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-200 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-150">
             <!-- Modal Header -->
-            <div class="px-6 py-5 border-b border-gray-800 flex items-center justify-between bg-gray-900/60">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
-                        <i data-lucide="sparkles" class="w-5 h-5"></i>
-                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0"></span>
                     <div>
-                        <h3 class="text-base font-black uppercase tracking-wider text-white">Loading Screen UI Theme Selector</h3>
-                        <p class="text-[11px] text-gray-400 font-semibold">Select and live-preview your preferred animation style</p>
+                        <h3 class="text-sm md:text-base font-black uppercase tracking-wider text-gray-900">Loading Screen UI Theme Selector</h3>
+                        <p class="text-xs text-gray-500 font-normal">Select and live-preview your preferred animation style</p>
                     </div>
                 </div>
-                <button onclick="closeLoaderThemeModal()" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition">
+                <button onclick="closeLoaderThemeModal()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Theme Choices Grid -->
-            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto">
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto bg-gray-50/50">
                 <!-- Theme 1: Gears (Single Big) -->
-                <div onclick="selectAndPreviewLoaderTheme('gears')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative">
+                <div onclick="selectAndPreviewLoaderTheme('gears')" class="loader-theme-card group cursor-pointer p-4 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative shadow-2xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="cog" class="w-5 h-5 text-red-500 group-hover:rotate-90 transition-transform duration-500"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Single Big Gear</span>
+                            <i data-lucide="cog" class="w-5 h-5 text-red-600 group-hover:rotate-90 transition-transform duration-500"></i>
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Single Big Gear</span>
                         </div>
-                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30">Recommended</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-50 text-red-600 border border-red-200">Recommended</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Single prominent mechanical precision gear spinning smoothly with a glowing red aura.</p>
-                    <button class="w-full py-2 bg-red-600/20 group-hover:bg-red-600 text-red-400 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">Single prominent mechanical precision gear spinning smoothly with a glowing red aura.</p>
+                    <button class="w-full py-2 bg-gray-100 group-hover:bg-red-600 text-gray-700 group-hover:text-white font-extrabold text-[10px] uppercase rounded-lg transition">Apply & Test</button>
                 </div>
 
                 <!-- Theme 2: Emblem & Orbit Ring (Preserved) -->
-                <div onclick="selectAndPreviewLoaderTheme('emblem')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative">
+                <div onclick="selectAndPreviewLoaderTheme('emblem')" class="loader-theme-card group cursor-pointer p-4 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative shadow-2xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="wrench" class="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Emblem & Orbit Ring</span>
+                            <i data-lucide="wrench" class="w-5 h-5 text-red-600 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Emblem & Orbit Ring</span>
                         </div>
-                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-800 text-gray-400">Classic</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">Classic</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Solid HonTech wrench emblem with animated outer rotating orbital ring and pulsating red aura.</p>
-                    <button class="w-full py-2 bg-gray-800 group-hover:bg-red-600 text-gray-300 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">Solid HonTech wrench emblem with animated outer rotating orbital ring and pulsating red aura.</p>
+                    <button class="w-full py-2 bg-gray-100 group-hover:bg-red-600 text-gray-700 group-hover:text-white font-extrabold text-[10px] uppercase rounded-lg transition">Apply & Test</button>
                 </div>
 
                 <!-- Theme 3: Tachometer Gauge Sweep -->
-                <div onclick="selectAndPreviewLoaderTheme('gauge')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative">
+                <div onclick="selectAndPreviewLoaderTheme('gauge')" class="loader-theme-card group cursor-pointer p-4 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative shadow-2xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="gauge" class="w-5 h-5 text-red-500 group-hover:rotate-45 transition-transform"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Turbo Tachometer</span>
+                            <i data-lucide="gauge" class="w-5 h-5 text-red-600 group-hover:rotate-45 transition-transform"></i>
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Turbo Tachometer</span>
                         </div>
-                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-800 text-gray-400">Gauge</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">Gauge</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Automotive high-RPM speed sweep arc with active bouncing center dial and digital readout.</p>
-                    <button class="w-full py-2 bg-gray-800 group-hover:bg-red-600 text-gray-300 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">Automotive high-RPM speed sweep arc with active bouncing center dial and digital readout.</p>
+                    <button class="w-full py-2 bg-gray-100 group-hover:bg-red-600 text-gray-700 group-hover:text-white font-extrabold text-[10px] uppercase rounded-lg transition">Apply & Test</button>
                 </div>
 
                 <!-- Theme 4: Cyber Diagnostic Scanner -->
-                <div onclick="selectAndPreviewLoaderTheme('cyber')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative">
+                <div onclick="selectAndPreviewLoaderTheme('cyber')" class="loader-theme-card group cursor-pointer p-4 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative shadow-2xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="car" class="w-5 h-5 text-red-500"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Cyber Telemetry Scanner</span>
+                            <i data-lucide="car" class="w-5 h-5 text-red-600"></i>
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Cyber Telemetry Scanner</span>
                         </div>
-                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-800 text-gray-400">Sci-Fi</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">Sci-Fi</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Futuristic vehicle diagnostic chassis silhouette with real-time horizontal red laser scanning beam.</p>
-                    <button class="w-full py-2 bg-gray-800 group-hover:bg-red-600 text-gray-300 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">Futuristic vehicle diagnostic chassis silhouette with real-time horizontal red laser scanning beam.</p>
+                    <button class="w-full py-2 bg-gray-100 group-hover:bg-red-600 text-gray-700 group-hover:text-white font-extrabold text-[10px] uppercase rounded-lg transition">Apply & Test</button>
                 </div>
 
                 <!-- Theme 5: Engine Pistons -->
-                <div onclick="selectAndPreviewLoaderTheme('piston')" class="loader-theme-card group cursor-pointer p-4 rounded-2xl bg-gray-900/80 hover:bg-gray-850 border border-gray-800 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative md:col-span-2">
+                <div onclick="selectAndPreviewLoaderTheme('piston')" class="loader-theme-card group cursor-pointer p-4 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 hover:border-red-500/60 transition-all flex flex-col justify-between gap-3 relative md:col-span-2 shadow-2xs">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
-                            <i data-lucide="activity" class="w-5 h-5 text-red-500 animate-pulse"></i>
-                            <span class="text-xs font-black uppercase tracking-wider text-white">Quad Engine Pistons</span>
+                            <i data-lucide="activity" class="w-5 h-5 text-red-600 animate-pulse"></i>
+                            <span class="text-xs font-black uppercase tracking-wider text-gray-900">Quad Engine Pistons</span>
                         </div>
-                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-800 text-gray-400">Mechanical</span>
+                        <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">Mechanical</span>
                     </div>
-                    <p class="text-[11px] text-gray-400 leading-relaxed">Dynamic 4-cylinder engine piston firing strokes with rhythmic red glow pulses.</p>
-                    <button class="w-full py-2 bg-gray-800 group-hover:bg-red-600 text-gray-300 group-hover:text-white font-extrabold text-[10px] uppercase rounded-xl transition">Apply & Test</button>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">Dynamic 4-cylinder engine piston firing strokes with rhythmic red glow pulses.</p>
+                    <button class="w-full py-2 bg-gray-100 group-hover:bg-red-600 text-gray-700 group-hover:text-white font-extrabold text-[10px] uppercase rounded-lg transition">Apply & Test</button>
                 </div>
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-6 py-4 bg-gray-900 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500 shrink-0">
                 <span>Selected style is automatically saved for all future logins & page reloads.</span>
-                <button onclick="closeLoaderThemeModal()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs rounded-xl uppercase tracking-wider transition">Close</button>
+                <button onclick="closeLoaderThemeModal()" class="px-4 py-1.5 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 font-semibold text-xs rounded-lg transition shadow-2xs">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Dev Mailbox Simulator Modal (Gmail Mockup) -->
     <div id="dev-mailbox-modal"
         class="fixed inset-0 z-[1000] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 select-none">
         <div
@@ -8993,7 +9015,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.62"></script>
+    <script src="js/app.js?v=5.63"></script>
 </body>
 
 </html>
