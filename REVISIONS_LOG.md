@@ -4,6 +4,38 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 14, 2026 (Queue Calendar Engine, Auto-Reset, Historical Recall & Ctrl+D Dev Sandbox)
+
+### 📅 Queue Calendar Filter, Next-Day Board Auto-Reset & Historical Recall (v5.55)
+* **Prototype Alignment**: Modeled after the staff module in `frontend/OthersPrototype/prototype_skipped.html` to introduce calendar-driven queue management across all 3 core workshop tables.
+* **Table 1: Online Booking Module (`#container-online-queue` / `#table-pending-express`)**:
+  - Added embedded date picker `#online-date-filter` and **"All Inquiries" / "Filter by Date"** toggle button.
+  - Defaults to filtering pending bookings scheduled for the chosen calendar day, with fast toggle to all pending inquiries.
+* **Table 2: Daily Intakes Master Queue (`#container-daily-intakes` / `#table-daily-intakes`)**:
+  - **Intake Calendar Toolbar**: Live digital date picker (`#intake-date-filter`), Day Steppers (`‹ Previous Day`, `Today`, `Next Day ›`), and `Show All Dates` toggle.
+  - **Automatic Next-Day Clean Reset**: When the calendar advances to tomorrow, the board automatically resets clean, clearing yesterday's intake clutter so the shop starts every morning with a fresh board.
+  - **Historical Ticket Recall**: Selecting any past date immediately recalls that day's intake tickets, diagnoses, arrival/departure timestamps, and completion statuses for advisors and auditors.
+  - **Include Carry-Overs Checkbox**: Staff toggle to display active unresolved carry-overs alongside daily intakes.
+* **Table 3: Carry-Over Data Table (`#container-carry-over` / `#table-carry-over`)**:
+  - **3-Mode Filter**: `All Active` (default to prevent vehicle loss across days), `Promised Date` (filter by scheduled delivery date), and `Intake Date` (filter by original intake date).
+
+### 🛠️ Unified Developer Testing Console & Ctrl+D Toolbox UI Redesign (v5.56)
+* **Global Developer Shortcut (`Ctrl + D` / `Cmd + D`)**: Relocated developer simulation controls from permanent on-screen clutter into the Unified Developer Toolbox modal (`#dev-toolbox-modal`), widened to `max-w-3xl`.
+* **Queue Date Time Machine & Auto-Reset Console**:
+  - **Simulated Calendar Steppers**: `⏪ -1 Day (Recall Past)`, `🔄 Today (Real Clock)`, `⏩ +1 Day (Fresh Reset)`, and direct Jump Date selector.
+  - **1-Click Multi-Day Test Suite**: `Seed Data` button injecting 8 partitioned test vehicles across Yesterday, Today, and Tomorrow, with `Purge Seed` button for instant cleanup.
+  - **Live Telemetry & Record Counter**: Real-time counter cards showing vehicle distributions for Yesterday, Today, and Tomorrow with diagnostic status messages.
+* **Smart Active Simulation Banner (`#dev-sim-active-banner`)**:
+  - Non-intrusive alert banner in `#section-queue` that displays *only* when a simulated date is active (`⚠️ Time Travel Simulation Active: [YYYY-MM-DD]`), with quick `Reset to Today` and `Open Toolbox (Ctrl+D)` actions.
+  - Normal staff operations remain 100% clean and uncluttered in real-time mode.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.56`.
+
+### ☁️ Google Auth, Supabase & Vercel Cloud Integration Documentation
+* **Cross-Repository Alignment**: Reviewed and documented integration workflows for Google OAuth, Supabase database schemas, and Vercel serverless deployment from `CapstoneOfficial2_Part3_Hontech_Cloud_GoogleAuth_Production`.
+* **Architecture Rules**: Added dedicated `.agents/skills/hontech-vercel-supabase/SKILL.md` and migration guidance for client cloud deployments.
+
+---
+
 ## 📅 September 4, 2026 (Operational SLA Tracking & System-Wide Edit Reason Audit Guard)
 
 ### ⚡ Express Lane 2-Hour SLA Peak Limit Alert & Delay Reporting (v4.86)
