@@ -57,6 +57,15 @@ This log documents all feature revisions, bugs resolved, and system updates comp
   - Added direct server routing in `router.php` for `/tv`, `/tv.html`, and `/frontend/tv.html`.
 * **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.57`.
 
+### 🎛️ TV Monitor Launch & Control Hub Navigation Integration (v5.58)
+* **Direct Navigation Modal Trigger (`launchTVMode`)**: Updated `launchTVMode()` across the application so that clicking **"TV Monitor"** in the top navigation bar or sidebar immediately displays the **TV Monitor Launch & Control Hub** modal (`#modal-tv-broadcast-hub`).
+* **Two Clear, Dependable Display Flows**:
+  - **Option 1: Display on This PC / Local Monitor**: Added a prominent primary action button (`📺 Launch TV Cinema Kiosk (New Tab)`) that opens `tv.html` in a dedicated cinema kiosk browser tab with automatic PIN authentication.
+  - **Option 2: Connect Smart TV Wirelessly**: Consolidated the wireless connection cards (Broadcast Power switch, Direct URL, 4-digit security PIN, 1-Click Auto-Login bookmark link, dynamic QR code, and 3-step setup guide).
+* **System-Wide RBAC Availability**: Integrated the **TV Monitor** navigation button into **Owner** and **Administrator** profiles in `buildNavbar()`, ensuring that shop owners and admins have direct access alongside Service Advisors and Assistants.
+* **Direct URL Query Handling**: Added automatic redirect in `app.js` routing `index.html?mode=tv` directly to `tv.html`.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.58`.
+
 ---
 
 
