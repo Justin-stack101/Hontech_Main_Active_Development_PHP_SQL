@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HonTech AutoCenter — Smart TV Service Monitor</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#dc2626',
+                            darkred: '#991b1b',
+                            dark: '#0a0f1d',
+                            card: '#111827'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Menlo', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(220, 38, 38, 0.4);
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(220, 38, 38, 0.8);
+        }
+
+        /* Ambient background glow */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Automotive License Plate Plaque Animation */
+        @keyframes plaqueDrop {
+            0% { transform: translate(-50%, -120%) scale(0.9); opacity: 0; }
+            70% { transform: translate(-50%, 8px) scale(1.02); opacity: 1; }
+            100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        }
+
+        .tv-plaque-animate {
+            animation: plaqueDrop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen relative bg-gray-950 flex flex-col justify-between">
+    <div class="ambient-glow -top-40 -left-40"></div>
+    <div class="ambient-glow -bottom-40 -right-40"></div>
+
+    <!-- ================================================================= -->
+    <!-- 1. PIN AUTHENTICATION / LOCK SCREEN                                -->
+    <!-- ================================================================= -->
+    <div id="screen-auth" class="absolute inset-0 z-50 bg-gray-950 flex flex-col items-center justify-center p-6 select-none">
+        <div class="max-w-md w-full bg-gray-900/90 border border-gray-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl flex flex-col items-center text-center relative overflow-hidden">
+            <!-- Red top accent stripe -->
+            <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-600 via-red-500 to-red-700"></div>
+
+            <!-- Logo & Title -->
+            <div class="w-16 h-16 rounded-2xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 mb-4 shadow-inner">
+                <i data-lucide="tv" class="w-8 h-8"></i>
+            </div>
+            <h1 class="text-2xl font-black uppercase tracking-wider text-white">Smart TV Service Monitor</h1>
+            <p class="text-xs font-semibold text-gray-400 mt-1 uppercase tracking-widest">HonTech AutoCenter • Marikina Main</p>
+
+            <!-- Status Guidance Note -->
+            <div class="mt-6 mb-4 p-3 bg-gray-950 border border-gray-800 rounded-2xl w-full">
+                <p class="text-xs text-gray-300 font-medium">Enter the <span class="font-bold text-red-400">4-digit TV Access PIN</span> provided by your Service Advisor or Staff Dashboard:</p>
+            </div>
+
+            <!-- PIN Display Dots -->
+            <div class="flex items-center justify-center gap-4 my-3">
+                <div id="pin-dot-0" class="w-5 h-5 rounded-full border-2 border-gray-700 bg-gray-800 transition-all duration-200"></div>
+                <div id="pin-dot-1" class="w-5 h-5 rounded-full border-2 border-gray-700 bg-gray-800 transition-all duration-200"></div>
+                <div id="pin-dot-2" class="w-5 h-5 rounded-full border-2 border-gray-700 bg-gray-800 transition-all duration-200"></div>
+                <div id="pin-dot-3" class="w-5 h-5 rounded-full border-2 border-gray-700 bg-gray-800 transition-all duration-200"></div>
+            </div>
+
+            <!-- Error message container -->
+            <div id="auth-error-msg" class="text-xs font-bold text-rose-400 min-h-[20px] mb-2"></div>
+
+            <!-- On-Screen Numeric Keypad (Remote Control & Touch Friendly) -->
+            <div class="grid grid-cols-3 gap-2.5 w-full max-w-[280px]">
+                <button type="button" onclick="handlePinKeyPress('1')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">1</button>
+                <button type="button" onclick="handlePinKeyPress('2')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">2</button>
+                <button type="button" onclick="handlePinKeyPress('3')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">3</button>
+                <button type="button" onclick="handlePinKeyPress('4')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">4</button>
+                <button type="button" onclick="handlePinKeyPress('5')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">5</button>
+                <button type="button" onclick="handlePinKeyPress('6')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">6</button>
+                <button type="button" onclick="handlePinKeyPress('7')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">7</button>
+                <button type="button" onclick="handlePinKeyPress('8')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">8</button>
+                <button type="button" onclick="handlePinKeyPress('9')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">9</button>
+                <button type="button" onclick="handlePinBackspace()" class="py-3 bg-gray-850 hover:bg-gray-800 text-gray-300 font-bold rounded-xl border border-gray-700 transition cursor-pointer flex items-center justify-center active:scale-95 shadow-sm" title="Clear / Backspace">
+                    <i data-lucide="delete" class="w-5 h-5"></i>
+                </button>
+                <button type="button" onclick="handlePinKeyPress('0')" class="py-3 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white font-mono text-xl font-black rounded-xl border border-gray-700 transition cursor-pointer active:scale-95 shadow-sm">0</button>
+                <button type="button" onclick="submitPinAuthentication()" class="py-3 bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-black rounded-xl transition cursor-pointer flex items-center justify-center active:scale-95 shadow-md shadow-red-600/30" title="Submit PIN">
+                    <i data-lucide="check" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <p class="text-[10px] text-gray-500 mt-5 font-semibold">Tip: You can use your Smart TV remote or keyboard to type.</p>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 2. STANDBY SCREEN (When Broadcast is Inactive)                    -->
+    <!-- ================================================================= -->
+    <div id="screen-standby" class="hidden absolute inset-0 z-40 bg-gray-950 flex flex-col items-center justify-center p-8 select-none">
+        <div class="text-center max-w-lg space-y-5">
+            <!-- Pulsing Standby Orb -->
+            <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full bg-red-600/20 animate-ping"></div>
+                <div class="w-24 h-24 rounded-3xl bg-gray-900 border-2 border-red-500/40 flex items-center justify-center text-red-500 shadow-2xl relative z-10">
+                    <i data-lucide="radio" class="w-12 h-12 animate-pulse"></i>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-3xl font-black uppercase tracking-wider text-white">Workshop Broadcast on Standby</h2>
+                <p class="text-sm font-semibold text-red-400 mt-1 uppercase tracking-widest">Waiting for Staff Activation...</p>
+            </div>
+
+            <div class="p-4 bg-gray-900/80 border border-gray-800 rounded-2xl text-xs text-gray-400 max-w-md mx-auto leading-relaxed">
+                The TV Service Monitor session is currently paused. As soon as the Service Advisor or Staff activates the session on their dashboard, this screen will update automatically.
+            </div>
+
+            <div class="flex items-center justify-center gap-3 pt-2">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-900 border border-gray-800 text-xs font-mono font-bold text-gray-400">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    Auto-Checking Every 5s
+                </span>
+                <button onclick="logoutTVSession()" class="px-3 py-1 text-xs font-bold text-gray-400 hover:text-white rounded-lg border border-gray-800 hover:bg-gray-800 transition cursor-pointer">
+                    Change PIN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 3. LIVE TV SERVICE MONITOR (Active Display View)                   -->
+    <!-- ================================================================= -->
+    <div id="screen-active-tv" class="hidden flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-gray-950">
+        
+        <!-- Live Multi-Event TV Notification Plaque (Signature Red-White-Red Automotive Plaque) -->
+        <div id="tv-ready-alert-banner" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[100] tv-plaque-animate select-none transition-all duration-300">
+            <div class="bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_4px_rgba(185,28,28,1)] border-2 border-red-700 flex flex-col min-w-[380px] sm:min-w-[480px] md:min-w-[580px] max-w-[95vw]">
+                <!-- Top Red Header Strip -->
+                <div id="tv-ready-alert-header" class="bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700">
+                    <span id="tv-ready-alert-status-text" class="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-white">WORKSHOP MONITORING</span>
+                    <div class="flex items-center gap-1.5 opacity-90 text-[11px] font-black uppercase tracking-widest text-red-100">
+                        <i id="tv-ready-alert-icon" data-lucide="radio" class="w-4 h-4 text-white"></i>
+                        <span>HONTECH LIVE</span>
+                    </div>
+                </div>
+
+                <!-- Center White License Plate Body -->
+                <div class="px-8 py-5 sm:py-6 bg-white flex items-center justify-center">
+                    <span id="tv-ready-alert-plate" class="text-4xl sm:text-5xl md:text-6xl font-mono font-black uppercase tracking-[0.25em] text-slate-950 leading-none text-center">
+                        NDO 8492
+                    </span>
+                </div>
+
+                <!-- Bottom Red Vehicle Model Strip -->
+                <div class="bg-red-600 px-6 py-3 flex items-center justify-between text-white border-t border-red-700">
+                    <span id="tv-ready-alert-model" class="text-sm md:text-base font-extrabold uppercase tracking-wider text-white truncate">HONDA CIVIC RS</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-red-200 shrink-0 ml-4">MARIKINA MAIN</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cinema Header Bar -->
+        <header class="flex items-center justify-between px-6 py-3.5 border-b border-gray-800/80 bg-gray-900/60 backdrop-blur-md shrink-0">
+            <!-- Left Branding -->
+            <div class="flex items-center gap-3.5">
+                <div class="p-2 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
+                    <i data-lucide="monitor" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2.5">
+                        <h1 class="text-xl md:text-2xl font-black uppercase italic tracking-tight text-white flex items-center gap-2">
+                            HonTech <span class="text-red-500">AutoCenter</span>
+                        </h1>
+                        <span class="text-[10px] not-italic font-black uppercase tracking-wider bg-red-600/25 text-red-300 border border-red-500/40 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-inner">
+                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                            Live Service Monitor
+                        </span>
+                    </div>
+                    <p id="tv-date-display" class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Sunday, June 21, 2026</p>
+                </div>
+            </div>
+
+            <!-- Right Telemetry & Controls -->
+            <div class="flex items-center gap-4">
+                <!-- Weather Widget -->
+                <div class="flex items-center gap-2.5 bg-gray-800/50 border border-gray-700/60 px-3.5 py-1.5 rounded-xl">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
+                    <div class="text-left leading-none">
+                        <p class="text-sm font-black text-white">32°C</p>
+                        <p class="text-[8.5px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Marikina</p>
+                    </div>
+                </div>
+
+                <!-- Live Digital Clock -->
+                <div class="text-right">
+                    <p id="tv-clock-display" class="text-2xl md:text-3xl font-black text-gray-200 tabular-nums font-mono leading-none">00:00:00</p>
+                </div>
+
+                <!-- Slide Indicator Dots -->
+                <div class="flex items-center gap-1.5 pl-2 border-l border-gray-800">
+                    <button type="button" onclick="jumpToSlide(0)" id="dot-slide-0" class="w-2.5 h-2.5 rounded-full bg-red-600 transition-all cursor-pointer" title="Slide 1: Bay Monitoring"></button>
+                    <button type="button" onclick="jumpToSlide(1)" id="dot-slide-1" class="w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer" title="Slide 2: Queue & Release"></button>
+                    <button type="button" onclick="jumpToSlide(2)" id="dot-slide-2" class="w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer" title="Slide 3: Service Lanes"></button>
+                </div>
+
+                <!-- Fullscreen & Audio Controls -->
+                <button type="button" onclick="toggleTVAudio()" id="btn-tv-audio" class="p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer" title="Toggle Chimes & Voice">
+                    <i id="icon-tv-audio" data-lucide="volume-2" class="w-4 h-4 text-emerald-400"></i>
+                </button>
+                <button type="button" onclick="toggleFullscreen()" class="p-2 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white transition cursor-pointer" title="Toggle Fullscreen">
+                    <i data-lucide="maximize" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Display Slide Container -->
+        <main class="flex-1 relative overflow-hidden p-4 md:p-6">
+            
+            <!-- SLIDE 1: WORKSHOP BAY MONITORING -->
+            <section id="tv-slide-0" class="absolute inset-4 md:inset-6 flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
+                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
+                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Real-Time Bay Allocations & Floor Telemetry — Marikina Main Branch</p>
+                    </div>
+                    <span id="tv-slide1-bay-count" class="text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-black/20 border border-white/20">6 Active Bays</span>
+                </div>
+                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden">
+                    <div id="tv-bays-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4 h-full"></div>
+                </div>
+            </section>
+
+            <!-- SLIDE 2: QUEUE & RELEASE STATUS -->
+            <section id="tv-slide-1" class="absolute inset-4 md:inset-6 hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
+                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
+                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Service Queue, Claiming, & Carry-Over Vehicles</p>
+                    </div>
+                </div>
+                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden flex flex-col gap-4">
+                    <!-- Top Row: Service Queue & Ready for Release Side-by-Side -->
+                    <div class="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                        <!-- Service Queue -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
+                            <div class="bg-gray-950 py-2.5 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+                                    <h3 class="text-sm md:text-base font-black uppercase tracking-widest">Service Queue (Waiting List)</h3>
+                                </div>
+                                <span id="tv-count-waiting" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white">0</span>
+                            </div>
+                            <div id="tv-list-waiting" class="p-3 bg-white flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+
+                        <!-- Ready for Release -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
+                            <div class="bg-gray-950 py-2.5 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                                    <h3 class="text-sm md:text-base font-black uppercase tracking-widest">Ready for Release (Claiming)</h3>
+                                </div>
+                                <span id="tv-count-ready" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-emerald-600 text-white">0</span>
+                            </div>
+                            <div id="tv-list-ready" class="p-3 bg-white flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row: Carry-Over Grid -->
+                    <div class="h-40 flex flex-col shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-gray-900">
+                        <div class="bg-gray-950 py-2 px-4 flex items-center justify-between border-b border-gray-800 text-white shrink-0">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                                <h3 class="text-xs md:text-sm font-black uppercase tracking-widest">Carry-Over Vehicles (Extended Stay)</h3>
+                            </div>
+                            <span id="tv-count-carryover" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200">0</span>
+                        </div>
+                        <div id="tv-list-carryover" class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll grid grid-cols-3 gap-2"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: WORKSHOP SERVICE LANES -->
+            <section id="tv-slide-2" class="absolute inset-4 md:inset-6 hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl transition-opacity duration-500">
+                <div class="bg-red-600 py-3.5 px-6 flex items-center justify-between shrink-0 border-b border-red-700 text-white">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
+                        <p class="text-red-200 font-bold uppercase tracking-wider text-[11px]">Express, Flexible, Priority & Special Service Lanes</p>
+                    </div>
+                </div>
+                <div class="flex-1 p-5 bg-slate-100/70 overflow-hidden">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-full">
+                        <!-- Express Lane -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-red-600 shadow-sm">
+                            <div class="bg-red-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
+                                <span>Express Lane (2H)</span>
+                                <span id="tv-lane-express-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
+                            </div>
+                            <div id="tv-lane-express-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+
+                        <!-- Flexible Lane -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-blue-600 shadow-sm">
+                            <div class="bg-blue-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
+                                <span>Flexible Lane</span>
+                                <span id="tv-lane-flexible-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
+                            </div>
+                            <div id="tv-lane-flexible-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+
+                        <!-- Priority Lane -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-purple-600 shadow-sm">
+                            <div class="bg-purple-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
+                                <span>Priority Lane</span>
+                                <span id="tv-lane-priority-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
+                            </div>
+                            <div id="tv-lane-priority-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+
+                        <!-- Special Lane -->
+                        <div class="bg-white rounded-2xl overflow-hidden flex flex-col border-2 border-emerald-600 shadow-sm">
+                            <div class="bg-emerald-600 py-2.5 px-4 text-white font-black text-xs md:text-sm uppercase tracking-wider text-center flex items-center justify-between">
+                                <span>Special Lane</span>
+                                <span id="tv-lane-special-count" class="bg-black/20 px-2 py-0.5 rounded-md text-xs">0</span>
+                            </div>
+                            <div id="tv-lane-special-list" class="p-3 flex-1 overflow-y-auto custom-scroll flex flex-col gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- CLIENT SCRIPT LOGIC -->
+    <script>
+        // Global TV State
+        let currentPin = '';
+        let currentSlide = 0;
+        let slideInterval = null;
+        let dataPollInterval = null;
+        let sessionPollInterval = null;
+        let tvAudioEnabled = true;
+        let tvJobs = [];
+        let previousReadyPlates = new Set();
+        let previousMonitoringPlates = new Set();
+        let isInitialLoad = true;
+
+        // Sound Chime generator
+        function playChime() {
+            if (!tvAudioEnabled) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const now = ctx.currentTime;
+                
+                const playTone = (freq, start, duration) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, start);
+                    gain.gain.setValueAtTime(0, start);
+                    gain.gain.linearRampToValueAtTime(0.25, start + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(start);
+                    osc.stop(start + duration);
+                };
+
+                // 2-tone airport chime
+                playTone(587.33, now, 0.4);        // D5
+                playTone(880.00, now + 0.25, 0.6); // A5
+            } catch (e) {
+                console.warn('Audio context blocked until user interaction:', e);
+            }
+        }
+
+        // Web Speech TTS Voice announcement
+        function speakTVAnnouncement(text) {
+            if (!tvAudioEnabled || !('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(text);
+                utter.rate = 0.95;
+                utter.pitch = 1.0;
+                utter.lang = 'en-US';
+                window.speechSynthesis.speak(utter);
+            } catch (e) {
+                console.warn('Speech synthesis error:', e);
+            }
+        }
+
+        function toggleTVAudio() {
+            tvAudioEnabled = !tvAudioEnabled;
+            const icon = document.getElementById('icon-tv-audio');
+            if (icon) {
+                icon.setAttribute('data-lucide', tvAudioEnabled ? 'volume-2' : 'volume-x');
+                icon.className = tvAudioEnabled ? 'w-4 h-4 text-emerald-400' : 'w-4 h-4 text-gray-500';
+            }
+            if (tvAudioEnabled) playChime();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen request error:', err);
+                });
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // PIN Keypad Handlers
+        function handlePinKeyPress(digit) {
+            if (currentPin.length < 4) {
+                currentPin += digit;
+                updatePinDots();
+                if (currentPin.length === 4) {
+                    submitPinAuthentication();
+                }
+            }
+        }
+
+        function handlePinBackspace() {
+            if (currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updatePinDots();
+                document.getElementById('auth-error-msg').innerText = '';
+            }
+        }
+
+        function updatePinDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`pin-dot-${i}`);
+                if (!dot) continue;
+                if (i < currentPin.length) {
+                    dot.className = 'w-5 h-5 rounded-full border-2 border-red-500 bg-red-600 shadow-md shadow-red-500/50 scale-110 transition-all';
+                } else {
+                    dot.className = 'w-5 h-5 rounded-full border-2 border-gray-700 bg-gray-800 transition-all';
+                }
+            }
+        }
+
+        // PIN Submission & Authentication
+        async function submitPinAuthentication(pinToVerify) {
+            const pin = pinToVerify || currentPin;
+            const errEl = document.getElementById('auth-error-msg');
+            errEl.innerText = 'Verifying PIN...';
+
+            try {
+                const res = await fetch('/api/tv/verify-pin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.valid) {
+                    localStorage.setItem('hontech_tv_token', data.token);
+                    localStorage.setItem('hontech_tv_pin', pin);
+                    errEl.innerText = '';
+                    enterActiveTVMode();
+                } else {
+                    errEl.innerText = data.error || data.message || 'Invalid PIN or broadcast inactive.';
+                    currentPin = '';
+                    updatePinDots();
+                }
+            } catch (err) {
+                errEl.innerText = 'Server connection error. Check Wi-Fi.';
+            }
+        }
+
+        function logoutTVSession() {
+            localStorage.removeItem('hontech_tv_token');
+            localStorage.removeItem('hontech_tv_pin');
+            currentPin = '';
+            updatePinDots();
+            showScreen('auth');
+        }
+
+        function showScreen(screen) {
+            document.getElementById('screen-auth').classList.toggle('hidden', screen !== 'auth');
+            document.getElementById('screen-standby').classList.toggle('hidden', screen !== 'standby');
+            document.getElementById('screen-active-tv').classList.toggle('hidden', screen !== 'active');
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Check broadcast session status
+        async function checkBroadcastSession() {
+            try {
+                const res = await fetch('/api/tv/session');
+                const session = await res.json();
+
+                if (!session.active) {
+                    showScreen('standby');
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (err) {
+                console.warn('Error checking TV session:', err);
+                return true; // fail-open in offline dev
+            }
+        }
+
+        async function enterActiveTVMode() {
+            const isSessionActive = await checkBroadcastSession();
+            if (!isSessionActive) return;
+
+            showScreen('active');
+            playChime();
+
+            // Load data immediately
+            await fetchTVJobs();
+
+            // Start slide rotation (every 12s)
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(rotateSlides, 12000);
+
+            // Start data polling (every 6s)
+            if (dataPollInterval) clearInterval(dataPollInterval);
+            dataPollInterval = setInterval(fetchTVJobs, 6000);
+
+            // Start session heartbeat (every 5s)
+            if (sessionPollInterval) clearInterval(sessionPollInterval);
+            sessionPollInterval = setInterval(async () => {
+                const active = await checkBroadcastSession();
+                if (!active) {
+                    showScreen('standby');
+                }
+            }, 5000);
+        }
+
+        // Slide management
+        function jumpToSlide(idx) {
+            currentSlide = idx;
+            for (let i = 0; i < 3; i++) {
+                const slideEl = document.getElementById(`tv-slide-${i}`);
+                const dotEl = document.getElementById(`dot-slide-${i}`);
+                if (slideEl) slideEl.classList.toggle('hidden', i !== currentSlide);
+                if (dotEl) {
+                    dotEl.className = (i === currentSlide)
+                        ? 'w-3 h-3 rounded-full bg-red-600 scale-125 transition-all shadow-sm cursor-pointer'
+                        : 'w-2.5 h-2.5 rounded-full bg-gray-700 hover:bg-gray-500 transition-all cursor-pointer';
+                }
+            }
+        }
+
+        function rotateSlides() {
+            currentSlide = (currentSlide + 1) % 3;
+            jumpToSlide(currentSlide);
+        }
+
+        // Fetch TV Jobs
+        async function fetchTVJobs() {
+            try {
+                const res = await fetch('/api/jobs/tv');
+                const jobs = await res.json();
+                if (Array.isArray(jobs)) {
+                    tvJobs = jobs;
+                    renderTVDisplay(jobs);
+                }
+            } catch (e) {
+                console.warn('Error fetching jobs for TV:', e);
+            }
+        }
+
+        // Render all TV slides
+        function renderTVDisplay(jobs) {
+            const activeJobs = jobs.filter(j => j.status !== 'Completed' && j.status !== 'Released');
+            const monitoringJobs = jobs.filter(j => j.status === 'Monitoring');
+            const waitingJobs = jobs.filter(j => j.status === 'Waiting');
+            const readyJobs = jobs.filter(j => j.status === 'Ready');
+            const carryOverJobs = jobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
+
+            // 1. Render Slide 1: Bays Grid (Supports 4 to 10 bays)
+            renderBaysGrid(monitoringJobs);
+
+            // 2. Render Slide 2: Queue & Release
+            renderQueueAndRelease(waitingJobs, readyJobs, carryOverJobs);
+
+            // 3. Render Slide 3: Service Lanes
+            renderServiceLanes(activeJobs);
+
+            // Check for new announcements
+            detectAndBroadcastAlerts(monitoringJobs, readyJobs);
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderBaysGrid(monitoringJobs) {
+            const gridEl = document.getElementById('tv-bays-grid');
+            if (!gridEl) return;
+
+            // Default to 6 bays, adaptive up to 10
+            const maxBays = Math.max(6, monitoringJobs.length);
+            let html = '';
+
+            for (let i = 1; i <= maxBays; i++) {
+                const bayName = `Bay ${i}`;
+                const matchedJob = monitoringJobs.find(j => (j.location || '').toLowerCase() === bayName.toLowerCase());
+
+                if (matchedJob) {
+                    html += `
+                    <div class="bg-white border-2 border-red-600 rounded-2xl p-4 flex flex-col justify-between shadow-md relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 bg-red-600 text-white font-black text-xs uppercase tracking-wider rounded-lg">${bayName}</span>
+                            <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> IN SERVICE
+                            </span>
+                        </div>
+                        <div class="my-2">
+                            <h3 class="text-2xl md:text-3xl font-mono font-black text-slate-900 tracking-wider">${matchedJob.plate || 'NO PLATE'}</h3>
+                            <p class="text-sm font-extrabold uppercase text-slate-700 truncate mt-0.5">${matchedJob.vehicle || matchedJob.model || 'HONDA VEHICLE'}</p>
+                            <p class="text-xs font-semibold text-slate-500 truncate mt-0.5">Owner: ${matchedJob.customer || matchedJob.name || 'Customer'}</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                            <span>SA: ${matchedJob.sa || matchedJob.serviceAdvisor || 'Floor SA'}</span>
+                            <span class="text-red-600 font-mono">${matchedJob.arrival ? `In: ${matchedJob.arrival}` : 'In Service'}</span>
+                        </div>
+                    </div>`;
+                } else {
+                    html += `
+                    <div class="bg-white/80 border-2 border-dashed border-slate-300 rounded-2xl p-4 flex flex-col justify-between shadow-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 bg-slate-200 text-slate-700 font-black text-xs uppercase tracking-wider rounded-lg">${bayName}</span>
+                            <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">VACANT</span>
+                        </div>
+                        <div class="my-auto py-4 text-center">
+                            <i data-lucide="wrench" class="w-8 h-8 text-slate-300 mx-auto mb-1"></i>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ready for Next Intake</p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-100 text-[10px] text-slate-400 font-semibold text-center">
+                            Available Bay
+                        </div>
+                    </div>`;
+                }
+            }
+
+            gridEl.innerHTML = html;
+        }
+
+        function renderQueueAndRelease(waitingJobs, readyJobs, carryOverJobs) {
+            document.getElementById('tv-count-waiting').innerText = waitingJobs.length;
+            document.getElementById('tv-count-ready').innerText = readyJobs.length;
+            document.getElementById('tv-count-carryover').innerText = carryOverJobs.length;
+
+            // Waiting list
+            const waitEl = document.getElementById('tv-list-waiting');
+            waitEl.innerHTML = waitingJobs.map(j => `
+                <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <span class="text-sm font-mono font-black text-slate-900">${j.plate}</span>
+                        <span class="text-xs font-bold text-slate-700 ml-2">${j.vehicle || j.model}</span>
+                    </div>
+                    <span class="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">${j.arrival || 'Waiting'}</span>
+                </div>
+            `).join('') || '<p class="text-center py-6 text-xs text-slate-400 font-semibold">No vehicles currently waiting.</p>';
+
+            // Ready list
+            const readyEl = document.getElementById('tv-list-ready');
+            readyEl.innerHTML = readyJobs.map(j => `
+                <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center justify-between">
+                    <div>
+                        <span class="text-sm font-mono font-black text-emerald-950">${j.plate}</span>
+                        <span class="text-xs font-bold text-emerald-800 ml-2">${j.vehicle || j.model}</span>
+                    </div>
+                    <span class="text-[10px] font-black uppercase text-emerald-700 bg-white px-2.5 py-0.5 rounded-full border border-emerald-300">FOR RELEASE</span>
+                </div>
+            `).join('') || '<p class="text-center py-6 text-xs text-slate-400 font-semibold">No vehicles pending release.</p>';
+
+            // Carryover list
+            const coEl = document.getElementById('tv-list-carryover');
+            coEl.innerHTML = carryOverJobs.map(j => `
+                <div class="p-2 rounded-lg bg-amber-50/80 border border-amber-200 text-xs">
+                    <div class="font-mono font-black text-amber-950">${j.plate}</div>
+                    <div class="text-[11px] text-amber-800 truncate">${j.vehicle || j.model}</div>
+                </div>
+            `).join('') || '<p class="text-center col-span-3 py-4 text-xs text-slate-400 font-semibold">No carry over vehicles.</p>';
+        }
+
+        function renderServiceLanes(jobs) {
+            const lanes = {
+                express: jobs.filter(j => (j.laneType || '').toLowerCase().includes('express')),
+                flexible: jobs.filter(j => (j.laneType || '').toLowerCase().includes('flexible')),
+                priority: jobs.filter(j => (j.laneType || '').toLowerCase().includes('priority')),
+                special: jobs.filter(j => (j.laneType || '').toLowerCase().includes('special'))
+            };
+
+            const renderLaneList = (list) => list.map(j => `
+                <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl">
+                    <div class="font-mono font-black text-xs text-slate-900">${j.plate}</div>
+                    <div class="text-[10.5px] font-bold text-slate-700 truncate">${j.vehicle || j.model}</div>
+                    <div class="text-[9.5px] text-slate-500 mt-0.5">${j.status}</div>
+                </div>
+            `).join('') || '<p class="text-center py-4 text-xs text-slate-400">Clear</p>';
+
+            document.getElementById('tv-lane-express-count').innerText = lanes.express.length;
+            document.getElementById('tv-lane-express-list').innerHTML = renderLaneList(lanes.express);
+
+            document.getElementById('tv-lane-flexible-count').innerText = lanes.flexible.length;
+            document.getElementById('tv-lane-flexible-list').innerHTML = renderLaneList(lanes.flexible);
+
+            document.getElementById('tv-lane-priority-count').innerText = lanes.priority.length;
+            document.getElementById('tv-lane-priority-list').innerHTML = renderLaneList(lanes.priority);
+
+            document.getElementById('tv-lane-special-count').innerText = lanes.special.length;
+            document.getElementById('tv-lane-special-list').innerHTML = renderLaneList(lanes.special);
+        }
+
+        // Live Plaque Alert Detection
+        function detectAndBroadcastAlerts(monitoringJobs, readyJobs) {
+            const currentMonitoringPlates = new Set(monitoringJobs.map(j => j.plate));
+            const currentReadyPlates = new Set(readyJobs.map(j => j.plate));
+
+            if (!isInitialLoad) {
+                // Check newly ready vehicles
+                readyJobs.forEach(job => {
+                    if (job.plate && !previousReadyPlates.has(job.plate)) {
+                        triggerTVAlertPlaque({
+                            type: 'ready',
+                            statusText: 'READY FOR RELEASE',
+                            plate: job.plate,
+                            model: job.vehicle || job.model || 'HONDA VEHICLE',
+                            speechText: `Customer ${job.customer || job.name || 'Vehicle Owner'}, vehicle ${job.plate} is now ready for release. Please proceed to cashier.`
+                        });
+                    }
+                });
+
+                // Check newly monitoring vehicles
+                monitoringJobs.forEach(job => {
+                    if (job.plate && !previousMonitoringPlates.has(job.plate)) {
+                        triggerTVAlertPlaque({
+                            type: 'monitoring',
+                            statusText: 'WORKSHOP MONITORING',
+                            plate: job.plate,
+                            model: job.vehicle || job.model || 'HONDA VEHICLE',
+                            speechText: `Vehicle ${job.plate} is now entering service in ${job.location || 'Workshop Bay'}.`
+                        });
+                    }
+                });
+            }
+
+            previousReadyPlates = currentReadyPlates;
+            previousMonitoringPlates = currentMonitoringPlates;
+            isInitialLoad = false;
+        }
+
+        function triggerTVAlertPlaque({ statusText, plate, model, speechText }) {
+            const banner = document.getElementById('tv-ready-alert-banner');
+            document.getElementById('tv-ready-alert-status-text').innerText = statusText;
+            document.getElementById('tv-ready-alert-plate').innerText = plate;
+            document.getElementById('tv-ready-alert-model').innerText = model;
+
+            banner.classList.remove('hidden');
+            playChime();
+            setTimeout(() => {
+                speakTVAnnouncement(speechText);
+            }, 500);
+
+            setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 9000);
+        }
+
+        // Live Clock & Date Update
+        function startLiveClock() {
+            const updateTime = () => {
+                const now = new Date();
+                const clockEl = document.getElementById('tv-clock-display');
+                const dateEl = document.getElementById('tv-date-display');
+                
+                if (clockEl) {
+                    clockEl.innerText = now.toLocaleTimeString('en-US', { hour12: false });
+                }
+                if (dateEl) {
+                    dateEl.innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                }
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        // Startup
+        window.addEventListener('DOMContentLoaded', async () => {
+            startLiveClock();
+            if (window.lucide) lucide.createIcons();
+
+            // Keyboard listener for remote control / physical keyboard
+            window.addEventListener('keydown', (e) => {
+                if (document.getElementById('screen-auth').classList.contains('hidden')) return;
+                if (e.key >= '0' && e.key <= '9') {
+                    handlePinKeyPress(e.key);
+                } else if (e.key === 'Backspace') {
+                    handlePinBackspace();
+                } else if (e.key === 'Enter') {
+                    submitPinAuthentication();
+                }
+            });
+
+            // 1. Check for URL parameter auto-login (?pin=XXXX)
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryPin = urlParams.get('pin');
+            if (queryPin) {
+                currentPin = queryPin;
+                updatePinDots();
+                await submitPinAuthentication(queryPin);
+                return;
+            }
+
+            // 2. Check for saved token
+            const savedPin = localStorage.getItem('hontech_tv_pin');
+            if (savedPin) {
+                currentPin = savedPin;
+                updatePinDots();
+                await submitPinAuthentication(savedPin);
+            } else {
+                showScreen('auth');
+            }
+        });
+    </script>
+</body>
+
+</html>

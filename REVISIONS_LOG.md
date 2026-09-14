@@ -34,7 +34,31 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 * **Cross-Repository Alignment**: Reviewed and documented integration workflows for Google OAuth, Supabase database schemas, and Vercel serverless deployment from `CapstoneOfficial2_Part3_Hontech_Cloud_GoogleAuth_Production`.
 * **Architecture Rules**: Added dedicated `.agents/skills/hontech-vercel-supabase/SKILL.md` and migration guidance for client cloud deployments.
 
+### 📺 Wireless Smart TV Monitor via Direct Link & PIN Authentication (v5.57)
+* **HDMI-Free Direct Web Link Display**: Allows actual smart TVs (Samsung Tizen, LG webOS, Sony Android TV, Fire TV, Apple TV, PC browsers) to display the live workshop and queue status over Wi-Fi without needing HDMI cables or screen mirroring.
+* **Staff TV Broadcast Hub Modal (`#modal-tv-broadcast-hub`)**:
+  - Accessible via the **"Wireless TV Link & PIN"** button in the TV Monitor header.
+  - **Broadcast Power Switch**: Master toggle allowing Service Advisors (SAs) or Admins to activate or pause the live TV stream at any time.
+  - **Direct Access URL & PIN**: Displays standard access URL (`http://<server-ip>:8000/tv.html`) alongside an active 4-digit security PIN (`8492` default).
+  - **1-Click Auto-Login Link**: Provides a direct link with pre-authenticated PIN (`tv.html?pin=XXXX`) for smart TV bookmarks.
+  - **Dynamic QR Code**: Generates instant QR code for fast mobile and tablet onboarding.
+  - **PIN Re-generation**: 1-click button to cycle a new random 4-digit security PIN whenever needed.
+* **Standalone Big-Screen TV Kiosk App (`frontend/tv.html`)**:
+  - **PIN Lock Screen (`#screen-auth`)**: Features large high-contrast PIN entry dots, TV remote-friendly on-screen numeric keypad, keyboard listeners, and instant verification feedback. Supports auto-login via `?pin=` parameter.
+  - **Standby Auto-Wakeup Screen (`#screen-standby`)**: Appears whenever staff deactivates the broadcast session. Auto-polls the backend every 5 seconds and instantly resumes live broadcast the moment staff reactivates it.
+  - **Active Cinema Monitor (`#screen-active-tv`)**:
+    - High-visibility automotive dark cinema theme optimized for 55"+ 1080p/4K panels.
+    - 3-slide auto-rotating carousel (Bays Grid, Live Queue & Releases, Workshop Lanes).
+    - Live background polling every 6 seconds to `/api/jobs/tv`.
+    - Automated Web Speech API audio chimes and voice announcements for vehicle readiness, bay assignments, and carry-overs.
+* **Backend Session Architecture**:
+  - Dedicated state store in `backend/tv_session.json`.
+  - Added REST API endpoints in `backend/index.php`: `GET /tv/session`, `POST /tv/session`, `POST /tv/verify-pin`.
+  - Added direct server routing in `router.php` for `/tv`, `/tv.html`, and `/frontend/tv.html`.
+* **Cache Busting**: Incremented script cache-buster tag in `frontend/index.html` to `js/app.js?v=5.57`.
+
 ---
+
 
 ## 📅 September 4, 2026 (Operational SLA Tracking & System-Wide Edit Reason Audit Guard)
 

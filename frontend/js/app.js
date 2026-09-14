@@ -7732,6 +7732,171 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.rotateTVSlides = rotateTVSlides;
 
+        // =========================================================================
+        // WIRELESS SMART TV BROADCAST HUB (HDMI-Free TV Access via Link & PIN)
+        // =========================================================================
+        const HontechTVBroadcastManager = {
+            session: {
+                active: true,
+                pin: '8492',
+                branch: 'Marikina Main Branch'
+            },
+            async loadSession() {
+                try {
+                    const res = await apiRequest('/api/tv/session');
+                    if (res && typeof res.active !== 'undefined') {
+                        this.session = res;
+                        this.updateUI();
+                    }
+                } catch (e) {
+                    console.warn('Could not load TV broadcast session:', e);
+                }
+            },
+            async toggleBroadcast() {
+                const newActive = !this.session.active;
+                try {
+                    const res = await apiRequest('/api/tv/session', {
+                        method: 'POST',
+                        body: { active: newActive }
+                    });
+                    if (res && res.session) {
+                        this.session = res.session;
+                        this.updateUI();
+                        showSystemToast(
+                            newActive ? '🟢 TV Broadcast is now LIVE! Smart TVs can connect.' : '🔴 TV Broadcast PAUSED. Connected TVs are in standby.',
+                            newActive ? 'success' : 'info',
+                            'TV Broadcast Hub'
+                        );
+                    }
+                } catch (e) {
+                    showSystemToast('Error updating broadcast session.', 'error');
+                }
+            },
+            async regeneratePin() {
+                try {
+                    const res = await apiRequest('/api/tv/session', {
+                        method: 'POST',
+                        body: { generate_pin: true }
+                    });
+                    if (res && res.session) {
+                        this.session = res.session;
+                        this.updateUI();
+                        showSystemToast(`New TV Access PIN generated: ${this.session.pin}`, 'success', 'TV Broadcast PIN');
+                    }
+                } catch (e) {
+                    showSystemToast('Error regenerating TV PIN.', 'error');
+                }
+            },
+            getTVUrls() {
+                const host = window.location.hostname || 'localhost';
+                const port = window.location.port ? `:${window.location.port}` : '';
+                const protocol = window.location.protocol || 'http:';
+                const basePath = window.location.pathname.replace(/\/frontend(\/.*)?$/, '');
+                const cleanBase = basePath ? basePath.replace(/\/+$/, '') : '';
+                
+                const directUrl = `${protocol}//${host}${port}${cleanBase}/tv.html`;
+                const autoLoginUrl = `${directUrl}?pin=${this.session.pin || '8492'}`;
+                return { directUrl, autoLoginUrl };
+            },
+            updateUI() {
+                const { directUrl, autoLoginUrl } = this.getTVUrls();
+
+                // 1. Update status badges & buttons
+                const headerBadge = document.getElementById('tv-hub-header-badge');
+                const navBadge = document.getElementById('badge-tv-broadcast-status');
+                const toggleIconWrap = document.getElementById('tv-hub-toggle-icon-wrap');
+                const toggleDesc = document.getElementById('tv-hub-toggle-desc');
+                const toggleBtn = document.getElementById('btn-toggle-tv-broadcast');
+                const toggleBtnText = document.getElementById('btn-toggle-tv-broadcast-text');
+
+                if (this.session.active) {
+                    if (headerBadge) {
+                        headerBadge.className = 'text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+                        headerBadge.innerText = 'Active';
+                    }
+                    if (navBadge) {
+                        navBadge.className = 'px-1.5 py-0.2 rounded-md bg-emerald-500/30 text-emerald-300 text-[8.5px] font-mono uppercase tracking-wider';
+                        navBadge.innerText = 'Active';
+                    }
+                    if (toggleIconWrap) toggleIconWrap.className = 'w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center';
+                    if (toggleDesc) toggleDesc.innerText = 'Broadcasting live workshop queue and bay monitoring';
+                    if (toggleBtn) toggleBtn.className = 'px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-md shadow-emerald-600/20 flex items-center gap-1.5';
+                    if (toggleBtnText) toggleBtnText.innerText = 'Broadcast: ON';
+                } else {
+                    if (headerBadge) {
+                        headerBadge.className = 'text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30';
+                        headerBadge.innerText = 'Paused';
+                    }
+                    if (navBadge) {
+                        navBadge.className = 'px-1.5 py-0.2 rounded-md bg-gray-700 text-gray-400 text-[8.5px] font-mono uppercase tracking-wider';
+                        navBadge.innerText = 'Standby';
+                    }
+                    if (toggleIconWrap) toggleIconWrap.className = 'w-10 h-10 rounded-xl bg-gray-800 text-gray-500 border border-gray-700 flex items-center justify-center';
+                    if (toggleDesc) toggleDesc.innerText = 'Broadcast is PAUSED. Connected TVs display standby screen.';
+                    if (toggleBtn) toggleBtn.className = 'px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer border border-gray-700 flex items-center gap-1.5';
+                    if (toggleBtnText) toggleBtnText.innerText = 'Broadcast: OFF';
+                }
+
+                // 2. Update Link & PIN inputs
+                const displayUrlInput = document.getElementById('tv-hub-display-url');
+                if (displayUrlInput) displayUrlInput.value = directUrl;
+
+                const displayPinEl = document.getElementById('tv-hub-display-pin');
+                if (displayPinEl) displayPinEl.innerText = this.session.pin || '8492';
+
+                const autologinUrlInput = document.getElementById('tv-hub-autologin-url');
+                if (autologinUrlInput) autologinUrlInput.value = autoLoginUrl;
+
+                const openTabBtn = document.getElementById('tv-hub-open-tab-btn');
+                if (openTabBtn) openTabBtn.href = autoLoginUrl;
+
+                // 3. Update QR Code
+                const qrImg = document.getElementById('tv-hub-qr-img');
+                if (qrImg) {
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(autoLoginUrl)}`;
+                }
+
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            },
+            copyTVUrl() {
+                const { directUrl } = this.getTVUrls();
+                navigator.clipboard?.writeText(directUrl).then(() => {
+                    showSystemToast('TV link copied to clipboard!', 'success', 'TV Broadcast Hub');
+                }).catch(() => {
+                    showSystemToast(directUrl, 'info', 'TV Link');
+                });
+            },
+            copyAutoLoginUrl() {
+                const { autoLoginUrl } = this.getTVUrls();
+                navigator.clipboard?.writeText(autoLoginUrl).then(() => {
+                    showSystemToast('Auto-login TV link copied! Bookmark this on your Smart TV.', 'success', 'TV Broadcast Hub');
+                }).catch(() => {
+                    showSystemToast(autoLoginUrl, 'info', 'TV Auto-Login Link');
+                });
+            }
+        };
+        window.HontechTVBroadcastManager = HontechTVBroadcastManager;
+
+        function openTVBroadcastHubModal() {
+            const modal = document.getElementById('modal-tv-broadcast-hub');
+            if (modal) {
+                modal.classList.remove('hidden');
+                HontechTVBroadcastManager.loadSession();
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            }
+        }
+        window.openTVBroadcastHubModal = openTVBroadcastHubModal;
+
+        function closeTVBroadcastHubModal() {
+            const modal = document.getElementById('modal-tv-broadcast-hub');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeTVBroadcastHubModal = closeTVBroadcastHubModal;
+
         function setupTVMode() {
             initTimeFormatSetting();
             document.getElementById('auth-view').classList.add('hidden');

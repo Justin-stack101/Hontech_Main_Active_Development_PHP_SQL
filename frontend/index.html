@@ -5570,6 +5570,12 @@
                         <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
                     </div>
                     <div class="flex items-center gap-4 text-right">
+                        <!-- Wireless Smart TV Broadcast Hub Button -->
+                        <button onclick="openTVBroadcastHubModal()" id="btn-tv-broadcast-hub" class="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white border border-red-500/60 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-lg shadow-red-600/20 active:scale-95">
+                            <i data-lucide="radio" class="w-4 h-4 text-white animate-pulse"></i>
+                            <span>Wireless TV Link & PIN</span>
+                        </button>
+
                         <!-- TV Developer Tools Toggle Button -->
                         <button onclick="toggleTVDevDrawer()" id="tv-btn-dev-drawer" class="flex items-center gap-1.5 px-3.5 py-2 bg-gray-800/90 hover:bg-gray-750 text-gray-200 hover:text-white border border-gray-700 hover:border-red-500/50 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md">
                             <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i> TV Dev Tools
@@ -6976,6 +6982,135 @@
             <div class="flex gap-3 justify-end pt-2">
                 <button onclick="closeCarryoverModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
                 <button onclick="submitCarryoverDetails()" class="px-5 py-2 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-orange-500/10">Confirm Carry-Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WIRELESS SMART TV BROADCAST HUB MODAL (HDMI-Free Access via Link & PIN) -->
+    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 select-none">
+        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
+                        <i data-lucide="radio" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-base font-black uppercase tracking-wider text-white">Wireless Smart TV Broadcast Hub</h3>
+                            <span id="tv-hub-header-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Active</span>
+                        </div>
+                        <p class="text-[11px] text-gray-400 font-semibold">Connect customer lounge or workshop TVs via Wi-Fi (No HDMI cables required)</p>
+                    </div>
+                </div>
+                <button onclick="closeTVBroadcastHubModal()" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scroll">
+                
+                <!-- Master Toggle Card -->
+                <div class="p-4 bg-gray-900 border border-gray-800 rounded-2xl flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div id="tv-hub-toggle-icon-wrap" class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                            <i data-lucide="power" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-wider text-white block">TV Broadcast Power</span>
+                            <span id="tv-hub-toggle-desc" class="text-[11px] text-gray-400">Broadcasting live workshop queue and bay monitoring</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <button type="button" id="btn-toggle-tv-broadcast" onclick="HontechTVBroadcastManager.toggleBroadcast()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-md shadow-emerald-600/20 flex items-center gap-1.5">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                            <span id="btn-toggle-tv-broadcast-text">Broadcast: ON</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2-Column Info Deck: Link & PIN on left, QR Code on right -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- Left: TV Access Link & PIN (2 cols) -->
+                    <div class="md:col-span-2 space-y-3">
+                        <!-- TV Link Box -->
+                        <div class="p-3.5 bg-gray-900/90 border border-gray-800 rounded-2xl">
+                            <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1.5">1. Open this link on your Smart TV Browser:</label>
+                            <div class="flex items-center gap-2">
+                                <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-950 border border-gray-700 text-red-400 font-mono font-bold text-xs px-3 py-2 rounded-xl outline-none select-all">
+                                <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Copy Link">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                </button>
+                                <a id="tv-hub-open-tab-btn" href="/tv.html" target="_blank" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Open in New Tab">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- TV Access PIN Box -->
+                        <div class="p-3.5 bg-gray-900/90 border border-gray-800 rounded-2xl flex items-center justify-between">
+                            <div>
+                                <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-0.5">2. TV Access Passcode / PIN:</label>
+                                <p class="text-[10.5px] text-gray-400 font-medium">Enter this 4-digit code using your TV remote:</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span id="tv-hub-display-pin" class="px-4 py-1.5 bg-red-600/20 border-2 border-red-500/40 text-red-400 text-xl font-mono font-black rounded-xl tracking-widest">
+                                    8492
+                                </span>
+                                <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition cursor-pointer" title="Generate New PIN">
+                                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Login Link (Bookmark Ready) -->
+                        <div class="p-3.5 bg-gray-900/90 border border-gray-800 rounded-2xl">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block">3. 1-Click Auto-Login Link (Save to TV Bookmarks):</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-950 border border-gray-700 text-emerald-400 font-mono font-bold text-xs px-3 py-2 rounded-xl outline-none select-all">
+                                <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 active:bg-emerald-600 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <p class="text-[9.5px] text-gray-500 mt-1.5">Tip: Bookmark this link on the Smart TV browser so the TV starts immediately every morning without typing the PIN.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: QR Code Card (1 col) -->
+                    <div class="bg-gray-900/90 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
+                        <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2.5">Scan via TV / Phone</span>
+                        <div class="p-2.5 bg-white rounded-2xl shadow-md mb-2.5">
+                            <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-32 h-32 object-contain">
+                        </div>
+                        <p class="text-[10px] text-gray-400 font-medium leading-tight">Aim your TV or phone camera to open the monitor link instantly.</p>
+                    </div>
+                </div>
+
+                <!-- Simple 3-Step TV Setup Guide -->
+                <div class="p-3.5 bg-gray-950 border border-gray-800 rounded-2xl">
+                    <span class="text-[9.5px] font-black uppercase tracking-wider text-red-400 flex items-center gap-1.5 mb-2">
+                        <i data-lucide="info" class="w-3.5 h-3.5"></i> Quick 3-Step Setup for Any Smart TV (Samsung, LG, Sony, Android TV)
+                    </span>
+                    <ol class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[10px] text-gray-400">
+                        <li class="p-2 rounded-xl bg-gray-900 border border-gray-850">
+                            <strong class="text-white block mb-0.5">Step 1: Connect Wi-Fi</strong>
+                            Ensure the TV is on the same shop Wi-Fi network as this PC.
+                        </li>
+                        <li class="p-2 rounded-xl bg-gray-900 border border-gray-850">
+                            <strong class="text-white block mb-0.5">Step 2: Open Browser</strong>
+                            Open the TV's built-in Web Browser and visit the TV link.
+                        </li>
+                        <li class="p-2 rounded-xl bg-gray-900 border border-gray-850">
+                            <strong class="text-white block mb-0.5">Step 3: Enter PIN</strong>
+                            Type the 4-digit PIN. Press F11 or the on-screen button to enter Fullscreen!
+                        </li>
+                    </ol>
+                </div>
+
             </div>
         </div>
     </div>
@@ -8685,7 +8820,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.56"></script>
+    <script src="js/app.js?v=5.57"></script>
 </body>
 
 </html>

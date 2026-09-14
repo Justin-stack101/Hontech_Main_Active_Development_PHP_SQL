@@ -135,6 +135,93 @@ if ($method === 'GET' && ($route === '/jobs/tv' || ($route === '/jobs' && (empty
     exit;
 }
 
+// TV Wireless Broadcast & Session Routes (Public for Smart TV access)
+$tvSessionFile = __DIR__ . '/tv_session.json';
+
+if ($method === 'GET' && $route === '/tv/session') {
+    $session = [
+        'active'        => true,
+        'pin'           => '8492',
+        'branch'        => 'Marikina Main Branch',
+        'updated_at'    => date('Y-m-d H:i:s')
+    ];
+    if (file_exists($tvSessionFile)) {
+        $saved = json_decode(file_get_contents($tvSessionFile), true);
+        if (is_array($saved)) {
+            $session = array_merge($session, $saved);
+        }
+    }
+    \App\Utils\ApiResponse::json($session);
+    exit;
+}
+
+if ($method === 'POST' && $route === '/tv/session') {
+    $input = json_decode(file_get_contents('php://input'), true) ?? [];
+    $session = [
+        'active'        => true,
+        'pin'           => '8492',
+        'branch'        => 'Marikina Main Branch',
+        'updated_at'    => date('Y-m-d H:i:s')
+    ];
+    if (file_exists($tvSessionFile)) {
+        $saved = json_decode(file_get_contents($tvSessionFile), true);
+        if (is_array($saved)) {
+            $session = array_merge($session, $saved);
+        }
+    }
+
+    if (isset($input['active'])) {
+        $session['active'] = (bool)$input['active'];
+    }
+    if (!empty($input['pin'])) {
+        $cleanPin = preg_replace('/\D/', '', substr((string)$input['pin'], 0, 8));
+        if (!empty($cleanPin)) {
+            $session['pin'] = $cleanPin;
+        }
+    } elseif (!empty($input['generate_pin'])) {
+        $session['pin'] = str_pad((string)random_int(1000, 9999), 4, '0', STR_PAD_LEFT);
+    }
+    $session['updated_at'] = date('Y-m-d H:i:s');
+    file_put_contents($tvSessionFile, json_encode($session, JSON_PRETTY_PRINT));
+    \App\Utils\ApiResponse::json(['message' => 'TV broadcast session updated.', 'session' => $session]);
+    exit;
+}
+
+if ($method === 'POST' && $route === '/tv/verify-pin') {
+    $input = json_decode(file_get_contents('php://input'), true) ?? [];
+    $submittedPin = trim((string)($input['pin'] ?? ''));
+
+    $session = [
+        'active'        => true,
+        'pin'           => '8492',
+        'branch'        => 'Marikina Main Branch'
+    ];
+    if (file_exists($tvSessionFile)) {
+        $saved = json_decode(file_get_contents($tvSessionFile), true);
+        if (is_array($saved)) {
+            $session = array_merge($session, $saved);
+        }
+    }
+
+    if (!$session['active']) {
+        \App\Utils\ApiResponse::badRequest('TV Broadcast is currently inactive. Please ask workshop staff to activate the TV broadcast.');
+        exit;
+    }
+
+    if ($submittedPin === (string)$session['pin']) {
+        $token = hash('sha256', $session['pin'] . ($session['updated_at'] ?? ''));
+        \App\Utils\ApiResponse::json([
+            'valid'     => true,
+            'message'   => 'TV Access PIN verified successfully.',
+            'token'     => $token,
+            'branch'    => $session['branch']
+        ]);
+    } else {
+        \App\Utils\ApiResponse::unauthorized('Invalid TV Access PIN. Please enter the correct 4-digit PIN provided by staff.');
+    }
+    exit;
+}
+
 // =============================================
 // PROTECTED ROUTES (require authentication)
 // =============================================
