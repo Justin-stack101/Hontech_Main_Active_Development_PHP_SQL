@@ -7161,276 +7161,234 @@
     </div>
 
     <!-- UNIFIED DEVELOPER TOOLBOX MODAL (Triggered exclusively via Ctrl + D) -->
-    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 select-none">
-        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
-                <div class="flex items-center gap-3">
-                    <div id="tv-hub-header-icon-wrap" class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
-                        <i data-lucide="tv" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h3 class="text-base font-black uppercase tracking-wider text-white">TV Monitor Display Hub</h3>
-                            <span id="tv-hub-header-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30">Offline</span>
-                        </div>
-                        <p class="text-[11px] text-gray-400 font-semibold">Select your display method: Live Wireless Smart TV or Direct HDMI Cable</p>
-                    </div>
+        <!-- SMART TV & HDMI DISPLAY HUB MODAL (Professional White UI Modeled After Error Exception Dialog) -->
+    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-gray-900/60 backdrop-blur-xs flex items-center justify-center p-4 md:p-6 select-none fade-in">
+        <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-200 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-150">
+            <!-- Modal Header (Matches Exception Modal Style) -->
+            <div class="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-white shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0"></span>
+                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-900">TV Monitor Display Hub</h3>
+                    <span id="tv-hub-header-badge" class="text-xs font-mono text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200 font-medium">Offline</span>
                 </div>
-                <button onclick="closeTVBroadcastHubModal()" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-mono text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200 font-medium">Marikina Branch</span>
+                    <button onclick="closeTVBroadcastHubModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-md hover:bg-gray-100 transition cursor-pointer" title="Close (Esc)">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 space-y-5 max-h-[82vh] overflow-y-auto custom-scroll">
+            <div class="p-5 space-y-4 bg-white max-h-[82vh] overflow-y-auto custom-scroll">
 
-                <!-- ========================================================= -->
-                <!-- TOP METHOD SELECTOR: LIVE STREAM vs DIRECT HDMI CABLE     -->
-                <!-- ========================================================= -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-1.5 bg-gray-900/90 border border-gray-800 rounded-2xl">
+                <!-- TOP METHOD SELECTOR: LIVE STREAM vs DIRECT HDMI CABLE -->
+                <div class="flex flex-wrap items-center gap-2 pb-1">
                     <!-- Option A: Live Wireless Smart TV -->
-                    <button type="button" id="tab-tv-method-live" onclick="HontechTVBroadcastManager.switchMethod('live')" class="p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-red-600/15 border-red-500/40 text-white shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-red-600/25 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
-                            <i data-lucide="radio" class="w-5 h-5 animate-pulse"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-xs font-black uppercase tracking-wider text-white">Live Smart TV</span>
-                                <span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-red-500/20 text-red-300 uppercase">Wi-Fi Stream</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 truncate mt-0.5">Link & 4-Digit Password for Smart TV</p>
-                        </div>
+                    <button type="button" id="tab-tv-method-live" onclick="HontechTVBroadcastManager.switchMethod('live')" class="px-4 py-2.5 rounded-xl border-2 border-slate-900 bg-slate-900 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-2">
+                        <i data-lucide="radio" class="w-4 h-4"></i>
+                        <span>Live Wireless Smart TV</span>
                     </button>
 
                     <!-- Option B: Direct HDMI Cable -->
-                    <button type="button" id="tab-tv-method-hdmi" onclick="HontechTVBroadcastManager.switchMethod('hdmi')" class="p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white">
-                        <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 shrink-0">
-                            <i data-lucide="cable" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-xs font-black uppercase tracking-wider text-gray-200">HDMI Cable Mode</span>
-                                <span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 uppercase">Wired Screen</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 truncate mt-0.5">Plug PC to TV • 1-Click Cinema Kiosk</p>
-                        </div>
+                    <button type="button" id="tab-tv-method-hdmi" onclick="HontechTVBroadcastManager.switchMethod('hdmi')" class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-bold text-xs transition cursor-pointer flex items-center gap-2">
+                        <i data-lucide="cable" class="w-4 h-4"></i>
+                        <span>Direct HDMI Dual-Display</span>
                     </button>
                 </div>
 
-                <!-- ========================================================= -->
-                <!-- PANEL 1: WIRELESS LIVE SMART TV METHOD                     -->
-                <!-- ========================================================= -->
+                <!-- PANEL 1: WIRELESS LIVE SMART TV METHOD -->
                 <div id="panel-tv-method-live" class="space-y-4">
                     
-                    <!-- STATE 1: TV IS OFFLINE (Staff must click 'Make TV Live') -->
-                    <div id="tv-hub-state-offline" class="p-6 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 border border-gray-800 rounded-3xl text-center space-y-5">
-                        <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-                            <div class="absolute inset-0 rounded-full bg-red-600/10 animate-ping"></div>
-                            <div class="w-16 h-16 rounded-2xl bg-gray-950 border-2 border-red-500/30 flex items-center justify-center text-red-500 shadow-xl relative z-10">
-                                <i data-lucide="radio" class="w-8 h-8 text-red-400"></i>
-                            </div>
+                    <!-- STATE 1: TV IS OFFLINE -->
+                    <div id="tv-hub-state-offline" class="p-5 bg-gray-50 border border-gray-200 rounded-xl text-center space-y-4">
+                        <div class="w-12 h-12 mx-auto rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shadow-2xs">
+                            <i data-lucide="radio" class="w-6 h-6"></i>
                         </div>
 
-                        <div class="space-y-1.5 max-w-md mx-auto">
-                            <h4 class="text-lg font-black uppercase tracking-wide text-white">TV Service Monitor is Offline</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                The Smart TV in the customer lounge or workshop is currently waiting. Click below to activate the live broadcast, which will generate and display the active link and password for the TV.
+                        <div class="space-y-1 max-w-md mx-auto">
+                            <h4 class="text-sm font-black uppercase tracking-wider text-gray-900">TV Broadcast is Currently Offline</h4>
+                            <p class="text-xs text-gray-500 leading-relaxed">
+                                Smart TVs in the lounge display a standby screen. Click below to activate real-time queue streaming and generate your 4-digit PIN.
                             </p>
                         </div>
 
-                        <div class="pt-2 max-w-md mx-auto">
-                            <button type="button" onclick="HontechTVBroadcastManager.startLiveBroadcast()" class="w-full py-4 px-6 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-95 group">
-                                <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
+                        <div class="pt-1 max-w-md mx-auto">
+                            <button type="button" onclick="HontechTVBroadcastManager.startLiveBroadcast()" class="w-full py-3 px-5 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
                                 <span>Make TV Live Now (Generate Link & Password)</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
                             </button>
                         </div>
 
-                        <div class="p-3 bg-gray-950 border border-gray-850 rounded-xl text-[10.5px] text-gray-400 max-w-md mx-auto flex items-center justify-center gap-2">
-                            <i data-lucide="info" class="w-4 h-4 text-red-400 shrink-0"></i>
-                            <span>No HDMI cables needed — works on any Smart TV browser over Wi-Fi.</span>
-                        </div>
+                        <p class="text-[11px] text-gray-400 font-medium">
+                            No HDMI cables needed — works on any Smart TV browser over workshop Wi-Fi.
+                        </p>
                     </div>
 
-                    <!-- STATE 2: TV IS LIVE (Link and Password provided to Staff) -->
+                    <!-- STATE 2: TV IS LIVE -->
                     <div id="tv-hub-state-live" class="hidden space-y-4">
                         
                         <!-- Live Banner Card -->
-                        <div class="p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
-                                <div>
-                                    <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block">TV Broadcast is LIVE!</span>
-                                    <span class="text-[11px] text-gray-300">Open the link below on the Smart TV and enter the password:</span>
-                                </div>
+                        <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-emerald-900">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-emerald-900">TV Broadcast Active: Live stream running</span>
                             </div>
-                            <button type="button" onclick="HontechTVBroadcastManager.stopLiveBroadcast()" class="px-3 py-1.5 bg-gray-900 hover:bg-red-950/80 text-rose-300 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl border border-rose-500/30 transition cursor-pointer flex items-center gap-1.5 shadow-sm">
-                                <i data-lucide="power" class="w-3.5 h-3.5"></i> Stop Live
+                            <button type="button" onclick="HontechTVBroadcastManager.stopLiveBroadcast()" class="px-3 py-1 bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold transition cursor-pointer">
+                                Pause Broadcast
                             </button>
                         </div>
 
-                        <!-- 2-Column Info Deck: Link & Password on left, QR on right -->
+                        <!-- 2-Column Info Deck -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                             
                             <!-- Left: TV Access Link & Password (2 cols) -->
                             <div class="md:col-span-2 space-y-3">
                                 <!-- 1. TV Link Box -->
-                                <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
-                                    <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block mb-1 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">1</span>
-                                        Open this Link on the Smart TV Browser:
-                                    </label>
+                                <div class="p-3.5 bg-gray-50 border border-gray-200 rounded-xl space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
+                                            <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">1</span>
+                                            Open Link on Smart TV Browser:
+                                        </span>
+                                        <span class="text-[10px] text-gray-400 font-mono">Any TV Browser</span>
+                                    </div>
                                     <div class="flex items-center gap-2">
-                                        <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-950 border border-gray-700 text-red-400 font-mono font-bold text-xs px-3 py-2 rounded-xl outline-none select-all">
-                                        <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Copy Link">
+                                        <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-white border border-gray-300 text-gray-900 font-mono font-bold text-xs px-3 py-2 rounded-lg outline-none select-all focus:border-red-500">
+                                        <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg text-xs font-bold transition cursor-pointer shrink-0 border border-gray-200" title="Copy Link">
                                             <i data-lucide="copy" class="w-4 h-4"></i>
                                         </button>
                                     </div>
-                                    <p class="text-[9.5px] text-gray-500 mt-1">Type this address in Samsung Internet, LG Web Browser, Sony Chrome, etc.</p>
+                                    <p class="text-[10px] text-gray-500">Type address in Samsung Internet, LG Web Browser, Sony, etc.</p>
                                 </div>
 
                                 <!-- 2. TV Access Password / PIN Box -->
-                                <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-between">
+                                <div class="p-3.5 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-between">
                                     <div>
-                                        <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block flex items-center gap-1.5">
+                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
                                             <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">2</span>
                                             TV Access Password:
-                                        </label>
-                                        <p class="text-[10px] text-gray-400 mt-0.5">Enter this 4-digit code using your TV remote:</p>
+                                        </span>
+                                        <p class="text-[10px] text-gray-500 mt-0.5">Enter this 4-digit code using your TV remote:</p>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span id="tv-hub-display-pin" class="px-4 py-1.5 bg-red-600/20 border-2 border-red-500/40 text-red-400 text-xl font-mono font-black rounded-xl tracking-widest">
+                                        <span id="tv-hub-display-pin" class="px-3 py-1 bg-white border-2 border-red-500 text-red-600 text-xl font-mono font-black rounded-lg tracking-widest shadow-2xs">
                                             8492
                                         </span>
-                                        <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition cursor-pointer" title="Generate New Password">
+                                        <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-2 bg-white hover:bg-gray-100 text-gray-600 rounded-lg border border-gray-300 transition cursor-pointer" title="Generate New Password">
                                             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                                         </button>
                                     </div>
                                 </div>
 
-                                <!-- 3. Optional 1-Click Bookmark URL -->
-                                <div class="p-3 bg-gray-900/60 border border-gray-800 rounded-2xl">
-                                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">
+                                <!-- 3. 1-Click Bookmark URL -->
+                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-1">
+                                    <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 block">
                                         Save to TV Bookmarks (Auto-Login Link):
-                                    </label>
+                                    </span>
                                     <div class="flex items-center gap-1.5">
-                                        <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-950 border border-gray-750 text-emerald-400 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none select-all">
-                                        <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 active:bg-emerald-600 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
-                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                        <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-white border border-gray-300 text-gray-800 font-mono text-[11px] px-2.5 py-1.5 rounded-lg outline-none select-all truncate">
+                                        <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
+                                            Copy
                                         </button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Right: QR Code Card (1 col) -->
-                            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">Scan with Phone / TV</span>
-                                <div class="p-2 bg-white rounded-xl shadow-md mb-2">
-                                    <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-28 h-28 object-contain">
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col items-center justify-center text-center">
+                                <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-2">Scan with Phone / TV</span>
+                                <div class="p-2 bg-white border border-gray-200 rounded-xl shadow-2xs mb-2">
+                                    <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-24 h-24 object-contain">
                                 </div>
-                                <p class="text-[9.5px] text-gray-400 font-medium leading-tight">Scan camera to open TV monitor instantly</p>
+                                <p class="text-[10px] text-gray-500 font-medium leading-tight">Scan camera to open TV monitor instantly</p>
                             </div>
                         </div>
 
                         <!-- Setup Checklist Guide -->
-                        <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
-                            <span class="text-[9.5px] font-black uppercase tracking-wider text-red-400 flex items-center gap-1.5 mb-2">
-                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Manual Setup on the Smart TV:
+                        <div class="p-3.5 bg-gray-50 border border-gray-200 rounded-xl space-y-2">
+                            <span class="text-[10px] font-black uppercase tracking-wider text-gray-700 flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Manual Setup on the Smart TV:
                             </span>
-                            <ol class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[10.5px] text-gray-400">
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">1. Open Browser</strong>
-                                    On your Smart TV, launch the built-in browser and type the link above.
-                                </li>
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">2. Enter Password</strong>
-                                    Use your TV remote to enter the 4-digit code shown above.
-                                </li>
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">3. Fullscreen</strong>
-                                    Click the on-screen Fullscreen button for a borderless cinema display.
-                                </li>
-                            </ol>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-gray-600">
+                                <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">1. Open Browser</strong>
+                                    Launch TV browser and enter the web address above.
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">2. Enter Password</strong>
+                                    Type 4-digit code using the TV remote keypad.
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">3. Fullscreen</strong>
+                                    Press the on-screen Fullscreen button for cinema mode.
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- ========================================================= -->
-                <!-- PANEL 2: DIRECT HDMI CABLE METHOD (Wired Second Display)  -->
-                <!-- ========================================================= -->
+                <!-- PANEL 2: DIRECT HDMI CABLE METHOD -->
                 <div id="panel-tv-method-hdmi" class="hidden space-y-4">
                     
-                    <!-- HDMI Overview Card -->
-                    <div class="p-5 bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 rounded-3xl space-y-4">
+                    <div class="p-5 bg-gray-50 border border-gray-200 rounded-xl space-y-4">
                         <div class="flex items-start gap-3.5">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-                                <i data-lucide="cable" class="w-6 h-6"></i>
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shrink-0">
+                                <i data-lucide="cable" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="text-sm font-black uppercase tracking-wider text-white">Direct HDMI / Wired TV Display</h4>
-                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-                                    Connect your computer or laptop directly to the TV or wall monitor using an HDMI cable. No Wi-Fi login or password entry required on the TV.
+                                <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide">Direct HDMI Dual-Monitor Configuration</h4>
+                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                                    Connect your computer directly to the wall display using an HDMI cable. Windows Extend mode keeps your admin dashboard on your PC while streaming the queue to the TV.
                                 </p>
                             </div>
                         </div>
 
                         <!-- 3-Step HDMI Checklist -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">1</span>
-                                    <span>Plug HDMI</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Connect the HDMI cable from your PC to the TV's HDMI port.</p>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl space-y-1">
+                                <span class="text-xs font-bold text-gray-900 block">1. Plug HDMI</span>
+                                <p class="text-[11px] text-gray-500">Connect HDMI cable from PC to TV input port.</p>
                             </div>
-
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">2</span>
-                                    <span>Extend Screen</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Press <kbd class="px-1 py-0.5 rounded bg-gray-800 text-[9px] font-mono text-gray-200">Win + P</kbd> on your keyboard and select <strong>Extend</strong>.</p>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl space-y-1">
+                                <span class="text-xs font-bold text-gray-900 block">2. Windows Extend</span>
+                                <p class="text-[11px] text-gray-500">Press <kbd class="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-300 text-[10px] font-mono font-bold text-gray-800">Win + P</kbd> and select <strong>Extend</strong>.</p>
                             </div>
-
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">3</span>
-                                    <span>Press Fullscreen</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Drag the kiosk window to the TV and press <kbd class="px-1 py-0.5 rounded bg-gray-800 text-[9px] font-mono text-gray-200">F11</kbd>.</p>
+                            <div class="p-3 bg-white border border-gray-200 rounded-xl space-y-1">
+                                <span class="text-xs font-bold text-gray-900 block">3. Press Fullscreen</span>
+                                <p class="text-[11px] text-gray-500">Drag window to TV and press <kbd class="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-300 text-[10px] font-mono font-bold text-gray-800">F11</kbd>.</p>
                             </div>
                         </div>
 
                         <!-- Action Button: Launch HDMI Cinema Kiosk -->
-                        <div class="pt-2">
-                            <button type="button" onclick="HontechTVBroadcastManager.launchHDMIKiosk()" class="w-full py-4 px-6 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-amber-600/20 transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-95 group">
+                        <div class="pt-1">
+                            <button type="button" onclick="HontechTVBroadcastManager.launchHDMIKiosk()" class="w-full py-3.5 px-5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-xs transition flex items-center justify-center gap-2 cursor-pointer active:scale-95">
                                 <i data-lucide="monitor" class="w-4 h-4"></i>
                                 <span>Launch HDMI Cinema Kiosk (New Window)</span>
-                                <i data-lucide="external-link" class="w-4 h-4 group-hover:translate-x-0.5 transition"></i>
                             </button>
                         </div>
                     </div>
 
-                    <!-- In-App Preview Option -->
-                    <div class="p-3.5 bg-gray-900/60 border border-gray-800 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-xs text-gray-300">
-                            <i data-lucide="layout" class="w-4 h-4 text-gray-400"></i>
-                            <span>Want to check the monitor without opening a new window?</span>
-                        </div>
-                        <button type="button" onclick="HontechTVBroadcastManager.viewInAppMonitor()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5">
-                            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Open In-App
-                        </button>
+                    <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-between text-xs text-gray-600">
+                        <span>Pre-authenticated kiosk: Zero Wi-Fi setup and zero PIN entry needed.</span>
+                        <span class="font-mono text-gray-400">1920×1080</span>
                     </div>
-
                 </div>
 
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-5 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between shrink-0">
+                <span class="text-xs font-mono text-gray-500">Press <kbd class="px-1.5 py-0.5 rounded bg-white border border-gray-200 text-[10px]">Esc</kbd> to close</span>
+                <button type="button" onclick="closeTVBroadcastHubModal()" class="px-4 py-1.5 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer shadow-2xs">
+                    Dismiss
+                </button>
             </div>
         </div>
     </div>
 
-    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-gray-900/60 backdrop-blur-xs flex items-center justify-center p-4 md:p-6 select-none fade-in">
+<div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-gray-900/60 backdrop-blur-xs flex items-center justify-center p-4 md:p-6 select-none fade-in">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-5xl md:max-w-6xl overflow-hidden border border-gray-200 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-150">
             
             <!-- Clean Industry-Standard Header Bar (Modeled after Runtime Exception Modal) -->
@@ -9140,7 +9098,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.64"></script>
+    <script src="js/app.js?v=5.65"></script>
 </body>
 
 </html>
