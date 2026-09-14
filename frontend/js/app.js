@@ -2133,7 +2133,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'lookup': 'Customer History & Back-Job Lookup',
                 'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
-                'tv': 'TV Workshop Display & Broadcast Hub',
+                'tv': 'Service Monitor · Waiting Lounge TV',
                 'profile': 'My Security & Profile Settings',
                 'settings': 'Account Settings',
                 'support': 'Help & Support Center'
@@ -2151,10 +2151,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     try {
                         await loadData();
                         renderTV();
+                        jumpToTVSlide(0);
                         if (window.HontechTVBroadcastManager) {
                             await HontechTVBroadcastManager.loadSession();
-                            const savedMethod = localStorage.getItem('hontech_tv_hub_method') || 'live';
-                            HontechTVBroadcastManager.switchMethod(savedMethod);
                         }
                     } catch (e) {
                         console.error('Error loading TV monitor:', e);
@@ -8001,7 +8000,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.HontechTVBroadcastManager = HontechTVBroadcastManager;
 
         function openTVBroadcastHubModal() {
-            showSection('tv');
+            const modal = document.getElementById('modal-tv-broadcast-hub');
+            if (modal) {
+                modal.classList.remove('hidden');
+                const savedMethod = localStorage.getItem('hontech_tv_hub_method') || 'live';
+                HontechTVBroadcastManager.switchMethod(savedMethod);
+                HontechTVBroadcastManager.loadSession();
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            }
         }
         window.openTVBroadcastHubModal = openTVBroadcastHubModal;
 
@@ -8009,7 +8017,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const modal = document.getElementById('modal-tv-broadcast-hub');
             if (modal) modal.classList.add('hidden');
         }
-        window.closeTVBroadcastHubModal = closeTVBroadcastHubModal;
         window.closeTVBroadcastHubModal = closeTVBroadcastHubModal;
 
         function setupTVMode() {
