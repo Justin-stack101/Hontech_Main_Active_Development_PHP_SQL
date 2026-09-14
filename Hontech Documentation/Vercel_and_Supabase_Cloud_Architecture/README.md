@@ -14,6 +14,7 @@ Welcome to the **Vercel & Supabase Cloud Documentation Hub** for the **HonTech A
 | [`04_PHP_TO_SUPABASE_MIGRATION_AND_LEARNING_ROADMAP.md`](./04_PHP_TO_SUPABASE_MIGRATION_AND_LEARNING_ROADMAP.md) | **PHP to Supabase Transition Roadmap** | Side-by-side code comparison, transition roadmap, and 3-stage safe migration strategy. |
 | [`05_SECURITY_AND_RISK_PREVENTION_TECHNICAL_GUIDE.md`](./05_SECURITY_AND_RISK_PREVENTION_TECHNICAL_GUIDE.md) | **Security, Zero-Risk Architecture & Cloud Safety** | Key separation (`anon` vs `service_role`), 2-minute stealth crawler shield (`noindex`, `robots.txt`), and RLS data lockdown. |
 | [`06_FUTURE_STEP_BY_STEP_ACTION_PLAN.md`](./06_FUTURE_STEP_BY_STEP_ACTION_PLAN.md) | **Future Action Plan & Step-by-Step Execution** | Complete execution guide for creating the dedicated `vercel_supabase` private repo, connecting Supabase, and deploying safely. |
+| [`07_GOOGLE_AUTH_VERCEL_AND_SUPABASE_INTEGRATION_SPECIFICATION.md`](./07_GOOGLE_AUTH_VERCEL_AND_SUPABASE_INTEGRATION_SPECIFICATION.md) | **Google Auth, Vercel & Supabase Cloud Integration** | Direct technical mapping from Part 3 (`google auth_september`) to Vercel and Supabase cloud OAuth, email whitelisting trigger, and SMTP relay. |
 | [`supabase_schema.sql`](./supabase_schema.sql) | **Production-Ready PostgreSQL Schema** | Copy-paste SQL script containing tables (`jobs`, `users`, `audit_logs`, `express_issues`), indexes, RLS policies, seeds, and Realtime. |
 
 ---
@@ -22,4 +23,5 @@ Welcome to the **Vercel & Supabase Cloud Documentation Hub** for the **HonTech A
 1. **₱0.00 Monthly Software & Server Cost:** Zero credit card required; permanent free tier covers all daily shop operations.
 2. **Sub-Second Global Performance:** Vercel Global Edge CDN serves pages in milliseconds.
 3. **Live Waiting Lounge Synchronization:** Built-in Supabase WebSockets push new vehicle statuses to lounge TVs in ~50ms without page refreshing.
-4. **100% Isolated Safety:** Prototype progress in the local PHP/MySQL repository remains untouched while exploring cloud capabilities in a separate private repository.
+4. **Enterprise Google Authentication:** Native Google OAuth provider backed by PostgreSQL triggers to ensure only authorized personnel can log in.
+5. **100% Isolated Safety:** Prototype progress in the local PHP/MySQL repository remains untouched while exploring cloud capabilities in a separate private repository.
