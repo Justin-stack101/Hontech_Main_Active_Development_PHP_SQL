@@ -5552,268 +5552,411 @@
                 </div>
             </div>
 
-            <!-- TV DISPLAY MONITOR -->
-            <div id="section-tv"
-                class="section-content hidden fade-in h-full flex flex-col relative overflow-hidden bg-gray-900">
-                <div
-                    class="flex justify-between items-end mb-6 border-b border-gray-800 pt-4 pb-4 shrink-0 z-20 relative px-6">
-                    <div>
-                        <div class="flex items-center gap-3">
-                            <h1 class="text-3xl font-black uppercase italic tracking-tight text-white flex items-center gap-3">
-                                <i data-lucide="monitor" class="text-red-500"></i> Service Monitor
-                            </h1>
-                            <span class="text-[11px] not-italic font-black uppercase tracking-wider bg-red-600/30 text-red-300 border border-red-500/50 px-3 py-1 rounded-full shadow-inner flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                📍 Marikina Main Branch
-                            </span>
-                        </div>
-                        <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
-                    </div>
-                    <div class="flex items-center gap-4 text-right">
-                        <!-- Wireless Smart TV Broadcast Hub Button -->
-                        <button onclick="openTVBroadcastHubModal()" id="btn-tv-broadcast-hub" class="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white border border-red-500/60 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-lg shadow-red-600/20 active:scale-95">
-                            <i data-lucide="radio" class="w-4 h-4 text-white animate-pulse"></i>
-                            <span>Wireless TV Link & PIN</span>
-                        </button>
+            <!-- TV DISPLAY MONITOR (IN-APP WORKSPACE MODULE - ZERO POPUP SESSION) -->
+            <div id="section-tv" class="section-content hidden fade-in space-y-6">
 
-                        <!-- TV Developer Tools Toggle Button -->
-                        <button onclick="toggleTVDevDrawer()" id="tv-btn-dev-drawer" class="flex items-center gap-1.5 px-3.5 py-2 bg-gray-800/90 hover:bg-gray-750 text-gray-200 hover:text-white border border-gray-700 hover:border-red-500/50 rounded-2xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md">
-                            <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i> TV Dev Tools
-                        </button>
-
-                        <!-- Weather Widget -->
-                        <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
-                            <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
-                                <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
-                            </span>
-                            <div class="text-left leading-none">
-                                <p id="tv-temp-display" class="text-lg font-black text-white">32°C</p>
-                                <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none">00:00</p>
-                            <div class="flex gap-2 justify-end mt-2">
-                                <span onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-red-500 scale-125 cursor-pointer transition-all" title="Slide 1: Bay Monitoring"></span>
-                                <span onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Queue & Release"></span>
-                                <span onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TV DEVELOPER SIMULATION TOOLBAR -->
-                <div id="tv-dev-drawer" class="hidden mb-4 mx-6 bg-slate-950 text-white border-2 border-slate-800 rounded-2xl shadow-2xl z-30 relative animate-in fade-in slide-in-from-top-2 duration-200 overflow-hidden p-4">
-                    <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                            <h4 class="text-xs font-black uppercase tracking-wider text-white">TV Module Announcement Simulator</h4>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="toggleTVVoice()" id="tv-dev-toggle-voice-btn" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-1.5 shadow-sm">
-                                <i data-lucide="mic" class="w-3.5 h-3.5"></i> Voice: ON
-                            </button>
-                            <button onclick="toggleTVDevDrawer(false)" class="p-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer" title="Close">
-                                <i data-lucide="x" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Target Vehicle Parameters + 5 Event Triggers -->
-                    <div class="mt-3 flex flex-col lg:flex-row items-center gap-3">
-                        <div class="flex items-center gap-2 w-full lg:w-auto shrink-0">
-                            <div>
-                                <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Plate</label>
-                                <input type="text" id="tv-dev-input-plate" value="NDO 8492" class="w-24 bg-slate-900 border border-slate-700 text-white font-mono font-black text-xs px-2.5 py-1.5 rounded-lg uppercase outline-none focus:border-red-500">
-                            </div>
-                            <div>
-                                <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Car Model</label>
-                                <input type="text" id="tv-dev-input-vehicle" value="Honda Civic RS" class="w-32 bg-slate-900 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500">
-                            </div>
-                            <div>
-                                <label class="text-[8.5px] font-black uppercase text-slate-400 block mb-0.5">Customer</label>
-                                <input type="text" id="tv-dev-input-customer" value="Sophia Loren" class="w-32 bg-slate-900 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500">
-                            </div>
-                        </div>
-
-                        <!-- 5 Event Buttons -->
-                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full flex-1">
-                            <button onclick="triggerTVSimulationEvent('monitoring')" class="p-2.5 bg-slate-900 hover:bg-blue-950/80 border border-slate-800 hover:border-blue-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
-                                <span class="text-[9px] font-mono font-black text-blue-400 mb-1">01 · MONITOR</span>
-                                <span class="text-xs font-black uppercase group-hover:text-blue-300">Monitoring</span>
-                            </button>
-                            <button onclick="triggerTVSimulationEvent('bay_assigned')" class="p-2.5 bg-slate-900 hover:bg-amber-950/80 border border-slate-800 hover:border-amber-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
-                                <span class="text-[9px] font-mono font-black text-amber-400 mb-1">02 · BAY LOC</span>
-                                <span class="text-xs font-black uppercase group-hover:text-amber-300">Bay Assign</span>
-                            </button>
-                            <button onclick="triggerTVSimulationEvent('ready')" class="p-2.5 bg-slate-900 hover:bg-emerald-950/80 border border-slate-800 hover:border-emerald-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
-                                <span class="text-[9px] font-mono font-black text-emerald-400 mb-1">03 · RELEASE</span>
-                                <span class="text-xs font-black uppercase group-hover:text-emerald-300">Ready Claim</span>
-                            </button>
-                            <button onclick="triggerTVSimulationEvent('carryover')" class="p-2.5 bg-slate-900 hover:bg-purple-950/80 border border-slate-800 hover:border-purple-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
-                                <span class="text-[9px] font-mono font-black text-purple-400 mb-1">04 · HOLD</span>
-                                <span class="text-xs font-black uppercase group-hover:text-purple-300">Carry Over</span>
-                            </button>
-                            <button onclick="triggerTVSimulationEvent('return_active')" class="p-2.5 bg-slate-900 hover:bg-cyan-950/80 border border-slate-800 hover:border-cyan-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group col-span-2 sm:col-span-1">
-                                <span class="text-[9px] font-mono font-black text-cyan-400 mb-1">05 · RETURN</span>
-                                <span class="text-xs font-black uppercase group-hover:text-cyan-300">Back Active</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Live Multi-Event TV Notification Banner (Signature Red-White-Red Automotive Plaque) -->
-                <div id="tv-ready-alert-banner" class="hidden absolute top-8 md:top-12 left-1/2 transform -translate-x-1/2 z-[100] tv-broadcast-banner-active select-none transition-all duration-300">
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_4px_rgba(185,28,28,1)] border-2 border-red-700 flex flex-col min-w-[380px] sm:min-w-[480px] md:min-w-[580px] max-w-[95vw]">
-                        <!-- Top Red Header Strip -->
-                        <div id="tv-ready-alert-header" class="bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700">
-                            <span id="tv-ready-alert-status-text" class="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-white">WORKSHOP MONITORING</span>
-                            <div class="flex items-center gap-1.5 opacity-90 text-[11px] font-black uppercase tracking-widest text-red-100">
-                                <i id="tv-ready-alert-icon" data-lucide="radio" class="w-4 h-4 text-white"></i>
-                                <span>HONTECH LIVE</span>
-                            </div>
-                        </div>
-
-                        <!-- Center White License Plate Body -->
-                        <div class="px-8 py-5 sm:py-6 bg-white flex items-center justify-center">
-                            <span id="tv-ready-alert-plate" class="text-4xl sm:text-5xl md:text-6xl font-mono font-black uppercase tracking-[0.25em] text-slate-950 leading-none text-center">
-                                NDO 8492
-                            </span>
-                        </div>
-
-                        <!-- Bottom Red Vehicle Model Strip -->
-                        <div class="bg-red-600 px-6 py-3 flex items-center justify-between text-white border-t border-red-700">
-                            <span id="tv-ready-alert-model" class="text-sm md:text-base font-extrabold uppercase tracking-wider text-white truncate">HONDA CIVIC RS</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-red-200 shrink-0 ml-4">MARIKINA MAIN</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex-1 relative min-h-0">
-                    <!-- SLIDE 1: ACTIVE BAY MONITORING (4-10 BAYS) -->
-                    <div id="tv-slide-1"
-                        class="absolute inset-0 tv-slide flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Bay Monitoring</h2>
-                            <p id="tv-slide1-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Active Bays & Real-Time Allocations — Marikina Main Floor</p>
-                        </div>
-                        <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden">
-                            <div id="tv-grs-list" class="grid grid-cols-2 gap-5 h-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- SLIDE 2: SERVICE QUEUE (WAITING LIST), READY & CARRY-OVER (Clean Black, Red & White TV Design) -->
-                    <div id="tv-slide-2"
-                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Queue & Release Status</h2>
-                            <p id="tv-slide2-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Queue & Turnaround Status — Marikina Main Branch</p>
-                        </div>
-                        
-                        <div class="flex-1 p-6 bg-slate-100/60 overflow-hidden flex flex-col gap-5 min-h-0">
-                            <!-- Top Row: Service Queue (Waiting List) & Ready for Release (Side-by-Side) -->
-                            <div class="flex-1 grid grid-cols-2 gap-5 min-h-0">
-                                <!-- Service Queue (Waiting List) -->
-                                <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
-                                    <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue (Waiting List)</h3>
-                                        </div>
-                                        <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
-                                    </div>
-                                    <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
-                                        <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Ready for Release (Completed / For Claiming) -->
-                                <div class="bg-white rounded-2xl overflow-hidden flex flex-col min-h-0 shadow-sm border-2 border-gray-900">
-                                    <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                                            <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Ready for Release (Claiming)</h3>
-                                        </div>
-                                        <span class="text-xs font-black px-3 py-0.5 rounded-full bg-emerald-600 text-white" id="tv-all-released-count">0</span>
-                                    </div>
-                                    <div class="p-3.5 bg-white flex-1 overflow-y-auto custom-scroll">
-                                        <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Row: Carry-Over (Full Width Grid) -->
-                            <div class="h-44 flex flex-col shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm border-2 border-gray-900">
-                                <div class="bg-gray-950 py-2.5 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                                        <h3 class="text-sm font-black uppercase tracking-widest text-white">Carry-Over Vehicles (Awaiting Parts / Extended Stay)</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-3 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700" id="tv-all-carryover-count">0</span>
-                                </div>
-                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll">
-                                    <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-2.5"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- MAIN TV MODULE CARD (Matches Daily Intakes & Forms Module Design) -->
+                <div class="bg-white border border-gray-200 border-t-4 border-t-red-600 rounded-2xl p-5 md:p-6 shadow-sm space-y-5">
                     
-                    <!-- SLIDE 3: WORKSHOP LANES MONITORING (Clean Black, Red & White TV Design) -->
-                    <div id="tv-slide-3"
-                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
-                        <div class="bg-red-600 py-5 text-center shrink-0 border-b border-red-700">
-                            <h2 class="text-4xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
-                            <p id="tv-slide3-sub" class="text-red-200 font-bold uppercase tracking-[0.2em] text-xs mt-1">Live Turnaround Status by Work Classification — Marikina Workshop</p>
+                    <!-- Module Header Row -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+                        <div class="flex items-start sm:items-center gap-3.5">
+                            <div class="p-2.5 bg-red-50 text-red-600 rounded-xl border border-red-100 shrink-0">
+                                <i data-lucide="monitor" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2.5">
+                                    <h2 class="text-lg md:text-xl font-black uppercase tracking-tight text-gray-900">TV Workshop Display & Broadcast Hub</h2>
+                                    <span id="badge-tv-broadcast-status" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-mono uppercase font-bold tracking-wider bg-gray-100 text-gray-600 border border-gray-200">
+                                        Offline
+                                    </span>
+                                </div>
+                                <p class="text-xs text-gray-500 font-medium mt-0.5">
+                                    Live Workshop Queue Display · Wireless Smart TV Sync · Dual-Screen HDMI Output · Marikina Main Branch
+                                </p>
+                            </div>
                         </div>
-                        <div class="flex-1 p-5 lg:p-6 overflow-hidden bg-slate-100/60 flex gap-4 min-h-0">
-                            <!-- Express Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0"></span>
-                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Express (PMS ≤ 60m)</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white shrink-0 ml-1.5" id="tv-express-lane-count">0</span>
+
+                        <!-- Top Action Controls -->
+                        <div class="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
+                            <button type="button" id="btn-toggle-tv-broadcast" onclick="HontechTVBroadcastManager.toggleBroadcast()" class="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-xs">
+                                <i data-lucide="power" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span id="btn-toggle-tv-broadcast-text">Broadcast: OFF</span>
+                            </button>
+                            <button type="button" onclick="HontechTVBroadcastManager.launchHDMIKiosk()" class="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-2xs" title="Open Fullscreen Cinema Kiosk in New Tab">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-red-600"></i>
+                                <span>Launch Fullscreen TV</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Method Selector Tabs (Monochromatic & Clean) -->
+                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                        <button type="button" id="tab-tv-method-live" onclick="HontechTVBroadcastManager.switchMethod('live')" class="px-4 py-2.5 rounded-xl border-2 border-slate-900 bg-slate-900 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-2">
+                            <i data-lucide="radio" class="w-4 h-4"></i>
+                            <span>Wireless Smart TV Stream</span>
+                        </button>
+                        <button type="button" id="tab-tv-method-hdmi" onclick="HontechTVBroadcastManager.switchMethod('hdmi')" class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-bold text-xs transition cursor-pointer flex items-center gap-2">
+                            <i data-lucide="cable" class="w-4 h-4"></i>
+                            <span>Direct HDMI Dual-Display</span>
+                        </button>
+                        <button type="button" id="tab-tv-method-preview" onclick="HontechTVBroadcastManager.switchMethod('preview')" class="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-bold text-xs transition cursor-pointer flex items-center gap-2">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                            <span>Live Display & Audio Preview</span>
+                        </button>
+                    </div>
+
+                    <!-- METHOD 1: WIRELESS LIVE SMART TV -->
+                    <div id="panel-tv-method-live" class="space-y-4 pt-1">
+                        
+                        <!-- Offline State Notice -->
+                        <div id="tv-hub-state-offline" class="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="flex items-center gap-3 text-left">
+                                <div class="w-12 h-12 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center shrink-0 border border-slate-300">
+                                    <i data-lucide="radio" class="w-6 h-6"></i>
                                 </div>
-                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-express-lane-list"></div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wide">TV Broadcast is Currently Inactive</h4>
+                                    <p class="text-xs text-slate-500 font-normal mt-0.5">
+                                        Smart TVs in the customer lounge will show a standby screen. Click "Make TV Live Now" to activate real-time queue streaming and generate your 4-digit PIN.
+                                    </p>
+                                </div>
                             </div>
-                            <!-- Flexible Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
-                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Flexible Lane (GRS)</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-flexible-lane-count">0</span>
+                            <button type="button" onclick="HontechTVBroadcastManager.startLiveBroadcast()" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-sm shrink-0 flex items-center gap-2">
+                                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                                <span>Make TV Live Now</span>
+                            </button>
+                        </div>
+
+                        <!-- Live State: Credentials & Pairing Info Deck -->
+                        <div id="tv-hub-state-live" class="hidden space-y-4">
+                            <div class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-emerald-900">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-900">Broadcast Active: Connected TVs receive live updates every 5 seconds</span>
                                 </div>
-                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-flexible-lane-list"></div>
+                                <button type="button" onclick="HontechTVBroadcastManager.stopLiveBroadcast()" class="px-3 py-1 bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold transition cursor-pointer">
+                                    Pause Broadcast
+                                </button>
                             </div>
-                            <!-- Special Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span>
-                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Specialty (Heavy Work)</h3>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <!-- Step 1: Web Link -->
+                                <div class="bg-white border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-xs font-bold text-gray-900 uppercase tracking-wide">1. Smart TV Web Link</span>
+                                            <span class="text-[10px] text-gray-500 font-mono">Any TV Browser</span>
+                                        </div>
+                                        <p class="text-[11px] text-gray-500">Open built-in browser (Samsung, LG, Sony) and enter:</p>
                                     </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-special-lane-count">0</span>
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-50 border border-gray-300 text-gray-900 font-mono font-bold text-xs px-3 py-2 rounded-lg outline-none select-all">
+                                        <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg text-xs font-bold transition cursor-pointer shrink-0 border border-gray-300" title="Copy Link">
+                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-special-lane-list"></div>
+
+                                <!-- Step 2: 4-Digit Password PIN -->
+                                <div class="bg-white border border-gray-200 p-4 rounded-xl flex flex-col justify-between space-y-3">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-xs font-bold text-gray-900 uppercase tracking-wide">2. TV Access Password</span>
+                                            <span class="text-[10px] text-gray-500 font-mono">One-Time Entry</span>
+                                        </div>
+                                        <p class="text-[11px] text-gray-500">Enter this 4-digit code using the Smart TV remote:</p>
+                                    </div>
+                                    <div class="flex items-center justify-between bg-gray-50 border border-gray-300 px-3 py-1.5 rounded-lg">
+                                        <span id="tv-hub-display-pin" class="text-xl font-mono font-black text-gray-900 tracking-widest">8492</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="px-2.5 py-1 bg-white hover:bg-gray-100 text-gray-700 rounded text-xs font-bold border border-gray-300 transition cursor-pointer flex items-center gap-1" title="Regenerate PIN">
+                                                <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
+                                                <span class="text-[10px]">New PIN</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: QR Code & 1-Click Bookmark Link -->
+                                <div class="bg-white border border-gray-200 p-4 rounded-xl flex items-center gap-4">
+                                    <div class="w-20 h-20 shrink-0 bg-white border border-gray-200 rounded-lg p-1 shadow-2xs flex items-center justify-center">
+                                        <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-full h-full object-contain">
+                                    </div>
+                                    <div class="min-w-0 space-y-1.5">
+                                        <span class="text-xs font-bold text-gray-900 uppercase tracking-wide block">Instant QR & Bookmark</span>
+                                        <p class="text-[11px] text-gray-500 leading-tight">Scan with phone camera or save 1-click auto-login link:</p>
+                                        <div class="flex items-center gap-2">
+                                            <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-50 border border-gray-300 text-gray-700 font-mono text-[11px] px-2 py-1 rounded outline-none select-all truncate">
+                                            <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-2.5 py-1 bg-gray-900 hover:bg-gray-800 text-white rounded text-[11px] font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
+                                                Copy
+                                            </button>
+                                            <a id="tv-hub-open-tab-btn" href="#" target="_blank" class="hidden"></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <!-- Priority Lane Column -->
-                            <div class="flex-1 bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
-                                <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
-                                        <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Priority (Senior / Elders)</h3>
-                                    </div>
-                                    <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-500 text-gray-950 shrink-0 ml-1.5" id="tv-priority-lane-count">0</span>
+                        </div>
+
+                        <!-- Technical Setup Instructions -->
+                        <div class="p-4 bg-gray-50 border border-gray-200 rounded-xl space-y-2 text-xs text-gray-600">
+                            <span class="font-bold text-gray-900 uppercase tracking-wide block">Quick Staff Connection Checklist:</span>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                                <div class="bg-white p-3 rounded-lg border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">1. Connect to Wi-Fi</strong>
+                                    Ensure the TV is on the same local network or Wi-Fi as the HonTech terminal.
                                 </div>
-                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll space-y-2.5" id="tv-priority-lane-list"></div>
+                                <div class="bg-white p-3 rounded-lg border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">2. Enter URL & PIN</strong>
+                                    Type the web link into the TV browser, input the 4-digit PIN, and bookmark the page.
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-gray-200">
+                                    <strong class="text-gray-900 block mb-0.5 font-bold">3. Fullscreen Display</strong>
+                                    Click the browser fullscreen button (or press F11) for seamless cinema presentation.
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- METHOD 2: DIRECT HDMI CABLE DUAL-DISPLAY -->
+                    <div id="panel-tv-method-hdmi" class="hidden space-y-4 pt-1">
+                        <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center shrink-0 border border-slate-300">
+                                    <i data-lucide="cable" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wide">Direct HDMI Dual-Monitor Configuration</h4>
+                                    <p class="text-xs text-slate-500 font-normal mt-0.5 leading-relaxed">
+                                        For workshops with an HDMI cable running directly from this computer to the wall display. Windows Extend mode keeps your administrative dashboard on screen while broadcasting the queue to the TV.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="p-3.5 bg-white border border-gray-200 rounded-xl space-y-1">
+                                    <span class="text-xs font-bold text-gray-900 block">Step 1: Connect Cable</span>
+                                    <p class="text-[11px] text-gray-500">Plug HDMI cable from PC/laptop video output to the TV input port.</p>
+                                </div>
+                                <div class="p-3.5 bg-white border border-gray-200 rounded-xl space-y-1">
+                                    <span class="text-xs font-bold text-gray-900 block">Step 2: Windows Extend (Win+P)</span>
+                                    <p class="text-[11px] text-gray-500">Press <kbd class="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-300 text-[10px] font-mono font-bold text-gray-800">Win + P</kbd> on your keyboard and choose <strong>Extend</strong>.</p>
+                                </div>
+                                <div class="p-3.5 bg-white border border-gray-200 rounded-xl space-y-1">
+                                    <span class="text-xs font-bold text-gray-900 block">Step 3: Launch Cinema Kiosk</span>
+                                    <p class="text-[11px] text-gray-500">Click below to open the dedicated kiosk window, drag to TV screen, and press <kbd class="px-1.5 py-0.5 rounded bg-gray-100 border border-gray-300 text-[10px] font-mono font-bold text-gray-800">F11</kbd>.</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-1 flex flex-wrap items-center justify-between gap-3">
+                                <button type="button" onclick="HontechTVBroadcastManager.launchHDMIKiosk()" class="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition cursor-pointer shadow-xs flex items-center gap-2">
+                                    <i data-lucide="monitor" class="w-4 h-4"></i>
+                                    <span>Launch Cinema Kiosk Window</span>
+                                </button>
+                                <span class="text-xs text-gray-500 font-medium">Recommended TV display resolution: 1920×1080 (16:9 widescreen)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- METHOD 3 & LIVE DISPLAY CANVAS (Real-Time In-App Slides) -->
+                    <div id="panel-tv-method-preview" class="space-y-4 pt-1">
+                        
+                        <!-- Top Canvas Control Bar -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gray-900 text-white rounded-xl">
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-gray-200">Interactive Display Canvas</span>
+                                </div>
+                                <span class="text-gray-500 text-xs font-mono">|</span>
+                                <p id="tv-date-display" class="text-xs text-gray-400 font-mono uppercase">Sunday, June 21, 2026</p>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <!-- Slide Switcher Dots -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400 mr-1">Slides:</span>
+                                    <button type="button" onclick="jumpToTVSlide(0)" id="tv-dot-0" class="w-3 h-3 rounded-full bg-red-500 cursor-pointer transition-all" title="Slide 1: Workshop Bay Allocations"></button>
+                                    <button type="button" onclick="jumpToTVSlide(1)" id="tv-dot-1" class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 2: Service Queue & Ready"></button>
+                                    <button type="button" onclick="jumpToTVSlide(2)" id="tv-dot-2" class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 cursor-pointer transition-all" title="Slide 3: Workshop Lanes"></button>
+                                </div>
+
+                                <!-- Weather & Clock -->
+                                <div class="flex items-center gap-3 pl-3 border-l border-gray-800">
+                                    <div class="flex items-center gap-1.5">
+                                        <span id="tv-weather-icon-wrap"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></span>
+                                        <span id="tv-temp-display" class="text-xs font-bold text-white">32°C</span>
+                                        <span id="tv-weather-text" class="text-[9px] text-gray-400 uppercase">Sunny</span>
+                                    </div>
+                                    <span id="tv-clock-display" class="text-base font-black font-mono text-gray-200 tabular-nums">00:00</span>
+                                </div>
+
+                                <!-- Voice Synthesis Toggle -->
+                                <button type="button" onclick="toggleTVVoice()" id="tv-dev-toggle-voice-btn" class="px-2.5 py-1 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold rounded-lg transition cursor-pointer flex items-center gap-1.5 border border-gray-700">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gray-400"></i>
+                                    <span>Voice: ON</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Frame Container (16:9 Aspect Ratio) -->
+                        <div class="relative bg-gray-950 rounded-2xl border-2 border-gray-900 shadow-xl overflow-hidden min-h-[580px] flex flex-col">
+                            
+                            <!-- Live Multi-Event TV Notification Banner (Automotive Plaque) -->
+                            <div id="tv-ready-alert-banner" class="hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-[100] tv-broadcast-banner-active select-none transition-all duration-300">
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-2xl border-2 border-red-700 flex flex-col min-w-[360px] sm:min-w-[460px] max-w-[90vw]">
+                                    <div id="tv-ready-alert-header" class="bg-red-600 px-5 py-2 flex items-center justify-between text-white border-b border-red-700">
+                                        <span id="tv-ready-alert-status-text" class="text-xs font-black uppercase tracking-wider text-white">WORKSHOP MONITORING</span>
+                                        <div class="flex items-center gap-1 text-[10px] font-bold text-red-100">
+                                            <i id="tv-ready-alert-icon" data-lucide="radio" class="w-3.5 h-3.5 text-white"></i>
+                                            <span>HONTECH LIVE</span>
+                                        </div>
+                                    </div>
+                                    <div class="px-6 py-4 bg-white flex items-center justify-center">
+                                        <span id="tv-ready-alert-plate" class="text-4xl sm:text-5xl font-mono font-black uppercase tracking-widest text-slate-950 leading-none text-center">
+                                            NDO 8492
+                                        </span>
+                                    </div>
+                                    <div class="bg-red-600 px-5 py-2 flex items-center justify-between text-white border-t border-red-700">
+                                        <span id="tv-ready-alert-model" class="text-xs sm:text-sm font-bold uppercase tracking-wide text-white truncate">HONDA CIVIC RS</span>
+                                        <span class="text-[10px] font-bold uppercase text-red-200">MARIKINA MAIN</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Carousel Slides (Bays, Queue, Lanes) -->
+                            <div class="flex-1 relative min-h-0 bg-slate-100">
+                                <!-- SLIDE 1: ACTIVE BAY MONITORING -->
+                                <div id="tv-slide-1" class="absolute inset-0 tv-slide flex flex-col bg-white overflow-hidden">
+                                    <div class="bg-red-600 py-3 text-center shrink-0 border-b border-red-700 text-white">
+                                        <h3 class="text-xl sm:text-2xl font-black uppercase tracking-wider">Workshop Bay Monitoring</h3>
+                                        <p id="tv-slide1-sub" class="text-red-100 font-medium text-xs mt-0.5">Active Bays & Real-Time Allocations — Marikina Main Floor</p>
+                                    </div>
+                                    <div class="flex-1 p-4 sm:p-5 bg-slate-50 overflow-hidden">
+                                        <div id="tv-grs-list" class="grid grid-cols-2 gap-4 h-full"></div>
+                                    </div>
+                                </div>
+
+                                <!-- SLIDE 2: SERVICE QUEUE (WAITING LIST), READY & CARRY-OVER -->
+                                <div id="tv-slide-2" class="absolute inset-0 tv-slide hidden flex flex-col bg-white overflow-hidden">
+                                    <div class="bg-red-600 py-3 text-center shrink-0 border-b border-red-700 text-white">
+                                        <h3 class="text-xl sm:text-2xl font-black uppercase tracking-wider">Queue & Release Status</h3>
+                                        <p id="tv-slide2-sub" class="text-red-100 font-medium text-xs mt-0.5">Live Queue & Turnaround Status — Marikina Main Branch</p>
+                                    </div>
+                                    <div class="flex-1 p-4 bg-slate-50 overflow-hidden flex flex-col gap-4 min-h-0">
+                                        <div class="flex-1 grid grid-cols-2 gap-4 min-h-0">
+                                            <!-- Upcoming Queue -->
+                                            <div class="bg-white rounded-xl overflow-hidden flex flex-col min-h-0 border border-gray-300 shadow-2xs">
+                                                <div class="bg-gray-900 py-2 px-4 text-center shrink-0 border-b border-gray-800 flex items-center justify-between text-white">
+                                                    <span class="text-xs font-bold uppercase tracking-wide">Service Queue (Waiting List)</span>
+                                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
+                                                </div>
+                                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll">
+                                                    <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Ready for Release -->
+                                            <div class="bg-white rounded-xl overflow-hidden flex flex-col min-h-0 border border-gray-300 shadow-2xs">
+                                                <div class="bg-gray-900 py-2 px-4 text-center shrink-0 border-b border-gray-800 flex items-center justify-between text-white">
+                                                    <span class="text-xs font-bold uppercase tracking-wide">Ready for Release (Claiming)</span>
+                                                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-600 text-white" id="tv-all-released-count">0</span>
+                                                </div>
+                                                <div class="p-3 bg-white flex-1 overflow-y-auto custom-scroll">
+                                                    <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Carry-Over -->
+                                        <div class="h-32 flex flex-col shrink-0 bg-white rounded-xl overflow-hidden border border-gray-300 shadow-2xs">
+                                            <div class="bg-gray-900 py-1.5 px-4 text-center shrink-0 border-b border-gray-800 flex items-center justify-between text-white">
+                                                <span class="text-xs font-bold uppercase tracking-wide">Carry-Over Vehicles (Awaiting Parts / Next Day)</span>
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-700 text-gray-200" id="tv-all-carryover-count">0</span>
+                                            </div>
+                                            <div class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll">
+                                                <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SLIDE 3: WORKSHOP LANES -->
+                                <div id="tv-slide-3" class="absolute inset-0 tv-slide hidden flex flex-col bg-white overflow-hidden">
+                                    <div class="bg-red-600 py-3 text-center shrink-0 border-b border-red-700 text-white">
+                                        <h3 class="text-xl sm:text-2xl font-black uppercase tracking-wider">Workshop Lanes Monitoring</h3>
+                                        <p id="tv-slide3-sub" class="text-red-100 font-medium text-xs mt-0.5">Live Turnaround Status by Work Classification — Marikina Workshop</p>
+                                    </div>
+                                    <div class="flex-1 p-4 overflow-hidden bg-slate-50 flex gap-3 min-h-0">
+                                        <!-- Express -->
+                                        <div class="flex-1 bg-white rounded-xl border border-gray-300 overflow-hidden flex flex-col shadow-2xs min-h-0">
+                                            <div class="bg-gray-900 py-2 px-3 text-center border-b border-gray-800 shrink-0 flex items-center justify-between text-white">
+                                                <span class="text-xs font-bold uppercase tracking-wider truncate">Express (PMS ≤ 60m)</span>
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-red-600 text-white" id="tv-express-lane-count">0</span>
+                                            </div>
+                                            <div class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2" id="tv-express-lane-list"></div>
+                                        </div>
+                                        <!-- Flexible -->
+                                        <div class="flex-1 bg-white rounded-xl border border-gray-300 overflow-hidden flex flex-col shadow-2xs min-h-0">
+                                            <div class="bg-gray-900 py-2 px-3 text-center border-b border-gray-800 shrink-0 flex items-center justify-between text-white">
+                                                <span class="text-xs font-bold uppercase tracking-wider truncate">Flexible Lane (GRS)</span>
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-700 text-gray-200" id="tv-flexible-lane-count">0</span>
+                                            </div>
+                                            <div class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2" id="tv-flexible-lane-list"></div>
+                                        </div>
+                                        <!-- Specialty -->
+                                        <div class="flex-1 bg-white rounded-xl border border-gray-300 overflow-hidden flex flex-col shadow-2xs min-h-0">
+                                            <div class="bg-gray-900 py-2 px-3 text-center border-b border-gray-800 shrink-0 flex items-center justify-between text-white">
+                                                <span class="text-xs font-bold uppercase tracking-wider truncate">Specialty (Heavy Work)</span>
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-700 text-gray-200" id="tv-special-lane-count">0</span>
+                                            </div>
+                                            <div class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2" id="tv-special-lane-list"></div>
+                                        </div>
+                                        <!-- Priority -->
+                                        <div class="flex-1 bg-white rounded-xl border border-gray-300 overflow-hidden flex flex-col shadow-2xs min-h-0">
+                                            <div class="bg-gray-900 py-2 px-3 text-center border-b border-gray-800 shrink-0 flex items-center justify-between text-white">
+                                                <span class="text-xs font-bold uppercase tracking-wider truncate">Priority (Senior/Elders)</span>
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-700 text-gray-200" id="tv-priority-lane-count">0</span>
+                                            </div>
+                                            <div class="p-2.5 bg-white flex-1 overflow-y-auto custom-scroll space-y-2" id="tv-priority-lane-list"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Audio Signage Simulation Triggers (Clean Monochromatic Bar) -->
+                        <div class="p-3.5 bg-gray-50 border border-gray-200 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-wide text-gray-800 flex items-center gap-1.5">
+                                    <i data-lucide="volume-2" class="w-4 h-4 text-gray-600"></i>
+                                    <span>Test Signage Announcements</span>
+                                </span>
+                                <span class="text-[10px] text-gray-500 font-medium">Triggers TV speech chime and banner alert</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                                <button type="button" onclick="triggerTVSimulationEvent('monitoring')" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer text-center">
+                                    01 · Intake Broadcast
+                                </button>
+                                <button type="button" onclick="triggerTVSimulationEvent('bay_assigned')" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer text-center">
+                                    02 · Bay Assigned
+                                </button>
+                                <button type="button" onclick="triggerTVSimulationEvent('ready')" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer text-center">
+                                    03 · Ready for Claim
+                                </button>
+                                <button type="button" onclick="triggerTVSimulationEvent('carryover')" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer text-center">
+                                    04 · Carry-Over Hold
+                                </button>
+                                <button type="button" onclick="triggerTVSimulationEvent('return_active')" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-lg text-xs font-bold transition cursor-pointer text-center col-span-2 sm:col-span-1">
+                                    05 · Return Active
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
 
             <!-- MY PROFILE & SECURITY -->
@@ -7161,590 +7304,304 @@
         </div>
     </div>
 
-    <!-- SMART TV & HDMI DISPLAY HUB MODAL (Live Wireless & HDMI Wired Options) -->
-    <div id="modal-tv-broadcast-hub" class="hidden fixed inset-0 z-[9998] bg-black/85 backdrop-blur-md flex items-center justify-center p-4 select-none">
-        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
-                <div class="flex items-center gap-3">
-                    <div id="tv-hub-header-icon-wrap" class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
-                        <i data-lucide="tv" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h3 class="text-base font-black uppercase tracking-wider text-white">TV Monitor Display Hub</h3>
-                            <span id="tv-hub-header-badge" class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-400 border border-rose-500/30">Offline</span>
-                        </div>
-                        <p class="text-[11px] text-gray-400 font-semibold">Select your display method: Live Wireless Smart TV or Direct HDMI Cable</p>
-                    </div>
-                </div>
-                <button onclick="closeTVBroadcastHubModal()" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="p-6 space-y-5 max-h-[82vh] overflow-y-auto custom-scroll">
-
-                <!-- ========================================================= -->
-                <!-- TOP METHOD SELECTOR: LIVE STREAM vs DIRECT HDMI CABLE     -->
-                <!-- ========================================================= -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-1.5 bg-gray-900/90 border border-gray-800 rounded-2xl">
-                    <!-- Option A: Live Wireless Smart TV -->
-                    <button type="button" id="tab-tv-method-live" onclick="HontechTVBroadcastManager.switchMethod('live')" class="p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-red-600/15 border-red-500/40 text-white shadow-sm">
-                        <div class="w-10 h-10 rounded-xl bg-red-600/25 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
-                            <i data-lucide="radio" class="w-5 h-5 animate-pulse"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-xs font-black uppercase tracking-wider text-white">Live Smart TV</span>
-                                <span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-red-500/20 text-red-300 uppercase">Wi-Fi Stream</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 truncate mt-0.5">Link & 4-Digit Password for Smart TV</p>
-                        </div>
-                    </button>
-
-                    <!-- Option B: Direct HDMI Cable -->
-                    <button type="button" id="tab-tv-method-hdmi" onclick="HontechTVBroadcastManager.switchMethod('hdmi')" class="p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white">
-                        <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 shrink-0">
-                            <i data-lucide="cable" class="w-5 h-5"></i>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="flex items-center gap-1.5">
-                                <span class="text-xs font-black uppercase tracking-wider text-gray-200">HDMI Cable Mode</span>
-                                <span class="text-[8px] font-bold px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 uppercase">Wired Screen</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 truncate mt-0.5">Plug PC to TV • 1-Click Cinema Kiosk</p>
-                        </div>
-                    </button>
-                </div>
-
-                <!-- ========================================================= -->
-                <!-- PANEL 1: WIRELESS LIVE SMART TV METHOD                     -->
-                <!-- ========================================================= -->
-                <div id="panel-tv-method-live" class="space-y-4">
-                    
-                    <!-- STATE 1: TV IS OFFLINE (Staff must click 'Make TV Live') -->
-                    <div id="tv-hub-state-offline" class="p-6 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 border border-gray-800 rounded-3xl text-center space-y-5">
-                        <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-                            <div class="absolute inset-0 rounded-full bg-red-600/10 animate-ping"></div>
-                            <div class="w-16 h-16 rounded-2xl bg-gray-950 border-2 border-red-500/30 flex items-center justify-center text-red-500 shadow-xl relative z-10">
-                                <i data-lucide="radio" class="w-8 h-8 text-red-400"></i>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1.5 max-w-md mx-auto">
-                            <h4 class="text-lg font-black uppercase tracking-wide text-white">TV Service Monitor is Offline</h4>
-                            <p class="text-xs text-gray-400 leading-relaxed">
-                                The Smart TV in the customer lounge or workshop is currently waiting. Click below to activate the live broadcast, which will generate and display the active link and password for the TV.
-                            </p>
-                        </div>
-
-                        <div class="pt-2 max-w-md mx-auto">
-                            <button type="button" onclick="HontechTVBroadcastManager.startLiveBroadcast()" class="w-full py-4 px-6 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-red-600/30 transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-95 group">
-                                <i data-lucide="radio" class="w-4 h-4 animate-pulse"></i>
-                                <span>Make TV Live Now (Generate Link & Password)</span>
-                                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
-                            </button>
-                        </div>
-
-                        <div class="p-3 bg-gray-950 border border-gray-850 rounded-xl text-[10.5px] text-gray-400 max-w-md mx-auto flex items-center justify-center gap-2">
-                            <i data-lucide="info" class="w-4 h-4 text-red-400 shrink-0"></i>
-                            <span>No HDMI cables needed — works on any Smart TV browser over Wi-Fi.</span>
-                        </div>
-                    </div>
-
-                    <!-- STATE 2: TV IS LIVE (Link and Password provided to Staff) -->
-                    <div id="tv-hub-state-live" class="hidden space-y-4">
-                        
-                        <!-- Live Banner Card -->
-                        <div class="p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl flex items-center justify-between">
-                            <div class="flex items-center gap-3">
-                                <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
-                                <div>
-                                    <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block">TV Broadcast is LIVE!</span>
-                                    <span class="text-[11px] text-gray-300">Open the link below on the Smart TV and enter the password:</span>
-                                </div>
-                            </div>
-                            <button type="button" onclick="HontechTVBroadcastManager.stopLiveBroadcast()" class="px-3 py-1.5 bg-gray-900 hover:bg-red-950/80 text-rose-300 hover:text-white text-[10px] font-black uppercase tracking-wider rounded-xl border border-rose-500/30 transition cursor-pointer flex items-center gap-1.5 shadow-sm">
-                                <i data-lucide="power" class="w-3.5 h-3.5"></i> Stop Live
-                            </button>
-                        </div>
-
-                        <!-- 2-Column Info Deck: Link & Password on left, QR on right -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            
-                            <!-- Left: TV Access Link & Password (2 cols) -->
-                            <div class="md:col-span-2 space-y-3">
-                                <!-- 1. TV Link Box -->
-                                <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
-                                    <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block mb-1 flex items-center gap-1.5">
-                                        <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">1</span>
-                                        Open this Link on the Smart TV Browser:
-                                    </label>
-                                    <div class="flex items-center gap-2">
-                                        <input type="text" id="tv-hub-display-url" readonly value="http://localhost:8000/tv.html" class="w-full bg-gray-950 border border-gray-700 text-red-400 font-mono font-bold text-xs px-3 py-2 rounded-xl outline-none select-all">
-                                        <button type="button" onclick="HontechTVBroadcastManager.copyTVUrl()" class="px-3 py-2 bg-gray-800 hover:bg-gray-700 active:bg-red-600 text-white rounded-xl text-xs font-bold transition cursor-pointer shrink-0" title="Copy Link">
-                                            <i data-lucide="copy" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                    <p class="text-[9.5px] text-gray-500 mt-1">Type this address in Samsung Internet, LG Web Browser, Sony Chrome, etc.</p>
-                                </div>
-
-                                <!-- 2. TV Access Password / PIN Box -->
-                                <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-between">
-                                    <div>
-                                        <label class="text-[9.5px] font-black uppercase tracking-widest text-gray-400 block flex items-center gap-1.5">
-                                            <span class="w-4 h-4 rounded-full bg-red-600 text-white text-[9px] font-bold flex items-center justify-center">2</span>
-                                            TV Access Password:
-                                        </label>
-                                        <p class="text-[10px] text-gray-400 mt-0.5">Enter this 4-digit code using your TV remote:</p>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span id="tv-hub-display-pin" class="px-4 py-1.5 bg-red-600/20 border-2 border-red-500/40 text-red-400 text-xl font-mono font-black rounded-xl tracking-widest">
-                                            8492
-                                        </span>
-                                        <button type="button" onclick="HontechTVBroadcastManager.regeneratePin()" class="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl transition cursor-pointer" title="Generate New Password">
-                                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- 3. Optional 1-Click Bookmark URL -->
-                                <div class="p-3 bg-gray-900/60 border border-gray-800 rounded-2xl">
-                                    <label class="text-[9px] font-black uppercase tracking-widest text-gray-400 block mb-1">
-                                        Save to TV Bookmarks (Auto-Login Link):
-                                    </label>
-                                    <div class="flex items-center gap-1.5">
-                                        <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-gray-950 border border-gray-750 text-emerald-400 font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none select-all">
-                                        <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 active:bg-emerald-600 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
-                                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right: QR Code Card (1 col) -->
-                            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">Scan with Phone / TV</span>
-                                <div class="p-2 bg-white rounded-xl shadow-md mb-2">
-                                    <img id="tv-hub-qr-img" src="" alt="TV QR Code" class="w-28 h-28 object-contain">
-                                </div>
-                                <p class="text-[9.5px] text-gray-400 font-medium leading-tight">Scan camera to open TV monitor instantly</p>
-                            </div>
-                        </div>
-
-                        <!-- Setup Checklist Guide -->
-                        <div class="p-3.5 bg-gray-900 border border-gray-800 rounded-2xl">
-                            <span class="text-[9.5px] font-black uppercase tracking-wider text-red-400 flex items-center gap-1.5 mb-2">
-                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Manual Setup on the Smart TV:
-                            </span>
-                            <ol class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[10.5px] text-gray-400">
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">1. Open Browser</strong>
-                                    On your Smart TV, launch the built-in browser and type the link above.
-                                </li>
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">2. Enter Password</strong>
-                                    Use your TV remote to enter the 4-digit code shown above.
-                                </li>
-                                <li class="p-2.5 rounded-xl bg-gray-950 border border-gray-850">
-                                    <strong class="text-white block mb-0.5">3. Fullscreen</strong>
-                                    Click the on-screen Fullscreen button for a borderless cinema display.
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- ========================================================= -->
-                <!-- PANEL 2: DIRECT HDMI CABLE METHOD (Wired Second Display)  -->
-                <!-- ========================================================= -->
-                <div id="panel-tv-method-hdmi" class="hidden space-y-4">
-                    
-                    <!-- HDMI Overview Card -->
-                    <div class="p-5 bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 rounded-3xl space-y-4">
-                        <div class="flex items-start gap-3.5">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-                                <i data-lucide="cable" class="w-6 h-6"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-black uppercase tracking-wider text-white">Direct HDMI / Wired TV Display</h4>
-                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-                                    Connect your computer or laptop directly to the TV or wall monitor using an HDMI cable. No Wi-Fi login or password entry required on the TV.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 3-Step HDMI Checklist -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">1</span>
-                                    <span>Plug HDMI</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Connect the HDMI cable from your PC to the TV's HDMI port.</p>
-                            </div>
-
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">2</span>
-                                    <span>Extend Screen</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Press <kbd class="px-1 py-0.5 rounded bg-gray-800 text-[9px] font-mono text-gray-200">Win + P</kbd> on your keyboard and select <strong>Extend</strong>.</p>
-                            </div>
-
-                            <div class="p-3 bg-gray-950 border border-gray-850 rounded-2xl space-y-1">
-                                <div class="flex items-center gap-1.5 text-amber-400 text-xs font-bold">
-                                    <span class="w-4 h-4 rounded-full bg-amber-500/20 border border-amber-500/40 text-[9px] flex items-center justify-center font-mono">3</span>
-                                    <span>Press Fullscreen</span>
-                                </div>
-                                <p class="text-[10.5px] text-gray-400">Drag the kiosk window to the TV and press <kbd class="px-1 py-0.5 rounded bg-gray-800 text-[9px] font-mono text-gray-200">F11</kbd>.</p>
-                            </div>
-                        </div>
-
-                        <!-- Action Button: Launch HDMI Cinema Kiosk -->
-                        <div class="pt-2">
-                            <button type="button" onclick="HontechTVBroadcastManager.launchHDMIKiosk()" class="w-full py-4 px-6 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-amber-600/20 transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-95 group">
-                                <i data-lucide="monitor" class="w-4 h-4"></i>
-                                <span>Launch HDMI Cinema Kiosk (New Window)</span>
-                                <i data-lucide="external-link" class="w-4 h-4 group-hover:translate-x-0.5 transition"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- In-App Preview Option -->
-                    <div class="p-3.5 bg-gray-900/60 border border-gray-800 rounded-2xl flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-xs text-gray-300">
-                            <i data-lucide="layout" class="w-4 h-4 text-gray-400"></i>
-                            <span>Want to check the monitor without opening a new window?</span>
-                        </div>
-                        <button type="button" onclick="HontechTVBroadcastManager.viewInAppMonitor()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5">
-                            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Open In-App
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <!-- UNIFIED DEVELOPER TOOLBOX MODAL (Triggered exclusively via Ctrl + D) -->
-    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 select-none">
-        <div class="bg-gray-950 text-white rounded-3xl shadow-2xl w-full max-w-3xl overflow-hidden border border-gray-800 flex flex-col fade-in animate-in zoom-in-95 duration-200">
+    <div id="dev-toolbox-modal" class="hidden fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 md:p-6 select-none">
+        <div class="bg-slate-950 text-slate-100 rounded-2xl shadow-2xl w-full max-w-5xl md:max-w-6xl overflow-hidden border border-slate-800 flex flex-col fade-in animate-in zoom-in-95 duration-150">
             <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between bg-gray-900/80">
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/95">
                 <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-500">
+                    <div class="p-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-slate-300">
                         <i data-lucide="terminal" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <h3 class="text-base font-black uppercase tracking-wider text-white">Developer Toolbox & Sandbox</h3>
-                            <span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 border border-red-500/30">Ctrl + D</span>
+                        <div class="flex items-center gap-2.5">
+                            <h3 class="text-sm md:text-base font-bold uppercase tracking-wider text-slate-100">System Diagnostics & Developer Suite</h3>
+                            <span class="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Ctrl + D</span>
+                            <span class="text-[10px] font-mono font-normal uppercase px-2 py-0.5 rounded bg-slate-800/60 text-slate-400 border border-slate-700/60">Branch 2 · Security & Recovery</span>
                         </div>
-                        <p class="text-[11px] text-gray-400 font-semibold">Diagnostic tools, date time machine, audio tests, themes & database reset</p>
+                        <p class="text-xs text-slate-400 font-normal mt-0.5">HonTech AutoCenter Operations · Runtime Diagnostics, Hardware Emulation & Test Controls</p>
                     </div>
                 </div>
-                <button onclick="toggleDevToolbox(false)" class="p-2 text-gray-400 hover:text-white rounded-xl hover:bg-gray-800 transition cursor-pointer" title="Close (Esc)">
+                <button type="button" onclick="toggleDevToolbox(false)" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer" title="Close (Esc)">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <!-- Scrollable Content Grid -->
-            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto custom-scroll">
-                <!-- CATEGORY: QUEUE DATE TIME MACHINE & MULTI-DAY RESET SIMULATOR -->
-                <div class="p-4 bg-gradient-to-br from-slate-900 via-gray-900 to-slate-950 border border-amber-500/30 rounded-2xl shadow-lg relative overflow-hidden">
-                    <!-- Ambient accent glow -->
-                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
-                    <!-- Category Header -->
-                    <div class="flex items-center justify-between gap-3 mb-3 border-b border-gray-800 pb-2.5">
-                        <div class="flex items-center gap-2.5">
-                            <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                                <i data-lucide="calendar-clock" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-xs font-black uppercase tracking-wider text-amber-300">Queue Date Time Machine & Auto-Reset</span>
-                                    <span id="dev-sim-status-badge" class="px-2 py-0.5 text-[8.5px] font-black uppercase tracking-wider rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Real-Time Mode</span>
+            <!-- Scrollable Content Grid (2 Columns: Left = Simulation & Hardware, Right = System Tools & Resilience) -->
+            <div class="p-6 space-y-5 max-h-[78vh] overflow-y-auto custom-scroll bg-slate-950">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    
+                    <!-- LEFT COLUMN: TIME TRAVEL SIMULATION & TV SIGNAGE (7 Cols) -->
+                    <div class="lg:col-span-7 space-y-5">
+                        
+                        <!-- PANEL 1: QUEUE DATE TIME MACHINE & MULTI-DAY RESET SIMULATOR -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3.5">
+                            <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-2.5">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
+                                        <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200">Queue Date Simulator & Daily Reset</span>
+                                            <span id="dev-sim-status-badge" class="px-2 py-0.5 text-[9px] font-mono uppercase font-bold rounded bg-slate-800 text-slate-300 border border-slate-700">Real-Time Mode</span>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 font-normal">Test morning queue reset, carry-over ticket retention & historical recall.</p>
+                                    </div>
                                 </div>
-                                <p class="text-[10px] text-gray-400 font-medium">Simulate date shifts to test next-day auto board reset, clean start & historical ticket recall.</p>
+                                <div class="text-right">
+                                    <span class="text-[9px] text-slate-400 uppercase font-bold block">Active Date</span>
+                                    <span id="dev-sim-active-date" class="text-xs font-mono font-bold text-slate-200">2026-09-14</span>
+                                </div>
+                            </div>
+
+                            <!-- Calendar Steppers & Jump Date -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="bg-slate-950 border border-slate-800 p-3 rounded-lg space-y-2">
+                                    <span class="text-[9.5px] font-bold uppercase tracking-wider text-slate-400 block">Date Shift Controls</span>
+                                    <div class="grid grid-cols-3 gap-1.5">
+                                        <button type="button" onclick="HontechDevDateSimulator.prevDay()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-center transition cursor-pointer text-xs font-semibold">
+                                            -1 Day
+                                        </button>
+                                        <button type="button" onclick="HontechDevDateSimulator.reset()" class="p-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded-lg text-center transition cursor-pointer text-xs font-bold">
+                                            Today
+                                        </button>
+                                        <button type="button" onclick="HontechDevDateSimulator.nextDay()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-center transition cursor-pointer text-xs font-semibold">
+                                            +1 Day
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center gap-2 pt-1">
+                                        <label for="dev-sim-direct-date" class="text-[9.5px] font-bold uppercase text-slate-400 whitespace-nowrap">Direct Jump:</label>
+                                        <input type="date" id="dev-sim-direct-date" onchange="HontechDevDateSimulator.simulateDate(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 font-mono text-xs px-2 py-1 rounded outline-none cursor-pointer">
+                                    </div>
+                                </div>
+
+                                <!-- Test Suite Dataset & Record Distribution -->
+                                <div class="bg-slate-950 border border-slate-800 p-3 rounded-lg space-y-2 flex flex-col justify-between">
+                                    <div>
+                                        <span class="text-[9.5px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Test Suite Dataset</span>
+                                        <div class="grid grid-cols-2 gap-1.5">
+                                            <button type="button" onclick="HontechDevDateSimulator.seedMultiDaySuite()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-200 rounded-lg text-left transition cursor-pointer text-xs font-semibold">
+                                                Seed 8 Records
+                                            </button>
+                                            <button type="button" onclick="HontechDevDateSimulator.clearTestData()" class="p-2 bg-slate-900 hover:bg-slate-850 border border-slate-700 text-slate-300 hover:text-white rounded-lg text-left transition cursor-pointer text-xs font-semibold">
+                                                Purge Seed
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-slate-900 border border-slate-800 p-2 rounded-lg">
+                                        <div class="grid grid-cols-3 gap-1 text-center font-mono">
+                                            <div>
+                                                <span class="text-[8px] text-slate-400 block uppercase">Yesterday</span>
+                                                <span id="dev-sim-count-yesterday" class="text-xs font-bold text-slate-300">0</span>
+                                            </div>
+                                            <div>
+                                                <span class="text-[8px] text-slate-400 block uppercase">Today</span>
+                                                <span id="dev-sim-count-today" class="text-xs font-bold text-slate-100">0</span>
+                                            </div>
+                                            <div>
+                                                <span class="text-[8px] text-slate-400 block uppercase">Tomorrow</span>
+                                                <span id="dev-sim-count-tomorrow" class="text-xs font-bold text-slate-300">0</span>
+                                            </div>
+                                        </div>
+                                        <div id="dev-sim-message" class="text-[9px] text-slate-400 truncate font-mono text-center mt-1">Ready for testing</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-1 border-t border-slate-800 text-[11px] text-slate-400">
+                                <span>Inspect changes in Table 1 (Bookings), Table 2 (Intakes), Table 3 (Carry-Overs):</span>
+                                <button type="button" onclick="toggleDevToolbox(false); showSection('queue');" class="text-xs font-bold text-slate-200 hover:text-white transition flex items-center gap-1 cursor-pointer">
+                                    <span>Go to Records</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="text-[9px] text-gray-400 uppercase font-bold block">Simulated Date</span>
-                            <span id="dev-sim-active-date" class="text-xs font-mono font-black text-amber-400">2026-09-14</span>
+
+                        <!-- PANEL 2: TV SIGNAGE & ANNOUNCEMENT SIMULATOR -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3.5">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                                    <i data-lucide="volume-2" class="w-4 h-4 text-slate-400"></i>
+                                    <span>TV Signage & Voice Announcement Simulator</span>
+                                </span>
+                                <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-800 px-2 py-0.5 rounded border border-slate-700">5 Events</span>
+                            </div>
+
+                            <!-- Vehicle parameter inputs -->
+                            <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                                <div>
+                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Plate</label>
+                                    <input type="text" id="dev-sim-modal-plate" value="NDO 8492" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-mono font-bold text-xs px-2 py-1 rounded uppercase outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Car Model</label>
+                                    <input type="text" id="dev-sim-modal-vehicle" value="Honda Civic RS" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-bold text-xs px-2 py-1 rounded outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold uppercase text-slate-400 block mb-0.5">Customer Name</label>
+                                    <input type="text" id="dev-sim-modal-customer" value="Sophia Loren" class="w-full bg-slate-900 border border-slate-700 text-slate-100 font-bold text-xs px-2 py-1 rounded outline-none">
+                                </div>
+                            </div>
+
+                            <!-- 5 Events (Professional Dark Slate Styling) -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <button type="button" onclick="triggerTVSimulationEvent('monitoring', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                        <span>01 · Monitoring Reception</span>
+                                        <span class="text-[9px] font-mono text-slate-400">Audio/Plaque</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Intake telemetry broadcast to waiting lounge</p>
+                                </button>
+
+                                <button type="button" onclick="triggerTVSimulationEvent('bay_assigned', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                        <span>02 · Bay Allocation</span>
+                                        <span class="text-[9px] font-mono text-slate-400">Dispatch</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Mechanical bay assignment & technician chime</p>
+                                </button>
+
+                                <button type="button" onclick="triggerTVSimulationEvent('ready', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                        <span>03 · Ready for Release</span>
+                                        <span class="text-[9px] font-mono text-slate-400">Cashier Call</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Vehicle completion announcement & cashier callout</p>
+                                </button>
+
+                                <button type="button" onclick="triggerTVSimulationEvent('carryover', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                        <span>04 · Carry-Over Hold</span>
+                                        <span class="text-[9px] font-mono text-slate-400">Extended</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Overnight parts hold & customer notification notice</p>
+                                </button>
+
+                                <button type="button" onclick="triggerTVSimulationEvent('return_active', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer sm:col-span-2">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center justify-between">
+                                        <span>05 · Return to Active Service</span>
+                                        <span class="text-[9px] font-mono text-slate-400">Re-activate</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Re-activates vehicle back into workshop floor queue</p>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
 
-                    <!-- Simulator Controls Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <!-- Column 1: Date Steppers & Jump Date -->
-                        <div class="bg-gray-950/70 border border-gray-800 p-3 rounded-xl flex flex-col justify-between gap-2.5">
-                            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center justify-between">
-                                <span>1. Simulated Calendar Stepper</span>
-                                <span class="text-gray-500 font-mono text-[8.5px]">Day-by-Day</span>
+                    <!-- RIGHT COLUMN: SYSTEM TOOLS, RESILIENCE & DATABASE (5 Cols) -->
+                    <div class="lg:col-span-5 space-y-5">
+                        
+                        <!-- PANEL 3: DATABASE & SEED STATE -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
+                                <i data-lucide="database" class="w-4 h-4 text-slate-400"></i>
+                                <span>Database & Record Management</span>
                             </span>
                             
-                            <div class="grid grid-cols-3 gap-1.5">
-                                <button type="button" onclick="HontechDevDateSimulator.prevDay()" class="p-2 bg-gray-900 hover:bg-gray-800 border border-gray-700 hover:border-amber-500/50 rounded-xl text-center transition cursor-pointer active:scale-[0.97] group" title="Shift -1 Day (Test Historical Recall)">
-                                    <div class="text-amber-400 text-xs font-black flex items-center justify-center gap-1">
-                                        <i data-lucide="chevrons-left" class="w-3.5 h-3.5"></i> -1 Day
+                            <div class="space-y-2.5">
+                                <button type="button" onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-left transition cursor-pointer flex items-center justify-between group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                                            <i data-lucide="database-backup" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-xs font-bold uppercase text-slate-200 block">Reset & Seed MariaDB Database</span>
+                                            <span class="text-[10px] text-slate-400 font-normal">Re-initializes demo accounts & 8 queue records</span>
+                                        </div>
                                     </div>
-                                    <p class="text-[8px] text-gray-400 group-hover:text-amber-300 uppercase font-bold mt-0.5">Recall Past</p>
+                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-1 rounded border border-slate-800">MariaDB</span>
                                 </button>
-                                
-                                <button type="button" onclick="HontechDevDateSimulator.reset()" class="p-2 bg-blue-950/60 hover:bg-blue-900/70 border border-blue-800 hover:border-blue-500 rounded-xl text-center transition cursor-pointer active:scale-[0.97] group" title="Reset to Real System Clock">
-                                    <div class="text-blue-300 text-xs font-black flex items-center justify-center gap-1">
-                                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Today
-                                    </div>
-                                    <p class="text-[8px] text-blue-400 uppercase font-bold mt-0.5">Real Clock</p>
-                                </button>
-                                
-                                <button type="button" onclick="HontechDevDateSimulator.nextDay()" class="p-2 bg-gray-900 hover:bg-gray-800 border border-gray-700 hover:border-emerald-500/50 rounded-xl text-center transition cursor-pointer active:scale-[0.97] group" title="Shift +1 Day (Test Clean Next-Day Reset)">
-                                    <div class="text-emerald-400 text-xs font-black flex items-center justify-center gap-1">
-                                        +1 Day <i data-lucide="chevrons-right" class="w-3.5 h-3.5"></i>
-                                    </div>
-                                    <p class="text-[8px] text-gray-400 group-hover:text-emerald-300 uppercase font-bold mt-0.5">Fresh Reset</p>
-                                </button>
-                            </div>
 
-                            <!-- Jump to specific date -->
-                            <div class="flex items-center gap-2 pt-0.5">
-                                <label for="dev-sim-direct-date" class="text-[9px] font-bold uppercase text-gray-400 whitespace-nowrap">Jump Date:</label>
-                                <input type="date" id="dev-sim-direct-date" onchange="HontechDevDateSimulator.simulateDate(this.value)" class="w-full bg-gray-900 border border-gray-700 hover:border-gray-600 focus:border-amber-500 text-white font-mono font-bold text-xs px-2.5 py-1 rounded-lg outline-none cursor-pointer transition">
+                                <button type="button" onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="w-full p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl text-left transition cursor-pointer flex items-center justify-between group">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </div>
+                                        <div>
+                                            <span class="text-xs font-bold uppercase text-slate-200 block">Clear Audit & Incident Logs</span>
+                                            <span class="text-[10px] text-slate-400 font-normal">Purges historical delay records & audit trail clean</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-1 rounded border border-slate-800">Logs</span>
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Column 2: Test Dataset Generator & Record Counts -->
-                        <div class="bg-gray-950/70 border border-gray-800 p-3 rounded-xl flex flex-col justify-between gap-2">
-                            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center justify-between">
-                                <span>2. Test Suite Dataset</span>
-                                <span class="text-gray-500 font-mono text-[8.5px]">Multi-Day</span>
+                        <!-- PANEL 4: FAULT INJECTION & RESILIENCE TESTING -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-slate-400"></i>
+                                <span>Fault Injection & Resilience</span>
                             </span>
 
-                            <div class="grid grid-cols-2 gap-2">
-                                <button type="button" onclick="HontechDevDateSimulator.seedMultiDaySuite()" class="p-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white rounded-xl text-left transition cursor-pointer active:scale-[0.97] shadow-sm flex flex-col justify-center">
-                                    <div class="flex items-center gap-1.5 text-xs font-black uppercase">
-                                        <i data-lucide="flask-conical" class="w-3.5 h-3.5"></i> Seed Data
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button type="button" onclick="toggleDevMailbox(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400"></i>
+                                        <span>Dev Mailbox</span>
                                     </div>
-                                    <p class="text-[8.5px] text-amber-100/80 mt-0.5 font-semibold">8 test vehicles across 3 days</p>
+                                    <p class="text-[10px] text-slate-400">OTP code sandboxes</p>
                                 </button>
 
-                                <button type="button" onclick="HontechDevDateSimulator.clearTestData()" class="p-2 bg-gray-900 hover:bg-rose-950/50 border border-gray-800 hover:border-rose-500/50 text-gray-300 hover:text-white rounded-xl text-left transition cursor-pointer active:scale-[0.97] flex flex-col justify-center">
-                                    <div class="flex items-center gap-1.5 text-xs font-black uppercase text-rose-400">
-                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Purge Seed
+                                <button type="button" onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-slate-400"></i>
+                                        <span>Offline Outage</span>
                                     </div>
-                                    <p class="text-[8.5px] text-gray-400 mt-0.5 font-semibold">Remove test records</p>
+                                    <p class="text-[10px] text-slate-400">Simulate network drop</p>
+                                </button>
+
+                                <button type="button" onclick="window.triggerTestCrash(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                    <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-1">
+                                        <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-slate-400"></i>
+                                        <span>Crash Test</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400">Diagnostic exception</p>
                                 </button>
                             </div>
+                        </div>
 
-                            <!-- Live Telemetry Counters -->
-                            <div class="bg-gray-900/80 border border-gray-800/80 p-2 rounded-xl">
-                                <div class="grid grid-cols-3 gap-1.5 text-center">
-                                    <div class="bg-gray-950/80 p-1 rounded-lg border border-gray-800">
-                                        <span class="text-[8px] text-gray-400 block uppercase font-bold">Yesterday</span>
-                                        <span id="dev-sim-count-yesterday" class="text-xs font-mono font-black text-amber-300">0</span>
+                        <!-- PANEL 5: SLA PERFORMANCE & THEMES -->
+                        <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 space-y-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-2">
+                                <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                                <span>Turnaround SLA & UI Themes</span>
+                            </span>
+
+                            <div class="space-y-2">
+                                <button type="button" onclick="window.triggerSimulateExpressOverdue(); toggleDevToolbox(false);" class="w-full p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer flex items-center justify-between">
+                                    <div>
+                                        <span class="text-xs font-bold uppercase text-slate-200 block">Simulate 2H Express Overdue SLA</span>
+                                        <span class="text-[10px] text-slate-400">Spawns 2h 15m overdue job to test escalation status</span>
                                     </div>
-                                    <div class="bg-gray-950/80 p-1 rounded-lg border border-gray-800">
-                                        <span class="text-[8px] text-gray-400 block uppercase font-bold">Today</span>
-                                        <span id="dev-sim-count-today" class="text-xs font-mono font-black text-emerald-400">0</span>
-                                    </div>
-                                    <div class="bg-gray-950/80 p-1 rounded-lg border border-gray-800">
-                                        <span class="text-[8px] text-gray-400 block uppercase font-bold">Tomorrow</span>
-                                        <span id="dev-sim-count-tomorrow" class="text-xs font-mono font-black text-blue-400">0</span>
-                                    </div>
+                                    <span class="text-[9px] font-mono text-slate-400 uppercase bg-slate-900 px-2 py-0.5 rounded border border-slate-800">SLA Test</span>
+                                </button>
+
+                                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                    <button type="button" onclick="openLoaderThemeModal(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                        <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-0.5">
+                                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <span>Preloader Themes</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400">5 animation styles</p>
+                                    </button>
+
+                                    <button type="button" onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-left transition cursor-pointer">
+                                        <div class="text-xs font-bold uppercase text-slate-200 flex items-center gap-1.5 mb-0.5">
+                                            <i data-lucide="loader-2" class="w-3.5 h-3.5 text-slate-400"></i>
+                                            <span>Test Preloader</span>
+                                        </div>
+                                        <p class="text-[10px] text-slate-400">Render active theme</p>
+                                    </button>
                                 </div>
-                                <div id="dev-sim-message" class="text-[9px] text-emerald-300 truncate font-mono text-center mt-1 font-semibold">Ready for testing</div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Bottom Quick Jump Link -->
-                    <div class="flex items-center justify-between pt-2.5 mt-2.5 border-t border-gray-800/80">
-                        <span class="text-[9.5px] text-gray-400">Apply simulated shifts & inspect Table 1 (Bookings), Table 2 (Intakes), Table 3 (Carry-Overs):</span>
-                        <button type="button" onclick="toggleDevToolbox(false); showSection('queue');" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white text-[10px] font-bold uppercase tracking-wider transition flex items-center gap-1 cursor-pointer">
-                            <span>Inspect Tables</span>
-                            <i data-lucide="arrow-right" class="w-3 h-3 text-amber-400"></i>
-                        </button>
                     </div>
                 </div>
-
-                <!-- CATEGORY 1: WORKSHOP AUDIO & VOICE (TTS) -->
-                <div>
-                    <div class="flex items-center justify-between mb-2.5">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                            <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-500"></i> TV Signage & Voice Announcement Simulator
-                        </span>
-                        <span class="text-[9px] text-slate-400 font-mono font-bold uppercase bg-slate-900 px-2 py-0.5 rounded border border-slate-800">5 LIVE EVENTS</span>
-                    </div>
-
-                    <!-- Custom Simulation Inputs in Toolbox -->
-                    <div class="p-3 bg-slate-900/90 border border-slate-800 rounded-xl mb-3 flex flex-col gap-2">
-                        <div class="flex gap-2">
-                            <div class="w-1/3">
-                                <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Plate</label>
-                                <input type="text" id="dev-sim-modal-plate" value="NDO 8492" class="w-full bg-slate-950 border border-slate-700 text-white font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg uppercase outline-none focus:border-red-500 transition">
-                            </div>
-                            <div class="w-1/3">
-                                <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Car Model</label>
-                                <input type="text" id="dev-sim-modal-vehicle" value="Honda Civic RS" class="w-full bg-slate-950 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 transition">
-                            </div>
-                            <div class="w-1/3">
-                                <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Customer Name</label>
-                                <input type="text" id="dev-sim-modal-customer" value="Sophia Loren" class="w-full bg-slate-950 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 transition">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <!-- 01. Monitoring -->
-                        <button onclick="triggerTVSimulationEvent('monitoring', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <div class="text-xs font-black uppercase text-blue-400 flex items-center gap-1.5">
-                                    <span class="p-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20"><i data-lucide="radio" class="w-3.5 h-3.5"></i></span>
-                                    <span>Active Monitoring</span>
-                                </div>
-                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-blue-400">01</span>
-                            </div>
-                            <p class="text-[9.5px] text-slate-400 leading-tight">Floor telemetry & customer intake broadcast</p>
-                        </button>
-
-                        <!-- 02. Bay Allocation -->
-                        <button onclick="triggerTVSimulationEvent('bay_assigned', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
-                                    <span class="p-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i></span>
-                                    <span>Bay Allocation</span>
-                                </div>
-                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-amber-400">02</span>
-                            </div>
-                            <p class="text-[9.5px] text-slate-400 leading-tight">Bay dispatch & mechanical tone broadcast</p>
-                        </button>
-
-                        <!-- 03. Ready for Release -->
-                        <button onclick="triggerTVSimulationEvent('ready', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <div class="text-xs font-black uppercase text-emerald-400 flex items-center gap-1.5">
-                                    <span class="p-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
-                                    <span>Ready for Release</span>
-                                </div>
-                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-emerald-400">03</span>
-                            </div>
-                            <p class="text-[9.5px] text-slate-400 leading-tight">Completion alert & customer cashier callout</p>
-                        </button>
-
-                        <!-- 04. Carry Over -->
-                        <button onclick="triggerTVSimulationEvent('carryover', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-purple-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <div class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
-                                    <span class="p-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20"><i data-lucide="clock" class="w-3.5 h-3.5"></i></span>
-                                    <span>Carry Over Hold</span>
-                                </div>
-                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-purple-400">04</span>
-                            </div>
-                            <p class="text-[9.5px] text-slate-400 leading-tight">Overnight parts hold & status notice</p>
-                        </button>
-
-                        <!-- 05. Return to Active -->
-                        <button onclick="triggerTVSimulationEvent('return_active', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98] sm:col-span-2">
-                            <div class="flex items-center justify-between mb-1.5">
-                                <div class="text-xs font-black uppercase text-cyan-400 flex items-center gap-1.5">
-                                    <span class="p-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></span>
-                                    <span>Return to Active Service</span>
-                                </div>
-                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-cyan-400">05</span>
-                            </div>
-                            <p class="text-[9.5px] text-slate-400 leading-tight">Re-activates vehicle into active service workflow queue</p>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CATEGORY 2: THEMES & WORKSHOP -->
-                <div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
-                        <i data-lucide="palette" class="w-3.5 h-3.5 text-purple-400"></i> Themes & Animations
-                    </span>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <button onclick="openLoaderThemeModal(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
-                            <div class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
-                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Loader UI Themes
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Switch 5 loading styles</p>
-                        </button>
-                        <button onclick="triggerDevLoadingDemo(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
-                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
-                                <i data-lucide="loader-2" class="w-3.5 h-3.5"></i> Test Loader Screen
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Preview active animation</p>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CATEGORY 3: SECURITY, NETWORK & DATABASE -->
-                <div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
-                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-blue-400"></i> Security & Diagnostics
-                    </span>
-                    <div class="grid grid-cols-3 gap-2.5">
-                        <button onclick="toggleDevMailbox(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
-                            <div class="text-xs font-black uppercase text-blue-400 flex items-center gap-1.5">
-                                <i data-lucide="mail" class="w-3.5 h-3.5"></i> Dev Mailbox
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">OTP sandboxes</p>
-                        </button>
-                        <button onclick="window.triggerSimulateLostConnection(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
-                            <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
-                                <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i> Offline Modal
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Simulate outage</p>
-                        </button>
-                        <button onclick="window.triggerTestCrash(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 rounded-2xl text-left transition cursor-pointer">
-                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
-                                <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Crash Test
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Error overlay</p>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- CATEGORY 4: EXPRESS 2H SLA & AUDIT TRAIL SIMULATION -->
-                <div>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5 mb-2">
-                        <i data-lucide="clock-alert" class="w-3.5 h-3.5 text-amber-500"></i> Express 2H SLA & Audit Testing
-                    </span>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <button onclick="window.triggerSimulateExpressOverdue(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-amber-500/50 rounded-2xl text-left transition cursor-pointer group">
-                            <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
-                                <i data-lucide="zap" class="w-3.5 h-3.5"></i> Sim: 2H Express Overrun
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Spawns 2h 15m overdue job</p>
-                        </button>
-                        <button onclick="window.triggerClearAuditLogs(); toggleDevToolbox(false);" class="p-3 bg-gray-900 hover:bg-gray-850 border border-gray-800 hover:border-red-500/50 rounded-2xl text-left transition cursor-pointer group">
-                            <div class="text-xs font-black uppercase text-red-400 flex items-center gap-1.5">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Audit & Delay Logs
-                            </div>
-                            <p class="text-[10px] text-gray-400 mt-1">Purges test reports clean</p>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Action: MariaDB Seed Reset -->
-                <button onclick="window.triggerDeveloperResetSeed(this); toggleDevToolbox(false);" class="w-full p-3.5 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-900/60 rounded-2xl text-left transition cursor-pointer flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="p-2 rounded-xl bg-emerald-600/20 text-emerald-400">
-                            <i data-lucide="database-backup" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-black uppercase text-emerald-400 block">Reset & Seed MariaDB Database</span>
-                            <span class="text-[10px] text-gray-400">Re-seeds clean demo records and users</span>
-                        </div>
-                    </div>
-                    <span class="px-2.5 py-1 bg-emerald-600/30 text-emerald-300 text-[9px] font-black uppercase rounded-lg border border-emerald-500/30">MariaDB</span>
-                </button>
             </div>
         </div>
     </div>
@@ -9136,7 +8993,7 @@
     </div>
 
     <!-- CLIENT SCRIPT LOGIC -->
-    <script src="js/app.js?v=5.61"></script>
+    <script src="js/app.js?v=5.62"></script>
 </body>
 
 </html>

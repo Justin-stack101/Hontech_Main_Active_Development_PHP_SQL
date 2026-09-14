@@ -1699,14 +1699,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
-                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                navHTML += `<button onclick="showSection('tv', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('tv', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1724,7 +1724,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
-                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                navHTML += `<button onclick="showSection('tv', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
@@ -1732,7 +1732,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('tv', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1748,12 +1748,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
-                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                navHTML += `<button onclick="showSection('tv', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('tv', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('assistant');
                 defaultView = 'intake';
@@ -1772,14 +1772,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
-                navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
+                navHTML += `<button onclick="showSection('tv', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
-                sidebarNavHTML += `<button onclick="launchTVMode()" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-400 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('tv', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('sa');
                 defaultView = 'form13';
@@ -2133,7 +2133,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'lookup': 'Customer History & Back-Job Lookup',
                 'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
-                'tv': 'Live Display Monitor',
+                'tv': 'TV Workshop Display & Broadcast Hub',
                 'profile': 'My Security & Profile Settings',
                 'settings': 'Account Settings',
                 'support': 'Help & Support Center'
@@ -2151,6 +2151,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     try {
                         await loadData();
                         renderTV();
+                        if (window.HontechTVBroadcastManager) {
+                            await HontechTVBroadcastManager.loadSession();
+                            const savedMethod = localStorage.getItem('hontech_tv_hub_method') || 'live';
+                            HontechTVBroadcastManager.switchMethod(savedMethod);
+                        }
                     } catch (e) {
                         console.error('Error loading TV monitor:', e);
                     }
@@ -7701,8 +7706,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             setTimeout(() => { toast.style.transform = 'translateX(150%)'; }, 3000);
         }
 
-        function launchTVMode() {
-            openTVBroadcastHubModal();
+        function launchTVMode(btn) {
+            showSection('tv', btn);
         }
         window.launchTVMode = launchTVMode;
 
@@ -7963,27 +7968,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const btnLive = document.getElementById('tab-tv-method-live');
                 const btnHdmi = document.getElementById('tab-tv-method-hdmi');
+                const btnPreview = document.getElementById('tab-tv-method-preview');
                 const panelLive = document.getElementById('panel-tv-method-live');
                 const panelHdmi = document.getElementById('panel-tv-method-hdmi');
+                const panelPreview = document.getElementById('panel-tv-method-preview');
 
-                if (this.activeMethod === 'live') {
-                    if (btnLive) {
-                        btnLive.className = 'p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-red-600/15 border-red-500/40 text-white shadow-sm';
-                    }
-                    if (btnHdmi) {
-                        btnHdmi.className = 'p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white';
-                    }
-                    if (panelLive) panelLive.classList.remove('hidden');
-                    if (panelHdmi) panelHdmi.classList.add('hidden');
-                } else {
-                    if (btnLive) {
-                        btnLive.className = 'p-3.5 rounded-xl border border-transparent text-left transition flex items-center gap-3 cursor-pointer bg-gray-950/60 hover:bg-gray-800/80 text-gray-400 hover:text-white';
-                    }
-                    if (btnHdmi) {
-                        btnHdmi.className = 'p-3.5 rounded-xl border text-left transition flex items-center gap-3 cursor-pointer bg-amber-500/15 border-amber-500/40 text-white shadow-sm';
-                    }
-                    if (panelLive) panelLive.classList.add('hidden');
-                    if (panelHdmi) panelHdmi.classList.remove('hidden');
+                const activeClass = 'px-4 py-2.5 rounded-xl border-2 border-slate-900 bg-slate-900 text-white font-bold text-xs transition cursor-pointer shadow-xs flex items-center gap-2';
+                const inactiveClass = 'px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-bold text-xs transition cursor-pointer flex items-center gap-2';
+
+                if (btnLive) btnLive.className = this.activeMethod === 'live' ? activeClass : inactiveClass;
+                if (btnHdmi) btnHdmi.className = this.activeMethod === 'hdmi' ? activeClass : inactiveClass;
+                if (btnPreview) btnPreview.className = this.activeMethod === 'preview' ? activeClass : inactiveClass;
+
+                if (panelLive) {
+                    if (this.activeMethod === 'live') panelLive.classList.remove('hidden');
+                    else panelLive.classList.add('hidden');
+                }
+                if (panelHdmi) {
+                    if (this.activeMethod === 'hdmi') panelHdmi.classList.remove('hidden');
+                    else panelHdmi.classList.add('hidden');
+                }
+                if (panelPreview) {
+                    if (this.activeMethod === 'preview') panelPreview.classList.remove('hidden');
+                    else panelPreview.classList.add('hidden');
                 }
 
                 if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -7994,16 +8001,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.HontechTVBroadcastManager = HontechTVBroadcastManager;
 
         function openTVBroadcastHubModal() {
-            const modal = document.getElementById('modal-tv-broadcast-hub');
-            if (modal) {
-                modal.classList.remove('hidden');
-                const savedMethod = localStorage.getItem('hontech_tv_hub_method') || 'live';
-                HontechTVBroadcastManager.switchMethod(savedMethod);
-                HontechTVBroadcastManager.loadSession();
-                if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                    window.lucide.createIcons();
-                }
-            }
+            showSection('tv');
         }
         window.openTVBroadcastHubModal = openTVBroadcastHubModal;
 
@@ -8011,6 +8009,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const modal = document.getElementById('modal-tv-broadcast-hub');
             if (modal) modal.classList.add('hidden');
         }
+        window.closeTVBroadcastHubModal = closeTVBroadcastHubModal;
         window.closeTVBroadcastHubModal = closeTVBroadcastHubModal;
 
         function setupTVMode() {
