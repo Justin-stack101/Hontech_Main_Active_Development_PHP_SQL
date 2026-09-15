@@ -13292,7 +13292,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.applyQuotePreset = applyQuotePreset;
 
-        function syncForm23Canvas() {
+                function syncForm23Canvas() {
             const getVal = id => (document.getElementById(id)?.value || '').trim();
             const setCanvas = (id, val) => {
                 const el = document.getElementById(id);
@@ -13301,38 +13301,75 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
             const date = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
-            const name = getVal('f23-input-name') || 'JUAN DELA CRUZ';
-            const plate = (getVal('f23-input-plate') || 'ABC-1234').toUpperCase();
-            const address = getVal('f23-input-address') || 'Marikina City';
-            const model = getVal('f23-input-model') || '2021 Toyota Vios';
-            const contact = getVal('f23-input-contact') || '0917-123-4567';
-            const color = getVal('f23-input-color') || 'Silver';
+            const jobNo = getVal('f23-input-job-no') || getVal('f13-input-job-no') || 'HT-JO-0001';
+            const name = getVal('f23-input-name') || getVal('f13-input-name') || 'JUAN DELA CRUZ';
+            const plate = (getVal('f23-input-plate') || getVal('f13-input-plate') || 'ABC-1234').toUpperCase();
+            const address = getVal('f23-input-address') || getVal('f13-input-address') || 'Marikina City';
+            const model = getVal('f23-input-model') || getVal('f13-input-model') || '2021 Toyota Vios';
+            const contact = getVal('f23-input-contact') || getVal('f13-input-contact') || '0917-123-4567';
+            const color = getVal('f23-input-color') || getVal('f13-input-color') || 'Silver';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'ROMAN SAROL';
 
             setCanvas('canvas-q-quote-no', quoteNo);
-            setCanvas('canvas-q-date', 'Date: ' + date);
+            setCanvas('canvas-q-date', 'DATE: ' + date);
+            setCanvas('canvas-q-job-ref', 'RO REF: ' + jobNo);
             setCanvas('canvas-q-name', name);
             setCanvas('canvas-q-plate', plate);
             setCanvas('canvas-q-address', address);
             setCanvas('canvas-q-model', model);
             setCanvas('canvas-q-contact', contact);
             setCanvas('canvas-q-color', color);
+            setCanvas('canvas-q-sa', sa.toUpperCase() + ' (SERVICE ADVISOR)');
 
             const canvasTbody = document.getElementById('canvas-q-items-tbody');
             if (canvasTbody) {
                 canvasTbody.innerHTML = '';
-                (window.form23Items || []).forEach((it, idx) => {
-                    const rowTotal = (Number(it.qty) || 1) * (Number(it.price) || 0);
+                const items = window.form23Items || [];
+                const maxRows = Math.max(16, items.length);
+
+                let partsSubtotal = 0;
+                let laborSubtotal = 0;
+
+                for (let i = 0; i < maxRows; i++) {
+                    const it = items[i];
                     const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 text-[10.5px]';
-                    tr.innerHTML = `
-                        <td class="py-1.5 px-2.5 text-center font-mono border-r border-gray-200 text-gray-500">${idx + 1}</td>
-                        <td class="py-1.5 px-3 border-r border-gray-200 font-medium text-gray-800">${it.desc || ''}</td>
-                        <td class="py-1.5 px-2 text-center font-mono border-r border-gray-200 text-gray-700">${it.qty || 1}</td>
-                        <td class="py-1.5 px-3 text-right font-mono border-r border-gray-200 text-gray-700">₱${(Number(it.price) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="py-1.5 px-3 text-right font-mono font-bold text-gray-900">₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    `;
+                    tr.className = 'hover:bg-blue-50/20 text-[9px] font-mono';
+                    
+                    if (it && (it.desc || it.price)) {
+                        const qty = Number(it.qty) || 1;
+                        const price = Number(it.price) || 0;
+                        const rowTotal = qty * price;
+                        
+                        if (it.desc && (it.desc.toLowerCase().includes('labor') || it.desc.toLowerCase().includes('service') || it.desc.toLowerCase().includes('cleaning') || it.desc.toLowerCase().includes('alignment'))) {
+                            laborSubtotal += rowTotal;
+                        } else {
+                            partsSubtotal += rowTotal;
+                        }
+
+                        tr.innerHTML = `
+                            <td class="py-1 px-1.5 text-center border-r border-black text-gray-700 font-bold">${i + 1}</td>
+                            <td class="py-1 px-2 border-r border-black font-sans font-medium text-black">${it.desc || ''}</td>
+                            <td class="py-1 px-1 text-center border-r border-black text-black">${qty}</td>
+                            <td class="py-1 px-2 text-right border-r border-black text-black">₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td class="py-1 px-2 text-right font-bold text-black">₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        `;
+                    } else {
+                        // Empty styled grid line to keep authentic document paper height
+                        tr.innerHTML = `
+                            <td class="py-1 px-1.5 text-center border-r border-black text-gray-300 font-bold">${i + 1}</td>
+                            <td class="py-1 px-2 border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-1 text-center border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-2 text-right border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-2 text-right">&nbsp;</td>
+                        `;
+                    }
                     canvasTbody.appendChild(tr);
-                });
+                }
+
+                const grandTotal = partsSubtotal + laborSubtotal;
+                setCanvas('canvas-q-parts-subtotal', '₱' + partsSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                setCanvas('canvas-q-labor-subtotal', '₱' + laborSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                setCanvas('canvas-q-total', '₱' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
             }
         }
         window.syncForm23Canvas = syncForm23Canvas;

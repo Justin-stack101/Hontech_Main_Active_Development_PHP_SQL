@@ -3464,99 +3464,129 @@
                             </div>
                         </div>
 
-                        <!-- RIGHT COLUMN: 1:1 LIVE SPREADSHEET CANVAS (QUOTATION_NO) -->
+                                                <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
                         <div id="form23-canvas-pane" class="xl:col-span-6 space-y-3">
                             
                             <!-- Control Bar -->
                             <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                                 <div class="flex items-center gap-2">
                                     <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-blue-600"></i>
-                                        <span>Quotation_No Live Excel View</span>
+                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i>
+                                        <span class="font-black text-gray-900">Quotation_No (Form 2/3 1:1 Official Document View)</span>
                                     </span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer">
-                                        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export .xlsx
+                                    <button type="button" onclick="window.print()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Document
+                                    </button>
+                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Live Sheet Rendering Container -->
-                            <div class="w-full bg-white rounded-2xl border border-gray-300 overflow-hidden shadow-sm p-6 space-y-4 font-sans text-xs min-h-[750px]">
+                            <!-- 1:1 Physical Document Paper Sheet (Form 2/3 Official Sheet Design) -->
+                            <div class="w-full bg-white rounded-2xl border-2 border-gray-400 overflow-hidden shadow-xl p-5 font-sans text-gray-900 text-[10px] leading-tight space-y-3 min-h-[920px]">
                                 
-                                <!-- Sheet Header Banner -->
-                                <div class="border-b-2 border-slate-900 pb-3 flex items-start justify-between">
-                                    <div class="flex items-center gap-3">
-                                        <img src="assets/HonTech_Logo_Transp.png" alt="HonTech" class="w-12 h-12 object-contain" onerror="this.src='Hontech Documentation/HonTech-Icon.png'">
-                                        <div>
-                                            <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">HONTECH AUTO CENTER</h1>
-                                            <p class="text-[10px] text-gray-600 leading-tight">Complete Automotive Care, Diagnostic, Mechanical & Electrical Services</p>
+                                <!-- Document Header (Top Grid) -->
+                                <div class="border-2 border-black p-2.5 space-y-2">
+                                    <div class="flex items-start justify-between gap-3 border-b-2 border-black pb-2">
+                                        <div class="flex items-center gap-2.5">
+                                            <img src="assets/HonTech_Logo_Transp.png" alt="HonTech" class="w-14 h-14 object-contain" onerror="this.src='Hontech Documentation/HonTech-Icon.png'">
+                                            <div>
+                                                <div class="font-black text-sm tracking-tight uppercase text-black">HONTECH AUTO CENTER, INC.</div>
+                                                <div class="text-[9px] font-bold text-gray-700">70 Bayan Bayanan Ave. cor Narra St., Marikina Heights, Marikina City</div>
+                                                <div class="text-[9px] font-bold text-gray-600">Tel #: (8)564-4550 / 7121-9124 | Mobile/Viber: 0945-875-7441 / 0952-506-5084</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-right border-l-2 border-black pl-3 shrink-0">
+                                            <div class="font-black text-xs text-red-600 uppercase tracking-wider">FORM 2/3</div>
+                                            <div class="font-black text-sm text-black uppercase tracking-tight">QUOTATION</div>
+                                            <div class="font-mono font-bold text-[10.5px] mt-0.5 text-black" id="canvas-q-quote-no">QT-2026-0001</div>
+                                            <div class="text-[9.5px] font-bold text-gray-700 mt-0.5" id="canvas-q-date">DATE: 2026-09-15</div>
+                                            <div class="text-[9px] font-mono font-bold text-gray-600" id="canvas-q-job-ref">RO REF: HT-JO-0001</div>
                                         </div>
                                     </div>
-                                    <div class="text-right">
-                                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 font-black rounded text-xs uppercase tracking-wider">QUOTATION</span>
-                                        <div class="text-[11px] font-mono font-bold text-gray-800 mt-1" id="canvas-q-quote-no">QT-2026-0001</div>
-                                        <div class="text-[10.5px] text-gray-500" id="canvas-q-date">Date: 2026-09-15</div>
+
+                                    <!-- Customer & Vehicle Excel-Grid Table -->
+                                    <div class="grid grid-cols-12 border border-black text-[9.5px]">
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">CUSTOMER NAME:</div>
+                                        <div class="col-span-5 font-bold p-1 border-r border-b border-black text-black" id="canvas-q-name">JUAN DELA CRUZ</div>
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">PLATE NO.:</div>
+                                        <div class="col-span-3 font-mono font-black p-1 border-b border-black text-black" id="canvas-q-plate">ABC-1234</div>
+
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">ADDRESS:</div>
+                                        <div class="col-span-5 p-1 border-r border-b border-black" id="canvas-q-address">Marikina City</div>
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">MODEL / YEAR:</div>
+                                        <div class="col-span-3 font-semibold p-1 border-b border-black" id="canvas-q-model">2021 Toyota Vios</div>
+
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-black">CONTACT NO.:</div>
+                                        <div class="col-span-5 p-1 border-r border-black" id="canvas-q-contact">0917-123-4567</div>
+                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-black">BODY COLOR:</div>
+                                        <div class="col-span-3 p-1" id="canvas-q-color">Silver</div>
                                     </div>
                                 </div>
 
-                                <!-- Customer & Vehicle 2-Column Info Grid -->
-                                <div class="grid grid-cols-2 gap-4 bg-gray-50 p-3 rounded-xl border border-gray-200 text-[11px]">
-                                    <div class="space-y-1">
-                                        <div><span class="font-bold text-gray-500">Customer:</span> <span class="font-semibold text-gray-900" id="canvas-q-name">JUAN DELA CRUZ</span></div>
-                                        <div><span class="font-bold text-gray-500">Address:</span> <span class="text-gray-800" id="canvas-q-address">Marikina City</span></div>
-                                        <div><span class="font-bold text-gray-500">Contact:</span> <span class="text-gray-800" id="canvas-q-contact">0917-123-4567</span></div>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div><span class="font-bold text-gray-500">Plate No:</span> <span class="font-mono font-bold text-gray-900" id="canvas-q-plate">ABC-1234</span></div>
-                                        <div><span class="font-bold text-gray-500">Model:</span> <span class="text-gray-800" id="canvas-q-model">2021 Toyota Vios</span></div>
-                                        <div><span class="font-bold text-gray-500">Color:</span> <span class="text-gray-800" id="canvas-q-color">Silver</span></div>
-                                    </div>
-                                </div>
-
-                                <!-- Items Table Canvas -->
-                                <div class="border border-gray-300 rounded-lg overflow-hidden">
-                                    <table class="w-full text-left text-[11px] border-collapse">
-                                        <thead class="bg-slate-100 border-b border-gray-300 font-bold uppercase text-[9.5px] text-gray-700">
+                                <!-- 30-Row Quotation Line Items Grid (Exact Excel Replica) -->
+                                <div class="border-2 border-black">
+                                    <table class="w-full text-left text-[9.5px] border-collapse">
+                                        <thead class="bg-gray-200 border-b-2 border-black text-black font-black uppercase text-[9px] text-center">
                                             <tr>
-                                                <th class="py-2 px-2.5 w-8 text-center border-r border-gray-300">#</th>
-                                                <th class="py-2 px-3 border-r border-gray-300">Description of Work / Replacement Parts</th>
-                                                <th class="py-2 px-2 w-14 text-center border-r border-gray-300">Qty</th>
-                                                <th class="py-2 px-3 w-24 text-right border-r border-gray-300">Unit Price</th>
-                                                <th class="py-2 px-3 w-24 text-right">Amount</th>
+                                                <th class="py-1 px-1.5 w-7 border-r border-black">#</th>
+                                                <th class="py-1 px-2 border-r border-black text-left">DESCRIPTION OF WORK / REPLACEMENT PARTS & MATERIALS</th>
+                                                <th class="py-1 px-1 w-12 border-r border-black">QTY</th>
+                                                <th class="py-1 px-2 w-20 border-r border-black text-right">UNIT PRICE</th>
+                                                <th class="py-1 px-2 w-24 text-right">AMOUNT (₱)</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="canvas-q-items-tbody" class="divide-y divide-gray-200">
-                                            <!-- Dynamic items preview -->
+                                        <tbody id="canvas-q-items-tbody" class="divide-y divide-gray-300">
+                                            <!-- Dynamically filled with full 20-30 rows to preserve authentic paper aspect ratio -->
                                         </tbody>
-                                        <tfoot class="bg-gray-50 border-t-2 border-slate-900 font-bold">
-                                            <tr>
-                                                <td colspan="4" class="py-2.5 px-3 text-right uppercase text-[10.5px]">Grand Total Quotation:</td>
-                                                <td class="py-2.5 px-3 text-right text-sm font-mono text-blue-700" id="canvas-q-total">₱0.00</td>
+                                        <tfoot class="border-t-2 border-black font-bold">
+                                            <tr class="bg-gray-100 border-b border-black">
+                                                <td colspan="4" class="py-1 px-2 text-right uppercase font-black text-[9px] border-r border-black">TOTAL PARTS & MATERIALS ESTIMATE:</td>
+                                                <td class="py-1 px-2 text-right font-mono font-bold" id="canvas-q-parts-subtotal">₱0.00</td>
+                                            </tr>
+                                            <tr class="bg-gray-100 border-b border-black">
+                                                <td colspan="4" class="py-1 px-2 text-right uppercase font-black text-[9px] border-r border-black">TOTAL LABOR & SERVICE CHARGES:</td>
+                                                <td class="py-1 px-2 text-right font-mono font-bold" id="canvas-q-labor-subtotal">₱0.00</td>
+                                            </tr>
+                                            <tr class="bg-gray-200 text-black font-black text-[11px]">
+                                                <td colspan="4" class="py-1.5 px-2 text-right uppercase tracking-wider border-r border-black">GRAND TOTAL ESTIMATE (VAT INCLUSIVE):</td>
+                                                <td class="py-1.5 px-2 text-right font-mono text-xs text-blue-900" id="canvas-q-total">₱0.00</td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
 
-                                <!-- Terms & Signature -->
-                                <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-200 text-[10px] text-gray-600">
-                                    <div>
-                                        <div class="font-bold uppercase text-gray-700 mb-1">Terms & Conditions</div>
-                                        <p>1. Quotation valid for 15 days from issue date.<br>2. Parts subject to availability upon approval.<br>3. Labor warranty: 30 days or 1,000 km.</p>
+                                <!-- Official Terms, Warranty & Disclaimers -->
+                                <div class="border border-black p-2 bg-gray-50 text-[8.5px] space-y-1">
+                                    <div class="font-black uppercase text-black text-[9px]">TERMS, CONDITIONS & WARRANTY:</div>
+                                    <p>1. This quotation is valid for <strong>15 days</strong> from the date of issuance.</p>
+                                    <p>2. The details of the estimate provided above are based on initial inspection. Should additional parts or labor be discovered necessary during disassembly, a supplementary quotation will be submitted for customer approval prior to execution.</p>
+                                    <p>3. To avail warranty on parts & labor, owner-supplied parts are discouraged; otherwise a 25% surcharge applies on installation warranty.</p>
+                                </div>
+
+                                <!-- Signatures & Claim Stub (Bottom Perforation) -->
+                                <div class="grid grid-cols-2 gap-4 border-2 border-black p-2.5 text-[9px]">
+                                    <div class="text-center space-y-4">
+                                        <div class="text-[8.5px] text-gray-500 font-bold uppercase">Prepared & Estimated by:</div>
+                                        <div class="border-b border-black pt-4 font-black uppercase" id="canvas-q-sa">ROMAN SAROL (SERVICE ADVISOR)</div>
+                                        <div class="text-[8px] text-gray-500">Authorized HonTech Representative</div>
                                     </div>
-                                    <div class="text-center space-y-5">
-                                        <div class="pt-6 border-b border-gray-400 font-bold text-gray-800">HonTech Service Advisor</div>
-                                        <div class="text-[9.5px] text-gray-400">Authorized Signature & Date</div>
+                                    <div class="text-center space-y-4">
+                                        <div class="text-[8.5px] text-gray-500 font-bold uppercase">Conforme / Customer Approval:</div>
+                                        <div class="border-b border-black pt-4 font-black uppercase text-transparent">X</div>
+                                        <div class="text-[8px] text-gray-500">Customer Signature Over Printed Name / Date</div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-
                     </div>
                 </div>
 
-<!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
+            <!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
             <div id="section-intake" class="section-content hidden fade-in py-2">
                 <div class="max-w-4xl mx-auto">
                     
@@ -6988,7 +7018,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.22"></script>
+    <script src="js/app.js?v=2.23"></script>
 </body>
 
 </html>
