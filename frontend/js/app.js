@@ -1695,14 +1695,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 // Owner: Analytics, Form 1/3 Studio, Workshop Bays (Authority Configuration), Staff Access, Records, TV Monitor
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
@@ -1719,7 +1719,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
@@ -1727,7 +1727,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
@@ -1767,14 +1767,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 // Service Advisor Order: 1. Form 1/3 Studio, 2. Walk-In Form, 3. Daily Intakes / Master Queue, 4. Customer Lookup, 5. Bay Status, 6. TV Monitor
-                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Form 1/3 Studio</button>`;
+                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Form 1/3 Studio</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
@@ -2130,7 +2130,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const titles = {
                 'dashboard': 'Analytics Overview',
-                'form13': 'Form 1/3 Interactive Job Order Studio & Live Canvas',
+                'form13': '2025 RO Interactive Excel Workbook Studio',
                 'bays': 'Workshop Capacity & Bay Management',
                 'staff': 'Staff & Access Management',
                 'lookup': 'Customer History & Back-Job Lookup',
@@ -13061,107 +13061,282 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         ];
         window.allFormWorkbookSheets = allFormWorkbookSheets;
 
-        function switchFormStudioSheet(sheetKey) {
-            currentFormStudioActiveSheet = sheetKey;
-            const view13 = document.getElementById('view-sheet-form13');
-            const view23 = document.getElementById('view-sheet-form23');
-            const viewBilling = document.getElementById('view-sheet-billing');
-            const viewChecklist = document.getElementById('view-sheet-checklist');
-            const viewCashAd = document.getElementById('view-sheet-cashad');
-            const viewCustom = document.getElementById('view-sheet-custom');
-            if (viewCustom) viewCustom.classList.add('hidden');
+                // =========================================================================
+        // HONTECH 2025 QUOTATION_NO (SHEET 2) INTERACTIVE ENGINE
+        // =========================================================================
+        window.form23Items = window.form23Items || [
+            { desc: 'PMS Minor Service Package (Oil, Filter, Inspection)', qty: 1, price: 2800 },
+            { desc: 'Fully Synthetic 5W-30 Motor Oil (4 Liters)', qty: 4, price: 650 },
+            { desc: 'OEM Genuine Oil Filter Replacement', qty: 1, price: 450 },
+            { desc: 'Brake Fluid Flush & Clean', qty: 1, price: 850 }
+        ];
 
-            // Reset all tabs to inactive Google Sheets style and highlight active
-            allFormWorkbookSheets.forEach(s => {
-                const btn = document.getElementById(s.id);
-                if (btn) {
-                    const isTarget = (s.key === sheetKey);
-                    if (isTarget) {
-                        btn.className = 'px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
-                        const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-[#1a73e8] leading-none';
+        function switchFormStudioSheet(sheetKey) {
+            const tabs = [
+                { id: 'tab-sheet-joborder', key: 'form13', view: 'view-sheet-form13' },
+                { id: 'tab-sheet-quote', key: 'form23', view: 'view-sheet-quote' },
+                { id: 'tab-sheet-billing', key: 'billing', view: 'view-sheet-billing' },
+                { id: 'tab-sheet-checklist', key: 'checklist', view: 'view-sheet-checklist' },
+                { id: 'tab-sheet-cashad', key: 'cashad', view: 'view-sheet-cashad' }
+            ];
+
+            // Reset all tab active styles
+            tabs.forEach(t => {
+                const tabEl = document.getElementById(t.id);
+                const viewEl = document.getElementById(t.view);
+                if (tabEl) {
+                    if (t.key === sheetKey || (sheetKey === 'quote' && t.key === 'form23') || (sheetKey === 'joborder' && t.key === 'form13')) {
+                        tabEl.className = 'px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+                        if (tabEl.querySelector('span:last-child')) tabEl.querySelector('span:last-child').className = 'text-[10px] text-[#1a73e8] leading-none';
                     } else {
-                        btn.className = 'px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
-                        const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-[#5f6368] leading-none';
+                        tabEl.className = 'px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
+                        if (tabEl.querySelector('span:last-child')) tabEl.querySelector('span:last-child').className = 'text-[10px] text-[#5f6368] leading-none';
+                    }
+                }
+                if (viewEl) {
+                    if (t.key === sheetKey || (sheetKey === 'quote' && t.key === 'form23') || (sheetKey === 'joborder' && t.key === 'form13')) {
+                        viewEl.classList.remove('hidden');
+                    } else {
+                        viewEl.classList.add('hidden');
                     }
                 }
             });
 
-            if (sheetKey === 'form13') {
-                if (view13) view13.classList.remove('hidden');
-                if (view23) view23.classList.add('hidden');
-                if (viewBilling) viewBilling.classList.add('hidden');
-                if (viewChecklist) viewChecklist.classList.add('hidden');
-                if (viewCashAd) viewCashAd.classList.add('hidden');
-
-                syncForm13Canvas();
-                showSystemToast('Switched to Job_Order (Form 1/3 Job Order & Claim Stub)', 'info', 'Job_Order Active');
-            } else if (sheetKey === 'form23') {
-                if (view13) view13.classList.add('hidden');
-                if (view23) view23.classList.remove('hidden');
-                if (viewBilling) viewBilling.classList.add('hidden');
-                if (viewChecklist) viewChecklist.classList.add('hidden');
-                if (viewCashAd) viewCashAd.classList.add('hidden');
-
-                // Sync shared dossier from Form 1/3 into Form 2/3
-                syncDossierToForm23();
+            // Initialize or sync data on tab switch
+            if (sheetKey === 'form23' || sheetKey === 'quote') {
+                syncJobOrderFieldsToQuote();
                 renderForm23Rows();
-                calculateForm23Totals();
+                calcForm23Totals();
                 syncForm23Canvas();
-                showSystemToast('Switched to Quotation_No (Form 2/3 Quotation Studio)', 'info', 'Quotation_No Active');
-            } else if (sheetKey === 'billing') {
-                if (view13) view13.classList.add('hidden');
-                if (view23) view23.classList.add('hidden');
-                if (viewBilling) viewBilling.classList.remove('hidden');
-                if (viewChecklist) viewChecklist.classList.add('hidden');
-                if (viewCashAd) viewCashAd.classList.add('hidden');
-
-                // Sync shared dossier from Form 1/3 & Form 2/3 into Form 3/3
-                syncDossierToForm33();
-                renderForm33Rows();
-                calculateForm33Totals();
-                syncForm33Canvas();
-                showSystemToast('Switched to Billing_No (Form 3/3 Official Billing & Cashier Invoice)', 'info', 'Billing_No Active');
-            } else if (sheetKey === 'checklist') {
-                if (view13) view13.classList.add('hidden');
-                if (view23) view23.classList.add('hidden');
-                if (viewBilling) viewBilling.classList.add('hidden');
-                if (viewChecklist) viewChecklist.classList.remove('hidden');
-                if (viewCashAd) viewCashAd.classList.add('hidden');
-
-                syncDossierToChecklist();
-                renderChecklistEditor();
-                syncChecklistCanvas();
-                showSystemToast('Switched to CheckList_Result (Vehicle Intake Multi-Point Inspection)', 'info', 'CheckList_Result Active');
-            } else if (sheetKey === 'cashad') {
-                if (view13) view13.classList.add('hidden');
-                if (view23) view23.classList.add('hidden');
-                if (viewBilling) viewBilling.classList.add('hidden');
-                if (viewChecklist) viewChecklist.classList.add('hidden');
-                if (viewCashAd) viewCashAd.classList.remove('hidden');
-
-                syncCashAdvanceMeta();
-                renderCashAdvanceEditor();
-                calculateCashAdvanceTotals();
-                syncCashAdvanceCanvas();
-                showSystemToast('Switched to Cash_Advance (Cash Advance & Disbursement Ledger)', 'info', 'Cash_Advance Active');
-            } else {
-                if (view13) view13.classList.add('hidden');
-                if (view23) view23.classList.add('hidden');
-                if (viewBilling) viewBilling.classList.add('hidden');
-                if (viewChecklist) viewChecklist.classList.add('hidden');
-                if (viewCashAd) viewCashAd.classList.add('hidden');
+            } else if (sheetKey === 'form13' || sheetKey === 'joborder') {
+                syncForm13Canvas();
+                calcForm13Totals();
             }
 
-            const activeBtnId = sheetKey === 'form13' ? 'tab-sheet-joborder' : (sheetKey === 'form23' ? 'tab-sheet-quote' : `tab-sheet-${sheetKey}`);
-            const activeBtn = document.getElementById(activeBtnId);
-            if (activeBtn) {
-                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
             }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
         window.switchFormStudioSheet = switchFormStudioSheet;
+
+        function syncJobOrderFieldsToQuote() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+
+            const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+            const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+            const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
+
+            setVal('f23-input-quote-no', quoteNo);
+            setVal('f23-input-date', date);
+            setVal('f23-input-job-no', jobNo);
+
+            setVal('f23-input-name', getVal('f13-input-name') || 'JUAN DELA CRUZ');
+            setVal('f23-input-plate', getVal('f13-input-plate') || 'ABC-1234');
+            setVal('f23-input-address', getVal('f13-input-address') || 'Marikina City');
+            setVal('f23-input-model', getVal('f13-input-model') || '2021 Toyota Vios 1.3');
+            setVal('f23-input-contact', getVal('f13-input-contact') || '0917-123-4567');
+            setVal('f23-input-color', getVal('f13-input-color') || 'Silver');
+            setVal('f23-input-email', getVal('f13-input-email') || '');
+            setVal('f23-input-km', getVal('f13-input-km') || '42,500 km');
+        }
+        window.syncJobOrderFieldsToQuote = syncJobOrderFieldsToQuote;
+
+        function syncQuoteFieldsToJobOrder() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+
+            setVal('f13-input-name', getVal('f23-input-name'));
+            setVal('f13-input-plate', getVal('f23-input-plate'));
+            setVal('f13-input-address', getVal('f23-input-address'));
+            setVal('f13-input-model', getVal('f23-input-model'));
+            setVal('f13-input-contact', getVal('f23-input-contact'));
+            setVal('f13-input-color', getVal('f23-input-color'));
+            setVal('f13-input-email', getVal('f23-input-email'));
+            setVal('f13-input-km', getVal('f23-input-km'));
+
+            syncForm23Canvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.syncQuoteFieldsToJobOrder = syncQuoteFieldsToJobOrder;
+
+        function renderForm23Rows() {
+            const tbody = document.getElementById('f23-quote-items-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            (window.form23Items || []).forEach((item, idx) => {
+                const rowTotal = (Number(item.qty) || 1) * (Number(item.price) || 0);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-blue-50/40 transition';
+                tr.innerHTML = `
+                    <td class="py-2 px-3 text-center text-gray-400 font-mono font-bold">${idx + 1}</td>
+                    <td class="py-2 px-3">
+                        <input type="text" value="${item.desc || ''}" oninput="updateForm23Item(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-medium text-gray-800 outline-none text-xs" placeholder="Item or Service Description">
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateForm23Item(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-mono text-center text-gray-800 outline-none text-xs">
+                    </td>
+                    <td class="py-2 px-3 text-right">
+                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateForm23Item(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-mono text-right text-gray-800 outline-none text-xs">
+                    </td>
+                    <td class="py-2 px-3 text-right font-mono font-bold text-gray-900">
+                        ₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <button type="button" onclick="removeForm23ItemRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 transition cursor-pointer" title="Remove Item">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+        window.renderForm23Rows = renderForm23Rows;
+
+        function addForm23ItemRow() {
+            window.form23Items = window.form23Items || [];
+            window.form23Items.push({ desc: 'New Service / Replacement Part', qty: 1, price: 1000 });
+            renderForm23Rows();
+            calcForm23Totals();
+            syncForm23Canvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.addForm23ItemRow = addForm23ItemRow;
+
+        function removeForm23ItemRow(index) {
+            window.form23Items.splice(index, 1);
+            renderForm23Rows();
+            calcForm23Totals();
+            syncForm23Canvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.removeForm23ItemRow = removeForm23ItemRow;
+
+        function updateForm23Item(index, field, value) {
+            if (!window.form23Items[index]) return;
+            if (field === 'qty') window.form23Items[index].qty = Number(value) || 1;
+            else if (field === 'price') window.form23Items[index].price = Number(value) || 0;
+            else window.form23Items[index].desc = value;
+
+            calcForm23Totals();
+            syncForm23Canvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.updateForm23Item = updateForm23Item;
+
+        function calcForm23Totals() {
+            let total = 0;
+            (window.form23Items || []).forEach(item => {
+                total += (Number(item.qty) || 1) * (Number(item.price) || 0);
+            });
+
+            const formatted = '₱' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const totalEl = document.getElementById('f23-grand-total');
+            if (totalEl) totalEl.innerText = formatted;
+
+            const canvasTotalEl = document.getElementById('canvas-q-total');
+            if (canvasTotalEl) canvasTotalEl.innerText = formatted;
+
+            return total;
+        }
+        window.calcForm23Totals = calcForm23Totals;
+
+        function applyQuotePreset(type) {
+            if (type === 'pms') {
+                window.form23Items = [
+                    { desc: 'PMS 10K Comprehensive Service Package', qty: 1, price: 3500 },
+                    { desc: 'Fully Synthetic Engine Oil 5W-30 (4L)', qty: 4, price: 650 },
+                    { desc: 'OEM Genuine Oil Filter', qty: 1, price: 450 },
+                    { desc: 'Engine Flush Treatment', qty: 1, price: 550 },
+                    { desc: 'Brake Caliper Cleaning & Pad Inspection', qty: 1, price: 800 }
+                ];
+            } else if (type === 'brakes') {
+                window.form23Items = [
+                    { desc: 'Front Brake Pad Replacement (Akebono OEM)', qty: 1, price: 2800 },
+                    { desc: 'Rear Brake Shoe Replacement', qty: 1, price: 2200 },
+                    { desc: 'Brake Rotor Resurfacing / Refacing (Pair)', qty: 2, price: 950 },
+                    { desc: 'DOT 4 Brake Fluid Flush & Bleeding', qty: 1, price: 850 },
+                    { desc: 'Brake System Labor & Calibration', qty: 1, price: 1500 }
+                ];
+            } else if (type === 'aircon') {
+                window.form23Items = [
+                    { desc: 'Car Aircon General Cleaning (Pull-down)', qty: 1, price: 4500 },
+                    { desc: 'R134a Freon Charging & Leak Test', qty: 1, price: 1200 },
+                    { desc: 'OEM Cabin Filter Replacement', qty: 1, price: 650 },
+                    { desc: 'Aircon Expansion Valve', qty: 1, price: 1800 }
+                ];
+            } else if (type === 'underchassis') {
+                window.form23Items = [
+                    { desc: 'Front Shock Absorber Assembly (Pair)', qty: 2, price: 3800 },
+                    { desc: 'Lower Control Arm Bushings (OEM)', qty: 2, price: 1400 },
+                    { desc: 'Tie Rod End & Rack End Set', qty: 2, price: 1600 },
+                    { desc: 'Stabilizer Link Replacement', qty: 2, price: 950 },
+                    { desc: '4-Wheel Computerized Alignment', qty: 1, price: 1200 }
+                ];
+            }
+            renderForm23Rows();
+            calcForm23Totals();
+            syncForm23Canvas();
+            showSystemToast(`Applied ${type.toUpperCase()} package preset to Quotation.`, 'info', 'Package Preset Applied');
+        }
+        window.applyQuotePreset = applyQuotePreset;
+
+        function syncForm23Canvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setCanvas = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val;
+            };
+
+            const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
+            const date = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
+            const name = getVal('f23-input-name') || 'JUAN DELA CRUZ';
+            const plate = (getVal('f23-input-plate') || 'ABC-1234').toUpperCase();
+            const address = getVal('f23-input-address') || 'Marikina City';
+            const model = getVal('f23-input-model') || '2021 Toyota Vios';
+            const contact = getVal('f23-input-contact') || '0917-123-4567';
+            const color = getVal('f23-input-color') || 'Silver';
+
+            setCanvas('canvas-q-quote-no', quoteNo);
+            setCanvas('canvas-q-date', 'Date: ' + date);
+            setCanvas('canvas-q-name', name);
+            setCanvas('canvas-q-plate', plate);
+            setCanvas('canvas-q-address', address);
+            setCanvas('canvas-q-model', model);
+            setCanvas('canvas-q-contact', contact);
+            setCanvas('canvas-q-color', color);
+
+            const canvasTbody = document.getElementById('canvas-q-items-tbody');
+            if (canvasTbody) {
+                canvasTbody.innerHTML = '';
+                (window.form23Items || []).forEach((it, idx) => {
+                    const rowTotal = (Number(it.qty) || 1) * (Number(it.price) || 0);
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 text-[10.5px]';
+                    tr.innerHTML = `
+                        <td class="py-1.5 px-2.5 text-center font-mono border-r border-gray-200 text-gray-500">${idx + 1}</td>
+                        <td class="py-1.5 px-3 border-r border-gray-200 font-medium text-gray-800">${it.desc || ''}</td>
+                        <td class="py-1.5 px-2 text-center font-mono border-r border-gray-200 text-gray-700">${it.qty || 1}</td>
+                        <td class="py-1.5 px-3 text-right font-mono border-r border-gray-200 text-gray-700">₱${(Number(it.price) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="py-1.5 px-3 text-right font-mono font-bold text-gray-900">₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    `;
+                    canvasTbody.appendChild(tr);
+                });
+            }
+        }
+        window.syncForm23Canvas = syncForm23Canvas;
+
 
         window.currentCustomSheetType = 'OEF';
         window.customSheetDataStore = {

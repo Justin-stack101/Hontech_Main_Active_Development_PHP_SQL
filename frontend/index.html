@@ -3312,7 +3312,251 @@
             </div>
                 </div>
 
-            <!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
+            
+                <!-- =========================================================================
+                     SHEET VIEW 2: Quotation_No (Interactive Quotation Studio & 2025 Excel Canvas)
+                     ========================================================================= -->
+                <div id="view-sheet-quote" class="space-y-4 hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                        <!-- LEFT COLUMN: SA QUOTATION SMART INTERACTIVE EDITOR -->
+                        <div id="form23-editor-pane" class="xl:col-span-6 space-y-5">
+                            
+                            <!-- Quotation Header & Actions Bar -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                            <i data-lucide="calculator" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Quotation Studio (Quotation_No)</h2>
+                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Sheet 2 Active
+                                                </span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 font-medium">Service Quotation Specification & Cost Estimator</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Actions -->
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
+                                        </button>
+                                        <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                                        </button>
+                                        <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Quotation Meta Fields -->
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation No.</label>
+                                        <input type="text" id="f23-input-quote-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none transition" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Date</label>
+                                        <input type="date" id="f23-input-date" onchange="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
+                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer & Vehicle Dossier (Two-Way Synced with Job Order) -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                        <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i> Customer & Vehicle Details
+                                    </h3>
+                                    <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
+                                        <input type="text" id="f23-input-name" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Full Customer Name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
+                                        <input type="text" id="f23-input-plate" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-800 focus:border-blue-500 outline-none transition" placeholder="ABC-1234">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
+                                        <input type="text" id="f23-input-address" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Street, City">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Make / Model</label>
+                                        <input type="text" id="f23-input-model" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. 2021 Toyota Vios 1.3">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact Number</label>
+                                        <input type="text" id="f23-input-contact" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="09XX-XXX-XXXX">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
+                                        <input type="text" id="f23-input-color" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. Silver">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quotation Line Items (Parts, Labor & Materials) -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <div>
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Quotation Line Items & Scope (Rows 17–52)
+                                        </h3>
+                                        <p class="text-[11px] text-gray-500">Add service jobs, replacement parts, or package estimates</p>
+                                    </div>
+                                    <button type="button" onclick="addForm23ItemRow()" class="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
+                                    </button>
+                                </div>
+
+                                <!-- Preset Packages -->
+                                <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                                    <span class="font-bold text-gray-400 uppercase text-[10px]">Presets:</span>
+                                    <button type="button" onclick="applyQuotePreset('pms')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">PMS 10K Package</button>
+                                    <button type="button" onclick="applyQuotePreset('brakes')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Brake Overhaul</button>
+                                    <button type="button" onclick="applyQuotePreset('aircon')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Aircon Cleaning</button>
+                                    <button type="button" onclick="applyQuotePreset('underchassis')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Underchassis Rebuild</button>
+                                </div>
+
+                                <!-- Items Table -->
+                                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                                    <table class="w-full text-left text-xs border-collapse">
+                                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold uppercase text-[10px]">
+                                            <tr>
+                                                <th class="py-2.5 px-3 w-10 text-center">#</th>
+                                                <th class="py-2.5 px-3">Description / Scope of Work</th>
+                                                <th class="py-2.5 px-2 w-16 text-center">Qty</th>
+                                                <th class="py-2.5 px-3 w-28 text-right">Unit Price (₱)</th>
+                                                <th class="py-2.5 px-3 w-28 text-right">Total (₱)</th>
+                                                <th class="py-2.5 px-2 w-10 text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="f23-quote-items-tbody" class="divide-y divide-gray-100 bg-white">
+                                            <!-- Dynamically rendered -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Quotation Totals Summary Card -->
+                                <div class="bg-slate-900 text-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                                    <div>
+                                        <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Total Quotation Estimate</div>
+                                        <div class="text-xs text-slate-400 mt-0.5">Includes parts, materials & labor scope</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-black text-emerald-400 font-mono" id="f23-grand-total">₱0.00</div>
+                                        <div class="text-[10px] text-slate-400">Official HonTech 2025 Pricing</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: 1:1 LIVE SPREADSHEET CANVAS (QUOTATION_NO) -->
+                        <div id="form23-canvas-pane" class="xl:col-span-6 space-y-3">
+                            
+                            <!-- Control Bar -->
+                            <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-800 flex items-center gap-1.5">
+                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-blue-600"></i>
+                                        <span>Quotation_No Live Excel View</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i> Export .xlsx
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Live Sheet Rendering Container -->
+                            <div class="w-full bg-white rounded-2xl border border-gray-300 overflow-hidden shadow-sm p-6 space-y-4 font-sans text-xs min-h-[750px]">
+                                
+                                <!-- Sheet Header Banner -->
+                                <div class="border-b-2 border-slate-900 pb-3 flex items-start justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <img src="assets/HonTech_Logo_Transp.png" alt="HonTech" class="w-12 h-12 object-contain" onerror="this.src='Hontech Documentation/HonTech-Icon.png'">
+                                        <div>
+                                            <h1 class="text-lg font-black tracking-tight text-slate-900 uppercase">HONTECH AUTO CENTER</h1>
+                                            <p class="text-[10px] text-gray-600 leading-tight">Complete Automotive Care, Diagnostic, Mechanical & Electrical Services</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 font-black rounded text-xs uppercase tracking-wider">QUOTATION</span>
+                                        <div class="text-[11px] font-mono font-bold text-gray-800 mt-1" id="canvas-q-quote-no">QT-2026-0001</div>
+                                        <div class="text-[10.5px] text-gray-500" id="canvas-q-date">Date: 2026-09-15</div>
+                                    </div>
+                                </div>
+
+                                <!-- Customer & Vehicle 2-Column Info Grid -->
+                                <div class="grid grid-cols-2 gap-4 bg-gray-50 p-3 rounded-xl border border-gray-200 text-[11px]">
+                                    <div class="space-y-1">
+                                        <div><span class="font-bold text-gray-500">Customer:</span> <span class="font-semibold text-gray-900" id="canvas-q-name">JUAN DELA CRUZ</span></div>
+                                        <div><span class="font-bold text-gray-500">Address:</span> <span class="text-gray-800" id="canvas-q-address">Marikina City</span></div>
+                                        <div><span class="font-bold text-gray-500">Contact:</span> <span class="text-gray-800" id="canvas-q-contact">0917-123-4567</span></div>
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div><span class="font-bold text-gray-500">Plate No:</span> <span class="font-mono font-bold text-gray-900" id="canvas-q-plate">ABC-1234</span></div>
+                                        <div><span class="font-bold text-gray-500">Model:</span> <span class="text-gray-800" id="canvas-q-model">2021 Toyota Vios</span></div>
+                                        <div><span class="font-bold text-gray-500">Color:</span> <span class="text-gray-800" id="canvas-q-color">Silver</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- Items Table Canvas -->
+                                <div class="border border-gray-300 rounded-lg overflow-hidden">
+                                    <table class="w-full text-left text-[11px] border-collapse">
+                                        <thead class="bg-slate-100 border-b border-gray-300 font-bold uppercase text-[9.5px] text-gray-700">
+                                            <tr>
+                                                <th class="py-2 px-2.5 w-8 text-center border-r border-gray-300">#</th>
+                                                <th class="py-2 px-3 border-r border-gray-300">Description of Work / Replacement Parts</th>
+                                                <th class="py-2 px-2 w-14 text-center border-r border-gray-300">Qty</th>
+                                                <th class="py-2 px-3 w-24 text-right border-r border-gray-300">Unit Price</th>
+                                                <th class="py-2 px-3 w-24 text-right">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="canvas-q-items-tbody" class="divide-y divide-gray-200">
+                                            <!-- Dynamic items preview -->
+                                        </tbody>
+                                        <tfoot class="bg-gray-50 border-t-2 border-slate-900 font-bold">
+                                            <tr>
+                                                <td colspan="4" class="py-2.5 px-3 text-right uppercase text-[10.5px]">Grand Total Quotation:</td>
+                                                <td class="py-2.5 px-3 text-right text-sm font-mono text-blue-700" id="canvas-q-total">₱0.00</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <!-- Terms & Signature -->
+                                <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-200 text-[10px] text-gray-600">
+                                    <div>
+                                        <div class="font-bold uppercase text-gray-700 mb-1">Terms & Conditions</div>
+                                        <p>1. Quotation valid for 15 days from issue date.<br>2. Parts subject to availability upon approval.<br>3. Labor warranty: 30 days or 1,000 km.</p>
+                                    </div>
+                                    <div class="text-center space-y-5">
+                                        <div class="pt-6 border-b border-gray-400 font-bold text-gray-800">HonTech Service Advisor</div>
+                                        <div class="text-[9.5px] text-gray-400">Authorized Signature & Date</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+<!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
             <div id="section-intake" class="section-content hidden fade-in py-2">
                 <div class="max-w-4xl mx-auto">
                     
@@ -6744,7 +6988,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.21"></script>
+    <script src="js/app.js?v=2.22"></script>
 </body>
 
 </html>
