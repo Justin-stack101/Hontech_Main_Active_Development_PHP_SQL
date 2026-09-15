@@ -7708,9 +7708,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             setTimeout(() => { toast.style.transform = 'translateX(150%)'; }, 3000);
         }
 
-        function launchTVMode(btn) {
-            showSection('tv', btn);
-        }
+        function showTVSectionDirect(btn) { showSection('tv', btn); }
         window.launchTVMode = launchTVMode;
 
         function jumpToTVSlide(index) {
@@ -13051,14 +13049,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         const allFormWorkbookSheets = [
             { key: 'form13', id: 'tab-sheet-joborder', label: 'Job_Order' },
-            { key: 'form23', id: 'tab-sheet-quote', label: 'QUOTE' },
-            { key: 'billing', id: 'tab-sheet-billing', label: 'BILLING' },
-            { key: 'checklist', id: 'tab-sheet-checklist', label: 'CHECKLIST' },
-            { key: 'cashad', id: 'tab-sheet-cashad', label: 'CASH AD' },
+            { key: 'form23', id: 'tab-sheet-quote', label: 'Quotation_No' },
+            { key: 'billing', id: 'tab-sheet-billing', label: 'Billing_No' },
+            { key: 'checklist', id: 'tab-sheet-checklist', label: 'CheckList_Result' },
+            { key: 'cashad', id: 'tab-sheet-cashad', label: 'Cash_Advance' },
             { key: 'oef', id: 'tab-sheet-oef', label: 'OEF' },
-            { key: 'acknowledgement', id: 'tab-sheet-acknowledgement', label: 'Acknowledgement' },
-            { key: 'liquidation', id: 'tab-sheet-liquidation', label: 'LIQUIDATION' },
-            { key: 'daily', id: 'tab-sheet-daily', label: 'Daily Summary' }
+            { key: 'liquidation', id: 'tab-sheet-liquidation', label: 'LIQUIDATION_REPORT' },
+            { key: 'disbursement', id: 'tab-sheet-disbursement', label: '(Broken)DISBURSEMENT' },
+            { key: 'cashflow', id: 'tab-sheet-cashflow', label: '(Broken)Daily Cash Flow' },
+            { key: 'acknowledgement', id: 'tab-sheet-acknowledgement', label: 'Acknowledgement' }
         ];
         window.allFormWorkbookSheets = allFormWorkbookSheets;
 
@@ -13078,13 +13077,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (btn) {
                     const isTarget = (s.key === sheetKey);
                     if (isTarget) {
-                        btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+                        btn.className = 'px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
                         const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-blue-600 leading-none';
+                        if (caret) caret.className = 'text-[10px] text-[#1a73e8] leading-none';
                     } else {
-                        btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
+                        btn.className = 'px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
                         const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-gray-400 leading-none';
+                        if (caret) caret.className = 'text-[10px] text-[#5f6368] leading-none';
                     }
                 }
             });
@@ -13110,7 +13109,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderForm23Rows();
                 calculateForm23Totals();
                 syncForm23Canvas();
-                showSystemToast('Switched to QUOTE (Form 2/3 Quotation Studio)', 'info', 'QUOTE Active');
+                showSystemToast('Switched to Quotation_No (Form 2/3 Quotation Studio)', 'info', 'Quotation_No Active');
             } else if (sheetKey === 'billing') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
@@ -13123,7 +13122,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderForm33Rows();
                 calculateForm33Totals();
                 syncForm33Canvas();
-                showSystemToast('Switched to BILLING (Form 3/3 Official Billing & Cashier Invoice)', 'info', 'BILLING Active');
+                showSystemToast('Switched to Billing_No (Form 3/3 Official Billing & Cashier Invoice)', 'info', 'Billing_No Active');
             } else if (sheetKey === 'checklist') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
@@ -13134,7 +13133,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncDossierToChecklist();
                 renderChecklistEditor();
                 syncChecklistCanvas();
-                showSystemToast('Switched to CHECKLIST (Vehicle Intake Multi-Point Inspection)', 'info', 'CHECKLIST Active');
+                showSystemToast('Switched to CheckList_Result (Vehicle Intake Multi-Point Inspection)', 'info', 'CheckList_Result Active');
             } else if (sheetKey === 'cashad') {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
@@ -13146,7 +13145,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderCashAdvanceEditor();
                 calculateCashAdvanceTotals();
                 syncCashAdvanceCanvas();
-                showSystemToast('Switched to CASH AD (Cash Advance & Disbursement Ledger)', 'info', 'CASH AD Active');
+                showSystemToast('Switched to Cash_Advance (Cash Advance & Disbursement Ledger)', 'info', 'Cash_Advance Active');
             } else {
                 if (view13) view13.classList.add('hidden');
                 if (view23) view23.classList.add('hidden');
@@ -13272,12 +13271,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         };
 
         function handleCustomSheetClick(sheetName) {
-            if (sheetName === 'CHECKLIST') {
+            if (sheetName === 'CHECKLIST' || sheetName === 'CheckList_Result' || sheetName === 'checklist') {
                 switchFormStudioSheet('checklist');
                 return;
             }
-            if (sheetName === 'CASH AD') {
+            if (sheetName === 'CASH AD' || sheetName === 'Cash_Advance' || sheetName === 'cashad') {
                 switchFormStudioSheet('cashad');
+                return;
+            }
+            if (sheetName === 'Job_Order' || sheetName === 'form13') {
+                switchFormStudioSheet('form13');
+                return;
+            }
+            if (sheetName === 'Quotation_No' || sheetName === 'QUOTE' || sheetName === 'form23') {
+                switchFormStudioSheet('form23');
+                return;
+            }
+            if (sheetName === 'Billing_No' || sheetName === 'BILLING' || sheetName === 'billing') {
+                switchFormStudioSheet('billing');
                 return;
             }
 
@@ -13288,8 +13299,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'acknowledgement': 'Acknowledgement',
                 'LIQUIDATION': 'LIQUIDATION',
                 'liquidation': 'LIQUIDATION',
-                'Daily Summary': 'Daily Summary',
-                'daily': 'Daily Summary'
+                'Daily Summary': 'Daily_Summary',
+                'Daily_Summary': 'Daily_Summary',
+                'daily': 'Daily_Summary'
             };
             const activeSheetKey = sheetMap[sheetName] || sheetName;
             window.currentCustomSheetType = activeSheetKey;
@@ -13312,16 +13324,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             allFormWorkbookSheets.forEach(s => {
                 const btn = document.getElementById(s.id);
                 if (btn) {
-                    const isTarget = (s.label === sheetName || s.key === sheetName.toLowerCase() || s.label.toLowerCase() === sheetName.toLowerCase());
+                    const isTarget = (s.label === sheetName || s.key === sheetName.toLowerCase() || s.label.toLowerCase() === sheetName.toLowerCase() || (sheetName === 'Daily_Summary' && s.key === 'daily') || (sheetName === 'CheckList_Result' && s.key === 'checklist') || (sheetName === 'Cash_Advance' && s.key === 'cashad') || (sheetName === 'Quotation_No' && s.key === 'form23') || (sheetName === 'Billing_No' && s.key === 'billing'));
                     if (isTarget) {
-                        btn.className = 'px-2.5 py-1 text-xs font-bold text-blue-700 bg-[#e8f0fe] rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+                        btn.className = 'px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
                         const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-blue-600 leading-none';
+                        if (caret) caret.className = 'text-[10px] text-[#1a73e8] leading-none';
                         btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                     } else {
-                        btn.className = 'px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-200/80 rounded-md flex items-center gap-1 whitespace-nowrap shrink-0 transition cursor-pointer';
+                        btn.className = 'px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
                         const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-gray-400 leading-none';
+                        if (caret) caret.className = 'text-[10px] text-[#5f6368] leading-none';
                     }
                 }
             });
@@ -13334,8 +13346,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Switched to Acknowledgement: Vehicle Release & Customer Handover Receipt.', 'info', 'Acknowledgement Active');
             } else if (sheetName === 'LIQUIDATION') {
                 showSystemToast('Switched to LIQUIDATION: Service Job Liquidation & Parts Cost Reconciliation.', 'info', 'LIQUIDATION Active');
-            } else if (sheetName === 'Daily Summary') {
-                showSystemToast('Switched to Daily Summary: Workshop Operations & Revenue Log.', 'info', 'Daily Summary Active');
+            } else if (sheetName === 'Daily Summary' || sheetName === 'Daily_Summary') {
+                showSystemToast('Switched to Daily_Summary: Workshop Operations & Revenue Log.', 'info', 'Daily_Summary Active');
             } else {
                 showSystemToast(`Switched to workbook sheet: ${sheetName}`, 'info', `${sheetName} Active`);
             }
@@ -15435,3 +15447,329 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             syncCashAdvanceCanvas();
         }
 
+
+
+        // =========================================================================
+        // HONTECH 2025 OFFLINE-FIRST EXCEL ENGINE (BASED ON Polished_2025 BLANK RO UPDATED.xlsx)
+        // =========================================================================
+        const DRAFT_STORAGE_KEY = 'hontech_workbook_draft_2025_v1';
+
+        function saveWorkbookDraftOffline(silent = false) {
+            try {
+                const getVal = id => (document.getElementById(id)?.value || '').trim();
+                const draft = {
+                    timestamp: new Date().toISOString(),
+                    jobNo: getVal('f13-input-job-no'),
+                    intakeDate: getVal('f13-input-intake-date'),
+                    promiseDate: getVal('f13-input-promise-date'),
+                    category: getVal('f13-input-category'),
+                    name: getVal('f13-input-name'),
+                    address: getVal('f13-input-address'),
+                    contact: getVal('f13-input-contact'),
+                    email: getVal('f13-input-email'),
+                    plate: getVal('f13-input-plate'),
+                    model: getVal('f13-input-model'),
+                    color: getVal('f13-input-color'),
+                    km: getVal('f13-input-km'),
+                    engine: getVal('f13-input-engine'),
+                    chassis: getVal('f13-input-chassis'),
+                    concern: getVal('f13-input-concern'),
+                    diagnostic: getVal('f13-input-diagnostic'),
+                    sa: getVal('f13-input-sa'),
+                    mechanic: getVal('f13-input-mechanic'),
+                    assessor: getVal('f13-input-assessor'),
+                    manager: getVal('f13-input-manager'),
+                    parts: window.form13Parts || [],
+                    materials: window.form13Materials || [],
+                    quoteItems: window.form23Items || [],
+                    customStore: window.customSheetDataStore || {}
+                };
+
+                localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+                if (!silent) {
+                    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    showSystemToast(`Workbook draft saved offline at ${timeStr}. Ready for export or queue dispatch.`, 'success', 'Draft Saved Offline');
+                }
+            } catch (err) {
+                console.warn('Failed to save workbook draft offline:', err);
+            }
+        }
+        window.saveWorkbookDraftOffline = saveWorkbookDraftOffline;
+
+        function loadWorkbookDraftOffline() {
+            try {
+                const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+                if (!raw) return false;
+                const draft = JSON.parse(raw);
+                if (!draft) return false;
+
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el && val !== undefined) el.value = val;
+                };
+
+                setVal('f13-input-job-no', draft.jobNo);
+                setVal('f13-input-intake-date', draft.intakeDate);
+                setVal('f13-input-promise-date', draft.promiseDate);
+                setVal('f13-input-category', draft.category);
+                setVal('f13-input-name', draft.name);
+                setVal('f13-input-address', draft.address);
+                setVal('f13-input-contact', draft.contact);
+                setVal('f13-input-email', draft.email);
+                setVal('f13-input-plate', draft.plate);
+                setVal('f13-input-model', draft.model);
+                setVal('f13-input-color', draft.color);
+                setVal('f13-input-km', draft.km);
+                setVal('f13-input-engine', draft.engine);
+                setVal('f13-input-chassis', draft.chassis);
+                setVal('f13-input-concern', draft.concern);
+                setVal('f13-input-diagnostic', draft.diagnostic);
+                setVal('f13-input-sa', draft.sa);
+                setVal('f13-input-mechanic', draft.mechanic);
+                setVal('f13-input-assessor', draft.assessor);
+                setVal('f13-input-manager', draft.manager);
+
+                if (Array.isArray(draft.parts)) window.form13Parts = draft.parts;
+                if (Array.isArray(draft.materials)) window.form13Materials = draft.materials;
+                if (Array.isArray(draft.quoteItems)) window.form23Items = draft.quoteItems;
+                if (draft.customStore && typeof draft.customStore === 'object') {
+                    window.customSheetDataStore = Object.assign({}, window.customSheetDataStore, draft.customStore);
+                }
+
+                renderForm13Rows();
+                calcForm13Totals();
+                syncForm13Canvas();
+
+                const timeFormatted = draft.timestamp ? new Date(draft.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Previous Session';
+                showSystemToast(`Restored saved offline draft from ${timeFormatted}.`, 'info', 'Offline Draft Loaded');
+                return true;
+            } catch (err) {
+                console.warn('Failed to load offline draft:', err);
+                return false;
+            }
+        }
+        window.loadWorkbookDraftOffline = loadWorkbookDraftOffline;
+
+        function resetWorkbookToTemplate() {
+            if (!confirm('Are you sure you want to reset all workbook sheets back to the original 2025 blank template? Any unsaved changes will be cleared.')) return;
+            
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
+            
+            ['f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
+             'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
+             'f13-input-engine', 'f13-input-chassis', 'f13-input-concern', 'f13-input-diagnostic'
+            ].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
+            const today = new Date().toISOString().split('T')[0];
+            const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
+            const jobNoInput = document.getElementById('f13-input-job-no');
+            if (jobNoInput) jobNoInput.value = `HT-JO-${randSuffix}`;
+
+            const intakeDateEl = document.getElementById('f13-input-intake-date');
+            if (intakeDateEl) intakeDateEl.value = today;
+
+            const promiseDateEl = document.getElementById('f13-input-promise-date');
+            if (promiseDateEl) promiseDateEl.value = today;
+
+            window.form13Parts = [];
+            window.form13Materials = [];
+            window.form23Items = [];
+
+            renderForm13Rows();
+            calcForm13Totals();
+            syncForm13Canvas();
+            generateForm13PDF(false);
+
+            showSystemToast('Workbook reset to original blank 2025 template.', 'success', 'Template Reset');
+        }
+        window.resetWorkbookToTemplate = resetWorkbookToTemplate;
+
+        async function exportOfficialXLSX() {
+            try {
+                if (typeof XLSX === 'undefined') {
+                    showSystemToast('SheetJS engine loading... please retry in a second.', 'warning', 'Excel Engine Loading');
+                    return;
+                }
+
+                showSystemToast('Compiling official 2025 HonTech Excel Workbook (.xlsx)...', 'info', 'Generating Excel');
+
+                const getVal = id => (document.getElementById(id)?.value || '').trim();
+                const plate = (getVal('f13-input-plate') || 'VEHICLE').toUpperCase();
+                const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+                const name = getVal('f13-input-name') || 'Customer';
+                const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+                const model = getVal('f13-input-model') || '';
+                const contact = getVal('f13-input-contact') || '';
+                const address = getVal('f13-input-address') || '';
+                const email = getVal('f13-input-email') || '';
+                const km = getVal('f13-input-km') || '';
+                const engine = getVal('f13-input-engine') || '';
+                const chassis = getVal('f13-input-chassis') || '';
+                const color = getVal('f13-input-color') || '';
+                const concern = getVal('f13-input-concern') || '';
+                const diag = getVal('f13-input-diagnostic') || '';
+                const sa = getVal('f13-input-sa') || currentUserName || 'Roman Sarol';
+
+                // Attempt to load the official binary template if accessible, else construct full 10-sheet workbook
+                let wb;
+                try {
+                    const resp = await fetch('assets/Polished_2025 BLANK RO UPDATED.xlsx');
+                    if (resp.ok) {
+                        const ab = await resp.arrayBuffer();
+                        wb = XLSX.read(new Uint8Array(ab), { type: 'array' });
+                    }
+                } catch (e) {
+                    console.warn('Direct binary template fetch fallback:', e);
+                }
+
+                if (!wb) {
+                    wb = XLSX.utils.book_new();
+                }
+
+                // 1. UPDATE OR BUILD Job_Order SHEET
+                let wsJob = wb.Sheets['Job_Order'];
+                if (!wsJob) {
+                    wsJob = XLSX.utils.aoa_to_sheet([
+                        ['HONTECH AUTO CENTER, INC.'],
+                        ['70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City'],
+                        ['JOB ORDER & CLAIM STUB'],
+                        [],
+                        ['DATE:', date, '', '', '', '', '', '', '', 'DATE RECEIVED:', date],
+                        [],
+                        [],
+                        [],
+                        [],
+                        ['CUSTOMER NAME:', name, '', '', '', '', '', 'YEAR/MODEL:', model, '', 'PLATE NO:', plate],
+                        ['ADDRESS:', address, '', '', '', '', '', 'KM READING:', km, '', 'INTAKE DATE:', date],
+                        ['CONTACT NO:', contact, '', '', '', '', '', 'ENGINE NO:', engine, '', 'PROMISE DATE:', date],
+                        ['E-MAIL:', email, '', '', '', '', '', 'CHASSIS NO:', chassis, '', 'COLOR:', color],
+                        [],
+                        ['CUSTOMER CONCERN:', concern],
+                        ['SERVICE ADVISOR:', sa],
+                        ['DIAGNOSTIC ASSESSMENT:', diag]
+                    ]);
+                    XLSX.utils.book_append_sheet(wb, wsJob, 'Job_Order');
+                } else {
+                    // Update key cells in existing official sheet
+                    const updateCell = (cellRef, val) => {
+                        wsJob[cellRef] = { t: 's', v: String(val) };
+                    };
+                    updateCell('C10', name);
+                    updateCell('K10', plate);
+                    updateCell('H10', model);
+                    updateCell('K5', date);
+                    updateCell('C11', address);
+                    updateCell('C12', contact);
+                    updateCell('C13', email);
+                    updateCell('H11', km);
+                    updateCell('H12', engine);
+                    updateCell('H13', chassis);
+                    updateCell('K13', color);
+                    updateCell('C15', concern);
+                    updateCell('C16', sa);
+                    updateCell('C17', diag);
+                }
+
+                // 2. UPDATE Quotation_No SHEET
+                let wsQuote = wb.Sheets['Quotation_No'];
+                if (!wsQuote) {
+                    wsQuote = XLSX.utils.aoa_to_sheet([
+                        ['HONTECH AUTO CENTER - QUOTATION ESTIMATE'],
+                        ['CUSTOMER:', name, '', 'PLATE:', plate, '', 'DATE:', date]
+                    ]);
+                    XLSX.utils.book_append_sheet(wb, wsQuote, 'Quotation_No');
+                }
+
+                // 3. UPDATE Billing_No SHEET
+                let wsBilling = wb.Sheets['Billing_No'];
+                if (!wsBilling) {
+                    wsBilling = XLSX.utils.aoa_to_sheet([
+                        ['HONTECH AUTO CENTER - OFFICIAL BILLING INVOICE'],
+                        ['CUSTOMER:', name, '', 'PLATE:', plate, '', 'DATE:', date]
+                    ]);
+                    XLSX.utils.book_append_sheet(wb, wsBilling, 'Billing_No');
+                }
+
+                // 4. UPDATE CheckList_Result SHEET
+                let wsChk = wb.Sheets['CheckList_Result'];
+                if (!wsChk) {
+                    wsChk = XLSX.utils.aoa_to_sheet([
+                        ['HONTECH AUTO CENTER - VEHICLE INTAKE CHECKLIST'],
+                        ['CUSTOMER:', name, '', 'PLATE:', plate, '', 'DATE:', date]
+                    ]);
+                    XLSX.utils.book_append_sheet(wb, wsChk, 'CheckList_Result');
+                }
+
+                const filename = `HonTech_RO_2025_${plate.replace(/[^A-Z0-9]/g, '_')}_${jobNo}.xlsx`;
+                XLSX.writeFile(wb, filename);
+
+                showSystemToast(`Exported official Excel workbook: ${filename}`, 'success', 'Excel Export Complete');
+            } catch (err) {
+                console.error('Error exporting official XLSX:', err);
+                showSystemToast(err.message || 'Failed to export Excel file.', 'error', 'Export Failed');
+            }
+        }
+        window.exportOfficialXLSX = exportOfficialXLSX;
+
+        function importOfficialXLSX(event) {
+            const file = event?.target?.files?.[0];
+            if (!file) return;
+
+            if (typeof XLSX === 'undefined') {
+                return showSystemToast('SheetJS parser loading... please retry in a moment.', 'warning');
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const wb = XLSX.read(data, { type: 'array' });
+                    
+                    showSystemToast(`Loaded Excel Workbook with ${wb.SheetNames.length} sheets: ${wb.SheetNames.slice(0, 4).join(', ')}...`, 'info', 'Parsing Excel');
+
+                    // Parse Job_Order sheet
+                    const wsJob = wb.Sheets['Job_Order'];
+                    if (wsJob) {
+                        const getC = ref => (wsJob[ref] ? String(wsJob[ref].v || '') : '');
+                        const name = getC('C10') || getC('B10');
+                        const plate = getC('K10') || getC('D10');
+                        const model = getC('H10') || getC('C10');
+                        const date = getC('K5') || getC('B5');
+                        const contact = getC('C12') || getC('B12');
+                        const address = getC('C11') || getC('B11');
+                        const email = getC('C13') || getC('B13');
+                        const km = getC('H11') || getC('F11');
+                        const concern = getC('C15') || getC('A15');
+
+                        const setEl = (id, val) => {
+                            const el = document.getElementById(id);
+                            if (el && val) el.value = val;
+                        };
+
+                        setEl('f13-input-name', name);
+                        setEl('f13-input-plate', plate);
+                        setEl('f13-input-model', model);
+                        setEl('f13-input-intake-date', date);
+                        setEl('f13-input-contact', contact);
+                        setEl('f13-input-address', address);
+                        setEl('f13-input-email', email);
+                        setEl('f13-input-km', km);
+                        setEl('f13-input-concern', concern);
+                    }
+
+                    syncForm13Canvas();
+                    calcForm13Totals();
+                    saveWorkbookDraftOffline(true);
+                    showSystemToast(`Successfully imported ${file.name} into Form Studio!`, 'success', 'Excel Imported');
+                } catch (err) {
+                    console.error('Import error:', err);
+                    showSystemToast('Failed to parse Excel file.', 'error', 'Import Error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        window.importOfficialXLSX = importOfficialXLSX;
+    
