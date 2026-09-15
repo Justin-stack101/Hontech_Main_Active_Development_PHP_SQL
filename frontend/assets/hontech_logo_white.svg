@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" width="100%" height="100%">
+  <g id="hontech-official-logo-white">
+    <!-- Top Sleek Car Silhouette in Crisp White/Silver -->
+    <path d="M 8 68 
+             C 18 52, 35 44, 52 42
+             L 130 42 
+             C 180 34, 230 14, 275 14
+             C 340 14, 420 22, 470 42
+             C 495 52, 510 60, 515 68
+             C 500 62, 475 52, 440 46
+             C 385 36, 310 32, 260 32
+             C 195 32, 140 44, 90 56
+             C 55 64, 30 68, 8 68 Z" 
+          fill="#FFFFFF" />
+
+    <!-- Front Fender Accent -->
+    <path d="M 8 68 L 28 48 L 42 66 Z" fill="#FFFFFF" />
+
+    <!-- Inner Window Canopy Line -->
+    <path d="M 145 42
+             C 185 35, 235 24, 275 24
+             C 325 24, 385 30, 425 42
+             C 375 36, 315 32, 270 32
+             C 220 32, 175 38, 145 42 Z" 
+          fill="#E2E8F0" opacity="0.8"/>
+
+    <!-- 'H' in Bold Red -->
+    <path d="M 40 70 L 64 70 L 64 85 L 82 85 L 82 70 L 106 70 L 106 118 L 82 118 L 82 101 L 64 101 L 64 118 L 40 118 Z" 
+          fill="#FF2222" />
+
+    <!-- 'O' as Precision Automotive Wheel Rim -->
+    <g transform="translate(142, 94)">
+      <circle cx="0" cy="0" r="24" fill="#FFFFFF" />
+      <circle cx="0" cy="0" r="20" fill="#1E293B" />
+      <circle cx="0" cy="0" r="18" fill="#FFFFFF" />
+      
+      <!-- Hub & Spokes -->
+      <circle cx="0" cy="0" r="6" fill="#0F172A" />
+      <rect x="-2.5" y="-17" width="5" height="34" fill="#FFFFFF" rx="1" />
+      <rect x="-2.5" y="-17" width="5" height="34" fill="#FFFFFF" rx="1" transform="rotate(60)" />
+      <rect x="-2.5" y="-17" width="5" height="34" fill="#FFFFFF" rx="1" transform="rotate(120)" />
+      <circle cx="0" cy="0" r="4.5" fill="#CBD5E1" />
+      <circle cx="0" cy="0" r="2" fill="#0F172A" />
+    </g>
+
+    <!-- 'N' in Red -->
+    <path d="M 178 70 L 202 70 L 222 98 L 222 70 L 244 70 L 244 118 L 220 118 L 200 90 L 200 118 L 178 118 Z" 
+          fill="#FF2222" />
+
+    <!-- 'T' in Red -->
+    <path d="M 252 70 L 302 70 L 302 85 L 289 85 L 289 118 L 265 118 L 265 85 L 252 85 Z" 
+          fill="#FF2222" />
+
+    <!-- 'E' in Red -->
+    <path d="M 310 70 L 354 70 L 354 85 L 333 85 L 333 87 L 349 87 L 349 101 L 333 101 L 333 103 L 354 103 L 354 118 L 310 118 Z" 
+          fill="#FF2222" />
+
+    <!-- 'C' in Red -->
+    <path d="M 362 70 L 406 70 L 406 85 L 385 85 L 385 103 L 406 103 L 406 118 L 362 118 Z" 
+          fill="#FF2222" />
+
+    <!-- 'H' in Red -->
+    <path d="M 414 70 L 438 70 L 438 85 L 456 85 L 456 70 L 480 70 L 480 118 L 456 118 L 456 101 L 438 101 L 438 118 L 414 118 Z" 
+          fill="#FF2222" />
+
+    <!-- 'AUTO CENTER INC.' Subtitle Text in White -->
+    <text x="480" y="132" 
+          font-family="Arial, 'Helvetica Neue', sans-serif" 
+          font-size="12.5" 
+          font-weight="900" 
+          letter-spacing="1.5" 
+          fill="#FFFFFF" 
+          text-anchor="end">AUTO CENTER INC.</text>
+  </g>
+</svg>
