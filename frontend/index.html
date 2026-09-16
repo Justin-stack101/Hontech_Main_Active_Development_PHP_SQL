@@ -3881,7 +3881,7 @@
 
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
-                    class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col hidden">
+                    class="bg-white border border-gray-200 border-t-4 border-t-gray-800 p-3 md:p-3.5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden hidden">
                     <div class="flex items-center justify-between mb-3">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-gray-100 rounded-lg text-gray-800"><i data-lucide="calendar-clock"
@@ -3913,7 +3913,7 @@
 
                 <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
                 <div id="container-daily-intakes"
-                    class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col hidden">
+                    class="bg-white border border-gray-200 border-t-4 border-t-red-600 p-3 md:p-3.5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden hidden">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-2.5">
                             <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
@@ -3928,15 +3928,15 @@
                     <div class="overflow-x-auto max-h-[580px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                         <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-slate-50">
-                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest whitespace-nowrap">
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
                                     <th class="px-3 py-2.5 bg-slate-50">Claim Stub</th>
                                     <th class="px-3 py-2.5 bg-slate-50">Plate No.</th>
-                                    <th class="px-3 py-2.5 bg-slate-50 min-w-[260px]">Model & Category</th>
+                                    <th class="px-2.5 py-2 bg-slate-50 min-w-[200px]">Model & Category</th>
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center">Source</th>
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center">Arrival (24H)</th>
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center">Departure (24H)</th>
-                                    <th class="px-3 py-2.5 bg-slate-50 min-w-[300px]">Evaluation / Diagnosis</th>
+                                    <th class="px-2.5 py-2 bg-slate-50 min-w-[190px]">Evaluation / Diagnosis</th>
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center">Promised Date</th>
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center">C.O. Status</th>
                                     <th class="px-3 py-2.5 bg-slate-50 text-center">Status</th>
@@ -3964,7 +3964,7 @@
 
                 <!-- CARRY OVER BOARD (Shared) -->
                 <div id="container-carry-over"
-                    class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-3.5 md:p-4 rounded-2xl shadow-sm flex flex-col mt-4">
+                    class="bg-white border border-gray-200 border-t-4 border-t-orange-500 p-3 md:p-3.5 rounded-2xl shadow-sm flex flex-col mt-3 w-full max-w-full overflow-hidden">
                     <div class="flex items-center gap-2.5 mb-3">
                         <div class="p-1.5 bg-orange-50 rounded-lg text-orange-600"><i data-lucide="calendar-off"
                                 class="w-4 h-4"></i></div>
@@ -3977,7 +3977,7 @@
                     <div class="overflow-x-auto max-h-[440px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
                         <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-slate-50">
-                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest">
+                                <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9.5px] font-black uppercase tracking-widest whitespace-nowrap">
                                     <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-gray-400 font-bold">#</th>
                                     <th onclick="toggleCarryOverStubSort()" class="px-3 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                         <span class="inline-flex items-center gap-1">
@@ -7018,7 +7018,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.23"></script>
+    <script src="js/app.js?v=2.24"></script>
 </body>
 
 </html>
