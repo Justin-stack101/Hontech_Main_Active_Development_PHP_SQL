@@ -72,7 +72,32 @@ Whenever the AI is requested to make any changes (features, bug fixes, UI adjust
 
 ---
 
+## 🚗 Service Advisor (SA) 2025 RO Excel Studio Foundation
+1. **Strict 4-Worksheet Architecture**: The SA studio in `#section-form13` must maintain strictly 4 authentic operational sheets:
+   - `Job_Order` (Form 1/3 & Customer Claim Stub)
+   - `Quotation_No` (Parts, Labor & Scope Estimator)
+   - `Billing_No` (Official Billing Statement & Invoice Settlement)
+   - `CheckList_Result` (15-Point Multi-System Receiving Inspection)
+   *Never restore obsolete non-SA tabs (e.g. Cash Advance, OEF, Liquidation, Disbursement).*
+2. **Sticky Top Tab Selection Bar**: Ensure `#form-top-tab-bar` remains prominently anchored at the head of `#section-form13` featuring carets (`▾`), Google Sheets styling, and active blue selection states so tabs are immediately accessible without scrolling.
+3. **Official PDF Format Preview Sidebars**: The right-column preview for each sheet must embed authentic, responsive PDF format viewers using official assets:
+   - `Job_Order`: `assets/form13_template.pdf`
+   - `Quotation_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf`
+   - `Billing_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf`
+   - `CheckList_Result`: `assets/Current_2025 BLANK RO UPDATED.xlsx - CheckList_Result.pdf`
+   *Equip each preview sidebar with toolbar action links: Full PDF (`target="_blank"`), Download PDF (`download`), and Export Official `.xlsx`.*
+4. **Zero-Lag Reactive Auto-Fill & Purged Keystroke Canvas Overhead**:
+   - Never render heavy simulated HTML document spans on every keystroke.
+   - Typing in `Job_Order` must instantly auto-populate customer & vehicle dossier into input fields on `Quotation_No`, `Billing_No`, and `CheckList_Result` (`syncJobOrderFieldsToQuote`, `syncJobOrderFieldsToBilling`, `syncJobOrderFieldsToChecklist`) with zero typing latency.
+   - Offline draft persistence is handled via `saveWorkbookDraftOffline` in `localStorage`.
+5. **Official Excel Template Export Engine**:
+   - Multi-sheet export must inject typed data directly into `Current_2025 BLANK RO UPDATED.xlsx` across sheets 1 through 7 (`Job_Order`, `Quotation_No 1-3`, `Billing_No 1-2`, and `CheckList_Result`) via JSZip without altering sheet visibility or structure.
+   - Do not reference obsolete `Polished_2025` templates.
+
+---
+
 ## 🌿 Development & Git Workflow
 1. **Terminal Development Standard**: Developers run local operations using `npm.cmd run dev` (which launches `php -S 0.0.0.0:8000 router.php`) and test via `npm.cmd test`.
 2. **Active Branch Discipline**: Ensure work is committed and pushed to the current working branch (e.g. `prototype_process` or `branch2-Security-Account-Recovery`).
 3. **Main Branch Protection**: Preserve `main` as the stable client backup.
+

@@ -43,6 +43,26 @@ This skill provides the core context, architectural constraints, and house rules
 
 ---
 
+## 🚗 Service Advisor (SA) 2025 RO Excel Studio Standards
+
+- **Strict 4 Worksheets**: `Job_Order`, `Quotation_No`, `Billing_No`, and `CheckList_Result`. Never re-introduce non-SA tabs.
+- **Top Sticky Tab Bar**: `#form-top-tab-bar` positioned at the head of `#section-form13` with carets (`▾`) and blue active highlight.
+- **Official PDF Format Preview Sidebars**: Embedded iframe PDF viewers in the right column using official templates:
+  - `Job_Order`: `assets/form13_template.pdf`
+  - `Quotation_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf`
+  - `Billing_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf`
+  - `CheckList_Result`: `assets/Current_2025 BLANK RO UPDATED.xlsx - CheckList_Result.pdf`
+  - Toolbar actions: Full PDF (`target="_blank"`), Download PDF (`download`), and Export Official `.xlsx`.
+- **Zero-Lag Reactive Auto-Fill**:
+  - No heavy keystroke canvas redraw loops.
+  - Typing in `Job_Order` auto-populates input fields across `Quotation_No`, `Billing_No`, and `CheckList_Result` with zero typing delay.
+  - Auto-saves offline drafts directly to `localStorage`.
+- **Official Template Multi-Sheet Export**:
+  - Populates `Current_2025 BLANK RO UPDATED.xlsx` across sheets 1–7 using JSZip.
+  - Preserves 100% sheet formatting and original workbook structure.
+
+---
+
 ## 🧪 Terminal Workflow & Dual-Track Testing
 
 - **Local Server Launch**: Run via terminal:

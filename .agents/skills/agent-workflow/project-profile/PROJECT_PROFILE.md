@@ -17,9 +17,19 @@
 - **Roles**:
   - `owner`: System Owner (full access to analytics, staff roster, and system logs).
   - `admin`: Branch Administrator (manages staff and branches).
-  - `sa` (Service Advisor): Encodes walk-in intake tickets and updates job cards.
+  - `sa` (Service Advisor): Encodes walk-in intake tickets, operates the 2025 RO Excel Studio, and updates job cards.
   - `assistant` (Front Desk): Manages online bookings, active status updates, and daily intake sheets.
 - **Gating**: Handled dynamically on the client via `handleLogin(role)` and route guards. The backend enforces role-level security in Controller constructors.
+
+---
+
+## 🚗 Service Advisor (SA) 2025 RO Excel Studio Foundation
+
+- **Worksheet Scope**: Strictly 4 operational worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`). Purged non-SA tabs are permanently deprecated.
+- **Top Sticky Tab Bar**: Head of `#section-form13` anchored with Google Sheets styled tabs, carets (`▾`), and active blue highlighting.
+- **Official PDF Format Preview Sidebars**: Embedded iframe viewers in the right preview pane with Full PDF, Download PDF, and Export `.xlsx` actions for each worksheet.
+- **Zero-Lag Reactive Auto-Fill**: Keystrokes in `Job_Order` auto-populate input fields on other sheets (`syncJobOrderFieldsToQuote`, `syncJobOrderFieldsToBilling`, `syncJobOrderFieldsToChecklist`) with zero typing delay and auto-save to `localStorage`.
+- **Export Engine**: Injects data into `Current_2025 BLANK RO UPDATED.xlsx` across sheets 1 through 7 without modifying workbook visibility.
 
 ---
 
