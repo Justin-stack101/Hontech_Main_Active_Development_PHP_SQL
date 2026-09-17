@@ -25,11 +25,12 @@ This skill provides the core context, architectural constraints, and house rules
 ## 🗄️ Database Specifications
 
 - **Server**: MariaDB / MySQL
-- **Port**: `3307`
+- **Port**: `3307` (or configured via `.env`)
 - **Tables**:
   - `users`: Stores admin, owner, and advisor accounts.
   - `jobs`: Stores intake records, active states, and completion statuses.
 - **Deletions**: Soft deletions are configured. Always filter queries using `is_deleted = 0`.
+- **Prepared Statements**: Parameterized PDO binding is mandatory on all queries.
 
 ---
 
@@ -37,12 +38,23 @@ This skill provides the core context, architectural constraints, and house rules
 
 - **Core**: Single Page Application (SPA) driven by `frontend/js/app.js` and `frontend/index.html`.
 - **CSS**: Vanilla CSS with styling tokens. Tailored HSL colors, smooth transitions, and premium dark glassmorphism effects.
-- **Error Boundaries**: A global exception modal captures console crashes, runtime errors, and unhandled rejections, displaying them with file coordinates and stack traces.
+- **Defensive DOM Operations**: Always wrap DOM element property access in `if (document.getElementById('...'))`.
+- **Cache Busting**: Always increment `js/app.js?v=X.XX` in `frontend/index.html` after modifying client scripts.
 
 ---
 
-## 🧪 Developer Sandbox & Testing
+## 🧪 Terminal Workflow & Dual-Track Testing
 
-- **Local Server**: Run locally via `php -S 127.0.0.1:8000 router.php`.
+- **Local Server Launch**: Run via terminal:
+  ```bash
+  npm.cmd run dev
+  ```
+  *(Launches `php -S 0.0.0.0:8000 router.php`)*
+- **Automated Test Suite**: Run via terminal:
+  ```bash
+  npm.cmd test
+  ```
+  *(Executes `test:frontend`, `test:backend`, and `test:security`)*
+- **Whole-System Regression Rule**: After any code changes, `npm.cmd test` must pass. If any test fails, self-debug immediately before finishing.
+- **Manual QA Synchronization**: For every feature or UI adjustment, add a test scenario row to `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and append to `REVISIONS_LOG.md` and `Revisions checklist.csv`.
 - **Reset Seeding API**: Access `POST /api/auth/developer/reset-seed` in development mode to wipe records and run seeder scripts instantly.
-- **Developer Sandbox Mailbox**: Syncs and reads simulated verification code emails from the backend.

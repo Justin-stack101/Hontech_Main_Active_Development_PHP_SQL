@@ -3356,8 +3356,6 @@
                     <span>2025 Excel Mode (Offline Active)</span>
                 </div>
             </div>
-            </div>
-                </div>
 
             
                 <!-- =========================================================================
@@ -3632,6 +3630,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
             <!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
             <div id="section-intake" class="section-content hidden fade-in py-2">
@@ -4849,6 +4848,7 @@
 
                             <p class="text-xs text-slate-500 leading-relaxed pt-1">
                                 Service Advisors on the workshop floor can dynamically adjust active operational bays up to this maximum facility ceiling (e.g. 1 to 7 bays).
+                            </p>
                             <!-- Direct Link to Live Workshop Floor Module -->
                             <div class="pt-3 border-t border-gray-100">
                                 <button type="button" onclick="showSection('bays')" class="w-full py-3 px-4 bg-gray-900 hover:bg-red-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-sm group">
@@ -6644,6 +6644,10 @@
                 <button type="button" onclick="submitBackJobWithReason()" class="px-8 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-xs md:text-sm uppercase tracking-wider shadow-2xs transition flex items-center gap-2 cursor-pointer">
                     <i data-lucide="arrow-right" class="w-4 h-4 text-white"></i> Proceed to Intake
                 </button>
+            </div>
+        </div>
+    </div>
+
     <!-- CUSTOM WORKSHOP BAY CAPACITY MODAL (Replaces native browser prompt) -->
     <div id="modal-custom-bay-capacity" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-200 overflow-hidden flex flex-col transform transition-all my-auto">
@@ -7065,7 +7069,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.25"></script>
+    <script src="js/app.js?v=2.28"></script>
 </body>
 
 </html>

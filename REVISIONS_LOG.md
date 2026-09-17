@@ -4,6 +4,18 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 17, 2026 (Terminal Dev Automation, Automated Test Runner & 5-Stage AI Closed-Loop Lifecycle)
+
+### 🧪 Terminal Dev Automation & 27-Assertion Test Suite (v5.71)
+* **Terminal Dev Runner**: Updated `package.json` to configure `npm.cmd run dev` pointing directly to the PHP built-in server (`php -S 0.0.0.0:8000 router.php`), removing defunct Node `backend/server.js` references.
+* **Automated Script Testing Suite (`npm.cmd test`)**:
+  - **Frontend Tests (`tests/frontend/sla_and_logic.test.js`)**: 12 assertions testing Express PMS 2-Hour SLA turnaround calculations, overnight midnight rollovers, XSS HTML sanitization (`escapeHtml`), audit field labels (`formatFieldName`), and claim stub format validation.
+  - **Backend Tests (`tests/backend/api.test.js`)**: 8 assertions testing PHP CLI syntax linting (`php -l`), MariaDB/MySQL PDO database connectivity (`backend/test_db.php`), and HTTP routing.
+  - **Security Tests (`tests/security/security.test.js`)**: 7 assertions performing static repository audits for PDO prepared statement parameter binding, input sanitization against SQL injection payloads, 401/403 RBAC boundary protection, and 4-digit PIN validation.
+* **Whole-System Regression Prevention & Self-Debugging Directives**: Enforced in `.agents/AGENTS.md` and `.agents/skills/hontech-qa-and-revisions-sync/SKILL.md` that any code change must be accompanied by `npm.cmd test` execution, self-debugging on failure, updating `HONTECH_QA_TEST_CHECKLIST.csv` (CLI-01, CLI-02, SEC-01, SEC-02), and logging in `Revisions checklist.csv` (`REV-071`).
+
+---
+
 ## 📅 September 14, 2026 (Queue Calendar Engine, Auto-Reset, Historical Recall & Ctrl+D Dev Sandbox)
 
 ### 📅 Queue Calendar Filter, Next-Day Board Auto-Reset & Historical Recall (v5.55)

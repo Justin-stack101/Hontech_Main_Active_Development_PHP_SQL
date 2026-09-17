@@ -63,3 +63,44 @@ If you prefer running commands one by one to verify your progress:
 * **Safe Collaboration:** Multiple developers can work on frontend styling, backend API logic, or database scripts concurrently. Git automatically merges changes and flags conflicts if two people edit the exact same line.
 * **Continuous Integration & Deployment (CI/CD):** Production and hosting platforms (e.g., Render, Vercel, AWS) sync directly with GitHub. Pushing changes to your main branch can trigger automated builds and deploy updates to users in seconds.
 * **Your Professional Portfolio:** A developer's GitHub is their living resume. Recruiters and clients check commit history, code structure, readability, and documentation (like this guide) to assess technical capabilities.
+
+---
+
+## 4. HonTech Enterprise Commit & Revision Traceability Standard
+
+To ensure 100% defense readiness and audit integrity, **every commit to GitHub must link directly to the Capstone Revisions Tracking system**:
+
+### Commit Message Format
+```bash
+git commit -m "<type>(REV-XXX): <concise summary of changes>"
+```
+
+| Commit Type | When to Use | Example |
+| :--- | :--- | :--- |
+| `feat(REV-XXX)` | Adding a new operational capability or screen | `feat(REV-071): add terminal dev runner and 27-assertion test suite` |
+| `fix(REV-XXX)` | Resolving a bug, DOM error, or layout misalignment | `fix(REV-070): prevent flexbox right-side overflow on daily intakes` |
+| `test(REV-XXX)` | Adding or updating automated script test suites | `test(REV-071): add security RBAC and SQL injection test assertions` |
+| `docs(REV-XXX)` | Updating QA matrices, guides, or revision logs | `docs(REV-071): update StartupOperation.md and Git guide` |
+
+### The 4-Step GitHub Push Workflow for Justin & Team
+1. **Run Automated Tests:**
+   ```bash
+   npm.cmd test
+   ```
+   *(Must pass 27/27 assertions before committing)*
+2. **Stage All Changes:**
+   ```bash
+   git add .
+   ```
+3. **Commit with Task ID:**
+   ```bash
+   git commit -m "feat(REV-071): configure terminal dev runner and automated test suites"
+   ```
+4. **Push to GitHub:**
+   ```bash
+   git push origin prototype_process
+   ```
+   *(Or active branch: `git push origin branch2-Security-Account-Recovery`)*
+
+### Commit Hash Traceability
+After committing, grab the short commit hash (`git rev-parse --short HEAD`) and update the `Git_Commit` column in `Revisions checklist.csv`. This provides the Capstone Panel 1:1 proof that every revision in the spreadsheet maps to real code in GitHub.

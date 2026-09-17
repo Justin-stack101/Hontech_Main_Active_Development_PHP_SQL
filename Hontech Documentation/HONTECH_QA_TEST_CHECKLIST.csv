@@ -49,3 +49,7 @@ ERR-01,Tier 3 (Shared Core),Diagnostics,TV / Error,Developer Exception Overlay (
 ERR-02,Tier 2 (Single-Role),Diagnostics,TV / Error,Diagnostic Crash Log Export (.txt),Downloads detailed crash log containing stack trace and environment state,Pending,
 ERR-03,Tier 3 (Shared Core),Diagnostics,TV / Error,One-Click Database Re-Seed Trigger,Calls /api/auth/developer/reset-seed and prints live database reset log,Pending,
 ERR-04,Tier 1 (Visual/Cosmetic),Diagnostics,TV / Error,Copy Error Trace to Clipboard,Copies clean stack trace to clipboard with success toast notification,Pending,
+CLI-01,Tier 3 (Shared Core),Developer Tooling,All Roles,Terminal Server Launch (npm.cmd run dev),Starts PHP router on port 8000 and serves application cleanly,Pending,
+CLI-02,Tier 3 (Shared Core),Quality Assurance,Developer / QA,Terminal Automated Test Suite (npm.cmd test),Executes all 27 automated frontend backend and security test assertions,Pending,
+SEC-01,Tier 3 (Shared Core),Security & RBAC,All Roles,Backend SQL Injection Defense Guard,Ensures parameterized queries block malicious SQL injection payloads,Pending,
+SEC-02,Tier 3 (Shared Core),Security & RBAC,Assistant & SA,Unauthorized Route Protection (401/403),Blocks Assistant from admin endpoints and unauthenticated requests,Pending,

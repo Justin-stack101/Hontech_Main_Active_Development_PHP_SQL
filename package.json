@@ -1,32 +1,24 @@
 {
   "name": "hontech-ops-system",
   "version": "1.0.0",
-  "description": "HonTech AutoCenter Operations System",
-  "main": "backend/server.js",
+  "description": "HonTech AutoCenter Operations System (PHP PDO + MySQL Backend, Vanilla JS SPA Frontend)",
   "type": "module",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js",
+    "dev": "php -S 0.0.0.0:8000 router.php",
+    "start": "php -S 0.0.0.0:8000 router.php",
+    "tunnel": "node tunnel.js",
     "build:sass": "sass frontend/scss/main.scss frontend/css/main.css",
     "watch:sass": "sass --watch frontend/scss/main.scss frontend/css/main.css",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test:frontend": "node --test tests/frontend/*.test.js",
+    "test:backend": "node --test tests/backend/*.test.js",
+    "test:security": "node --test tests/security/*.test.js",
+    "test": "node --test tests/frontend/*.test.js tests/backend/*.test.js tests/security/*.test.js"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-rate-limit": "^7.2.0",
-    "helmet": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "localtunnel": "^2.0.2",
-    "mongoose": "^8.3.1"
+    "localtunnel": "^2.0.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0",
-    "sass": "^1.75.0",
-    "vitest": "^4.1.10"
+    "sass": "^1.75.0"
   }
 }
