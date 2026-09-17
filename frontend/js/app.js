@@ -12163,13 +12163,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Bind reactive input listeners for instant zero-latency mirroring
             const onReactiveJobOrderInput = () => {
-                syncForm13Canvas();
                 syncJobOrderFieldsToQuote();
-                syncForm23Canvas();
                 syncJobOrderFieldsToBilling();
-                syncBillingCanvas();
                 syncJobOrderFieldsToChecklist();
-                syncChecklistCanvas();
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }

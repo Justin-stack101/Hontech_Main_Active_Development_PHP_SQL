@@ -2913,26 +2913,21 @@
                          RIGHT COLUMN: 1:1 LIVE FORM 1/3 CANVAS SHEET
                          ========================================== -->
                     <div id="form13-canvas-pane" class="xl:col-span-6 space-y-3">
-                        
-                        <!-- Canvas Control Toolbar (Hidden in Print) -->
+                        <!-- Canvas Control Toolbar -->
                         <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
-                                <div class="flex items-center bg-gray-100 p-1 rounded-xl border border-gray-200 gap-1">
-                                    <button type="button" id="btn-f13-tab-pdf" onclick="switchForm13View('pdf')" class="px-3 py-1 rounded-lg font-bold text-xs bg-red-600 text-white shadow-xs transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="file-check" class="w-3.5 h-3.5"></i> Live PDF Viewer
-                                    </button>
-                                    <button type="button" id="btn-f13-tab-html" onclick="switchForm13View('html')" class="px-3 py-1 rounded-lg font-bold text-xs bg-transparent hover:bg-gray-200 text-gray-700 transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="layout-template" class="w-3.5 h-3.5"></i> Keystroke Sheet
-                                    </button>
-                                </div>
+                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
+                                    <i data-lucide="file-check" class="w-4 h-4 text-red-600"></i>
+                                    <span class="font-black text-gray-900">Job_Order (Form 1/3 Official PDF View)</span>
+                                </span>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <button type="button" onclick="openForm13EnlargeModal()" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Enlarge Document to Fullscreen High-Definition View">
-                                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> Enlarge View
-                                </button>
-                                <button type="button" onclick="generateForm13PDF(true)" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
+                                <a href="assets/form13_template.pdf" target="_blank" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Enlarge Document to Fullscreen High-Definition View">
+                                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
+                                </a>
+                                <a href="assets/form13_template.pdf" download="Form13_Official_Template.pdf" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                                </button>
+                                </a>
                                 <button type="button" onclick="printForm13()" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
                                 </button>
@@ -2942,443 +2937,196 @@
                             </div>
                         </div>
 
-                        <!-- 1. Real PDF Viewer Iframe Container (Active by default) -->
-                        <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border border-gray-300 overflow-hidden shadow-sm relative h-[860px]">
-                            <iframe id="f13-pdf-iframe" class="w-full h-full border-0 rounded-2xl bg-white" src="about:blank" title="HonTech Form 1/3 PDF Viewer"></iframe>
+                        <!-- Real PDF Viewer Container -->
+                        <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
+                            <iframe id="f13-pdf-iframe" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
                         </div>
-
-                        <!-- 2. Physical Form 1/3 White Document Sheet (Keystroke Mode) -->
-                        <div id="f13-html-canvas-wrap" class="hidden bg-gray-100/70 p-2 sm:p-4 rounded-2xl border border-gray-200 overflow-x-auto custom-scroll">
-                            <div id="form13-canvas-sheet" class="form13-sheet form13-paper-shadow mx-auto bg-white border border-black p-5 max-w-[760px] text-[10px] select-text">
-                                
-                                <!-- Document Header -->
-                                <div class="flex items-start justify-between pb-2 border-b border-black">
-                                    <!-- Left: HonTech Brand Info -->
-                                    <div class="space-y-0.5">
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <div class="bg-red-600 text-white font-black italic px-2 py-0.5 rounded text-[11px] tracking-wider uppercase inline-block">
-                                                HONTECH
-                                            </div>
-                                            <span class="font-black text-xs uppercase tracking-tight text-gray-900">Auto Center</span>
-                                        </div>
-                                        <div class="font-semibold leading-tight text-gray-800">70 Bayan Bayanan Ave cor Narra St.</div>
-                                        <div class="leading-tight text-gray-700">Marikina Heights, Marikina City</div>
-                                        <div class="leading-tight text-gray-600">fb.com/hontechautocenter</div>
-                                        <div class="leading-tight text-gray-800 font-medium">85644550 / 71219124 / 09458757441 / 09525065084 - VIBER</div>
-                                    </div>
-
-                                    <!-- Right: Form 1/3, Job Order No, Date -->
-                                    <div class="text-right space-y-1">
-                                        <div class="font-bold text-[10px] text-gray-600">Form 1/3</div>
-                                        <div class="flex items-baseline justify-end gap-1.5">
-                                            <span class="font-black text-sm uppercase tracking-tight">JOB ORDER NO.</span>
-                                            <span id="f13-live-job-no" class="font-mono font-black text-sm border-b-2 border-black min-w-[110px] inline-block text-center text-red-700">HT-JO-0001</span>
-                                        </div>
-                                        <div class="flex items-center justify-end gap-1.5 pt-0.5">
-                                            <span class="font-bold text-[10px] uppercase">DATE:</span>
-                                            <div class="border border-black px-2 py-0.5 font-bold min-w-[90px] text-center" id="f13-live-date">2026-09-08</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- CUSTOMER DETAILS SECTION -->
-                                <div class="mt-2 border border-black">
-                                    <div class="header-band uppercase font-black text-center text-[10px] tracking-widest bg-gray-300 py-0.5 border-b border-black">
-                                        CUSTOMER DETAILS
-                                    </div>
-                                    <div class="grid grid-cols-12 text-[9.5px] divide-x divide-black">
-                                        <!-- Col 1 -->
-                                        <div class="col-span-5 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Name :</span> <span id="f13-live-name" class="font-semibold"></span></div>
-                                            <div><span class="font-bold">Address :</span> <span id="f13-live-address" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Contact No. :</span> <span id="f13-live-contact" class="font-semibold font-mono"></span></div>
-                                            <div><span class="font-bold">E-Mail Add. :</span> <span id="f13-live-email" class="font-medium"></span></div>
-                                        </div>
-                                        <!-- Col 2 -->
-                                        <div class="col-span-4 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Year/Model :</span> <span id="f13-live-model" class="font-semibold"></span></div>
-                                            <div><span class="font-bold">KM Reading :</span> <span id="f13-live-km" class="font-semibold font-mono"></span></div>
-                                            <div><span class="font-bold">Engine No :</span> <span id="f13-live-engine" class="font-mono"></span></div>
-                                            <div><span class="font-bold">Chassis No. :</span> <span id="f13-live-chassis" class="font-mono"></span></div>
-                                        </div>
-                                        <!-- Col 3 -->
-                                        <div class="col-span-3 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Plate No :</span> <span id="f13-live-plate" class="font-black font-mono text-[10.5px]"></span></div>
-                                            <div><span class="font-bold">Intake Date :</span> <span id="f13-live-intake-date" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Promise Date :</span> <span id="f13-live-promise-date" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Color :</span> <span id="f13-live-color" class="font-medium"></span></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN -->
-                                <div class="mt-2 border border-black">
-                                    <div class="header-band uppercase font-bold text-center text-[9.5px] tracking-wide bg-gray-200 py-0.5 border-b border-black">
-                                        CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN <span class="font-normal text-[8.5px] italic">(To be filled out by Service Advisor)</span>
-                                    </div>
-                                    <div id="f13-live-concern" class="p-2 min-h-[42px] text-[10px] leading-relaxed whitespace-pre-wrap font-medium"></div>
-                                </div>
-
-                                <!-- NOTE Surcharge Disclaimer -->
-                                <div class="mt-1 text-[8px] text-gray-800 leading-tight italic px-1">
-                                    <strong>NOTE:</strong> To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied. The cost of the item/s shall be the current price of Hontech Auto Center, Inc.
-                                </div>
-
-                                <!-- Interviewed By & Authorization Grid -->
-                                <div class="mt-2 grid grid-cols-12 gap-3 items-end text-[9px]">
-                                    <div class="col-span-5 space-y-0.5">
-                                        <div><span class="font-bold">Interviewed by:</span> <span id="f13-live-sa-name" class="font-bold border-b border-black min-w-[120px] inline-block text-center">Roman Sarol</span></div>
-                                        <div class="text-[8px] text-gray-600 pl-20">Service Advisor</div>
-                                    </div>
-                                    <div class="col-span-7 border border-black p-1.5 text-center">
-                                        <div class="font-bold uppercase tracking-wider text-[8.5px]">AUTHORIZATION</div>
-                                        <div class="text-[7.5px] leading-tight text-gray-700 mt-0.5">I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.</div>
-                                        <div class="mt-3 border-t border-black w-48 mx-auto"></div>
-                                        <div class="text-[7.5px] font-bold mt-0.5">Customer Name and Signature</div>
-                                    </div>
-                                </div>
-
-                                <!-- DIAGNOSTIC RESULT | PARTS | MATERIALS MATRIX -->
-                                <div class="mt-2 border border-black">
-                                    <table class="w-full text-[8.5px] border-collapse">
-                                        <thead>
-                                            <tr class="bg-gray-200 border-b border-black text-center font-bold">
-                                                <th class="border-r border-black p-1 w-[26%] uppercase">DIAGNOSTIC RESULT</th>
-                                                <th colspan="4" class="border-r border-black p-1 uppercase">PARTS</th>
-                                                <th colspan="4" class="p-1 uppercase">MATERIALS</th>
-                                            </tr>
-                                            <tr class="bg-gray-100 border-b border-black text-center font-semibold text-[8px]">
-                                                <th class="border-r border-black p-0.5"></th>
-                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
-                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
-                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
-                                                <th class="border-r border-black p-0.5 w-14">AMOUNT</th>
-                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
-                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
-                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
-                                                <th class="p-0.5 w-14">AMOUNT</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="f13-live-matrix-body">
-                                            <!-- Dynamically rendered 15-20 rows matching scanned grid -->
-                                        </tbody>
-                                        <tfoot>
-                                            <tr class="border-t border-black font-bold text-[9px] bg-gray-100">
-                                                <td class="border-r border-black p-1 text-center font-bold uppercase text-[8px]">SUBTOTALS</td>
-                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">PARTS:</td>
-                                                <td class="border-r border-black p-1 text-right font-mono" id="f13-live-parts-total">0.00</td>
-                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">MATERIALS:</td>
-                                                <td class="p-1 text-right font-mono" id="f13-live-materials-total">0.00</td>
-                                            </tr>
-                                            <tr class="border-t border-black font-black text-[9.5px] bg-gray-200">
-                                                <td colspan="7" class="border-r border-black p-1 text-right uppercase tracking-wider">ESTIMATED TOTAL:</td>
-                                                <td colspan="2" class="p-1 text-right font-mono text-[10.5px] font-black" id="f13-live-grand-total">₱ 0.00</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-
-                                <!-- Middle Sign-off: Diagnosed by & Assessed by -->
-                                <div class="mt-2 grid grid-cols-2 gap-4 text-[9px]">
-                                    <div>
-                                        <span class="font-bold">Diagnosed by:</span>
-                                        <span id="f13-live-mechanic" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Auto Mechanic</span>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="font-bold">Assessed by:</span>
-                                        <span id="f13-live-assessor" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Parts/Materials Controller</span>
-                                    </div>
-                                </div>
-
-                                <!-- CERTIFICATE OF COMPLETION/ACCEPTANCE -->
-                                <div class="mt-2 border border-black p-2">
-                                    <div class="text-center font-black uppercase text-[9.5px] tracking-wide">
-                                        CERTIFICATE OF COMPLETION/ACCEPTANCE
-                                    </div>
-                                    <div class="text-[8px] text-center italic text-gray-800 leading-snug mt-0.5">
-                                        This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-4 mt-3 text-[8.5px]">
-                                        <!-- Left Column -->
-                                        <div class="space-y-3">
-                                            <div>
-                                                <div class="font-bold">Recommending Approval:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-sa-name2">Roman Sarol</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Service Advisor</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">CONFORME:</div>
-                                                <div class="mt-3 border-b border-black w-44"></div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Customer's Name & Signature</div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Right Column -->
-                                        <div class="space-y-3">
-                                            <div>
-                                                <div class="font-bold">Approved by:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-approved-by">Chief, Auto Mechanic / Authorized AM</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Chief, Auto Mechanic / Authorized AM</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Concurred by:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-manager">General Manager</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">General Manager</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- PERFORATED TEAR-OFF DIVIDER -->
-                                <div class="my-3 form13-perforated-border text-center">
-                                    <span class="bg-white px-2 text-[8px] font-bold text-red-600 uppercase tracking-widest">
-                                        Gupitin Dito / Perforated Customer Claim Stub
-                                    </span>
-                                </div>
-
-                                <!-- CUSTOMER CLAIM STUB IN FILIPINO (Bottom Section) -->
-                                <div class="p-2 border border-red-300 rounded bg-red-50/20 text-[9px] space-y-1.5">
-                                    <div class="text-red-600 font-bold leading-tight">
-                                        <div class="text-[10px] font-black uppercase tracking-tight">Mahal Naming Mga Kustomer,</div>
-                                        <div class="text-[8px] font-normal leading-snug text-red-700 mt-0.5">
-                                            Para sa inyong seguridad at kapakinabangan ng lahat, pinapayuhan po namin kayong kunin ang lahat ng mahahalagang gamit mula sa inyong sasakyan bago ito ipagkatiwala sa aming mga kawani. Malaki po ang maitutulong ng inyong kooperasyon upang masiguro namin ang mahusay na serbisyo.
-                                        </div>
-                                        <div class="text-[8px] font-normal mt-0.5 text-red-700">Maraming salamat po sa inyong patuloy na suporta.</div>
-                                        <div class="text-[8.5px] font-black mt-0.5 text-red-800">Ang Pamunuan</div>
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-3 pt-1 border-t border-red-200">
-                                        <div class="space-y-1">
-                                            <div><span class="font-bold">Name :</span> <span id="f13-stub-live-name" class="font-semibold underline"></span></div>
-                                            <div><span class="font-bold">Service Advisor :</span> <span id="f13-stub-live-sa" class="font-semibold underline">Manny Sarol</span></div>
-                                            <div><span class="font-bold">Date:</span> <span id="f13-stub-live-date" class="font-semibold underline">2026-09-08</span></div>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <div><span class="font-bold">Plate No./Year/Model :</span> <span id="f13-stub-live-plate-model" class="font-bold underline font-mono"></span></div>
-                                            <div><span class="font-bold">Contact :</span> <span class="font-semibold">09458757441 / 09525065084 - VIBER</span></div>
-                                            <div><span class="font-bold text-red-600">Claim Stub :</span> <span id="f13-stub-live-id" class="font-mono font-black text-red-600 underline">CS-8821</span></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center italic text-[7.5px] text-gray-600 pt-0.5">
-                                        (Please present this to our Service Advisor to claim required documents for the release of your vehicle)
-                                    </div>
-
-                                    <div class="flex items-center justify-between pt-1 border-t border-gray-200">
-                                        <div class="font-black text-[8px] uppercase tracking-wider text-gray-800">
-                                            THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!
-                                        </div>
-                                        <div class="text-right text-[7.5px] text-gray-700 leading-tight">
-                                            <div class="font-bold">Hontech Auto Center, Inc</div>
-                                            <div>70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City</div>
-                                            <div>Tel #: (8)564-4550 / 71219124</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                                    <div class="header-band uppercase font-black text-center text-[10px] tracking-widest bg-gray-300 py-0.5 border-b border-black">
-                                        CUSTOMER DETAILS
-                                    </div>
-                                    <div class="grid grid-cols-12 text-[9.5px] divide-x divide-black">
-                                        <!-- Col 1 -->
-                                        <div class="col-span-5 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Name :</span> <span id="f13-live-name" class="font-semibold"></span></div>
-                                            <div><span class="font-bold">Address :</span> <span id="f13-live-address" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Contact No. :</span> <span id="f13-live-contact" class="font-semibold font-mono"></span></div>
-                                            <div><span class="font-bold">E-Mail Add. :</span> <span id="f13-live-email" class="font-medium"></span></div>
-                                        </div>
-                                        <!-- Col 2 -->
-                                        <div class="col-span-4 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Year/Model :</span> <span id="f13-live-model" class="font-semibold"></span></div>
-                                            <div><span class="font-bold">KM Reading :</span> <span id="f13-live-km" class="font-semibold font-mono"></span></div>
-                                            <div><span class="font-bold">Engine No :</span> <span id="f13-live-engine" class="font-mono"></span></div>
-                                            <div><span class="font-bold">Chassis No. :</span> <span id="f13-live-chassis" class="font-mono"></span></div>
-                                        </div>
-                                        <!-- Col 3 -->
-                                        <div class="col-span-3 p-1.5 space-y-1 leading-tight">
-                                            <div><span class="font-bold">Plate No :</span> <span id="f13-live-plate" class="font-black font-mono text-[10.5px]"></span></div>
-                                            <div><span class="font-bold">Intake Date :</span> <span id="f13-live-intake-date" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Promise Date :</span> <span id="f13-live-promise-date" class="font-medium"></span></div>
-                                            <div><span class="font-bold">Color :</span> <span id="f13-live-color" class="font-medium"></span></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN -->
-                                <div class="mt-2 border border-black">
-                                    <div class="header-band uppercase font-bold text-center text-[9.5px] tracking-wide bg-gray-200 py-0.5 border-b border-black">
-                                        CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN <span class="font-normal text-[8.5px] italic">(To be filled out by Service Advisor)</span>
-                                    </div>
-                                    <div id="f13-live-concern" class="p-2 min-h-[42px] text-[10px] leading-relaxed whitespace-pre-wrap font-medium"></div>
-                                </div>
-
-                                <!-- NOTE Surcharge Disclaimer -->
-                                <div class="mt-1 text-[8px] text-gray-800 leading-tight italic px-1">
-                                    <strong>NOTE:</strong> To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied. The cost of the item/s shall be the current price of Hontech Auto Center, Inc.
-                                </div>
-
-                                <!-- Interviewed By & Authorization Grid -->
-                                <div class="mt-2 grid grid-cols-12 gap-3 items-end text-[9px]">
-                                    <div class="col-span-5 space-y-0.5">
-                                        <div><span class="font-bold">Interviewed by:</span> <span id="f13-live-sa-name" class="font-bold border-b border-black min-w-[120px] inline-block text-center">Roman Sarol</span></div>
-                                        <div class="text-[8px] text-gray-600 pl-20">Service Advisor</div>
-                                    </div>
-                                    <div class="col-span-7 border border-black p-1.5 text-center">
-                                        <div class="font-bold uppercase tracking-wider text-[8.5px]">AUTHORIZATION</div>
-                                        <div class="text-[7.5px] leading-tight text-gray-700 mt-0.5">I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.</div>
-                                        <div class="mt-3 border-t border-black w-48 mx-auto"></div>
-                                        <div class="text-[7.5px] font-bold mt-0.5">Customer Name and Signature</div>
-                                    </div>
-                                </div>
-
-                                <!-- DIAGNOSTIC RESULT | PARTS | MATERIALS MATRIX -->
-                                <div class="mt-2 border border-black">
-                                    <table class="w-full text-[8.5px] border-collapse">
-                                        <thead>
-                                            <tr class="bg-gray-200 border-b border-black text-center font-bold">
-                                                <th class="border-r border-black p-1 w-[26%] uppercase">DIAGNOSTIC RESULT</th>
-                                                <th colspan="4" class="border-r border-black p-1 uppercase">PARTS</th>
-                                                <th colspan="4" class="p-1 uppercase">MATERIALS</th>
-                                            </tr>
-                                            <tr class="bg-gray-100 border-b border-black text-center font-semibold text-[8px]">
-                                                <th class="border-r border-black p-0.5"></th>
-                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
-                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
-                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
-                                                <th class="border-r border-black p-0.5 w-14">AMOUNT</th>
-                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
-                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
-                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
-                                                <th class="p-0.5 w-14">AMOUNT</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="f13-live-matrix-body">
-                                            <!-- Dynamically rendered 15-20 rows matching scanned grid -->
-                                        </tbody>
-                                        <tfoot>
-                                            <tr class="border-t border-black font-bold text-[9px] bg-gray-100">
-                                                <td class="border-r border-black p-1 text-center font-bold uppercase text-[8px]">SUBTOTALS</td>
-                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">PARTS:</td>
-                                                <td class="border-r border-black p-1 text-right font-mono" id="f13-live-parts-total">0.00</td>
-                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">MATERIALS:</td>
-                                                <td class="p-1 text-right font-mono" id="f13-live-materials-total">0.00</td>
-                                            </tr>
-                                            <tr class="border-t border-black font-black text-[9.5px] bg-gray-200">
-                                                <td colspan="7" class="border-r border-black p-1 text-right uppercase tracking-wider">ESTIMATED TOTAL:</td>
-                                                <td colspan="2" class="p-1 text-right font-mono text-[10.5px] font-black" id="f13-live-grand-total">₱ 0.00</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-
-                                <!-- Middle Sign-off: Diagnosed by & Assessed by -->
-                                <div class="mt-2 grid grid-cols-2 gap-4 text-[9px]">
-                                    <div>
-                                        <span class="font-bold">Diagnosed by:</span>
-                                        <span id="f13-live-mechanic" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Auto Mechanic</span>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="font-bold">Assessed by:</span>
-                                        <span id="f13-live-assessor" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Parts/Materials Controller</span>
-                                    </div>
-                                </div>
-
-                                <!-- CERTIFICATE OF COMPLETION/ACCEPTANCE -->
-                                <div class="mt-2 border border-black p-2">
-                                    <div class="text-center font-black uppercase text-[9.5px] tracking-wide">
-                                        CERTIFICATE OF COMPLETION/ACCEPTANCE
-                                    </div>
-                                    <div class="text-[8px] text-center italic text-gray-800 leading-snug mt-0.5">
-                                        This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-4 mt-3 text-[8.5px]">
-                                        <!-- Left Column -->
-                                        <div class="space-y-3">
-                                            <div>
-                                                <div class="font-bold">Recommending Approval:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-sa-name2">Roman Sarol</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Service Advisor</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">CONFORME:</div>
-                                                <div class="mt-3 border-b border-black w-44"></div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Customer's Name & Signature</div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Right Column -->
-                                        <div class="space-y-3">
-                                            <div>
-                                                <div class="font-bold">Approved by:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-approved-by">Chief, Auto Mechanic / Authorized AM</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Chief, Auto Mechanic / Authorized AM</div>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold">Concurred by:</div>
-                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-manager">General Manager</div>
-                                                <div class="text-[7.5px] text-gray-600 text-center w-44">General Manager</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- PERFORATED TEAR-OFF DIVIDER -->
-                                <div class="my-3 form13-perforated-border text-center">
-                                    <span class="bg-white px-2 text-[8px] font-bold text-red-600 uppercase tracking-widest">
-                                        Gupitin Dito / Perforated Customer Claim Stub
-                                    </span>
-                                </div>
-
-                                <!-- CUSTOMER CLAIM STUB IN FILIPINO (Bottom Section) -->
-                                <div class="p-2 border border-red-300 rounded bg-red-50/20 text-[9px] space-y-1.5">
-                                    <div class="text-red-600 font-bold leading-tight">
-                                        <div class="text-[10px] font-black uppercase tracking-tight">Mahal Naming Mga Kustomer,</div>
-                                        <div class="text-[8px] font-normal leading-snug text-red-700 mt-0.5">
-                                            Para sa inyong seguridad at kapakinabangan ng lahat, pinapayuhan po namin kayong kunin ang lahat ng mahahalagang gamit mula sa inyong sasakyan bago ito ipagkatiwala sa aming mga kawani. Malaki po ang maitutulong ng inyong kooperasyon upang masiguro namin ang mahusay na serbisyo.
-                                        </div>
-                                        <div class="text-[8px] font-normal mt-0.5 text-red-700">Maraming salamat po sa inyong patuloy na suporta.</div>
-                                        <div class="text-[8.5px] font-black mt-0.5 text-red-800">Ang Pamunuan</div>
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-3 pt-1 border-t border-red-200">
-                                        <div class="space-y-1">
-                                            <div><span class="font-bold">Name :</span> <span id="f13-stub-live-name" class="font-semibold underline"></span></div>
-                                            <div><span class="font-bold">Service Advisor :</span> <span id="f13-stub-live-sa" class="font-semibold underline">Manny Sarol</span></div>
-                                            <div><span class="font-bold">Date:</span> <span id="f13-stub-live-date" class="font-semibold underline">2026-09-08</span></div>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <div><span class="font-bold">Plate No./Year/Model :</span> <span id="f13-stub-live-plate-model" class="font-bold underline font-mono"></span></div>
-                                            <div><span class="font-bold">Contact :</span> <span class="font-semibold">09458757441 / 09525065084 - VIBER</span></div>
-                                            <div><span class="font-bold text-red-600">Claim Stub :</span> <span id="f13-stub-live-id" class="font-mono font-black text-red-600 underline">CS-8821</span></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="text-center italic text-[7.5px] text-gray-600 pt-0.5">
-                                        (Please present this to our Service Advisor to claim required documents for the release of your vehicle)
-                                    </div>
-
-                                    <div class="flex items-center justify-between pt-1 border-t border-gray-200">
-                                        <div class="font-black text-[8px] uppercase tracking-wider text-gray-800">
-                                            THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!
-                                        </div>
-                                        <div class="text-right text-[7.5px] text-gray-700 leading-tight">
-                                            <div class="font-bold">Hontech Auto Center, Inc</div>
-                                            <div>70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City</div>
-                                            <div>Tel #: (8)564-4550 / 71219124</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
                     </div>
-
+                    </div>
                 </div>
-                     <!-- =========================================================================
+<!-- =========================================================================
+                     SHEET VIEW 2: Quotation_No (Interactive Quotation Studio & 2025 Excel Canvas)
+                     ========================================================================= -->
+                <div id="view-sheet-quote" class="space-y-4 hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                        <!-- LEFT COLUMN: SA QUOTATION SMART INTERACTIVE EDITOR -->
+                        <div id="form23-editor-pane" class="xl:col-span-6 space-y-5">
+                            
+                            <!-- Quotation Header & Actions Bar -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                            <i data-lucide="calculator" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Quotation Studio (Quotation_No)</h2>
+                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Sheet 2 Active
+                                                </span>
+                                            </div>
+                                            <p class="text-xs text-gray-500 font-medium">Service Quotation Specification & Cost Estimator</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quick Actions -->
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
+                                        </button>
+                                        <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                                        </button>
+                                        <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Quotation Meta Fields -->
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation No.</label>
+                                        <input type="text" id="f23-input-quote-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none transition" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Date</label>
+                                        <input type="date" id="f23-input-date" onchange="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
+                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer & Vehicle Dossier (Two-Way Synced with Job Order) -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                        <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i> Customer & Vehicle Details
+                                    </h3>
+                                    <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
+                                        <input type="text" id="f23-input-name" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Full Customer Name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
+                                        <input type="text" id="f23-input-plate" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-800 focus:border-blue-500 outline-none transition" placeholder="ABC-1234">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
+                                        <input type="text" id="f23-input-address" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Street, City">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Make / Model</label>
+                                        <input type="text" id="f23-input-model" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. 2021 Toyota Vios 1.3">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact Number</label>
+                                        <input type="text" id="f23-input-contact" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="09XX-XXX-XXXX">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
+                                        <input type="text" id="f23-input-color" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. Silver">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quotation Line Items (Parts, Labor & Materials) -->
+                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                    <div>
+                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Quotation Line Items & Scope (Rows 17–52)
+                                        </h3>
+                                        <p class="text-[11px] text-gray-500">Add service jobs, replacement parts, or package estimates</p>
+                                    </div>
+                                    <button type="button" onclick="addForm23ItemRow()" class="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
+                                    </button>
+                                </div>
+
+                                <!-- Preset Packages -->
+                                <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                                    <span class="font-bold text-gray-400 uppercase text-[10px]">Presets:</span>
+                                    <button type="button" onclick="applyQuotePreset('pms')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">PMS 10K Package</button>
+                                    <button type="button" onclick="applyQuotePreset('brakes')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Brake Overhaul</button>
+                                    <button type="button" onclick="applyQuotePreset('aircon')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Aircon Cleaning</button>
+                                    <button type="button" onclick="applyQuotePreset('underchassis')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Underchassis Rebuild</button>
+                                </div>
+
+                                <!-- Items Table -->
+                                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                                    <table class="w-full text-left text-xs border-collapse">
+                                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold uppercase text-[10px]">
+                                            <tr>
+                                                <th class="py-2.5 px-3 w-10 text-center">#</th>
+                                                <th class="py-2.5 px-3">Description / Scope of Work</th>
+                                                <th class="py-2.5 px-2 w-16 text-center">Qty</th>
+                                                <th class="py-2.5 px-3 w-28 text-right">Unit Price (₱)</th>
+                                                <th class="py-2.5 px-3 w-28 text-right">Total (₱)</th>
+                                                <th class="py-2.5 px-2 w-10 text-center"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="f23-quote-items-tbody" class="divide-y divide-gray-100 bg-white">
+                                            <!-- Dynamically rendered -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Quotation Totals Summary Card -->
+                                <div class="bg-slate-900 text-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                                    <div>
+                                        <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Total Quotation Estimate</div>
+                                        <div class="text-xs text-slate-400 mt-0.5">Includes parts, materials & labor scope</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-black text-emerald-400 font-mono" id="f23-grand-total">₱0.00</div>
+                                        <div class="text-[10px] text-slate-400">Official HonTech 2025 Pricing</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                                <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
+                        <div id="form23-canvas-pane" class="xl:col-span-6 space-y-3">
+                            <!-- Control Bar -->
+                            <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-gray-800 flex items-center gap-1.5">
+                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-blue-600"></i>
+                                        <span class="font-black text-gray-900">Quotation_No (Official PDF View)</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf" target="_blank" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
+                                    </a>
+                                    <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf" download="Current_2025_Quotation_No.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+                                    </a>
+                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- PDF Format View Container -->
+                            <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
+                                <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- =========================================================================
                  SHEET VIEW 3: Billing_No (Interactive Billing & Invoice Studio)
                  ========================================================================= -->
             <div id="view-sheet-billing" class="space-y-4 hidden">
@@ -3539,92 +3287,35 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC BILLING PHYSICAL CANVAS -->
-                    <div id="billing-canvas-pane" class="xl:col-span-6 bg-slate-100 border border-gray-300 rounded-2xl p-4 sm:p-6 shadow-inner overflow-x-auto">
-                        <div id="billing-canvas-sheet" class="bg-white border border-black p-6 mx-auto shadow-md text-black font-sans" style="width: 100%; max-width: 680px; min-height: 840px; font-size: 10px;">
-                            <!-- Canvas Header -->
-                            <div class="flex items-start justify-between border-b-2 border-black pb-3 mb-3">
-                                <div>
-                                    <h1 class="text-base font-black uppercase tracking-tight text-black">HONTECH AUTOCENTER</h1>
-                                    <p class="text-[9px] text-gray-600 font-semibold">Specialist in Precision Automotive Service & Overhaul</p>
-                                    <p class="text-[8.5px] text-gray-500">Marikina City · Contact: (02) 8645-8821 / 0917-882-9912</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="inline-block border-2 border-black px-3 py-1 font-mono font-black text-xs uppercase bg-gray-50">
-                                        BILLING INVOICE
-                                    </div>
-                                    <div class="mt-1 text-[9px] font-bold">
-                                        <div>NO: <span id="cv-bill-no" class="font-mono text-purple-800">BL-2026-0001</span></div>
-                                        <div>DATE: <span id="cv-bill-date" class="font-mono">2026-09-17</span></div>
-                                        <div>JO REF: <span id="cv-bill-job" class="font-mono">HT-JO-0001</span></div>
-                                    </div>
-                                </div>
+                    <div id="billing-canvas-pane" class="xl:col-span-6 space-y-3">
+                        <!-- Control Bar -->
+                        <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
+                                    <i data-lucide="receipt" class="w-4 h-4 text-purple-600"></i>
+                                    <span class="font-black text-gray-900">Billing_No (Official PDF View)</span>
+                                </span>
                             </div>
-
-                            <!-- Customer & Vehicle Info Grid -->
-                            <div class="border border-black mb-3 text-[9px]">
-                                <div class="grid grid-cols-2 border-b border-black">
-                                    <div class="p-1.5 border-r border-black"><strong>BILLED TO:</strong> <span id="cv-bill-customer-name" class="font-bold">Juan Dela Cruz</span></div>
-                                    <div class="p-1.5"><strong>PLATE NO:</strong> <span id="cv-bill-plate" class="font-mono font-bold uppercase">NDG 4721</span></div>
-                                </div>
-                                <div class="grid grid-cols-2 border-b border-black">
-                                    <div class="p-1.5 border-r border-black"><strong>ADDRESS:</strong> <span id="cv-bill-address">Marikina City</span></div>
-                                    <div class="p-1.5"><strong>MODEL:</strong> <span id="cv-bill-model">Honda Civic</span></div>
-                                </div>
-                                <div class="grid grid-cols-2">
-                                    <div class="p-1.5 border-r border-black"><strong>CONTACT:</strong> <span id="cv-bill-contact">0917-123-4567</span></div>
-                                    <div class="p-1.5"><strong>ODOMETER:</strong> <span id="cv-bill-km" class="font-mono">45,000 KM</span></div>
-                                </div>
-                            </div>
-
-                            <!-- Invoice Line Items Table -->
-                            <table class="w-full border border-black text-[9px] mb-3">
-                                <thead>
-                                    <tr class="bg-gray-100 border-b border-black font-bold">
-                                        <th class="p-1.5 text-left border-r border-black">ITEM DESCRIPTION / PARTICULARS</th>
-                                        <th class="p-1.5 text-center border-r border-black w-12">QTY</th>
-                                        <th class="p-1.5 text-right border-r border-black w-24">UNIT PRICE</th>
-                                        <th class="p-1.5 text-right w-24">AMOUNT (₱)</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cv-bill-table-body">
-                                    <!-- Rendered dynamically -->
-                                </tbody>
-                            </table>
-
-                            <!-- Canvas Summary -->
-                            <div class="flex justify-end mb-4">
-                                <div class="w-64 border border-black text-[9.5px]">
-                                    <div class="flex justify-between p-1.5 border-b border-gray-300">
-                                        <span>Subtotal:</span>
-                                        <span id="cv-bill-subtotal" class="font-mono font-bold">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between p-1.5 border-b border-gray-300">
-                                        <span>Discount:</span>
-                                        <span id="cv-bill-discount" class="font-mono font-bold">₱0.00</span>
-                                    </div>
-                                    <div class="flex justify-between p-2 bg-gray-100 font-black text-xs">
-                                        <span>GRAND TOTAL:</span>
-                                        <span id="cv-bill-grand-total" class="font-mono text-purple-900">₱0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Signatories -->
-                            <div class="grid grid-cols-2 gap-8 pt-4 border-t border-black text-[8.5px]">
-                                <div class="text-center">
-                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase" id="cv-bill-sa-sig">Service Advisor</div>
-                                    <div class="text-gray-500">Prepared & Billed By</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase">Customer Acceptance</div>
-                                    <div class="text-gray-500">Conforme / Customer Signature</div>
-                                </div>
+                            <div class="flex items-center gap-2">
+                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf" target="_blank" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
+                                </a>
+                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf" download="Current_2025_Billing_No.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+                                </a>
+                                <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                </button>
                             </div>
                         </div>
+
+                        <!-- PDF Format View Container -->
+                        <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
+                            <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
+                        </div>
+                    </div>
                     </div>
                 </div>
-            </div>
-
             <!-- =========================================================================
                  SHEET VIEW 4: CheckList_Result (Interactive Multi-Point Inspection Studio)
                  ========================================================================= -->
@@ -3727,79 +3418,35 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC CHECKLIST PHYSICAL CANVAS -->
-                    <div id="checklist-canvas-pane" class="xl:col-span-6 bg-slate-100 border border-gray-300 rounded-2xl p-4 sm:p-6 shadow-inner overflow-x-auto">
-                        <div id="checklist-canvas-sheet" class="bg-white border border-black p-6 mx-auto shadow-md text-black font-sans" style="width: 100%; max-width: 680px; min-height: 840px; font-size: 10px;">
-                            <!-- Canvas Header -->
-                            <div class="flex items-start justify-between border-b-2 border-black pb-3 mb-3">
-                                <div>
-                                    <h1 class="text-base font-black uppercase tracking-tight text-black">HONTECH AUTOCENTER</h1>
-                                    <p class="text-[9px] text-gray-600 font-semibold">Vehicle Multi-Point Receiving Inspection & Inventory Report</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="inline-block border-2 border-black px-3 py-1 font-mono font-black text-xs uppercase bg-gray-50">
-                                        CHECKLIST RESULT
-                                    </div>
-                                    <div class="mt-1 text-[9px] font-bold">
-                                        <div>DATE: <span id="cv-chk-date" class="font-mono">2026-09-17</span></div>
-                                        <div>PLATE: <span id="cv-chk-plate" class="font-mono uppercase font-bold">NDG 4721</span></div>
-                                    </div>
-                                </div>
+                    <div id="checklist-canvas-pane" class="xl:col-span-6 space-y-3">
+                        <!-- Control Bar -->
+                        <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
+                                    <i data-lucide="check-square" class="w-4 h-4 text-amber-600"></i>
+                                    <span class="font-black text-gray-900">CheckList_Result (Official PDF View)</span>
+                                </span>
                             </div>
-
-                            <!-- Vehicle & Owner Summary -->
-                            <div class="grid grid-cols-3 border border-black mb-3 text-[9px]">
-                                <div class="p-1.5 border-r border-black"><strong>CUSTOMER:</strong> <span id="cv-chk-name">Juan Dela Cruz</span></div>
-                                <div class="p-1.5 border-r border-black"><strong>VEHICLE / MODEL:</strong> <span id="cv-chk-model">Honda Civic</span></div>
-                                <div class="p-1.5"><strong>MILEAGE:</strong> <span id="cv-chk-km" class="font-mono">45,000 KM</span></div>
-                            </div>
-
-                            <!-- Fuel Status Visual Bar -->
-                            <div class="border border-black p-2 mb-3 bg-gray-50 flex items-center justify-between text-[9px]">
-                                <span class="font-bold uppercase">RECEIVING FUEL LEVEL:</span>
-                                <div class="flex items-center gap-3 font-mono font-bold">
-                                    <span id="cv-fuel-E" class="px-2 py-0.5 border border-black rounded">E</span>
-                                    <span id="cv-fuel-14" class="px-2 py-0.5 border border-black rounded">1/4</span>
-                                    <span id="cv-fuel-12" class="px-2 py-0.5 border border-black rounded bg-black text-white">1/2</span>
-                                    <span id="cv-fuel-34" class="px-2 py-0.5 border border-black rounded">3/4</span>
-                                    <span id="cv-fuel-F" class="px-2 py-0.5 border border-black rounded">F</span>
-                                </div>
-                            </div>
-
-                            <!-- Checkpoints Results Table -->
-                            <table class="w-full border border-black text-[8.5px] mb-3">
-                                <thead>
-                                    <tr class="bg-gray-100 border-b border-black font-bold">
-                                        <th class="p-1.5 text-left border-r border-black">INSPECTION CHECKPOINT</th>
-                                        <th class="p-1.5 text-center border-r border-black w-24">STATUS</th>
-                                        <th class="p-1.5 text-left">INSPECTION NOTES</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cv-chk-table-body">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-
-                            <!-- Remarks Box -->
-                            <div class="border border-black p-2 mb-4 text-[9px]">
-                                <div class="font-bold text-gray-700 uppercase mb-1">Inspector General Remarks:</div>
-                                <div id="cv-chk-remarks" class="italic text-gray-800">Standard 45-point vehicle intake inspection cleared.</div>
-                            </div>
-
-                            <!-- Signatories -->
-                            <div class="grid grid-cols-2 gap-8 pt-4 border-t border-black text-[8.5px]">
-                                <div class="text-center">
-                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase" id="cv-chk-inspector">Service Advisor / Inspector</div>
-                                    <div class="text-gray-500">Vehicle Inspected By</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase">Customer Sign-off</div>
-                                    <div class="text-gray-500">Acknowledged Initial Vehicle Condition</div>
-                                </div>
+                            <div class="flex items-center gap-2">
+                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf" target="_blank" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
+                                </a>
+                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf" download="Current_2025_CheckList_Result.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
+                                </a>
+                                <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                </button>
                             </div>
                         </div>
+
+                        <!-- PDF Format View Container -->
+                        <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
+                            <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-            </div>
-            
             
             <!-- GOOGLE SHEETS AUTHENTIC WORKBOOK BOTTOM BAR -->
             <div id="form-workbook-bottom-bar" class="sticky bottom-0 z-30 bg-[#f8f9fa] border-t border-[#dadce0] px-2 py-1 flex items-center justify-between gap-2 shadow-md mt-6 select-none font-sans">
@@ -3850,277 +3497,6 @@
             </div>
 
             
-                <!-- =========================================================================
-                     SHEET VIEW 2: Quotation_No (Interactive Quotation Studio & 2025 Excel Canvas)
-                     ========================================================================= -->
-                <div id="view-sheet-quote" class="space-y-4 hidden">
-                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-
-                        <!-- LEFT COLUMN: SA QUOTATION SMART INTERACTIVE EDITOR -->
-                        <div id="form23-editor-pane" class="xl:col-span-6 space-y-5">
-                            
-                            <!-- Quotation Header & Actions Bar -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
-                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                                            <i data-lucide="calculator" class="w-5 h-5"></i>
-                                        </div>
-                                        <div>
-                                            <div class="flex items-center gap-2">
-                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Quotation Studio (Quotation_No)</h2>
-                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Sheet 2 Active
-                                                </span>
-                                            </div>
-                                            <p class="text-xs text-gray-500 font-medium">Service Quotation Specification & Cost Estimator</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Quick Actions -->
-                                    <div class="flex flex-wrap items-center gap-1.5">
-                                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
-                                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
-                                        </button>
-                                        <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
-                                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
-                                        </button>
-                                        <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
-                                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Quotation Meta Fields -->
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation No.</label>
-                                        <input type="text" id="f23-input-quote-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none transition" readonly>
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Date</label>
-                                        <input type="date" id="f23-input-date" onchange="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
-                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Customer & Vehicle Dossier (Two-Way Synced with Job Order) -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                        <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i> Customer & Vehicle Details
-                                    </h3>
-                                    <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
-                                        <input type="text" id="f23-input-name" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Full Customer Name">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
-                                        <input type="text" id="f23-input-plate" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-800 focus:border-blue-500 outline-none transition" placeholder="ABC-1234">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
-                                        <input type="text" id="f23-input-address" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Street, City">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Make / Model</label>
-                                        <input type="text" id="f23-input-model" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. 2021 Toyota Vios 1.3">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact Number</label>
-                                        <input type="text" id="f23-input-contact" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="09XX-XXX-XXXX">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
-                                        <input type="text" id="f23-input-color" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. Silver">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Quotation Line Items (Parts, Labor & Materials) -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                                    <div>
-                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Quotation Line Items & Scope (Rows 17–52)
-                                        </h3>
-                                        <p class="text-[11px] text-gray-500">Add service jobs, replacement parts, or package estimates</p>
-                                    </div>
-                                    <button type="button" onclick="addForm23ItemRow()" class="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition flex items-center gap-1 cursor-pointer">
-                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
-                                    </button>
-                                </div>
-
-                                <!-- Preset Packages -->
-                                <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
-                                    <span class="font-bold text-gray-400 uppercase text-[10px]">Presets:</span>
-                                    <button type="button" onclick="applyQuotePreset('pms')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">PMS 10K Package</button>
-                                    <button type="button" onclick="applyQuotePreset('brakes')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Brake Overhaul</button>
-                                    <button type="button" onclick="applyQuotePreset('aircon')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Aircon Cleaning</button>
-                                    <button type="button" onclick="applyQuotePreset('underchassis')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Underchassis Rebuild</button>
-                                </div>
-
-                                <!-- Items Table -->
-                                <div class="overflow-x-auto rounded-xl border border-gray-200">
-                                    <table class="w-full text-left text-xs border-collapse">
-                                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold uppercase text-[10px]">
-                                            <tr>
-                                                <th class="py-2.5 px-3 w-10 text-center">#</th>
-                                                <th class="py-2.5 px-3">Description / Scope of Work</th>
-                                                <th class="py-2.5 px-2 w-16 text-center">Qty</th>
-                                                <th class="py-2.5 px-3 w-28 text-right">Unit Price (₱)</th>
-                                                <th class="py-2.5 px-3 w-28 text-right">Total (₱)</th>
-                                                <th class="py-2.5 px-2 w-10 text-center"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="f23-quote-items-tbody" class="divide-y divide-gray-100 bg-white">
-                                            <!-- Dynamically rendered -->
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <!-- Quotation Totals Summary Card -->
-                                <div class="bg-slate-900 text-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
-                                    <div>
-                                        <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Total Quotation Estimate</div>
-                                        <div class="text-xs text-slate-400 mt-0.5">Includes parts, materials & labor scope</div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-2xl font-black text-emerald-400 font-mono" id="f23-grand-total">₱0.00</div>
-                                        <div class="text-[10px] text-slate-400">Official HonTech 2025 Pricing</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                                                <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
-                        <div id="form23-canvas-pane" class="xl:col-span-6 space-y-3">
-                            
-                            <!-- Control Bar -->
-                            <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i>
-                                        <span class="font-black text-gray-900">Quotation_No (Form 2/3 1:1 Official Document View)</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <button type="button" onclick="window.print()" class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Document
-                                    </button>
-                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
-                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- 1:1 Physical Document Paper Sheet (Form 2/3 Official Sheet Design) -->
-                            <div class="w-full bg-white rounded-2xl border-2 border-gray-400 overflow-hidden shadow-xl p-5 font-sans text-gray-900 text-[10px] leading-tight space-y-3 min-h-[920px]">
-                                
-                                <!-- Document Header (Top Grid) -->
-                                <div class="border-2 border-black p-2.5 space-y-2">
-                                    <div class="flex items-start justify-between gap-3 border-b-2 border-black pb-2">
-                                        <div class="flex items-center gap-2.5">
-                                            <img src="assets/HonTech_Logo_Transp.png" alt="HonTech" class="w-14 h-14 object-contain" onerror="this.src='Hontech Documentation/HonTech-Icon.png'">
-                                            <div>
-                                                <div class="font-black text-sm tracking-tight uppercase text-black">HONTECH AUTO CENTER, INC.</div>
-                                                <div class="text-[9px] font-bold text-gray-700">70 Bayan Bayanan Ave. cor Narra St., Marikina Heights, Marikina City</div>
-                                                <div class="text-[9px] font-bold text-gray-600">Tel #: (8)564-4550 / 7121-9124 | Mobile/Viber: 0945-875-7441 / 0952-506-5084</div>
-                                            </div>
-                                        </div>
-                                        <div class="text-right border-l-2 border-black pl-3 shrink-0">
-                                            <div class="font-black text-xs text-red-600 uppercase tracking-wider">FORM 2/3</div>
-                                            <div class="font-black text-sm text-black uppercase tracking-tight">QUOTATION</div>
-                                            <div class="font-mono font-bold text-[10.5px] mt-0.5 text-black" id="canvas-q-quote-no">QT-2026-0001</div>
-                                            <div class="text-[9.5px] font-bold text-gray-700 mt-0.5" id="canvas-q-date">DATE: 2026-09-15</div>
-                                            <div class="text-[9px] font-mono font-bold text-gray-600" id="canvas-q-job-ref">RO REF: HT-JO-0001</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Customer & Vehicle Excel-Grid Table -->
-                                    <div class="grid grid-cols-12 border border-black text-[9.5px]">
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">CUSTOMER NAME:</div>
-                                        <div class="col-span-5 font-bold p-1 border-r border-b border-black text-black" id="canvas-q-name">JUAN DELA CRUZ</div>
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">PLATE NO.:</div>
-                                        <div class="col-span-3 font-mono font-black p-1 border-b border-black text-black" id="canvas-q-plate">ABC-1234</div>
-
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">ADDRESS:</div>
-                                        <div class="col-span-5 p-1 border-r border-b border-black" id="canvas-q-address">Marikina City</div>
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-b border-black">MODEL / YEAR:</div>
-                                        <div class="col-span-3 font-semibold p-1 border-b border-black" id="canvas-q-model">2021 Toyota Vios</div>
-
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-black">CONTACT NO.:</div>
-                                        <div class="col-span-5 p-1 border-r border-black" id="canvas-q-contact">0917-123-4567</div>
-                                        <div class="col-span-2 bg-gray-100 font-bold p-1 border-r border-black">BODY COLOR:</div>
-                                        <div class="col-span-3 p-1" id="canvas-q-color">Silver</div>
-                                    </div>
-                                </div>
-
-                                <!-- 30-Row Quotation Line Items Grid (Exact Excel Replica) -->
-                                <div class="border-2 border-black">
-                                    <table class="w-full text-left text-[9.5px] border-collapse">
-                                        <thead class="bg-gray-200 border-b-2 border-black text-black font-black uppercase text-[9px] text-center">
-                                            <tr>
-                                                <th class="py-1 px-1.5 w-7 border-r border-black">#</th>
-                                                <th class="py-1 px-2 border-r border-black text-left">DESCRIPTION OF WORK / REPLACEMENT PARTS & MATERIALS</th>
-                                                <th class="py-1 px-1 w-12 border-r border-black">QTY</th>
-                                                <th class="py-1 px-2 w-20 border-r border-black text-right">UNIT PRICE</th>
-                                                <th class="py-1 px-2 w-24 text-right">AMOUNT (₱)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="canvas-q-items-tbody" class="divide-y divide-gray-300">
-                                            <!-- Dynamically filled with full 20-30 rows to preserve authentic paper aspect ratio -->
-                                        </tbody>
-                                        <tfoot class="border-t-2 border-black font-bold">
-                                            <tr class="bg-gray-100 border-b border-black">
-                                                <td colspan="4" class="py-1 px-2 text-right uppercase font-black text-[9px] border-r border-black">TOTAL PARTS & MATERIALS ESTIMATE:</td>
-                                                <td class="py-1 px-2 text-right font-mono font-bold" id="canvas-q-parts-subtotal">₱0.00</td>
-                                            </tr>
-                                            <tr class="bg-gray-100 border-b border-black">
-                                                <td colspan="4" class="py-1 px-2 text-right uppercase font-black text-[9px] border-r border-black">TOTAL LABOR & SERVICE CHARGES:</td>
-                                                <td class="py-1 px-2 text-right font-mono font-bold" id="canvas-q-labor-subtotal">₱0.00</td>
-                                            </tr>
-                                            <tr class="bg-gray-200 text-black font-black text-[11px]">
-                                                <td colspan="4" class="py-1.5 px-2 text-right uppercase tracking-wider border-r border-black">GRAND TOTAL ESTIMATE (VAT INCLUSIVE):</td>
-                                                <td class="py-1.5 px-2 text-right font-mono text-xs text-blue-900" id="canvas-q-total">₱0.00</td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-
-                                <!-- Official Terms, Warranty & Disclaimers -->
-                                <div class="border border-black p-2 bg-gray-50 text-[8.5px] space-y-1">
-                                    <div class="font-black uppercase text-black text-[9px]">TERMS, CONDITIONS & WARRANTY:</div>
-                                    <p>1. This quotation is valid for <strong>15 days</strong> from the date of issuance.</p>
-                                    <p>2. The details of the estimate provided above are based on initial inspection. Should additional parts or labor be discovered necessary during disassembly, a supplementary quotation will be submitted for customer approval prior to execution.</p>
-                                    <p>3. To avail warranty on parts & labor, owner-supplied parts are discouraged; otherwise a 25% surcharge applies on installation warranty.</p>
-                                </div>
-
-                                <!-- Signatures & Claim Stub (Bottom Perforation) -->
-                                <div class="grid grid-cols-2 gap-4 border-2 border-black p-2.5 text-[9px]">
-                                    <div class="text-center space-y-4">
-                                        <div class="text-[8.5px] text-gray-500 font-bold uppercase">Prepared & Estimated by:</div>
-                                        <div class="border-b border-black pt-4 font-black uppercase" id="canvas-q-sa">ROMAN SAROL (SERVICE ADVISOR)</div>
-                                        <div class="text-[8px] text-gray-500">Authorized HonTech Representative</div>
-                                    </div>
-                                    <div class="text-center space-y-4">
-                                        <div class="text-[8.5px] text-gray-500 font-bold uppercase">Conforme / Customer Approval:</div>
-                                        <div class="border-b border-black pt-4 font-black uppercase text-transparent">X</div>
-                                        <div class="text-[8px] text-gray-500">Customer Signature Over Printed Name / Date</div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -7993,7 +7369,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.31"></script>
+    <script src="js/app.js?v=2.32"></script>
 </body>
 
 </html>

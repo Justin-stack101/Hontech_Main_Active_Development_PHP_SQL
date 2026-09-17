@@ -133,12 +133,13 @@ Every operational screen in HonTech belongs to one of these 11 integrated sectio
 │                    │                             │ • #modal-backjob-reason (Odometer & Return Details) │
 ├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
 │ #section-form13    │ 2025 RO Excel Studio        │ • 100% Offline-First SheetJS (xlsx.full.min.js)     │
-│                    │                             │ • Sheet 1: Job Order (Official Client Form 1/3)     │
-│                    │                             │ • Sheet 2: Quotation Studio (Official Form 2/3)     │
-│                    │                             │ • Sheet 3: Billing Invoice with 12% BIR VAT Engine  │
-│                    │                             │ • Sheet 4: Multi-Point Vehicle Inspection Checklist │
-│                    │                             │ • Sheet 5: Cash Advance Ledger & Cumulative Balance │
-│                    │                             │ • Sheets 6-10: OEF, Liquidation, Disbursement, etc. │
+│                    │                             │ • Top 4-Tab Bar & Official PDF Preview Sidebars     │
+│                    │                             │ • Sheet 1: Job_Order (Form 1/3 & Claim Stub)        │
+│                    │                             │ • Sheet 2: Quotation_No (Parts/Labor Estimator)     │
+│                    │                             │ • Sheet 3: Billing_No (Official Invoice Engine)     │
+│                    │                             │ • Sheet 4: CheckList_Result (15-Point Inspection)   │
+│                    │                             │ • Official PDF format sidebars (no keystroke lag)   │
+│                    │                             │ • Reactive vehicle dossier sync & 1-click .xlsx     │
 ├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
 │ #section-bays      │ Workshop Floor & Bays Grid  │ • Admin Max Bay Ceiling Slider (2 to 50 bays)       │
 │                    │                             │ • SA Daily Active Bay Selector (1 to Admin Ceiling) │

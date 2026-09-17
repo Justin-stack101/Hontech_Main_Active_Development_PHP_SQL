@@ -48,6 +48,9 @@ npm.cmd run test:security
 | **AUT-FRONT-16** | TV Monitor Hub | Verify modal-tv-broadcast-hub exists in DOM and openTVBroadcastHubModal is callable | Confirms presence of TV Display Hub modal in DOM with wireless Smart TV, HDMI, and launch actions. |
 | **AUT-FRONT-17** | Top Tab Selection | Verify form-top-tab-bar has strictly 4 authentic SA tabs with carets | Confirms top tab bar renders `Job_Order ▾`, `Quotation_No ▾`, `Billing_No ▾`, `CheckList_Result ▾` with active style switching. |
 | **AUT-FRONT-18** | Template Migration | Verify Current_2025 BLANK RO UPDATED template integration and zero Polished_2025 references | Confirms template file switch, base64 embed in app.js, and zero residual references to obsolete Polished_2025. |
+| **AUT-FRONT-19** | Official PDF Assets | Verify all 3 official PDF worksheet templates exist in frontend/assets/ | Confirms `Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf`, `Billing_No.pdf`, and `CheckList_Result.pdf` exist with valid file sizes. |
+| **AUT-FRONT-20** | PDF Format Sidebars | Verify PDF iframe format view sidebars in Job Order, Quotation, Billing, and Checklist | Confirms responsive right-column embedded PDF viewers are wired to official documents with Full PDF, Download, and Export actions. |
+| **AUT-FRONT-21** | Keystroke Overhead | Verify keystroke HTML sheet simulation is completely removed from index.html and app.js | Confirms removal of heavy simulated HTML canvas spans and keystroke DOM rerenders for zero typing latency. |
 
 ---
 

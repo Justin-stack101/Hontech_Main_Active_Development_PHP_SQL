@@ -4,7 +4,26 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (TV Monitor Natural Trigger, Top 4-Tab Bar, Reactive Auto-Fill & Current_2025 Template Sync)
+## 📅 September 17, 2026 (Official PDF Format Preview Sidebars, Purge Keystroke HTML Canvas & Zero-Latency Reactive Input Sync)
+
+### 📄 Official PDF Format Preview Sidebars & Purge Keystroke HTML Canvas (REV-074 / v5.74)
+* **Official PDF Format Preview Sidebars across All Worksheets**:
+  - Embedded high-fidelity responsive PDF format viewers in the right preview sidebar for all 4 worksheets using the newly provided official assets:
+    - `Job_Order`: `assets/form13_template.pdf`
+    - `Quotation_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf`
+    - `Billing_No`: `assets/Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf`
+    - `CheckList_Result`: `assets/Current_2025 BLANK RO UPDATED.xlsx - CheckList_Result.pdf`
+  - Added dedicated preview action toolbars with "Full PDF" (`target="_blank"`), "Download PDF" (`download`), and "Export .xlsx" triggers.
+* **Purge of Keystroke Sheet HTML Canvas Overhead**:
+  - Removed simulated keystroke HTML document sheets (`#f13-html-canvas-wrap`, `#billing-canvas-sheet`, `#checklist-canvas-sheet`) and hundreds of unnecessary span tags that triggered expensive DOM redraw loops on every keypress.
+  - Streamlined `onReactiveJobOrderInput` to focus exclusively on zero-latency input field cross-synchronization and `localStorage` offline draft persistence.
+* **Ordered Worksheet DOM Architecture**:
+  - Re-ordered sheet views in DOM sequentially: `view-sheet-form13` -> `view-sheet-quote` -> `view-sheet-billing` -> `view-sheet-checklist`, followed by `form-workbook-bottom-bar`.
+  - Removed 820+ lines of duplicate and dead HTML canvas markup.
+* **Automated Test Expansion (Suite 7)**:
+  - Added Suite 7 (`AUT-FRONT-19`, `AUT-FRONT-20`, `AUT-FRONT-21`) in `tests/frontend/sla_and_logic.test.js`.
+  - Total automated assertions increased from 33 to **36/36 tests passing** in ~1.7s.
+  - Cache buster bumped to `v=2.32`.
 
 ### 📺 TV Monitor Natural Trigger, Top 4-Tab Bar, Reactive Auto-Fill & Current_2025 Template Sync (REV-073 / v5.73)
 * **Natural TV Monitor Launch & Hub Restoration**:
