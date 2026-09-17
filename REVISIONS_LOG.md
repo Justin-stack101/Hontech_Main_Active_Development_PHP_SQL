@@ -4,7 +4,27 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (Documentation Reorganization, OpenXML Namespace Compliance & Lossless Excel Injection)
+## 📅 September 17, 2026 (1-Button RO Registration, Warranty Back-Job Sync, Documentation Reorganization & OpenXML Namespace Compliance)
+
+### 🚗 Service Advisor Unified Workflow — 1-Button RO Registration, Warranty Back-Job Sync & Intake Streamlining (REV-080 / v5.80)
+* **Single Source of Truth 1-Button Registration Architecture**:
+  - Implemented `registerStudioROToSystem()` in `frontend/js/app.js` and wired to `#btn-register-ro-top`, `#f13-btn-register-ro`, and `#f13-btn-push-bay`.
+  - Replaced disjointed queue push with a single unified action saving all 10 core fields (`name`, `address`, `contact`, `vehicle`, `km_reading`, `engine_no`, `plate`, `date_received`, `promised_date`, `color`) plus monitoring and warranty fields (`evaluation`, `concern`, `category`, `sa_name`, `is_backjob`, `parent_job_id`, `backjob_reason`).
+  - Synced payload via `POST /api/jobs` to central MySQL MariaDB, seamlessly refreshing `#container-daily-intakes`, Wireless Smart TV Monitor, and Customer History Registry without losing the SA's place in the Studio.
+* **Database Schema Migration & Backend Controller Support**:
+  - Enhanced `backend/migration.php` with columns `address`, `km_reading`, `engine_no`, `color`, `is_backjob`, `parent_job_id`, `backjob_reason`, and widened `source` to VARCHAR(50).
+  - Updated `backend/controllers/JobController.php` to handle all 10 fields, back-job attributes, and custom identifiers using prepared statements with parameter binding.
+* **Customer Lookup Roundtrip & Warranty Back-Job Handling**:
+  - Upgraded `buildCustomerLookupRegistry()` and search filter to match against Customer Name, License Plate, Engine Number, Contact Number, Vehicle Model, and Claim Stub ID.
+  - Added `loadCustomerIntoStudioForms()` supporting both returning regular customers and warranty back-jobs.
+  - Added dynamic `#f13-backjob-banner` in 2025 RO Excel Studio highlighting back-job return details and parent job reference, with `cancelStudioBackJobMode()`.
+* **Redundant Intake Form Retirement from SA Flow**:
+  - Retired the obsolete walk-in form (`#section-intake`) from the Service Advisor navigation bar and sidebar, establishing the 2025 RO Excel Studio as the exclusive vehicle intake engine.
+  - Retargeted bay allocation empty queue button from obsolete `intake` to `showSection('form13')`.
+* **Verification & Automated Testing**:
+  - Added Suite 11 (AUT-FRONT-31 to AUT-FRONT-35) in `tests/frontend/sla_and_logic.test.js`.
+  - All 50 tests pass across 20 suites with 0 failures (`npm.cmd test`).
+  - Cache buster incremented to `v=2.39` in `frontend/index.html`.
 
 ### 📁 Technical Documentation Organization & 7 Numbered Operational Subdirectories (REV-079 / v5.79)
 * **Technical Documentation Reorganization**:

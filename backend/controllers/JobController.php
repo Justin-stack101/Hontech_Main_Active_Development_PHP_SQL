@@ -100,6 +100,13 @@ class JobController
             'carryOverStatus'    => $job['carry_over_status'],
             'remarks'            => $job['remarks'],
             'saName'             => $job['sa_name'],
+            'address'            => $job['address'] ?? '',
+            'kmReading'          => !is_null($job['km_reading'] ?? null) ? (int)$job['km_reading'] : null,
+            'engineNo'           => $job['engine_no'] ?? '',
+            'color'              => $job['color'] ?? '',
+            'isBackjob'          => (bool)($job['is_backjob'] ?? false),
+            'parentJobId'        => $job['parent_job_id'] ?? null,
+            'backjobReason'      => $job['backjob_reason'] ?? '',
             'goalStatus'         => $job['goal_status'],
             'recommendation'     => $job['recommendation'],
             'recommendationNotes'=> $job['recommendation_notes'],
@@ -146,17 +153,28 @@ class JobController
         $source       = $input['source'] ?? 'Walk-in';
         $plate        = strtoupper(trim($input['plate'] ?? ''));
         $name         = trim($input['name'] ?? '');
+        $address      = trim($input['address'] ?? '');
         $contact      = $input['contact'] ?? '';
-        $vehicle      = trim($input['vehicle'] ?? '');
+        $vehicle      = trim($input['vehicle'] ?? ($input['model'] ?? ''));
+        $kmReading    = isset($input['kmReading']) ? (int)$input['kmReading'] : (isset($input['km']) ? (int)$input['km'] : null);
+        $engineNo     = trim($input['engineNo'] ?? ($input['engine'] ?? ''));
+        $color        = trim($input['color'] ?? '');
         $category     = $input['category'] ?? '';
         $concern      = $input['concern'] ?? '';
-        $dateReceived = $input['dateReceived'] ?? date('Y-m-d');
+        $evaluation   = trim($input['evaluation'] ?? ($input['diagnostic'] ?? ''));
+        $dateReceived = $input['dateReceived'] ?? ($input['intakeDate'] ?? date('Y-m-d'));
+        $promisedDate = !empty($input['promisedDate']) ? $input['promisedDate'] : (!empty($input['promiseDate']) ? $input['promiseDate'] : null);
         $arrival      = $input['arrival'] ?? '';
         $apptDate     = $input['apptDate'] ?? null;
         $apptTime     = $input['apptTime'] ?? '';
         $confirmed    = $input['confirmed'] ?? false;
         $branch       = $input['branch'] ?? 'Branch A';
         $laneType     = self::normalizeLaneType($input['laneType'] ?? null);
+        $isBackjob    = (!empty($input['isBackjob']) || !empty($input['is_backjob'])) ? 1 : 0;
+        $parentJobId  = !empty($input['parentJobId']) ? trim($input['parentJobId']) : (!empty($input['parent_job_id']) ? trim($input['parent_job_id']) : null);
+        $backjobReason= trim($input['backjobReason'] ?? ($input['backjob_reason'] ?? ''));
+        $customJobId  = !empty($input['jobId']) ? trim($input['jobId']) : (!empty($input['jobNo']) ? trim($input['jobNo']) : null);
+        $customSa     = trim($input['saName'] ?? ($input['sa'] ?? ''));
 
         if (empty($plate) || empty($name) || empty($vehicle) || empty($category)) {
             http_response_code(400);
@@ -165,20 +183,24 @@ class JobController
         }
 
         try {
-            $isWalkin = ($source === 'Walk-in');
+            $isWalkin = ($source === 'Walk-in' || $source === 'Studio Form' || $source === 'Returning' || $source === 'Back-Job');
             $prefix   = $isWalkin ? 'WLK-' : 'ONL-';
-            $jobId    = $prefix . random_int(1000, 9999);
+            $jobId    = $customJobId ?: ($prefix . random_int(1000, 9999));
 
             $finalArrival   = $arrival;
-            $claimStub      = '';
-            $initialStatus  = 'Pending';
+            $claimStub      = !empty($input['claimStub']) ? trim($input['claimStub']) : '';
+            $initialStatus  = !empty($input['status']) ? $input['status'] : 'Pending';
 
             if ($isWalkin) {
                 if (empty($finalArrival)) {
                     $finalArrival = date('H:i');
                 }
-                $claimStub     = self::generateStubNumber();
-                $initialStatus = 'Waiting';
+                if (empty($claimStub)) {
+                    $claimStub = self::generateStubNumber();
+                }
+                if ($initialStatus === 'Pending') {
+                    $initialStatus = 'Waiting';
+                }
             }
 
             // Branch assignment based on role
@@ -186,18 +208,24 @@ class JobController
                 ? ($branch ?: 'Branch A')
                 : ($user['branch'] ?: 'Branch A');
 
-            $saName = ($isWalkin && !empty($user['name'])) ? $user['name'] : '';
+            $saName = $customSa ?: (($isWalkin && !empty($user['name'])) ? $user['name'] : '');
 
             $db   = Database::getConnection();
             $stmt = $db->prepare(
-                'INSERT INTO jobs (job_id, source, plate, name, contact, vehicle, category, concern, lane_type, date_received, arrival, appt_date, appt_time, confirmed, claim_stub, status, branch, location, sa_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO jobs (
+                    job_id, source, plate, name, address, contact, vehicle, km_reading, engine_no, color,
+                    category, concern, evaluation, lane_type, date_received, promised_date, arrival,
+                    appt_date, appt_time, confirmed, claim_stub, status, is_backjob, parent_job_id,
+                    backjob_reason, branch, location, sa_name
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             );
             $stmt->execute([
-                $jobId, $source, $plate, $name, $contact, $vehicle, $category, $concern,
-                $laneType, $dateReceived, $finalArrival,
+                $jobId, $source, $plate, $name, $address, $contact, $vehicle, $kmReading, $engineNo, $color,
+                $category, $concern, $evaluation, $laneType, $dateReceived, $promisedDate, $finalArrival,
                 !empty($apptDate) ? $apptDate : null,
                 $apptTime, $confirmed ? 1 : 0, $claimStub,
-                $initialStatus, $finalBranch, 'None', $saName
+                $initialStatus, $isBackjob, $parentJobId, $backjobReason,
+                $finalBranch, 'None', $saName
             ]);
 
             $newId = $db->lastInsertId();

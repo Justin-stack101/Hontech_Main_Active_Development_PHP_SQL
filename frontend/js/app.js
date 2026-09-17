@@ -916,6 +916,90 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (window.lucide) window.lucide.createIcons();
         };
 
+        function loadCustomerIntoStudioForms(rawCustomerKey, isBackJob = false, parentJobId = null, reasonText = '', odo = '') {
+            if (!rawCustomerKey) return;
+            const decodedKey = decodeURIComponent(rawCustomerKey);
+            const cust = customerLookupRegistry[decodedKey] || customerLookupRegistry[rawCustomerKey];
+            if (!cust) {
+                showSystemToast('Customer record not found in registry.', 'error');
+                return;
+            }
+
+            // Populate the 10 core customer fields in Form 1/3 Studio
+            const nameEl = document.getElementById('f13-input-name');
+            const addressEl = document.getElementById('f13-input-address');
+            const contactEl = document.getElementById('f13-input-contact');
+            const vehicleEl = document.getElementById('f13-input-model');
+            const kmEl = document.getElementById('f13-input-km');
+            const engineEl = document.getElementById('f13-input-engine');
+            const plateEl = document.getElementById('f13-input-plate');
+            const colorEl = document.getElementById('f13-input-color');
+            const intakeDateEl = document.getElementById('f13-input-intake-date');
+            const catEl = document.getElementById('f13-input-category');
+            const concernEl = document.getElementById('f13-input-concern');
+
+            if (nameEl) nameEl.value = cust.name || '';
+            if (addressEl) addressEl.value = cust.address || '';
+            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
+            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
+            if (kmEl) kmEl.value = odo || cust.kmReading || '';
+            if (engineEl) engineEl.value = cust.engineNo || '';
+            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
+            if (colorEl) colorEl.value = cust.color || '';
+            if (intakeDateEl) intakeDateEl.value = new Date().toISOString().split('T')[0];
+
+            // Trigger zero-lag 1:1 cross-sheet auto-fill sync
+            if (typeof syncJobOrderFieldsToQuote === 'function') syncJobOrderFieldsToQuote();
+            if (typeof syncJobOrderFieldsToBilling === 'function') syncJobOrderFieldsToBilling();
+            if (typeof syncJobOrderFieldsToChecklist === 'function') syncJobOrderFieldsToChecklist();
+
+            // Handle Back-Job state
+            const banner = document.getElementById('f13-backjob-banner');
+            const parentRefEl = document.getElementById('f13-backjob-parent-ref');
+            const reasonEl = document.getElementById('f13-backjob-reason-text');
+
+            if (isBackJob) {
+                const targetRefId = parentJobId || (cust.jobs && cust.jobs[0]?.id) || 'PREV-JOB';
+                window.currentStudioBackJob = {
+                    isBackJob: 1,
+                    parentJobId: targetRefId,
+                    reason: reasonText || 'Warranty Back-Job Return'
+                };
+                if (banner) banner.classList.remove('hidden');
+                if (parentRefEl) parentRefEl.innerText = `Ref Job: #${targetRefId}`;
+                if (reasonEl) reasonEl.innerText = reasonText ? `Return Symptom: ${reasonText}` : 'Customer warranty return claim';
+                if (catEl) catEl.value = 'Others';
+                if (concernEl) {
+                    const odoSuffix = odo ? ` [Current Odo: ${odo} KM]` : '';
+                    concernEl.value = `[WARRANTY BACK-JOB RETURN] Ref Parent Job: #${targetRefId}${odoSuffix} | Return Complaint: ${reasonText || 'Service re-inspection'}`;
+                }
+            } else {
+                window.currentStudioBackJob = null;
+                if (banner) banner.classList.add('hidden');
+                if (catEl) catEl.value = 'PMS';
+                if (concernEl) concernEl.value = '';
+            }
+
+            // Switch to Form 1/3 Studio view
+            if (typeof switchFormStudioSheet === 'function') switchFormStudioSheet('form13');
+            showSection('form13');
+
+            showSystemToast(`Customer "${cust.name}" & vehicle "${cust.plate}" pre-filled in 2025 RO Studio!`, 'success', isBackJob ? 'Back-Job Return Studio Ready' : 'Returning Customer Loaded');
+        }
+        window.loadCustomerIntoStudioForms = loadCustomerIntoStudioForms;
+
+        function cancelStudioBackJobMode(showToast = true) {
+            window.currentStudioBackJob = null;
+            const banner = document.getElementById('f13-backjob-banner');
+            if (banner) banner.classList.add('hidden');
+            const catEl = document.getElementById('f13-input-category');
+            if (catEl && catEl.value === 'Others') catEl.value = 'PMS';
+            if (showToast) {
+                showSystemToast('Warranty Back-Job flag cleared. Order returned to standard intake mode.', 'info');
+            }
+        }
+        window.cancelStudioBackJobMode = cancelStudioBackJobMode;
+
         // --- LOST CONNECTION & NETWORK STATUS UI SYSTEM ---
         let lostConnectionAutoRetryTimer = null;
         let lostConnectionRetryCountdown = 5;
@@ -1762,16 +1846,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Service Advisor Order: 1. Form 1/3 Studio, 2. Walk-In Form, 3. Daily Intakes / Master Queue, 4. Customer Lookup, 5. Bay Status, 6. TV Monitor
+                // Service Advisor Order: 1. 2025 RO Excel Studio, 2. Daily Intakes / Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
                 navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
-                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-plus" class="w-4 h-4"></i> Walk-In Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Walk-In Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
@@ -2097,9 +2179,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return;
             }
 
-            if (id === 'form13' && currentUserRole !== 'sa') {
+            if (id === 'form13' && currentUserRole !== 'sa' && currentUserRole !== 'admin' && currentUserRole !== 'owner') {
                 showSystemToast('Access Restricted: 2025 RO Interactive Excel Studio is strictly reserved for Service Advisors.', 'warning', 'Permission Denied');
-                showSection(currentUserRole === 'owner' || currentUserRole === 'admin' ? 'dashboard' : 'intake');
+                showSection('intake');
                 return;
             }
 
@@ -9434,7 +9516,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <i data-lucide="inbox" class="w-6 h-6"></i>
                         </div>
                         <p class="text-xs font-bold text-gray-500 uppercase tracking-wider">No vehicles currently waiting in queue</p>
-                        <button onclick="closeBayAllocationModal(); showSection('intake');" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition cursor-pointer">
+                        <button onclick="closeBayAllocationModal(); showSection('form13');" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition cursor-pointer">
                             + Add New Intake
                         </button>
                     </div>
@@ -10415,6 +10497,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const phone = (job.contact_number || job.contact || job.phone || 'N/A').trim();
                 const vehicle = (job.vehicle_model || job.vehicle || 'Unknown Model').trim();
                 const branch = (job.branch || 'Marikina Branch').trim();
+                const address = (job.address || '').trim();
+                const kmReading = job.km_reading ?? job.kmReading ?? '';
+                const engineNo = (job.engine_no || job.engineNo || '').trim();
+                const color = (job.color || '').trim();
 
                 // Unique key by plate (or name if no plate)
                 const key = plate !== 'NO-PLATE' ? plate : name.toLowerCase();
@@ -10426,14 +10512,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         plate: plate,
                         phone: phone,
                         vehicle: vehicle,
+                        address: address,
+                        kmReading: kmReading,
+                        engineNo: engineNo,
+                        color: color,
                         branch: branch,
                         jobs: []
                     };
                 }
 
-                // Update phone or vehicle if current is more specific
+                // Update fields if current has more details
                 if (registry[key].phone === 'N/A' && phone !== 'N/A') registry[key].phone = phone;
                 if (registry[key].vehicle === 'Unknown Model' && vehicle !== 'Unknown Model') registry[key].vehicle = vehicle;
+                if (!registry[key].address && address) registry[key].address = address;
+                if (!registry[key].engineNo && engineNo) registry[key].engineNo = engineNo;
+                if (!registry[key].color && color) registry[key].color = color;
+                if (!registry[key].kmReading && kmReading) registry[key].kmReading = kmReading;
 
                 registry[key].jobs.push(job);
             });
@@ -10529,6 +10623,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const matchPlate = cust.plate.toLowerCase().includes(query);
                 const matchPhone = cust.phone.toLowerCase().includes(query);
                 const matchVehicle = cust.vehicle.toLowerCase().includes(query);
+                const matchEngine = (cust.engineNo || '').toLowerCase().includes(query) ||
+                    cust.jobs.some(j => ((j.engine_no || j.engineNo || '')).toLowerCase().includes(query));
                 const matchJobId = cust.jobs.some(j => {
                     const jId = String(j.id ?? j._id ?? j.job_id ?? '').toLowerCase();
                     const stub = String(j.claim_stub || j.stub || '').toLowerCase();
@@ -10536,7 +10632,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return jId.includes(query) || stub.includes(query) || cat.includes(query);
                 });
 
-                return matchName || matchPlate || matchPhone || matchVehicle || matchJobId;
+                return matchName || matchPlate || matchPhone || matchVehicle || matchEngine || matchJobId;
             });
 
             if (matchesBadge) {
@@ -10551,8 +10647,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </div>
                         <h5 class="text-xs font-black uppercase tracking-wider text-gray-800">No matching customer records</h5>
                         <p class="text-[11px] text-gray-500 font-medium max-w-xs mx-auto">Try adjusting your search terms or filter tabs. First-time visitors can be registered immediately.</p>
-                        <button onclick="showSection('intake')" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm cursor-pointer">
-                            <i data-lucide="user-plus" class="w-3.5 h-3.5 text-red-400"></i> New Customer Intake
+                        <button onclick="if(typeof switchFormStudioSheet==='function')switchFormStudioSheet('form13'); showSection('form13');" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider transition shadow-sm cursor-pointer">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5 text-red-400"></i> New Customer — Open Studio
                         </button>
                     </div>
                 `;
@@ -10827,7 +10923,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         class="group px-3 py-1.5 bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-900 border border-slate-300 hover:border-amber-400 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs"
                                         title="Initiate Back-Job Return Intake and record customer complaints">
                                         <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600 group-hover:-rotate-45 transition-transform"></i>
-                                        <span>Flag Back-Job</span>
+                                        <span>🔁 Issue Back-Job in Forms</span>
                                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-700 group-hover:translate-y-0.5 transition-all"></i>
                                     </button>
                                 </div>
@@ -10893,39 +10989,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Please select a customer record first.', 'warning', 'Regular Intake');
                 return;
             }
-
-            const cust = customerLookupRegistry[selectedLookupCustomerKey];
-            const latestJob = cust.jobs[0] || {};
-
-            // 1. Switch view to vehicle intake
-            showSection('intake');
-
-            // 2. Pre-fill customer and vehicle fields
-            const nameEl = document.getElementById('intake-name');
-            const plateEl = document.getElementById('intake-plate');
-            const contactEl = document.getElementById('intake-contact');
-            const vehicleEl = document.getElementById('intake-vehicle');
-            const catEl = document.getElementById('intake-category');
-            const catOtherEl = document.getElementById('intake-category-other');
-            const concernEl = document.getElementById('intake-concern');
-
-            if (nameEl) nameEl.value = cust.name;
-            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
-            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
-            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
-
-            // Default to PMS (or previous standard category if not Back-Job)
-            if (catEl) {
-                const prevCategory = latestJob.category && latestJob.category !== 'Others' ? latestJob.category : 'PMS';
-                catEl.value = prevCategory;
-                if (catOtherEl) catOtherEl.classList.add('hidden');
-            }
-
-            if (concernEl) {
-                concernEl.value = '';
-            }
-
-            showSystemToast(`Returning customer "${cust.name}" details pre-filled for fresh intake!`, 'success', 'Regular Intake Initialized');
+            loadCustomerIntoStudioForms(selectedLookupCustomerKey, false);
         }
 
         function confirmSpecificBackJob(refJobId, prevCategory, prevDate) {
@@ -10933,41 +10997,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Please select a customer record first.', 'warning', 'Back-Job Intake');
                 return;
             }
-
-            const cust = customerLookupRegistry[selectedLookupCustomerKey];
-
-            // 1. Switch view to vehicle intake
-            showSection('intake');
-
-            // 2. Pre-fill customer and vehicle fields
-            const nameEl = document.getElementById('intake-name');
-            const plateEl = document.getElementById('intake-plate');
-            const contactEl = document.getElementById('intake-contact');
-            const vehicleEl = document.getElementById('intake-vehicle');
-            const catEl = document.getElementById('intake-category');
-            const catOtherEl = document.getElementById('intake-category-other');
-            const concernEl = document.getElementById('intake-concern');
-
-            if (nameEl) nameEl.value = cust.name;
-            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
-            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
-            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
-
-            // Set Category to Others -> Back-Job / Warranty Return
-            if (catEl) {
-                catEl.value = 'Others';
-                if (catOtherEl) {
-                    catOtherEl.value = 'Back-Job / Warranty Return';
-                    catOtherEl.classList.remove('hidden');
-                }
-            }
-
-            // Pre-fill concern with the specific order selected
-            if (concernEl) {
-                concernEl.value = `[BACK-JOB / RETURN REPAIR] Previous Ref: ${refJobId} (${prevCategory} on ${prevDate}). Customer concern/issue: `;
-            }
-
-            showSystemToast(`Back-Job initialized referencing order ${refJobId}!`, 'success', 'Back-Job Created');
+            openBackJobReasonModal(refJobId);
         }
 
         function copyCustomerPhone() {
@@ -11098,40 +11128,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const currentOdometer = document.getElementById('modal-bj-odometer-input') ? document.getElementById('modal-bj-odometer-input').value.trim() : '';
 
             closeBackJobReasonModal();
-
-            // 1. Switch view to intake
-            showSection('intake');
-
-            // 2. Pre-fill customer fields
-            const nameEl = document.getElementById('intake-name');
-            const plateEl = document.getElementById('intake-plate');
-            const contactEl = document.getElementById('intake-contact');
-            const vehicleEl = document.getElementById('intake-vehicle');
-            const catEl = document.getElementById('intake-category');
-            const catOtherEl = document.getElementById('intake-category-other');
-            const concernEl = document.getElementById('intake-concern');
-
-            if (nameEl) nameEl.value = cust.name;
-            if (plateEl) plateEl.value = cust.plate !== 'NO-PLATE' ? cust.plate : '';
-            if (contactEl) contactEl.value = cust.phone !== 'N/A' ? cust.phone : '';
-            if (vehicleEl) vehicleEl.value = cust.vehicle !== 'Unknown Model' ? cust.vehicle : '';
-
-            // Set category to Back-Job / Return Repair
-            if (catEl) {
-                catEl.value = 'Others';
-                if (catOtherEl) {
-                    catOtherEl.value = `Back-Job / Return (${selectedConcernCat})`;
-                    catOtherEl.classList.remove('hidden');
-                }
-            }
-
-            // Pre-fill concern with complete automotive traceability
-            if (concernEl) {
-                const odoTag = currentOdometer ? ` | Current Odometer: ${currentOdometer} KM` : '';
-                concernEl.value = `[BACK-JOB / RETURN REPAIR - ${selectedConcernCat}] Prev Order: ${refJobId} (${prevCat} on ${prevDate} | Orig Tech: ${origTech} | Returned after ${diffDays} days${odoTag}). Customer Return Complaint: ${reasonText}`;
-            }
-
-            showSystemToast(`Back-Job ticket prepared for "${cust.name}" (Original Tech: ${origTech})!`, 'success', 'Back-Job Initialized');
+            const fullReason = `${selectedConcernCat}: ${reasonText} (Prev Ref: ${refJobId}, ${prevCat} on ${prevDate} | Orig Tech: ${origTech} | Returned after ${diffDays} days)`;
+            loadCustomerIntoStudioForms(selectedLookupCustomerKey, true, refJobId, fullReason, currentOdometer);
         }
         window.submitBackJobWithReason = submitBackJobWithReason;
 
@@ -13513,39 +13511,67 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.printForm13 = printForm13;
 
-        async function pushToBayQueueFromStudio() {
+        async function registerStudioROToSystem() {
             const plate = (document.getElementById('f13-input-plate')?.value || '').toUpperCase().trim();
             const name = (document.getElementById('f13-input-name')?.value || '').trim();
-            const vehicle = (document.getElementById('f13-input-model')?.value || '').trim();
+            const address = (document.getElementById('f13-input-address')?.value || '').trim();
             const contact = (document.getElementById('f13-input-contact')?.value || '').trim();
-            const category = document.getElementById('f13-input-category')?.value || 'PMS';
-            const concern = document.getElementById('f13-input-concern')?.value || '';
+            const vehicle = (document.getElementById('f13-input-model')?.value || '').trim();
+            const kmRaw = (document.getElementById('f13-input-km')?.value || '').toString().replace(/[^0-9]/g, '');
+            const kmReading = kmRaw ? parseInt(kmRaw, 10) : null;
+            const engineNo = (document.getElementById('f13-input-engine')?.value || '').trim();
+            const color = (document.getElementById('f13-input-color')?.value || '').trim();
             const intakeDate = document.getElementById('f13-input-intake-date')?.value || new Date().toISOString().split('T')[0];
+            const promisedDate = document.getElementById('f13-input-promise-date')?.value || null;
+            const category = document.getElementById('f13-input-category')?.value || 'PMS';
+            const concern = (document.getElementById('f13-input-concern')?.value || '').trim();
+            const evaluation = (document.getElementById('f13-input-diagnostic')?.value || '').trim();
+            const saName = (document.getElementById('f13-input-sa')?.value || '').trim();
+            const customJobId = (document.getElementById('f13-input-job-no')?.value || '').trim();
 
-            if (!plate) return showSystemToast('Plate Number is required to push to Bay Queue.', 'error');
+            if (!plate) return showSystemToast('Plate Number is required to register Repair Order.', 'error');
             if (!name) return showSystemToast('Customer Full Name is required.', 'error');
             if (!vehicle) return showSystemToast('Vehicle Model is required.', 'error');
 
+            const regBtnTop = document.getElementById('btn-register-ro-top');
+            const regBtnEditor = document.getElementById('f13-btn-register-ro');
             const pushBtn = document.getElementById('f13-btn-push-bay');
-            if (pushBtn) {
-                pushBtn.disabled = true;
-                pushBtn.classList.add('opacity-50', 'pointer-events-none');
-            }
+
+            [regBtnTop, regBtnEditor, pushBtn].forEach(btn => {
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'pointer-events-none');
+                }
+            });
 
             try {
                 const arrivalTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-                
+                const isBackJobActive = Boolean(window.currentStudioBackJob?.isBackJob);
+                const parentJobId = window.currentStudioBackJob?.parentJobId || null;
+                const backjobReason = window.currentStudioBackJob?.reason || null;
+
                 const payload = {
+                    jobId: customJobId || undefined,
                     plate: plate,
                     name: name,
+                    address: address,
                     contact: contact,
                     vehicle: vehicle,
+                    kmReading: kmReading,
+                    engineNo: engineNo,
+                    color: color,
+                    dateReceived: intakeDate,
+                    promisedDate: promisedDate || undefined,
                     category: category,
                     concern: concern,
-                    dateReceived: intakeDate,
-                    arrival: arrivalTime,
-                    source: 'Walk-in',
-                    laneType: 'Regular'
+                    evaluation: evaluation,
+                    saName: saName || undefined,
+                    source: isBackJobActive ? 'Back-job' : 'Walk-in',
+                    isBackjob: isBackJobActive ? 1 : 0,
+                    parentJobId: parentJobId,
+                    backjobReason: backjobReason,
+                    laneType: 'Regular',
+                    arrival: arrivalTime
                 };
 
                 const createdJob = await apiRequest('/api/jobs', {
@@ -13553,27 +13579,39 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     body: payload
                 });
 
+                // Clear back-job tracking state once saved
+                if (typeof cancelStudioBackJobMode === 'function') {
+                    cancelStudioBackJobMode(false);
+                }
+
+                // Reload data across all state stores
                 await loadData();
                 renderStaffTables();
+                buildCustomerLookupRegistry();
+                if (typeof renderCustomerLookupModule === 'function') renderCustomerLookupModule();
+                if (typeof renderTableDailyIntakes === 'function') renderTableDailyIntakes();
 
-                showSystemToast(`Job Order created! Vehicle ${plate} registered into Workshop Queue.`, 'success', 'Queue Handover Success');
+                const assignedJobId = createdJob?.data?.jobId || createdJob?.data?.job_id || createdJob?.jobId || customJobId || 'RO-REGISTERED';
+                showSystemToast(`Repair Order [${assignedJobId}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
 
-                if (currentUserRole === 'sa' || currentUserRole === 'admin' || currentUserRole === 'owner') {
-                    showSection('bays');
-                } else {
-                    showSection('queue');
+                // Keep SA in studio view
+                if (typeof switchFormStudioSheet === 'function') {
+                    switchFormStudioSheet('form13');
                 }
             } catch (err) {
-                console.error('Push to bay queue failed:', err);
-                showSystemToast(err.message || 'Failed to push vehicle into bay queue.', 'error');
+                console.error('1-Button RO Registration failed:', err);
+                showSystemToast(err.message || 'Failed to register Repair Order to system.', 'error');
             } finally {
-                if (pushBtn) {
-                    pushBtn.disabled = false;
-                    pushBtn.classList.remove('opacity-50', 'pointer-events-none');
-                }
+                [regBtnTop, regBtnEditor, pushBtn].forEach(btn => {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'pointer-events-none');
+                    }
+                });
             }
         }
-        window.pushToBayQueueFromStudio = pushToBayQueueFromStudio;
+        window.registerStudioROToSystem = registerStudioROToSystem;
+        window.pushToBayQueueFromStudio = registerStudioROToSystem;
 
         function resetForm13Studio() {
             if (!confirm('Are you sure you want to reset all Form 1/3 Studio fields?')) return;

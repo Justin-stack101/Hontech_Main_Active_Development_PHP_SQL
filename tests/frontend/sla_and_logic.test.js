@@ -485,5 +485,59 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(appJs.includes('fullCalcOnLoad="1"'), true, 'Workbook must enforce automatic formula recalculation on load');
         });
     });
+
+    describe('Suite 11: REV-080 1-Button Studio RO Registration, Back-Job Sync & Intake Streamlining', () => {
+        it('AUT-FRONT-31: should verify registerStudioROToSystem gathers all 10 core fields, back-job attributes, and maintains pushToBayQueueFromStudio alias', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('async function registerStudioROToSystem()'), true, 'registerStudioROToSystem function must be declared');
+            assert.strictEqual(appJs.includes('window.registerStudioROToSystem = registerStudioROToSystem;'), true, 'registerStudioROToSystem must be exposed on window');
+            assert.strictEqual(appJs.includes('window.pushToBayQueueFromStudio = registerStudioROToSystem;'), true, 'pushToBayQueueFromStudio must be aliased to registerStudioROToSystem');
+            assert.strictEqual(appJs.includes('address: address,'), true, 'payload must include address');
+            assert.strictEqual(appJs.includes('kmReading: kmReading,'), true, 'payload must include kmReading');
+            assert.strictEqual(appJs.includes('engineNo: engineNo,'), true, 'payload must include engineNo');
+            assert.strictEqual(appJs.includes('color: color,'), true, 'payload must include color');
+            assert.strictEqual(appJs.includes('isBackjob: isBackJobActive ? 1 : 0,'), true, 'payload must include isBackjob flag');
+            assert.strictEqual(appJs.includes('parentJobId: parentJobId,'), true, 'payload must include parentJobId');
+        });
+
+        it('AUT-FRONT-32: should verify loadCustomerIntoStudioForms and cancelStudioBackJobMode support returning customer and warranty back-job loading', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('function loadCustomerIntoStudioForms('), true, 'loadCustomerIntoStudioForms must be declared');
+            assert.strictEqual(appJs.includes('window.loadCustomerIntoStudioForms = loadCustomerIntoStudioForms;'), true, 'loadCustomerIntoStudioForms must be exposed on window');
+            assert.strictEqual(appJs.includes('function cancelStudioBackJobMode('), true, 'cancelStudioBackJobMode must be declared');
+            assert.strictEqual(appJs.includes('window.cancelStudioBackJobMode = cancelStudioBackJobMode;'), true, 'cancelStudioBackJobMode must be exposed on window');
+            assert.strictEqual(appJs.includes("document.getElementById('f13-backjob-banner')"), true, 'Must manage f13-backjob-banner DOM element');
+        });
+
+        it('AUT-FRONT-33: should verify customer lookup registry and search indexing include engine_no and address alongside plate and name', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes("const engineNo = (job.engine_no || job.engineNo || '').trim();"), true, 'customer registry must extract engine_no');
+            assert.strictEqual(appJs.includes("const address = (job.address || '').trim();"), true, 'customer registry must extract address');
+            assert.strictEqual(appJs.includes("const matchEngine = (cust.engineNo || '').toLowerCase().includes(query)"), true, 'lookup search filter must match on engine number');
+        });
+
+        it('AUT-FRONT-34: should verify index.html UI elements for 1-Button registration and back-job warranty alert banner', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(indexHtml.includes('id="btn-register-ro-top"'), true, '#btn-register-ro-top must exist in index.html');
+            assert.strictEqual(indexHtml.includes('id="f13-btn-register-ro"'), true, '#f13-btn-register-ro must exist in index.html');
+            assert.strictEqual(indexHtml.includes('id="f13-backjob-banner"'), true, '#f13-backjob-banner must exist in index.html');
+            assert.strictEqual(indexHtml.includes('registerStudioROToSystem()'), true, 'registerStudioROToSystem onclick handler must exist');
+        });
+
+        it('AUT-FRONT-35: should verify Service Advisor navigation stream eliminates obsolete Walk-In Form and bay queue fallback targets 2025 RO Excel Studio', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // Find SA nav block
+            const saNavIdx = appJs.indexOf("else if (role === 'sa') {");
+            const saNavBlock = appJs.slice(saNavIdx, saNavIdx + 1200);
+
+            assert.strictEqual(saNavBlock.includes('Walk-In Form'), false, 'SA navigation must not contain obsolete Walk-In Form');
+            assert.strictEqual(appJs.includes("closeBayAllocationModal(); showSection('form13');"), true, 'Empty bay allocation fallback must target form13');
+        });
+    });
 });
 
