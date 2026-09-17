@@ -383,5 +383,51 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(workflowSkill.includes('Open-Minded Collaborative Inquiry Phase'), true, 'agent-workflow SKILL.md must mandate open-minded questions');
         });
     });
+
+    describe('Suite 9: REV-076 Full Multi-Sheet Lossless XLSX Data Injection Engine', () => {
+        it('AUT-FRONT-25: should verify exportOfficialXLSX uses getOfficialXlsxTemplateBuffer with caching', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('getOfficialXlsxTemplateBuffer'), true, 'getOfficialXlsxTemplateBuffer must exist in app.js');
+            assert.strictEqual(appJs.includes('Current_2025%20BLANK%20RO%20UPDATED.xlsx'), true, 'Template path must reference Current_2025 BLANK RO UPDATED.xlsx');
+            assert.strictEqual(appJs.includes('HONTECH_2025_RO_TEMPLATE_BASE64'), false, 'Undefined template base64 string must not be referenced');
+        });
+
+        it('AUT-FRONT-26: should verify accurate cell coordinate injection for Job_Order Parts and Materials', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // Customer dossier coordinates
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'C10', name);"), true, 'Name must map to C10');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'H10', model);"), true, 'Model must map to H10');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'K10', plate);"), true, 'Plate must map to K10');
+
+            // Parts in columns D-G and Materials in columns H-K starting at row 27
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'D' + rIdx, p.desc || '');"), true, 'Parts description must map to column D');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'E' + rIdx, qty, true);"), true, 'Parts qty must map to column E');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'F' + rIdx, price, true);"), true, 'Parts unit price must map to column F');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'G' + rIdx, qty * price, true);"), true, 'Parts amount must map to column G');
+
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'H' + rIdx, m.desc || '');"), true, 'Materials description must map to column H');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'I' + rIdx, qty, true);"), true, 'Materials qty must map to column I');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'J' + rIdx, price, true);"), true, 'Materials unit price must map to column J');
+            assert.strictEqual(appJs.includes("setCell(sheet1Doc, 'K' + rIdx, qty * price, true);"), true, 'Materials amount must map to column K');
+        });
+
+        it('AUT-FRONT-27: should verify multi-sheet XML targeting across Quotation (sheets 2-4), Billing (sheets 5-6), and Checklist (sheet 7)', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // Quotation targets sheets 2, 3, 4
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet2.xml'"), true, 'Quotation 1 must target sheet2.xml');
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet3.xml'"), true, 'Quotation 2 must target sheet3.xml');
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet4.xml'"), true, 'Quotation 3 must target sheet4.xml');
+
+            // Billing targets sheets 5, 6
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet5.xml'"), true, 'Billing 1 must target sheet5.xml');
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet6.xml'"), true, 'Billing 2 must target sheet6.xml');
+
+            // Checklist targets sheet 7
+            assert.strictEqual(appJs.includes("'xl/worksheets/sheet7.xml'"), true, 'Checklist must target sheet7.xml');
+        });
+    });
 });
 
