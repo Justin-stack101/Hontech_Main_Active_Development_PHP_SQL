@@ -4,7 +4,24 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (Complete Lossless Excel Data Injection, Multi-Sheet Synchronization & Dynamic PDF Live Stamping)
+## 📅 September 17, 2026 (Quotation Scope Safety, ReferenceError Elimination & Lossless Excel Injection)
+
+### 🛡️ Quotation Scope Safety & Zero-Crash Startup Fix (REV-077 / v5.77)
+* **Root Cause Diagnostics & ReferenceError Elimination**:
+  - Investigated exception diagnostics report `HTR-CRASH-20260917-154947` (`Uncaught ReferenceError: removeForm23Row is not defined` at `js/app.js:14691`).
+  - Identified that during historical refactoring of the Service Advisor Quotation studio, `removeForm23Row` was renamed to `removeLegacyForm23Row`, but line 14691 retained an undeclared reference `window.removeForm23Row = removeForm23Row;`, causing the JavaScript runtime to halt top-level evaluation and trigger the developer exception diagnostics modal.
+* **Safe Compatibility Aliases & Obsolete Prototype Handler Purge**:
+  - Registered defensive global compatibility wrappers that safely route legacy invocations to active 2025 RO Excel Studio handlers:
+    - `window.removeForm23Row = function(index) { if (typeof removeForm23ItemRow === 'function') removeForm23ItemRow(index); };`
+    - `window.addForm23Row = function() { if (typeof addForm23ItemRow === 'function') addForm23ItemRow(); };`
+    - `window.calculateForm23Totals = function() { if (typeof calcForm23Totals === 'function') return calcForm23Totals(); };`
+    - `window.applyForm23Preset = function(presetKey) { if (typeof applyQuotePreset === 'function') applyQuotePreset(presetKey); };`
+    - `window.resetForm23Studio = function() { ... };`
+  - Purged 300+ lines of duplicate, dead prototype studio code (lines 14607–14910) that was overwriting the active 2025 `syncForm23Canvas`.
+* **Automated Test Expansion (Suite 10)**:
+  - Added Suite 10 (`AUT-FRONT-28`, `AUT-FRONT-29`) in `tests/frontend/sla_and_logic.test.js` validating alias registration and full Node VM execution of `frontend/js/app.js` with zero runtime exceptions.
+  - Automated assertions increased to **44/44 passing** across 19 test suites.
+  - Cache buster updated to `v=2.36`.
 
 ### 📊 Complete Lossless Data Injection into Official Excel Template (REV-076 / v5.76)
 * **Binary Buffer Template Loading & Memory Cache Engine**:

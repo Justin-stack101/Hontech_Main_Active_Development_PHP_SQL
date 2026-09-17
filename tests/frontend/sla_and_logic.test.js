@@ -3,6 +3,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { TEST_CONFIG } from '../helpers/test_config.js';
 
 // Reusable logic functions corresponding to frontend/js/app.js implementations
@@ -427,6 +428,50 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
 
             // Checklist targets sheet 7
             assert.strictEqual(appJs.includes("'xl/worksheets/sheet7.xml'"), true, 'Checklist must target sheet7.xml');
+        });
+    });
+
+    describe('Suite 10: REV-077 Quotation Handler Scope Safety & Legacy Alias Integrity', () => {
+        it('AUT-FRONT-28: should verify removeForm23Row and addForm23Row exist as callable aliases in app.js', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('window.removeForm23Row = function(index)'), true, 'removeForm23Row must be safely declared');
+            assert.strictEqual(appJs.includes('window.addForm23Row = function()'), true, 'addForm23Row must be safely declared');
+            assert.strictEqual(appJs.includes('window.removeForm23ItemRow = removeForm23ItemRow'), true, 'removeForm23ItemRow must be registered');
+        });
+
+        it('AUT-FRONT-29: should verify app.js evaluates cleanly in JS context without top-level ReferenceErrors', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const sandbox = {
+                window: {},
+                document: { getElementById: () => null, querySelector: () => null, querySelectorAll: () => [], addEventListener: () => {} },
+                navigator: {},
+                console: { log: () => {}, warn: () => {}, error: () => {} },
+                localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+                sessionStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+                setTimeout: () => {},
+                setInterval: () => {},
+                clearTimeout: () => {},
+                clearInterval: () => {},
+                fetch: () => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }),
+                CustomEvent: function() {},
+                Event: function() {},
+                location: { href: 'http://localhost:8000', search: '', pathname: '/' },
+                alert: () => {},
+                confirm: () => true,
+                prompt: () => '',
+                addEventListener: () => {}
+            };
+            sandbox.window = sandbox;
+            sandbox.globalThis = sandbox;
+            sandbox.self = sandbox;
+
+            assert.doesNotThrow(() => {
+                vm.runInNewContext(appJs, sandbox);
+            }, 'app.js must execute without throwing top-level ReferenceErrors');
+
+            assert.strictEqual(typeof sandbox.window.removeForm23Row, 'function');
+            assert.strictEqual(typeof sandbox.window.addForm23Row, 'function');
         });
     });
 });
