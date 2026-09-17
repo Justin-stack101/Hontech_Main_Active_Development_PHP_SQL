@@ -4,7 +4,27 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (2025 RO Excel Studio 4-Sheet Streamlining, Strict SA Access & Lossless XLSX Injection)
+## 📅 September 17, 2026 (TV Monitor Natural Trigger, Top 4-Tab Bar, Reactive Auto-Fill & Current_2025 Template Sync)
+
+### 📺 TV Monitor Natural Trigger, Top 4-Tab Bar, Reactive Auto-Fill & Current_2025 Template Sync (REV-073 / v5.73)
+* **Natural TV Monitor Launch & Hub Restoration**:
+  - Restored `#modal-tv-broadcast-hub` in `frontend/index.html` after accidental omission in earlier commits, resolving non-responsive TV Monitor navigation clicks.
+  - Features high-contrast modal with live wireless pairing (URL, 4-digit PIN, QR code), direct HDMI Dual-Display guide, and 1-click in-app slides launcher.
+* **Authentic Top Tab Selection Bar (Strictly 4 Core SA Sheets)**:
+  - Engineered `#form-top-tab-bar` positioned prominently at the top of `#section-form13` so tabs are permanently visible without scrolling.
+  - Implemented strictly the 4 authentic worksheets matching user reference styling: `Job_Order ▾`, `Quotation_No ▾`, `Billing_No ▾`, `CheckList_Result ▾`.
+  - Active tab highlighted in Google blue (`bg-[#e8f0fe]`, `text-[#1a73e8]`, border line, active caret); seamless two-way view switching.
+* **Instant "Type-to-Save & Auto-Fill" Pipeline (Zero Copy-Pasting)**:
+  - Connected reactive input listeners across all `Job_Order` fields (`f13-input-*`).
+  - Typing customer dossier, vehicle specifications, intake/promised dates, and repair scopes instantly auto-populates `Quotation_No`, `Billing_No`, and `CheckList_Result`.
+  - Re-renders all physical document preview canvases in real time and persists draft data automatically to `localStorage`.
+* **Migration to `Current_2025 BLANK RO UPDATED.xlsx` Export Template**:
+  - Permanently deleted obsolete `Polished_2025 BLANK RO UPDATED.xlsx` (0 residual references).
+  - Encoded base64 of official `Current_2025 BLANK RO UPDATED.xlsx` (423 KB) containing sheets 1–7 into `window.HONTECH_2025_RO_TEMPLATE_BASE64`.
+  - Updated `exportOfficialXLSX` to inject typed data across all 7 sheets: `Job_Order` (`sheet1.xml`), `Quotation_No 1-3` (`sheet2-4.xml`), `Billing_No 1-2` (`sheet5-6.xml`), and `CheckList_Result` (`sheet7.xml`).
+* **Automated Test Suite Expansion**:
+  - Added Suite 6 with assertions `AUT-FRONT-16`, `AUT-FRONT-17`, and `AUT-FRONT-18` in `tests/frontend/sla_and_logic.test.js`.
+  - All 33 assertions passing across 15 test suites with 0 failures; bumped cache buster to `v=2.31`.
 
 ### 📊 2025 RO Excel Studio Streamlining & Non-SA Tabs Purge (REV-072 / v5.72)
 * **Purge of 6 Non-SA Tabs & Mock Stores**:

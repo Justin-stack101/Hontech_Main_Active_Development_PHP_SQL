@@ -8,7 +8,7 @@ Unlike manual QA checklists (which human testers execute via web browsers), this
 
 ## ⚡ Quick Execution Commands
 ```powershell
-# Run the entire test suite (All 30 assertions)
+# Run the entire test suite (All 33 assertions)
 npm.cmd test
 
 # Run only Frontend SLA & Calculation tests
@@ -45,6 +45,9 @@ npm.cmd run test:security
 | **AUT-FRONT-13** | 2025 Excel Studio | Register strictly the 4 authentic SA worksheets and purge obsolete non-SA tabs | Confirms `allFormWorkbookSheets` has exactly 4 sheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) and non-SA tabs (`Cash_Advance`, `OEF`, etc.) are purged. |
 | **AUT-FRONT-14** | 2025 Excel Studio | Cross-synchronize core vehicle dossier from Job Order across Quote, Billing, and Checklist | Verifies reactive propagation of customer name, license plate, vehicle model, mileage, and date across sheets. |
 | **AUT-FRONT-15** | 2025 Excel Studio | Calculate billing totals accurately and validate 15-point inspection checkpoints | Validates line item total summation and tallies checklist statuses (`Good`, `Attention`, `Defect`). |
+| **AUT-FRONT-16** | TV Monitor Hub | Verify modal-tv-broadcast-hub exists in DOM and openTVBroadcastHubModal is callable | Confirms presence of TV Display Hub modal in DOM with wireless Smart TV, HDMI, and launch actions. |
+| **AUT-FRONT-17** | Top Tab Selection | Verify form-top-tab-bar has strictly 4 authentic SA tabs with carets | Confirms top tab bar renders `Job_Order ▾`, `Quotation_No ▾`, `Billing_No ▾`, `CheckList_Result ▾` with active style switching. |
+| **AUT-FRONT-18** | Template Migration | Verify Current_2025 BLANK RO UPDATED template integration and zero Polished_2025 references | Confirms template file switch, base64 embed in app.js, and zero residual references to obsolete Polished_2025. |
 
 ---
 
