@@ -1,150 +1,276 @@
-# 🗺️ HonTech System Architecture & Master User Journey Blueprint
+# 🏛️ HONTECH AUTOCENTER: OFFICIAL SYSTEM ARCHITECTURE, SUBSYSTEM TOPOLOGY & MASTER OPERATIONS BLUEPRINT
 
-**Document Reference:** `HONTECH-ARCH-BLUEPRINT-2026-V1`  
-**Classification:** System Architecture, End-to-End User Flow & Foundation Ground Truth  
+**Document Classification:** Official Enterprise Architecture & Canonical System Standard  
+**Document Reference:** `HONTECH-ARCH-OFFICIAL-2026-V1.0`  
+**Status:** **OFFICIAL / PERMANENT PRODUCTION BLUEPRINT (NOT A DRAFT)**  
 **Target Repository:** `Hontech_Main_Active_Development_PHP_SQL`  
-**Active Working Branch:** `prototype_process`  
-**Audience:** Justin Nolasco J., Catherine Ramos G., Mary Dayne Villas T., Antigravity AI, Capstone Panel
+**Active Development Branch:** `prototype_process`  
+**Deployment Target:** September 2026 Academic Defense & Shop Floor Production  
+**Lead Developers & Architects:** Justin Nolasco J., Catherine Ramos G., Mary Dayne Villas T.  
+**Advisory Oversight:** Mr. Ar-Jay C. Agbayani *(Faculty Capstone Adviser)*  
+**Client Partner:** HonTech AutoCenter Operations Team  
 
 ---
 
-## 🎯 Purpose of this Blueprint
+## 📌 1. Executive Charter & Architectural Ground Truth
 
-As the HonTech Operations System evolves across 70+ revisions, this document serves as the **immutable architectural anchor and ground truth**. 
+This document serves as the **supreme architectural anchor, subsystem topology, and operational ground truth** for the HonTech AutoCenter Web-Based Operations & Queue Monitoring System.
 
-Whenever developers or the AI add features, refactor code, or fix bugs, **this map ensures that every successfully built capability is treated as a solid foundation and that core workflows are never broken, altered, or bypassed.**
+### 🛡️ The Immutable Engineering Rule:
+> **"Every feature, UI module, and backend transaction documented herein represents a validated operational foundation. Under no circumstances may any AI agent or software engineer bypass, regress, disconnect, or alter these core flows without explicit team authorization."**
 
 ---
 
-## 👥 1. The 4-Role RBAC Authority Matrix
+## 👥 2. The 4-Role Role-Based Access Control (RBAC) Authority Matrix
+
+The system enforces strict operational boundaries across 4 distinct user roles to maintain shop-floor accountability and data integrity:
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────────┐
-│                                4-ROLE AUTHORITY MATRIX                                │
-├───────────────────┬───────────────────────────────────────────────────────────────────┤
-│ 👑 OWNER          │ View-Only Workshop Floor • System Analytics • Staff Audit Access  │
-│                   │ Cannot modify bay capacities directly (avoids operational clash). │
-├───────────────────┼───────────────────────────────────────────────────────────────────┤
-│ 🛡️ ADMINISTRATOR   │ Facility Max Bay Ceiling Configuration (1 to 50 bays) • User Roster│
-│                   │ System Settings • SLA Delay Intelligence • Global Audit Logs      │
-├───────────────────┼───────────────────────────────────────────────────────────────────┤
-│ 🔧 SERVICE ADVISOR│ Active Floor Bay Scaling (1 to Admin Ceiling) • Claim Intakes     │
-│ (SA)              │ Bay Lift Allocation • Diagnosis • Carry-Over • TV Announcements   │
-├───────────────────┼───────────────────────────────────────────────────────────────────┤
-│ 📋 FRONT DESK     │ Online Inquiries • Fast Walk-In Intake • 40-Day Customer Lookup   │
-│ ASSISTANT         │ "Confirm Active" conversion • Locked out from Bay floor & Admin   │
-└───────────────────┴───────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                   4-ROLE ENTERPRISE RBAC HIERARCHY                                     │
+├──────────────────────┬─────────────────────────────────────────────────────────────────────────────────┤
+│ 👑 OWNER             │ • Global Multi-Branch Telemetry & Executive Analytics Dashboard                 │
+│                      │ • Customer Back-Job Return Rate Intelligence & Overrun Incident Logs            │
+│                      │ • Centralized Audit Logs & Staff Handover Timeline Hub                          │
+│                      │ • View-Only Workshop Floor Access (Strictly locked from changing bay capacity) │
+├──────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ 🛡️ ADMINISTRATOR      │ • Facility Max Bay Ceiling Authority (Defines shop ceiling from 2 to 50 bays)   │
+│                      │ • Full Staff Account Management (Create, Suspend, Activate, Reset Passwords)   │
+│                      │ • Branch Register & Multi-Shop Location Management                             │
+│                      │ • Operational Settings, Printer Layout Presets & System Diagnostics             │
+├──────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ 🔧 SERVICE ADVISOR   │ • Active Floor Bay Scaling (Scales operational bays from 1 to Admin Ceiling)    │
+│ (SA)                 │ • Vehicle Claiming ("Assign to Me") & Mandatory Handover Justification         │
+│                      │ • Bay Allocation (Lift 1 to N or Waiting Area) with Live Floor Sync             │
+│                      │ • Diagnosis & Status Progression (Waiting ➔ Monitoring ➔ Ready ➔ Released)     │
+│                      │ • Carry-Over Management & Parts Availability Toggle (YES / NO)                  │
+│                      │ • 2025 RO Excel Studio (Job Orders, Quotations, Billings, Inspection Checklist) │
+│                      │ • TV Audio Announcements & Lounge Voice Broadcasting Control                    │
+├──────────────────────┼─────────────────────────────────────────────────────────────────────────────────┤
+│ 📋 FRONT DESK        │ • Online Booking Inquiries Management & Time Slot Scheduling                    │
+│ ASSISTANT            │ • "Confirm Active" Action Flow (Converts booking to live intake with timestamp) │
+│                      │ • Rapid Walk-In Paperwork Intake & Real-Time Claim Stub Generation              │
+│                      │ • 40-Day Regular Customer Lookup & Past Repair Dossier Inspection               │
+│                      │ • Strictly Locked Out from Bay Status, Admin Settings, and Executive Analytics │
+└──────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔄 2. End-to-End Workshop User Journey (Step 1 to Step 8)
+## 🔄 3. The 8-Stage End-to-End Vehicle Lifecycle (Start to Release)
 
 ```mermaid
 flowchart TD
-    subgraph S1["<b>STEP 1: INTAKE & TRIAGE</b>"]
-        A1["Online Booking<br/>(Assistant confirms active)"] --> W["<b>Waiting Area</b><br/>(Status: Waiting / Bay locked)"]
-        A2["Walk-In Fast Intake<br/>(Plate, Name, Stub)"] --> W
-        A3["Back-Job Return Intake<br/>(Odometer, Complaint)"] --> W
+    subgraph STAGE1["<b>STAGE 1: TRIAGE & ARRIVAL (3 ENTRY PATHWAYS)</b>"]
+        P1["<b>Pathway A: Online Booking</b><br/>Inquiry in Online Queue<br/>➔ Assistant clicks 'Confirm Active'"] --> W["<b>Waiting Area Queue</b><br/>Status: 'Waiting'<br/>Bay: Locked to Waiting Area<br/>Express PMS SLA Timer: 0m"]
+        P2["<b>Pathway B: Walk-In Fast Intake</b><br/>Encoded in #section-intake<br/>Plate, Customer, Category, Lane<br/>➔ Auto-Generates Claim Stub"] --> W
+        P3["<b>Pathway C: Back-Job Return</b><br/>Customer Lookup within 40 days<br/>➔ #modal-backjob-reason captures<br/>odometer & repeat complaint"] --> W
     end
 
-    subgraph S2["<b>STEP 2: CLAIM & ALLOCATION</b>"]
-        W --> B["<b>SA Claims Ticket</b><br/>(Assign to Me / Handover)"]
-        B --> C["<b>Status: Monitoring</b><br/>(Bay Lift 1-N or Waiting Area)"]
-        C --> TV1["<b>TV Broadcast & Chime</b><br/>(Announces Bay Assignment)"]
+    subgraph STAGE2["<b>STAGE 2: SA CLAIM & TICKET OWNERSHIP</b>"]
+        W --> CL["<b>SA Claims Vehicle</b><br/>Clicks 'Assign to Me'<br/>➔ If absent SA: #modal-ticket-takeover<br/>records mandatory handover justification"]
     end
 
-    subgraph S3["<b>STEP 3: WORKSHOP SERVICING & SLA</b>"]
-        C --> D["<b>Repair & Diagnosis</b><br/>(2025 RO Excel Sheets 1-4)"]
-        D --> E{"Express 2h SLA?<br/>Elapsed ≥ 120m"}
-        E -- "Yes (Overdue)" --> F["<b>SLA Delay Report</b><br/>(Parts / Tech / Customer delay)"]
-        E -- "No (On-Time)" --> G{"Parts available<br/>same day?"}
-        F --> G
+    subgraph STAGE3["<b>STAGE 3: BAY ALLOCATION & LIVE BROADCAST</b>"]
+        CL --> MN["<b>Status: Monitoring</b><br/>Bay dropdown unlocks<br/>➔ SA assigns Bay 1-N or Waiting Area"]
+        MN --> TVB["<b>Smart TV Broadcast & Voice Chime</b><br/>• Airport chime triggers<br/>• Web Speech: 'Vehicle [Plate] to Bay [X]'<br/>• Standalone tv.html updates in ~50ms"]
     end
 
-    subgraph S4["<b>STEP 4: CARRY-OVER / RELEASE</b>"]
-        G -- "No (Carry-Over)" --> H["<b>Carry-Over Board</b><br/>(Promised Date + Parts Toggle)"]
-        H -- "Next Morning" --> I["<b>Return to Active</b><br/>(Fresh arrival timestamp)"]
-        I --> C
-        G -- "Yes (Completed)" --> J["<b>Status: Ready to Release</b><br/>(Row turns Green)"]
-        J --> TV2["<b>TV Broadcast & Chime</b><br/>(Announces Vehicle Ready)"]
+    subgraph STAGE4["<b>STAGE 4: SERVICING, DIAGNOSIS & EXCEL STUDIO</b>"]
+        MN --> RO["<b>2025 RO Excel Studio (#section-form13)</b><br/>• Form 1/3: Job Order<br/>• Form 2/3: Quotation (Sheet 2)<br/>• Form 4: Multi-Point Inspection Checklist"]
+        RO --> AUD["<b>Edit Reason Audit Guard</b><br/>Any field modification triggers<br/>#modal-edit-reason-prompt (Old vs New)"]
     end
 
-    subgraph S5["<b>STEP 5: INVOICE & ARCHIVE</b>"]
-        J --> K["<b>Status: Released</b><br/>(Custom release confirm modal)"]
-        K --> L["<b>Bay Freed to Vacant</b><br/>(Permanent Analytics Record)"]
+    subgraph STAGE5["<b>STAGE 5: 2-HOUR EXPRESS SLA MONITORING</b>"]
+        AUD --> SLA{"Express PMS Job?<br/>Elapsed Time ≥ 120m"}
+        SLA -- "Elapsed ≥ 120m" --> DLY["<b>Express SLA Overdue Alert</b><br/>Badge turns Amber (2h 15m)<br/>➔ #modal-express-delay-report captures<br/>Parts / Tech / Customer delay cause"]
+        SLA -- "Elapsed < 120m" --> CO_CHECK{"Can repair finish<br/>same business day?"}
+        DLY --> CO_CHECK
+    end
+
+    subgraph STAGE6["<b>STAGE 6: OVERNIGHT CARRY-OVER (CONDITIONAL)</b>"]
+        CO_CHECK -- "No (Parts / Time Shortage)" --> CO_BOARD["<b>Carry-Over Board (#container-carry-over)</b><br/>• Status: 'Carry-Over'<br/>• Set Promised Delivery Date<br/>• Parts Available Toggle: YES / NO"]
+        CO_BOARD -- "Next Business Day" --> RET["<b>Return to Active Queue</b><br/>SA clicks 'Return Active'<br/>➔ Re-enters Daily Intakes with fresh timestamp"]
+        RET --> MN
+    end
+
+    subgraph STAGE7["<b>STAGE 7: COMPLETION & CUSTOMER RELEASE NOTIFICATION</b>"]
+        CO_CHECK -- "Yes (Work Completed)" --> RDY["<b>Status: Ready to Release</b><br/>• Daily Intakes row turns Green<br/>• Moves to 'Ready' column on TV Lounge Display<br/>• Voice Chime: 'Customer [Name], vehicle [Plate] ready'"]
+    end
+
+    subgraph STAGE8["<b>STAGE 8: INVOICE, SETTLEMENT & ANALYTICS ARCHIVAL</b>"]
+        RDY --> INV["<b>Form 3/3: Official Billing Invoice</b><br/>Customer settles invoice with 12% VAT calculations"]
+        INV --> REL["<b>Status: Released</b><br/>Custom red release confirmation modal prompts"]
+        REL --> ARC["<b>Automatic Bay Vacancy & Analytics Sync</b><br/>• Assigned bay reverts to 'Vacant'<br/>• Archived to MySQL with permanent audit log<br/>• Populates Owner Volume & KPI Trends"]
     end
 ```
 
-### Detailed Step-by-Step Breakdown:
+---
 
-#### 🚗 Step 1: Vehicle Arrival & Intake Pathway
-1. **Pathway A (Online Booking):** Customer books online $\to$ Appears in `#container-online-queue` $\to$ Assistant reviews date/time $\to$ When customer arrives, Assistant clicks **"Confirm Active"** $\to$ Converted into live workshop intake with current arrival timestamp.
-2. **Pathway B (Walk-In Intake):** Customer drives into bay $\to$ Assistant or SA opens `#section-intake` $\to$ Encodes Customer Name, Plate Number (`ABC-1234`), Contact, Category (PMS, GRS, Both, Others), and Lane $\to$ Generates real-time Claim Stub (`MMDDYY-XXX`).
-3. **Pathway C (Back-Job Return):** Customer returns for repeat repair $\to$ SA opens `#section-lookup`, searches plate $\to$ System detects visit within 40 days $\to$ Clicks **"Back-Job Return Intake"** $\to$ `#modal-backjob-reason` captures complaint and odometer $\to$ Dispatches to intake with Back-Job audit tag.
+## 🏛️ 4. The 11 Core Navigation Modules & Functional Inventory
 
-#### ⏱️ Step 2: Waiting Queue & SLA Countdown Starts
-- The vehicle lands at the top of `#container-daily-intakes` with status **`Waiting`**.
-- Location is **locked** to `Waiting Area`.
-- The **2-Hour Express PMS SLA timer** begins counting elapsed minutes (`⏱️ 0m`).
+Every operational screen in HonTech belongs to one of these 11 integrated sections:
 
-#### 👤 Step 3: Service Advisor Ticket Claiming
-- SA clicks **"Assign to Me"** on the intake row to take ownership.
-- If taking over an absent SA's vehicle, `#modal-ticket-takeover` captures justification for audit compliance.
-
-#### 🔧 Step 4: Bay Allocation & Monitoring Transition
-- SA changes status from `Waiting` $\to$ **`Monitoring`**.
-- Location dropdown unlocks $\to$ SA assigns an active bay (e.g. `Bay 2`) or keeps in `Waiting Area`.
-- `#section-bays` floor card updates to `Occupied` with license plate.
-- **Smart TV Monitor (`tv.html`)** receives real-time update $\to$ Airport chime sounds $\to$ Web Speech announces:  
-  *"Attention: Customer [Name], your vehicle [Plate] is assigned to Bay 2."*
-
-#### 📝 Step 5: Diagnosis, 2025 RO Excel Studio & SLA Guard
-- SA updates diagnosis in-line. Any field modification triggers `#modal-edit-reason-prompt`, saving changes to `job_audit_logs`.
-- SA opens **2025 RO Excel Studio (`#section-form13`)** to draft Job Orders (Sheet 1) or Quotations (Sheet 2) using authentic client spreadsheet layouts.
-- **SLA Alert:** If the vehicle exceeds 120 minutes without release, the timer badge turns amber (`⏱️ Express: 2h 15m`), exposing the `Report Reason` button $\to$ Logs to `express_lane_issues`.
-
-#### 📦 Step 6: Overnight Carry-Over (Conditional Branch)
-- If the vehicle cannot be finished today (e.g. waiting for parts), SA moves status to **`Carry-Over`**.
-- Moves into `#container-carry-over`.
-- SA inputs Promised Date and toggles **"Parts & Materials Available?"** (`YES`/`NO`).
-- Next morning, SA clicks **"Return Active"** $\to$ Board returns car to Daily Intakes with fresh time.
-
-#### 📢 Step 7: Ready for Release & Lounge Broadcast
-- Work is completed $\to$ SA changes status to **`Ready to Release`**.
-- Table row highlights in green.
-- Standalone Smart TV Monitor shifts vehicle to the "Ready for Release" column $\to$ Airport chime plays $\to$ Voice announces:  
-  *"Attention: Customer [Name], your vehicle [Plate] is now ready for release."*
-
-#### 🏁 Step 8: Billing, Customer Release & Analytics Sync
-- Customer settles bill in Billing Studio $\to$ SA changes status to **`Released`**.
-- Custom red confirmation dialog confirms transaction.
-- Vehicle is archived; assigned bay immediately reverts to **`Vacant`**.
-- Record permanently populates **Owner Analytics (`#section-dashboard`)** for daily volume, turnaround averages, and back-job intelligence.
+```
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    11 CORE MODULES SPECIFICATION                                       │
+├────────────────────┬─────────────────────────────┬─────────────────────────────────────────────────────┤
+│ DOM Section ID     │ Official Module Title       │ Scope, Subsystems & Capabilities                    │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-queue     │ Master Workshop Queue Hub   │ • Table 1: Online Booking Queue (#container-online) │
+│                    │                             │ • Table 2: Daily Intakes Master (#container-intakes)│
+│                    │                             │ • Table 3: Carry-Over Data Table (#container-carry) │
+│                    │                             │ • Queue Date Calendar Toolbar (-1 Day, Today, +1 Day│
+│                    │                             │ • Next-Day Clean Board Auto-Reset & History Recall  │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-intake    │ Fast Vehicle Intake Form    │ • Customer Name, Contact, Plate, Model, Category    │
+│                    │                             │ • Real-time Claim Stub Preview (MMDDYY-XXX)         │
+│                    │                             │ • Dynamic Lane Type Selection & Custom Service Wrap │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-lookup    │ Customer & Back-Job Lookup  │ • 40-Day Regular Customer Retention Tracking        │
+│                    │                             │ • Historical Repair Timeline & Prior Diagnosis Logs │
+│                    │                             │ • 1-Click Back-Job Return Intake Dispatcher         │
+│                    │                             │ • #modal-backjob-reason (Odometer & Return Details) │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-form13    │ 2025 RO Excel Studio        │ • 100% Offline-First SheetJS (xlsx.full.min.js)     │
+│                    │                             │ • Sheet 1: Job Order (Official Client Form 1/3)     │
+│                    │                             │ • Sheet 2: Quotation Studio (Official Form 2/3)     │
+│                    │                             │ • Sheet 3: Billing Invoice with 12% BIR VAT Engine  │
+│                    │                             │ • Sheet 4: Multi-Point Vehicle Inspection Checklist │
+│                    │                             │ • Sheet 5: Cash Advance Ledger & Cumulative Balance │
+│                    │                             │ • Sheets 6-10: OEF, Liquidation, Disbursement, etc. │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-bays      │ Workshop Floor & Bays Grid  │ • Admin Max Bay Ceiling Slider (2 to 50 bays)       │
+│                    │                             │ • SA Daily Active Bay Selector (1 to Admin Ceiling) │
+│                    │                             │ • High-visibility Vacant / Occupied visual cards    │
+│                    │                             │ • Deep-linking: Click bay card jumps to table row   │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-tv        │ Waiting Lounge TV Monitor   │ • Dual-Path: In-App Slide Monitor & Standalone TV   │
+│                    │                             │ • External Kiosk (frontend/tv.html) over Wi-Fi      │
+│                    │                             │ • PIN Authentication (4-digit code) & Remote Keypad │
+│                    │                             │ • Standby Auto-Wakeup background polling (6s)       │
+│                    │                             │ • 3-Slide Cinema Carousel (Bays, Queue, Lanes)      │
+│                    │                             │ • Web Speech API Airport Chime & Voice Broadcast    │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-dashboard │ Executive Analytics Hub     │ • Tab 1: KPI Summary Metrics (Intakes, Lifts, SLA)  │
+│                    │                             │ • Tab 2: Daily Throughput Volume Trends (Chart.js)  │
+│                    │                             │ • Tab 3: Service Category Breakdown Doughnut Chart  │
+│                    │                             │ • Tab 4: Period Record Log with Column ASC/DESC Sort│
+│                    │                             │ • Tab 5: Express PMS 2-Hour Overrun Incident Logs   │
+│                    │                             │ • Tab 6: Centralized Audit Logs & Staff Handovers   │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-staff     │ Staff Roster & RBAC Hub     │ • Personnel Roster Table with Status Badges         │
+│                    │                             │ • Add Staff Modal with Duplicate Email Verification │
+│                    │                             │ • Dynamic Role Dropdown & Account Activation/Suspend│
+│                    │                             │ • Owner Account Shield (Immune to Deletion/Suspend) │
+│                    │                             │ • Staff Direct Password Reset Modal                 │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-profile   │ Account Settings & Security │ • Dynamic Edit Full Name (Syncs navbar & job logs)  │
+│                    │                             │ • Password Change Flow with Input Complexity Guard  │
+│                    │                             │ • 4-Digit Security PIN Management for Password Reset│
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-settings  │ Workshop Facility Config    │ • Default Workshop Branch Configuration             │
+│                    │                             │ • Printer Page Setup & Document Paper Margins       │
+│                    │                             │ • Global System Parameter Management                │
+├────────────────────┼─────────────────────────────┼─────────────────────────────────────────────────────┤
+│ #section-support   │ Developer Suite & Recovery  │ • Global Shortcut: Ctrl + D (Unified Dev Toolbox)   │
+│                    │                             │ • Queue Date Time Machine (-1 Day, Today, +1 Day)   │
+│                    │                             │ • 1-Click Multi-Day Test Dataset Generator & Purge  │
+│                    │                             │ • One-Click MariaDB Seed Reset (/reset-seed)        │
+│                    │                             │ • High-Contrast Runtime Exception Diagnostic Overlay│
+└────────────────────┴─────────────────────────────┴─────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🏛️ 3. Complete Module & Section Inventory
+## 📊 5. Master Data Flow & Relational Schema Topology
 
-| Section ID | Module Name | Primary Role | Core Capabilities |
-| :--- | :--- | :--- | :--- |
-| `#section-queue` | **Master Queue Hub** | SA, Assistant, Admin, Owner | Houses the 3 core tables: Online Queue (`#container-online-queue`), Daily Intakes (`#container-daily-intakes`), and Carry-Over (`#container-carry-over`). Features calendar date filtering and auto-reset. |
-| `#section-intake` | **Vehicle Intake Form** | SA, Assistant | Rapid intake paperwork encoding, plate validation, claim stub generator, custom category input. |
-| `#section-lookup` | **Customer & Back-Job Lookup** | SA, Assistant | 40-day regular lookup, historical customer dossier, 1-click back-job intake dispatcher. |
-| `#section-form13` | **2025 RO Excel Studio** | SA, Admin, Owner | 1:1 physical sheet document canvas (Job Order, Quotation, Billing, Checklist Result, Cash Advance) with 100% offline SheetJS export/import. |
-| `#section-bays` | **Workshop Bay Floor** | SA, Admin, Owner | Dynamic floor grid. Admin sets ceiling (1-50); SA sets daily active count (1-N). Visual cards show Occupied/Vacant status. |
-| `#section-tv` | **Waiting Lounge TV Display** | All Roles / Public | Standalone kiosk (`tv.html`) & in-app TV slide carousel (Lifts, Ready Queue, Lanes) with PIN security and voice chime. |
-| `#section-dashboard`| **Executive Analytics** | Owner, Admin | Volume trends, category doughnut charts, period record log, SLA overrun causes, and Centralized Audit Logs & Handovers. |
-| `#section-staff` | **Staff Management** | Admin, Owner | Roster table, add personnel, role assignment, account activation/suspension, manual password reset. |
-| `#section-profile` | **Account Settings** | All Roles | Edit full name, password update, 4-digit security PIN verification. |
-| `#section-settings`| **Workshop Settings** | Admin | Default branch configuration, printer presets, facility bay limits. |
-| `#section-support` | **Tutorial & Diagnostics** | All Roles / Developer | Interactive system tour, developer toolbox (`Ctrl + D`), database seed reset, crash overlay export. |
+The backend utilizes **PHP 8.x PDO** connecting to **MariaDB / MySQL (Port 3307 or 3306)**. All queries strictly enforce parameterized prepared statements and soft-deletion (`is_deleted = 0`):
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                             PRIMARY DATABASE TABLES TOPOLOGY                           │
+├──────────────────────┬─────────────────────────────────────────────────────────────────┤
+│ `users`              │ `id`, `name`, `email`, `password` (bcrypt), `role`, `branch`,   │
+│                      │ `is_active`, `is_online`, `security_pin`, `created_at`          │
+├──────────────────────┼─────────────────────────────────────────────────────────────────┤
+│ `jobs`               │ `id`, `claim_stub`, `customer_name`, `plate_number`, `model`,   │
+│                      │ `category`, `lane_type`, `arrival_time`, `departure_time`,     │
+│                      │ `location`, `status`, `sa_id`, `sa_name`, `evaluation`,         │
+│                      │ `promised_date`, `carry_over_status`, `parts_available`,        │
+│                      │ `is_backjob`, `is_deleted`, `created_at`, `updated_at`          │
+├──────────────────────┼─────────────────────────────────────────────────────────────────┤
+│ `job_audit_logs`     │ `id`, `job_id`, `changed_by_id`, `changed_by_name`, `field_name`,│
+│                      │ `old_value`, `new_value`, `reason_preset`, `reason_text`,       │
+│                      │ `created_at` (Immutable Audit Trail)                            │
+├──────────────────────┼─────────────────────────────────────────────────────────────────┤
+│ `express_lane_issues`│ `id`, `job_id`, `plate_number`, `elapsed_minutes`, `delay_reason`,│
+│                      │ `delay_details`, `reported_by_sa`, `created_at`                 │
+├──────────────────────┼─────────────────────────────────────────────────────────────────┤
+│ `branches`           │ `id`, `branch_code`, `branch_name`, `is_active`, `created_at`   │
+└──────────────────────┴─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🛡️ 4. Immutable Architectural Rules for the AI
+## ⚡ 6. Terminal Automation & Developer Suite Standard
 
-1. **Rule of Continuous Flow:** Never disconnect a state transition (e.g. changing an intake status must ALWAYS update the bay card, the TV monitor, and the audit log simultaneously).
-2. **Rule of Role Bounds:** Never expose Bay Capacity ceiling sliders to the Owner or Service Advisor. Facility ceiling belongs strictly to the Administrator.
-3. **Rule of Defensive DOM:** Every DOM access must use `if (document.getElementById('...'))` to prevent runtime freezing.
-4. **Rule of Zero Unverified Code:** Any change touching these modules must pass `npm.cmd test` (27 assertions) before being committed to GitHub.
+Developers and AI agents operate through standardized terminal commands:
+
+| Command | Action Performed | Execution Environment |
+| :--- | :--- | :--- |
+| `npm.cmd run dev` | Launches PHP built-in web server with rewrite routing on port 8000. | `php -S 0.0.0.0:8000 router.php` |
+| `npm.cmd test` | Runs the complete automated test harness (27 assertions). | Node.js Native Test Runner (`node --test`) |
+| `npm.cmd run test:frontend` | Verifies SLA turnaround math, XSS sanitization, and role permissions. | `tests/frontend/*.test.js` |
+| `npm.cmd run test:backend` | Executes PHP syntax linting (`php -l`) and MySQL PDO database verification. | `tests/backend/*.test.js` |
+| `npm.cmd run test:security` | Audits SQL injection defense, 401/403 RBAC barriers, and 4-digit PINs. | `tests/security/*.test.js` |
+| `start_lan_server.bat` | Multi-device LAN launcher auto-detecting Wi-Fi IP for phone/tablet testing. | Windows Batch Script |
+
+---
+
+## 🔄 7. The Mandatory 6-Stage AI Closed-Loop Lifecycle
+
+Whenever any AI agent touches this codebase, it **MUST** execute this complete 6-stage closed loop:
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        HONTECH 6-STAGE AI CLOSED-LOOP LIFECYCLE                        │
+├────────────────────────────────────────────────────────────────────────────────────────┤
+│  STAGE 1: 📖 PRE-FLIGHT CONTEXT INGESTION                                              │
+│  • Reads this master blueprint, schema rules, and the latest entries in                │
+│    `REVISIONS_LOG.md` and `Revisions checklist.csv` before writing any code.           │
+│                                                                                        │
+│  STAGE 2: 🛠️ ATOMIC IMPLEMENTATION & BACKEND GUARDRAILS                               │
+│  • Backend: Uses PDO prepared statements (`:param`), soft-delete filters               │
+│    (`WHERE is_deleted = 0`), and unified `App\Utils\ApiResponse` formatting.          │
+│  • Frontend: Defensive DOM element checks (`if (document.getElementById(...))`).       │
+│  • Cache Busting: Increments script query version in `frontend/index.html` (`?v=X.XX`).│
+│                                                                                        │
+│  STAGE 3: 🛡️ WHOLE-SYSTEM INTEGRITY CHECK & AUTO-DEBUGGING                             │
+│  • Cross-Module Verification: Ensures modifications do NOT break any of the 11 modules│
+│    or 4 user roles.                                                                    │
+│  • Self-Debugging Mandate: Runs `npm.cmd test`. If any assertion fails, the AI must   │
+│    diagnose and self-debug immediately before concluding the task.                     │
+│                                                                                        │
+│  STAGE 4: 📋 TRACK A — MANUAL QA MATRIX SYNCHRONIZATION                                │
+│  • Appends a new testing scenario to `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv│
+│    with Test ID, Risk Tier, Target Role, and Expected Behavior for human QA testers.   │
+│                                                                                        │
+│  STAGE 5: 🧪 TRACK B — AUTOMATED SCRIPT TESTING & REVISIONS LOGGING                    │
+│  • Adds/updates assertions in `tests/` (`npm.cmd test`).                               │
+│  • Appends a detailed entry in `REVISIONS_LOG.md` with version and remarks.            │
+│  • Appends a tracking row in `Revisions checklist.csv` (`REV-XXX`).                    │
+│                                                                                        │
+│  STAGE 6: 🌿 GITHUB COMMIT TRACEABILITY & REMOTE SYNC                                  │
+│  • Stages files (`git add .`) and commits using semantic syntax:                       │
+│    `git commit -m "<type>(REV-XXX): <description>"`                                    │
+│  • Syncs the short commit hash (`git rev-parse --short HEAD`) into the CSV tracking.   │
+│  • Pushes cleanly to the active remote branch (`git push origin <branch>`).            │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🏆 8. Official Sign-Off & System Authorization
+
+This blueprint constitutes the **official engineering baseline** for the HonTech AutoCenter Operations System. All future developments, capstone thesis defense presentations, and client deliverables must strictly conform to the specifications defined in this document.
