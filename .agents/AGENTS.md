@@ -9,8 +9,9 @@ This document defines project-specific guidelines, architectural rules, and qual
 Whenever the AI is requested to make any changes (features, bug fixes, UI adjustments, or backend modifications), it **MUST** execute this complete 6-stage loop without skipping any stage:
 
 1. **Stage 1: Pre-Flight Context Reading & Ingestion**
-   - Read relevant documentation in `Hontech Documentation/`, existing schema rules, and the most recent entries in `REVISIONS_LOG.md` and `Revisions checklist.csv`.
-   - Never write code based on assumptions; ground all changes in existing architectural patterns.
+   - Read the master blueprint: [`Hontech Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md).
+   - Review existing schema rules and the most recent entries in `REVISIONS_LOG.md` and `Revisions checklist.csv`.
+   - Never write code based on assumptions; ground all changes in existing architectural patterns and user journey steps.
 
 2. **Stage 2: Implementation, Defensive Coding & Cache Busting**
    - **Backend Guardrails:** Use PDO prepared statements with parameter binding for all queries. Always filter active records using `is_deleted = 0`. Use `App\Utils\ApiResponse` for JSON responses.
