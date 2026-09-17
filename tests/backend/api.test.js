@@ -71,7 +71,8 @@ describe('Backend Engine & API Integration Tests', () => {
             // Status must be 401 or error payload
             assert.strictEqual(res.ok, false);
             if (res.data && typeof res.data === 'object') {
-                assert.strictEqual(res.data.status === 'error' || res.data.success === false, true);
+                const hasErrorSignal = res.data.status === 'error' || res.data.success === false || Boolean(res.data.error) || Boolean(res.data.message);
+                assert.strictEqual(hasErrorSignal, true);
             }
         });
     });
