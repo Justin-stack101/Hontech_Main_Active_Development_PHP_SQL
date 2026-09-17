@@ -539,5 +539,67 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(appJs.includes("closeBayAllocationModal(); showSection('form13');"), true, 'Empty bay allocation fallback must target form13');
         });
     });
+
+    describe('Suite 12: Authentic HonTech Form 1/3 Customer Details Layout & Dossier Actions (REV-081)', () => {
+        it('AUT-FRONT-36: should verify top contact header, CUSTOMER DETAILS banner, and cache buster v=2.40 in index.html', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(indexHtml.includes('85644550 / 71219124 / 09458757441 / 09525065084 - VIBER'), true, 'Must display official HonTech contact header');
+            assert.strictEqual(indexHtml.includes('CUSTOMER DETAILS'), true, 'Must include authentic CUSTOMER DETAILS uppercase banner');
+            assert.strictEqual(indexHtml.toLowerCase().includes('bg-[#c0c0c0]'), true, 'Header banner must have authentic gray background #c0c0c0');
+            assert.strictEqual(indexHtml.includes('js/app.js?v=2.40'), true, 'Cache buster must be updated to v=2.40');
+        });
+
+        it('AUT-FRONT-37: should verify all 12 authentic HonTech Form 1/3 fields exist in index.html with underlined document styling', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            const expectedFieldIds = [
+                // Col 1: Customer Identity & Contacts
+                'dossier-customer-name',
+                'dossier-customer-address',
+                'dossier-customer-phone',
+                'dossier-customer-email',
+                // Col 2: Vehicle Specs & Mechanics
+                'dossier-vehicle-model',
+                'dossier-km-reading',
+                'dossier-engine-no',
+                'dossier-chassis-no',
+                // Col 3: Registration, Timeline & Appearance
+                'dossier-vehicle-plate',
+                'dossier-intake-date',
+                'dossier-promise-date',
+                'dossier-vehicle-color'
+            ];
+
+            expectedFieldIds.forEach(id => {
+                assert.strictEqual(indexHtml.includes(`id="${id}"`), true, `Field element #${id} must exist in index.html`);
+            });
+        });
+
+        it('AUT-FRONT-38: should verify customer lookup registry extracts email and chassis_no, and selectCustomerForLookup populates all 12 fields', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes("const chassisNo = (job.chassis_no || job.chassisNo || job.chassis || '').trim();"), true, 'Registry must extract chassis number');
+            assert.strictEqual(appJs.includes("const email = (job.customer_email || job.email || '').trim();"), true, 'Registry must extract customer email');
+            assert.strictEqual(appJs.includes("document.getElementById('dossier-customer-email').innerText = cust.email"), true, 'Must populate dossier-customer-email');
+            assert.strictEqual(appJs.includes("document.getElementById('dossier-chassis-no').innerText = cust.chassisNo"), true, 'Must populate dossier-chassis-no');
+            assert.strictEqual(appJs.includes("document.getElementById('dossier-intake-date').innerText = intakeDateFormatted"), true, 'Must populate dossier-intake-date');
+            assert.strictEqual(appJs.includes("document.getElementById('dossier-promise-date').innerText = promiseDateFormatted"), true, 'Must populate dossier-promise-date');
+        });
+
+        it('AUT-FRONT-39: should verify copyCustomerDossier function, action command buttons, and telemetry integration', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(appJs.includes('function copyCustomerDossier()'), true, 'copyCustomerDossier function must be declared');
+            assert.strictEqual(appJs.includes('window.copyCustomerDossier = copyCustomerDossier;'), true, 'copyCustomerDossier must be exposed on window');
+            assert.strictEqual(indexHtml.includes('onclick="copyCustomerDossier()"'), true, 'Copy button must trigger copyCustomerDossier()');
+            assert.strictEqual(indexHtml.includes('id="btn-regular-visit"'), true, 'Start New Service button must exist');
+            assert.strictEqual(indexHtml.includes('id="btn-backjob-yes"'), true, 'Issue Back-Job button must exist');
+            assert.strictEqual(indexHtml.includes('onclick="exportCustomerServicePassportPDF()"'), true, 'Passport PDF button must exist');
+            assert.strictEqual(indexHtml.includes('id="dossier-total-visits"'), true, 'Telemetry metric Total Visits must exist');
+        });
+    });
 });
+
 

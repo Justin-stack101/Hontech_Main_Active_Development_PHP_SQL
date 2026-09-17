@@ -4,7 +4,32 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (1-Button RO Registration, Warranty Back-Job Sync, Documentation Reorganization & OpenXML Namespace Compliance)
+## 📅 September 17, 2026 (Customer Lookup Authentic Document Redesign, 1-Button RO Registration, Warranty Back-Job Sync, Documentation Reorganization & OpenXML Namespace Compliance)
+
+### 📋 Authentic HonTech Form 1/3 Customer Details 3-Column Layout & Dossier Actions (REV-081 / v5.81)
+* **Authentic Physical Form 3-Column Document Architecture**:
+  - Redesigned the Customer Lookup module (`#section-lookup`) to precisely mirror the physical HonTech Form 1/3 document and 2025 Excel template header block.
+  - Replaced generic card layout with an authentic 3-column physical document card with dark solid 2px borders, top contact header (`85644550 / 71219124 / 09458757441 / 09525065084 - VIBER`), and authentic gray `#C0C0C0` centered uppercase `CUSTOMER DETAILS` banner.
+* **12 Structured Form Fields with Document Underlines**:
+  - Structured exactly across 3 columns matching workshop documentation:
+    - Column 1: Customer Name, Address, Contact No., E-Mail Add.
+    - Column 2: Year / Model, KM Reading, Engine No., Chassis No.
+    - Column 3: Plate No., Intake Date, Promise Date, Color.
+  - Form fields render with authentic, sharp document underlines (`border-b border-slate-800 pb-0.5`).
+* **Registry Data Extraction & Field Population**:
+  - Updated `buildCustomerLookupRegistry()` in `frontend/js/app.js` to extract `customer_email`/`email` and `chassis_no` into customer records alongside engine number and address.
+  - Updated `selectCustomerForLookup()` to defensively populate all 12 fields and format dates (`YYYY-MM-DD`) with defensive null fallbacks.
+* **Integrated Action Toolbar & One-Click Dossier Copy**:
+  - Embedded an attached command toolbar at the base of the Customer Details box containing:
+    - `[⚡ Start New Service in Forms]` (`confirmRegularIntake()`)
+    - `[🔁 Issue Back-Job in Forms]` (`openBackJobReasonModal()`)
+    - `[Copy Info]` (`copyCustomerDossier()`)
+    - `[Passport PDF]` (`exportCustomerServicePassportPDF()`)
+  - Preserved 4 telemetry metrics (Total Visits, Last Service, PMS Prediction, Warranty Standing) and historical repair order timeline.
+* **Testing & Verification**:
+  - Added Suite 12 (`AUT-FRONT-36` to `AUT-FRONT-39`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 54 automated assertions pass across 21 test suites (`npm.cmd test`).
+  - Cache buster incremented to `v=2.40` in `frontend/index.html`.
 
 ### 🚗 Service Advisor Unified Workflow — 1-Button RO Registration, Warranty Back-Job Sync & Intake Streamlining (REV-080 / v5.80)
 * **Single Source of Truth 1-Button Registration Architecture**:

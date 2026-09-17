@@ -10500,6 +10500,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const address = (job.address || '').trim();
                 const kmReading = job.km_reading ?? job.kmReading ?? '';
                 const engineNo = (job.engine_no || job.engineNo || '').trim();
+                const chassisNo = (job.chassis_no || job.chassisNo || job.chassis || '').trim();
+                const email = (job.customer_email || job.email || '').trim();
                 const color = (job.color || '').trim();
 
                 // Unique key by plate (or name if no plate)
@@ -10511,10 +10513,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         name: name,
                         plate: plate,
                         phone: phone,
+                        email: email,
                         vehicle: vehicle,
                         address: address,
                         kmReading: kmReading,
                         engineNo: engineNo,
+                        chassisNo: chassisNo,
                         color: color,
                         branch: branch,
                         jobs: []
@@ -10523,9 +10527,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 // Update fields if current has more details
                 if (registry[key].phone === 'N/A' && phone !== 'N/A') registry[key].phone = phone;
+                if (!registry[key].email && email) registry[key].email = email;
                 if (registry[key].vehicle === 'Unknown Model' && vehicle !== 'Unknown Model') registry[key].vehicle = vehicle;
                 if (!registry[key].address && address) registry[key].address = address;
                 if (!registry[key].engineNo && engineNo) registry[key].engineNo = engineNo;
+                if (!registry[key].chassisNo && chassisNo) registry[key].chassisNo = chassisNo;
                 if (!registry[key].color && color) registry[key].color = color;
                 if (!registry[key].kmReading && kmReading) registry[key].kmReading = kmReading;
 
@@ -10754,6 +10760,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const latestJob = cust.jobs[0] || {};
             const rawLastDate = latestJob.date || latestJob.created_at;
+            const rawIntake = latestJob.dateReceived || latestJob.date_received || latestJob.date || latestJob.created_at || '';
+            const intakeDateFormatted = rawIntake ? String(rawIntake).split('T')[0] : '___________________';
+            const rawPromise = latestJob.promisedDate || latestJob.promised_date || latestJob.promiseDate || latestJob.promise_date || '';
+            const promiseDateFormatted = rawPromise ? String(rawPromise).split('T')[0] : '___________________';
 
             // Generate Initials Avatar
             const initials = (cust.name || 'Customer').split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'CU';
@@ -10761,18 +10771,50 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-avatar-initials').innerText = initials;
             }
 
+            // Populate all 12 Authentic HonTech Form 1/3 Customer Details Fields
+            // Column 1
             if (document.getElementById('dossier-customer-name')) {
-                document.getElementById('dossier-customer-name').innerText = cust.name;
+                document.getElementById('dossier-customer-name').innerText = cust.name || '—';
+            }
+            if (document.getElementById('dossier-customer-address')) {
+                document.getElementById('dossier-customer-address').innerText = cust.address || '___________________';
             }
             if (document.getElementById('dossier-customer-phone')) {
-                document.getElementById('dossier-customer-phone').innerText = cust.phone;
+                document.getElementById('dossier-customer-phone').innerText = cust.phone && cust.phone !== 'N/A' ? cust.phone : '___________________';
             }
-            if (document.getElementById('dossier-vehicle-plate')) {
-                document.getElementById('dossier-vehicle-plate').innerText = cust.plate;
+            if (document.getElementById('dossier-customer-email')) {
+                document.getElementById('dossier-customer-email').innerText = cust.email || latestJob.customer_email || latestJob.email || '___________________';
             }
+
+            // Column 2
             if (document.getElementById('dossier-vehicle-model')) {
-                document.getElementById('dossier-vehicle-model').innerText = cust.vehicle;
+                document.getElementById('dossier-vehicle-model').innerText = cust.vehicle || '—';
             }
+            if (document.getElementById('dossier-km-reading')) {
+                const kmVal = cust.kmReading || latestJob.km_reading || latestJob.kmReading;
+                document.getElementById('dossier-km-reading').innerText = kmVal ? `${Number(kmVal).toLocaleString()} km` : '___________________';
+            }
+            if (document.getElementById('dossier-engine-no')) {
+                document.getElementById('dossier-engine-no').innerText = cust.engineNo || latestJob.engine_no || latestJob.engineNo || '___________________';
+            }
+            if (document.getElementById('dossier-chassis-no')) {
+                document.getElementById('dossier-chassis-no').innerText = cust.chassisNo || latestJob.chassis_no || latestJob.chassisNo || latestJob.chassis || '___________________';
+            }
+
+            // Column 3
+            if (document.getElementById('dossier-vehicle-plate')) {
+                document.getElementById('dossier-vehicle-plate').innerText = cust.plate !== 'NO-PLATE' ? cust.plate : 'NO-PLATE';
+            }
+            if (document.getElementById('dossier-intake-date')) {
+                document.getElementById('dossier-intake-date').innerText = intakeDateFormatted;
+            }
+            if (document.getElementById('dossier-promise-date')) {
+                document.getElementById('dossier-promise-date').innerText = promiseDateFormatted;
+            }
+            if (document.getElementById('dossier-vehicle-color')) {
+                document.getElementById('dossier-vehicle-color').innerText = cust.color || latestJob.color || '___________________';
+            }
+
             if (document.getElementById('dossier-branch-text')) {
                 document.getElementById('dossier-branch-text').innerText = cust.branch || 'Marikina Branch';
             }
@@ -11012,6 +11054,42 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSystemToast(`Phone number [${phone}] copied to clipboard!`, 'success', 'Contact Copied');
         }
         window.copyCustomerPhone = copyCustomerPhone;
+
+        function copyCustomerDossier() {
+            if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
+                showSystemToast('Please select a customer record first.', 'warning', 'Copy Dossier');
+                return;
+            }
+            const cust = customerLookupRegistry[selectedLookupCustomerKey];
+            const latestJob = cust.jobs[0] || {};
+            const dossierText = [
+                `HONTECH AUTOCENTER - CUSTOMER DOSSIER`,
+                `----------------------------------------`,
+                `Customer Name : ${cust.name || '—'}`,
+                `Address       : ${cust.address || 'N/A'}`,
+                `Contact No.   : ${cust.phone || 'N/A'}`,
+                `E-Mail Add.   : ${cust.email || latestJob.customer_email || latestJob.email || 'N/A'}`,
+                `Year / Model  : ${cust.vehicle || '—'}`,
+                `Plate Number  : ${cust.plate || 'NO-PLATE'}`,
+                `KM Reading    : ${cust.kmReading || latestJob.km_reading || 'N/A'}`,
+                `Engine No.    : ${cust.engineNo || latestJob.engine_no || 'N/A'}`,
+                `Chassis No.   : ${cust.chassisNo || latestJob.chassis_no || 'N/A'}`,
+                `Color         : ${cust.color || latestJob.color || 'N/A'}`,
+                `Total Visits  : ${cust.jobs.length}`,
+                `Latest Service: ${latestJob.category || 'N/A'} (${latestJob.date || latestJob.created_at || 'Recent'})`
+            ].join('\n');
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(dossierText).then(() => {
+                    showSystemToast(`Customer dossier for [${cust.name}] copied to clipboard!`, 'success', 'Dossier Copied');
+                }).catch(() => {
+                    showSystemToast('Unable to copy dossier to clipboard.', 'error', 'Copy Failed');
+                });
+            } else {
+                showSystemToast(`Customer dossier for [${cust.name}] copied to clipboard!`, 'success', 'Dossier Copied');
+            }
+        }
+        window.copyCustomerDossier = copyCustomerDossier;
 
         function openBackJobReasonModal(explicitJobId) {
             if (!selectedLookupCustomerKey || !customerLookupRegistry[selectedLookupCustomerKey]) {
