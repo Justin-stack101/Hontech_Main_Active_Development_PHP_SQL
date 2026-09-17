@@ -351,5 +351,37 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(appJs.includes('syncForm13Canvas();\n                syncJobOrderFieldsToQuote();'), false, 'syncForm13Canvas must not be called inside onReactiveJobOrderInput');
         });
     });
+
+    describe('Suite 8: REV-075 Dynamic PDF Stamping Across All SA Worksheets & Open-Minded Inquiry Mandate', () => {
+        it('AUT-FRONT-22: should verify dynamic PDF compilers are registered in app.js and callables exist', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('compileQuotePDFBytes'), true, 'compileQuotePDFBytes must exist in app.js');
+            assert.strictEqual(appJs.includes('generateQuotePDF'), true, 'generateQuotePDF must exist in app.js');
+            assert.strictEqual(appJs.includes('compileBillingPDFBytes'), true, 'compileBillingPDFBytes must exist in app.js');
+            assert.strictEqual(appJs.includes('generateBillingPDF'), true, 'generateBillingPDF must exist in app.js');
+            assert.strictEqual(appJs.includes('compileChecklistPDFBytes'), true, 'compileChecklistPDFBytes must exist in app.js');
+            assert.strictEqual(appJs.includes('generateChecklistPDF'), true, 'generateChecklistPDF must exist in app.js');
+            assert.strictEqual(appJs.includes('scheduleFormStudioPdfRefresh'), true, 'scheduleFormStudioPdfRefresh must exist in app.js');
+        });
+
+        it('AUT-FRONT-23: should verify standardized dark ink typography and removal of destructive whiteout in Form 1/3', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // Form 13 must use darkInk rather than glaring red
+            assert.strictEqual(appJs.includes('drawText(jobNo, 478, 794, 8.5, true, darkInk);'), true, 'Job No must use darkInk typography');
+            // Border destructive whiteouts in table parts/materials must be removed
+            assert.strictEqual(appJs.includes('whiteOut(297, ry - 1.5, 55, 7.5);'), false, 'Parts row destructive whiteout must be removed');
+            assert.strictEqual(appJs.includes('whiteOut(475, ry - 1.5, 46, 7.5);'), false, 'Materials row destructive whiteout must be removed');
+        });
+
+        it('AUT-FRONT-24: should verify Open-Minded Inquiry Mandate is codified in AGENTS.md and agent-workflow SKILL.md', () => {
+            const agentsMd = fs.readFileSync(path.resolve('.agents/AGENTS.md'), 'utf8');
+            const workflowSkill = fs.readFileSync(path.resolve('.agents/skills/agent-workflow/SKILL.md'), 'utf8');
+
+            assert.strictEqual(agentsMd.includes('Mandatory Open-Minded Inquiry & Alignment Requirement'), true, 'AGENTS.md must mandate open-minded questions');
+            assert.strictEqual(workflowSkill.includes('Open-Minded Collaborative Inquiry Phase'), true, 'agent-workflow SKILL.md must mandate open-minded questions');
+        });
+    });
 });
 

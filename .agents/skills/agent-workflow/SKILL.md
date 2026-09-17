@@ -49,7 +49,7 @@ For every non-trivial task, follow this workflow:
 1. Understand the request.
 2. Research the codebase.
 3. Create an implementation plan.
-4. Resolve unknowns (ask, don't guess).
+4. **Open-Minded Collaborative Inquiry Phase**: Resolve unknowns and solicit user alignment (always formulate thoughtful, open-ended questions in the plan covering UI styling, colors, typography, layout ergonomics, data capacity, and operational edge cases to align with the user before coding).
 5. Wait for explicit approval.
 6. Implement.
 7. Verify.

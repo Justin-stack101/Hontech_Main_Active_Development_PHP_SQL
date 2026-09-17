@@ -4,7 +4,25 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (Official PDF Format Preview Sidebars, Purge Keystroke HTML Canvas & Zero-Latency Reactive Input Sync)
+## 📅 September 17, 2026 (Dynamic PDF Stamping Across All SA Worksheets, Professional Typography Harmonization & AI Inquiry Mandate)
+
+### 🖨️ Dynamic PDF Stamping Across All SA Worksheets & Open-Minded Inquiry Mandate (REV-075 / v5.75)
+* **Dynamic Live PDF Stamping Across All SA Worksheets**:
+  - Implemented dynamic PDF compiling via `PDFLib` for the 3 remaining Service Advisor worksheets matching `Job_Order`:
+    - `Quotation_No`: `compileQuotePDFBytes()` & `generateQuotePDF()` stamp quote no, date, customer & vehicle dossier, line items (qty, description, unit price, total), subtotals, VAT, and grand total directly onto `assets/Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf`.
+    - `Billing_No`: `compileBillingPDFBytes()` & `generateBillingPDF()` stamp billing no, date, JO/quote reference, customer & vehicle specs, line items, discounts, VAT, and balance due directly onto `assets/Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf`.
+    - `CheckList_Result`: `compileChecklistPDFBytes()` & `generateChecklistPDF()` stamp vehicle dossier, date, SA inspector name, 15-point multi-system inspection status markers (`✔` Good, `⚠` Attn, `✘` Defect), dark fuel gauge badge marker over `E`, `1/4`, `1/2`, `3/4`, or `F`, and remarks onto `assets/Current_2025 BLANK RO UPDATED.xlsx - CheckList_Result.pdf`.
+  - Added debounced (350ms) auto-refresh pipeline (`scheduleFormStudioPdfRefresh()`) that updates the active preview iframe (`#f13-pdf-iframe`, `#f23-pdf-iframe`, `#billing-pdf-iframe`, `#checklist-pdf-iframe`) with zero keystroke lag.
+  - Connected toolbar "Download PDF" buttons with standardized filenames (`HonTech_Quotation_QT-2026-XXXX.pdf`, `HonTech_Billing_BL-2026-XXXX.pdf`, `HonTech_CheckList_HT-JO-XXXX.pdf`).
+* **Standardized Professional PDF Typography & Visual Quality Fix**:
+  - Fixed typography issues reported by user on `Job_Order` PDF: eliminated clashing bright red headers, irregular font sizes, and destructive whiteout blocks that clipped table borders.
+  - Harmonized typography across all 4 PDFs with authentic laser-printed charcoal/black ink (`rgb(0.08, 0.08, 0.08)`), consistent 8pt standard sizing (7.5pt secondary), and clean baseline vertical alignments.
+* **Mandatory AI Workflow Directive (Open-Minded Collaborative Inquiry Phase)**:
+  - Codified user mandate permanently into `.agents/AGENTS.md` and `.agents/skills/agent-workflow/SKILL.md`: Whenever creating an implementation plan, the AI MUST formulate deep, open-minded questions for the user (covering UI styling, colors, typography, layout ergonomics, data capacity, and operational edge cases) to ensure mutual understanding and alignment before code is written.
+* **Automated Test Expansion (Suite 8)**:
+  - Added Suite 8 (`AUT-FRONT-22`, `AUT-FRONT-23`, `AUT-FRONT-24`) in `tests/frontend/sla_and_logic.test.js`.
+  - Automated assertions increased to **39/39 passing** across 17 test suites.
+  - Cache buster updated to `v=2.34`.
 
 ### 📄 Official PDF Format Preview Sidebars & Purge Keystroke HTML Canvas (REV-074 / v5.74)
 * **Official PDF Format Preview Sidebars across All Worksheets**:

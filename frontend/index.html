@@ -2925,9 +2925,9 @@
                                 <a href="assets/form13_template.pdf" target="_blank" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Enlarge Document to Fullscreen High-Definition View">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
-                                <a href="assets/form13_template.pdf" download="Form13_Official_Template.pdf" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
+                                <button type="button" onclick="generateForm13PDF(true)" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                                </a>
+                                </button>
                                 <button type="button" onclick="printForm13()" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
                                 </button>
@@ -3109,9 +3109,9 @@
                                     <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf" target="_blank" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                     </a>
-                                    <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf" download="Current_2025_Quotation_No.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                    <button type="button" onclick="generateQuotePDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Quotation PDF">
                                         <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                                    </a>
+                                    </button>
                                     <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
@@ -3120,7 +3120,7 @@
 
                             <!-- PDF Format View Container -->
                             <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                                <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
+                                <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
                             </div>
                         </div>
                     </div>
@@ -3300,9 +3300,9 @@
                                 <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf" target="_blank" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
-                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf" download="Current_2025_Billing_No.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                <button type="button" onclick="generateBillingPDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Billing PDF">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                                </a>
+                                </button>
                                 <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
                                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                 </button>
@@ -3311,7 +3311,7 @@
 
                         <!-- PDF Format View Container -->
                         <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                            <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
+                            <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -3431,9 +3431,9 @@
                                 <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf" target="_blank" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
-                                <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf" download="Current_2025_CheckList_Result.pdf" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                <button type="button" onclick="generateChecklistPDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Checklist PDF">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
-                                </a>
+                                </button>
                                 <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
                                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                 </button>
@@ -3442,7 +3442,7 @@
 
                         <!-- PDF Format View Container -->
                         <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                            <iframe src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
+                            <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -7369,7 +7369,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.32"></script>
+    <script src="js/app.js?v=2.34"></script>
 </body>
 
 </html>

@@ -12510,13 +12510,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 updateSheetBarDossierSummary();
             }
 
-            // Debounced Live PDF generation
-            if (form13PdfDebounceTimer) clearTimeout(form13PdfDebounceTimer);
-            form13PdfDebounceTimer = setTimeout(() => {
-                if (currentForm13View === 'pdf') {
-                    generateForm13PDF(false);
-                }
-            }, 300);
+            // Universal Debounced Live PDF generation
+            scheduleFormStudioPdfRefresh();
         }
         window.syncForm13Canvas = syncForm13Canvas;
 
@@ -12552,11 +12547,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
-            const red = rgb(0.85, 0.1, 0.1);
-            const black = rgb(0, 0, 0);
+            const darkInk = rgb(0.08, 0.08, 0.08);
+            const black = darkInk;
             const white = rgb(1, 1, 1);
 
-            const drawText = (str, x, y, size = 7, isBold = false, color = black) => {
+            const drawText = (str, x, y, size = 7.5, isBold = false, color = darkInk) => {
                 if (!str && str !== 0) return;
                 page.drawText(String(str), {
                     x, y, size,
@@ -12565,7 +12560,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
             };
 
-            const drawTextRight = (str, rightX, y, size = 6, isBold = false, color = black) => {
+            const drawTextRight = (str, rightX, y, size = 7, isBold = false, color = darkInk) => {
                 if (!str && str !== 0) return;
                 const s = String(str);
                 const f = isBold ? fontBold : fontNorm;
@@ -12573,7 +12568,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawText(s, { x: rightX - w, y, size, font: f, color });
             };
 
-            const drawTextCenter = (str, centerX, y, size = 6, isBold = false, color = black) => {
+            const drawTextCenter = (str, centerX, y, size = 7, isBold = false, color = darkInk) => {
                 if (!str && str !== 0) return;
                 const s = String(str);
                 const f = isBold ? fontBold : fontNorm;
@@ -12581,7 +12576,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawText(s, { x: centerX - (w / 2), y, size, font: f, color });
             };
 
-            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = black, minSize = 4.8) => {
+            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 6) => {
                 if (!str && str !== 0) return;
                 let s = String(str);
                 let size = initialSize;
@@ -12618,18 +12613,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const chassis = getVal('f13-input-chassis') || '';
             const concern = getVal('f13-input-concern') || '';
             const diagnostic = getVal('f13-input-diagnostic') || '';
-            const sa = getVal('f13-input-sa') || currentUserName || 'Roman Sarol';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
             const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
             const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
             const manager = getVal('f13-input-manager') || 'General Manager';
 
             // 1. Header
-            drawText(jobNo, 478, 794, 9.5, true, red);
-            drawTextCenter(intakeDate, 505, 767.6, 7.5, true, black);
+            drawText(jobNo, 478, 794, 8.5, true, darkInk);
+            drawTextCenter(intakeDate, 505, 767.6, 7.5, true, darkInk);
 
             // 2. Customer Details
             drawTextFit(name, 134, 723.3, 140, 7.5, true);
-            drawTextFit(model, 348, 723.3, 72, 7.5, false, black, 4.5);
+            drawTextFit(model, 348, 723.3, 72, 7.5, false, darkInk);
             drawTextFit(plate, 472, 723.3, 48, 8, true);
 
             drawTextFit(address, 134, 715.2, 140, 7, false);
@@ -12642,7 +12637,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             drawTextFit(email, 136, 698.9, 138, 7, false);
             drawTextFit(chassis, 348, 698.9, 72, 7, false);
-            drawTextFit(color, 475, 698.9, 46, 7, false, black, 4.5);
+            drawTextFit(color, 475, 698.9, 46, 7, false, darkInk);
 
             // 3. Concern Box
             if (concern) {
@@ -12658,11 +12653,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // 5. Diagnostics
             if (diagnostic) {
                 page.drawText(diagnostic, {
-                    x: 81, y: 498, size: 6, font: fontNorm, maxWidth: 100, lineHeight: 8.5
+                    x: 81, y: 498, size: 6.5, font: fontNorm, maxWidth: 100, lineHeight: 8.5
                 });
             }
 
-            // 6. Parts & Materials (Exact match with original vector grid rows)
+            // 6. Parts & Materials (Clean vector grid alignment without destructive whiteouts)
             const ROW_Y = [494.4, 486.3, 478.2, 470.1, 462.0, 453.8, 445.7, 437.6, 429.5, 421.4, 413.3, 405.2, 397.1, 389.0, 380.9, 372.8, 364.7, 356.6, 348.5, 340.4, 332.2, 324.1, 317.0];
             let partsTotal = 0;
             let matsTotal = 0;
@@ -12675,11 +12670,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 partsTotal += amt;
 
-                whiteOut(297, ry - 1.5, 55, 7.5);
-                drawTextFit((p.desc || ''), 190.5, ry, 41, 5.2);
-                drawTextCenter(String(qty), 245, ry, 6);
-                drawTextRight(price.toFixed(2), 293, ry, 6);
-                drawTextRight(amt.toFixed(2), 350, ry, 6, true);
+                drawTextFit((p.desc || ''), 190.5, ry, 48, 6.5);
+                drawTextCenter(String(qty), 245, ry, 6.5);
+                drawTextRight(price.toFixed(2), 293, ry, 6.5);
+                drawTextRight(amt.toFixed(2), 350, ry, 6.5, true);
             });
 
             (window.form13Materials || []).forEach((m, i) => {
@@ -12690,49 +12684,45 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 matsTotal += amt;
 
-                whiteOut(475, ry - 1.5, 46, 7.5);
-                drawTextFit((m.desc || ''), 355.5, ry, 46, 5.2);
-                drawTextCenter(String(qty), 415, ry, 6);
-                drawTextRight(price.toFixed(2), 471, ry, 6);
-                drawTextRight(amt.toFixed(2), 520, ry, 6, true);
+                drawTextFit((m.desc || ''), 355.5, ry, 52, 6.5);
+                drawTextCenter(String(qty), 415, ry, 6.5);
+                drawTextRight(price.toFixed(2), 471, ry, 6.5);
+                drawTextRight(amt.toFixed(2), 520, ry, 6.5, true);
             });
 
             // Subtotals & Total
             if (partsTotal > 0) {
-                whiteOut(293, 305, 54, 8);
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 6.5, true);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 7, true);
             }
 
             if (matsTotal > 0) {
-                whiteOut(479, 304, 38, 8);
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 6.5, true);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 7, true);
             }
 
             const grandTotal = partsTotal + matsTotal;
             if (grandTotal > 0) {
-                whiteOut(455, 294, 66, 10);
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 514, 297.5, 7.5, true, red);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 514, 297.5, 8, true, darkInk);
             }
 
             // Signatures
-            drawTextCenter(mechanic, 184, 279.8, 6.5, true);
-            drawTextCenter(assessor, 462, 279.8, 6.5, true);
+            drawTextCenter(mechanic, 184, 279.8, 7, true);
+            drawTextCenter(assessor, 462, 279.8, 7, true);
 
-            whiteOut(150, 204, 70, 9);
-            drawTextCenter(sa, 184, 206, 7, true);
-            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7, true);
-            drawTextCenter(name, 184, 169.5, 7, true);
-            drawTextCenter(manager, 413, 169.5, 7, true);
+            whiteOut(150, 204, 70, 8);
+            drawTextCenter(sa, 184, 206, 7.5, true);
+            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7.5, true);
+            drawTextCenter(name, 184, 169.5, 7.5, true);
+            drawTextCenter(manager, 413, 169.5, 7.5, true);
 
             // 7. Filipino Claim stub
-            drawTextFit(name, 134, 77.6, 140, 7, true);
+            drawTextFit(name, 134, 77.6, 140, 7.5, true);
             const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-            drawTextFit(combinedVehicle, 355, 77.6, 160, 7, true);
-            whiteOut(170, 68, 80, 8);
-            drawTextFit(sa, 175, 69.1, 100, 7, true);
-            drawText(intakeDate, 95, 59, 7);
+            drawTextFit(combinedVehicle, 355, 77.6, 160, 7.5, true);
+            whiteOut(170, 68, 80, 7);
+            drawTextFit(sa, 175, 69.1, 100, 7.5, true);
+            drawText(intakeDate, 95, 59, 7.5);
             const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
-            drawText(stubId, 355, 59, 8, true, red);
+            drawText(stubId, 355, 59, 8, true, darkInk);
 
             return await doc.save();
         }
@@ -12765,11 +12755,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     currentForm13PdfBlobUrl = URL.createObjectURL(pdfBlob);
                     const iframe = document.getElementById('f13-pdf-iframe');
                     if (iframe) {
-                        iframe.src = currentForm13PdfBlobUrl;
+                        iframe.src = currentForm13PdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                     const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
                     if (enlargeIframe) {
-                        enlargeIframe.src = currentForm13PdfBlobUrl;
+                        enlargeIframe.src = currentForm13PdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                 }
             } catch (err) {
@@ -12777,6 +12767,612 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
         window.generateForm13PDF = generateForm13PDF;
+
+        // =========================================================================
+        // WORKSHEET 2: QUOTATION_NO DYNAMIC PDF COMPILER & LIVE SYNCHRONIZER
+        // =========================================================================
+        let quoteTemplateArrayBuffer = null;
+        let currentQuotePdfBlobUrl = null;
+
+        async function getQuoteTemplateBuffer() {
+            if (quoteTemplateArrayBuffer) return quoteTemplateArrayBuffer;
+            try {
+                const response = await fetch('assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf');
+                quoteTemplateArrayBuffer = await response.arrayBuffer();
+                return quoteTemplateArrayBuffer;
+            } catch (e) {
+                console.error('Failed to load Quotation_No official template:', e);
+                return null;
+            }
+        }
+
+        async function compileQuotePDFBytes() {
+            if (typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
+                console.warn('PDFLib not available');
+                return null;
+            }
+
+            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const templateBuffer = await getQuoteTemplateBuffer();
+            if (!templateBuffer) throw new Error('Quotation template buffer could not be loaded');
+
+            const doc = await PDFDocument.load(templateBuffer);
+            const page = doc.getPages()[0];
+            const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
+            const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
+
+            const darkInk = rgb(0.08, 0.08, 0.08);
+
+            const drawText = (str, x, y, size = 7.5, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                page.drawText(String(str), { x, y, size, font: isBold ? fontBold : fontNorm, color });
+            };
+
+            const drawTextRight = (str, rightX, y, size = 7, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: rightX - w, y, size, font: f, color });
+            };
+
+            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 5.5) => {
+                if (!str && str !== 0) return;
+                let s = String(str);
+                let size = initialSize;
+                const f = isBold ? fontBold : fontNorm;
+                while (size > minSize && f.widthOfTextAtSize(s, size) > maxWidth) {
+                    size -= 0.2;
+                }
+                if (f.widthOfTextAtSize(s, size) > maxWidth) {
+                    while (s.length > 3 && f.widthOfTextAtSize(s + '...', size) > maxWidth) {
+                        s = s.slice(0, -1);
+                    }
+                    s += '...';
+                }
+                page.drawText(s, { x, y, size, font: f, color });
+            };
+
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
+            const date = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
+            const jobNo = getVal('f23-input-job-no') || getVal('f13-input-job-no') || 'HT-JO-0001';
+            const promiseDate = getVal('f13-input-promise-date') || date;
+            const name = getVal('f23-input-name') || getVal('f13-input-name') || '';
+            const plate = (getVal('f23-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
+            const address = getVal('f23-input-address') || getVal('f13-input-address') || '';
+            const model = getVal('f23-input-model') || getVal('f13-input-model') || '';
+            const contact = getVal('f23-input-contact') || getVal('f13-input-contact') || '';
+            const color = getVal('f23-input-color') || getVal('f13-input-color') || '';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+
+            // Meta Header
+            drawText(quoteNo, 420, 776.6, 8.5, true, darkInk);
+            drawText(date, 440, 744.3, 7.5, false, darkInk);
+            drawText(jobNo, 440, 734.7, 7.5, false, darkInk);
+            drawText(promiseDate, 440, 725.2, 7.5, false, darkInk);
+
+            // Customer Details
+            drawTextFit(name, 115, 696.5, 180, 7.5, true);
+            drawTextFit(plate, 380, 696.5, 120, 8, true);
+            drawTextFit(address, 115, 686.9, 180, 7, false);
+            drawTextFit(model, 380, 686.9, 120, 7.5, false);
+            drawTextFit(contact, 115, 677.3, 180, 7.5, false);
+            drawTextFit(color, 380, 677.3, 120, 7.5, false);
+
+            // Table Line Items (Up to 24 rows on template)
+            const items = window.form23Items || [];
+            let totalLabor = 0;
+            let totalParts = 0;
+            let totalMats = 0;
+
+            const startY = 649.2;
+            const rowStep = 9.56;
+            const maxRows = 24;
+
+            items.slice(0, maxRows).forEach((it, idx) => {
+                const ry = startY - (idx * rowStep);
+                const desc = it.desc || '';
+                const qty = Number(it.qty) || 1;
+                const price = Number(it.price) || 0;
+                const rowTotal = qty * price;
+
+                const isLabor = it.desc && (it.desc.toLowerCase().includes('labor') || it.desc.toLowerCase().includes('service') || it.desc.toLowerCase().includes('cleaning') || it.desc.toLowerCase().includes('alignment'));
+                const isMat = it.desc && (it.desc.toLowerCase().includes('fluid') || it.desc.toLowerCase().includes('oil') || it.desc.toLowerCase().includes('flush') || it.desc.toLowerCase().includes('gas'));
+
+                let laborAmt = Number(it.labor) || 0;
+                let partsAmt = Number(it.parts) || 0;
+                let matsAmt = Number(it.materials) || 0;
+
+                if (!laborAmt && !partsAmt && !matsAmt) {
+                    if (isLabor) laborAmt = rowTotal;
+                    else if (isMat) matsAmt = rowTotal;
+                    else partsAmt = rowTotal;
+                }
+
+                totalLabor += laborAmt;
+                totalParts += partsAmt;
+                totalMats += matsAmt;
+
+                drawTextFit(desc, 72, ry, 115, 6.8, false);
+                drawTextCenter(String(qty), 200, ry, 6.5);
+                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
+                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
+                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
+                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, true);
+            });
+
+            // Subtotals
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.5, true);
+            const subtotal = totalLabor + totalParts + totalMats;
+            const vat12 = subtotal * 0.12;
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 355.0, 7.5, true);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 345.5, 7.5, true);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 335.9, 7.5, true);
+
+            const grandTotal = subtotal + vat12;
+            if (grandTotal > 0) {
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 465, 326.3, 8, true, darkInk);
+            }
+
+            // Signatures
+            drawTextFit(sa, 70, 165, 140, 7.5, true);
+            drawTextFit('GENERAL MANAGER', 330, 165, 140, 7.5, true);
+            drawTextFit(name, 70, 125, 140, 7.5, true);
+
+            return await doc.save();
+        }
+        window.compileQuotePDFBytes = compileQuotePDFBytes;
+
+        async function generateQuotePDF(shouldDownload = false) {
+            try {
+                const getVal = id => (document.getElementById(id)?.value || '').trim();
+                const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
+
+                const pdfBytes = await compileQuotePDFBytes();
+                if (!pdfBytes) return;
+
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+                if (shouldDownload) {
+                    const downloadUrl = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `HonTech_Quotation_${quoteNo}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    showSystemToast(`Exported official Quotation PDF ${quoteNo}`, 'success', 'PDF Downloaded');
+                } else {
+                    if (currentQuotePdfBlobUrl) {
+                        URL.revokeObjectURL(currentQuotePdfBlobUrl);
+                    }
+                    currentQuotePdfBlobUrl = URL.createObjectURL(pdfBlob);
+                    const iframe = document.getElementById('f23-pdf-iframe');
+                    if (iframe) {
+                        iframe.src = currentQuotePdfBlobUrl + '#toolbar=1&navpanes=0';
+                    }
+                }
+            } catch (err) {
+                console.error('Error in Quotation PDF generator:', err);
+            }
+        }
+        window.generateQuotePDF = generateQuotePDF;
+
+        // =========================================================================
+        // WORKSHEET 3: BILLING_NO DYNAMIC PDF COMPILER & LIVE SYNCHRONIZER
+        // =========================================================================
+        let billingTemplateArrayBuffer = null;
+        let currentBillingPdfBlobUrl = null;
+
+        async function getBillingTemplateBuffer() {
+            if (billingTemplateArrayBuffer) return billingTemplateArrayBuffer;
+            try {
+                const response = await fetch('assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf');
+                billingTemplateArrayBuffer = await response.arrayBuffer();
+                return billingTemplateArrayBuffer;
+            } catch (e) {
+                console.error('Failed to load Billing_No official template:', e);
+                return null;
+            }
+        }
+
+        async function compileBillingPDFBytes() {
+            if (typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
+                console.warn('PDFLib not available');
+                return null;
+            }
+
+            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const templateBuffer = await getBillingTemplateBuffer();
+            if (!templateBuffer) throw new Error('Billing template buffer could not be loaded');
+
+            const doc = await PDFDocument.load(templateBuffer);
+            const page = doc.getPages()[0];
+            const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
+            const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
+
+            const darkInk = rgb(0.08, 0.08, 0.08);
+
+            const drawText = (str, x, y, size = 7.5, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                page.drawText(String(str), { x, y, size, font: isBold ? fontBold : fontNorm, color });
+            };
+
+            const drawTextRight = (str, rightX, y, size = 7, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: rightX - w, y, size, font: f, color });
+            };
+
+            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 5.5) => {
+                if (!str && str !== 0) return;
+                let s = String(str);
+                let size = initialSize;
+                const f = isBold ? fontBold : fontNorm;
+                while (size > minSize && f.widthOfTextAtSize(s, size) > maxWidth) {
+                    size -= 0.2;
+                }
+                if (f.widthOfTextAtSize(s, size) > maxWidth) {
+                    while (s.length > 3 && f.widthOfTextAtSize(s + '...', size) > maxWidth) {
+                        s = s.slice(0, -1);
+                    }
+                    s += '...';
+                }
+                page.drawText(s, { x, y, size, font: f, color });
+            };
+
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const billingNo = getVal('bill-input-billing-no') || 'BL-2026-0001';
+            const date = getVal('bill-input-date') || new Date().toISOString().split('T')[0];
+            const jobNo = getVal('bill-input-job-no') || getVal('f13-input-job-no') || 'HT-JO-0001';
+            const quoteNo = getVal('bill-input-quote-no') || 'QT-2026-0001';
+            const name = getVal('bill-input-name') || getVal('f13-input-name') || '';
+            const plate = (getVal('bill-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
+            const address = getVal('bill-input-address') || getVal('f13-input-address') || '';
+            const model = getVal('bill-input-model') || getVal('f13-input-model') || '';
+            const contact = getVal('bill-input-contact') || getVal('f13-input-contact') || '';
+            const color = getVal('bill-input-color') || getVal('f13-input-color') || '';
+            const email = getVal('f13-input-email') || '';
+            const km = getVal('bill-input-km') || getVal('f13-input-km') || '';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+
+            // Meta Header
+            drawText(billingNo, 420, 776.6, 8.5, true, darkInk);
+            drawText(date, 440, 746.0, 7.5, false, darkInk);
+            drawText(jobNo, 440, 736.5, 7.5, false, darkInk);
+            drawText(quoteNo, 440, 727.0, 7.5, false, darkInk);
+
+            // Customer Details
+            drawTextFit(name, 115, 698.2, 180, 7.5, true);
+            drawTextFit(plate, 380, 698.2, 120, 8, true);
+            drawTextFit(address, 115, 688.6, 180, 7, false);
+            drawTextFit(model, 380, 688.6, 120, 7.5, false);
+            drawTextFit(contact, 115, 679.0, 180, 7.5, false);
+            drawTextFit(color, 380, 679.0, 120, 7.5, false);
+            drawTextFit(email, 115, 669.5, 180, 7, false);
+            drawTextFit(km, 380, 669.5, 120, 7.5, false);
+
+            // Table Line Items (Up to 24 rows)
+            const items = window.billingItems || [];
+            let totalLabor = 0;
+            let totalParts = 0;
+            let totalMats = 0;
+
+            const startY = 629.5;
+            const rowStep = 9.56;
+            const maxRows = 24;
+
+            items.slice(0, maxRows).forEach((it, idx) => {
+                const ry = startY - (idx * rowStep);
+                const desc = it.desc || '';
+                const qty = Number(it.qty) || 1;
+                const price = Number(it.price) || 0;
+                const rowTotal = qty * price;
+
+                const isLabor = it.desc && (it.desc.toLowerCase().includes('labor') || it.desc.toLowerCase().includes('service') || it.desc.toLowerCase().includes('cleaning') || it.desc.toLowerCase().includes('alignment'));
+                const isMat = it.desc && (it.desc.toLowerCase().includes('fluid') || it.desc.toLowerCase().includes('oil') || it.desc.toLowerCase().includes('flush') || it.desc.toLowerCase().includes('gas'));
+
+                let laborAmt = 0;
+                let partsAmt = 0;
+                let matsAmt = 0;
+
+                if (isLabor) laborAmt = rowTotal;
+                else if (isMat) matsAmt = rowTotal;
+                else partsAmt = rowTotal;
+
+                totalLabor += laborAmt;
+                totalParts += partsAmt;
+                totalMats += matsAmt;
+
+                drawTextFit(desc, 72, ry, 115, 6.8, false);
+                drawTextCenter(String(qty), 200, ry, 6.5);
+                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
+                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
+                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
+                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, true);
+            });
+
+            // Subtotals
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 285.3, 7.5, true);
+            const subtotal = totalLabor + totalParts + totalMats;
+            const vat12 = subtotal * 0.12;
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 275.7, 7.5, true);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 266.1, 7.5, true);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 254.9, 7.5, true);
+
+            const grandTotal = subtotal + vat12;
+            if (grandTotal > 0) {
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 465, 245.3, 8, true, darkInk);
+                // Also stamp amount banner in row 14
+                drawText('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 210, 658.0, 7.5, true, darkInk);
+            }
+
+            // Signatures
+            drawTextFit(sa, 70, 215, 140, 7.5, true);
+
+            return await doc.save();
+        }
+        window.compileBillingPDFBytes = compileBillingPDFBytes;
+
+        async function generateBillingPDF(shouldDownload = false) {
+            try {
+                const getVal = id => (document.getElementById(id)?.value || '').trim();
+                const billingNo = getVal('bill-input-billing-no') || 'BL-2026-0001';
+
+                const pdfBytes = await compileBillingPDFBytes();
+                if (!pdfBytes) return;
+
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+                if (shouldDownload) {
+                    const downloadUrl = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `HonTech_Billing_${billingNo}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    showSystemToast(`Exported official Billing PDF ${billingNo}`, 'success', 'PDF Downloaded');
+                } else {
+                    if (currentBillingPdfBlobUrl) {
+                        URL.revokeObjectURL(currentBillingPdfBlobUrl);
+                    }
+                    currentBillingPdfBlobUrl = URL.createObjectURL(pdfBlob);
+                    const iframe = document.getElementById('billing-pdf-iframe');
+                    if (iframe) {
+                        iframe.src = currentBillingPdfBlobUrl + '#toolbar=1&navpanes=0';
+                    }
+                }
+            } catch (err) {
+                console.error('Error in Billing PDF generator:', err);
+            }
+        }
+        window.generateBillingPDF = generateBillingPDF;
+
+        // =========================================================================
+        // WORKSHEET 4: CHECKLIST_RESULT DYNAMIC PDF COMPILER & LIVE SYNCHRONIZER
+        // =========================================================================
+        let checklistTemplateArrayBuffer = null;
+        let currentChecklistPdfBlobUrl = null;
+
+        async function getChecklistTemplateBuffer() {
+            if (checklistTemplateArrayBuffer) return checklistTemplateArrayBuffer;
+            try {
+                const response = await fetch('assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf');
+                checklistTemplateArrayBuffer = await response.arrayBuffer();
+                return checklistTemplateArrayBuffer;
+            } catch (e) {
+                console.error('Failed to load CheckList_Result official template:', e);
+                return null;
+            }
+        }
+
+        async function compileChecklistPDFBytes() {
+            if (typeof window.PDFLib === 'undefined' || !window.PDFLib.PDFDocument) {
+                console.warn('PDFLib not available');
+                return null;
+            }
+
+            const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+            const templateBuffer = await getChecklistTemplateBuffer();
+            if (!templateBuffer) throw new Error('Checklist template buffer could not be loaded');
+
+            const doc = await PDFDocument.load(templateBuffer);
+            const page = doc.getPages()[0];
+            const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
+            const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
+
+            const darkInk = rgb(0.08, 0.08, 0.08);
+            const greenInk = rgb(0.1, 0.6, 0.2);
+            const amberInk = rgb(0.8, 0.5, 0.0);
+            const redInk = rgb(0.8, 0.1, 0.1);
+            const white = rgb(1, 1, 1);
+
+            const drawText = (str, x, y, size = 7.5, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                page.drawText(String(str), { x, y, size, font: isBold ? fontBold : fontNorm, color });
+            };
+
+            const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 5.5) => {
+                if (!str && str !== 0) return;
+                let s = String(str);
+                let size = initialSize;
+                const f = isBold ? fontBold : fontNorm;
+                while (size > minSize && f.widthOfTextAtSize(s, size) > maxWidth) {
+                    size -= 0.2;
+                }
+                if (f.widthOfTextAtSize(s, size) > maxWidth) {
+                    while (s.length > 3 && f.widthOfTextAtSize(s + '...', size) > maxWidth) {
+                        s = s.slice(0, -1);
+                    }
+                    s += '...';
+                }
+                page.drawText(s, { x, y, size, font: f, color });
+            };
+
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const date = getVal('chk-input-date') || getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+            const name = getVal('chk-input-name') || getVal('f13-input-name') || '';
+            const plate = (getVal('chk-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
+            const model = getVal('chk-input-model') || getVal('f13-input-model') || '';
+            const km = getVal('chk-input-km') || getVal('f13-input-km') || '';
+            const remarks = getVal('chk-input-remarks') || 'Vehicle intake inspection cleared. No critical defects noted.';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+
+            // Top Header Info
+            drawTextFit(name, 120, 733.4, 250, 7.5, true);
+            drawText(date, 460, 733.4, 7.5, false, darkInk);
+            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 8, true);
+            drawTextFit(model, 120, 709.3, 200, 7.5, false);
+
+            // Fuel Level Marker (Clean pill selector)
+            drawText('FUEL LEVEL:', 355, 709.3, 7, true, darkInk);
+            const fuelLevels = ['E', '1/4', '1/2', '3/4', 'F'];
+            const activeLevel = window.checklistFuelLevel || '1/2';
+            let fx = 415;
+            fuelLevels.forEach(lvl => {
+                const isSel = (lvl === activeLevel);
+                if (isSel) {
+                    page.drawRectangle({ x: fx - 3, y: 706.5, width: 18, height: 11, color: darkInk });
+                    page.drawText(lvl, { x: fx, y: 709.3, size: 6.5, font: fontBold, color: white });
+                } else {
+                    page.drawText(lvl, { x: fx, y: 709.3, size: 6.5, font: fontNorm, color: darkInk });
+                }
+                fx += 20;
+            });
+
+            // Vector checkmark, alert, and cross drawers
+            const drawCheckmark = (cx, cy) => {
+                page.drawLine({ start: { x: cx - 2.5, y: cy }, end: { x: cx - 0.8, y: cy - 2.2 }, thickness: 1.2, color: greenInk });
+                page.drawLine({ start: { x: cx - 0.8, y: cy - 2.2 }, end: { x: cx + 3, y: cy + 2.5 }, thickness: 1.2, color: greenInk });
+            };
+            const drawAlert = (cx, cy) => {
+                page.drawText('!', { x: cx - 1.5, y: cy - 2.5, size: 7.5, font: fontBold, color: amberInk });
+            };
+            const drawCross = (cx, cy) => {
+                page.drawLine({ start: { x: cx - 2.5, y: cy - 2.5 }, end: { x: cx + 2.5, y: cy + 2.5 }, thickness: 1.2, color: redInk });
+                page.drawLine({ start: { x: cx - 2.5, y: cy + 2.5 }, end: { x: cx + 2.5, y: cy - 2.5 }, thickness: 1.2, color: redInk });
+            };
+
+            // 15-Point Inspection Stamp Mapping
+            const checkpointPositions = {
+                'lights_ext': { y: 642.3, col: 'left' },
+                'ac_cooling': { y: 618.3, col: 'left' },
+                'horn_wipers': { y: 595.2, col: 'left' },
+                'battery': { y: 464.2, col: 'left' },
+                'eng_oil': { y: 401.7, col: 'left' },
+                'brk_fluid': { y: 389.2, col: 'left' },
+                'coolant': { y: 372.8, col: 'left' },
+                'suspension': { y: 302.5, col: 'left' },
+                'exhaust': { y: 279.5, col: 'left' },
+                'tire_fl': { y: 579.8, xG: 392, xA: 405, xR: 418 },
+                'tire_fr': { y: 579.8, xG: 472, xA: 485, xR: 498 },
+                'tire_rl': { y: 526.8, xG: 392, xA: 405, xR: 418 },
+                'tire_rr': { y: 526.8, xG: 472, xA: 485, xR: 498 },
+                'spare_tire': { y: 473.8, xG: 392, xA: 405, xR: 418 },
+                'brakes_pads': { y: 382.4, xG: 432, xA: 445, xR: 458 }
+            };
+
+            const leftX_Good = 241;
+            const leftX_Attn = 254;
+            const leftX_Defect = 267;
+
+            (window.checklistInspectionPoints || []).forEach(pt => {
+                const pos = checkpointPositions[pt.id];
+                if (!pos) return;
+
+                const status = (pt.status || 'Good').toLowerCase();
+                let x = leftX_Good;
+                if (pos.col === 'left') {
+                    if (status === 'attention' || status === 'attn') x = leftX_Attn;
+                    else if (status === 'defect') x = leftX_Defect;
+                } else {
+                    if (status === 'attention' || status === 'attn') x = pos.xA;
+                    else if (status === 'defect') x = pos.xR;
+                    else x = pos.xG;
+                }
+
+                if (status === 'attention' || status === 'attn') {
+                    drawAlert(x, pos.y);
+                } else if (status === 'defect') {
+                    drawCross(x, pos.y);
+                } else {
+                    drawCheckmark(x, pos.y);
+                }
+            });
+
+            // Comments / Remarks
+            if (remarks) {
+                page.drawText(remarks, { x: 55, y: 175, size: 7, font: fontNorm, maxWidth: 200, lineHeight: 9 });
+            }
+
+            // Technician and Customer Signature
+            drawTextFit(sa, 150, 55.8, 140, 7.5, true);
+            drawTextFit(name, 410, 55.8, 140, 7.5, true);
+
+            return await doc.save();
+        }
+        window.compileChecklistPDFBytes = compileChecklistPDFBytes;
+
+        async function generateChecklistPDF(shouldDownload = false) {
+            try {
+                const getVal = id => (document.getElementById(id)?.value || '').trim();
+                const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+
+                const pdfBytes = await compileChecklistPDFBytes();
+                if (!pdfBytes) return;
+
+                const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+                if (shouldDownload) {
+                    const downloadUrl = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = `HonTech_CheckList_${jobNo}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    showSystemToast(`Exported official CheckList PDF for ${jobNo}`, 'success', 'PDF Downloaded');
+                } else {
+                    if (currentChecklistPdfBlobUrl) {
+                        URL.revokeObjectURL(currentChecklistPdfBlobUrl);
+                    }
+                    currentChecklistPdfBlobUrl = URL.createObjectURL(pdfBlob);
+                    const iframe = document.getElementById('checklist-pdf-iframe');
+                    if (iframe) {
+                        iframe.src = currentChecklistPdfBlobUrl + '#toolbar=1&navpanes=0';
+                    }
+                }
+            } catch (err) {
+                console.error('Error in Checklist PDF generator:', err);
+            }
+        }
+        window.generateChecklistPDF = generateChecklistPDF;
+
+        // Universal Debounced Form Studio PDF Auto-Refresher
+        let formStudioPdfDebounceTimer = null;
+        function scheduleFormStudioPdfRefresh() {
+            if (formStudioPdfDebounceTimer) clearTimeout(formStudioPdfDebounceTimer);
+            formStudioPdfDebounceTimer = setTimeout(() => {
+                const active = currentFormStudioActiveSheet || 'form13';
+                if (active === 'form13' || active === 'joborder') {
+                    generateForm13PDF(false);
+                } else if (active === 'form23' || active === 'quote') {
+                    generateQuotePDF(false);
+                } else if (active === 'billing') {
+                    generateBillingPDF(false);
+                } else if (active === 'checklist') {
+                    generateChecklistPDF(false);
+                }
+            }, 350);
+        }
+        window.scheduleFormStudioPdfRefresh = scheduleFormStudioPdfRefresh;
 
         function applyForm13Preset(presetType) {
             const today = new Date().toISOString().split('T')[0];
@@ -13079,24 +13675,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
+            currentFormStudioActiveSheet = sheetKey;
+
             // Trigger bidirectional sync and canvas renders
             if (sheetKey === 'form23' || sheetKey === 'quote') {
                 syncJobOrderFieldsToQuote();
                 renderForm23Rows();
                 calcForm23Totals();
                 syncForm23Canvas();
+                generateQuotePDF(false);
             } else if (sheetKey === 'billing') {
                 syncJobOrderFieldsToBilling();
                 renderBillingRows();
                 calcBillingTotals();
                 syncBillingCanvas();
+                generateBillingPDF(false);
             } else if (sheetKey === 'checklist') {
                 syncJobOrderFieldsToChecklist();
                 renderChecklistTable();
                 syncChecklistCanvas();
+                generateChecklistPDF(false);
             } else if (sheetKey === 'form13' || sheetKey === 'joborder') {
                 syncForm13Canvas();
                 calcForm13Totals();
+                generateForm13PDF(false);
             }
 
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
@@ -13175,6 +13777,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             syncForm23Canvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.syncQuoteFieldsToJobOrder = syncQuoteFieldsToJobOrder;
 
@@ -13223,6 +13826,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcForm23Totals();
             syncForm23Canvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.addForm23ItemRow = addForm23ItemRow;
 
@@ -13232,6 +13836,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcForm23Totals();
             syncForm23Canvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.removeForm23ItemRow = removeForm23ItemRow;
 
@@ -13244,6 +13849,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcForm23Totals();
             syncForm23Canvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.updateForm23Item = updateForm23Item;
 
@@ -13475,6 +14081,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             syncBillingCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.syncBillingToJobOrder = syncBillingToJobOrder;
 
@@ -13523,6 +14130,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcBillingTotals();
             syncBillingCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.addBillingItemRow = addBillingItemRow;
 
@@ -13532,6 +14140,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcBillingTotals();
             syncBillingCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.removeBillingItemRow = removeBillingItemRow;
 
@@ -13544,6 +14153,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             calcBillingTotals();
             syncBillingCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.updateBillingItem = updateBillingItem;
 
@@ -13712,6 +14322,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.syncChecklistToJobOrder = syncChecklistToJobOrder;
 
@@ -13732,6 +14343,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
         }
         window.setChecklistFuel = setChecklistFuel;
 
@@ -13742,6 +14354,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderChecklistTable();
                 syncChecklistCanvas();
                 saveWorkbookDraftOffline(true);
+                scheduleFormStudioPdfRefresh();
             }
         }
         window.setChecklistStatus = setChecklistStatus;
@@ -13752,6 +14365,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 item.notes = notes;
                 syncChecklistCanvas();
                 saveWorkbookDraftOffline(true);
+                scheduleFormStudioPdfRefresh();
             }
         }
         window.updateChecklistNotes = updateChecklistNotes;
@@ -13763,6 +14377,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderChecklistTable();
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
             showSystemToast(`Marked all 15 inspection checkpoints as ${status.toUpperCase()}!`, 'success', 'Checklist Updated');
         }
         window.setAllChecklistItems = setAllChecklistItems;

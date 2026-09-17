@@ -11,7 +11,7 @@ Whenever the AI is requested to make any changes (features, bug fixes, UI adjust
 1. **Stage 1: Pre-Flight Context Reading & Ingestion**
    - Read the master blueprint: [`Hontech Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md).
    - Review existing schema rules and the most recent entries in `REVISIONS_LOG.md` and `Revisions checklist.csv`.
-   - Never write code based on assumptions; ground all changes in existing architectural patterns and user journey steps.
+    - **Mandatory Open-Minded Inquiry & Alignment Requirement**: Whenever creating an implementation plan, the AI MUST formulate deep, open-minded questions for the user (covering UI styling, typography, colors, layout aesthetics, user flows, capacity limits, and operational edge cases) to ensure mutual understanding and accuracy before code is written.
 
 2. **Stage 2: Implementation, Defensive Coding & Cache Busting**
    - **Backend Guardrails:** Use PDO prepared statements with parameter binding for all queries. Always filter active records using `is_deleted = 0`. Use `App\Utils\ApiResponse` for JSON responses.
