@@ -1693,16 +1693,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
-                // Owner: Analytics, Form 1/3 Studio, Workshop Bays (Authority Configuration), Staff Access, Records, TV Monitor
+                // Owner: Analytics, Workshop Bays (Authority Configuration), Staff Access, Records, TV Monitor
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
@@ -1719,7 +1717,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
@@ -1727,7 +1724,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
@@ -2098,6 +2094,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (id === 'bays' && currentUserRole === 'assistant') {
                 showSystemToast('Access Restricted: Assistant role does not have Bay Status reader access.', 'warning', 'Permission Denied');
                 showSection('intake');
+                return;
+            }
+
+            if (id === 'form13' && currentUserRole !== 'sa') {
+                showSystemToast('Access Restricted: 2025 RO Interactive Excel Studio is strictly reserved for Service Advisors.', 'warning', 'Permission Denied');
+                showSection(currentUserRole === 'owner' || currentUserRole === 'admin' ? 'dashboard' : 'intake');
                 return;
             }
 
@@ -13009,17 +13011,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             { key: 'form13', id: 'tab-sheet-joborder', label: 'Job_Order' },
             { key: 'form23', id: 'tab-sheet-quote', label: 'Quotation_No' },
             { key: 'billing', id: 'tab-sheet-billing', label: 'Billing_No' },
-            { key: 'checklist', id: 'tab-sheet-checklist', label: 'CheckList_Result' },
-            { key: 'cashad', id: 'tab-sheet-cashad', label: 'Cash_Advance' },
-            { key: 'oef', id: 'tab-sheet-oef', label: 'OEF' },
-            { key: 'liquidation', id: 'tab-sheet-liquidation', label: 'LIQUIDATION_REPORT' },
-            { key: 'disbursement', id: 'tab-sheet-disbursement', label: '(Broken)DISBURSEMENT' },
-            { key: 'cashflow', id: 'tab-sheet-cashflow', label: '(Broken)Daily Cash Flow' },
-            { key: 'acknowledgement', id: 'tab-sheet-acknowledgement', label: 'Acknowledgement' }
+            { key: 'checklist', id: 'tab-sheet-checklist', label: 'CheckList_Result' }
         ];
         window.allFormWorkbookSheets = allFormWorkbookSheets;
 
-                // =========================================================================
+        // =========================================================================
         // HONTECH 2025 QUOTATION_NO (SHEET 2) INTERACTIVE ENGINE
         // =========================================================================
         window.form23Items = window.form23Items || [
@@ -13034,8 +13030,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 { id: 'tab-sheet-joborder', key: 'form13', view: 'view-sheet-form13' },
                 { id: 'tab-sheet-quote', key: 'form23', view: 'view-sheet-quote' },
                 { id: 'tab-sheet-billing', key: 'billing', view: 'view-sheet-billing' },
-                { id: 'tab-sheet-checklist', key: 'checklist', view: 'view-sheet-checklist' },
-                { id: 'tab-sheet-cashad', key: 'cashad', view: 'view-sheet-cashad' }
+                { id: 'tab-sheet-checklist', key: 'checklist', view: 'view-sheet-checklist' }
             ];
 
             // Reset all tab active styles
@@ -13066,6 +13061,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 renderForm23Rows();
                 calcForm23Totals();
                 syncForm23Canvas();
+            } else if (sheetKey === 'billing') {
+                syncJobOrderFieldsToBilling();
+                renderBillingRows();
+                calcBillingTotals();
+                syncBillingCanvas();
+            } else if (sheetKey === 'checklist') {
+                syncJobOrderFieldsToChecklist();
+                renderChecklistTable();
+                syncChecklistCanvas();
             } else if (sheetKey === 'form13' || sheetKey === 'joborder') {
                 syncForm13Canvas();
                 calcForm13Totals();
@@ -13333,594 +13337,468 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.syncForm23Canvas = syncForm23Canvas;
 
 
-        window.currentCustomSheetType = 'OEF';
-        window.customSheetDataStore = {
-            'OEF': {
-                badge: 'OFFICIAL EXPENSE',
-                icon: 'receipt',
-                color: 'blue',
-                title: 'OEF Studio - Operating Expense Form',
-                desc: 'Official Operations & Workshop Petty Expense Receipts Ledger',
-                banner: 'OFFICIAL OPERATING EXPENSE FORM (OEF)',
-                refPrefix: 'HT-OEF-2026-001',
-                columns: [
-                    { key: 'date', label: 'Date', width: 'w-24' },
-                    { key: 'payee', label: 'Payee / Supplier', width: 'w-36' },
-                    { key: 'desc', label: 'Particulars / Description', width: 'flex-1' },
-                    { key: 'ref', label: 'Receipt / OR #', width: 'w-28' },
-                    { key: 'amount', label: 'Amount (₱)', width: 'w-28', align: 'right', isNumber: true }
-                ],
-                kpi2Label: 'TOTAL DISBURSED',
-                kpi3Label: 'AUDIT STATUS',
-                rows: [
-                    { date: '2026-09-08', payee: 'Shell San Isidro', desc: 'Shop Diesel fuel for test run & cleaner', ref: 'OR-94821', amount: 850.00 },
-                    { date: '2026-09-09', payee: 'Hardware Depot', desc: 'Heavy-duty degreaser & rags bundle', ref: 'INV-4410', amount: 620.00 },
-                    { date: '2026-09-09', payee: 'Fast Courier', desc: 'Rush delivery for Honda Civic steering boot', ref: 'WB-8831', amount: 350.00 },
-                    { date: '2026-09-10', payee: 'Auto Supply Pampanga', desc: 'Brake cleaner cans & copper anti-seize paste', ref: 'SI-7291', amount: 980.00 }
-                ],
-                notes: 'All items substantiated with official receipts. Reconciled under weekly workshop operating budget.'
-            },
-            'Acknowledgement': {
-                badge: 'RELEASE & SIGN-OFF',
-                icon: 'file-check-2',
-                color: 'emerald',
-                title: 'Acknowledgement Studio - Vehicle Release Receipt',
-                desc: 'Customer Handover Sign-off, Item Inventory & Acceptance Certificate',
-                banner: 'VEHICLE RELEASE & CUSTOMER ACKNOWLEDGEMENT RECEIPT',
-                refPrefix: 'HT-ACK-2026-001',
-                columns: [
-                    { key: 'category', label: 'Category', width: 'w-32' },
-                    { key: 'desc', label: 'Inspected Property / Item Description', width: 'flex-1' },
-                    { key: 'condition', label: 'Condition / Status', width: 'w-32' },
-                    { key: 'released', label: 'Handed Over', width: 'w-28' },
-                    { key: 'remarks', label: 'Remarks', width: 'w-36' }
-                ],
-                kpi2Label: 'TOTAL ITEMS RELEASED',
-                kpi3Label: 'HANDOVER STATUS',
-                rows: [
-                    { category: 'Keys & Remotes', desc: 'Master ignition key & alarm transponder', condition: 'Working / Good', released: 'YES', remarks: 'Tested by owner' },
-                    { category: 'Tools & Spare', desc: 'Spare tire, scissor jack, lug wrench & rod', condition: 'Complete & intact', released: 'YES', remarks: 'Trunk verified' },
-                    { category: 'Replaced Parts', desc: 'Old brake pads, engine belt & worn spark plugs', condition: 'Replaced / Worn', released: 'YES', remarks: 'Customer inspected' },
-                    { category: 'Vehicle Road Test', desc: 'Post-service road trial conducted with SA', condition: 'Operational / OK', released: 'YES', remarks: 'Signed release' },
-                    { category: 'Valuables & Dashcam', desc: 'Dashcam micro-SD card & interior accessories', condition: 'Undamaged', released: 'YES', remarks: 'Owner cleared' }
-                ],
-                notes: 'Owner certifies that all work listed on Job Order was executed satisfactorily and the vehicle has been received in clean and complete condition.'
-            },
-            'LIQUIDATION': {
-                badge: 'EXPENSE RECONCILIATION',
-                icon: 'scale',
-                color: 'purple',
-                title: 'Liquidation Studio - Job Expense Reconciliation',
-                desc: 'Cash Advance Reconciliation, Parts Incurred vs Returned Balance',
-                banner: 'SERVICE JOB EXPENSE LIQUIDATION & RECONCILIATION REPORT',
-                refPrefix: 'HT-LIQ-2026-001',
-                columns: [
-                    { key: 'ref', label: 'Receipt / Voucher #', width: 'w-32' },
-                    { key: 'desc', label: 'Procured Item / Service Particulars', width: 'flex-1' },
-                    { key: 'allocated', label: 'Advance Budget (₱)', width: 'w-32', align: 'right', isNumber: true },
-                    { key: 'actual', label: 'Actual Spent (₱)', width: 'w-32', align: 'right', isNumber: true },
-                    { key: 'variance', label: 'Variance / Refund (₱)', width: 'w-32', align: 'right', isNumber: true }
-                ],
-                kpi2Label: 'TOTAL EXPENSES SPENT',
-                kpi3Label: 'NET RECONCILIATION',
-                rows: [
-                    { ref: 'OR-5510', desc: 'OEM Front Brake Pad Set (Brembo Spec)', allocated: 3500.00, actual: 3250.00, variance: 250.00 },
-                    { ref: 'OR-5512', desc: 'Rear Caliper Repair Kit & Guide Pins', allocated: 1200.00, actual: 1150.00, variance: 50.00 },
-                    { ref: 'OR-5519', desc: 'DOT 4 High-Temp Brake Fluid (1L bottle)', allocated: 650.00, actual: 650.00, variance: 0.00 },
-                    { ref: 'OR-5525', desc: 'Machine Shop Rotor Disc Resurfacing (2 pcs)', allocated: 1800.00, actual: 1600.00, variance: 200.00 }
-                ],
-                notes: 'Total advance allocated: ₱7,150.00. Total actual expense: ₱6,650.00. Net surplus refunded to Cashier: ₱500.00.'
-            },
-            'Daily Summary': {
-                badge: 'DAILY OPERATIONS REPORT',
-                icon: 'bar-chart-3',
-                color: 'teal',
-                title: 'Daily Summary Studio - Workshop Service Log',
-                desc: 'Daily Finished Vehicles, Assigned Technicians & Revenue Intake',
-                banner: 'DAILY WORKSHOP SERVICE LOG & REVENUE SUMMARY',
-                refPrefix: 'HT-DAY-2026-001',
-                columns: [
-                    { key: 'job', label: 'Job Order #', width: 'w-24' },
-                    { key: 'plate', label: 'Plate #', width: 'w-24' },
-                    { key: 'client', label: 'Customer / Vehicle', width: 'w-36' },
-                    { key: 'service', label: 'Primary Service Done', width: 'flex-1' },
-                    { key: 'tech', label: 'Mechanic', width: 'w-24' },
-                    { key: 'status', label: 'Status', width: 'w-24' },
-                    { key: 'total', label: 'Total (₱)', width: 'w-28', align: 'right', isNumber: true }
-                ],
-                kpi2Label: 'TOTAL DAILY REVENUE',
-                kpi3Label: 'JOBS COMPLETED',
-                rows: [
-                    { job: 'WLK-2026', plate: 'NDG 4721', client: 'Justin / Honda Civic', service: 'Brake Overhaul & PMS Package', tech: 'VIC', status: 'PAID', total: 6850.00 },
-                    { job: 'JOB-2026-08', plate: 'ZAA 3391', client: 'Roberto / Toyota Vios', service: 'Alternator Replacement & Belt', tech: 'MARLON', status: 'RELEASED', total: 4200.00 },
-                    { job: 'JOB-2026-09', plate: 'NCY 1822', client: 'Maria / Mitsubishi Mirage', service: 'Aircon System Flushing & Cabin Filter', tech: 'VIC', status: 'PAID', total: 3150.00 },
-                    { job: 'JOB-2026-10', plate: 'TAB 5928', client: 'Carlos / Nissan Navara', service: 'Suspension Bushing & Alignment', tech: 'EDWIN', status: 'RELEASED', total: 5400.00 }
-                ],
-                notes: 'All vehicles logged above completed quality inspection test run. Cash & online receipts reconciled with cashier drawer.'
-            }
-        };
+        // =========================================================================
+        // HONTECH 2025 BILLING_NO (SHEET 3) INTERACTIVE ENGINE
+        // =========================================================================
+        window.billingItems = window.billingItems || [
+            { desc: 'Comprehensive Diagnostics & Periodic Maintenance Service', qty: 1, price: 2800 },
+            { desc: 'Fully Synthetic 5W-30 Motor Oil (4 Liters)', qty: 4, price: 650 },
+            { desc: 'OEM Genuine Oil Filter Element', qty: 1, price: 450 },
+            { desc: 'Brake Caliper Servicing & System Bleeding', qty: 1, price: 1200 }
+        ];
 
-        function handleCustomSheetClick(sheetName) {
-            if (sheetName === 'CHECKLIST' || sheetName === 'CheckList_Result' || sheetName === 'checklist') {
-                switchFormStudioSheet('checklist');
-                return;
-            }
-            if (sheetName === 'CASH AD' || sheetName === 'Cash_Advance' || sheetName === 'cashad') {
-                switchFormStudioSheet('cashad');
-                return;
-            }
-            if (sheetName === 'Job_Order' || sheetName === 'form13') {
-                switchFormStudioSheet('form13');
-                return;
-            }
-            if (sheetName === 'Quotation_No' || sheetName === 'QUOTE' || sheetName === 'form23') {
-                switchFormStudioSheet('form23');
-                return;
-            }
-            if (sheetName === 'Billing_No' || sheetName === 'BILLING' || sheetName === 'billing') {
-                switchFormStudioSheet('billing');
-                return;
-            }
-
-            const sheetMap = {
-                'OEF': 'OEF',
-                'oef': 'OEF',
-                'Acknowledgement': 'Acknowledgement',
-                'acknowledgement': 'Acknowledgement',
-                'LIQUIDATION': 'LIQUIDATION',
-                'liquidation': 'LIQUIDATION',
-                'Daily Summary': 'Daily_Summary',
-                'Daily_Summary': 'Daily_Summary',
-                'daily': 'Daily_Summary'
+        function syncJobOrderFieldsToBilling() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
             };
-            const activeSheetKey = sheetMap[sheetName] || sheetName;
-            window.currentCustomSheetType = activeSheetKey;
 
-            const view13 = document.getElementById('view-sheet-form13');
-            const view23 = document.getElementById('view-sheet-form23');
-            const viewBilling = document.getElementById('view-sheet-billing');
-            const viewChecklist = document.getElementById('view-sheet-checklist');
-            const viewCashAd = document.getElementById('view-sheet-cashad');
-            const viewCustom = document.getElementById('view-sheet-custom');
+            const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+            const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+            const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
+            const billingNo = 'BL-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
 
-            if (view13) view13.classList.add('hidden');
-            if (view23) view23.classList.add('hidden');
-            if (viewBilling) viewBilling.classList.add('hidden');
-            if (viewChecklist) viewChecklist.classList.add('hidden');
-            if (viewCashAd) viewCashAd.classList.add('hidden');
-            if (viewCustom) viewCustom.classList.remove('hidden');
+            setVal('bill-input-billing-no', billingNo);
+            setVal('bill-input-date', date);
+            setVal('bill-input-job-no', jobNo);
+            setVal('bill-input-quote-no', quoteNo);
 
-            // Reset tab highlights and activate selected
-            allFormWorkbookSheets.forEach(s => {
-                const btn = document.getElementById(s.id);
-                if (btn) {
-                    const isTarget = (s.label === sheetName || s.key === sheetName.toLowerCase() || s.label.toLowerCase() === sheetName.toLowerCase() || (sheetName === 'Daily_Summary' && s.key === 'daily') || (sheetName === 'CheckList_Result' && s.key === 'checklist') || (sheetName === 'Cash_Advance' && s.key === 'cashad') || (sheetName === 'Quotation_No' && s.key === 'form23') || (sheetName === 'Billing_No' && s.key === 'billing'));
-                    if (isTarget) {
-                        btn.className = 'px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
-                        const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-[#1a73e8] leading-none';
-                        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            setVal('bill-input-name', getVal('f13-input-name') || 'JUAN DELA CRUZ');
+            setVal('bill-input-plate', getVal('f13-input-plate') || 'ABC 1234');
+            setVal('bill-input-address', getVal('f13-input-address') || 'Marikina City');
+            setVal('bill-input-model', getVal('f13-input-model') || '2021 Toyota Vios 1.3');
+            setVal('bill-input-contact', getVal('f13-input-contact') || '0917-123-4567');
+            setVal('bill-input-color', getVal('f13-input-color') || 'Silver');
+            setVal('bill-input-km', getVal('f13-input-km') || '42,500 km');
+        }
+        window.syncJobOrderFieldsToBilling = syncJobOrderFieldsToBilling;
+
+        function syncBillingToJobOrder() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+
+            setVal('f13-input-name', getVal('bill-input-name'));
+            setVal('f13-input-plate', getVal('bill-input-plate'));
+            setVal('f13-input-address', getVal('bill-input-address'));
+            setVal('f13-input-model', getVal('bill-input-model'));
+            setVal('f13-input-contact', getVal('bill-input-contact'));
+            setVal('f13-input-color', getVal('bill-input-color'));
+            setVal('f13-input-km', getVal('bill-input-km'));
+
+            // Propagate also to quote
+            setVal('f23-input-name', getVal('bill-input-name'));
+            setVal('f23-input-plate', getVal('bill-input-plate'));
+            setVal('f23-input-address', getVal('bill-input-address'));
+            setVal('f23-input-model', getVal('bill-input-model'));
+            setVal('f23-input-contact', getVal('bill-input-contact'));
+            setVal('f23-input-color', getVal('bill-input-color'));
+            setVal('f23-input-km', getVal('bill-input-km'));
+
+            syncBillingCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.syncBillingToJobOrder = syncBillingToJobOrder;
+
+        function renderBillingRows() {
+            const tbody = document.getElementById('bill-items-tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            (window.billingItems || []).forEach((item, idx) => {
+                const rowTotal = (Number(item.qty) || 1) * (Number(item.price) || 0);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-purple-50/40 transition';
+                tr.innerHTML = `
+                    <td class="py-2 px-3 text-center text-gray-400 font-mono font-bold">${idx + 1}</td>
+                    <td class="py-2 px-3">
+                        <input type="text" value="${item.desc || ''}" oninput="updateBillingItem(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-medium text-gray-800 outline-none text-xs" placeholder="Billed Line Item / Repair Service">
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateBillingItem(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-mono text-center text-gray-800 outline-none text-xs">
+                    </td>
+                    <td class="py-2 px-3 text-right">
+                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateBillingItem(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-mono text-right text-gray-800 outline-none text-xs">
+                    </td>
+                    <td class="py-2 px-3 text-right font-mono font-bold text-gray-900">
+                        ₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </td>
+                    <td class="py-2 px-2 text-center">
+                        <button type="button" onclick="removeBillingItemRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 transition cursor-pointer" title="Remove Billed Item">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                lucide.createIcons();
+            }
+        }
+        window.renderBillingRows = renderBillingRows;
+
+        function addBillingItemRow() {
+            window.billingItems = window.billingItems || [];
+            window.billingItems.push({ desc: 'Billed Replacement Component / Service', qty: 1, price: 1200 });
+            renderBillingRows();
+            calcBillingTotals();
+            syncBillingCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.addBillingItemRow = addBillingItemRow;
+
+        function removeBillingItemRow(index) {
+            window.billingItems.splice(index, 1);
+            renderBillingRows();
+            calcBillingTotals();
+            syncBillingCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.removeBillingItemRow = removeBillingItemRow;
+
+        function updateBillingItem(index, field, value) {
+            if (!window.billingItems[index]) return;
+            if (field === 'qty') window.billingItems[index].qty = Number(value) || 1;
+            else if (field === 'price') window.billingItems[index].price = Number(value) || 0;
+            else window.billingItems[index].desc = value;
+
+            calcBillingTotals();
+            syncBillingCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.updateBillingItem = updateBillingItem;
+
+        function calcBillingTotals() {
+            let total = 0;
+            (window.billingItems || []).forEach(item => {
+                total += (Number(item.qty) || 1) * (Number(item.price) || 0);
+            });
+
+            const formatted = '₱' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const totalEl = document.getElementById('bill-grand-total');
+            if (totalEl) totalEl.innerText = formatted;
+
+            const badgeEl = document.getElementById('bill-total-preview-badge');
+            if (badgeEl) badgeEl.innerText = formatted;
+
+            const cvGrandTotal = document.getElementById('cv-bill-grand-total');
+            if (cvGrandTotal) cvGrandTotal.innerText = formatted;
+
+            return total;
+        }
+        window.calcBillingTotals = calcBillingTotals;
+
+        function syncBillingCanvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setCanvas = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val;
+            };
+
+            const billNo = getVal('bill-input-billing-no') || 'BL-2026-0001';
+            const date = getVal('bill-input-date') || new Date().toISOString().split('T')[0];
+            const jobNo = getVal('bill-input-job-no') || 'HT-JO-0001';
+            const quoteNo = getVal('bill-input-quote-no') || 'QT-2026-0001';
+            const name = getVal('bill-input-name') || getVal('f13-input-name') || 'JUAN DELA CRUZ';
+            const plate = (getVal('bill-input-plate') || getVal('f13-input-plate') || 'ABC 1234').toUpperCase();
+            const address = getVal('bill-input-address') || getVal('f13-input-address') || 'Marikina City';
+            const model = getVal('bill-input-model') || getVal('f13-input-model') || '2021 Toyota Vios';
+            const contact = getVal('bill-input-contact') || getVal('f13-input-contact') || '0917-123-4567';
+            const color = getVal('bill-input-color') || getVal('f13-input-color') || 'Silver';
+            const km = getVal('bill-input-km') || getVal('f13-input-km') || '42,500 km';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'ROMAN SAROL';
+
+            setCanvas('cv-bill-no', billNo);
+            setCanvas('cv-bill-date', 'DATE: ' + date);
+            setCanvas('cv-bill-job-no', 'RO: ' + jobNo);
+            setCanvas('cv-bill-quote-no', 'QT: ' + quoteNo);
+            setCanvas('cv-bill-name', name);
+            setCanvas('cv-bill-plate', plate);
+            setCanvas('cv-bill-address', address);
+            setCanvas('cv-bill-model', model);
+            setCanvas('cv-bill-contact', contact);
+            setCanvas('cv-bill-color', color);
+            setCanvas('cv-bill-km', km);
+            setCanvas('cv-bill-sa', sa.toUpperCase() + ' (SERVICE ADVISOR)');
+
+            const canvasTbody = document.getElementById('cv-bill-items-tbody');
+            if (canvasTbody) {
+                canvasTbody.innerHTML = '';
+                const items = window.billingItems || [];
+                const maxRows = Math.max(16, items.length);
+
+                let partsSubtotal = 0;
+                let laborSubtotal = 0;
+
+                for (let i = 0; i < maxRows; i++) {
+                    const it = items[i];
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-purple-50/20 text-[9px] font-mono';
+                    
+                    if (it && (it.desc || it.price)) {
+                        const qty = Number(it.qty) || 1;
+                        const price = Number(it.price) || 0;
+                        const amt = qty * price;
+                        const isLabor = (it.desc || '').toLowerCase().includes('labor') || (it.desc || '').toLowerCase().includes('service') || (it.desc || '').toLowerCase().includes('repair') || (it.desc || '').toLowerCase().includes('package');
+
+                        if (isLabor) laborSubtotal += amt;
+                        else partsSubtotal += amt;
+
+                        tr.innerHTML = `
+                            <td class="py-1 px-2 border-r border-black font-sans font-medium">${it.desc || ''}</td>
+                            <td class="py-1 px-1 text-center border-r border-black font-bold">${qty}</td>
+                            <td class="py-1 px-2 text-right border-r border-black">₱${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            <td class="py-1 px-2 text-right font-bold">₱${amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        `;
                     } else {
-                        btn.className = 'px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
-                        const caret = btn.querySelector('span:last-child');
-                        if (caret) caret.className = 'text-[10px] text-[#5f6368] leading-none';
+                        tr.innerHTML = `
+                            <td class="py-1 px-2 border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-1 text-center border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-2 text-right border-r border-black">&nbsp;</td>
+                            <td class="py-1 px-2 text-right">&nbsp;</td>
+                        `;
+                    }
+                    canvasTbody.appendChild(tr);
+                }
+
+                const grandTotal = partsSubtotal + laborSubtotal;
+                setCanvas('cv-bill-parts-subtotal', '₱' + partsSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                setCanvas('cv-bill-labor-subtotal', '₱' + laborSubtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                setCanvas('cv-bill-grand-total', '₱' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            }
+        }
+        window.syncBillingCanvas = syncBillingCanvas;
+
+        // =========================================================================
+        // HONTECH 2025 CHECKLIST_RESULT (SHEET 4) INTERACTIVE ENGINE
+        // =========================================================================
+        window.checklistInspectionPoints = window.checklistInspectionPoints || [
+            { id: 'eng_oil', group: 'Fluids & Engine Bay', name: 'Engine Motor Oil (Level & Condition)', status: 'Good', notes: 'Level optimal at full dipstick mark' },
+            { id: 'brk_fluid', group: 'Fluids & Engine Bay', name: 'Brake Fluid (Level & Clarity)', status: 'Good', notes: 'DOT-4 clear, within max limit' },
+            { id: 'coolant', group: 'Fluids & Engine Bay', name: 'Radiator Coolant & Expansion Reservoir', status: 'Good', notes: 'No leaks, coolant pink' },
+            { id: 'battery', group: 'Electrical & Ignition', name: 'Battery Health & Terminal Cables', status: 'Good', notes: '12.6V resting charge, tight clamps' },
+            { id: 'lights_ext', group: 'Electrical & Ignition', name: 'Exterior Headlights, Tail Lights & Turn Signals', status: 'Good', notes: 'All bulbs operational' },
+            { id: 'ac_cooling', group: 'Interior & Controls', name: 'Air Conditioning Temperature & Blower', status: 'Good', notes: 'Blows cold at 6°C vent test' },
+            { id: 'horn_wipers', group: 'Interior & Controls', name: 'Horn, Wipers & Windshield Washer Spray', status: 'Good', notes: 'Wipers clean with no streaks' },
+            { id: 'tire_fl', group: 'Tires & Brakes', name: 'Front Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
+            { id: 'tire_fr', group: 'Tires & Brakes', name: 'Front Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
+            { id: 'tire_rl', group: 'Tires & Brakes', name: 'Rear Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
+            { id: 'tire_rr', group: 'Tires & Brakes', name: 'Rear Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
+            { id: 'spare_tire', group: 'Tires & Brakes', name: 'Spare Tire, Jack & Lug Wrench Kit', status: 'Good', notes: 'Complete in trunk compartment' },
+            { id: 'brakes_pads', group: 'Tires & Brakes', name: 'Brake Pads & Disc Rotors Inspection', status: 'Good', notes: 'Pads at ~70% remaining life' },
+            { id: 'suspension', group: 'Underchassis', name: 'Front & Rear Shock Absorbers / Bushings', status: 'Good', notes: 'No oil weeping or clunking' },
+            { id: 'exhaust', group: 'Underchassis', name: 'Exhaust Piping & Catalytic Muffler', status: 'Good', notes: 'Mounts secure, no exhaust leak' }
+        ];
+
+        window.checklistFuelLevel = window.checklistFuelLevel || '1/2';
+
+        function syncJobOrderFieldsToChecklist() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+
+            const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
+            const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
+
+            setVal('chk-input-date', date);
+            setVal('chk-input-name', getVal('f13-input-name') || 'JUAN DELA CRUZ');
+            setVal('chk-input-plate', getVal('f13-input-plate') || 'ABC 1234');
+            setVal('chk-input-model', getVal('f13-input-model') || '2021 Toyota Vios 1.3');
+            setVal('chk-input-km', getVal('f13-input-km') || '42,500 km');
+            setVal('chk-input-contact', getVal('f13-input-contact') || '0917-123-4567');
+        }
+        window.syncJobOrderFieldsToChecklist = syncJobOrderFieldsToChecklist;
+
+        function syncChecklistToJobOrder() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+
+            setVal('f13-input-name', getVal('chk-input-name'));
+            setVal('f13-input-plate', getVal('chk-input-plate'));
+            setVal('f13-input-model', getVal('chk-input-model'));
+            setVal('f13-input-km', getVal('chk-input-km'));
+            setVal('f13-input-contact', getVal('chk-input-contact'));
+
+            syncChecklistCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.syncChecklistToJobOrder = syncChecklistToJobOrder;
+
+        function setChecklistFuel(level) {
+            window.checklistFuelLevel = level;
+            const levels = ['E', '14', '12', '34', 'F'];
+            levels.forEach(lvl => {
+                const btn = document.getElementById('chk-fuel-' + lvl);
+                if (btn) {
+                    const match = (lvl === '14' && level === '1/4') || (lvl === '12' && level === '1/2') || (lvl === '34' && level === '3/4') || (lvl === level);
+                    if (match) {
+                        btn.className = 'px-3 py-1.5 rounded-lg border-2 border-black bg-black text-white font-bold text-xs shadow-xs';
+                    } else {
+                        btn.className = 'px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-bold text-xs transition cursor-pointer';
                     }
                 }
             });
 
-            renderCustomSheet(activeSheetKey);
+            syncChecklistCanvas();
+            saveWorkbookDraftOffline(true);
+        }
+        window.setChecklistFuel = setChecklistFuel;
 
-            if (sheetName === 'OEF') {
-                showSystemToast('Switched to OEF: Operating / Official Expense Form & Workshop Receipts.', 'info', 'OEF Active');
-            } else if (sheetName === 'Acknowledgement') {
-                showSystemToast('Switched to Acknowledgement: Vehicle Release & Customer Handover Receipt.', 'info', 'Acknowledgement Active');
-            } else if (sheetName === 'LIQUIDATION') {
-                showSystemToast('Switched to LIQUIDATION: Service Job Liquidation & Parts Cost Reconciliation.', 'info', 'LIQUIDATION Active');
-            } else if (sheetName === 'Daily Summary' || sheetName === 'Daily_Summary') {
-                showSystemToast('Switched to Daily_Summary: Workshop Operations & Revenue Log.', 'info', 'Daily_Summary Active');
+        function setChecklistStatus(itemId, status) {
+            const item = (window.checklistInspectionPoints || []).find(p => p.id === itemId);
+            if (item) {
+                item.status = status;
+                renderChecklistTable();
+                syncChecklistCanvas();
+                saveWorkbookDraftOffline(true);
+            }
+        }
+        window.setChecklistStatus = setChecklistStatus;
+
+        function updateChecklistNotes(itemId, notes) {
+            const item = (window.checklistInspectionPoints || []).find(p => p.id === itemId);
+            if (item) {
+                item.notes = notes;
+                syncChecklistCanvas();
+                saveWorkbookDraftOffline(true);
+            }
+        }
+        window.updateChecklistNotes = updateChecklistNotes;
+
+        function setAllChecklistItems(status) {
+            (window.checklistInspectionPoints || []).forEach(p => {
+                p.status = status;
+            });
+            renderChecklistTable();
+            syncChecklistCanvas();
+            saveWorkbookDraftOffline(true);
+            showSystemToast(`Marked all 15 inspection checkpoints as ${status.toUpperCase()}!`, 'success', 'Checklist Updated');
+        }
+        window.setAllChecklistItems = setAllChecklistItems;
+
+        function renderChecklistTable() {
+            const container = document.getElementById('chk-items-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+            let currentGroup = '';
+
+            (window.checklistInspectionPoints || []).forEach(point => {
+                if (point.group !== currentGroup) {
+                    currentGroup = point.group;
+                    const groupHeader = document.createElement('div');
+                    groupHeader.className = 'pt-2 pb-1 text-[11px] font-black uppercase text-gray-500 tracking-wider flex items-center gap-2 border-b border-gray-200';
+                    groupHeader.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-500"></span> ${currentGroup}`;
+                    container.appendChild(groupHeader);
+                }
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'p-3 bg-white border border-gray-200 rounded-xl space-y-2 hover:border-blue-300 transition shadow-2xs';
+
+                const isGood = point.status === 'Good';
+                const isAttn = point.status === 'Attention';
+                const isDefect = point.status === 'Defect';
+                const isNA = point.status === 'N/A';
+
+                itemRow.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-xs font-bold text-gray-800">${point.name}</span>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Good')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isGood ? 'bg-emerald-600 text-white shadow-xs' : 'bg-gray-100 hover:bg-emerald-50 text-gray-600'}">Good</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Attention')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isAttn ? 'bg-amber-500 text-white shadow-xs' : 'bg-gray-100 hover:bg-amber-50 text-gray-600'}">Attention</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Defect')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isDefect ? 'bg-red-600 text-white shadow-xs' : 'bg-gray-100 hover:bg-red-50 text-gray-600'}">Defect</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'N/A')" class="px-2 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${isNA ? 'bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-500'}">N/A</button>
+                        </div>
+                    </div>
+                    <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Inspection notes or findings..." class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition">
+                `;
+                container.appendChild(itemRow);
+            });
+        }
+        window.renderChecklistTable = renderChecklistTable;
+
+        function syncChecklistCanvas() {
+            const getVal = id => (document.getElementById(id)?.value || '').trim();
+            const setCanvas = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val;
+            };
+
+            const date = getVal('chk-input-date') || new Date().toISOString().split('T')[0];
+            const name = getVal('chk-input-name') || getVal('f13-input-name') || 'JUAN DELA CRUZ';
+            const plate = (getVal('chk-input-plate') || getVal('f13-input-plate') || 'ABC 1234').toUpperCase();
+            const model = getVal('chk-input-model') || getVal('f13-input-model') || '2021 Toyota Vios';
+            const km = getVal('chk-input-km') || getVal('f13-input-km') || '42,500 km';
+            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'ROMAN SAROL';
+            const remarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared. No safety critical defects found.';
+
+            setCanvas('cv-chk-date', date);
+            setCanvas('cv-chk-name', name);
+            setCanvas('cv-chk-plate', plate);
+            setCanvas('cv-chk-model', model);
+            setCanvas('cv-chk-km', km);
+            setCanvas('cv-chk-remarks', remarks);
+            setCanvas('cv-chk-inspector', sa.toUpperCase() + ' / SERVICE ADVISOR');
+
+            // Sync Fuel Gauge badges on canvas
+            const fuelLevels = ['E', '14', '12', '34', 'F'];
+            fuelLevels.forEach(lvl => {
+                const badge = document.getElementById('cv-fuel-' + lvl);
+                if (badge) {
+                    const match = (lvl === '14' && window.checklistFuelLevel === '1/4') || (lvl === '12' && window.checklistFuelLevel === '1/2') || (lvl === '34' && window.checklistFuelLevel === '3/4') || (lvl === window.checklistFuelLevel);
+                    if (match) {
+                        badge.className = 'px-2 py-0.5 border border-black rounded bg-black text-white font-bold';
+                    } else {
+                        badge.className = 'px-2 py-0.5 border border-black rounded bg-transparent text-black font-normal';
+                    }
+                }
+            });
+
+            // Populate canvas table
+            const canvasTbody = document.getElementById('cv-chk-table-body');
+            if (canvasTbody) {
+                canvasTbody.innerHTML = '';
+                (window.checklistInspectionPoints || []).forEach((p, idx) => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-black text-[8px]';
+                    let statusColor = 'text-emerald-700 font-bold';
+                    if (p.status === 'Attention') statusColor = 'text-amber-700 font-bold';
+                    else if (p.status === 'Defect') statusColor = 'text-red-700 font-black';
+                    else if (p.status === 'N/A') statusColor = 'text-gray-400';
+
+                    tr.innerHTML = `
+                        <td class="p-1 border-r border-black font-medium">${p.name}</td>
+                        <td class="p-1 text-center border-r border-black ${statusColor}">${(p.status || 'Good').toUpperCase()}</td>
+                        <td class="p-1 italic text-gray-700">${escapeHtml(p.notes || '-')}</td>
+                    `;
+                    canvasTbody.appendChild(tr);
+                });
+            }
+        }
+        window.syncChecklistCanvas = syncChecklistCanvas;
+
+        function handleCustomSheetClick(sheetName) {
+            const s = String(sheetName).toLowerCase();
+            if (s.includes('check')) {
+                switchFormStudioSheet('checklist');
+            } else if (s.includes('bill')) {
+                switchFormStudioSheet('billing');
+            } else if (s.includes('quot')) {
+                switchFormStudioSheet('form23');
             } else {
-                showSystemToast(`Switched to workbook sheet: ${sheetName}`, 'info', `${sheetName} Active`);
+                switchFormStudioSheet('form13');
             }
         }
         window.handleCustomSheetClick = handleCustomSheetClick;
-
-        function renderCustomSheet(sheetKey) {
-            let conf = window.customSheetDataStore[sheetKey];
-            if (!conf) {
-                // Generate standard generic config for dynamic user-added sheet
-                conf = {
-                    badge: 'CUSTOM SHEET',
-                    icon: 'file-spreadsheet',
-                    color: 'blue',
-                    title: `${sheetKey} Studio`,
-                    desc: 'Custom Operations & Data Ledger',
-                    banner: `OFFICIAL ${sheetKey.toUpperCase()} RECORD`,
-                    refPrefix: `HT-${sheetKey.substring(0, 3).toUpperCase()}-2026-001`,
-                    columns: [
-                        { key: 'date', label: 'Date', width: 'w-24' },
-                        { key: 'particulars', label: 'Particulars / Description', width: 'flex-1' },
-                        { key: 'category', label: 'Category', width: 'w-32' },
-                        { key: 'ref', label: 'Reference #', width: 'w-28' },
-                        { key: 'amount', label: 'Amount (₱)', width: 'w-28', align: 'right', isNumber: true }
-                    ],
-                    kpi2Label: 'TOTAL AMOUNT',
-                    kpi3Label: 'STATUS',
-                    rows: [
-                        { date: '2026-09-10', particulars: 'Initial custom sheet entry record', category: 'General', ref: 'REC-01', amount: 1500.00 }
-                    ],
-                    notes: 'Custom record maintained in HonTech Auto Center workbook system.'
-                };
-                window.customSheetDataStore[sheetKey] = conf;
-            }
-
-            // Sync Header & Controls
-            const titleEl = document.getElementById('custom-sheet-studio-title');
-            const badgeEl = document.getElementById('custom-sheet-badge');
-            const descEl = document.getElementById('custom-sheet-studio-desc');
-            const canvasDocTag = document.getElementById('custom-canvas-doc-tag');
-            const canvasBanner = document.getElementById('custom-canvas-title-banner');
-
-            if (titleEl) titleEl.textContent = conf.title;
-            if (badgeEl) badgeEl.textContent = conf.badge;
-            if (descEl) descEl.textContent = conf.desc;
-            if (canvasDocTag) canvasDocTag.textContent = sheetKey.toUpperCase();
-            if (canvasBanner) canvasBanner.textContent = conf.banner;
-
-            // Inputs
-            const inputRef = document.getElementById('custom-input-ref');
-            const inputDate = document.getElementById('custom-input-date');
-            const inputJob = document.getElementById('custom-input-job');
-            const inputOfficer = document.getElementById('custom-input-officer');
-            const inputNotes = document.getElementById('custom-input-notes');
-
-            if (inputRef && !inputRef.value) inputRef.value = conf.refPrefix;
-            if (inputDate && !inputDate.value) inputDate.value = new Date().toISOString().split('T')[0];
-            if (inputNotes) inputNotes.value = conf.notes || '';
-
-            // Render Table Head in Editor
-            const editorHead = document.getElementById('custom-editor-table-head');
-            if (editorHead) {
-                let ths = '<tr class="border-b border-gray-200">';
-                ths += '<th class="p-2 text-center w-10 font-bold">#</th>';
-                conf.columns.forEach(col => {
-                    ths += `<th class="p-2 text-${col.align || 'left'} ${col.width} font-bold text-gray-700 uppercase tracking-wider text-[10px]">${col.label}</th>`;
-                });
-                ths += '<th class="p-2 text-center w-12 font-bold">Act</th></tr>';
-                editorHead.innerHTML = ths;
-            }
-
-            // Render Table Body in Editor
-            const editorBody = document.getElementById('custom-editor-table-body');
-            if (editorBody) {
-                if (!conf.rows || conf.rows.length === 0) {
-                    editorBody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-400 italic">No entries recorded yet. Click "Add Row" or "Sample Data" to start.</td></tr>';
-                } else {
-                    editorBody.innerHTML = conf.rows.map((row, idx) => {
-                        let rowHtml = `<tr class="hover:bg-gray-50/80 transition border-b border-gray-100">
-                            <td class="p-2 text-center font-bold text-gray-400 font-mono text-[10px]">${idx + 1}</td>`;
-                        conf.columns.forEach(col => {
-                            const val = row[col.key] !== undefined ? row[col.key] : '';
-                            if (col.isNumber) {
-                                rowHtml += `<td class="p-1.5">
-                                    <input type="number" step="0.01" value="${val}" oninput="handleCustomSheetRowInput(${idx}, '${col.key}', this.value)" class="w-full bg-gray-50 border border-gray-200 rounded px-2 py-1 text-right font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none">
-                                </td>`;
-                            } else {
-                                rowHtml += `<td class="p-1.5">
-                                    <input type="text" value="${escapeHtml(String(val))}" oninput="handleCustomSheetRowInput(${idx}, '${col.key}', this.value)" class="w-full bg-gray-50 border border-gray-200 rounded px-2 py-1 font-medium text-gray-800 focus:bg-white focus:border-blue-500 outline-none text-[11px]">
-                                </td>`;
-                            }
-                        });
-                        rowHtml += `<td class="p-1.5 text-center">
-                            <button type="button" onclick="removeCustomSheetRow(${idx})" class="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition cursor-pointer" title="Remove row">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            </button>
-                        </td></tr>`;
-                        return rowHtml;
-                    }).join('');
-                }
-            }
-
-            // Sync Right 1:1 Physical Document Canvas
-            syncCustomSheetCanvas(sheetKey);
-
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-        window.renderCustomSheet = renderCustomSheet;
-
-        function syncCustomSheetCanvas(sheetKey) {
-            const conf = window.customSheetDataStore[sheetKey];
-            if (!conf) return;
-
-            const inputRef = document.getElementById('custom-input-ref');
-            const inputDate = document.getElementById('custom-input-date');
-            const inputJob = document.getElementById('custom-input-job');
-            const inputOfficer = document.getElementById('custom-input-officer');
-            const inputNotes = document.getElementById('custom-input-notes');
-
-            const refVal = inputRef?.value || conf.refPrefix;
-            const dateVal = inputDate?.value || new Date().toISOString().split('T')[0];
-            const jobVal = inputJob?.value || 'WLK-2026';
-            const officerVal = inputOfficer?.value || 'JUSTIN / SA';
-            const notesVal = inputNotes?.value || conf.notes || '';
-
-            // Header elements
-            const headerRef = document.getElementById('custom-canvas-header-ref');
-            const headerDate = document.getElementById('custom-canvas-header-date');
-            const metaRef = document.getElementById('custom-canvas-meta-ref');
-            const metaJob = document.getElementById('custom-canvas-meta-job');
-            const metaOfficer = document.getElementById('custom-canvas-meta-officer');
-            const notesDisplay = document.getElementById('custom-canvas-notes-display');
-            const sigPrep = document.getElementById('custom-canvas-sig-prep');
-
-            if (headerRef) headerRef.textContent = refVal;
-            if (headerDate) headerDate.textContent = `DATE: ${dateVal}`;
-            if (metaRef) metaRef.textContent = refVal;
-            if (metaJob) metaJob.textContent = jobVal;
-            if (metaOfficer) metaOfficer.textContent = officerVal;
-            if (notesDisplay) notesDisplay.textContent = notesVal || 'No additional remarks.';
-            if (sigPrep) sigPrep.textContent = officerVal;
-
-            // Canvas Table Head
-            const canvasHead = document.getElementById('custom-canvas-table-head');
-            if (canvasHead) {
-                let ths = '<tr class="border-b border-black text-black">';
-                ths += '<th class="p-1.5 text-center border-r border-black w-8 font-black">#</th>';
-                conf.columns.forEach((col, idx) => {
-                    const isLast = (idx === conf.columns.length - 1);
-                    ths += `<th class="p-1.5 text-${col.align || 'left'} font-black uppercase text-[8.5px] ${!isLast ? 'border-r border-black' : ''}">${col.label}</th>`;
-                });
-                ths += '</tr>';
-                canvasHead.innerHTML = ths;
-            }
-
-            // Canvas Table Body & Calculation
-            const canvasBody = document.getElementById('custom-canvas-table-body');
-            let sumNumber = 0;
-            let rowsHtml = '';
-            const rows = conf.rows || [];
-
-            rows.forEach((row, idx) => {
-                rowsHtml += '<tr class="border-b border-gray-300 font-sans">';
-                rowsHtml += `<td class="p-1.5 text-center border-r border-black font-mono font-bold text-[9px]">${idx + 1}</td>`;
-                conf.columns.forEach((col, cIdx) => {
-                    const isLast = (cIdx === conf.columns.length - 1);
-                    const val = row[col.key] !== undefined ? row[col.key] : '';
-                    if (col.isNumber) {
-                        const numVal = parseFloat(val) || 0;
-                        if (col.key === 'amount' || col.key === 'actual' || col.key === 'total') {
-                            sumNumber += numVal;
-                        }
-                        rowsHtml += `<td class="p-1.5 text-right font-mono font-bold ${!isLast ? 'border-r border-black' : ''}">₱${numVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>`;
-                    } else {
-                        rowsHtml += `<td class="p-1.5 text-${col.align || 'left'} font-medium ${!isLast ? 'border-r border-black' : ''}">${escapeHtml(String(val))}</td>`;
-                    }
-                });
-                rowsHtml += '</tr>';
-            });
-
-            // Blank filler rows so it always looks authentic
-            const totalDisplayRows = Math.max(rows.length, 6);
-            for (let i = rows.length; i < totalDisplayRows; i++) {
-                rowsHtml += '<tr class="border-b border-gray-200 h-6">';
-                rowsHtml += `<td class="p-1.5 text-center border-r border-black font-mono text-gray-300 text-[8px]">${i + 1}</td>`;
-                conf.columns.forEach((col, cIdx) => {
-                    const isLast = (cIdx === conf.columns.length - 1);
-                    rowsHtml += `<td class="p-1.5 ${!isLast ? 'border-r border-black' : ''}">&nbsp;</td>`;
-                });
-                rowsHtml += '</tr>';
-            }
-            if (canvasBody) canvasBody.innerHTML = rowsHtml;
-
-            // Update Total Bar & KPI Cards
-            const totalRecordsEl = document.getElementById('custom-canvas-total-records');
-            const totalLabelEl = document.getElementById('custom-canvas-total-label');
-            const totalValEl = document.getElementById('custom-canvas-total-val');
-
-            const kpiEntries = document.getElementById('custom-kpi-entries');
-            const kpiLabel2 = document.getElementById('custom-kpi-label-2');
-            const kpiVal2 = document.getElementById('custom-kpi-val-2');
-            const kpiSub2 = document.getElementById('custom-kpi-sub-2');
-            const kpiLabel3 = document.getElementById('custom-kpi-label-3');
-            const kpiVal3 = document.getElementById('custom-kpi-val-3');
-
-            if (totalRecordsEl) totalRecordsEl.textContent = `Total Entries: ${rows.length}`;
-            if (kpiEntries) kpiEntries.textContent = rows.length;
-
-            if (conf.columns.some(c => c.isNumber)) {
-                const formattedSum = `₱${sumNumber.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                if (totalLabelEl) totalLabelEl.textContent = 'GRAND TOTAL:';
-                if (totalValEl) totalValEl.textContent = formattedSum;
-
-                if (kpiLabel2) kpiLabel2.textContent = conf.kpi2Label || 'TOTAL AMOUNT';
-                if (kpiVal2) kpiVal2.textContent = formattedSum;
-                if (kpiSub2) kpiSub2.textContent = 'Calculated Ledger Sum';
-            } else {
-                if (totalLabelEl) totalLabelEl.textContent = 'ITEMS RECORDED:';
-                if (totalValEl) totalValEl.textContent = `${rows.length} ITEMS`;
-
-                if (kpiLabel2) kpiLabel2.textContent = conf.kpi2Label || 'TOTAL ITEMS';
-                if (kpiVal2) kpiVal2.textContent = `${rows.length} Items`;
-                if (kpiSub2) kpiSub2.textContent = 'Completed Inventory Count';
-            }
-
-            if (kpiLabel3) kpiLabel3.textContent = conf.kpi3Label || 'AUDIT STATUS';
-            if (kpiVal3) kpiVal3.textContent = 'VERIFIED';
-        }
-        window.syncCustomSheetCanvas = syncCustomSheetCanvas;
-
-        function handleCustomSheetMetaChange() {
-            syncCustomSheetCanvas(window.currentCustomSheetType || 'OEF');
-        }
-        window.handleCustomSheetMetaChange = handleCustomSheetMetaChange;
-
-        function handleCustomSheetRowInput(index, field, value) {
-            const sheetKey = window.currentCustomSheetType || 'OEF';
-            const conf = window.customSheetDataStore[sheetKey];
-            if (!conf || !conf.rows || !conf.rows[index]) return;
-
-            const col = conf.columns.find(c => c.key === field);
-            if (col && col.isNumber) {
-                conf.rows[index][field] = parseFloat(value) || 0;
-                // Auto calculate variance if liquidation
-                if (sheetKey === 'LIQUIDATION') {
-                    const alloc = parseFloat(conf.rows[index].allocated) || 0;
-                    const act = parseFloat(conf.rows[index].actual) || 0;
-                    conf.rows[index].variance = Math.max(0, alloc - act);
-                }
-            } else {
-                conf.rows[index][field] = value;
-            }
-
-            syncCustomSheetCanvas(sheetKey);
-        }
-        window.handleCustomSheetRowInput = handleCustomSheetRowInput;
-
-        function addCustomSheetRow() {
-            const sheetKey = window.currentCustomSheetType || 'OEF';
-            const conf = window.customSheetDataStore[sheetKey];
-            if (!conf) return;
-
-            const newRow = {};
-            conf.columns.forEach(col => {
-                if (col.isNumber) newRow[col.key] = 0;
-                else if (col.key === 'date') newRow[col.key] = new Date().toISOString().split('T')[0];
-                else newRow[col.key] = '';
-            });
-
-            if (!conf.rows) conf.rows = [];
-            conf.rows.push(newRow);
-
-            renderCustomSheet(sheetKey);
-            showSystemToast(`Added new entry row to ${sheetKey}!`, 'success', 'Row Added');
-        }
-        window.addCustomSheetRow = addCustomSheetRow;
-
-        function removeCustomSheetRow(index) {
-            const sheetKey = window.currentCustomSheetType || 'OEF';
-            const conf = window.customSheetDataStore[sheetKey];
-            if (!conf || !conf.rows) return;
-
-            conf.rows.splice(index, 1);
-            renderCustomSheet(sheetKey);
-            showSystemToast(`Removed row #${index + 1} from ${sheetKey}`, 'info', 'Row Removed');
-        }
-        window.removeCustomSheetRow = removeCustomSheetRow;
-
-        function resetCustomSheetForm() {
-            const sheetKey = window.currentCustomSheetType || 'OEF';
-            const conf = window.customSheetDataStore[sheetKey];
-            if (!conf) return;
-
-            conf.rows = [];
-            conf.notes = '';
-            renderCustomSheet(sheetKey);
-            showSystemToast(`Cleared ${sheetKey} entries to blank sheet.`, 'info', 'Sheet Cleared');
-        }
-        window.resetCustomSheetForm = resetCustomSheetForm;
-
-        function loadCustomSheetSample() {
-            const sheetKey = window.currentCustomSheetType || 'OEF';
-            // Reload default sample data
-            if (sheetKey === 'OEF') {
-                window.customSheetDataStore['OEF'].rows = [
-                    { date: '2026-09-08', payee: 'Shell San Isidro', desc: 'Shop Diesel fuel for test run & cleaner', ref: 'OR-94821', amount: 850.00 },
-                    { date: '2026-09-09', payee: 'Hardware Depot', desc: 'Heavy-duty degreaser & rags bundle', ref: 'INV-4410', amount: 620.00 },
-                    { date: '2026-09-09', payee: 'Fast Courier', desc: 'Rush delivery for Honda Civic steering boot', ref: 'WB-8831', amount: 350.00 },
-                    { date: '2026-09-10', payee: 'Auto Supply Pampanga', desc: 'Brake cleaner cans & copper anti-seize paste', ref: 'SI-7291', amount: 980.00 }
-                ];
-                window.customSheetDataStore['OEF'].notes = 'All items substantiated with official receipts. Reconciled under weekly workshop operating budget.';
-            } else if (sheetKey === 'Acknowledgement') {
-                window.customSheetDataStore['Acknowledgement'].rows = [
-                    { category: 'Keys & Remotes', desc: 'Master ignition key & alarm transponder', condition: 'Working / Good', released: 'YES', remarks: 'Tested by owner' },
-                    { category: 'Tools & Spare', desc: 'Spare tire, scissor jack, lug wrench & rod', condition: 'Complete & intact', released: 'YES', remarks: 'Trunk verified' },
-                    { category: 'Replaced Parts', desc: 'Old brake pads, engine belt & worn spark plugs', condition: 'Replaced / Worn', released: 'YES', remarks: 'Customer inspected' },
-                    { category: 'Vehicle Road Test', desc: 'Post-service road trial conducted with SA', condition: 'Operational / OK', released: 'YES', remarks: 'Signed release' },
-                    { category: 'Valuables & Dashcam', desc: 'Dashcam micro-SD card & interior accessories', condition: 'Undamaged', released: 'YES', remarks: 'Owner cleared' }
-                ];
-                window.customSheetDataStore['Acknowledgement'].notes = 'Owner certifies that all work listed on Job Order was executed satisfactorily and the vehicle has been received in clean and complete condition.';
-            } else if (sheetKey === 'LIQUIDATION') {
-                window.customSheetDataStore['LIQUIDATION'].rows = [
-                    { ref: 'OR-5510', desc: 'OEM Front Brake Pad Set (Brembo Spec)', allocated: 3500.00, actual: 3250.00, variance: 250.00 },
-                    { ref: 'OR-5512', desc: 'Rear Caliper Repair Kit & Guide Pins', allocated: 1200.00, actual: 1150.00, variance: 50.00 },
-                    { ref: 'OR-5519', desc: 'DOT 4 High-Temp Brake Fluid (1L bottle)', allocated: 650.00, actual: 650.00, variance: 0.00 },
-                    { ref: 'OR-5525', desc: 'Machine Shop Rotor Disc Resurfacing (2 pcs)', allocated: 1800.00, actual: 1600.00, variance: 200.00 }
-                ];
-                window.customSheetDataStore['LIQUIDATION'].notes = 'Total advance allocated: ₱7,150.00. Total actual expense: ₱6,650.00. Net surplus refunded to Cashier: ₱500.00.';
-            } else if (sheetKey === 'Daily Summary') {
-                window.customSheetDataStore['Daily Summary'].rows = [
-                    { job: 'WLK-2026', plate: 'NDG 4721', client: 'Justin / Honda Civic', service: 'Brake Overhaul & PMS Package', tech: 'VIC', status: 'PAID', total: 6850.00 },
-                    { job: 'JOB-2026-08', plate: 'ZAA 3391', client: 'Roberto / Toyota Vios', service: 'Alternator Replacement & Belt', tech: 'MARLON', status: 'RELEASED', total: 4200.00 },
-                    { job: 'JOB-2026-09', plate: 'NCY 1822', client: 'Maria / Mitsubishi Mirage', service: 'Aircon System Flushing & Cabin Filter', tech: 'VIC', status: 'PAID', total: 3150.00 },
-                    { job: 'JOB-2026-10', plate: 'TAB 5928', client: 'Carlos / Nissan Navara', service: 'Suspension Bushing & Alignment', tech: 'EDWIN', status: 'RELEASED', total: 5400.00 }
-                ];
-                window.customSheetDataStore['Daily Summary'].notes = 'All vehicles logged above completed quality inspection test run. Cash & online receipts reconciled with cashier drawer.';
-            }
-            renderCustomSheet(sheetKey);
-            showSystemToast(`Loaded official sample records for ${sheetKey}!`, 'success', 'Sample Data Loaded');
-        }
-        window.loadCustomSheetSample = loadCustomSheetSample;
-
-        function printCustomSheet() {
-            const sheet = document.getElementById('custom-document-sheet');
-            if (!sheet) {
-                showSystemToast('Error: Sheet document not found for printing', 'error', 'Print Failed');
-                return;
-            }
-
-            let printIframe = document.getElementById('custom-print-frame');
-            if (!printIframe) {
-                printIframe = document.createElement('iframe');
-                printIframe.id = 'custom-print-frame';
-                printIframe.style.position = 'fixed';
-                printIframe.style.right = '0';
-                printIframe.style.bottom = '0';
-                printIframe.style.width = '0';
-                printIframe.style.height = '0';
-                printIframe.style.border = '0';
-                document.body.appendChild(printIframe);
-            }
-
-            const activeTitle = window.customSheetDataStore[window.currentCustomSheetType]?.banner || 'HonTech Sheet';
-            const frameDoc = printIframe.contentDocument || printIframe.contentWindow.document;
-            frameDoc.open();
-            frameDoc.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>${activeTitle} - HonTech Auto Center</title>
-                    <meta charset="utf-8">
-                    <script src="https://cdn.tailwindcss.com"></script>
-                    <style>
-                        @page {
-                            size: A4 portrait;
-                            margin: 8mm;
-                        }
-                        body {
-                            background: white !important;
-                            color: black !important;
-                            -webkit-print-color-adjust: exact !important;
-                            print-color-adjust: exact !important;
-                            font-family: Arial, Helvetica, sans-serif !important;
-                            margin: 0;
-                            padding: 0;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div style="width: 100%; max-width: 100%;">
-                        ${sheet.outerHTML}
-                    </div>
-                </body>
-                </html>
-            `);
-            frameDoc.close();
-
-            setTimeout(() => {
-                printIframe.contentWindow.focus();
-                printIframe.contentWindow.print();
-            }, 600);
-        }
-        window.printCustomSheet = printCustomSheet;
 
         function scrollSheetTabs(direction) {
             const strip = document.getElementById('form-sheet-tabs-scroll');
@@ -13976,8 +13854,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 switchFormStudioSheet('billing');
             } else if (key === 'checklist') {
                 switchFormStudioSheet('checklist');
-            } else if (key === 'cashad') {
-                switchFormStudioSheet('cashad');
             } else {
                 handleCustomSheetClick(label);
             }
@@ -15652,7 +15528,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     parts: window.form13Parts || [],
                     materials: window.form13Materials || [],
                     quoteItems: window.form23Items || [],
-                    customStore: window.customSheetDataStore || {}
+                    billingItems: window.billingItems || [],
+                    checklistPoints: window.checklistInspectionPoints || [],
+                    checklistFuel: window.checklistFuelLevel || '1/2',
+                    checklistRemarks: getVal('chk-input-remarks')
                 };
 
                 localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
@@ -15702,9 +15581,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (Array.isArray(draft.parts)) window.form13Parts = draft.parts;
                 if (Array.isArray(draft.materials)) window.form13Materials = draft.materials;
                 if (Array.isArray(draft.quoteItems)) window.form23Items = draft.quoteItems;
-                if (draft.customStore && typeof draft.customStore === 'object') {
-                    window.customSheetDataStore = Object.assign({}, window.customSheetDataStore, draft.customStore);
-                }
+                if (Array.isArray(draft.billingItems)) window.billingItems = draft.billingItems;
+                if (Array.isArray(draft.checklistPoints)) window.checklistInspectionPoints = draft.checklistPoints;
+                if (draft.checklistFuel) setChecklistFuel(draft.checklistFuel);
+                if (draft.checklistRemarks) setVal('chk-input-remarks', draft.checklistRemarks);
 
                 renderForm13Rows();
                 calcForm13Totals();
@@ -15966,7 +15846,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet4Doc, 'C6', plate);
                     setCell(sheet4Doc, 'D7', model);
                     setCell(sheet4Doc, 'K7', km);
+                    const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
+                    setCell(sheet4Doc, 'C45', chkRemarks);
+                    setCell(sheet4Doc, 'C48', sa);
                     zip.file('xl/worksheets/sheet4.xml', serializer.serializeToString(sheet4Doc));
+                }
+
+                // 5. Hide non-SA sheets (5-10) in xl/workbook.xml so only the 4 authentic SA worksheets are exposed in Excel
+                const wbFile = zip.file('xl/workbook.xml');
+                if (wbFile) {
+                    const wbStr = await wbFile.async('text');
+                    const wbDoc = parser.parseFromString(wbStr, 'text/xml');
+                    const sheets = wbDoc.querySelectorAll('sheet');
+                    sheets.forEach(s => {
+                        const sName = s.getAttribute('name') || '';
+                        if (['Cash_Advance', 'OEF', 'LIQUIDATION_REPORT', '(Broken)DISBURSEMENT', '(Broken)Daily Cash Flow', 'Acknowledgement'].includes(sName)) {
+                            s.setAttribute('state', 'hidden');
+                        }
+                    });
+                    zip.file('xl/workbook.xml', serializer.serializeToString(wbDoc));
                 }
 
                 // Generate full binary blob with 100% formatting preserved

@@ -3146,150 +3146,628 @@
                                 </div>
 
                             </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                </div>
-                
-            <!-- CUSTOM / EXTENSION WORKBOOK SHEET STUDIO (OEF, ACKNOWLEDGEMENT, LIQUIDATION, DAILY SUMMARY) -->
-            <div id="view-sheet-custom" class="hidden fade-in space-y-5">
-                <!-- Studio Header Bar -->
-                <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs flex flex-wrap items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h2 id="custom-sheet-studio-title" class="text-base font-black text-gray-900 uppercase tracking-tight">OEF Studio</h2>
-                                <span id="custom-sheet-badge" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200 uppercase">OFFICIAL EXPENSE</span>
-                            </div>
-                            <p id="custom-sheet-studio-desc" class="text-xs text-gray-500 font-medium">Official Workshop Multi-Sheet Dossier & Operational Records</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" onclick="loadCustomSheetSample(window.currentCustomSheetType)" class="px-3 py-1.5 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer">
-                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Load Sample
-                        </button>
-                        <button type="button" onclick="printCustomSheet()" class="px-3 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-xs">
-                            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Sheet
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Main Grid: Left Editor & Right Live Document Canvas -->
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-                    <!-- Left: Interactive Editor Matrix -->
-                    <div class="xl:col-span-6 space-y-4">
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
-                            <h3 class="text-xs font-black uppercase text-gray-800 tracking-wider flex items-center justify-between">
-                                <span>Sheet Metadata & Header</span>
-                                <span class="text-[10px] font-mono text-gray-400">Live Linked</span>
-                            </h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase mb-1">Reference / Doc No.</label>
-                                    <input type="text" id="custom-input-ref" oninput="renderCustomSheet(window.currentCustomSheetType)" class="w-full px-3 py-2 border border-gray-200 rounded-lg font-mono font-bold text-gray-800 focus:border-blue-500 outline-none" placeholder="HT-OEF-2026-001">
-                                </div>
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase mb-1">Date</label>
-                                    <input type="date" id="custom-input-date" oninput="renderCustomSheet(window.currentCustomSheetType)" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-gray-800 focus:border-blue-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase mb-1">Associated Job / Plate</label>
-                                    <input type="text" id="custom-input-job" oninput="renderCustomSheet(window.currentCustomSheetType)" class="w-full px-3 py-2 border border-gray-200 rounded-lg uppercase font-bold text-gray-800 focus:border-blue-500 outline-none" placeholder="NDG 4721 / HT-JO-0001">
-                                </div>
-                                <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase mb-1">Officer / Custodian</label>
-                                    <input type="text" id="custom-input-officer" oninput="renderCustomSheet(window.currentCustomSheetType)" class="w-full px-3 py-2 border border-gray-200 rounded-lg font-semibold text-gray-800 focus:border-blue-500 outline-none" placeholder="Roman Sarol">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10.5px] font-bold text-gray-600 uppercase mb-1">Notes / Remarks / Reconciled Details</label>
-                                <textarea id="custom-input-notes" oninput="renderCustomSheet(window.currentCustomSheetType)" rows="2" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs text-gray-800 focus:border-blue-500 outline-none resize-none" placeholder="Enter notes or audit justification..."></textarea>
-                            </div>
-                        </div>
-
-                        <!-- KPI Summary Cards -->
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-2xs">
-                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Entries</div>
-                                <div id="custom-kpi-entries" class="text-lg font-black text-gray-900 font-mono mt-0.5">4</div>
-                                <div class="text-[9.5px] text-gray-400">Total Rows</div>
-                            </div>
-                            <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-2xs">
-                                <div id="custom-kpi-label-2" class="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Total Amount</div>
-                                <div id="custom-kpi-val-2" class="text-lg font-black text-blue-700 font-mono mt-0.5">₱2,800.00</div>
-                                <div id="custom-kpi-sub-2" class="text-[9.5px] text-gray-400">Calculated Sum</div>
-                            </div>
-                            <div class="bg-white border border-gray-200 rounded-xl p-3 shadow-2xs">
-                                <div id="custom-kpi-label-3" class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Audit Status</div>
-                                <div id="custom-kpi-val-3" class="text-lg font-black text-emerald-700 mt-0.5">VERIFIED</div>
-                                <div class="text-[9.5px] text-emerald-500">Official Dossier</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Exact Physical Document Canvas -->
-                    <div class="xl:col-span-6 bg-slate-100 border border-gray-300 rounded-2xl p-4 sm:p-6 shadow-inner overflow-x-auto">
-                        <div id="custom-document-sheet" class="bg-white border border-black p-6 mx-auto shadow-md text-black font-sans" style="width: 100%; max-width: 680px; min-height: 720px; font-size: 10px;">
-                            <!-- Header -->
-                            <div class="flex items-start justify-between border-b-2 border-black pb-3 mb-3">
-                                <div class="flex items-center gap-2.5">
-                                    <img src="assets/hontech_logo.png" class="w-10 h-10 object-contain" alt="HonTech">
-                                    <div>
-                                        <div class="font-black text-sm tracking-tight leading-tight">HONTECH AUTO CENTER, INC.</div>
-                                        <div class="text-[8px] text-gray-600 leading-tight">70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City</div>
-                                        <div class="text-[8px] text-gray-600 leading-tight">Tel #: (8)564-4550 / 71219124 • Non-VAT Reg. TIN: 000-000-000</div>
+                                    <div class="header-band uppercase font-black text-center text-[10px] tracking-widest bg-gray-300 py-0.5 border-b border-black">
+                                        CUSTOMER DETAILS
+                                    </div>
+                                    <div class="grid grid-cols-12 text-[9.5px] divide-x divide-black">
+                                        <!-- Col 1 -->
+                                        <div class="col-span-5 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Name :</span> <span id="f13-live-name" class="font-semibold"></span></div>
+                                            <div><span class="font-bold">Address :</span> <span id="f13-live-address" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Contact No. :</span> <span id="f13-live-contact" class="font-semibold font-mono"></span></div>
+                                            <div><span class="font-bold">E-Mail Add. :</span> <span id="f13-live-email" class="font-medium"></span></div>
+                                        </div>
+                                        <!-- Col 2 -->
+                                        <div class="col-span-4 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Year/Model :</span> <span id="f13-live-model" class="font-semibold"></span></div>
+                                            <div><span class="font-bold">KM Reading :</span> <span id="f13-live-km" class="font-semibold font-mono"></span></div>
+                                            <div><span class="font-bold">Engine No :</span> <span id="f13-live-engine" class="font-mono"></span></div>
+                                            <div><span class="font-bold">Chassis No. :</span> <span id="f13-live-chassis" class="font-mono"></span></div>
+                                        </div>
+                                        <!-- Col 3 -->
+                                        <div class="col-span-3 p-1.5 space-y-1 leading-tight">
+                                            <div><span class="font-bold">Plate No :</span> <span id="f13-live-plate" class="font-black font-mono text-[10.5px]"></span></div>
+                                            <div><span class="font-bold">Intake Date :</span> <span id="f13-live-intake-date" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Promise Date :</span> <span id="f13-live-promise-date" class="font-medium"></span></div>
+                                            <div><span class="font-bold">Color :</span> <span id="f13-live-color" class="font-medium"></span></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <div id="custom-canvas-doc-tag" class="inline-block bg-black text-white text-[9px] font-black px-2 py-0.5 uppercase tracking-wider mb-1">OFFICIAL DOSSIER</div>
-                                    <div class="font-mono text-[9px] font-bold" id="custom-canvas-meta-ref">REF: HT-2026-001</div>
-                                    <div class="text-[8.5px]" id="custom-canvas-meta-date">Date: 2026-09-15</div>
+
+                                <!-- CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN -->
+                                <div class="mt-2 border border-black">
+                                    <div class="header-band uppercase font-bold text-center text-[9.5px] tracking-wide bg-gray-200 py-0.5 border-b border-black">
+                                        CUSTOMER'S DESCRIPTION OF REQUESTED SERVICE/CONCERN <span class="font-normal text-[8.5px] italic">(To be filled out by Service Advisor)</span>
+                                    </div>
+                                    <div id="f13-live-concern" class="p-2 min-h-[42px] text-[10px] leading-relaxed whitespace-pre-wrap font-medium"></div>
+                                </div>
+
+                                <!-- NOTE Surcharge Disclaimer -->
+                                <div class="mt-1 text-[8px] text-gray-800 leading-tight italic px-1">
+                                    <strong>NOTE:</strong> To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item is automatically applied. The cost of the item/s shall be the current price of Hontech Auto Center, Inc.
+                                </div>
+
+                                <!-- Interviewed By & Authorization Grid -->
+                                <div class="mt-2 grid grid-cols-12 gap-3 items-end text-[9px]">
+                                    <div class="col-span-5 space-y-0.5">
+                                        <div><span class="font-bold">Interviewed by:</span> <span id="f13-live-sa-name" class="font-bold border-b border-black min-w-[120px] inline-block text-center">Roman Sarol</span></div>
+                                        <div class="text-[8px] text-gray-600 pl-20">Service Advisor</div>
+                                    </div>
+                                    <div class="col-span-7 border border-black p-1.5 text-center">
+                                        <div class="font-bold uppercase tracking-wider text-[8.5px]">AUTHORIZATION</div>
+                                        <div class="text-[7.5px] leading-tight text-gray-700 mt-0.5">I hereby authorize you and your assigned employees to operate the vehicle for purposes of testing, inspection, pick-up or delivery.</div>
+                                        <div class="mt-3 border-t border-black w-48 mx-auto"></div>
+                                        <div class="text-[7.5px] font-bold mt-0.5">Customer Name and Signature</div>
+                                    </div>
+                                </div>
+
+                                <!-- DIAGNOSTIC RESULT | PARTS | MATERIALS MATRIX -->
+                                <div class="mt-2 border border-black">
+                                    <table class="w-full text-[8.5px] border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-200 border-b border-black text-center font-bold">
+                                                <th class="border-r border-black p-1 w-[26%] uppercase">DIAGNOSTIC RESULT</th>
+                                                <th colspan="4" class="border-r border-black p-1 uppercase">PARTS</th>
+                                                <th colspan="4" class="p-1 uppercase">MATERIALS</th>
+                                            </tr>
+                                            <tr class="bg-gray-100 border-b border-black text-center font-semibold text-[8px]">
+                                                <th class="border-r border-black p-0.5"></th>
+                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
+                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
+                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
+                                                <th class="border-r border-black p-0.5 w-14">AMOUNT</th>
+                                                <th class="border-r border-black p-0.5 text-left pl-1">DESCRIPTION</th>
+                                                <th class="border-r border-black p-0.5 w-7">QTY</th>
+                                                <th class="border-r border-black p-0.5 w-14">UNIT PRICE</th>
+                                                <th class="p-0.5 w-14">AMOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="f13-live-matrix-body">
+                                            <!-- Dynamically rendered 15-20 rows matching scanned grid -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="border-t border-black font-bold text-[9px] bg-gray-100">
+                                                <td class="border-r border-black p-1 text-center font-bold uppercase text-[8px]">SUBTOTALS</td>
+                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">PARTS:</td>
+                                                <td class="border-r border-black p-1 text-right font-mono" id="f13-live-parts-total">0.00</td>
+                                                <td colspan="3" class="border-r border-black p-1 text-right uppercase">MATERIALS:</td>
+                                                <td class="p-1 text-right font-mono" id="f13-live-materials-total">0.00</td>
+                                            </tr>
+                                            <tr class="border-t border-black font-black text-[9.5px] bg-gray-200">
+                                                <td colspan="7" class="border-r border-black p-1 text-right uppercase tracking-wider">ESTIMATED TOTAL:</td>
+                                                <td colspan="2" class="p-1 text-right font-mono text-[10.5px] font-black" id="f13-live-grand-total">₱ 0.00</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <!-- Middle Sign-off: Diagnosed by & Assessed by -->
+                                <div class="mt-2 grid grid-cols-2 gap-4 text-[9px]">
+                                    <div>
+                                        <span class="font-bold">Diagnosed by:</span>
+                                        <span id="f13-live-mechanic" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Auto Mechanic</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="font-bold">Assessed by:</span>
+                                        <span id="f13-live-assessor" class="border-b border-black min-w-[130px] inline-block font-semibold pl-1">Parts/Materials Controller</span>
+                                    </div>
+                                </div>
+
+                                <!-- CERTIFICATE OF COMPLETION/ACCEPTANCE -->
+                                <div class="mt-2 border border-black p-2">
+                                    <div class="text-center font-black uppercase text-[9.5px] tracking-wide">
+                                        CERTIFICATE OF COMPLETION/ACCEPTANCE
+                                    </div>
+                                    <div class="text-[8px] text-center italic text-gray-800 leading-snug mt-0.5">
+                                        This is to certify that the aforementioned vehicle was thoroughly inspected/checked/examined and was done in accordance with the agreed recommendation/discussions and satisfaction of the customer
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4 mt-3 text-[8.5px]">
+                                        <!-- Left Column -->
+                                        <div class="space-y-3">
+                                            <div>
+                                                <div class="font-bold">Recommending Approval:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-sa-name2">Roman Sarol</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Service Advisor</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">CONFORME:</div>
+                                                <div class="mt-3 border-b border-black w-44"></div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Customer's Name & Signature</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right Column -->
+                                        <div class="space-y-3">
+                                            <div>
+                                                <div class="font-bold">Approved by:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-approved-by">Chief, Auto Mechanic / Authorized AM</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">Chief, Auto Mechanic / Authorized AM</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">Concurred by:</div>
+                                                <div class="mt-3 border-b border-black w-44 font-semibold text-center" id="f13-live-manager">General Manager</div>
+                                                <div class="text-[7.5px] text-gray-600 text-center w-44">General Manager</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PERFORATED TEAR-OFF DIVIDER -->
+                                <div class="my-3 form13-perforated-border text-center">
+                                    <span class="bg-white px-2 text-[8px] font-bold text-red-600 uppercase tracking-widest">
+                                        Gupitin Dito / Perforated Customer Claim Stub
+                                    </span>
+                                </div>
+
+                                <!-- CUSTOMER CLAIM STUB IN FILIPINO (Bottom Section) -->
+                                <div class="p-2 border border-red-300 rounded bg-red-50/20 text-[9px] space-y-1.5">
+                                    <div class="text-red-600 font-bold leading-tight">
+                                        <div class="text-[10px] font-black uppercase tracking-tight">Mahal Naming Mga Kustomer,</div>
+                                        <div class="text-[8px] font-normal leading-snug text-red-700 mt-0.5">
+                                            Para sa inyong seguridad at kapakinabangan ng lahat, pinapayuhan po namin kayong kunin ang lahat ng mahahalagang gamit mula sa inyong sasakyan bago ito ipagkatiwala sa aming mga kawani. Malaki po ang maitutulong ng inyong kooperasyon upang masiguro namin ang mahusay na serbisyo.
+                                        </div>
+                                        <div class="text-[8px] font-normal mt-0.5 text-red-700">Maraming salamat po sa inyong patuloy na suporta.</div>
+                                        <div class="text-[8.5px] font-black mt-0.5 text-red-800">Ang Pamunuan</div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3 pt-1 border-t border-red-200">
+                                        <div class="space-y-1">
+                                            <div><span class="font-bold">Name :</span> <span id="f13-stub-live-name" class="font-semibold underline"></span></div>
+                                            <div><span class="font-bold">Service Advisor :</span> <span id="f13-stub-live-sa" class="font-semibold underline">Manny Sarol</span></div>
+                                            <div><span class="font-bold">Date:</span> <span id="f13-stub-live-date" class="font-semibold underline">2026-09-08</span></div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <div><span class="font-bold">Plate No./Year/Model :</span> <span id="f13-stub-live-plate-model" class="font-bold underline font-mono"></span></div>
+                                            <div><span class="font-bold">Contact :</span> <span class="font-semibold">09458757441 / 09525065084 - VIBER</span></div>
+                                            <div><span class="font-bold text-red-600">Claim Stub :</span> <span id="f13-stub-live-id" class="font-mono font-black text-red-600 underline">CS-8821</span></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center italic text-[7.5px] text-gray-600 pt-0.5">
+                                        (Please present this to our Service Advisor to claim required documents for the release of your vehicle)
+                                    </div>
+
+                                    <div class="flex items-center justify-between pt-1 border-t border-gray-200">
+                                        <div class="font-black text-[8px] uppercase tracking-wider text-gray-800">
+                                            THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!
+                                        </div>
+                                        <div class="text-right text-[7.5px] text-gray-700 leading-tight">
+                                            <div class="font-bold">Hontech Auto Center, Inc</div>
+                                            <div>70 Bayan Bayanan Ave. cor Narra St. Marikina Heights, Marikina City</div>
+                                            <div>Tel #: (8)564-4550 / 71219124</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                     <!-- =========================================================================
+                 SHEET VIEW 3: Billing_No (Interactive Billing & Invoice Studio)
+                 ========================================================================= -->
+            <div id="view-sheet-billing" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                    <!-- LEFT COLUMN: SA BILLING SMART INTERACTIVE EDITOR -->
+                    <div id="billing-editor-pane" class="xl:col-span-6 space-y-5">
+                        
+                        <!-- Billing Header & Actions Bar -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
+                                        <i data-lucide="receipt" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Billing Studio (Billing_No)</h2>
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span> Sheet 3 Active
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 font-medium">Service Billing Statement & Invoice Settlement Engine</p>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
+                                    </button>
+                                    <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                                    </button>
+                                    <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Banner Title -->
-                            <div id="custom-canvas-title-banner" class="text-center font-black text-xs uppercase tracking-wide bg-gray-100 border-y border-black py-1 mb-3">
-                                OFFICIAL OPERATING RECORD
+                            <!-- Billing Meta Fields -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing No.</label>
+                                    <input type="text" id="bill-input-billing-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-purple-500 outline-none transition" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Date</label>
+                                    <input type="date" id="bill-input-date" onchange="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
+                                    <input type="text" id="bill-input-job-no" oninput="syncBillingCanvas()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-purple-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quote Ref</label>
+                                    <input type="text" id="bill-input-quote-no" oninput="syncBillingCanvas()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-purple-500 outline-none transition" placeholder="QT-2026-XXXX">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customer & Vehicle Dossier (Synced with Job Order) -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                    <i data-lucide="user-check" class="w-4 h-4 text-purple-600"></i> Customer & Vehicle Details
+                                </h3>
+                                <span class="text-[11px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
                             </div>
 
-                            <!-- Canvas Table -->
-                            <table class="w-full border-collapse border border-black text-[8.5px] mb-3">
-                                <thead id="custom-canvas-table-head" class="bg-gray-50 border-b border-black"></thead>
-                                <tbody id="custom-canvas-table-body"></tbody>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
+                                    <input type="text" id="bill-input-name" oninput="syncBillingToJobOrder()" placeholder="Customer Name" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact No. / Viber</label>
+                                    <input type="text" id="bill-input-contact" oninput="syncBillingToJobOrder()" placeholder="0917-XXX-XXXX" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Address</label>
+                                    <input type="text" id="bill-input-address" oninput="syncBillingToJobOrder()" placeholder="Billing Address" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
+                                    <input type="text" id="bill-input-plate" oninput="syncBillingToJobOrder()" placeholder="ABC 1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Make / Model / Year</label>
+                                    <input type="text" id="bill-input-model" oninput="syncBillingToJobOrder()" placeholder="e.g. Honda Civic RS" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Color</label>
+                                    <input type="text" id="bill-input-color" oninput="syncBillingToJobOrder()" placeholder="e.g. Pearl White" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Mileage / Odometer (KM)</label>
+                                    <input type="text" id="bill-input-km" oninput="syncBillingToJobOrder()" placeholder="e.g. 45,000" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Billable Items & Charges Table -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <div>
+                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                        <i data-lucide="shopping-cart" class="w-4 h-4 text-purple-600"></i> Billed Parts, Materials & Services
+                                    </h3>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Line items consolidated from Job Order & Quotation</p>
+                                </div>
+                                <button type="button" onclick="addBillingItemRow()" class="px-2.5 py-1 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line
+                                </button>
+                            </div>
+
+                            <div class="overflow-x-auto max-h-[300px] custom-scroll">
+                                <table class="w-full text-xs text-left">
+                                    <thead class="bg-gray-50 text-[10.5px] font-bold uppercase tracking-wider text-gray-600 border-b border-gray-200">
+                                        <tr>
+                                            <th class="py-2.5 px-3">Description</th>
+                                            <th class="py-2.5 px-2 w-16 text-center">Qty</th>
+                                            <th class="py-2.5 px-3 w-28 text-right">Unit Price (₱)</th>
+                                            <th class="py-2.5 px-3 w-28 text-right">Total (₱)</th>
+                                            <th class="py-2.5 px-2 w-10 text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bill-items-table-body" class="divide-y divide-gray-100 font-medium">
+                                        <!-- Rendered dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Financial Summary Matrix -->
+                            <div class="bg-purple-50/60 border border-purple-150 rounded-xl p-4 space-y-2 text-xs">
+                                <div class="flex justify-between text-gray-700">
+                                    <span>Parts & Materials Subtotal:</span>
+                                    <span id="bill-summary-parts" class="font-mono font-bold">₱0.00</span>
+                                </div>
+                                <div class="flex justify-between text-gray-700">
+                                    <span>Labor & Services Subtotal:</span>
+                                    <span id="bill-summary-labor" class="font-mono font-bold">₱0.00</span>
+                                </div>
+                                <div class="flex items-center justify-between text-gray-700 pt-1 border-t border-purple-200/60">
+                                    <span class="font-bold">Discount / Promo:</span>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-gray-500">₱</span>
+                                        <input type="number" id="bill-input-discount" value="0" min="0" step="50" oninput="calcBillingTotals()" class="w-24 px-2 py-1 text-right font-mono font-bold border border-gray-200 rounded bg-white outline-none focus:border-purple-500 text-xs">
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t-2 border-purple-300 font-black text-sm text-purple-950">
+                                    <span class="uppercase tracking-wide">Grand Total Due:</span>
+                                    <span id="bill-summary-grand-total" class="text-base font-mono font-black text-purple-900">₱0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN: 1:1 AUTHENTIC BILLING PHYSICAL CANVAS -->
+                    <div id="billing-canvas-pane" class="xl:col-span-6 bg-slate-100 border border-gray-300 rounded-2xl p-4 sm:p-6 shadow-inner overflow-x-auto">
+                        <div id="billing-canvas-sheet" class="bg-white border border-black p-6 mx-auto shadow-md text-black font-sans" style="width: 100%; max-width: 680px; min-height: 840px; font-size: 10px;">
+                            <!-- Canvas Header -->
+                            <div class="flex items-start justify-between border-b-2 border-black pb-3 mb-3">
+                                <div>
+                                    <h1 class="text-base font-black uppercase tracking-tight text-black">HONTECH AUTOCENTER</h1>
+                                    <p class="text-[9px] text-gray-600 font-semibold">Specialist in Precision Automotive Service & Overhaul</p>
+                                    <p class="text-[8.5px] text-gray-500">Marikina City · Contact: (02) 8645-8821 / 0917-882-9912</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="inline-block border-2 border-black px-3 py-1 font-mono font-black text-xs uppercase bg-gray-50">
+                                        BILLING INVOICE
+                                    </div>
+                                    <div class="mt-1 text-[9px] font-bold">
+                                        <div>NO: <span id="cv-bill-no" class="font-mono text-purple-800">BL-2026-0001</span></div>
+                                        <div>DATE: <span id="cv-bill-date" class="font-mono">2026-09-17</span></div>
+                                        <div>JO REF: <span id="cv-bill-job" class="font-mono">HT-JO-0001</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Customer & Vehicle Info Grid -->
+                            <div class="border border-black mb-3 text-[9px]">
+                                <div class="grid grid-cols-2 border-b border-black">
+                                    <div class="p-1.5 border-r border-black"><strong>BILLED TO:</strong> <span id="cv-bill-customer-name" class="font-bold">Juan Dela Cruz</span></div>
+                                    <div class="p-1.5"><strong>PLATE NO:</strong> <span id="cv-bill-plate" class="font-mono font-bold uppercase">NDG 4721</span></div>
+                                </div>
+                                <div class="grid grid-cols-2 border-b border-black">
+                                    <div class="p-1.5 border-r border-black"><strong>ADDRESS:</strong> <span id="cv-bill-address">Marikina City</span></div>
+                                    <div class="p-1.5"><strong>MODEL:</strong> <span id="cv-bill-model">Honda Civic</span></div>
+                                </div>
+                                <div class="grid grid-cols-2">
+                                    <div class="p-1.5 border-r border-black"><strong>CONTACT:</strong> <span id="cv-bill-contact">0917-123-4567</span></div>
+                                    <div class="p-1.5"><strong>ODOMETER:</strong> <span id="cv-bill-km" class="font-mono">45,000 KM</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Invoice Line Items Table -->
+                            <table class="w-full border border-black text-[9px] mb-3">
+                                <thead>
+                                    <tr class="bg-gray-100 border-b border-black font-bold">
+                                        <th class="p-1.5 text-left border-r border-black">ITEM DESCRIPTION / PARTICULARS</th>
+                                        <th class="p-1.5 text-center border-r border-black w-12">QTY</th>
+                                        <th class="p-1.5 text-right border-r border-black w-24">UNIT PRICE</th>
+                                        <th class="p-1.5 text-right w-24">AMOUNT (₱)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cv-bill-table-body">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
                             </table>
 
-                            <!-- Canvas Total Bar -->
-                            <div class="flex items-center justify-between border border-black p-2 bg-gray-50 mb-4">
-                                <div id="custom-canvas-total-records" class="font-bold text-[9px]">Total Entries: 4</div>
-                                <div class="flex items-center gap-2">
-                                    <span id="custom-canvas-total-label" class="font-black text-[9.5px]">GRAND TOTAL:</span>
-                                    <span id="custom-canvas-total-val" class="font-mono font-black text-xs text-blue-900">₱0.00</span>
+                            <!-- Canvas Summary -->
+                            <div class="flex justify-end mb-4">
+                                <div class="w-64 border border-black text-[9.5px]">
+                                    <div class="flex justify-between p-1.5 border-b border-gray-300">
+                                        <span>Subtotal:</span>
+                                        <span id="cv-bill-subtotal" class="font-mono font-bold">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between p-1.5 border-b border-gray-300">
+                                        <span>Discount:</span>
+                                        <span id="cv-bill-discount" class="font-mono font-bold">₱0.00</span>
+                                    </div>
+                                    <div class="flex justify-between p-2 bg-gray-100 font-black text-xs">
+                                        <span>GRAND TOTAL:</span>
+                                        <span id="cv-bill-grand-total" class="font-mono text-purple-900">₱0.00</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Signatories -->
-                            <div class="grid grid-cols-2 gap-6 pt-3 border-t border-gray-300 text-[8.5px]">
-                                <div>
-                                    <div class="text-gray-500 mb-6">Prepared / Submitted By:</div>
-                                    <div class="font-black uppercase border-b border-black pb-0.5">Service Advisor / Custodian</div>
-                                    <div class="text-[7.5px] text-gray-500">HonTech Auto Center Staff</div>
+                            <div class="grid grid-cols-2 gap-8 pt-4 border-t border-black text-[8.5px]">
+                                <div class="text-center">
+                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase" id="cv-bill-sa-sig">Service Advisor</div>
+                                    <div class="text-gray-500">Prepared & Billed By</div>
                                 </div>
-                                <div>
-                                    <div class="text-gray-500 mb-6">Approved & Verified By:</div>
-                                    <div class="font-black uppercase border-b border-black pb-0.5">General Manager / Operations Chief</div>
-                                    <div class="text-[7.5px] text-gray-500">HonTech Management Authorization</div>
+                                <div class="text-center">
+                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase">Customer Acceptance</div>
+                                    <div class="text-gray-500">Conforme / Customer Signature</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-                
+
+            <!-- =========================================================================
+                 SHEET VIEW 4: CheckList_Result (Interactive Multi-Point Inspection Studio)
+                 ========================================================================= -->
+            <div id="view-sheet-checklist" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+                    <!-- LEFT COLUMN: SA CHECKLIST SMART INTERACTIVE EDITOR -->
+                    <div id="checklist-editor-pane" class="xl:col-span-6 space-y-5">
+                        
+                        <!-- Checklist Header & Actions Bar -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                                        <i data-lucide="check-square" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">CheckList Studio (CheckList_Result)</h2>
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-700 border border-amber-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Sheet 4 Active
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-gray-500 font-medium">Multi-Point Vehicle Intake Inspection & Inventory Protocol</p>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions -->
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
+                                    </button>
+                                    <button type="button" onclick="setAllChecklistItems('OK')" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="check-check" class="w-3.5 h-3.5"></i> All Pass
+                                    </button>
+                                    <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                                    </button>
+                                    <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Vehicle & Client Info (Synced) -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
+                                    <input type="text" id="chk-input-name" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-amber-500 outline-none transition" placeholder="Customer Name">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Intake Date</label>
+                                    <input type="date" id="chk-input-date" onchange="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-amber-500 outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
+                                    <input type="text" id="chk-input-plate" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-amber-500 outline-none transition" placeholder="ABC 1234">
+                                </div>
+                                <div>
+                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Odometer (KM)</label>
+                                    <input type="text" id="chk-input-km" oninput="syncChecklistCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-amber-500 outline-none transition" placeholder="45,000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fuel Gauge Selector -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3">
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                                <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
+                                    <i data-lucide="gauge" class="w-4 h-4 text-amber-500"></i> Intake Fuel Gauge Level
+                                </span>
+                                <span id="chk-fuel-label" class="text-xs font-mono font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">1/2 (50%)</span>
+                            </div>
+                            <div class="grid grid-cols-5 gap-2 text-center text-xs font-bold">
+                                <button type="button" onclick="setChecklistFuel('E')" class="chk-fuel-btn py-2 rounded-xl border border-gray-200 hover:border-amber-500 transition cursor-pointer" data-fuel="E">E (Empty)</button>
+                                <button type="button" onclick="setChecklistFuel('1/4')" class="chk-fuel-btn py-2 rounded-xl border border-gray-200 hover:border-amber-500 transition cursor-pointer" data-fuel="1/4">1/4</button>
+                                <button type="button" onclick="setChecklistFuel('1/2')" class="chk-fuel-btn py-2 rounded-xl border border-amber-500 bg-amber-50 text-amber-900 font-black transition cursor-pointer" data-fuel="1/2">1/2</button>
+                                <button type="button" onclick="setChecklistFuel('3/4')" class="chk-fuel-btn py-2 rounded-xl border border-gray-200 hover:border-amber-500 transition cursor-pointer" data-fuel="3/4">3/4</button>
+                                <button type="button" onclick="setChecklistFuel('F')" class="chk-fuel-btn py-2 rounded-xl border border-gray-200 hover:border-amber-500 transition cursor-pointer" data-fuel="F">F (Full)</button>
+                            </div>
+                        </div>
+
+                        <!-- Multi-Point Inspection Categories Grid -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
+                                <i data-lucide="list-checks" class="w-4 h-4 text-amber-600"></i> Inspection Checkpoints
+                            </h3>
+
+                            <div id="checklist-items-container" class="space-y-3 max-h-[380px] overflow-y-auto custom-scroll pr-1">
+                                <!-- Dynamically populated inspection checkpoints with OK / ATTN / DEFECT buttons -->
+                            </div>
+                        </div>
+
+                        <!-- Inspection Notes & Remarks -->
+                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-2 text-xs">
+                            <label class="block text-[10.5px] font-bold text-gray-600 uppercase">Inspector Remarks / Discovered Deficiencies</label>
+                            <textarea id="chk-input-remarks" oninput="syncChecklistCanvas()" rows="2" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-gray-900 focus:border-amber-500 outline-none transition resize-none" placeholder="Enter findings (e.g. Scratches on rear bumper, Front right tire 40% worn)..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN: 1:1 AUTHENTIC CHECKLIST PHYSICAL CANVAS -->
+                    <div id="checklist-canvas-pane" class="xl:col-span-6 bg-slate-100 border border-gray-300 rounded-2xl p-4 sm:p-6 shadow-inner overflow-x-auto">
+                        <div id="checklist-canvas-sheet" class="bg-white border border-black p-6 mx-auto shadow-md text-black font-sans" style="width: 100%; max-width: 680px; min-height: 840px; font-size: 10px;">
+                            <!-- Canvas Header -->
+                            <div class="flex items-start justify-between border-b-2 border-black pb-3 mb-3">
+                                <div>
+                                    <h1 class="text-base font-black uppercase tracking-tight text-black">HONTECH AUTOCENTER</h1>
+                                    <p class="text-[9px] text-gray-600 font-semibold">Vehicle Multi-Point Receiving Inspection & Inventory Report</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="inline-block border-2 border-black px-3 py-1 font-mono font-black text-xs uppercase bg-gray-50">
+                                        CHECKLIST RESULT
+                                    </div>
+                                    <div class="mt-1 text-[9px] font-bold">
+                                        <div>DATE: <span id="cv-chk-date" class="font-mono">2026-09-17</span></div>
+                                        <div>PLATE: <span id="cv-chk-plate" class="font-mono uppercase font-bold">NDG 4721</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vehicle & Owner Summary -->
+                            <div class="grid grid-cols-3 border border-black mb-3 text-[9px]">
+                                <div class="p-1.5 border-r border-black"><strong>CUSTOMER:</strong> <span id="cv-chk-name">Juan Dela Cruz</span></div>
+                                <div class="p-1.5 border-r border-black"><strong>VEHICLE / MODEL:</strong> <span id="cv-chk-model">Honda Civic</span></div>
+                                <div class="p-1.5"><strong>MILEAGE:</strong> <span id="cv-chk-km" class="font-mono">45,000 KM</span></div>
+                            </div>
+
+                            <!-- Fuel Status Visual Bar -->
+                            <div class="border border-black p-2 mb-3 bg-gray-50 flex items-center justify-between text-[9px]">
+                                <span class="font-bold uppercase">RECEIVING FUEL LEVEL:</span>
+                                <div class="flex items-center gap-3 font-mono font-bold">
+                                    <span id="cv-fuel-E" class="px-2 py-0.5 border border-black rounded">E</span>
+                                    <span id="cv-fuel-14" class="px-2 py-0.5 border border-black rounded">1/4</span>
+                                    <span id="cv-fuel-12" class="px-2 py-0.5 border border-black rounded bg-black text-white">1/2</span>
+                                    <span id="cv-fuel-34" class="px-2 py-0.5 border border-black rounded">3/4</span>
+                                    <span id="cv-fuel-F" class="px-2 py-0.5 border border-black rounded">F</span>
+                                </div>
+                            </div>
+
+                            <!-- Checkpoints Results Table -->
+                            <table class="w-full border border-black text-[8.5px] mb-3">
+                                <thead>
+                                    <tr class="bg-gray-100 border-b border-black font-bold">
+                                        <th class="p-1.5 text-left border-r border-black">INSPECTION CHECKPOINT</th>
+                                        <th class="p-1.5 text-center border-r border-black w-24">STATUS</th>
+                                        <th class="p-1.5 text-left">INSPECTION NOTES</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cv-chk-table-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+
+                            <!-- Remarks Box -->
+                            <div class="border border-black p-2 mb-4 text-[9px]">
+                                <div class="font-bold text-gray-700 uppercase mb-1">Inspector General Remarks:</div>
+                                <div id="cv-chk-remarks" class="italic text-gray-800">Standard 45-point vehicle intake inspection cleared.</div>
+                            </div>
+
+                            <!-- Signatories -->
+                            <div class="grid grid-cols-2 gap-8 pt-4 border-t border-black text-[8.5px]">
+                                <div class="text-center">
+                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase" id="cv-chk-inspector">Service Advisor / Inspector</div>
+                                    <div class="text-gray-500">Vehicle Inspected By</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="border-b border-black pb-1 mb-1 font-bold uppercase">Customer Sign-off</div>
+                                    <div class="text-gray-500">Acknowledged Initial Vehicle Condition</div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
             
             <!-- GOOGLE SHEETS AUTHENTIC WORKBOOK BOTTOM BAR -->
             <div id="form-workbook-bottom-bar" class="sticky bottom-0 z-30 bg-[#f8f9fa] border-t border-[#dadce0] px-2 py-1 flex items-center justify-between gap-2 shadow-md mt-6 select-none font-sans">
@@ -3316,7 +3794,7 @@
                     </button>
                 </div>
 
-                <!-- Scrollable Tabs Strip with all 10 Official 2025 Sheets -->
+                <!-- Scrollable Tabs Strip with 4 Core Official 2025 SA Sheets -->
                 <div id="form-sheet-tabs-scroll" class="flex-1 flex items-center gap-0.5 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
                     <button type="button" id="tab-sheet-joborder" onclick="switchFormStudioSheet('form13')" class="px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs">
                         <span>Job_Order</span><span class="text-[10px] text-[#1a73e8] leading-none">▾</span>
@@ -3329,24 +3807,6 @@
                     </button>
                     <button type="button" id="tab-sheet-checklist" onclick="switchFormStudioSheet('checklist')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
                         <span>CheckList_Result</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-cashad" onclick="switchFormStudioSheet('cashad')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>Cash_Advance</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-oef" onclick="handleCustomSheetClick('OEF')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>OEF</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-liquidation" onclick="handleCustomSheetClick('LIQUIDATION_REPORT')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>LIQUIDATION_REPORT</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-disbursement" onclick="handleCustomSheetClick('(Broken)DISBURSEMENT')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>(Broken)DISBURSEMENT</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-cashflow" onclick="handleCustomSheetClick('(Broken)Daily Cash Flow')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>(Broken)Daily Cash Flow</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-acknowledgement" onclick="handleCustomSheetClick('Acknowledgement')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>Acknowledgement</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
                     </button>
                 </div>
 
@@ -7043,6 +7503,201 @@
                 <iframe id="f13-enlarge-pdf-iframe" class="w-full h-full border-0 rounded-2xl bg-white shadow-xl" src="about:blank" title="Enlarged Form 1/3 PDF Viewer"></iframe>
             </div>
         </div>
+                            class="w-full bg-white border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-bold text-xs text-slate-900 transition cursor-pointer appearance-none">
+                            <option value="Required Parts Delay / Not In Stock">Required Parts Delay / Not In Stock</option>
+                            <option value="Additional Deep Diagnostics Required">Additional Deep Diagnostics Required</option>
+                            <option value="Customer Requested Scope Change / Additional Work">Customer Requested Scope Change / Additional Work</option>
+                            <option value="Technician Bay Bottleneck / Lift Availability">Technician Bay Bottleneck / Lift Availability</option>
+                            <option value="Unforeseen Mechanical Complications">Unforeseen Mechanical Complications</option>
+                            <option value="Others">Others (Specify Custom Reason)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none absolute right-3.5 top-3"></i>
+                    </div>
+                </div>
+
+                <!-- Custom Reason Input (Revealed on Others) -->
+                <div id="modal-delay-custom-wrap" class="space-y-1.5 hidden">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Specify Custom Reason <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="modal-delay-custom-input" placeholder="e.g. Additional electrical inspection requested..."
+                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-medium text-xs text-slate-900 transition">
+                </div>
+
+                <!-- Detailed Explanation Textarea -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Diagnostic Remarks & Operational Notes <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="modal-delay-details" rows="3" placeholder="Provide notes on the vehicle status or why additional service time is required..."
+                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="closeExpressDelayModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="submitExpressDelayReport()" id="btn-submit-express-delay" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Save Progress Note
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SYSTEM-WIDE REASON-REQUIRED EDIT PROMPT MODAL -->
+    <div id="modal-edit-reason-prompt" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[92vh] fade-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 flex items-center justify-center border border-blue-500/20">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Audit Guard: Reason Required</h3>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">All record modifications must be documented</p>
+                    </div>
+                </div>
+                <button type="button" onclick="cancelFieldEdit()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4 overflow-y-auto custom-scroll text-slate-700">
+                <!-- Change Context Card -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-400 font-bold uppercase text-[10px]">Field Being Modified</span>
+                        <span id="modal-edit-field-name" class="font-bold text-slate-900 bg-white border border-slate-200 px-2 py-0.5 rounded-md">Departure Time</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 pt-1 text-xs">
+                        <div class="p-2.5 bg-white border border-slate-200 rounded-xl">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase">Previous Value</span>
+                            <span id="modal-edit-old-val" class="font-mono font-bold text-slate-700 truncate block mt-0.5">15:00</span>
+                        </div>
+                        <div class="p-2.5 bg-blue-50/60 border border-blue-200 rounded-xl">
+                            <span class="text-[10px] text-blue-500 font-bold block uppercase">Updated Value</span>
+                            <span id="modal-edit-new-val" class="font-mono font-black text-blue-900 truncate block mt-0.5">16:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reason Preset Dropdown -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Reason Category <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="modal-edit-reason-preset" onchange="handleEditPresetChange(this.value)"
+                            class="w-full bg-white border border-slate-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-3.5 py-2.5 outline-none font-bold text-xs text-slate-900 transition cursor-pointer appearance-none">
+                            <option value="Typo / Data Entry Correction">Typo / Data Entry Correction</option>
+                            <option value="Customer Requested Modification">Customer Requested Modification</option>
+                            <option value="Supervisor / Manager Authorization">Supervisor / Manager Authorization</option>
+                            <option value="Parts / Operational Status Change">Parts / Operational Status Change</option>
+                            <option value="Others">Others (Custom Justification)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none absolute right-3.5 top-3"></i>
+                    </div>
+                </div>
+
+                <!-- Mandatory Justification Textarea -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+                        Justification Details <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="modal-edit-reason-text" rows="2" placeholder="State the operational reason for modifying this customer record..."
+                        class="w-full bg-white border border-slate-300 focus:border-blue-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
+                <button type="button" onclick="cancelFieldEdit()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Cancel & Discard
+                </button>
+                <button type="button" onclick="confirmFieldEditWithReason()" id="btn-confirm-field-edit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md shadow-blue-600/20 transition flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Save & Apply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. AUDIT HISTORY TIMELINE MODAL -->
+    <div id="modal-job-audit-history" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[99999] flex items-center justify-center p-4 select-none">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-[90vh] fade-in">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-150 flex items-center justify-between bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center">
+                        <i data-lucide="history" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-black uppercase tracking-tight text-slate-900">Audit History Timeline</h3>
+                            <span id="modal-audit-plate-badge" class="font-mono font-bold text-xs bg-slate-900 text-white px-2 py-0.5 rounded">PLATE</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider" id="modal-audit-customer-subtitle">Customer Change History Log</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeJobAuditHistoryModal()" class="w-8 h-8 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition flex items-center justify-center cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Chronological Timeline) -->
+            <div class="p-6 space-y-3 overflow-y-auto custom-scroll" id="modal-audit-history-content">
+                <!-- Injected dynamically by app.js -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 px-6 py-3.5 border-t border-slate-150 flex items-center justify-end shrink-0">
+                <button type="button" onclick="closeJobAuditHistoryModal()" class="px-5 py-2 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition cursor-pointer">
+                    Close History
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENLARGED FULLSCREEN FORM 1/3 DOCUMENT VIEWER MODAL -->
+    <div id="modal-f13-enlarge" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[99999] flex flex-col p-2 sm:p-5 transition-all">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 flex flex-col w-full h-full overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-5 py-3.5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 bg-slate-900 text-white shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center font-black shadow-md shadow-red-600/30">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm font-black uppercase tracking-tight">Form 1/3 Job Order Document</h3>
+                            <span id="f13-enlarge-title-jo" class="px-2 py-0.5 rounded-full text-xs font-mono font-black bg-red-500/20 text-red-400 border border-red-500/30">HT-JO-0001</span>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Full Scale High-Def
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-gray-400">1:1 Physical Scanned Document with Real-Time Dynamic Field Overlay</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="generateForm13PDF(true)" class="px-3.5 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                        <i data-lucide="download" class="w-4 h-4"></i> Download PDF
+                    </button>
+                    <button type="button" onclick="printForm13()" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-red-600/30 active:scale-95">
+                        <i data-lucide="printer" class="w-4 h-4"></i> Print Form 1/3
+                    </button>
+                    <button type="button" onclick="closeForm13EnlargeModal()" class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition cursor-pointer" title="Close Enlarge View (ESC)">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Modal Iframe Body -->
+            <div class="flex-1 bg-slate-900/10 p-2 sm:p-4 overflow-hidden relative">
+                <iframe id="f13-enlarge-pdf-iframe" class="w-full h-full border-0 rounded-2xl bg-white shadow-xl" src="about:blank" title="Enlarged Form 1/3 PDF Viewer"></iframe>
+            </div>
+        </div>
     </div>
 
     <!-- OFFLINE NETWORK STATUS SCREEN (Guaranteed Fallback Screen for Disconnections) -->
@@ -7069,9 +7724,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.28"></script>
+    <script src="js/app.js?v=2.30"></script>
 </body>
 
 </html>
-
-

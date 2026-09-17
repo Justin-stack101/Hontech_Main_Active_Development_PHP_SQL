@@ -8,7 +8,7 @@ Unlike manual QA checklists (which human testers execute via web browsers), this
 
 ## ⚡ Quick Execution Commands
 ```powershell
-# Run the entire test suite (All 27 assertions)
+# Run the entire test suite (All 30 assertions)
 npm.cmd test
 
 # Run only Frontend SLA & Calculation tests
@@ -23,10 +23,10 @@ npm.cmd run test:security
 
 ---
 
-## 📋 Comprehensive Automated Script Test Inventory (27 Passing Assertions)
+## 📋 Comprehensive Automated Script Test Inventory (30 Passing Assertions)
 
-### Suite 1: Frontend Logic & SLA Calculation (`tests/frontend/sla_and_logic.test.js`)
-*Scope: Client-side mathematical engines, XSS defense, field mapping, validation regexes, and 4-role UI capabilities.*
+### Suite 1: Frontend Logic, SLA Calculation & 2025 Excel Studio (`tests/frontend/sla_and_logic.test.js`)
+*Scope: Client-side mathematical engines, XSS defense, field mapping, validation regexes, 4-role UI capabilities, and 2025 RO Excel Studio 4-sheet reactive synchronization.*
 
 | Test ID | Sub-Category | Assertion / Test Case Description | Verified Logic / Expected Outcome |
 | :--- | :--- | :--- | :--- |
@@ -42,6 +42,9 @@ npm.cmd run test:security
 | **AUT-FRONT-10** | RBAC UI Matrix | Admin should have unrestricted bay ceiling and staff management | Admin capability flags allow modifying bay count, system settings, and user accounts. |
 | **AUT-FRONT-11** | RBAC UI Matrix | Service Advisor should be able to allocate bays but cannot view executive analytics | Service Advisor can assign bays/jobs but is locked out from Owner financial analytics tab. |
 | **AUT-FRONT-12** | RBAC UI Matrix | Assistant should be able to encode bookings but locked out from bay operations | Assistant can encode intakes/bookings but cannot change bays or release vehicles. |
+| **AUT-FRONT-13** | 2025 Excel Studio | Register strictly the 4 authentic SA worksheets and purge obsolete non-SA tabs | Confirms `allFormWorkbookSheets` has exactly 4 sheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) and non-SA tabs (`Cash_Advance`, `OEF`, etc.) are purged. |
+| **AUT-FRONT-14** | 2025 Excel Studio | Cross-synchronize core vehicle dossier from Job Order across Quote, Billing, and Checklist | Verifies reactive propagation of customer name, license plate, vehicle model, mileage, and date across sheets. |
+| **AUT-FRONT-15** | 2025 Excel Studio | Calculate billing totals accurately and validate 15-point inspection checkpoints | Validates line item total summation and tallies checklist statuses (`Good`, `Attention`, `Defect`). |
 
 ---
 

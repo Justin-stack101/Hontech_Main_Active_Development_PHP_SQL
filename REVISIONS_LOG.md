@@ -4,6 +4,33 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 17, 2026 (2025 RO Excel Studio 4-Sheet Streamlining, Strict SA Access & Lossless XLSX Injection)
+
+### 📊 2025 RO Excel Studio Streamlining & Non-SA Tabs Purge (REV-072 / v5.72)
+* **Purge of 6 Non-SA Tabs & Mock Stores**:
+  - Completely removed the 6 non-SA tabs (`Cash_Advance`, `OEF`, `LIQUIDATION_REPORT`, `(Broken)DISBURSEMENT`, `(Broken)Daily Cash Flow`, and `Acknowledgement`) from the bottom tab navigation bar (`#form-sheet-tabs-scroll`).
+  - Purged obsolete client-side mock stores (`customSheetDataStore`), non-SA tab switch logic, and DOM elements from `frontend/index.html` and `frontend/js/app.js`.
+* **Preservation & Polish of 4 Essential Service Advisor Worksheets**:
+  - `Job_Order` (`sheet1.xml`): Primary customer dossier, intake timestamps, labor & parts diagnostic matrix.
+  - `Quotation_No` (`sheet2.xml`): Formal estimation studio with dynamic line-item CRUD editor, package presets (PMS, Brakes, Aircon, Underchassis), and 1:1 physical paper sheet preview.
+  - `Billing_No` (`sheet3.xml`): Dedicated billing & settlement studio with line items, parts/labor subtotals, VAT calculations, and real-time document canvas.
+  - `CheckList_Result` (`sheet4.xml`): 15-point multi-system inspection matrix (Fluids, Electrical, Interior, Tires, Brakes, Suspension), fuel level gauge selector (`E`, `1/4`, `1/2`, `3/4`, `F`), inspector notes, and physical inspection report canvas.
+* **Reactive "Type-to-Save & Export" Cross-Sheet Pipeline**:
+  - Engineered bidirectional synchronization (`syncJobOrderFieldsToBilling`, `syncBillingToJobOrder`, `syncJobOrderFieldsToChecklist`, `syncChecklistToJobOrder`).
+  - Customer name, license plate, vehicle make/model, contact, and mileage automatically cross-populate between sheets upon typing.
+  - Offline draft engine (`saveWorkbookDraftOffline` / `loadWorkbookDraftOffline`) persists all 4 sheet states and line items in `localStorage`.
+* **Strict Service Advisor Only RBAC Lockout**:
+  - Form 13 navigation buttons removed from Owner and Admin role bars.
+  - Hard guardrail in `showSection('form13')` blocks non-SA roles with warning toast and auto-redirect.
+* **Lossless 1:1 Official XLSX Export (`exportOfficialXLSX`)**:
+  - Direct cell injection into `sheet1.xml`, `sheet2.xml`, `sheet3.xml`, and `sheet4.xml` using JSZip.
+  - Non-SA sheets (5–10) in `xl/workbook.xml` are dynamically assigned `state="hidden"`, ensuring Microsoft Excel opens displaying strictly the 4 authentic SA worksheets.
+* **Testing Expansion & Cache Busting**:
+  - Expanded automated test suite from 27 to 30 passing assertions (`AUT-FRONT-13`, `AUT-FRONT-14`, `AUT-FRONT-15`).
+  - Incremented cache buster in `frontend/index.html` to `js/app.js?v=2.30`.
+
+---
+
 ## 📅 September 17, 2026 (Terminal Dev Automation, Automated Test Runner & 5-Stage AI Closed-Loop Lifecycle)
 
 ### 🧪 Terminal Dev Automation & 27-Assertion Test Suite (v5.71)

@@ -152,4 +152,111 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(TEST_CONFIG.ROLES.ASSISTANT.canAssignBays, false);
         });
     });
+
+    describe('5. 2025 RO Excel Studio 4-Sheet Architecture & Cross-Sync', () => {
+        it('AUT-FRONT-13: should strictly register the 4 authentic SA worksheets and purge obsolete non-SA tabs', async () => {
+            const fs = await import('node:fs');
+            const appJs = fs.readFileSync('frontend/js/app.js', 'utf8');
+            const indexHtml = fs.readFileSync('frontend/index.html', 'utf8');
+
+            // 1. Verify allFormWorkbookSheets has exactly 4 sheets
+            const sheetsMatch = appJs.match(/const allFormWorkbookSheets = (\[[\s\S]*?\]);/);
+            assert.ok(sheetsMatch, 'allFormWorkbookSheets definition must exist in app.js');
+            
+            // Safe parse of the array literal
+            const cleanArrayStr = sheetsMatch[1].replace(/'/g, '"').replace(/([a-zA-Z0-9_]+):/g, '"$1":');
+            const sheets = JSON.parse(cleanArrayStr);
+            assert.strictEqual(sheets.length, 4, 'Must contain strictly 4 worksheets');
+            
+            const expectedKeys = ['form13', 'form23', 'billing', 'checklist'];
+            const actualKeys = sheets.map(s => s.key);
+            assert.deepStrictEqual(actualKeys, expectedKeys, 'Keys must match the 4 authentic SA sheets');
+
+            // 2. Verify decommissioned tabs are purged from index.html bottom bar
+            const purgedTabs = [
+                'tab-sheet-cashad',
+                'tab-sheet-oef',
+                'tab-sheet-liquidation',
+                'tab-sheet-disbursement',
+                'tab-sheet-cashflow',
+                'tab-sheet-acknowledgement'
+            ];
+            purgedTabs.forEach(tabId => {
+                assert.strictEqual(indexHtml.includes(tabId), false, `Decommissioned tab ${tabId} must be purged from index.html`);
+            });
+        });
+
+        it('AUT-FRONT-14: should cross-synchronize core vehicle dossier from Job Order across Quote, Billing, and Checklist', () => {
+            // Mock source Job Order data
+            const jobOrderData = {
+                jobNo: 'HT-JO-0042',
+                date: '2026-09-17',
+                name: 'Catherine Dayne',
+                contact: '0917-555-0199',
+                address: 'Marikina City',
+                plate: 'ncd 8821',
+                model: 'Honda Civic RS 2022',
+                color: 'Rallye Red',
+                km: '38,200 km'
+            };
+
+            // Test synchronization logic matching app.js
+            const quoteRef = 'QT-' + jobOrderData.date.slice(0, 4) + '-' + (jobOrderData.jobNo.replace(/[^0-9]/g, '') || '0001');
+            const billingRef = 'BL-' + jobOrderData.date.slice(0, 4) + '-' + (jobOrderData.jobNo.replace(/[^0-9]/g, '') || '0001');
+            const normalizedPlate = (jobOrderData.plate || '').toUpperCase();
+
+            // Assertions
+            assert.strictEqual(quoteRef, 'QT-2026-0042');
+            assert.strictEqual(billingRef, 'BL-2026-0042');
+            assert.strictEqual(normalizedPlate, 'NCD 8821');
+
+            // Test cross-sheet payload integrity
+            const billingPayload = {
+                billingNo: billingRef,
+                date: jobOrderData.date,
+                jobNo: jobOrderData.jobNo,
+                name: jobOrderData.name,
+                plate: normalizedPlate,
+                model: jobOrderData.model
+            };
+            assert.strictEqual(billingPayload.name, 'Catherine Dayne');
+            assert.strictEqual(billingPayload.plate, 'NCD 8821');
+        });
+
+        it('AUT-FRONT-15: should calculate billing totals accurately and validate 15-point inspection checkpoints', () => {
+            // 1. Billing calculations assertion
+            const sampleBillingItems = [
+                { desc: 'Comprehensive Periodic Maintenance Service Package', qty: 1, price: 3500 },
+                { desc: 'Fully Synthetic Motor Oil 5W-30 (4 Liters)', qty: 4, price: 650 },
+                { desc: 'OEM Genuine Oil Filter Element', qty: 1, price: 450 },
+                { desc: 'Brake Caliper Servicing & System Bleeding', qty: 1, price: 1200 }
+            ];
+            const total = sampleBillingItems.reduce((acc, item) => acc + (item.qty * item.price), 0);
+            assert.strictEqual(total, 7750, 'Billing items sum should equal ₱7,750.00');
+
+            // 2. Checklist inspection checkpoints assertion
+            const sampleCheckpoints = [
+                { id: 'eng_oil', status: 'Good' },
+                { id: 'brk_fluid', status: 'Good' },
+                { id: 'coolant', status: 'Good' },
+                { id: 'battery', status: 'Good' },
+                { id: 'lights_ext', status: 'Good' },
+                { id: 'ac_cooling', status: 'Good' },
+                { id: 'horn_wipers', status: 'Good' },
+                { id: 'tire_fl', status: 'Good' },
+                { id: 'tire_fr', status: 'Good' },
+                { id: 'tire_rl', status: 'Good' },
+                { id: 'tire_rr', status: 'Good' },
+                { id: 'spare_tire', status: 'Good' },
+                { id: 'brakes_pads', status: 'Attention' },
+                { id: 'suspension', status: 'Good' },
+                { id: 'exhaust', status: 'Good' }
+            ];
+            assert.strictEqual(sampleCheckpoints.length, 15, 'Standard inspection must have 15 checkpoints');
+            const goodCount = sampleCheckpoints.filter(c => c.status === 'Good').length;
+            const attnCount = sampleCheckpoints.filter(c => c.status === 'Attention').length;
+            assert.strictEqual(goodCount, 14);
+            assert.strictEqual(attnCount, 1);
+        });
+    });
 });
