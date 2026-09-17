@@ -9,7 +9,7 @@ This document defines project-specific guidelines, architectural rules, and qual
 Whenever the AI is requested to make any changes (features, bug fixes, UI adjustments, or backend modifications), it **MUST** execute this complete 6-stage loop without skipping any stage:
 
 1. **Stage 1: Pre-Flight Context Reading & Ingestion**
-   - Read the master blueprint: [`Hontech Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md).
+   - Read the master blueprint: [`Hontech Documentation/Technical/02_Architecture_and_Engineering/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/02_Architecture_and_Engineering/HONTECH_SYSTEM_ARCHITECTURE_AND_USER_JOURNEY_MAP.md).
    - Review existing schema rules and the most recent entries in `REVISIONS_LOG.md` and `Revisions checklist.csv`.
     - **Mandatory Open-Minded Inquiry & Alignment Requirement**: Whenever creating an implementation plan, the AI MUST formulate deep, open-minded questions for the user (covering UI styling, typography, colors, layout aesthetics, user flows, capacity limits, and operational edge cases) to ensure mutual understanding and accuracy before code is written.
 
@@ -93,6 +93,12 @@ Whenever the AI is requested to make any changes (features, bug fixes, UI adjust
 5. **Official Excel Template Export Engine**:
    - Multi-sheet export must inject typed data directly into `Current_2025 BLANK RO UPDATED.xlsx` across sheets 1 through 7 (`Job_Order`, `Quotation_No 1-3`, `Billing_No 1-2`, and `CheckList_Result`) via JSZip without altering sheet visibility or structure.
    - Do not reference obsolete `Polished_2025` templates.
+6. **Unified 1-Button Registration Architecture & Staff Progression Standard**:
+   - The 2025 RO Excel Studio in `#section-form13` is the **Single Source of Truth** for vehicle intake and repair orders.
+   - SAs register orders via the single action button: `[💾 Register Repair Order to System]`, simultaneously syncing the central MySQL database, the Daily Intakes Monitoring Queue (`#container-daily-intakes`), the Wireless Smart TV Monitor, and Customer Lookup (`#section-lookup`).
+   - Legacy redundant intake forms on the daily intake path (such as `#section-intake`) are retired.
+   - Detailed specifications are governed by `Hontech Documentation/Technical/01_Staff_Foundations_and_Operations/HONTECH_STAFF_PROGRESS_WORKFLOW_AND_FOUNDATIONS.md`.
+
 
 ---
 

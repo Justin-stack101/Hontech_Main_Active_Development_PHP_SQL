@@ -275,3 +275,11 @@ Whenever any AI agent touches this codebase, it **MUST** execute this complete 6
 ## 🏆 8. Official Sign-Off & System Authorization
 
 This blueprint constitutes the **official engineering baseline** for the HonTech AutoCenter Operations System. All future developments, capstone thesis defense presentations, and client deliverables must strictly conform to the specifications defined in this document.
+
+---
+
+## 🔗 9. Staff Operational Workflow & Single-Source Foundation Reference
+
+For the definitive role-by-role execution flow, the 1-button unified registration architecture, the retirement of redundant intake forms, and the complete 10-field alignment matrix between the 2025 RO Excel Studio, the Daily Intakes Monitoring Queue, and Customer Lookup, refer to the companion standard:
+👉 **[`HONTECH_STAFF_PROGRESS_WORKFLOW_AND_FOUNDATIONS.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/HONTECH_STAFF_PROGRESS_WORKFLOW_AND_FOUNDATIONS.md)**.
+
