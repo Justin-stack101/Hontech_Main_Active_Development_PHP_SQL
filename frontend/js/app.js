@@ -16108,6 +16108,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 await zip.loadAsync(templateBuffer);
                 const parser = new DOMParser();
                 const serializer = new XMLSerializer();
+                const SML_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+                const serializeSheet = doc => serializer.serializeToString(doc).replace(/\sxmlns=""/g, '');
 
                 const setCell = (doc, cellRef, textVal, isNumber = false) => {
                     if (textVal === undefined || textVal === null || textVal === '') return;
@@ -16142,13 +16144,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         if (!row) {
                             const sheetData = doc.getElementsByTagName('sheetData')[0];
                             if (sheetData) {
-                                row = doc.createElement('row');
+                                row = doc.createElementNS(SML_NS, 'row');
                                 row.setAttribute('r', rowNum);
                                 sheetData.appendChild(row);
                             }
                         }
                         if (row) {
-                            cell = doc.createElement('c');
+                            cell = doc.createElementNS(SML_NS, 'c');
                             cell.setAttribute('r', cellRef);
                             row.appendChild(cell);
                         }
@@ -16167,13 +16169,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                         if (isNumber) {
                             cell.removeAttribute('t');
-                            const vEl = doc.createElement('v');
+                            const vEl = doc.createElementNS(SML_NS, 'v');
                             vEl.textContent = String(textVal);
                             cell.appendChild(vEl);
                         } else {
                             cell.setAttribute('t', 'inlineStr');
-                            const isEl = doc.createElement('is');
-                            const tEl = doc.createElement('t');
+                            const isEl = doc.createElementNS(SML_NS, 'is');
+                            const tEl = doc.createElementNS(SML_NS, 't');
                             tEl.textContent = String(textVal);
                             isEl.appendChild(tEl);
                             cell.appendChild(isEl);
@@ -16242,7 +16244,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
-                    zip.file('xl/worksheets/sheet1.xml', serializer.serializeToString(sheet1Doc));
+                    zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
                 }
 
                 // Gather quote items
@@ -16290,7 +16292,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
-                    zip.file(qConf.file, serializer.serializeToString(qDoc));
+                    zip.file(qConf.file, serializeSheet(qDoc));
                 }
 
                 // Gather billing items
@@ -16345,7 +16347,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
-                    zip.file(bConf.file, serializer.serializeToString(bDoc));
+                    zip.file(bConf.file, serializeSheet(bDoc));
                 }
 
                 // 4. PATCH SHEET 7: CheckList_Result (sheet7.xml)
@@ -16363,7 +16365,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet7Doc, 'C45', chkRemarks);
                     setCell(sheet7Doc, 'C48', sa);
 
-                    zip.file('xl/worksheets/sheet7.xml', serializer.serializeToString(sheet7Doc));
+                    zip.file('xl/worksheets/sheet7.xml', serializeSheet(sheet7Doc));
+                }
+
+                // 5. UPDATE WORKBOOK CALCULATION PROPERTIES FOR AUTOMATIC FORMULA EVALUATION
+                const wbFile = zip.file('xl/workbook.xml');
+                if (wbFile) {
+                    let wbStr = await wbFile.async('text');
+                    if (wbStr.includes('<calcPr/>')) {
+                        wbStr = wbStr.replace('<calcPr/>', '<calcPr fullCalcOnLoad="1"/>');
+                    } else if (wbStr.includes('<calcPr ') && !wbStr.includes('fullCalcOnLoad')) {
+                        wbStr = wbStr.replace('<calcPr ', '<calcPr fullCalcOnLoad="1" ');
+                    }
+                    zip.file('xl/workbook.xml', wbStr);
                 }
 
                 // Generate full binary blob with 100% formatting preserved

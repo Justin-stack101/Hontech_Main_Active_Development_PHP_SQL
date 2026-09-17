@@ -4,7 +4,21 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
-## 📅 September 17, 2026 (Quotation Scope Safety, ReferenceError Elimination & Lossless Excel Injection)
+## 📅 September 17, 2026 (OpenXML Namespace Compliance, LibreOffice Fix & Lossless Excel Injection)
+
+### 📈 OpenXML SpreadsheetML Namespace Compliance & LibreOffice Display Fix (REV-078 / v5.78)
+* **Root Cause Diagnostics on Empty Spreadsheet Cells in LibreOffice Calc**:
+  - Investigated user report where exported workbook (`HonTech_Official_RO_2025_123131_HT-JO-8214.xlsx`) opened in LibreOffice Calc with empty customer dossier cells despite values being injected.
+  - Forensic XML inspection revealed that `doc.createElement('is')`, `doc.createElement('t')`, and `doc.createElement('v')` in browser DOMParser were serialized by `XMLSerializer` as `<is xmlns=""><t>...</t></is>`, resetting the element namespace to empty (`""`).
+  - Because OpenXML SpreadsheetML strictly requires `http://schemas.openxmlformats.org/spreadsheetml/2006/main`, LibreOffice Calc and Excel's schema validators discarded tags with `xmlns=""` as unrecognized schema extensions, displaying empty cells (which caused formula `=C10` on cell D23 to evaluate to `0`).
+* **SpreadsheetML Namespace Enforcement & Serialization Sanitization**:
+  - Updated `setCell` to strictly use `doc.createElementNS(SML_NS, '...')` across `<row>`, `<c>`, `<v>`, `<is>`, and `<t>`.
+  - Implemented `serializeSheet(doc)` which strips any rogue `xmlns=""` attributes via regex before zipping (`.replace(/\sxmlns=""/g, '')`).
+  - Updated `xl/workbook.xml` calculation properties to include `<calcPr fullCalcOnLoad="1"/>` ensuring automatic formula evaluation (customer signature `=C10`, grand totals) upon file open in LibreOffice Calc and Microsoft Excel.
+* **Automated Test Expansion (Suite 10)**:
+  - Added `AUT-FRONT-30` in `tests/frontend/sla_and_logic.test.js` validating SpreadsheetML namespace enforcement and empty `xmlns` purging.
+  - Automated assertions increased to **45/45 passing** across 19 test suites.
+  - Cache buster updated to `v=2.37`.
 
 ### 🛡️ Quotation Scope Safety & Zero-Crash Startup Fix (REV-077 / v5.77)
 * **Root Cause Diagnostics & ReferenceError Elimination**:

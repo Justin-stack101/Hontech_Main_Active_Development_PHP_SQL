@@ -473,6 +473,17 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(typeof sandbox.window.removeForm23Row, 'function');
             assert.strictEqual(typeof sandbox.window.addForm23Row, 'function');
         });
+
+        it('AUT-FRONT-30: should verify exportOfficialXLSX uses OpenXML SpreadsheetML namespace and purges empty xmlns attributes', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes("const SML_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';"), true, 'SpreadsheetML namespace must be defined');
+            assert.strictEqual(appJs.includes("doc.createElementNS(SML_NS, 'is')"), true, 'inlineStr <is> element must use SpreadsheetML namespace');
+            assert.strictEqual(appJs.includes("doc.createElementNS(SML_NS, 't')"), true, '<t> element must use SpreadsheetML namespace');
+            assert.strictEqual(appJs.includes("doc.createElementNS(SML_NS, 'v')"), true, '<v> element must use SpreadsheetML namespace');
+            assert.strictEqual(appJs.includes("replace(/\\sxmlns=\"\"/g, '')"), true, 'Empty xmlns attributes must be purged on sheet serialization');
+            assert.strictEqual(appJs.includes('fullCalcOnLoad="1"'), true, 'Workbook must enforce automatic formula recalculation on load');
+        });
     });
 });
 
