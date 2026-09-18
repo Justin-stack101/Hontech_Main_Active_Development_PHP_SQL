@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -750,8 +750,8 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(form13Idx !== -1 && queueIdx !== -1, true, 'Both sections must exist');
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
-            // Verify cache buster v=2.48
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.49 or v=2.48');
+            // Verify cache buster
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
         });
     });
 
@@ -782,9 +782,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
-                'Cache buster must be v=2.50 or v=2.49'
+                'Cache buster must be v=2.51, v=2.50 or v=2.49'
             );
         });
     });
@@ -833,11 +833,80 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Plate numbers and claim stubs must use roomy px-3 py-1.5 rounded-lg badge pills'
             );
 
-            // 5. Cache buster v=2.50
+            // 5. Cache buster v=2.50 or v=2.51
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.50"'),
+                indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
                 true,
-                'Cache buster must be v=2.50'
+                'Cache buster must be v=2.51 or v=2.50'
+            );
+        });
+    });
+
+    describe('Suite 21: REV-092 Carry-Over Table Revisions & Remarks Migration', () => {
+        it('AUT-FRONT-50: should verify Carry-Over table header has no Claim Stub column and features Remarks header', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            const carryOverTableIdx = indexHtml.indexOf('id="table-carry-over"');
+            assert.strictEqual(carryOverTableIdx !== -1, true, 'table-carry-over must exist in index.html');
+
+            const carryOverHeaderSection = indexHtml.substring(carryOverTableIdx - 1500, carryOverTableIdx);
+            assert.strictEqual(
+                carryOverHeaderSection.includes('Claim Stub'),
+                false,
+                'Carry-Over header must NOT contain Claim Stub column to recover horizontal width'
+            );
+            assert.strictEqual(
+                carryOverHeaderSection.includes('Remarks') && carryOverHeaderSection.includes('min-w-[210px]'),
+                true,
+                'Carry-Over header must feature Remarks column with min-w-[210px]'
+            );
+        });
+
+        it('AUT-FRONT-51: should verify Carry-Over row template removes Claim Stub, implements hybrid flexible Remarks combobox, and has colspan 9', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // 1. Verify hybrid flexible Remarks combobox with co-remarks- id
+            assert.strictEqual(
+                appJs.includes('id="co-remarks-${job.id}"'),
+                true,
+                'Carry-Over rows must feature hybrid flexible text input co-remarks-${job.id}'
+            );
+            assert.strictEqual(
+                appJs.includes('placeholder="Remarks or choose preset..."'),
+                true,
+                'Remarks input must guide user to type freely or choose standard preset'
+            );
+            assert.strictEqual(
+                appJs.includes('Pick standard preset or type custom remark'),
+                true,
+                'Remarks select dropdown must allow selecting quick presets'
+            );
+
+            // 2. Verify key presets are available
+            assert.strictEqual(
+                appJs.includes('Awaiting Parts') && 
+                appJs.includes('For Customer Approval') && 
+                appJs.includes('Machine Shop / Sublet') && 
+                appJs.includes('Insurance Clearance'),
+                true,
+                'Remarks presets must include workshop operational categories'
+            );
+
+            // 3. Verify empty state colspan is 9 (not 10)
+            assert.strictEqual(
+                appJs.includes('colspan="9" class="text-center py-10 text-slate-400 font-medium">No carry over vehicles'),
+                true,
+                'Carry-Over empty state must have colspan="9" matching the 9 table columns'
+            );
+        });
+
+        it('AUT-FRONT-52: should verify cache buster is incremented to v=2.51', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.51"'),
+                true,
+                'Cache buster in index.html must be incremented to v=2.51'
             );
         });
     });

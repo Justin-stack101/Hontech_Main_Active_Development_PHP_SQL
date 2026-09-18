@@ -1,3 +1,23 @@
+## 📅 September 18, 2026 (Carry-Over Table Revisions & Remarks Migration)
+
+### 📋 Carry-Over Table Revisions & Remarks Migration (REV-092 / v5.92)
+* **Elimination of Claim Stub Column in Carry-Over Table**:
+  - Removed Claim Stub `<th>` from `frontend/index.html` and corresponding `<td>` cell in `frontend/js/app.js` row renderer, recovering ~115px of horizontal canvas.
+  - Completely resolved action button truncation (`RETURN AC...`), allowing `[Return Active]` and `[Release]` buttons to render with full visual fidelity on standard 1366x768 and 1920x1080 screens.
+  - Adjusted empty state row `colspan` from `10` to `9` to match the authentic 9-column schema.
+* **Migration from Rigid Status to Hybrid Flexible Remarks Combobox**:
+  - Renamed table header column from `Status` to `Remarks` (`min-w-[210px]`).
+  - Replaced rigid `<select>` dropdown with a modern Google-style hybrid combobox (`#co-remarks-${job.id}`) combining free-form typing and instant preset picking.
+  - Integrated preset options (*Awaiting Parts*, *For Customer Approval*, *Machine Shop / Sublet*, *Insurance Clearance*, *Job Completed (Ready)*, *Extended Repair*, *Technician Unavailable*, *WCA*, *Others*).
+  - Maintained bidirectional sync with central MySQL database via `updateJobField(job.id, 'carryOverStatus', this.value)`.
+  - Configured graceful read-only badge pill for non-editable viewing contexts.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 21 (`AUT-FRONT-50`, `AUT-FRONT-51`, `AUT-FRONT-52`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 67 automated tests pass across 30 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.51` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Multi-Table Design Harmonization & Inner Viewport Scroll Limits)
 
 ### 📋 Multi-Table Design Harmonization & Inner Viewport Scroll Limits (REV-091 / v5.91)

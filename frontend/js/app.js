@@ -4556,12 +4556,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const partsAvail = String(job.partsAvailable || '').trim().toLowerCase();
                     const isPartsYes = (partsAvail === 'yes' || partsAvail === '1' || partsAvail === 'true');
                     const isPartsNo = (partsAvail === 'no' || partsAvail === '0' || partsAvail === 'false');
+                    const safeCarryRemarks = String(job.carryOverStatus || '').replace(/"/g, '&quot;');
 
                     return `
                     <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
                         <!-- Row Number -->
                         <td class="px-3 py-5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
-                        <td class="px-4 py-5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
                         <td class="px-4 py-5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span></td>
                         <td class="px-4 py-5 align-middle min-w-[200px]"><span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
@@ -4645,29 +4645,43 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                             `}
                         </td>
-                        <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[160px]">
+                        <!-- Remarks (Preset & Free-form Combobox) -->
+                        <td class="px-4 py-5 align-middle min-w-[210px] max-w-[260px]">
                             ${isEditable ? `
-                            <div class="relative inline-flex items-center justify-between gap-1 border border-amber-200 bg-amber-50/90 hover:bg-amber-100 hover:border-amber-300 text-amber-900 rounded-lg px-3 py-1.5 shadow-2xs transition cursor-pointer w-[155px]" title="Click to Change Carry-Over Status">
-                                <span class="font-bold text-xs uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
-                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-amber-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
-                                <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
-                                        class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                        title="Change Carry-Over Status">
-                                    <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
-                                    <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
-                                    <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
-                                    <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
-                                    <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
+                            <div class="relative flex items-center bg-white border border-slate-200 hover:border-amber-400 focus-within:border-amber-500 rounded-lg shadow-2xs px-2.5 py-1.5 transition-all">
+                                <input type="text" 
+                                       id="co-remarks-${job.id}" 
+                                       value="${safeCarryRemarks}" 
+                                       placeholder="Remarks or choose preset..." 
+                                       onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
+                                       class="text-xs font-semibold text-slate-800 bg-transparent border-none outline-none w-full pr-6 truncate" 
+                                       title="${safeCarryRemarks}">
+                                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400">
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 stroke-[2.5]"></i>
+                                </div>
+                                <select onchange="const inp = document.getElementById('co-remarks-${job.id}'); if (inp) { inp.value = this.value; updateJobField('${job.id}', 'carryOverStatus', this.value); }" 
+                                        class="absolute right-0 top-0 bottom-0 w-8 opacity-0 cursor-pointer z-10" 
+                                        title="Pick standard preset or type custom remark">
+                                    <option value="" disabled selected>-- Select Standard Preset --</option>
+                                    <option value="Awaiting Parts">Awaiting Parts</option>
+                                    <option value="For Customer Approval">For Customer Approval</option>
+                                    <option value="Machine Shop / Sublet">Machine Shop / Sublet</option>
+                                    <option value="Insurance Clearance">Insurance Clearance</option>
+                                    <option value="Job Completed (Ready)">Job Completed (Ready)</option>
+                                    <option value="Extended Repair">Extended Repair</option>
+                                    <option value="Technician Unavailable">Technician Unavailable</option>
+                                    <option value="WCA">WCA</option>
+                                    <option value="Others">Others</option>
                                 </select>
                             </div>
-                            ` : `<span class="px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-bold uppercase text-slate-700 border border-slate-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            ` : `<span class="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-bold text-slate-700 border border-slate-200 shadow-2xs max-w-[210px] truncate" title="${safeCarryRemarks}">${safeCarryRemarks || 'No remarks recorded'}</span>`}
                         </td>
                         <td class="px-4 py-5 align-middle text-right whitespace-nowrap">
                             ${actions}
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No carry over vehicles ${carryOverFilterMode !== 'active' ? `for ${carryOverFilterDate}` : ''}.</td></tr>`;
+                }).join('') || `<tr><td colspan="9" class="text-center py-10 text-slate-400 font-medium">No carry over vehicles ${carryOverFilterMode !== 'active' ? `for ${carryOverFilterDate}` : ''}.</td></tr>`;
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
