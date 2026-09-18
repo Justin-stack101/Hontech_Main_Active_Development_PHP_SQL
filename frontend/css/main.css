@@ -220,8 +220,597 @@ input[type=checkbox] {
   border-color: #dc2626;
   box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.2);
 }
-.login-btn:active {
-  transform: translateY(1px);
+/* Document Studio Table & Print Styles */
+#doc-view-quotation {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+#doc-view-quotation .company-details {
+  color: #000000;
+  font-weight: 700;
+}
+.quote-sheet-table {
+  border: 1px solid #000000 !important;
+  border-collapse: collapse !important;
+  width: 100%;
+}
+.quote-sheet-table th, .quote-sheet-table td {
+  border: 1px solid #000000 !important;
+}
+.quote-sheet-table input {
+  border: none !important;
+  outline: none !important;
+}
+
+#doc-view-quotation {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+}
+#doc-view-quotation .dates-table td.border {
+  border: 1px solid #000000;
+}
+#doc-view-quotation .customer-details-box .box-header,
+#doc-view-quotation .quote-sheet-table th,
+#doc-view-quotation .terms-block .bg-gray-400 {
+  background-color: #b0b0b0 !important;
+}
+#doc-view-quotation .quote-subtotal-table tr:last-child td:last-child {
+  background-color: #b0b0b0 !important;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #app-shell,
+  #app-main-wrapper {
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    min-height: auto !important;
+    width: 100% !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #main-content {
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    border: none !important;
+  }
+
+  #section-support {
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+  }
+
+  /* Screen chrome to completely hide */
+  header,
+  #app-header,
+  #app-main-wrapper > header,
+  #app-sidebar,
+  #auth-container,
+  #login-card,
+  #reset-password-card,
+  #otp-modal,
+  #toast,
+  #dashboard-header,
+  #header-actions,
+  .section-content:not(#section-support),
+  #section-support > *:not(#document-studio-canvas),
+  .no-print,
+  .document-studio-toolbar,
+  .doc-studio-tab-btn,
+  button {
+    display: none !important;
+  }
+
+  /* Document Studio Canvas with balanced paper margins and no browser headers/page numbers */
+  #document-studio-canvas {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 14mm 10mm !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  /* Only display the active form tab */
+  .doc-form-view.hidden {
+    display: none !important;
+  }
+  .doc-form-view:not(.hidden) {
+    display: block !important;
+  }
+
+  /* Quotation View Strict Single-Page A4 Print Layout */
+  #document-studio-canvas.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 3px !important;
+    margin-bottom: 0 !important;
+  }
+
+  #doc-view-quotation {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    color: #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  #doc-view-quotation.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 3.5px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Header Print Sizing & Flush Alignment */
+  #doc-view-quotation .quotation-header {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: none !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 3px !important;
+  }
+
+  #doc-view-quotation .hontech-official-logo {
+    height: 36px !important;
+    max-height: 36px !important;
+    width: auto !important;
+    display: block !important;
+    margin-bottom: 2px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #doc-view-quotation .company-details {
+    font-size: 7.2pt !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    color: #000000 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  #doc-view-quotation .company-details div {
+    color: #000000 !important;
+    font-weight: 500 !important;
+  }
+
+  #doc-view-quotation .quotation-header-right {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    width: auto !important;
+    margin-left: auto !important;
+  }
+
+  #doc-view-quotation .quotation-id-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    margin-bottom: 3px !important;
+  }
+
+  #doc-view-quotation .quotation-title {
+    font-size: 15pt !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    color: #000000 !important;
+  }
+
+  #doc-view-quotation .quotation-id-row input {
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  #doc-view-quotation .dates-table {
+    width: 220px !important;
+    margin-left: auto !important;
+    border-collapse: collapse !important;
+    border: none !important;
+  }
+
+  #doc-view-quotation .dates-table td.border {
+    border: 1px solid #000000 !important;
+    padding: 1px 4px !important;
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    height: 13px !important;
+    background: #ffffff !important;
+  }
+
+  #doc-view-quotation .dates-table td:not(.border) {
+    border: none !important;
+    padding: 1px 6px 1px 0 !important;
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-align: right !important;
+  }
+
+  #doc-view-quotation .dates-table input {
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  #doc-view-quotation .dates-table input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+    -webkit-appearance: none !important;
+    opacity: 0 !important;
+  }
+
+  #doc-view-quotation .dates-table input[type="date"] {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    text-align: center !important;
+  }
+
+  /* Customer Details Box Print Sizing */
+  #doc-view-quotation .customer-details-box {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: 1px solid #000000 !important;
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+  }
+
+  #doc-view-quotation .customer-details-box .box-header {
+    font-size: 7.5pt !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    background-color: #b0b0b0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    padding: 1.5px 0 !important;
+    line-height: 1.1 !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+
+  #doc-view-quotation .customer-details-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 28px !important;
+    row-gap: 2.5px !important;
+    padding: 2.5px 8px !important;
+  }
+
+  #doc-view-quotation .customer-details-grid .flex {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+
+  #doc-view-quotation .customer-details-grid span {
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    line-height: 1.1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  #doc-view-quotation .customer-details-grid input {
+    flex: 1 !important;
+    border: none !important;
+    border-bottom: 1px solid #000000 !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    text-align: center !important;
+    height: 13px !important;
+    line-height: 13px !important;
+    padding: 0 2px !important;
+  }
+
+  /* 30-Row Table Grid Print Sizing */
+  #doc-view-quotation .quote-sheet-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #000000 !important;
+    table-layout: fixed !important;
+    margin: 0 !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table tr {
+    height: 13.5px !important;
+    max-height: 13.5px !important;
+    page-break-inside: avoid !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table th {
+    background-color: #b0b0b0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color: #000000 !important;
+    font-size: 7.5pt !important;
+    font-weight: 900 !important;
+    padding: 1.5px 2px !important;
+    height: 14.5px !important;
+    line-height: 1.1 !important;
+    border: 1px solid #000000 !important;
+    letter-spacing: 0.01em !important;
+    text-align: center !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table td {
+    border: 1px solid #000000 !important;
+    padding: 0 2px !important;
+    height: 13.5px !important;
+    max-height: 13.5px !important;
+    line-height: 13px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    overflow: hidden !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table td input {
+    height: 13px !important;
+    max-height: 13px !important;
+    line-height: 13px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 7pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    outline: none !important;
+    display: block !important;
+    -webkit-font-smoothing: antialiased !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table td input.text-left {
+    text-align: left !important;
+    padding-left: 2px !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table td input.text-center {
+    text-align: center !important;
+  }
+
+  #doc-view-quotation .quote-sheet-table td input.text-right {
+    text-align: right !important;
+    padding-right: 2px !important;
+  }
+
+  #doc-view-quotation input::placeholder {
+    color: #000000 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  /* Subtotals Box Print Sizing */
+  #doc-view-quotation .quote-subtotal-box {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: -1px !important;
+    margin-bottom: 3px !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table {
+    width: 28.5% !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    border-collapse: collapse !important;
+    border: none !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table tr {
+    height: 14.5px !important;
+    max-height: 14.5px !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table td:first-child {
+    width: 49% !important;
+    border: none !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-align: left !important;
+    padding: 0 4px !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table tr:last-child td:first-child {
+    font-weight: 900 !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table td:last-child {
+    width: 51% !important;
+    border: 1px solid #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-align: right !important;
+    padding: 0 4px !important;
+    background-color: #ffffff !important;
+  }
+
+  #doc-view-quotation .quote-subtotal-table tr:last-child td:last-child {
+    background-color: #b0b0b0 !important;
+    font-weight: 900 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Terms and Conditions Print Sizing */
+  #doc-view-quotation .terms-block {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: 1px solid #000000 !important;
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 6.2pt !important;
+    line-height: 1.15 !important;
+    color: #000000 !important;
+  }
+
+  #doc-view-quotation .terms-block p {
+    margin: 1px 0 !important;
+    color: #000000 !important;
+    font-weight: 500 !important;
+  }
+
+  #doc-view-quotation .terms-block .p-2\.5 {
+    padding: 2.5px 5px !important;
+  }
+
+  #doc-view-quotation .terms-block .bg-gray-400 {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    font-size: 7pt !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    background-color: #b0b0b0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Signatures Section Print Sizing */
+  #doc-view-quotation .signatures-block {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding-top: 3px !important;
+    margin-top: 2px !important;
+    color: #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  #doc-view-quotation .sig-block-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 40px !important;
+    width: 100% !important;
+  }
+
+  #doc-view-quotation .sig-space {
+    height: 13px !important;
+    min-height: 13px !important;
+  }
+
+  #doc-view-quotation .sig-title {
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    line-height: 1 !important;
+    text-align: left !important;
+  }
+
+  #doc-view-quotation .sig-line-label {
+    font-size: 7.5pt !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    line-height: 1.1 !important;
+  }
+
+  #doc-view-quotation .auth-clause {
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    padding-top: 0 !important;
+  }
+
+  #doc-view-quotation .auth-clause p {
+    font-size: 6.8pt !important;
+    font-weight: 500 !important;
+    font-style: italic !important;
+    color: #000000 !important;
+    line-height: 1.15 !important;
+  }
+
+  #doc-view-quotation .customer-sig-space {
+    height: 10px !important;
+    min-height: 10px !important;
+  }
+
+  #doc-view-quotation .customer-sig-block {
+    margin-top: 2.5px !important;
+    margin-bottom: 2px !important;
+  }
+
+  #doc-view-quotation .customer-sig-block input {
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    line-height: 1.1 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  #doc-view-quotation .thank-you-footer {
+    margin-top: 2.5px !important;
+    padding-bottom: 0 !important;
+    font-size: 7.5pt !important;
+    font-weight: 900 !important;
+    font-style: italic !important;
+    color: #000000 !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.04em !important;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */
+

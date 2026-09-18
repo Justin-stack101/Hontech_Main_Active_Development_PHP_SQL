@@ -570,10 +570,12 @@ Report Generated Automatically by Developer Crash Reporter.
 
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
+                navHTML += `<button onclick="showSection('support', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4"></i> Document</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('support', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="file-text" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Document</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
                 setupIntakeForm('assistant');
@@ -603,6 +605,7 @@ Report Generated Automatically by Developer Crash Reporter.
             if (sidebarNav) sidebarNav.innerHTML = sidebarNavHTML;
 
             initLayout();
+            if (window.lucide) window.lucide.createIcons();
 
             setTimeout(() => {
                 const savedLayout = localStorage.getItem('hontech-layout') || 'sidebar';
@@ -881,7 +884,7 @@ Report Generated Automatically by Developer Crash Reporter.
                 'tv': 'Live Display Monitor',
                 'profile': 'My Security & Profile Settings',
                 'settings': 'Account Settings',
-                'support': 'Help & Support Center'
+                'support': 'Documentation & Support Center'
             };
             if (titles[id]) document.getElementById('view-title').innerText = titles[id];
             
@@ -908,6 +911,9 @@ Report Generated Automatically by Developer Crash Reporter.
             }
             if (id === 'dashboard') {
                 switchDashboardTab(currentDashboardTab || 'monitor');
+            }
+            if (id === 'support') {
+                initDocumentStudio();
             }
         }
 
@@ -5091,3 +5097,962 @@ Report Generated Automatically by Developer Crash Reporter.
                 showSystemToast('No 6-digit code found in this email.', 'error');
             }
         }
+
+        // =========================================================================
+        // 4-FORM INTERACTIVE DOCUMENT STUDIO & MULTI-FORMAT EXPORT ENGINE
+        // (Form 1/3 Job Order, Form 2/3 Quotation, Form 3/3 Billing, Form 4 Checklist)
+        // =========================================================================
+
+        let docStudioState = {
+            activeTab: 'joborder',
+            fields: {
+                job_id: 'JO-2026-001',
+                quote_id: '',
+                billing_id: 'BILL-2026-001',
+                claim_stub: 'STUB-2026-001',
+                date_received: new Date().toISOString().split('T')[0],
+                intake_date: new Date().toISOString().split('T')[0],
+                promised_date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+                name: '',
+                vehicle: '',
+                plate: '',
+                address: '',
+                km_reading: '',
+                contact: '',
+                engine_no: '',
+                email: '',
+                chassis_no: '',
+                color: '',
+                concern: '',
+                sa_name: ''
+            },
+            jobOrderParts: [
+                { desc: 'Engine Oil (Fully Synthetic 5W-40)', qty: 4, price: 650, amount: 2600 },
+                { desc: 'OEM Oil Filter Element', qty: 1, price: 450, amount: 450 },
+                { desc: 'Front Brake Pad Set (Ceramic)', qty: 1, price: 2800, amount: 2800 }
+            ],
+            jobOrderMaterials: [
+                { desc: 'Brake Cleaner & Degreaser Spray', qty: 2, price: 250, amount: 500 },
+                { desc: 'Engine Flush Treatment', qty: 1, price: 380, amount: 380 }
+            ],
+            quoteRows: [],
+            checklist: [
+                { id: 1, name: 'Engine Oil Level, Viscosity & Filter Condition', status: 'good', remarks: 'Clean fluid' },
+                { id: 2, name: 'Automatic / Manual Transmission Fluid Level', status: 'good', remarks: 'Normal level' },
+                { id: 3, name: 'Brake Fluid, Pads & Disc Rotor Thickness', status: 'attention', remarks: 'Pads at ~40% life' },
+                { id: 4, name: '12V Battery Voltage, Terminals & Cold Cranking Amps', status: 'good', remarks: '12.6V healthy' },
+                { id: 5, name: 'Radiator Coolant Level, Cap & Upper/Lower Hoses', status: 'good', remarks: 'No leaks' },
+                { id: 6, name: 'Alternator & Serpentine Drive Belts', status: 'good', remarks: 'Tension optimal' },
+                { id: 7, name: 'Air Conditioning System, Cabin Filter & Cooling', status: 'good', remarks: 'Blows cold' },
+                { id: 8, name: 'Front & Rear Suspension, Bushings & Shock Absorbers', status: 'good', remarks: 'No play' },
+                { id: 9, name: 'Steering Rack, Tie Rod Ends & Wheel Alignment', status: 'good', remarks: 'Centered' },
+                { id: 10, name: 'Exhaust Piping, Catalytic Converter & Muffler Mounts', status: 'good', remarks: 'Secure' },
+                { id: 11, name: 'Tires Tread Depth, Wear Pattern & Pressure (PSI)', status: 'good', remarks: '32 PSI front/rear' },
+                { id: 12, name: 'Headlights, High Beams, Tail Lights & Hazard Signals', status: 'good', remarks: 'All functional' },
+                { id: 13, name: 'Windshield Wipers & Windshield Washer Spray', status: 'good', remarks: 'Blades clean' },
+                { id: 14, name: 'Horn, Dashboard Warning Gauges & Instrument Cluster', status: 'good', remarks: 'No CEL codes' },
+                { id: 15, name: 'Seatbelts, Handbrake Cable & Interior Condition', status: 'good', remarks: 'All locked' }
+            ]
+        };
+
+        function initDocumentStudio() {
+            // Populate active queue vehicles into dropdown
+            const selector = document.getElementById('doc-studio-queue-selector');
+            if (selector && Array.isArray(allJobs)) {
+                const currentVal = selector.value;
+                selector.innerHTML = '<option value="">-- Auto-Fill from Queue --</option>';
+                allJobs.forEach(job => {
+                    const opt = document.createElement('option');
+                    opt.value = job.job_id || job.id;
+                    opt.textContent = `${job.plate || 'No Plate'} - ${job.name || 'Walk-in'} (${job.vehicle || 'Vehicle'})`;
+                    selector.appendChild(opt);
+                });
+                if (currentVal) selector.value = currentVal;
+            }
+
+            // Load saved draft from localStorage if present
+            try {
+                const saved = localStorage.getItem('hontech_doc_studio_draft');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.fields) {
+                        if (parsed.fields.sa_name === 'Mark (Advisor)') parsed.fields.sa_name = '';
+                        if (parsed.fields.quote_id === 'QT-2026-001') parsed.fields.quote_id = '';
+                        docStudioState.fields = Object.assign(docStudioState.fields, parsed.fields);
+                    }
+                    if (Array.isArray(parsed.jobOrderParts)) docStudioState.jobOrderParts = parsed.jobOrderParts;
+                    if (Array.isArray(parsed.jobOrderMaterials)) docStudioState.jobOrderMaterials = parsed.jobOrderMaterials;
+                    if (Array.isArray(parsed.quoteRows)) {
+                        // Purge legacy demo rows
+                        docStudioState.quoteRows = parsed.quoteRows.filter(r => r && r.desc && !r.desc.includes('PMS 20K') && !r.desc.includes('Brake System Cleaning'));
+                    }
+                    if (Array.isArray(parsed.checklist)) docStudioState.checklist = parsed.checklist;
+                }
+            } catch (e) {
+                console.error('Error loading document studio draft:', e);
+            }
+
+            // Sync inputs and listeners
+            syncDocStudioInputsFromState();
+            renderDocStudioRows();
+            recalculateDocStudioMath();
+            bindDocStudioInputs();
+        }
+
+        function bindDocStudioInputs() {
+            const inputs = document.querySelectorAll('#section-support [data-doc-bind]');
+            inputs.forEach(inp => {
+                inp.oninput = (e) => {
+                    const key = inp.getAttribute('data-doc-bind');
+                    docStudioState.fields[key] = inp.value;
+                    
+                    // Replicate value to other inputs bound to the same key
+                    document.querySelectorAll(`#section-support [data-doc-bind="${key}"]`).forEach(other => {
+                        if (other !== inp && other.value !== inp.value) {
+                            other.value = inp.value;
+                        }
+                    });
+
+                    // Replicate to display elements
+                    document.querySelectorAll(`#section-support [data-doc-display="${key}"]`).forEach(el => {
+                        el.textContent = inp.value || '--';
+                    });
+
+                    // Update summary bar
+                    if (key === 'name' && document.getElementById('doc-summary-customer')) document.getElementById('doc-summary-customer').textContent = inp.value || '--';
+                    if (key === 'plate' && document.getElementById('doc-summary-plate')) document.getElementById('doc-summary-plate').textContent = inp.value || '--';
+                    if (key === 'job_id' && document.getElementById('doc-summary-jobid')) document.getElementById('doc-summary-jobid').textContent = inp.value || 'JO-2026-001';
+
+                    saveDocStudioDraft();
+                };
+            });
+        }
+
+        function syncDocStudioInputsFromState() {
+            Object.keys(docStudioState.fields).forEach(key => {
+                const val = docStudioState.fields[key] || '';
+                document.querySelectorAll(`#section-support [data-doc-bind="${key}"]`).forEach(inp => {
+                    if (inp.value !== val) inp.value = val;
+                });
+                document.querySelectorAll(`#section-support [data-doc-display="${key}"]`).forEach(el => {
+                    el.textContent = val || '--';
+                });
+            });
+
+            if (document.getElementById('doc-summary-customer')) document.getElementById('doc-summary-customer').textContent = docStudioState.fields.name || '--';
+            if (document.getElementById('doc-summary-plate')) document.getElementById('doc-summary-plate').textContent = docStudioState.fields.plate || '--';
+            if (document.getElementById('doc-summary-jobid')) document.getElementById('doc-summary-jobid').textContent = docStudioState.fields.job_id || 'JO-2026-001';
+        }
+
+        function parseQuoteNumericValue(val) {
+            if (val === undefined || val === null) return 0;
+            const str = String(val).trim();
+            if (!str) return 0;
+            const clean = str.replace(/[₱$,\s]/g, '');
+            if (/^-?(?:\d+(?:\.\d+)?|\.\d+)$/.test(clean)) {
+                return parseFloat(clean) || 0;
+            }
+            return 0;
+        }
+
+        function renderDocStudioRows() {
+            // 1. Render Form 1/3 Diagnostic Parts & Materials
+            const f13Tbody = document.getElementById('doc-table-body-joborder');
+            if (f13Tbody) {
+                let html = '';
+                const maxRows = Math.max(docStudioState.jobOrderParts.length, docStudioState.jobOrderMaterials.length, 12);
+                for (let i = 0; i < maxRows; i++) {
+                    const part = docStudioState.jobOrderParts[i] || { desc: '', qty: '', price: '', amount: 0 };
+                    const mat = docStudioState.jobOrderMaterials[i] || { desc: '', qty: '', price: '', amount: 0 };
+
+                    html += `
+                        <tr>
+                            <td class="p-1 border-r border-gray-200 text-center font-mono text-xs text-gray-500">${i + 1}</td>
+                            <td class="p-1 border-r border-gray-200">
+                                <input type="text" value="${escapeDocHtml(part.desc || '')}" oninput="updateDocItem('parts', ${i}, 'desc', this.value)" placeholder="Part name..." class="w-full bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 border-r border-gray-200 text-center">
+                                <input type="number" min="0" value="${part.qty || ''}" oninput="updateDocItem('parts', ${i}, 'qty', this.value)" class="w-12 text-center bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 border-r border-gray-200 text-right">
+                                <input type="number" min="0" step="0.01" value="${part.price || ''}" oninput="updateDocItem('parts', ${i}, 'price', this.value)" class="w-16 text-right bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 border-r border-gray-200 text-right font-mono font-bold text-xs text-gray-900">
+                                ₱${Number(part.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </td>
+                            <td class="p-1 border-r border-gray-200">
+                                <input type="text" value="${escapeDocHtml(mat.desc || '')}" oninput="updateDocItem('materials', ${i}, 'desc', this.value)" placeholder="Material / consumable..." class="w-full bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 border-r border-gray-200 text-center">
+                                <input type="number" min="0" value="${mat.qty || ''}" oninput="updateDocItem('materials', ${i}, 'qty', this.value)" class="w-12 text-center bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 border-r border-gray-200 text-right">
+                                <input type="number" min="0" step="0.01" value="${mat.price || ''}" oninput="updateDocItem('materials', ${i}, 'price', this.value)" class="w-16 text-right bg-transparent px-1 py-0.5 outline-none font-mono text-xs">
+                            </td>
+                            <td class="p-1 text-right font-mono font-bold text-xs text-gray-900">
+                                ₱${Number(mat.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </td>
+                        </tr>
+                    `;
+                }
+                f13Tbody.innerHTML = html;
+            }
+
+            // 2. Render Form 2/3 Quotation Matrix (30 official rows)
+            const quoteTbody = document.getElementById('doc-table-body-quotation');
+            if (quoteTbody) {
+                let html = '';
+                const totalRows = Math.max(30, (docStudioState.quoteRows || []).length);
+                for (let i = 0; i < totalRows; i++) {
+                    const row = (docStudioState.quoteRows && docStudioState.quoteRows[i]) ? docStudioState.quoteRows[i] : { desc: '', qty: '', frt: '', labor: '', parts: '', materials: '', amount: 0 };
+                    const descVal = row.desc !== undefined && row.desc !== null ? row.desc : '';
+                    const qtyVal = row.qty !== undefined && row.qty !== null ? row.qty : '';
+                    const frtVal = row.frt !== undefined && row.frt !== null ? row.frt : '';
+                    const laborVal = row.labor !== undefined && row.labor !== null ? row.labor : '';
+                    const partsVal = row.parts !== undefined && row.parts !== null ? row.parts : '';
+                    const matVal = row.materials !== undefined && row.materials !== null ? row.materials : '';
+                    const amountVal = (row.amount !== undefined && row.amount !== null && !isNaN(row.amount)) ? Number(row.amount).toFixed(2) : '0.00';
+
+                    html += `
+                        <tr class="border-b border-black">
+                            <td class="border-r border-black p-0">
+                                <input type="text" value="${escapeDocHtml(descVal)}" oninput="updateQuoteRow(${i}, 'desc', this.value)" class="w-full bg-transparent px-1.5 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-r border-black p-0 text-center">
+                                <input type="text" value="${escapeDocHtml(qtyVal)}" oninput="updateQuoteRow(${i}, 'qty', this.value)" class="w-full text-center bg-transparent px-0.5 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-r border-black p-0 text-center">
+                                <input type="text" value="${escapeDocHtml(frtVal)}" oninput="updateQuoteRow(${i}, 'frt', this.value)" class="w-full text-center bg-transparent px-0.5 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-r border-black p-0 text-center">
+                                <input type="text" value="${escapeDocHtml(laborVal)}" placeholder="0.00" oninput="updateQuoteRow(${i}, 'labor', this.value)" class="w-full text-center bg-transparent px-1 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-r border-black p-0 text-left">
+                                <input type="text" value="${escapeDocHtml(partsVal)}" placeholder="" oninput="updateQuoteRow(${i}, 'parts', this.value)" class="w-full text-left bg-transparent px-1.5 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-r border-black p-0 text-left">
+                                <input type="text" value="${escapeDocHtml(matVal)}" placeholder="" oninput="updateQuoteRow(${i}, 'materials', this.value)" class="w-full text-left bg-transparent px-1.5 py-0.5 outline-none font-sans font-normal text-[11px] text-black">
+                            </td>
+                            <td class="border-black p-0 text-center font-sans font-normal text-[11px] px-1 py-0.5 text-black">
+                                ${amountVal}
+                            </td>
+                        </tr>
+                    `;
+                }
+                quoteTbody.innerHTML = html;
+            }
+
+            // 3. Render Form 3/3 Billing Matrix (Shares Quote Rows)
+            const billTbody = document.getElementById('doc-table-body-billing');
+            if (billTbody) {
+                let html = '';
+                (docStudioState.quoteRows || []).forEach((row) => {
+                    html += `
+                        <tr class="hover:bg-gray-50/80 transition">
+                            <td class="p-2 border-r border-gray-200 font-semibold text-xs font-sans text-gray-900">${row.desc || '--'}</td>
+                            <td class="p-2 border-r border-gray-200 text-center font-mono text-xs">${row.qty || 1}</td>
+                            <td class="p-2 border-r border-gray-200 text-center font-mono text-xs">${row.frt || 0}</td>
+                            <td class="p-2 border-r border-gray-200 text-right font-mono text-xs">₱${Number(row.labor || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                            <td class="p-2 border-r border-gray-200 text-right font-mono text-xs">₱${Number(row.parts || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                            <td class="p-2 border-r border-gray-200 text-right font-mono text-xs">₱${Number(row.materials || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                            <td class="p-2 text-right font-mono font-bold text-xs text-gray-900">₱${Number(row.amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+                        </tr>
+                    `;
+                });
+                billTbody.innerHTML = html;
+            }
+
+            // 4. Render Form 4 Checklist
+            const checkTbody = document.getElementById('doc-checklist-table-body');
+            if (checkTbody) {
+                let html = '';
+                (docStudioState.checklist || []).forEach((item, i) => {
+                    html += `
+                        <tr class="hover:bg-gray-50/80 transition">
+                            <td class="p-2 border-r border-gray-300 text-center font-bold text-gray-500 font-mono">${item.id}</td>
+                            <td class="p-2 border-r border-gray-300 font-bold text-gray-900">${item.name}</td>
+                            <td class="p-2 border-r border-gray-300 text-center">
+                                <input type="radio" name="check_status_${item.id}" value="good" ${item.status === 'good' ? 'checked' : ''} onchange="updateChecklistItem(${i}, 'status', 'good')" class="accent-emerald-600 cursor-pointer">
+                            </td>
+                            <td class="p-2 border-r border-gray-300 text-center">
+                                <input type="radio" name="check_status_${item.id}" value="attention" ${item.status === 'attention' ? 'checked' : ''} onchange="updateChecklistItem(${i}, 'status', 'attention')" class="accent-amber-600 cursor-pointer">
+                            </td>
+                            <td class="p-2 border-r border-gray-300 text-center">
+                                <input type="radio" name="check_status_${item.id}" value="defect" ${item.status === 'defect' ? 'checked' : ''} onchange="updateChecklistItem(${i}, 'status', 'defect')" class="accent-red-600 cursor-pointer">
+                            </td>
+                            <td class="p-1.5">
+                                <input type="text" value="${item.remarks || ''}" oninput="updateChecklistItem(${i}, 'remarks', this.value)" placeholder="Technician notes..." class="w-full bg-transparent px-2 py-0.5 outline-none font-medium text-xs text-gray-800">
+                            </td>
+                        </tr>
+                    `;
+                });
+                checkTbody.innerHTML = html;
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function updateDocItem(type, index, field, value) {
+            const arr = (type === 'parts') ? docStudioState.jobOrderParts : docStudioState.jobOrderMaterials;
+            if (!arr[index]) arr[index] = { desc: '', qty: 0, price: 0, amount: 0 };
+            
+            if (field === 'qty' || field === 'price') {
+                arr[index][field] = parseFloat(value) || 0;
+                arr[index].amount = (arr[index].qty || 0) * (arr[index].price || 0);
+            } else {
+                arr[index][field] = value;
+            }
+
+            renderDocStudioRows();
+            recalculateDocStudioMath();
+            saveDocStudioDraft();
+        }
+
+        function updateQuoteRow(index, field, value) {
+            if (!docStudioState.quoteRows) docStudioState.quoteRows = [];
+            for (let k = 0; k <= index; k++) {
+                if (!docStudioState.quoteRows[k]) {
+                    docStudioState.quoteRows[k] = { desc: '', qty: '', frt: '', labor: '', parts: '', materials: '', amount: 0 };
+                }
+            }
+            const row = docStudioState.quoteRows[index];
+
+            // Always preserve exact text or number entered
+            row[field] = value;
+
+            // Recalculate row amount if labor, parts, or materials changed
+            if (field === 'labor' || field === 'parts' || field === 'materials') {
+                const l = parseQuoteNumericValue(row.labor);
+                const p = parseQuoteNumericValue(row.parts);
+                const m = parseQuoteNumericValue(row.materials);
+                row.amount = l + p + m;
+
+                const tbody = document.getElementById('doc-table-body-quotation');
+                if (tbody && tbody.children[index]) {
+                    const amountCell = tbody.children[index].children[6];
+                    if (amountCell) amountCell.textContent = Number(row.amount || 0).toFixed(2);
+                }
+            }
+
+            recalculateDocStudioMath();
+            saveDocStudioDraft();
+        }
+
+        function updateChecklistItem(index, field, value) {
+            if (docStudioState.checklist[index]) {
+                docStudioState.checklist[index][field] = value;
+                saveDocStudioDraft();
+            }
+        }
+
+        function addDocStudioRow(type) {
+            if (type === 'joborder-parts') {
+                docStudioState.jobOrderParts.push({ desc: '', qty: 1, price: 0, amount: 0 });
+                docStudioState.jobOrderMaterials.push({ desc: '', qty: 1, price: 0, amount: 0 });
+            } else if (type === 'quote-matrix') {
+                docStudioState.quoteRows.push({ desc: '', qty: '', frt: '', labor: '', parts: '', materials: '', amount: 0 });
+            }
+            renderDocStudioRows();
+            recalculateDocStudioMath();
+            saveDocStudioDraft();
+        }
+
+        function removeDocStudioRow(type, index) {
+            if (type === 'quote-matrix' && docStudioState.quoteRows.length > 1) {
+                docStudioState.quoteRows.splice(index, 1);
+                renderDocStudioRows();
+                recalculateDocStudioMath();
+                saveDocStudioDraft();
+            }
+        }
+
+        function recalculateDocStudioMath() {
+            // 1. Form 1/3 totals
+            let f13Parts = 0;
+            (docStudioState.jobOrderParts || []).forEach(p => { f13Parts += (p.amount || 0); });
+            let f13Materials = 0;
+            (docStudioState.jobOrderMaterials || []).forEach(m => { f13Materials += (m.amount || 0); });
+            const f13Total = f13Parts + f13Materials;
+
+            if (document.getElementById('doc-f13-total-parts')) document.getElementById('doc-f13-total-parts').textContent = `₱${f13Parts.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (document.getElementById('doc-f13-total-materials')) document.getElementById('doc-f13-total-materials').textContent = `₱${f13Materials.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            if (document.getElementById('doc-f13-grand-total')) document.getElementById('doc-f13-grand-total').textContent = `₱${f13Total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            // 2. Quotation & Billing totals
+            let totalLabor = 0;
+            let totalParts = 0;
+            let totalMaterials = 0;
+            let totalFrt = 0;
+
+            (docStudioState.quoteRows || []).forEach(r => {
+                if (!r) return;
+                totalLabor += parseQuoteNumericValue(r.labor);
+                totalParts += parseQuoteNumericValue(r.parts);
+                totalMaterials += parseQuoteNumericValue(r.materials);
+                totalFrt += parseQuoteNumericValue(r.frt);
+            });
+
+            // 12% BIR VAT calculated on Labor and Materials
+            const vatAmount = (totalLabor + totalMaterials) * 0.12;
+            const grandTotal = totalLabor + totalParts + totalMaterials + totalFrt + vatAmount;
+
+            const fmtCurrency = (num) => `₱${Number(num || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            const fmtPlain = (num) => Number(num || 0).toFixed(2);
+
+            // Badges in Toolbar
+            if (document.getElementById('doc-badge-labor')) document.getElementById('doc-badge-labor').textContent = fmtCurrency(totalLabor);
+            if (document.getElementById('doc-badge-parts')) document.getElementById('doc-badge-parts').textContent = fmtCurrency(totalParts);
+            if (document.getElementById('doc-badge-materials')) document.getElementById('doc-badge-materials').textContent = fmtCurrency(totalMaterials);
+            if (document.getElementById('doc-badge-vat')) document.getElementById('doc-badge-vat').textContent = fmtCurrency(vatAmount);
+            if (document.getElementById('doc-badge-grandtotal')) document.getElementById('doc-badge-grandtotal').textContent = fmtCurrency(grandTotal);
+
+            // Quotation Form Table Footer (Formatted exactly as 0.00)
+            if (document.getElementById('doc-quote-subtotal-labor')) document.getElementById('doc-quote-subtotal-labor').textContent = fmtPlain(totalLabor);
+            if (document.getElementById('doc-quote-subtotal-vat')) document.getElementById('doc-quote-subtotal-vat').textContent = fmtPlain(vatAmount);
+            if (document.getElementById('doc-quote-subtotal-materials')) document.getElementById('doc-quote-subtotal-materials').textContent = fmtPlain(totalMaterials);
+            if (document.getElementById('doc-quote-subtotal-parts')) document.getElementById('doc-quote-subtotal-parts').textContent = fmtPlain(totalParts);
+            if (document.getElementById('doc-quote-grand-total')) document.getElementById('doc-quote-grand-total').textContent = fmtPlain(grandTotal);
+
+            // Billing Form Table Footer & Statement Text
+            if (document.getElementById('doc-billing-statement-amount')) document.getElementById('doc-billing-statement-amount').textContent = fmtCurrency(grandTotal);
+            if (document.getElementById('doc-bill-subtotal-labor')) document.getElementById('doc-bill-subtotal-labor').textContent = fmtCurrency(totalLabor);
+            if (document.getElementById('doc-bill-subtotal-vat')) document.getElementById('doc-bill-subtotal-vat').textContent = fmtCurrency(vatAmount);
+            if (document.getElementById('doc-bill-subtotal-materials')) document.getElementById('doc-bill-subtotal-materials').textContent = fmtCurrency(totalMaterials);
+            if (document.getElementById('doc-bill-subtotal-parts')) document.getElementById('doc-bill-subtotal-parts').textContent = fmtCurrency(totalParts);
+            if (document.getElementById('doc-bill-grand-total')) document.getElementById('doc-bill-grand-total').textContent = fmtCurrency(grandTotal);
+        }
+
+        function switchDocStudioTab(tabKey) {
+            docStudioState.activeTab = tabKey;
+            
+            // Toggle view panels
+            document.querySelectorAll('.doc-form-view').forEach(v => v.classList.add('hidden'));
+            const targetView = document.getElementById(`doc-view-${tabKey}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // Toggle tab button pills
+            document.querySelectorAll('.doc-studio-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-red-600', 'text-white', 'shadow-sm', 'shadow-red-600/20');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            const activeNavBtn = document.getElementById(`doc-nav-tab-${tabKey}`);
+            if (activeNavBtn) {
+                activeNavBtn.classList.remove('bg-gray-100', 'text-gray-700');
+                activeNavBtn.classList.add('bg-red-600', 'text-white', 'shadow-sm', 'shadow-red-600/20');
+            }
+
+            renderDocStudioRows();
+            recalculateDocStudioMath();
+            if (window.lucide) window.lucide.createIcons();
+        }
+
+        function loadVehicleIntoDocStudio(jobId) {
+            if (!jobId || !Array.isArray(allJobs)) return;
+            const match = allJobs.find(j => (j.job_id === jobId || j.id == jobId));
+            if (!match) return;
+
+            docStudioState.fields.job_id = match.job_id || 'JO-2026-001';
+            docStudioState.fields.quote_id = `QT-${(match.job_id || '1001').replace(/\D/g, '')}`;
+            docStudioState.fields.billing_id = `BILL-${(match.job_id || '1001').replace(/\D/g, '')}`;
+            docStudioState.fields.claim_stub = match.claim_stub || `STUB-${(match.job_id || '1001')}`;
+            docStudioState.fields.name = match.name || '';
+            docStudioState.fields.plate = match.plate || '';
+            docStudioState.fields.vehicle = match.vehicle || '';
+            docStudioState.fields.contact = match.contact || '';
+            docStudioState.fields.concern = match.concern || '';
+            docStudioState.fields.date_received = match.date_received || new Date().toISOString().split('T')[0];
+            docStudioState.fields.intake_date = match.date_received || new Date().toISOString().split('T')[0];
+            docStudioState.fields.promised_date = match.promised_date || new Date().toISOString().split('T')[0];
+            docStudioState.fields.sa_name = match.sa_name || currentUserName || 'Service Advisor';
+
+            syncDocStudioInputsFromState();
+            recalculateDocStudioMath();
+            saveDocStudioDraft();
+            showSystemToast(`Loaded customer [${match.name} - ${match.plate}] into Document Studio!`, 'success', 'Auto-Fill Complete');
+        }
+
+        function saveDocStudioDraft() {
+            try {
+                localStorage.setItem('hontech_doc_studio_draft', JSON.stringify(docStudioState));
+            } catch (e) { }
+        }
+
+        function clearDocumentStudio() {
+            if (!confirm('Are you sure you want to clear the document form fields?')) return;
+            localStorage.removeItem('hontech_doc_studio_draft');
+            docStudioState.fields.name = '';
+            docStudioState.fields.plate = '';
+            docStudioState.fields.vehicle = '';
+            docStudioState.fields.address = '';
+            docStudioState.fields.km_reading = '';
+            docStudioState.fields.contact = '';
+            docStudioState.fields.engine_no = '';
+            docStudioState.fields.email = '';
+            docStudioState.fields.chassis_no = '';
+            docStudioState.fields.color = '';
+            docStudioState.fields.concern = '';
+            
+            syncDocStudioInputsFromState();
+            recalculateDocStudioMath();
+            showSystemToast('Document form fields reset.', 'info', 'Form Cleared');
+        }
+
+        function printActiveDocumentForm() {
+            const titles = {
+                'joborder': 'HonTech Form 1/3 Job Order & Claim Stub',
+                'quotation': 'HonTech Quotation',
+                'billing': 'HonTech Form 3/3 Billing & Invoice',
+                'checklist': 'HonTech Form 4 Intake Inspection Checklist',
+                'faq': 'HonTech Document & Knowledge Base'
+            };
+            const originalTitle = document.title;
+            document.title = titles[docStudioState.activeTab] || 'HonTech Official Document';
+            window.print();
+            setTimeout(() => { document.title = originalTitle; }, 1000);
+        }
+
+        function escapeDocHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getHontechLogoDataUrl() {
+            const img = document.querySelector('.hontech-official-logo');
+            if (!img) return '';
+            try {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth || 323;
+                canvas.height = img.naturalHeight || 104;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                return canvas.toDataURL('image/png');
+            } catch (e) {
+                return img.src;
+            }
+        }
+
+        function generateQuotationWordHtml() {
+            const f = docStudioState.fields;
+            const totals = docStudioState.totals;
+            const rows = docStudioState.quoteRows || [];
+            const logoUrl = getHontechLogoDataUrl();
+
+            let rowsHtml = '';
+            for (let i = 0; i < 30; i++) {
+                const r = rows[i] || {};
+                const desc = (r.desc !== undefined && r.desc !== null && String(r.desc).trim() !== '') ? escapeDocHtml(r.desc) : '&nbsp;';
+                const qty = (r.qty !== undefined && r.qty !== null && String(r.qty).trim() !== '') ? escapeDocHtml(r.qty) : '&nbsp;';
+                const frt = (r.frt !== undefined && r.frt !== null && String(r.frt).trim() !== '') ? escapeDocHtml(r.frt) : '&nbsp;';
+                const labor = (r.labor !== undefined && r.labor !== null && String(r.labor).trim() !== '') ? escapeDocHtml(r.labor) : '0.00';
+                const parts = (r.parts !== undefined && r.parts !== null && String(r.parts).trim() !== '') ? escapeDocHtml(r.parts) : '&nbsp;';
+                const materials = (r.materials !== undefined && r.materials !== null && String(r.materials).trim() !== '') ? escapeDocHtml(r.materials) : '&nbsp;';
+                const amountVal = parseQuoteNumericValue(r.amount);
+                const amount = (amountVal > 0) ? amountVal.toFixed(2) : ((r.amount !== undefined && r.amount !== null && String(r.amount).trim() !== '') ? escapeDocHtml(r.amount) : '0.00');
+
+                rowsHtml += `
+                    <tr style="height: 13.5px;">
+                        <td style="border: 1px solid #000; padding: 0.5px 3px; font-size: 7pt; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 28%;">${desc}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 2px; font-size: 7pt; text-align: center; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 7%;">${qty}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 2px; font-size: 7pt; text-align: center; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 9%;">${frt}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 3px; font-size: 7pt; text-align: center; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 13%;">${labor}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 3px; font-size: 7pt; text-align: left; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 14.5%;">${parts}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 3px; font-size: 7pt; text-align: left; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 14%;">${materials}</td>
+                        <td style="border: 1px solid #000; padding: 0.5px 3px; font-size: 7pt; text-align: center; font-family: Arial, sans-serif; line-height: 12px; height: 13.5px; width: 14.5%;">${amount}</td>
+                    </tr>
+                `;
+            }
+
+            return `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset="utf-8">
+                    <title>HonTech Quotation - ${escapeDocHtml(f.plate || 'Form')}</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                    <w:WordDocument>
+                        <w:View>Print</w:View>
+                        <w:Zoom>100</w:Zoom>
+                        <w:DoNotOptimizeForBrowser/>
+                    </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page Section1 {
+                            size: 595.3pt 841.9pt; /* A4 */
+                            margin: 36.0pt 24.0pt 24.0pt 24.0pt;
+                            mso-header-margin: 0pt;
+                            mso-footer-margin: 0pt;
+                            mso-paper-source: 0;
+                            mso-vertical-page-align: middle;
+                        }
+                        div.Section1 {
+                            page: Section1;
+                            mso-vertical-page-align: middle;
+                        }
+                        body {
+                            font-family: Arial, Helvetica, sans-serif;
+                            background-color: #ffffff;
+                            margin: 0;
+                            padding: 0;
+                            text-align: center;
+                        }
+                        table.center-doc {
+                            width: 100%;
+                            max-width: 695px;
+                            margin-left: auto;
+                            margin-right: auto;
+                            text-align: left;
+                        }
+                        table {
+                            border-collapse: collapse;
+                            mso-table-lspace: 0pt;
+                            mso-table-rspace: 0pt;
+                        }
+                        p, div {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="Section1" style="text-align: center;">
+                    <center>
+                    <table align="center" border="0" cellpadding="0" cellspacing="0" class="center-doc" width="695" style="width: 695px; margin: 0 auto; text-align: left;">
+                    <tr><td>
+
+                        <!-- HEADER TABLE -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%; margin-bottom: 3px;">
+                            <tr>
+                                <td style="width: 52%; vertical-align: top;">
+                                    <img src="${logoUrl}" style="height: 34px; width: auto; display: block; margin-bottom: 2px;" alt="HONTECH"><br>
+                                    <div style="font-size: 8pt; font-style: italic; font-weight: normal; color: #000;">"Building Trust"</div>
+                                    <div style="font-size: 9.5pt; font-weight: bold; color: #000; padding-top: 1px;">Hontech Auto Center</div>
+                                    <div style="font-size: 7.2pt; font-weight: normal; color: #000; line-height: 1.2;">
+                                        70 Bayan Bayanan Ave cor Narra St.<br>
+                                        Marikina Heights, Marikina City<br>
+                                        fb.com/hontechautocenter<br>
+                                        85644550/ 71219124/ 09458757441/ 09525065084- VIBER
+                                    </div>
+                                </td>
+                                <td style="width: 48%; vertical-align: top; text-align: right;">
+                                    <div style="font-size: 15pt; font-weight: 900; margin-bottom: 4px; text-align: right; color: #000;">
+                                        QUOTATION NO.
+                                        <span style="border-bottom: 2px solid #000; display: inline-block; width: 140px; text-align: center; font-family: Arial, sans-serif; font-size: 10.5pt; font-weight: bold;">${escapeDocHtml(f.quote_id || '&nbsp;')}</span>
+                                    </div>
+                                    <table align="right" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 220px; margin-left: auto;">
+                                        <tr>
+                                            <td style="font-size: 7pt; font-weight: bold; text-align: right; padding: 1.5px 6px 1.5px 0; color: #000;">DATE:</td>
+                                            <td style="border: 1px solid #000; font-size: 7pt; font-weight: bold; text-align: center; width: 110px; padding: 1.5px 3px; background-color: #ffffff;">${escapeDocHtml(f.date_received || '&nbsp;')}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 7pt; font-weight: bold; text-align: right; padding: 1.5px 6px 1.5px 0; color: #000;">JOB ORDER NO.:</td>
+                                            <td style="border: 1px solid #000; font-size: 7pt; font-weight: bold; text-align: center; width: 110px; padding: 1.5px 3px; background-color: #ffffff;">${escapeDocHtml(f.job_id || '0')}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: 7pt; font-weight: bold; text-align: right; padding: 1.5px 6px 1.5px 0; color: #000;">PROMISED DATE:</td>
+                                            <td style="border: 1px solid #000; font-size: 7pt; font-weight: bold; text-align: center; width: 110px; padding: 1.5px 3px; background-color: #ffffff;">${escapeDocHtml(f.promised_date || '&nbsp;')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CUSTOMER DETAILS TABLE -->
+                        <table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #000; width: 100%; margin-bottom: 3px;">
+                            <tr>
+                                <td colspan="2" style="background-color: #b0b0b0; text-align: center; font-size: 7.5pt; font-weight: 900; letter-spacing: 1px; padding: 1.5px 0; border-bottom: 1px solid #000; color: #000;">CUSTOMER DETAILS</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 82px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Name:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.name || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 85px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Plate No:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.plate || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 82px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Address:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.address || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 85px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Year/Model:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.vehicle || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 82px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Contact No:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.contact || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="width: 50%; font-size: 7.5pt; border: none; padding: 2px 8px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 85px; font-weight: bold; font-size: 7.5pt; color: #000; white-space: nowrap;">Color:</td>
+                                            <td style="border-bottom: 1px solid #000; text-align: center; font-size: 7.5pt; font-weight: bold; color: #000;">${escapeDocHtml(f.color || '0')}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- 30-ROW SPREADSHEET TABLE -->
+                        <table border="1" cellpadding="1" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #000; width: 100%; margin-bottom: 0;">
+                            <thead>
+                                <tr style="background-color: #b0b0b0; height: 14.5px;">
+                                    <th style="width: 28%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">PARTS/MATERIAL</th>
+                                    <th style="width: 7%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">QTY</th>
+                                    <th style="width: 9%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">FRT</th>
+                                    <th style="width: 13%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">LABOR</th>
+                                    <th style="width: 14.5%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">PARTS</th>
+                                    <th style="width: 14%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">MATERALS</th>
+                                    <th style="width: 14.5%; font-size: 7.5pt; font-weight: 900; text-align: center; border: 1px solid #000; padding: 1px; color: #000;">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rowsHtml}
+                            </tbody>
+                        </table>
+
+                        <!-- SUBTOTALS TABLE -->
+                        <table align="right" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 28.5%; margin-left: auto; margin-bottom: 3px;">
+                            <tr style="height: 13.5px;">
+                                <td style="width: 49%; font-size: 7.5pt; font-weight: bold; text-align: left; padding: 1px 4px; color: #000;">LABOR</td>
+                                <td style="width: 51%; border: 1px solid #000; font-size: 7.5pt; font-weight: bold; text-align: right; padding: 1px 4px; font-family: Arial, sans-serif; background-color: #ffffff; color: #000;">${(totals.labor || 0).toFixed(2)}</td>
+                            </tr>
+                            <tr style="height: 13.5px;">
+                                <td style="font-size: 7.5pt; font-weight: bold; text-align: left; padding: 1px 4px; color: #000;">VAT 12%</td>
+                                <td style="border: 1px solid #000; font-size: 7.5pt; font-weight: bold; text-align: right; padding: 1px 4px; font-family: Arial, sans-serif; background-color: #ffffff; color: #000;">${(totals.vat || 0).toFixed(2)}</td>
+                            </tr>
+                            <tr style="height: 13.5px;">
+                                <td style="font-size: 7.5pt; font-weight: bold; text-align: left; padding: 1px 4px; color: #000;">MATERIALS</td>
+                                <td style="border: 1px solid #000; font-size: 7.5pt; font-weight: bold; text-align: right; padding: 1px 4px; font-family: Arial, sans-serif; background-color: #ffffff; color: #000;">${(totals.materials || 0).toFixed(2)}</td>
+                            </tr>
+                            <tr style="height: 13.5px;">
+                                <td style="font-size: 7.5pt; font-weight: bold; text-align: left; padding: 1px 4px; color: #000;">PARTS</td>
+                                <td style="border: 1px solid #000; font-size: 7.5pt; font-weight: bold; text-align: right; padding: 1px 4px; font-family: Arial, sans-serif; background-color: #ffffff; color: #000;">${(totals.parts || 0).toFixed(2)}</td>
+                            </tr>
+                            <tr style="height: 14.5px;">
+                                <td style="font-size: 8pt; font-weight: 900; text-align: left; padding: 1.5px 4px; color: #000;">TOTAL</td>
+                                <td style="border: 1px solid #000; background-color: #b0b0b0; font-size: 8pt; font-weight: 900; text-align: right; padding: 1.5px 4px; font-family: Arial, sans-serif; color: #000;">${(totals.grandTotal || 0).toFixed(2)}</td>
+                            </tr>
+                        </table>
+
+                        <!-- TERMS & CONDITIONS -->
+                        <table border="1" cellpadding="2" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #000; width: 100%; margin-top: 3px; margin-bottom: 4px;">
+                            <tr>
+                                <td style="background-color: #b0b0b0; text-align: center; font-size: 7pt; font-weight: 900; letter-spacing: 1px; padding: 1.5px 0; color: #000;">TERMS & CONDITIONS</td>
+                            </tr>
+                            <tr>
+                                <td style="font-size: 6.2pt; line-height: 1.15; padding: 2.5px 5px; color: #000;">
+                                    1. This quotation is valid only for 15 days from the date of issuance.<br>
+                                    2.The details of the estimate provided above are based on our first inspection and do not constitute a guarantee that no further work/parts will be required. The total bill of work will be per the details available on completion of work. Other terms and conditions as applicable.<br>
+                                    3. Under certain circumstances, Hontech shall not be responsible for any loss or damage to the vehicle including article/s left therein while it is in the premise. Failure to claim your vehicle within the prescribed period shall bear a corresponding storage fee.<br>
+                                    4. To avail of the warranty given for material, parts, and service, owner supplied is discouraged, otherwise a surcharge of 25% of the price of item/s is automatically applied. The price of the item/s shall be the current price of Hontech Auto Center, Inc.
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- SIGNATURES SECTION -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%; margin-top: 3px;">
+                            <tr>
+                                <td style="width: 46%; vertical-align: top;">
+                                    <div style="font-size: 7.5pt; font-weight: bold; margin-bottom: 14px; color: #000; text-align: left;">Prepared by:</div>
+                                    <div style="border-top: 1.5px solid #000; text-align: center; padding-top: 1.5px; font-size: 7.5pt; font-weight: 900; color: #000;">SERVICE ADVISOR</div>
+                                </td>
+                                <td style="width: 8%;"></td>
+                                <td style="width: 46%; vertical-align: top;">
+                                    <div style="font-size: 7.5pt; font-weight: bold; margin-bottom: 14px; color: #000; text-align: left;">Approved by:</div>
+                                    <div style="border-top: 1.5px solid #000; text-align: center; padding-top: 1.5px; font-size: 7.5pt; font-weight: 900; color: #000;">GENERAL MANAGER / AUTHORIZED OFFICER</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- AUTHORIZATION CLAUSE & CUSTOMER SIGNATURE -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%; margin-top: 3px;">
+                            <tr>
+                                <td style="text-align: center; font-size: 6.8pt; font-style: italic; color: #000; padding: 0 10px 4px 10px;">
+                                    I hereby authorize the above repair work listed in accordance with our agreed discussion or with my authorized representative.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; padding-top: 8px;">
+                                    <div style="display: inline-block; width: 280px; border-top: 1.5px solid #000; padding-top: 1.5px; font-size: 7.5pt; font-weight: bold; color: #000;">
+                                        ${escapeDocHtml(f.name || '&nbsp;')}<br>
+                                        <span style="font-size: 7pt; font-weight: bold; color: #000;">Customer Name and Signature</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-size: 7.5pt; font-weight: 900; font-style: italic; padding-top: 6px; letter-spacing: 0.5px; color: #000;">
+                                    THANK YOU FOR TRUSTING HONTECH AUTO CENTER, INC!
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td></tr>
+                    </table>
+                    </center>
+                    </div>
+                </body>
+                </html>
+            `;
+        }
+
+        function exportActiveDocumentWord() {
+            const activeTab = docStudioState.activeTab;
+            const viewEl = document.getElementById(`doc-view-${activeTab}`);
+            if (!viewEl) return;
+
+            const plate = (docStudioState.fields.plate || 'Form').replace(/\s+/g, '_');
+            const filename = `HonTech_${activeTab.toUpperCase()}_${plate}.doc`;
+
+            let docContent = '';
+            if (activeTab === 'quotation') {
+                docContent = generateQuotationWordHtml();
+            } else {
+                // Fallback for other forms: centered table container with clean inputs
+                const cloned = viewEl.cloneNode(true);
+                // Convert inputs to text or value attributes
+                cloned.querySelectorAll('input').forEach(inp => {
+                    const span = document.createElement('span');
+                    span.textContent = inp.value || inp.placeholder || '';
+                    span.style.cssText = 'border-bottom: 1px solid #000; display: inline-block; min-width: 60px; font-weight: bold;';
+                    inp.parentNode.replaceChild(span, inp);
+                });
+                cloned.querySelectorAll('button, .no-print').forEach(el => el.remove());
+
+                docContent = `
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>HonTech ${escapeDocHtml(activeTab)}</title>
+                        <!--[if gte mso 9]>
+                        <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            @page Section1 { size: 595.3pt 841.9pt; margin: 20.0pt 24.0pt 20.0pt 24.0pt; mso-header-margin: 0pt; mso-footer-margin: 0pt; mso-vertical-page-align: middle; }
+                            div.Section1 { page: Section1; mso-vertical-page-align: middle; }
+                            body { font-family: Arial, sans-serif; background-color: #fff; margin: 0; padding: 0; text-align: center; }
+                            table.center-doc { width: 100%; max-width: 695px; margin: 0 auto; text-align: left; }
+                            table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                            th, td { border: 1px solid #999; padding: 3pt; font-size: 8.5pt; }
+                            th { background-color: #f3f4f6; font-weight: bold; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="Section1" style="text-align: center;">
+                            <center>
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" class="center-doc" width="695" style="width: 695px; margin: 0 auto; text-align: left;">
+                                <tr><td>${cloned.innerHTML}</td></tr>
+                            </table>
+                            </center>
+                        </div>
+                    </body>
+                    </html>
+                `;
+            }
+
+            const blob = new Blob(['\ufeff' + docContent], { type: 'application/msword' });
+            downloadBlob(blob, filename);
+            showSystemToast(`Exported ${filename} successfully!`, 'success', 'Word Export Complete');
+        }
+
+        function exportActiveDocumentExcel() {
+            const activeTab = docStudioState.activeTab;
+            const plate = (docStudioState.fields.plate || 'Form').replace(/\s+/g, '_');
+            const filename = `HonTech_${activeTab.toUpperCase()}_${plate}.csv`;
+
+            let csvContent = 'HONTECH AUTOCENTER INC. - OFFICIAL DOCUMENT EXPORT\n';
+            csvContent += `Document Type:,${activeTab.toUpperCase()}\n`;
+            csvContent += `Date Exported:,${new Date().toLocaleDateString()}\n`;
+            csvContent += `Customer Name:,${docStudioState.fields.name || 'N/A'}\n`;
+            csvContent += `Plate Number:,${docStudioState.fields.plate || 'N/A'}\n`;
+            csvContent += `Vehicle Model:,${docStudioState.fields.vehicle || 'N/A'}\n`;
+            csvContent += `Contact:,${docStudioState.fields.contact || 'N/A'}\n\n`;
+
+            if (activeTab === 'joborder') {
+                csvContent += 'PARTS REPLACEMENT\n';
+                csvContent += 'Description,Quantity,Unit Price (PHP),Amount (PHP)\n';
+                docStudioState.jobOrderParts.forEach(p => {
+                    csvContent += `"${(p.desc || '').replace(/"/g, '""')}",${p.qty || 0},${p.price || 0},${p.amount || 0}\n`;
+                });
+                csvContent += '\nMATERIALS & CONSUMABLES\n';
+                csvContent += 'Description,Quantity,Unit Price (PHP),Amount (PHP)\n';
+                docStudioState.jobOrderMaterials.forEach(m => {
+                    csvContent += `"${(m.desc || '').replace(/"/g, '""')}",${m.qty || 0},${m.price || 0},${m.amount || 0}\n`;
+                });
+            } else if (activeTab === 'quotation' || activeTab === 'billing') {
+                csvContent += 'PARTS/MATERIAL,QTY,FRT,LABOR,PARTS,MATERIALS,AMOUNT\n';
+                let totalLabor = 0, totalParts = 0, totalMaterials = 0, totalFrt = 0;
+                (docStudioState.quoteRows || []).forEach(r => {
+                    if (r && (r.desc || r.qty || r.frt || r.labor || r.parts || r.materials || r.amount)) {
+                        const l = parseQuoteNumericValue(r.labor);
+                        const p = parseQuoteNumericValue(r.parts);
+                        const m = parseQuoteNumericValue(r.materials);
+                        const f = parseQuoteNumericValue(r.frt);
+                        const a = parseQuoteNumericValue(r.amount) || (l + p + m);
+                        totalLabor += l; totalParts += p; totalMaterials += m; totalFrt += f;
+
+                        const laborCell = (r.labor !== undefined && r.labor !== null && String(r.labor).trim() !== '') ? `"${String(r.labor).replace(/"/g, '""')}"` : '0.00';
+                        const partsCell = (r.parts !== undefined && r.parts !== null && String(r.parts).trim() !== '') ? `"${String(r.parts).replace(/"/g, '""')}"` : '';
+                        const matCell = (r.materials !== undefined && r.materials !== null && String(r.materials).trim() !== '') ? `"${String(r.materials).replace(/"/g, '""')}"` : '';
+                        const frtCell = (r.frt !== undefined && r.frt !== null && String(r.frt).trim() !== '') ? `"${String(r.frt).replace(/"/g, '""')}"` : '';
+                        const qtyCell = (r.qty !== undefined && r.qty !== null && String(r.qty).trim() !== '') ? `"${String(r.qty).replace(/"/g, '""')}"` : '';
+                        const amountCell = a > 0 ? a.toFixed(2) : ((r.amount !== undefined && r.amount !== null && String(r.amount).trim() !== '') ? `"${String(r.amount).replace(/"/g, '""')}"` : '0.00');
+
+                        csvContent += `"${(r.desc || '').replace(/"/g, '""')}",${qtyCell},${frtCell},${laborCell},${partsCell},${matCell},${amountCell}\n`;
+                    }
+                });
+                const vat = (totalLabor + totalMaterials) * 0.12;
+                const grand = totalLabor + totalMaterials + totalParts + totalFrt + vat;
+                csvContent += `\n,,,,,LABOR,${totalLabor.toFixed(2)}\n`;
+                csvContent += `,,,,,VAT 12%,${vat.toFixed(2)}\n`;
+                csvContent += `,,,,,MATERIALS,${totalMaterials.toFixed(2)}\n`;
+                csvContent += `,,,,,PARTS,${totalParts.toFixed(2)}\n`;
+                csvContent += `,,,,,TOTAL,${grand.toFixed(2)}\n`;
+            } else if (activeTab === 'checklist') {
+                csvContent += 'Item #,Inspection Criteria,Status,Technician Remarks\n';
+                docStudioState.checklist.forEach(c => {
+                    csvContent += `${c.id},"${(c.name || '').replace(/"/g, '""')}",${c.status.toUpperCase()},"${(c.remarks || '').replace(/"/g, '""')}"\n`;
+                });
+            }
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            downloadBlob(blob, filename);
+            showSystemToast(`Exported ${filename} successfully!`, 'success', 'Excel/CSV Export Complete');
+        }
+
