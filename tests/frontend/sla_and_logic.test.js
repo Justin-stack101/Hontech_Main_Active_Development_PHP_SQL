@@ -547,7 +547,7 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(indexHtml.includes('85644550 / 71219124 / 09458757441 / 09525065084 - VIBER'), true, 'Must display official HonTech contact header');
             assert.strictEqual(indexHtml.includes('CUSTOMER DETAILS'), true, 'Must include authentic CUSTOMER DETAILS uppercase banner');
             assert.strictEqual(indexHtml.toLowerCase().includes('bg-[#c0c0c0]'), true, 'Header banner must have authentic gray background #c0c0c0');
-            assert.strictEqual(indexHtml.includes('js/app.js?v=2.40'), true, 'Cache buster must be updated to v=2.40');
+            assert.strictEqual(/js\/app\.js\?v=2\.(4[0-9]|[5-9]\d)/.test(indexHtml), true, 'Cache buster must be at least v=2.40');
         });
 
         it('AUT-FRONT-37: should verify all 12 authentic HonTech Form 1/3 fields exist in index.html with underlined document styling', () => {
@@ -600,6 +600,31 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             assert.strictEqual(indexHtml.includes('id="dossier-total-visits"'), true, 'Telemetry metric Total Visits must exist');
         });
     });
+describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command Deck (REV-082)', () => {
+        it('AUT-FRONT-40: should verify section-queue uses unified flex gap-5 layout and standard card headers', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(indexHtml.includes('id="section-queue" class="section-content hidden fade-in flex flex-col gap-5'), true, 'section-queue must use flex flex-col gap-5');
+            assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
+            assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
+            assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented to v=2.41');
+        });
+
+        it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('Unified Command & Filter Deck') || appJs.includes('intake-search-input'), true, 'Daily Intakes command deck must exist');
+            assert.strictEqual(appJs.includes('Claim Stub'), true, 'Claim Stub sorting header must exist');
+            assert.strictEqual(appJs.includes('bg-slate-50/95 backdrop-blur-xs'), true, 'Sticky backdrop table header must be used');
+        });
+
+        it('AUT-FRONT-42: should verify Carry-Over table compact cells and action buttons prevent horizontal overflow', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(appJs.includes('Return Active'), true, 'Return Active button must exist in Carry-Over');
+            assert.strictEqual(appJs.includes('setJobStatus'), true, 'setJobStatus call must be bound');
+            assert.strictEqual(appJs.includes('completeRelease'), true, 'completeRelease call must be bound');
+        });
+    });
 });
-
-

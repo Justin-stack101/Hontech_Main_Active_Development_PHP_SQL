@@ -3763,12 +3763,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // BOOKING MODULE (Assistant Staff Operational Controls; Service Advisor, Owner, Admin View-Only)
             if (canViewOnline && document.getElementById('table-pending-express')) {
-                document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
+                document.getElementById('table-pending-express').innerHTML = pendingOnline.map((job, idx) => {
                     const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
                     const curLane = job.laneType || 'Flexible Lane';
                     return `
-                    <tr class="hover:bg-gray-50/60 transition border-b border-gray-100 text-xs">
-                        <td class="py-3 px-3.5 align-middle">
+                    <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
+                        <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
+                        <td class="py-2.5 px-3 align-middle">
                             <div class="font-bold text-gray-900">${job.name}</div>
                             <div class="text-[10px] text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
                         </td>
@@ -3890,7 +3891,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings ${onlineQueueFilterMode === 'selected' ? `scheduled for ${currentQueueDate}` : ''}.</td></tr>`;
+                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No pending online bookings ${onlineQueueFilterMode === 'selected' ? `scheduled for ${currentQueueDate}` : ''}.</td></tr>`;
             }
 
             // DAILY INTAKES
@@ -3979,26 +3980,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                                 const getTableHeaderHtml = () => {
                     return `
-                        <thead class="sticky top-0 z-10 bg-slate-50">
-                            <tr class="bg-slate-50 border-b border-gray-200 text-gray-500 text-[9px] font-black uppercase tracking-widest">
-                                <th class="px-2 py-2 bg-slate-50 text-center w-8 text-gray-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-2.5 py-2 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                        <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-slate-400 font-bold">#</th>
+                                <th onclick="toggleClaimStubSort()" class="px-2.5 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
                                         <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-2.5 py-2 bg-slate-50 whitespace-nowrap">Plate No.</th>
-                                <th class="px-2.5 py-2 bg-slate-50 min-w-[210px]">Model & Category</th>
-                                <th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">Source</th>
-                                <th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
-                                <th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">Departure</th>
-                                <th class="px-2.5 py-2 bg-slate-50 min-w-[190px]">Evaluation / Diagnosis</th>
-                                <th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">Promised</th>
-                                <th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
-                                ${showGoal ? '<th class="px-2 py-2 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
-                                <th class="px-2.5 py-2 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Status</th>
-                                <th class="px-2.5 py-2 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Location</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[200px]">Model & Category</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Departure</th>
+                                <th class="px-3 py-2.5 bg-slate-50 min-w-[180px]">Evaluation / Diagnosis</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Promised</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
+                                ${showGoal ? '<th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Status</th>
+                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -4349,114 +4350,122 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 : `Future: ${currentQueueDate} • ${filteredActiveJobs.length} Scheduled`;
 
                     dailyIntakesEl.innerHTML = `
-                        <div class="space-y-3">
-                            <div class="flex flex-wrap items-center justify-between gap-3 mb-1">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="p-1.5 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-4 h-4"></i></div>
+                        <div class="space-y-3.5">
+                            <!-- Daily Intakes Header -->
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-red-50 border border-red-100 rounded-xl text-red-600 shadow-2xs">
+                                        <i data-lucide="list-todo" class="w-4 h-4"></i>
+                                    </div>
                                     <div>
-                                        <h3 class="text-base font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
-                                        <p class="text-[9.5px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
+                                        <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Daily Intakes - Marikina</h3>
+                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Calendar Date Filter Toolbar Row (Modeled after prototype_skipped.html) -->
-                            <div class="flex flex-wrap items-center justify-between gap-2.5 bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs">
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <span class="text-[11px] text-slate-700 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                                        <i data-lucide="calendar" class="w-4 h-4 text-red-600"></i> Intake Calendar:
-                                    </span>
-                                    <div class="flex items-center bg-slate-50 border border-slate-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2.5 py-1 transition shadow-2xs">
-                                        <input type="date" id="intake-date-filter" value="${currentQueueDate}" onchange="setQueueDate(this.value)" class="text-xs font-bold font-mono text-slate-900 bg-transparent outline-none cursor-pointer">
-                                    </div>
-                                    <!-- Stepper Buttons -->
-                                    <div class="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 overflow-hidden shadow-2xs text-xs font-bold">
-                                        <button type="button" onclick="shiftQueueDate(-1)" class="px-2.5 py-1 hover:bg-slate-200 text-slate-700 transition cursor-pointer" title="Previous Day">‹</button>
-                                        <button type="button" onclick="resetQueueDateToToday()" class="px-3 py-1 hover:bg-slate-200 text-slate-800 transition border-x border-slate-200 cursor-pointer ${isViewingToday ? 'bg-red-50 text-red-700 font-black' : ''}">Today</button>
-                                        <button type="button" onclick="shiftQueueDate(1)" class="px-2.5 py-1 hover:bg-slate-200 text-slate-700 transition cursor-pointer" title="Next Day">›</button>
-                                    </div>
-                                    <button type="button" onclick="toggleQueueDateShowAll()" class="px-3 py-1 rounded-lg text-xs font-bold uppercase transition border ${isShowingAllQueueDates ? 'bg-slate-900 text-white border-slate-900' : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300'} shadow-2xs cursor-pointer">
-                                        ${isShowingAllQueueDates ? 'Filtered by Date' : 'Show All Dates'}
-                                    </button>
-                                </div>
-                                <div class="flex flex-wrap items-center gap-2.5">
-                                    <span class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                                         <span class="w-2 h-2 rounded-full ${isViewingToday ? 'bg-emerald-500 animate-pulse' : isViewingPast ? 'bg-amber-500' : 'bg-blue-500'}"></span>
                                         ${dateStatusBadgeText}
                                     </span>
-                                    <label class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg">
-                                        <input type="checkbox" id="intake-include-carryover" ${includeCarryOverInDailyIntakes ? 'checked' : ''} onchange="toggleIncludeCarryOver(this.checked)" class="w-3.5 h-3.5 text-red-600 rounded cursor-pointer">
-                                        <span>Include Carry-Overs</span>
-                                    </label>
                                 </div>
                             </div>
-                            
-                            <!-- Daily Intakes Advanced Filter & Sorting Panel -->
-                            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50/80 p-2.5 md:p-3 rounded-xl border border-slate-200/80">
-                                <!-- Search Input -->
-                                <div class="relative w-60">
-                                    <i data-lucide="search" class="absolute left-2.5 top-2 text-gray-400 w-3.5 h-3.5"></i>
-                                    <input type="text" id="intake-search-input" value="${intakeSearchQuery}" oninput="updateIntakeFilter('search', this.value)" placeholder="Search plate, vehicle..." class="w-full bg-white border border-gray-200 rounded-xl pl-8 pr-3 py-1.5 outline-none text-xs focus:border-red-500 transition font-medium shadow-2xs">
+
+                            <!-- Unified Command & Filter Deck -->
+                            <div class="bg-slate-50/80 border border-slate-200 rounded-xl p-3 space-y-2.5 shadow-2xs">
+                                <!-- Tier 1: Intake Calendar & Options -->
+                                <div class="flex flex-wrap items-center justify-between gap-2.5">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <span class="text-[11px] text-slate-700 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-red-600"></i> Intake Calendar:
+                                        </span>
+                                        <div class="flex items-center bg-white border border-slate-300 hover:border-red-500 focus-within:border-red-600 rounded-lg px-2.5 py-1 transition shadow-2xs">
+                                            <input type="date" id="intake-date-filter" value="${currentQueueDate}" onchange="setQueueDate(this.value)" class="text-xs font-bold font-mono text-slate-900 bg-transparent outline-none cursor-pointer">
+                                        </div>
+                                        <!-- Stepper Buttons -->
+                                        <div class="inline-flex items-center rounded-lg border border-slate-300 bg-white overflow-hidden shadow-2xs text-xs font-bold">
+                                            <button type="button" onclick="shiftQueueDate(-1)" class="px-2.5 py-1 hover:bg-slate-100 text-slate-700 transition cursor-pointer" title="Previous Day">‹</button>
+                                            <button type="button" onclick="resetQueueDateToToday()" class="px-3 py-1 hover:bg-slate-100 text-slate-800 transition border-x border-slate-200 cursor-pointer ${isViewingToday ? 'bg-red-50 text-red-700 font-black' : ''}">Today</button>
+                                            <button type="button" onclick="shiftQueueDate(1)" class="px-2.5 py-1 hover:bg-slate-100 text-slate-700 transition cursor-pointer" title="Next Day">›</button>
+                                        </div>
+                                        <button type="button" onclick="toggleQueueDateShowAll()" class="px-3 py-1 rounded-lg text-xs font-bold uppercase transition border ${isShowingAllQueueDates ? 'bg-slate-900 text-white border-slate-900' : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300'} shadow-2xs cursor-pointer">
+                                            ${isShowingAllQueueDates ? 'Filtered by Date' : 'Show All Dates'}
+                                        </button>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <label class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 cursor-pointer select-none bg-white hover:bg-slate-100 border border-slate-300 px-2.5 py-1 rounded-lg shadow-2xs transition">
+                                            <input type="checkbox" id="intake-include-carryover" ${includeCarryOverInDailyIntakes ? 'checked' : ''} onchange="toggleIncludeCarryOver(this.checked)" class="w-3.5 h-3.5 text-red-600 rounded cursor-pointer">
+                                            <span>Include Carry-Overs</span>
+                                        </label>
+                                    </div>
                                 </div>
                                 
-                                <!-- Dropdown Filters -->
-                                <div class="flex flex-wrap items-center gap-2.5">
-                                    <!-- Advisor / Works Filter -->
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Advisor:</span>
-                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
-                                            <select id="intake-advisor-filter" onchange="updateIntakeFilter('advisor', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
-                                                <option value="all" ${intakeAdvisorFilter === 'all' ? 'selected' : ''}>All Advisors</option>
-                                                <option value="mine" ${intakeAdvisorFilter === 'mine' ? 'selected' : ''}>My Works Only</option>
-                                                <option value="unassigned" ${intakeAdvisorFilter === 'unassigned' ? 'selected' : ''}>Unassigned Only</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Source:</span>
-                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
-                                            <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
-                                                <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
-                                                <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
-                                                <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
-                                        </div>
+                                <!-- Tier 2: Search Input & Dropdown Filters -->
+                                <div class="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-slate-200/80">
+                                    <!-- Search Input -->
+                                    <div class="relative w-64">
+                                        <i data-lucide="search" class="absolute left-2.5 top-2 text-slate-400 w-3.5 h-3.5"></i>
+                                        <input type="text" id="intake-search-input" value="${intakeSearchQuery}" oninput="updateIntakeFilter('search', this.value)" placeholder="Search plate, vehicle, stub..." class="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 outline-none text-xs focus:border-red-500 focus:ring-1 focus:ring-red-500 transition font-medium shadow-2xs">
                                     </div>
                                     
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Time:</span>
-                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
-                                            <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
-                                                <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
-                                                <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
-                                                <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                    <!-- Dropdown Filters -->
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <!-- Advisor / Works Filter -->
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[10.5px] text-slate-500 font-bold uppercase tracking-wider">Advisor:</span>
+                                            <div class="inline-flex items-center gap-1 bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                                <select id="intake-advisor-filter" onchange="updateIntakeFilter('advisor', this.value)" class="text-xs font-semibold text-slate-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                                    <option value="all" ${intakeAdvisorFilter === 'all' ? 'selected' : ''}>All Advisors</option>
+                                                    <option value="mine" ${intakeAdvisorFilter === 'mine' ? 'selected' : ''}>My Works Only</option>
+                                                    <option value="unassigned" ${intakeAdvisorFilter === 'unassigned' ? 'selected' : ''}>Unassigned Only</option>
+                                                </select>
+                                                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[10.5px] text-gray-500 font-semibold uppercase tracking-wider">Sort By:</span>
-                                        <div class="inline-flex items-center gap-1 bg-white border border-gray-200 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
-                                            <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-semibold text-gray-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
-                                                <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
-                                                <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
-                                                <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
-                                            </select>
-                                            <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[10.5px] text-slate-500 font-bold uppercase tracking-wider">Source:</span>
+                                            <div class="inline-flex items-center gap-1 bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                                <select id="intake-source-filter" onchange="updateIntakeFilter('source', this.value)" class="text-xs font-semibold text-slate-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                                    <option value="all" ${intakeSourceFilter === 'all' ? 'selected' : ''}>All Sources</option>
+                                                    <option value="Online" ${intakeSourceFilter === 'Online' ? 'selected' : ''}>Online Booking</option>
+                                                    <option value="Walk-in" ${intakeSourceFilter === 'Walk-in' ? 'selected' : ''}>Walk-in</option>
+                                                </select>
+                                                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[10.5px] text-slate-500 font-bold uppercase tracking-wider">Time:</span>
+                                            <div class="inline-flex items-center gap-1 bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                                <select id="intake-time-filter" onchange="updateIntakeFilter('time', this.value)" class="text-xs font-semibold text-slate-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                                    <option value="all" ${intakeTimeFilter === 'all' ? 'selected' : ''}>All Day</option>
+                                                    <option value="morning" ${intakeTimeFilter === 'morning' ? 'selected' : ''}>Morning (08:00 - 12:00)</option>
+                                                    <option value="afternoon" ${intakeTimeFilter === 'afternoon' ? 'selected' : ''}>Afternoon (12:00 - 17:00)</option>
+                                                </select>
+                                                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-[10.5px] text-slate-500 font-bold uppercase tracking-wider">Sort By:</span>
+                                            <div class="inline-flex items-center gap-1 bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 shadow-2xs transition">
+                                                <select id="intake-sort-by" onchange="updateIntakeFilter('sort', this.value)" class="text-xs font-semibold text-slate-800 bg-transparent border-none outline-none cursor-pointer p-0 pr-1 appearance-none">
+                                                    <option value="claimStubDesc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'desc' ? 'selected' : ''}>Claim Stub (Desc)</option>
+                                                    <option value="claimStubAsc" ${intakeSortBy === 'claimStub' && intakeSortOrder === 'asc' ? 'selected' : ''}>Claim Stub (Asc)</option>
+                                                    <option value="arrival" ${intakeSortBy === 'arrival' ? 'selected' : ''}>Arrival Time</option>
+                                                </select>
+                                                <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none stroke-[2]"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto max-h-[580px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full text-left min-w-full">
+                            <div class="overflow-x-auto max-h-[540px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs">
+                                <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
-                                    <tbody>
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in queue for ${isShowingAllQueueDates ? 'any date' : currentQueueDate}.</td></tr>`}
+                                    <tbody class="divide-y divide-slate-100">
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-10 text-slate-400 font-medium">No active vehicles in queue for ${isShowingAllQueueDates ? 'any date' : currentQueueDate}.</td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
@@ -4518,9 +4527,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     let actions = '';
                     if (isEditable) {
                         actions = `
-                            <div class="flex gap-1.5 justify-end">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer">Return Active</button>
-                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10 cursor-pointer">Remove</button>
+                            <div class="flex gap-1.5 justify-end items-center">
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 px-2.5 py-1 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Return vehicle to active queue">Return Active</button>
+                                <button onclick="completeRelease('${job.id}')" class="inline-flex items-center gap-1 bg-rose-600 text-white hover:bg-rose-700 px-2.5 py-1 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Release / complete repair">Remove</button>
                             </div>
                         `;
                     } else {
@@ -4532,22 +4541,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const isPartsNo = (partsAvail === 'no' || partsAvail === '0' || partsAvail === 'false');
 
                     return `
-                    <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80">
+                    <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
                         <!-- Row Number -->
-                        <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
-                        <td class="px-3 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-3 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span></td>
-                        <td class="px-3 py-2.5 align-middle"><span class="text-gray-900 text-sm font-bold">${job.vehicle}</span></td>
+                        <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+                        <td class="px-2.5 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-2.5 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">${job.plate}</span></td>
+                        <td class="px-3 py-2.5 align-middle"><span class="text-slate-900 text-xs font-bold block max-w-[130px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
                         <td class="px-3 py-2.5 align-middle whitespace-nowrap">
-                            <div class="inline-flex flex-col bg-slate-50 border border-slate-200 rounded-lg overflow-hidden min-w-[150px] shadow-2xs">
-                                <div class="flex items-center justify-between px-2.5 py-1 text-[10.5px] border-b border-slate-200 font-medium text-slate-600 gap-2">
-                                    <span class="text-[9.5px] uppercase font-bold text-slate-400 shrink-0">Recv:</span>
-                                    <span class="font-mono font-bold text-slate-800">${job.dateReceived || '--'}</span>
+                            <div class="text-[11px] leading-tight space-y-1">
+                                <div class="text-slate-500 flex items-center gap-1.5">
+                                    <span class="text-[9px] font-bold uppercase text-slate-400 shrink-0">Recv:</span>
+                                    <span class="font-mono font-bold text-slate-700">${job.dateReceived || '--'}</span>
                                 </div>
-                                <div class="relative flex items-center justify-between px-2.5 py-1 text-[10.5px] font-medium text-slate-600 gap-2 ${isEditable ? 'hover:bg-white cursor-pointer group' : ''}">
-                                    <span class="text-[9.5px] uppercase font-bold text-amber-600 shrink-0">Promised:</span>
-                                    <span class="font-mono font-bold text-slate-900 ${!job.promisedDate ? 'text-slate-400 italic' : ''}">${job.promisedDate || 'Set Date'}</span>
+                                <div class="relative flex items-center gap-1.5 ${isEditable ? 'hover:text-amber-700 cursor-pointer group' : ''}">
+                                    <span class="text-[9px] font-bold uppercase text-amber-600 shrink-0">Prom:</span>
+                                    <span class="font-mono font-bold text-slate-900 ${!job.promisedDate ? 'text-slate-400 italic' : 'border-b border-dashed border-amber-400'}">${job.promisedDate || 'Set Date'}</span>
                                     ${isEditable ? `
                                     <input type="date" 
                                            value="${job.promisedDate || ''}" 
@@ -4558,72 +4567,72 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
                         </td>
-                        <!-- Parts & Materials Available? (Whiteboard YES / NO requirement) -->
-                        <td class="px-3 py-2.5 align-middle text-center whitespace-nowrap">
+                        <!-- Parts & Materials Available? -->
+                        <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap">
                             ${isEditable ? `
-                            <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-xl shadow-2xs">
+                            <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-lg shadow-2xs">
                                 <button type="button" 
                                         onclick="updateJobField('${job.id}', 'partsAvailable', 'Yes')" 
-                                        class="px-2.5 py-1 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1 ${isPartsYes ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-500 hover:text-emerald-700 hover:bg-emerald-50'}"
-                                        title="Mark Parts & Materials as AVAILABLE (YES)">
+                                        class="px-2 py-0.5 rounded text-[10.5px] font-black uppercase transition cursor-pointer flex items-center gap-1 ${isPartsYes ? 'bg-emerald-600 text-white shadow-2xs' : 'text-slate-500 hover:text-emerald-700'}" 
+                                        title="Mark Parts as AVAILABLE (YES)">
                                     <i data-lucide="check" class="w-3 h-3"></i> YES
                                 </button>
                                 <button type="button" 
                                         onclick="updateJobField('${job.id}', 'partsAvailable', 'No')" 
-                                        class="px-2.5 py-1 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1 ${(isPartsNo || (!isPartsYes && !isPartsNo)) ? 'bg-rose-600 text-white shadow-xs' : 'text-slate-500 hover:text-rose-700 hover:bg-rose-50'}"
-                                        title="Mark Parts & Materials as NOT AVAILABLE (NO)">
+                                        class="px-2 py-0.5 rounded text-[10.5px] font-black uppercase transition cursor-pointer flex items-center gap-1 ${(isPartsNo || (!isPartsYes && !isPartsNo)) ? 'bg-rose-600 text-white shadow-2xs' : 'text-slate-500 hover:text-rose-700'}" 
+                                        title="Mark Parts as NOT AVAILABLE (NO)">
                                     <i data-lucide="x" class="w-3 h-3"></i> NO
                                 </button>
                             </div>
                             ` : `
                             ${isPartsYes ? `
-                                <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-xl text-xs font-black uppercase tracking-wider">
-                                    <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> YES
+                                <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10.5px] font-black uppercase">
+                                    <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> YES
                                 </span>
                             ` : `
-                                <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-xl text-xs font-black uppercase tracking-wider">
-                                    <i data-lucide="x-circle" class="w-3.5 h-3.5 text-rose-600"></i> NO
+                                <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded text-[10.5px] font-black uppercase">
+                                    <i data-lucide="x" class="w-3 h-3 text-rose-600"></i> NO
                                 </span>
                             `}
                             `}
                         </td>
                         <!-- Service Advisor -->
-                        <td class="px-3 py-2.5 align-middle whitespace-nowrap">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-lg shadow-2xs">
-                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-slate-500"></i>
+                        <td class="px-2.5 py-2.5 align-middle whitespace-nowrap">
+                            <span class="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">
+                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
                                 ${job.saName || 'Mark Bautista'}
                             </span>
                         </td>
-                        <td class="px-3 py-2.5 align-middle min-w-[220px]">
+                        <td class="px-3 py-2.5 align-middle min-w-[160px] max-w-[200px]">
                             ${isEditable ? `
                             <div class="eval-field-card">
-                                <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
                                     <line x1="16" y1="13" x2="8" y2="13"></line>
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <input type="text" id="co-evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')">
+                                <input type="text" id="co-evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\'")}')" class="text-xs">
                             </div>
                             ` : `
                             <div class="eval-badge-static">
-                                <svg class="w-3.5 h-3.5 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
                                     <line x1="16" y1="13" x2="8" y2="13"></line>
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <span class="text-[10.5px] font-medium text-gray-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
+                                <span class="text-[11px] font-medium text-slate-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
                             </div>
                             `}
                         </td>
-                        <td class="px-3 py-2.5 align-middle">
+                        <td class="px-2.5 py-2.5 align-middle text-center">
                             ${isEditable ? `
-                            <div class="relative inline-flex items-center justify-between gap-1.5 border border-orange-200 bg-orange-50/80 hover:bg-orange-100/80 hover:border-orange-400 text-orange-900 rounded-xl px-2.5 py-1.5 shadow-2xs transition cursor-pointer w-[165px]" title="Click to Change Carry-Over Status">
-                                <span class="font-extrabold text-xs uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
-                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-orange-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                            <div class="relative inline-flex items-center justify-between gap-1 border border-amber-200 bg-amber-50/90 hover:bg-amber-100 hover:border-amber-300 text-amber-900 rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer w-[145px]" title="Click to Change Carry-Over Status">
+                                <span class="font-bold text-[11px] uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
+                                <i data-lucide="chevron-down" class="w-3 h-3 text-amber-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                 <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                                         title="Change Carry-Over Status">
@@ -4634,14 +4643,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                                 </select>
                             </div>
-                            ` : `<span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-semibold uppercase text-gray-800 border border-gray-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            ` : `<span class="px-2 py-0.5 rounded bg-slate-100 text-[11px] font-bold uppercase text-slate-700 border border-slate-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
-                        <td class="px-3 py-2.5 align-middle text-right">
+                        <td class="px-3 py-2.5 align-middle text-right whitespace-nowrap">
                             ${actions}
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="10" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles ${carryOverFilterMode !== 'active' ? `for ${carryOverFilterDate}` : ''}.</td></tr>`;
+                }).join('') || `<tr><td colspan="10" class="text-center py-10 text-slate-400 font-medium">No carry over vehicles ${carryOverFilterMode !== 'active' ? `for ${carryOverFilterDate}` : ''}.</td></tr>`;
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
