@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -751,7 +751,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster v=2.48
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.49 or v=2.48');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.49 or v=2.48');
         });
     });
 
@@ -782,9 +782,62 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
-                'Cache buster must be v=2.49'
+                'Cache buster must be v=2.50 or v=2.49'
+            );
+        });
+    });
+
+
+    describe('Suite 20: REV-091 Multi-Table Design Harmonization & Inner Viewport Scroll Limits', () => {
+        it('AUT-FRONT-49: should verify inner scroll containers, py-5 roomy rows, and badge harmonization across all queue tables', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            // 1. Daily Intakes inner scroll container with max-h-[500px] overflow-y-auto
+            assert.strictEqual(
+                appJs.includes('overflow-x-auto max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2'),
+                true,
+                'Daily intakes table wrapper must have max-h-[500px] and overflow-y-auto for smooth internal scrolling'
+            );
+
+            // 2. Booking Module and Carry-Over inner scroll containers in index.html
+            assert.strictEqual(
+                indexHtml.includes('id="container-online-queue"') && indexHtml.includes('max-h-[480px] overflow-y-auto'),
+                true,
+                'Booking module container must have max-h-[480px] overflow-y-auto'
+            );
+            assert.strictEqual(
+                indexHtml.includes('id="container-carry-over"') && indexHtml.includes('max-h-[480px] overflow-y-auto'),
+                true,
+                'Carry-over container must have max-h-[480px] overflow-y-auto'
+            );
+
+            // 3. Roomy py-5 row padding in Booking Module and Carry-Over
+            assert.strictEqual(
+                appJs.includes('px-4 py-5 align-middle') && appJs.includes('px-3 py-5 text-center font-mono text-xs text-slate-400 font-bold align-middle'),
+                true,
+                'Booking module rows must use generous py-5 padding'
+            );
+            assert.strictEqual(
+                appJs.includes('px-3 py-5 align-middle text-center font-mono text-xs text-slate-400 font-bold'),
+                true,
+                'Carry-over rows must use generous py-5 padding'
+            );
+
+            // 4. Roomy badge pills (px-3 py-1.5 rounded-lg) in Carry-Over and Booking
+            assert.strictEqual(
+                appJs.includes('px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs'),
+                true,
+                'Plate numbers and claim stubs must use roomy px-3 py-1.5 rounded-lg badge pills'
+            );
+
+            // 5. Cache buster v=2.50
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.50"'),
+                true,
+                'Cache buster must be v=2.50'
             );
         });
     });

@@ -3781,53 +3781,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const curLane = job.laneType || 'Flexible Lane';
                     return `
                     <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 text-xs">
-                        <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
-                        <td class="py-3 px-3.5 align-middle">
-                            <div class="font-bold text-gray-900">${job.name}</div>
-                            <div class="text-[10px] text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
+                        <td class="px-3 py-5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
+                        <td class="px-4 py-5 align-middle">
+                            <span class="font-bold text-slate-900 text-xs block">${job.customerName || 'Online Inquirer'}</span>
+                            <span class="text-[11px] text-slate-500 font-medium">${job.phone || ''}</span>
                         </td>
-                        <td class="py-3 px-3.5 align-middle">
-                            <div class="inline-block font-bold font-mono text-gray-900 bg-gray-100 border border-gray-300 px-2 py-0.5 rounded-md text-xs tracking-wide shadow-2xs">${job.plate}</div>
+                        <td class="px-4 py-5 align-middle">
+                            <span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.plate || 'NO PLATE'}</span>
                         </td>
-                        <td class="py-3 px-3.5 align-middle">
-                            <span class="text-gray-700 text-[11px] font-semibold block truncate max-w-[130px]" title="${job.vehicle}">${job.vehicle}</span>
+                        <td class="px-4 py-5 align-middle min-w-[200px]">
+                            <span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle || ''}">${job.vehicle || 'Unknown Vehicle'}</span>
                         </td>
-                        <td class="py-3 px-3.5 align-middle">
+                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
                             ${isReadOnlyOnline ? `
-                                <span class="lane-badge-static">
-                                    ${curLane.replace(' Lane', '')}
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase ${isExpress ? 'bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs' : 'bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs'}">
+                                    <span class="w-1.5 h-1.5 rounded-full ${isExpress ? 'bg-amber-500' : 'bg-slate-400'}"></span>
+                                    ${curLane}
                                 </span>
                             ` : `
-                                <div class="lane-selector-pill">
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" title="Lane Type">
-                                        <option value="Express Lane" ${curLane.includes('Express') ? 'selected' : ''}>Express</option>
-                                        <option value="Flexible Lane" ${curLane.includes('Flexible') ? 'selected' : ''}>Flexible</option>
-                                        <option value="Special Lane" ${curLane.includes('Special') ? 'selected' : ''}>Special</option>
-                                        <option value="Priority Lane" ${curLane.includes('Priority') ? 'selected' : ''}>Priority</option>
-                                    </select>
-                                    <svg class="lane-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </div>
+                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-semibold py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white cursor-pointer shadow-2xs">
+                                    <option value="Flexible Lane" ${curLane === 'Flexible Lane' ? 'selected' : ''}>Flexible Lane</option>
+                                    <option value="Express Lane" ${curLane === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
+                                    <option value="Regular Lane" ${curLane === 'Regular Lane' ? 'selected' : ''}>Regular Lane</option>
+                                </select>
                             `}
                         </td>
-                        <td class="py-3 px-3.5 align-middle">
+                        <td class="px-4 py-5 align-middle whitespace-nowrap">
                             ${isReadOnlyOnline ? `
-                                <div class="appt-badge-static">
-                                    <div class="flex items-center gap-1.5 font-bold text-gray-900 text-[10.5px]">
-                                        <svg class="w-3 h-3 text-gray-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                                        </svg>
-                                        <span class="truncate">${job.apptDate || 'N/A'}</span>
+                                <div class="text-xs space-y-1">
+                                    <div class="font-bold text-slate-800 flex items-center gap-1.5">
+                                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i>
+                                        <span>${job.apptDate || 'Today'}</span>
                                     </div>
-                                    <div class="flex items-center gap-1.5 font-mono font-bold text-gray-700 text-[10px] mt-0.5 pt-0.5 border-t border-slate-200">
-                                        <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
+                                    <div class="font-mono text-slate-600 flex items-center gap-1.5 text-[11px]">
+                                        <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i>
                                         <span>${job.apptTime ? convertTimeTo24Hour(job.apptTime) : 'N/A'}</span>
                                     </div>
                                 </div>
@@ -3860,43 +3847,43 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             `}
                         </td>
-                        <td class="py-3 px-3.5 align-middle">
+                        <td class="px-4 py-5 align-middle min-w-[220px]">
                             ${isReadOnlyOnline ? `
                                 <div class="eval-badge-static">
-                                    <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                         <line x1="16" y1="13" x2="8" y2="13"></line>
                                         <line x1="16" y1="17" x2="8" y2="17"></line>
                                         <polyline points="10 9 9 9 8 9"></polyline>
                                     </svg>
-                                    <span class="text-[10.5px] font-medium text-gray-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
+                                    <span class="text-xs font-medium text-slate-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
                                 </div>
                             ` : `
                                 <div class="eval-field-card">
-                                    <svg class="w-3 h-3 text-gray-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                         <polyline points="14 2 14 8 20 8"></polyline>
                                         <line x1="16" y1="13" x2="8" y2="13"></line>
                                         <line x1="16" y1="17" x2="8" y2="17"></line>
                                         <polyline points="10 9 9 9 8 9"></polyline>
                                     </svg>
-                                    <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)">
+                                    <input type="text" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="text-xs">
                                 </div>
                             `}
                         </td>
-                        <td class="py-3 px-3.5 text-center align-middle">
-                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-3.5 h-3.5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
+                        <td class="px-4 py-5 text-center align-middle">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
                         </td>
-                        <td class="py-3 px-3.5 text-right align-middle">
-                            <div class="flex items-center justify-end gap-1.5">
+                        <td class="px-4 py-5 text-right align-middle">
+                            <div class="flex items-center justify-end gap-2">
                                 ${isReadOnlyOnline ? `
-                                    <span class="text-[11px] font-bold text-gray-400 italic">View Only</span>
+                                    <span class="text-xs font-bold text-slate-400 italic">View Only</span>
                                 ` : `
-                                    <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-sm hover:shadow-md flex items-center gap-1 cursor-pointer">
-                                        <i data-lucide="check" class="w-3 h-3"></i> Confirm
+                                    <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
                                     </button>
-                                    <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-1 rounded-lg transition flex items-center justify-center cursor-pointer" title="Delete Booking">
+                                    <button onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition flex items-center justify-center cursor-pointer shadow-2xs" title="Delete Booking">
                                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     </button>
                                 `}
@@ -4400,7 +4387,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             <button type="button" onclick="shiftQueueDate(1)" class="px-2.5 py-1 hover:bg-slate-100 text-slate-700 transition cursor-pointer" title="Next Day">›</button>
                                         </div>
                                         <button type="button" onclick="toggleQueueDateShowAll()" class="px-3 py-1 rounded-lg text-xs font-bold uppercase transition border ${isShowingAllQueueDates ? 'bg-slate-900 text-white border-slate-900' : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300'} shadow-2xs cursor-pointer">
-                                            ${isShowingAllQueueDates ? 'Filtered by Date' : 'Show All Dates'}
+                                            ${isShowingAllQueueDates ? 'Show Selected Date Only' : 'Show All Dates'}
                                         </button>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -4473,7 +4460,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto min-h-[220px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2">
+                            <div class="overflow-x-auto max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2">
                                 <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
                                     <tbody class="divide-y divide-slate-100">
@@ -4558,12 +4545,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (isEditable) {
                         actions = `
                             <div class="flex gap-1.5 justify-end items-center">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 px-2.5 py-1 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Return vehicle to active queue">Return Active</button>
-                                <button onclick="completeRelease('${job.id}')" class="inline-flex items-center gap-1 bg-rose-600 text-white hover:bg-rose-700 px-2.5 py-1 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Release / complete repair">Remove</button>
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Return vehicle to active queue">Return Active</button>
+                                <button onclick="completeRelease('${job.id}')" class="inline-flex items-center gap-1.5 bg-rose-600 text-white hover:bg-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Release / complete repair">Remove</button>
                             </div>
                         `;
                     } else {
-                        actions = `<span class="text-xs text-gray-400 italic">Read-Only</span>`;
+                        actions = `<span class="text-xs text-slate-400 italic font-medium">Read-Only</span>`;
                     }
 
                     const partsAvail = String(job.partsAvailable || '').trim().toLowerCase();
@@ -4573,19 +4560,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return `
                     <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
                         <!-- Row Number -->
-                        <td class="px-3 py-3.5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
-                        <td class="px-3.5 py-3.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2.5 py-1 rounded border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-3.5 py-3.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2.5 py-1 rounded border border-slate-200 shadow-2xs">${job.plate}</span></td>
-                        <td class="px-4 py-3.5 align-middle"><span class="text-slate-900 text-xs font-bold block max-w-[150px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
+                        <td class="px-3 py-5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+                        <td class="px-4 py-5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-4 py-5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.plate}</span></td>
+                        <td class="px-4 py-5 align-middle min-w-[200px]"><span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
-                        <td class="px-4 py-3.5 align-middle whitespace-nowrap">
-                            <div class="text-[11px] leading-tight space-y-1">
+                        <td class="px-4 py-5 align-middle whitespace-nowrap">
+                            <div class="text-xs leading-tight space-y-1">
                                 <div class="text-slate-500 flex items-center gap-1.5">
-                                    <span class="text-[9px] font-bold uppercase text-slate-400 shrink-0">Recv:</span>
+                                    <span class="text-[10px] font-bold uppercase text-slate-400 shrink-0">Recv:</span>
                                     <span class="font-mono font-bold text-slate-700">${job.dateReceived || '--'}</span>
                                 </div>
                                 <div class="relative flex items-center gap-1.5 ${isEditable ? 'hover:text-amber-700 cursor-pointer group' : ''}">
-                                    <span class="text-[9px] font-bold uppercase text-amber-600 shrink-0">Prom:</span>
+                                    <span class="text-[10px] font-bold uppercase text-amber-600 shrink-0">Prom:</span>
                                     <span class="font-mono font-bold text-slate-900 ${!job.promisedDate ? 'text-slate-400 italic' : 'border-b border-dashed border-amber-400'}">${job.promisedDate || 'Set Date'}</span>
                                     ${isEditable ? `
                                     <input type="date" 
@@ -4598,71 +4585,71 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                         </td>
                         <!-- Parts & Materials Available? -->
-                        <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
+                        <td class="px-4 py-5 align-middle text-center whitespace-nowrap">
                             ${isEditable ? `
                             <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-lg shadow-2xs">
                                 <button type="button" 
                                         onclick="updateJobField('${job.id}', 'partsAvailable', 'Yes')" 
-                                        class="px-2 py-0.5 rounded text-[10.5px] font-black uppercase transition cursor-pointer flex items-center gap-1 ${isPartsYes ? 'bg-emerald-600 text-white shadow-2xs' : 'text-slate-500 hover:text-emerald-700'}" 
+                                        class="px-3 py-1.5 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1.5 ${isPartsYes ? 'bg-emerald-600 text-white shadow-2xs' : 'text-slate-500 hover:text-emerald-700'}" 
                                         title="Mark Parts as AVAILABLE (YES)">
-                                    <i data-lucide="check" class="w-3 h-3"></i> YES
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> YES
                                 </button>
                                 <button type="button" 
                                         onclick="updateJobField('${job.id}', 'partsAvailable', 'No')" 
-                                        class="px-2 py-0.5 rounded text-[10.5px] font-black uppercase transition cursor-pointer flex items-center gap-1 ${(isPartsNo || (!isPartsYes && !isPartsNo)) ? 'bg-rose-600 text-white shadow-2xs' : 'text-slate-500 hover:text-rose-700'}" 
+                                        class="px-3 py-1.5 rounded-lg text-xs font-black uppercase transition cursor-pointer flex items-center gap-1.5 ${(isPartsNo || (!isPartsYes && !isPartsNo)) ? 'bg-rose-600 text-white shadow-2xs' : 'text-slate-500 hover:text-rose-700'}" 
                                         title="Mark Parts as NOT AVAILABLE (NO)">
-                                    <i data-lucide="x" class="w-3 h-3"></i> NO
+                                    <i data-lucide="x" class="w-3.5 h-3.5"></i> NO
                                 </button>
                             </div>
                             ` : `
                             ${isPartsYes ? `
-                                <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10.5px] font-black uppercase">
-                                    <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> YES
+                                <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-black uppercase shadow-2xs">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> YES
                                 </span>
                             ` : `
-                                <span class="inline-flex items-center gap-1 bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded text-[10.5px] font-black uppercase">
-                                    <i data-lucide="x" class="w-3 h-3 text-rose-600"></i> NO
+                                <span class="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-black uppercase shadow-2xs">
+                                    <i data-lucide="x" class="w-3.5 h-3.5 text-rose-600"></i> NO
                                 </span>
                             `}
                             `}
                         </td>
                         <!-- Service Advisor -->
                         <td class="px-4 py-5 align-middle whitespace-nowrap">
-                            <span class="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">
-                                <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-2xs">
+                                <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
                                 ${job.saName || 'Mark Bautista'}
                             </span>
                         </td>
-                        <td class="px-4 py-5 align-middle min-w-[200px] max-w-[260px]">
+                        <td class="px-4 py-5 align-middle min-w-[220px] max-w-[280px]">
                             ${isEditable ? `
                             <div class="eval-field-card">
-                                <svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
                                     <line x1="16" y1="13" x2="8" y2="13"></line>
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <input type="text" id="co-evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\'")}')" class="text-xs">
+                                <input type="text" id="co-evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="text-xs">
                             </div>
                             ` : `
                             <div class="eval-badge-static">
-                                <svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
                                     <line x1="16" y1="13" x2="8" y2="13"></line>
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <span class="text-[11px] font-medium text-slate-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
+                                <span class="text-xs font-medium text-slate-700 truncate" title="${job.evaluation || ''}">${job.evaluation || 'No evaluation note'}</span>
                             </div>
                             `}
                         </td>
-                        <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
+                        <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[160px]">
                             ${isEditable ? `
-                            <div class="relative inline-flex items-center justify-between gap-1 border border-amber-200 bg-amber-50/90 hover:bg-amber-100 hover:border-amber-300 text-amber-900 rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer w-[145px]" title="Click to Change Carry-Over Status">
-                                <span class="font-bold text-[11px] uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
-                                <i data-lucide="chevron-down" class="w-3 h-3 text-amber-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
+                            <div class="relative inline-flex items-center justify-between gap-1 border border-amber-200 bg-amber-50/90 hover:bg-amber-100 hover:border-amber-300 text-amber-900 rounded-lg px-3 py-1.5 shadow-2xs transition cursor-pointer w-[155px]" title="Click to Change Carry-Over Status">
+                                <span class="font-bold text-xs uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>
+                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-amber-600 shrink-0 pointer-events-none stroke-[2.5]"></i>
                                 <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
                                         class="table-select absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
                                         title="Change Carry-Over Status">
@@ -4673,9 +4660,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                                 </select>
                             </div>
-                            ` : `<span class="px-2 py-0.5 rounded bg-slate-100 text-[11px] font-bold uppercase text-slate-700 border border-slate-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            ` : `<span class="px-3 py-1.5 rounded-lg bg-slate-100 text-xs font-bold uppercase text-slate-700 border border-slate-200 shadow-2xs">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
-                        <td class="px-3 py-2.5 align-middle text-right whitespace-nowrap">
+                        <td class="px-4 py-5 align-middle text-right whitespace-nowrap">
                             ${actions}
                         </td>
                     </tr>

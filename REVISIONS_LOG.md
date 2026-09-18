@@ -1,3 +1,20 @@
+## 📅 September 18, 2026 (Multi-Table Design Harmonization & Inner Viewport Scroll Limits)
+
+### 📋 Multi-Table Design Harmonization & Inner Viewport Scroll Limits (REV-091 / v5.91)
+* **Bounded Inner Scroll Containers with Sleek 6px Custom Scrollbars**:
+  - Implemented responsive bounded inner scroll container (`max-h-[500px] overflow-y-auto custom-scroll`) on the Master Daily Intakes table wrapper, preventing long queue lists from causing infinite vertical page scrolling.
+  - Added matching bounded containers (`max-h-[480px] overflow-y-auto custom-scroll`) to Booking Module (`#container-online-queue`) and Carry-Over Data (`#container-carry-over`).
+* **Multi-Table Visual Rhythm & Row Harmonization**:
+  - Unified table row cell padding across all 3 tables with generous `py-5` (20px) vertical spacing and `px-4` horizontal padding.
+  - Standardized roomy plate number and claim stub badge pills to `px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs` across Booking Module and Carry-Over Data.
+  - Aligned table headers and status selectors with consistent rounded corner geometries (`rounded-lg`) and crisp typography.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 20 (`AUT-FRONT-49`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 64 automated unit, RBAC, and security regression tests pass across 29 test suites (`cmd /c npm test`).
+  - Incremented client script cache buster to `v=2.50` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Filter Deck Distance & Roomy Table Row Spacing Rhythm)
 
 ### 📋 Filter Deck Distance & Roomy Table Row Spacing Rhythm (REV-090 / v5.90)
