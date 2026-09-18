@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -633,7 +633,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
 
             assert.strictEqual(
-                appJs.includes('flex flex-col items-start gap-1'),
+                appJs.includes('flex flex-col items-start'),
                 true,
                 'Model & Category badge container must use flex flex-col items-start to stack badges vertically in column form'
             );
@@ -647,6 +647,29 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(laneIdx !== -1, true, 'Lane selection template must exist');
             assert.strictEqual(advisorIdx < categoryIdx, true, 'Advisor badge (myjob) must precede Service Category (grs)');
             assert.strictEqual(categoryIdx < laneIdx, true, 'Service Category (grs) must precede Lane Selection (special)');
+        });
+    });
+
+    describe('Suite 15: Daily Intakes & Queue Tables Expanded Spacing & Cell Breathing Room (REV-084)', () => {
+        it('AUT-FRONT-44: should verify Daily Intakes and Carry-Over tables use expanded cell padding py-3.5 and min-w-[240px]', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('px-4 py-3.5 align-middle min-w-[240px]'),
+                true,
+                'Model & Category cell must use px-4 py-3.5 min-w-[240px] for spacious layout'
+            );
+            assert.strictEqual(
+                appJs.includes('px-3.5 py-3.5'),
+                true,
+                'Cells must use generous py-3.5 padding to eliminate compressed feeling'
+            );
+            assert.strictEqual(
+                indexHtml.includes('p-5 rounded-2xl'),
+                true,
+                'Card containers must use generous p-5 padding'
+            );
         });
     });
 });

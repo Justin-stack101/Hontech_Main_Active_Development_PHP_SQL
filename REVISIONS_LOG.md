@@ -4,6 +4,28 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Daily Intakes & Queue Tables Expanded Spacing & Cell Breathing Room)
+
+### 📋 Daily Intakes & Queue Tables Expanded Spacing & Cell Breathing Room (REV-084 / v5.84)
+* **Generous Row & Cell Padding Architecture**:
+  - Replaced cramped `py-2` / `py-2.5` cell dimensions across Daily Intakes and Carry-Over tables with generous, readable `py-3.5 px-3.5` / `px-4` padding.
+  - Standardized table headers to match row proportions with `py-3.5 px-3.5`.
+* **Model & Category Column Expansion & Badge Breathing Rhythm**:
+  - Widened `Model & Category` column from `min-w-[200px]` to `min-w-[240px]` with `px-4 py-3.5` padding.
+  - Increased spacing between the vertical stacked badges to `gap-1.5 mt-1.5`, giving clear visual separation between Advisor, Category, and Lane pills.
+* **Expanded Column Minimum Widths & Controls**:
+  - Widened `Evaluation / Diagnosis` to `min-w-[210px]` with `px-4 py-3.5`.
+  - Expanded `Status` and `Location` columns to `min-w-[145px]` with `px-3.5 py-3.5`, preventing select badge truncation.
+* **Card Container & Viewport Capacity**:
+  - Upgraded table card padding from `p-4` to `p-5 rounded-2xl` across all 3 queue cards (`#container-booking`, `#container-daily-intakes`, `#container-carry-over`).
+  - Increased scrollable table max-heights to `max-h-[620px]` and `max-h-[520px]` for smooth, unconstrained viewport reading.
+* **Automated Unit Testing & Cache Invalidation**:
+  - Added Suite 15 (`AUT-FRONT-44`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 59 automated assertions pass across 24 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.43` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Daily Intakes Model & Category Column Form Vertical Badge Stacking)
 
 ### 📋 Model & Category Column Form Vertical Badge Stacking (REV-083 / v5.83)

@@ -3768,8 +3768,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const curLane = job.laneType || 'Flexible Lane';
                     return `
                     <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
-                        <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
-                        <td class="py-2.5 px-3 align-middle">
+                        <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
+                        <td class="py-3 px-3.5 align-middle">
                             <div class="font-bold text-gray-900">${job.name}</div>
                             <div class="text-[10px] text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
                         </td>
@@ -4044,10 +4044,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         return `
                         <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
                             <!-- Row Number -->
-                            <td class="px-2 py-2 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                            <td class="px-3 py-3.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
 
                             <!-- Claim Stub & Audit History -->
-                            <td class="px-2.5 py-2 align-middle">
+                            <td class="px-3.5 py-3.5 align-middle">
                                 <div class="flex items-center gap-1">
                                     <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1 font-bold text-xs uppercase tracking-wide bg-slate-100/90 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-slate-800 px-2 py-0.5 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
                                         <i data-lucide="printer" class="w-3 h-3 text-red-600"></i> ${job.claimStub || 'N/A'}
@@ -4059,7 +4059,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Plate -->
-                            <td class="px-2.5 py-2 align-middle">
+                            <td class="px-3.5 py-3.5 align-middle">
                                 <div class="flex flex-col gap-0.5">
                                     <span class="inline-flex items-center justify-center w-fit font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">${job.plate}</span>
                                     ${(job.promisedDate || job.carryOverStatus) ? `
@@ -4071,13 +4071,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-2.5 py-2 align-middle min-w-[210px]">
+                            <td class="px-4 py-3.5 align-middle min-w-[240px]">
                                 <div class="font-bold text-gray-900 text-xs flex items-center gap-1.5 mb-1">
                                     <i data-lucide="car" class="w-3.5 h-3.5 text-slate-500 shrink-0"></i>
                                     <span class="truncate max-w-[190px] font-bold text-slate-900" title="${job.vehicle}">${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex flex-col items-start gap-1 mt-1">
+                                <div class="flex flex-col items-start gap-1.5 mt-1.5">
                                     <!-- Service Advisor Action / Status Badge -->
                                     ${isAssignedToMe ? `
                                         <span class="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9.5px] font-bold uppercase px-1.5 py-0.5 rounded shadow-2xs" title="Assigned to you">
@@ -4148,17 +4148,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Source -->
-                            <td class="px-2 py-2 align-middle text-center">
+                            <td class="px-3 py-3.5 align-middle text-center">
                                 <span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${job.source === 'Online' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-700 border border-slate-200'} shadow-2xs">${job.source || 'Walk-in'}</span>
                             </td>
 
                             <!-- Arrival -->
-                            <td class="px-2 py-2 align-middle text-center whitespace-nowrap">
+                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
                                 <span class="block text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
                             </td>
                             
                             <!-- Departure -->
-                            <td class="px-2 py-2 align-middle text-center whitespace-nowrap">
+                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
                                 ${isEditable ? `
                                 <div class="inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-lg px-1.5 py-0.5 shadow-2xs transition group" title="Type departure time or pick from presets">
                                     <input type="text" 
@@ -4184,7 +4184,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Evaluation / Diagnosis -->
-                            <td class="px-2.5 py-2 align-middle min-w-[190px]">
+                            <td class="px-4 py-3.5 align-middle min-w-[210px]">
                                 ${isEditable ? `
                                 <div class="eval-field-card max-w-[210px]">
                                     <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" title="${job.evaluation || ''}" placeholder="Diagnosis / Notes..." onchange="requestFieldEditWithReason('${job.id}', 'evaluation', this.value, '${(job.evaluation || '').replace(/'/g, "\\'")}')" class="w-full text-xs">
@@ -4197,12 +4197,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Promised Date -->
-                            <td class="px-2 py-2 align-middle text-center whitespace-nowrap">
+                            <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
                                 <span class="inline-block text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
                             </td>
 
                             <!-- C.O. Status -->
-                            <td class="px-2 py-2 align-middle text-center whitespace-nowrap">
+                            <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
                                 ${job.carryOverStatus ? `
                                 <span class="inline-block px-1.5 py-0.5 rounded text-[9.5px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
                                     ${job.carryOverStatus}
@@ -4212,7 +4212,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                             <!-- SLA status -->
                             ${showGoal ? `
-                            <td class="px-2 py-2 align-middle text-center whitespace-nowrap">
+                            <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
                                 <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                     ${job.goalStatus || 'N/A'}
                                 </span>
@@ -4220,7 +4220,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-2.5 py-2 align-middle text-center whitespace-nowrap min-w-[130px]">
+                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap min-w-[145px]">
                                 ${isEditable ? `
                                 <div class="relative inline-flex items-center justify-between gap-1 border rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer min-w-[125px] max-w-[140px]" 
                                      style="${
@@ -4261,7 +4261,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Location -->
-                            <td class="px-2.5 py-2 align-middle text-center whitespace-nowrap min-w-[130px]">
+                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap min-w-[145px]">
                                 ${(() => {
                                     const isMonitoring = job.status === 'Monitoring';
                                     if (isEditable && isMonitoring) {
@@ -4543,12 +4543,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return `
                     <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
                         <!-- Row Number -->
-                        <td class="px-2.5 py-2.5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
-                        <td class="px-2.5 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-2.5 py-2.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 shadow-2xs">${job.plate}</span></td>
-                        <td class="px-3 py-2.5 align-middle"><span class="text-slate-900 text-xs font-bold block max-w-[130px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
+                        <td class="px-3 py-3.5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
+                        <td class="px-3.5 py-3.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2.5 py-1 rounded border border-slate-200 shadow-2xs">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-3.5 py-3.5 align-middle"><span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-2.5 py-1 rounded border border-slate-200 shadow-2xs">${job.plate}</span></td>
+                        <td class="px-4 py-3.5 align-middle"><span class="text-slate-900 text-xs font-bold block max-w-[150px] truncate" title="${job.vehicle}">${job.vehicle}</span></td>
                         <!-- Date (Received, Promised) -->
-                        <td class="px-3 py-2.5 align-middle whitespace-nowrap">
+                        <td class="px-4 py-3.5 align-middle whitespace-nowrap">
                             <div class="text-[11px] leading-tight space-y-1">
                                 <div class="text-slate-500 flex items-center gap-1.5">
                                     <span class="text-[9px] font-bold uppercase text-slate-400 shrink-0">Recv:</span>
@@ -4568,7 +4568,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                         </td>
                         <!-- Parts & Materials Available? -->
-                        <td class="px-2.5 py-2.5 align-middle text-center whitespace-nowrap">
+                        <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
                             ${isEditable ? `
                             <div class="inline-flex p-0.5 bg-slate-100 border border-slate-200 rounded-lg shadow-2xs">
                                 <button type="button" 
