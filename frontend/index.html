@@ -5366,10 +5366,10 @@
             </div>
             <div class="space-y-1">
                 <h3 class="text-base font-bold text-slate-900 tracking-tight">Finalize Release</h3>
-                <p class="text-xs text-slate-500 font-medium">Archiving vehicle record to history</p>
+                <p class="text-xs text-slate-500 font-medium">Automatic Clock Stamping & Retention</p>
             </div>
             <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs text-slate-700 font-medium leading-relaxed text-center" id="release-confirm-message">
-                Are you sure you want to finalize the release? This will remove the vehicle from the active workshop view.
+                Are you sure you want to finalize the release? This will automatically record the departure clock stamp, vacate workshop bays, and retain the vehicle in today's completed log.
             </div>
             <input type="hidden" id="release-confirm-job-id">
             <div class="flex items-center gap-2.5 pt-1">
@@ -5381,6 +5381,35 @@
                     class="flex-1 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
                     <i data-lucide="check" class="w-3.5 h-3.5"></i>
                     <span>Release</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Re-open Confirm Modal (REV-094 Same-Day Re-open Exception) -->
+    <div id="reopen-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 select-none">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-5 border border-slate-200 text-center space-y-4">
+            <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto text-blue-600 border border-blue-100 shadow-2xs">
+                <i data-lucide="rotate-ccw" class="w-6 h-6"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-base font-bold text-slate-900 tracking-tight">Re-open Active Service</h3>
+                <p class="text-xs text-slate-500 font-medium">Restoring vehicle to workshop queue</p>
+            </div>
+            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 text-xs text-slate-700 font-medium leading-relaxed text-center" id="reopen-confirm-message">
+                Are you sure you want to re-open this vehicle? This will reset the departure timestamp and return the vehicle to active Processing status.
+            </div>
+            <input type="hidden" id="reopen-confirm-job-id">
+            <div class="flex items-center gap-2.5 pt-1">
+                <button type="button" onclick="closeReopenConfirmModal()"
+                    class="flex-1 py-2.5 px-3 bg-white hover:bg-slate-100 text-slate-700 font-semibold text-xs rounded-xl border border-slate-300 hover:border-slate-400 transition cursor-pointer">
+                    Cancel
+                </button>
+                <button type="button" onclick="confirmReopenJob()"
+                    class="flex-1 py-2.5 px-3 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    <span>Re-open Active</span>
                 </button>
             </div>
         </div>
@@ -7499,7 +7528,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.52"></script>
+    <script src="js/app.js?v=2.53"></script>
 </body>
 
 </html>

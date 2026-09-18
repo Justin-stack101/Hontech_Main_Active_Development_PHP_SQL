@@ -474,14 +474,28 @@ class JobController
             }
 
             // Set departure on release
-            if ($status === 'Released' && empty($job['departure'])) {
-                $updates['departure'] = date('H:i');
+            if ($status === 'Released') {
+                $updates['date_completed'] = date('Y-m-d');
+                if (!empty($input['departure'])) {
+                    $updates['departure'] = $input['departure'];
+                } elseif (empty($job['departure'])) {
+                    $updates['departure'] = date('H:i');
+                }
+            }
+
+            // Same-day re-open logic: reset departure and completion date
+            if ($status === 'Processing' && (!empty($input['reopen']) || in_array($originalStatus, ['Released', 'Completed']))) {
+                $updates['departure']      = '';
+                $updates['date_completed'] = null;
+                $updates['goal_status']    = 'N/A';
             }
 
             // Completion logic
             if ($status === 'Completed') {
                 $updates['date_completed'] = date('Y-m-d');
-                if (empty($job['departure'])) {
+                if (!empty($input['departure'])) {
+                    $updates['departure'] = $input['departure'];
+                } elseif (empty($job['departure'])) {
                     $updates['departure'] = date('H:i');
                 }
             }

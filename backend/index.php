@@ -127,7 +127,7 @@ if ($method === 'GET' && preg_match('#^/jobs/export-download/([^/]+)$#', $route,
 // Public TV Display route (real-time workshop status for TV monitors)
 if ($method === 'GET' && ($route === '/jobs/tv' || ($route === '/jobs' && (empty($_COOKIE['token']) || !empty($_GET['monitor']))))) {
     $db = \App\Config\Database::getConnection();
-    $stmt = $db->prepare("SELECT * FROM jobs WHERE is_deleted = 0 AND status != 'Completed' ORDER BY updated_at DESC");
+    $stmt = $db->prepare("SELECT * FROM jobs WHERE is_deleted = 0 AND status NOT IN ('Completed', 'Released') ORDER BY updated_at DESC");
     $stmt->execute();
     $jobs = $stmt->fetchAll();
     $result = array_map([\App\Controllers\JobController::class, 'normalizeJob'], $jobs);

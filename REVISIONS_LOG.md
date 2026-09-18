@@ -1,3 +1,26 @@
+## 📅 September 18, 2026 (Zero-Typing Departure Clock Stamping & Same-Day Re-open Safeguards)
+
+### 📋 Automatic Departure Clock Stamping & Same-Day Re-open (REV-094 / v5.94)
+* **Zero-Typing Automatic Departure Clock Stamping**:
+  - Replaced manual text input boxes (`dep-input-${job.id}`) and preset dropdowns in Daily Intakes with an authentic non-editable display badge.
+  - Active vehicles display non-editable, calm mono pills (`--:--`).
+  - Upon clicking `[Release]` and confirming the modal, the system immediately captures `new Date()` (e.g. `18:15`), writes `departure = '18:15'` and `date_completed = date('Y-m-d')` into central MySQL via `JobController.php`, vacates workshop bays, and locks the row.
+  - Released vehicles render an emerald pill (`bg-emerald-50 text-emerald-800 border-emerald-200`) with check icon and precise 24H timestamp.
+* **Same-Day Intake Retention & Re-Open Exception Safeguard**:
+  - Updated Daily Intakes date filter to retain today's released vehicles in the queue view instead of immediately hiding them, maintaining transparency for end-of-day reconciliation.
+  - Added `#reopen-confirm-modal` in `frontend/index.html` allowing Service Advisors to click `[Re-open]` on today's released vehicles.
+  - Re-opening resets vehicle status back to `Processing`, clears the departure timestamp, and syncs central MySQL.
+* **Lounge Voice Departure Announcement & TV Monitor Sync**:
+  - Added `announceVehicleReleased(job)` function triggering the soothing female voice broadcast: *"Attention please. Vehicle [Plate], customer [Name], has been officially released. Thank you for choosing HonTech AutoCenter."*
+  - Synced Universal Broadcast Alert Toast with emerald theme (`OFFICIALLY RELEASED · Keys Dispatched · Departure Clock Stamped`).
+  - Updated TV public display endpoint in `backend/index.php` to exclude both `Completed` and `Released` statuses (`status NOT IN ('Completed', 'Released')`).
+* **Automated Unit & Regression Testing**:
+  - Added Suite 23 (`AUT-FRONT-57`, `AUT-FRONT-58`, `AUT-FRONT-59`, `AUT-FRONT-60`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 75 automated unit, RBAC, and security regression tests pass across 32 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.53` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Status Upgrade to Processing, Lounge Voice Engine & Broadcast Toast)
 
 ### 📋 Status Upgrade to Processing, Lounge Voice Engine & Broadcast Toast (REV-093 / v5.93)

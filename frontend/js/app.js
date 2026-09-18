@@ -3377,29 +3377,44 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function completeRelease(jobId) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
-            playAutomotiveChime();
-            document.getElementById('release-confirm-job-id').value = jobId;
-            document.getElementById('release-confirm-message').innerText = `Are you sure you want to finalize the release for ${job.plate}? This will remove the vehicle from the active workshop view.`;
-            document.getElementById('release-confirm-modal').classList.remove('hidden');
+            playAutomotiveChime('lounge');
+            const idInput = document.getElementById('release-confirm-job-id');
+            const msgEl = document.getElementById('release-confirm-message');
+            const modalEl = document.getElementById('release-confirm-modal');
+            if (idInput) idInput.value = jobId;
+            if (msgEl) {
+                msgEl.innerHTML = `Are you sure you want to finalize release for <strong class="text-slate-900">${job.plate}</strong>? This will record the real-time departure clock stamp, vacate workshop bays, and retain the vehicle in today's completed log.`;
+            }
+            if (modalEl) modalEl.classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
         }
+        window.completeRelease = completeRelease;
 
         function closeReleaseConfirmModal() {
-            document.getElementById('release-confirm-modal').classList.add('hidden');
+            const modalEl = document.getElementById('release-confirm-modal');
+            if (modalEl) modalEl.classList.add('hidden');
             renderStaffTables();
         }
+        window.closeReleaseConfirmModal = closeReleaseConfirmModal;
 
         async function confirmReleaseJob() {
-            const jobId = document.getElementById('release-confirm-job-id').value;
+            const idInput = document.getElementById('release-confirm-job-id');
+            const jobId = idInput ? idInput.value : null;
             if (!jobId) return;
             closeReleaseConfirmModal();
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
 
             try {
-                // Play celebratory dual chime on vehicle release
+                // 1. Capture real-time system clock (Zero-typing flow)
+                const now = new Date();
+                const autoDeparture = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                job.departure = autoDeparture;
+
+                // 2. Play celebratory lounge chime on release
                 playReleaseConfirmSound();
 
-                // Final auto-calculate before completing
+                // 3. Final auto-calculate before completing
                 const computed = calculateGoalStatusForJob(job);
                 if (computed !== 'N/A' && job.goalStatus !== computed) {
                     await apiRequest(`/api/jobs/${jobId}/field`, {
@@ -3409,20 +3424,112 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     job.goalStatus = computed;
                 }
 
+                // 4. Persist status and auto-stamped departure in central DB
                 await apiRequest(`/api/jobs/${jobId}/status`, {
                     method: 'PATCH',
-                    body: { status: 'Completed' }
+                    body: { 
+                        status: 'Released',
+                        departure: autoDeparture
+                    }
                 });
+
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: { field: 'departure', value: autoDeparture }
+                });
+
+                job.status = 'Released';
+                job.departure = autoDeparture;
+                job.location = 'None';
+                job.bayAssigned = null;
+
+                if (typeof announceVehicleReleased === 'function') {
+                    announceVehicleReleased(job);
+                }
 
                 await loadData();
                 renderStaffTables();
                 renderReports();
                 renderTV();
-                showSystemToast(`${job.plate} has been successfully released and archived.`, 'success', 'Release Finalized');
+                showSystemToast(`${job.plate} successfully released at ${autoDeparture}. Retained in today's completed log.`, 'success', 'Departure Clock Stamped');
             } catch (err) {
                 showSystemToast(err.message || 'Error releasing vehicle.', 'error');
             }
         }
+        window.confirmReleaseJob = confirmReleaseJob;
+
+        function reopenSameDayJob(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            playAutomotiveChime('lounge');
+            const idInput = document.getElementById('reopen-confirm-job-id');
+            const msgEl = document.getElementById('reopen-confirm-message');
+            const modalEl = document.getElementById('reopen-confirm-modal');
+            if (idInput) idInput.value = jobId;
+            if (msgEl) {
+                const depDisplay = convertTimeTo24Hour(job.departure) || job.departure || '--:--';
+                msgEl.innerHTML = `Are you sure you want to re-open <strong class="text-slate-900">${job.plate}</strong>? This will clear the departure timestamp (<span class="font-mono text-slate-700">${depDisplay}</span>) and restore the vehicle to active <strong>Processing</strong> status.`;
+            }
+            if (modalEl) modalEl.classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+        }
+        window.reopenSameDayJob = reopenSameDayJob;
+
+        function closeReopenConfirmModal() {
+            const modalEl = document.getElementById('reopen-confirm-modal');
+            if (modalEl) modalEl.classList.add('hidden');
+            renderStaffTables();
+        }
+        window.closeReopenConfirmModal = closeReopenConfirmModal;
+
+        async function confirmReopenJob() {
+            const idInput = document.getElementById('reopen-confirm-job-id');
+            const jobId = idInput ? idInput.value : null;
+            if (!jobId) return;
+            closeReopenConfirmModal();
+
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+
+            try {
+                // Reset status to Processing and clear departure in database
+                await apiRequest(`/api/jobs/${jobId}/status`, {
+                    method: 'PATCH',
+                    body: {
+                        status: 'Processing',
+                        departure: '',
+                        reopen: true
+                    }
+                });
+
+                // Defensively clear departure field
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: {
+                        field: 'departure',
+                        value: '',
+                        reason: 'Same-day active service re-opened by SA'
+                    }
+                });
+
+                job.status = 'Processing';
+                job.departure = '';
+
+                playAutomotiveChime('lounge');
+                if (typeof announceVehicleReturnActive === 'function') {
+                    announceVehicleReturnActive(job);
+                }
+
+                await loadData();
+                renderStaffTables();
+                renderReports();
+                renderTV();
+                showSystemToast(`${job.plate} has been returned to active Processing status.`, 'success', 'Queue Re-Opened');
+            } catch (err) {
+                showSystemToast(err.message || 'Error re-opening vehicle.', 'error');
+            }
+        }
+        window.confirmReopenJob = confirmReopenJob;
 
         function removeJob(jobId) {
             const job = allJobs.find(j => j.id === jobId);
@@ -3920,9 +4027,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     }
 
-                    // For today or future dates, hide completed/released jobs
+                    // For future dates or non-today views, hide completed/released jobs; for today, retain Released jobs
                     if (!isViewingPast) {
-                        if (j.status === 'Completed' || j.status === 'Released') return false;
+                        if (j.status === 'Completed') return false;
+                        if (j.status === 'Released' && !isViewingToday) return false;
                     }
 
                     return true;
@@ -4162,30 +4270,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 <span class="block text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
                             </td>
                             
-                            <!-- Departure -->
-                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
-                                ${isEditable ? `
-                                <div class="inline-flex items-center bg-white border border-slate-300 hover:border-red-500 rounded-lg px-2.5 py-1.5 shadow-2xs transition group" title="Type departure time or pick from presets">
-                                    <input type="text" 
-                                           id="dep-input-${job.id}" 
-                                           value="${convertTimeTo24Hour(job.departure) || ''}" 
-                                           placeholder="08:00" 
-                                           maxlength="8"
-                                           onkeydown="if(event.key === 'Enter') this.blur();"
-                                           onblur="handleDepartureChange('${job.id}', this)" 
-                                           class="font-mono font-bold text-xs text-gray-900 bg-transparent border-none outline-none w-11 text-center p-0 cursor-text">
-                                    
-                                    <div class="relative inline-flex items-center ml-0.5 border-l border-gray-200 pl-0.5 cursor-pointer">
-                                        <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 group-hover:text-red-600 transition shrink-0 pointer-events-none"></i>
-                                        <select onchange="document.getElementById('dep-input-${job.id}').value = this.value; requestFieldEditWithReason('${job.id}', 'departure', this.value, '${job.departure || ''}');" 
-                                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-                                                title="Select preset">
-                                            <option value="" disabled selected></option>
-                                            ${get24HourDepartureOptions(job.departure)}
-                                        </select>
-                                    </div>
-                                </div>
-                                ` : `<span class="block text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.departure) || '--:--'}</span>`}
+                            <!-- Departure (Zero-Typing Automatic Clock Stamping) -->
+                            <td class="px-4 py-5 align-middle text-center whitespace-nowrap">
+                                ${(() => {
+                                    const isReleased = (job.status === 'Released' || job.status === 'Completed');
+                                    const formattedDep = convertTimeTo24Hour(job.departure) || job.departure;
+                                    if (isReleased && formattedDep) {
+                                        return `
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-2xs font-mono font-bold text-xs" title="Actual Departure Timestamped on Release">
+                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                            <span>${formattedDep}</span>
+                                        </div>
+                                        `;
+                                    }
+                                    return `<span class="block font-mono font-bold text-xs text-slate-400 select-none">--:--</span>`;
+                                })()}
                             </td>
                             
                             <!-- Evaluation / Diagnosis -->
@@ -4226,7 +4325,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             
                             <!-- Status -->
                             <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
-                                ${isEditable ? `
+                                ${job.status === 'Released' ? `
+                                <div class="inline-flex items-center gap-1.5">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-xs uppercase shadow-2xs">
+                                        <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                                        <span>Released</span>
+                                    </span>
+                                    ${isSA ? `
+                                    <button type="button" onclick="reopenSameDayJob('${job.id}')" class="inline-flex items-center gap-1 bg-white hover:bg-slate-100 text-slate-700 hover:text-blue-700 border border-slate-300 px-2 py-1.5 rounded-lg text-xs font-bold transition shadow-2xs cursor-pointer" title="Re-open vehicle back to active Processing">
+                                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-blue-600"></i>
+                                        <span>Re-open</span>
+                                    </button>
+                                    ` : ''}
+                                </div>
+                                ` : isEditable ? `
                                 <div class="relative inline-flex items-center justify-between gap-1 border rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer min-w-[125px] max-w-[140px]" 
                                      style="${
                                          job.status === 'Ready to Release' || job.status === 'Ready' 
@@ -4268,6 +4380,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <!-- Location -->
                             <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
                                 ${(() => {
+                                    if (job.status === 'Released' || job.status === 'Completed') {
+                                        return `
+                                        <span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase text-slate-400 bg-slate-50 border border-slate-200 rounded-md px-2.5 py-1 select-none shadow-2xs">
+                                            <i data-lucide="check" class="w-3 h-3 text-slate-400"></i>
+                                            <span>Vacated</span>
+                                        </span>
+                                        `;
+                                    }
                                     const isProcessing = isProcessingStatus(job.status);
                                     if (isEditable && isProcessing) {
                                         return `
@@ -4552,7 +4672,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         actions = `
                             <div class="flex gap-1.5 justify-end items-center">
                                 <button onclick="setJobStatus('${job.id}', 'Waiting')" class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Return vehicle to active queue">Return Active</button>
-                                <button onclick="completeRelease('${job.id}')" class="inline-flex items-center gap-1.5 bg-rose-600 text-white hover:bg-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Release / complete repair">Remove</button>
+                                <button onclick="completeRelease('${job.id}')" class="inline-flex items-center gap-1.5 bg-emerald-600 text-white hover:bg-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition whitespace-nowrap shadow-2xs cursor-pointer" title="Finalize release and stamp departure">Release</button>
                             </div>
                         `;
                     } else {
@@ -8449,6 +8569,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (iconBox) iconBox.className = 'w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0';
                 if (iconEl) iconEl.setAttribute('data-lucide', 'rotate-ccw');
                 if (subtitleEl) subtitleEl.innerText = 'Resumed Active Daily Service Operations';
+            } else if (type === 'released') {
+                if (tagEl) {
+                    tagEl.innerText = 'OFFICIALLY RELEASED';
+                    tagEl.className = 'text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                }
+                if (iconBox) iconBox.className = 'w-10 h-10 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0';
+                if (iconEl) iconEl.setAttribute('data-lucide', 'check-circle-2');
+                if (subtitleEl) subtitleEl.innerText = 'Keys Dispatched · Departure Clock Stamped';
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -8603,6 +8731,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
         }
         window.announceVehicleReady = announceVehicleReady;
+
+        function announceVehicleReleased(job) {
+            if (!job) return;
+            const plateSpoken = formatPlateForSpeech(job.plate);
+            const customer = job.customer || job.name || 'valued customer';
+            const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
+
+            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been officially released. Thank you for choosing HonTech AutoCenter.`;
+            speakTVAnnouncement(message, { chimeTheme: 'lounge' });
+            triggerTVSlideAlertBanner({
+                type: 'released',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName
+            });
+            showUniversalBroadcastToast({
+                type: 'released',
+                plate: job.plate,
+                customer: customer,
+                vehicle: vehicleName
+            });
+        }
+        window.announceVehicleReleased = announceVehicleReleased;
 
         function announceVehicleCarryOver(job) {
             if (!job) return;
@@ -8941,6 +9092,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 } else if (type === 'return_active') {
                     statusText = 'RETURNED TO ACTIVE';
                     iconName = 'rotate-ccw';
+                } else if (type === 'released') {
+                    statusText = 'OFFICIALLY RELEASED';
+                    iconName = 'check-circle';
                 } else {
                     // ready
                     statusText = 'READY FOR RELEASE';
