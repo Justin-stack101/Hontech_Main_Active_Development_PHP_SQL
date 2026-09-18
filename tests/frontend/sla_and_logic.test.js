@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -751,7 +751,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
         });
     });
 
@@ -782,9 +782,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
-                'Cache buster must be v=2.54, v=2.53, v=2.52, v=2.51, v=2.50 or v=2.49'
+                'Cache buster must be v=2.55, v=2.54, v=2.53, v=2.52, v=2.51, v=2.50 or v=2.49'
             );
         });
     });
@@ -835,9 +835,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
 
             // 5. Cache buster v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
+                indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
                 true,
-                'Cache buster must be v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50'
+                'Cache buster must be v=2.55, v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50'
             );
         });
     });
@@ -904,9 +904,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
+                indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.54, v=2.53, v=2.52 or v=2.51'
+                'Cache buster in index.html must be incremented to v=2.55, v=2.54, v=2.53, v=2.52 or v=2.51'
             );
         });
     });
@@ -995,9 +995,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
+                indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.54, v=2.53 or v=2.52'
+                'Cache buster in index.html must be incremented to v=2.55, v=2.54, v=2.53 or v=2.52'
             );
         });
     });
@@ -1078,9 +1078,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"'),
+                indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.53 or v=2.54'
+                'Cache buster in index.html must be incremented to v=2.55, v=2.53 or v=2.54'
             );
         });
     });
@@ -1144,7 +1144,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
 
-        it('AUT-FRONT-64: should verify dossier live status badge in index.html and cache buster v=2.54', () => {
+        it('AUT-FRONT-64: should verify dossier live status badge in index.html and cache buster v=2.54 or v=2.55', () => {
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
             const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
 
@@ -1159,9 +1159,86 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'app.js selectCustomerForLookup must compute live status badge'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.54"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.55"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.54'
+                'Cache buster in index.html must be incremented to v=2.54 or v=2.55'
+            );
+        });
+    });
+
+    describe('Suite 25: REV-096 Express 2-Hour SLA Overrun Trigger & Simple Tabular Audit Hub', () => {
+        it('AUT-FRONT-65: should verify showGoal is enabled for Service Advisor (isSA), Owner, and Admin in app.js', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            assert.strictEqual(
+                appJs.includes('const showGoal = isOwnerOrAdmin || isAsst || isSA;'),
+                true,
+                'showGoal must include isSA so Service Advisors see the SLA column'
+            );
+        });
+
+        it('AUT-FRONT-66: should verify SLA cell renders interactive trigger [⚠️ 2h Exceeded — File Report] and reported status pill', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            assert.strictEqual(
+                appJs.includes('openExpressDelayModal('),
+                true,
+                'SLA cell must link to openExpressDelayModal'
+            );
+            assert.strictEqual(
+                appJs.includes('2h Exceeded — File Report'),
+                true,
+                'SLA cell must render 2h Exceeded — File Report trigger button'
+            );
+            assert.strictEqual(
+                appJs.includes('Reported:'),
+                true,
+                'SLA cell must render Reported status badge once report is logged'
+            );
+        });
+
+        it('AUT-FRONT-67: should verify openExpressDelayModal and submitExpressDelayReport persist to /api/express-issues', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                indexHtml.includes('id="modal-express-delay-report"'),
+                true,
+                'modal-express-delay-report must exist in index.html'
+            );
+            assert.strictEqual(
+                appJs.includes('function openExpressDelayModal(jobId)'),
+                true,
+                'openExpressDelayModal must be defined in app.js'
+            );
+            assert.strictEqual(
+                appJs.includes('/api/express-issues'),
+                true,
+                'submitExpressDelayReport must post to /api/express-issues'
+            );
+            assert.strictEqual(
+                appJs.includes('window.openExpressDelayModal = openExpressDelayModal;'),
+                true,
+                'openExpressDelayModal must be bound to window'
+            );
+        });
+
+        it('AUT-FRONT-68: should verify #db-tab-express maintains a clean tabular layout without Chart.js canvas elements and cache buster v=2.55', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            const expressTabBlock = indexHtml.slice(indexHtml.indexOf('id="db-tab-express"'), indexHtml.indexOf('id="db-tab-backjobs"'));
+
+            assert.strictEqual(
+                expressTabBlock.includes('<canvas'),
+                false,
+                'db-tab-express must not contain heavy canvas graph elements'
+            );
+            assert.strictEqual(
+                expressTabBlock.includes('id="table-express-delays-body"'),
+                true,
+                'db-tab-express must contain dedicated table-express-delays-body'
+            );
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.55"'),
+                true,
+                'Cache buster in index.html must be incremented to v=2.55'
             );
         });
     });

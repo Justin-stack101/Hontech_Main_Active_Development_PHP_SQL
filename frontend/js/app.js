@@ -4127,7 +4127,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     });
                 }
 
-                const showGoal = isOwnerOrAdmin || isAsst;
+                const showGoal = isOwnerOrAdmin || isAsst || isSA;
 
                                 const getTableHeaderHtml = () => {
                     return `
@@ -4354,14 +4354,91 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 ` : '<span class="text-gray-400">-</span>'}
                             </td>
 
-                            <!-- SLA status -->
-                            ${showGoal ? `
-                            <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
-                                <span class="px-1.5 py-0.5 rounded text-[9.5px] font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
-                                    ${job.goalStatus || 'N/A'}
-                                </span>
-                            </td>
-                            ` : ''}
+                            <!-- SLA status (Module 8 Express 2-Hour SLA Overrun Trigger & Modal Dialog) -->
+                            ${showGoal ? (() => {
+                                const isExpress = (job.laneType && job.laneType.toLowerCase().includes('express')) || (job.category && job.category.toUpperCase().includes('EXPRESS'));
+                                const isPMS = job.category && job.category.toUpperCase().includes('PMS');
+                                const maxAllowedSLA = isExpress ? 60 : 120; // 60 mins for Express, 120 mins (2 Hours) for Standard PMS
+                                
+                                const isDone = job.status === 'Completed' || job.status === 'Released';
+                                const reportedIssue = (window.reportedExpressIssues && (window.reportedExpressIssues[job.id] || window.reportedExpressIssues[job.job_id] || window.reportedExpressIssues[job.plate])) || null;
+                                const hasDelayReason = reportedIssue || (job.delayReason && job.delayReason.trim().length > 0) || (job.remarks && job.remarks.toLowerCase().includes('delay:'));
+
+                                if (isDone) {
+                                    const isSuccess = job.goalStatus === 'Successful';
+                                    const badgeClass = isSuccess ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200';
+                                    const icon = isSuccess ? 'check' : 'alert-triangle';
+                                    return `
+                                    <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase border shadow-2xs ${badgeClass}">
+                                            <i data-lucide="${icon}" class="w-3 h-3"></i>
+                                            <span>${isSuccess ? 'Met Target' : 'Exceeded'}</span>
+                                        </span>
+                                    </td>
+                                    `;
+                                }
+
+                                const arr24 = convertTimeTo24Hour(job.arrival) || job.arrival || '';
+                                let elapsedMin = 0;
+                                if (arr24 && arr24.includes(':')) {
+                                    const [ah, am] = arr24.split(':').map(Number);
+                                    const now = new Date();
+                                    let diff = (now.getHours() * 60 + now.getMinutes()) - (ah * 60 + am);
+                                    if (diff < 0) diff += 1440;
+                                    elapsedMin = diff;
+                                }
+
+                                const isOverrun = elapsedMin > maxAllowedSLA || job.goalStatus === 'Failed';
+
+                                if (isOverrun) {
+                                    if (hasDelayReason) {
+                                        const reasonSummary = reportedIssue?.reason_category || reportedIssue?.reasonCategory || job.delayReason || 'Delay Logged';
+                                        const cleanReason = reasonSummary.replace(/^Others:\s*/i, '').trim();
+                                        const tooltipNotes = reportedIssue?.reason_details || reportedIssue?.reasonDetails || job.remarks || 'Reason recorded in audit logs';
+                                        return `
+                                        <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
+                                            <button type="button" onclick="openExpressDelayModal('${job.id}')" 
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-tight bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 shadow-2xs transition cursor-pointer"
+                                                title="View / Update Filed Delay Notes: ${escapeHtml(tooltipNotes)}">
+                                                <i data-lucide="file-check-2" class="w-3 h-3 text-emerald-600"></i>
+                                                <span class="max-w-[130px] truncate">Reported: ${cleanReason}</span>
+                                            </button>
+                                        </td>
+                                        `;
+                                    } else {
+                                        const overrunMin = Math.max(1, elapsedMin - maxAllowedSLA);
+                                        return `
+                                        <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
+                                            <button type="button" onclick="openExpressDelayModal('${job.id}')" 
+                                                class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10.5px] font-black uppercase tracking-wide bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white shadow-xs hover:shadow-md transition active:scale-95 cursor-pointer animate-pulse"
+                                                title="SLA limit exceeded by ${overrunMin}m! Click to file required turnaround delay report.">
+                                                <i data-lucide="alert-triangle" class="w-3 h-3 group-hover:scale-110 transition-transform shrink-0"></i>
+                                                <span>⚠️ 2h Exceeded — File Report</span>
+                                            </button>
+                                        </td>
+                                        `;
+                                    }
+                                }
+
+                                if (!arr24 || (!isPMS && !isExpress)) {
+                                    return `
+                                    <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
+                                        <span class="text-gray-400 font-mono text-xs">-</span>
+                                    </td>
+                                    `;
+                                }
+
+                                const h = Math.floor(elapsedMin / 60);
+                                const m = elapsedMin % 60;
+                                return `
+                                <td class="px-3 py-3.5 align-middle text-center whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs" title="${elapsedMin} minutes elapsed against ${maxAllowedSLA}m target">
+                                        <i data-lucide="clock" class="w-2.5 h-2.5 text-slate-400"></i>
+                                        <span>${h}h ${String(m).padStart(2, '0')}m</span>
+                                    </span>
+                                </td>
+                                `;
+                            })() : ''}
                             
                             <!-- Status -->
                             <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
@@ -6012,6 +6089,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (isOverrun) {
                     const overrunDelta = Math.max(1, duration - maxAllowedSLA);
+                    const reported = (window.reportedExpressIssues && (window.reportedExpressIssues[j.id] || window.reportedExpressIssues[j.job_id] || window.reportedExpressIssues[j.plate])) || null;
+                    const reportedRemark = reported ? `${reported.reason_category || reported.reasonCategory}: ${reported.reason_details || reported.reasonDetails}` : null;
+
                     delayedRecords.push({
                         date: j.dateReceived || j.date || (j.createdAt ? j.createdAt.split('T')[0].split(' ')[0] : 'Today'),
                         claimStub: j.claimStub || `CS-${j.id || '000'}`,
@@ -6023,7 +6103,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         departure: j.departure || (j.status !== 'Completed' && j.status !== 'Released' ? 'Active in Shop' : '--:--'),
                         duration: duration,
                         overrun: overrunDelta,
-                        remarks: j.evaluation || j.remarks || j.goalRemarks || `Turnaround duration exceeded ${maxAllowedSLA}-minute target`
+                        remarks: reportedRemark || j.delayReason || j.evaluation || j.remarks || j.goalRemarks || `Turnaround duration exceeded ${maxAllowedSLA}-minute target`
                     });
                 }
             });
@@ -12224,7 +12304,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     body: payload
                 });
 
-                // Update local cache
+                // Update local cache and in-memory job fields
+                const formattedReason = customReasonCategory ? `Others: ${customReasonCategory}` : reasonCategory;
+                job.delayReason = formattedReason;
+                job.remarks = (job.remarks ? job.remarks + ' | ' : '') + `Delay: ${formattedReason} (${reasonDetails})`;
+
                 window.reportedExpressIssues[job.id] = savedRecord;
                 window.reportedExpressIssues[job.job_id || job.id] = savedRecord;
                 window.reportedExpressIssues[job.plate] = savedRecord;
@@ -12247,6 +12331,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             }
         }
+        window.openExpressDelayModal = openExpressDelayModal;
+        window.closeExpressDelayModal = closeExpressDelayModal;
+        window.toggleDelayCustomReason = toggleDelayCustomReason;
+        window.submitExpressDelayReport = submitExpressDelayReport;
 
         // ============================================================
         // 2. SYSTEM-WIDE REASON-REQUIRED EDIT WORKFLOW

@@ -1,3 +1,24 @@
+## 📅 September 18, 2026 (Express 2-Hour SLA Overrun Trigger & Simple Tabular Owner/Admin Audit Hub)
+
+### 📋 Express 2-Hour SLA Overrun Trigger & Simple Tabular Audit Hub (REV-096 / v5.96)
+* **Express 2-Hour SLA Overrun Incident Trigger & Modal Workflow (Module 8)**:
+  - Enabled the SLA column visibility in Daily Intakes (`showGoal`) for Service Advisors (`isSA`), Owners, and Admins.
+  - Dynamically calculates live elapsed duration (`now - arrival`) for active PMS (120m SLA target) and Express Lane (60m SLA target) services.
+  - Automatically transforms the SLA cell into an interactive alert button `[⚠️ 2h Exceeded — File Report]` when elapsed minutes cross the target threshold without vehicle release.
+  - Clicking launches `#modal-express-delay-report` pre-populated with customer name, plate badge, vehicle model, arrival time, and elapsed minutes.
+  - SAs select a reason category (`Required Parts Delay`, `Additional Deep Diagnostics`, `Customer Requested Scope Change`, `Technician Bay Bottleneck`, `Unforeseen Complications`, or `Others`) and provide verbatim diagnostic notes.
+  - Submitting writes to `/api/express-issues` in MySQL and records into `job_audit_logs`, updates in-memory job state, and flips the cell to a calm, verified status pill `[Reported: Parts Delay]` with tooltip inspection.
+* **Simple Tabular Owner & Admin Audit Hub (Module 9 - No Canvas Graphs)**:
+  - Preserved an ultra-clean, straightforward tabular log in `#db-tab-express` without heavy Chart.js canvas graphs or confusing metrics, specifically tailored for academic capstone defense and operational audits.
+  - Seamlessly merges reported delay records into `#table-express-delays-body` displaying Date, Claim Stub, Plate No., Vehicle Model, Service Advisor, Category, Arrival, Departure, Duration, Overrun (+Xm), and SA Diagnostic Remarks.
+  - Supports quick search, date range filters, branch scopes, and 1-click CSV/Print export.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 25 (`AUT-FRONT-65`, `AUT-FRONT-66`, `AUT-FRONT-67`, `AUT-FRONT-68`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 83 automated unit, RBAC, and security regression tests pass across 34 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.55` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Natural Claim Stub Sorting & Interactive Customer Lookup Link)
 
 ### 📋 Natural Claim Stub Sorting & Interactive Customer Lookup Link (REV-095 / v5.95)
