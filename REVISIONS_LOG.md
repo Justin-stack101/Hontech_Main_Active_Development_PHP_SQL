@@ -4,6 +4,26 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Queue View Unified 3-Table Stack, Professional Spacing & Scrollbar Clearance)
+
+### 📋 Queue View Unified 3-Table Stack, Professional Spacing & Scrollbar Clearance (REV-087 / v5.87)
+* **Restored Unified 3-Table Overview (Zero Sub-Tabs)**:
+  - Removed segmented tab switcher buttons per user directive, restoring all 3 operational tables (**Booking Module**, **Daily Intakes - Marikina**, and **Carry-Over Data**) into a single, unified command overview.
+* **Eliminated Horizontal Scrollbar Text Overlay (Min-Height & Clearance)**:
+  - Fixed root cause where empty tables (e.g. Booking Module with 0 rows) or single-row tables collapsed to 30px-70px, forcing the 17px browser scrollbar to draw directly on top of table header letters and row text.
+  - Enforced `min-height: 180px !important;` and `padding-bottom: 6px !important;` across all table scroll wrappers, ensuring the horizontal scrollbar always has dedicated clearance beneath table data.
+* **Rich Empty States with Friendly Centered Illustrations**:
+  - Replaced cramped 1-line empty messages with roomy `py-12` empty-state cards containing centered circular icon badges and descriptive status text for all 3 tables.
+* **24px-32px Viewport Gutters & Inset Canvas**:
+  - Maintained `padding: 1.5rem 2rem !important;` on `#main-content`, ensuring cards never stretch 100% against the dark sidebar or window edges.
+  - Enforced sleek 6px custom scrollbars (`.custom-scroll`) with cross-browser Firefox (`scrollbar-width: thin`) and WebKit support.
+* **Automated Unit Testing & Cache Invalidation**:
+  - Updated Suite 17 (`AUT-FRONT-46`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 61 automated assertions pass across 26 test suites (`cmd /c npm test`).
+  - Incremented client script cache buster to `v=2.46` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Queue View Edge Insets, Sleek Scrollbars & Sub-Tab Module Switcher)
 
 ### 📋 Queue View Edge Insets, Sleek Scrollbars & Sub-Tab Module Switcher (REV-086 / v5.86)

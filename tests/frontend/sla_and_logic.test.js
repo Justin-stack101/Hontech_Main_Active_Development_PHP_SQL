@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -696,15 +696,15 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
         });
     });
 
-    describe('Suite 17: Queue Layout Edge Insets, Slim Scrollbars & Sub-Tab Module Switcher (REV-086)', () => {
-        it('AUT-FRONT-46: should verify main-content edge padding, sleek custom scrollbars, and switchQueueTableTab switcher', () => {
+    describe('Suite 17: Queue Unified 3-Table Stack, Edge Insets & Scrollbar Clearance (REV-087)', () => {
+        it('AUT-FRONT-46: should verify main-content edge padding, sleek custom scrollbars, table min-height and clearance', () => {
             const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('padding: 1.5rem !important;'),
+                indexHtml.includes('padding: 1.5rem'),
                 true,
-                'main-content must have 1.5rem (24px) padding to prevent cards from touching window edges'
+                'main-content must have edge padding (1.5rem) to prevent cards from touching window edges'
             );
             assert.strictEqual(
                 indexHtml.includes('height: 6px !important;'),
@@ -712,14 +712,21 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Custom sleek 6px scrollbars must be defined to eliminate bulky default scrollbars'
             );
             assert.strictEqual(
-                indexHtml.includes('id="queue-view-deck"'),
+                indexHtml.includes('min-height: 180px !important;'),
                 true,
-                'Queue view module switcher deck must exist'
+                'Table scroll wrappers must enforce min-height: 180px so empty/single rows never crush headers'
             );
             assert.strictEqual(
-                appJs.includes('switchQueueTableTab'),
+                indexHtml.includes('padding-bottom: 6px !important;'),
                 true,
-                'switchQueueTableTab callable must exist in app.js'
+                'Table scroll wrappers must have padding-bottom: 6px clearance so scrollbars never overlay row contents'
+            );
+            assert.strictEqual(
+                indexHtml.includes('id="container-online-queue"') &&
+                indexHtml.includes('id="container-daily-intakes"') &&
+                indexHtml.includes('id="container-carry-over"'),
+                true,
+                'All three queue module tables must be present and unified on the screen'
             );
         });
     });

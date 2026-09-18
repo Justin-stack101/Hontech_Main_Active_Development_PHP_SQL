@@ -350,8 +350,8 @@
             width: 100% !important;
             overflow-x: hidden !important;
             box-sizing: border-box !important;
-            padding: 1.5rem !important; /* 24px edge insets: prevents cards from touching screen borders */
-            background-color: #f8fafc !important; /* bg-slate-50 canvas backdrop */
+            padding: 1.5rem 2rem !important; /* 24px-32px comfortable viewport gutters */
+            background-color: #f8fafc !important; /* Premium clean slate backdrop */
         }
         #section-queue {
             min-width: 0 !important;
@@ -362,7 +362,13 @@
             overflow-x: hidden !important;
             box-sizing: border-box !important;
         }
-        /* Sleek modern 6px scrollbars to eliminate chunky Windows default scrollbars */
+        /* Universal sleek 6px custom scrollbar styling */
+        .custom-scroll,
+        #section-queue div.overflow-x-auto,
+        #section-queue div.overflow-y-auto {
+            scrollbar-width: thin !important;
+            scrollbar-color: #cbd5e1 #f8fafc !important;
+        }
         .custom-scroll::-webkit-scrollbar,
         #section-queue div.overflow-x-auto::-webkit-scrollbar,
         #section-queue div.overflow-y-auto::-webkit-scrollbar {
@@ -372,7 +378,7 @@
         .custom-scroll::-webkit-scrollbar-track,
         #section-queue div.overflow-x-auto::-webkit-scrollbar-track,
         #section-queue div.overflow-y-auto::-webkit-scrollbar-track {
-            background: #f1f5f9 !important;
+            background: #f8fafc !important;
             border-radius: 9999px !important;
         }
         .custom-scroll::-webkit-scrollbar-thumb,
@@ -386,6 +392,7 @@
         #section-queue div.overflow-y-auto::-webkit-scrollbar-thumb:hover {
             background: #94a3b8 !important;
         }
+        /* Table scroll containers: enforce minimum height and scroll clearance */
         #container-online-queue,
         #container-daily-intakes,
         #container-carry-over {
@@ -395,13 +402,15 @@
             overflow: hidden !important;
             box-sizing: border-box !important;
         }
-        #container-online-queue > div.overflow-x-auto,
-        #container-daily-intakes > div.overflow-x-auto,
-        #container-carry-over > div.overflow-x-auto {
+        #container-online-queue div.overflow-x-auto,
+        #container-daily-intakes div.overflow-x-auto,
+        #container-carry-over div.overflow-x-auto {
             width: 100% !important;
             max-width: 100% !important;
+            min-height: 180px !important;
             overflow-x: auto !important;
             box-sizing: border-box !important;
+            padding-bottom: 6px !important; /* Clearance so scrollbars never overlay row contents */
         }
 
     </style>
@@ -3890,36 +3899,11 @@
             </div>
 
             <!-- RECORDS & QUEUES VIEW -->
-            <div id="section-queue" class="section-content hidden fade-in flex flex-col gap-5 w-full min-w-0 max-w-full overflow-hidden pb-8">
-
-                <!-- QUEUE VIEW MODULE SWITCHER DECK (TABS TO ELIMINATE 3-TABLE VERTICAL CRUSH) -->
-                <div id="queue-view-deck" class="flex flex-wrap items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-xs">
-                    <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
-                        <button type="button" onclick="switchQueueTableTab('daily')" id="tab-btn-queue-daily" class="px-3.5 py-1.5 rounded-lg text-xs font-black uppercase tracking-wide transition flex items-center gap-2 bg-red-600 text-white shadow-xs cursor-pointer">
-                            <i data-lucide="list-todo" class="w-3.5 h-3.5"></i> Daily Intakes
-                            <span id="queue-tab-count-daily" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white font-bold">--</span>
-                        </button>
-                        <button type="button" onclick="switchQueueTableTab('booking')" id="tab-btn-queue-booking" class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
-                            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> Booking Module
-                            <span id="queue-tab-count-booking" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">--</span>
-                        </button>
-                        <button type="button" onclick="switchQueueTableTab('carryover')" id="tab-btn-queue-carryover" class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
-                            <i data-lucide="clock-alert" class="w-3.5 h-3.5"></i> Carry-Over Data
-                            <span id="queue-tab-count-carryover" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">--</span>
-                        </button>
-                        <button type="button" onclick="switchQueueTableTab('all')" id="tab-btn-queue-all" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-1.5 text-slate-500 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
-                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> View All 3
-                        </button>
-                    </div>
-                    <div class="hidden sm:flex items-center gap-2 text-[11px] font-bold text-slate-500 pr-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span>Queue Monitoring Active</span>
-                    </div>
-                </div>
+            <div id="section-queue" class="section-content hidden fade-in flex flex-col gap-5 w-full min-w-0 max-w-full overflow-hidden pb-10">
 
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
-                    class="bg-white border border-slate-200 border-t-4 border-t-blue-600 p-4 rounded-2xl shadow-xs flex flex-col w-full max-w-full overflow-hidden hidden">
+                    class="bg-white border border-slate-200 border-t-4 border-t-blue-600 p-5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden">
                     <div class="flex items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-blue-50 border border-blue-100 rounded-xl text-blue-600 shadow-2xs">
@@ -3936,7 +3920,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="overflow-x-auto max-h-[380px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs">
+                    <div class="overflow-x-auto min-h-[180px] max-h-[460px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
                         <table class="w-full text-left min-w-full divide-y divide-slate-200">
                             <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
                                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-black uppercase tracking-wider whitespace-nowrap">
@@ -3958,7 +3942,7 @@
 
                 <!-- DAILY INTAKES / MASTER QUEUE (SA, Admin View) -->
                 <div id="container-daily-intakes"
-                    class="bg-white border border-slate-200 border-t-4 border-t-red-600 p-5 rounded-2xl shadow-xs flex flex-col w-full max-w-full overflow-hidden hidden">
+                    class="bg-white border border-slate-200 border-t-4 border-t-red-600 p-5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden">
                     <div class="flex items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-red-50 border border-red-100 rounded-xl text-red-600 shadow-2xs">
@@ -4009,7 +3993,7 @@
 
                 <!-- CARRY OVER BOARD (Shared) -->
                 <div id="container-carry-over"
-                    class="bg-white border border-slate-200 border-t-4 border-t-amber-500 p-5 rounded-2xl shadow-xs flex flex-col w-full max-w-full overflow-hidden">
+                    class="bg-white border border-slate-200 border-t-4 border-t-amber-500 p-5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden">
                     <div class="flex items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-amber-50 border border-amber-100 rounded-xl text-amber-600 shadow-2xs">
@@ -4026,7 +4010,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="overflow-x-auto max-h-[440px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs">
+                    <div class="overflow-x-auto min-h-[180px] max-h-[460px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
                         <table class="w-full text-left min-w-full divide-y divide-slate-200">
                             <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
                                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
@@ -7507,7 +7491,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.45"></script>
+    <script src="js/app.js?v=2.46"></script>
 </body>
 
 </html>

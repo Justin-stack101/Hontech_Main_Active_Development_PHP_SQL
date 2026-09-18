@@ -3818,10 +3818,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 
             // Apply active queue subtab mode (default to 'daily' for focused single-card view)
-            const activeSubtab = localStorage.getItem('hontech-queue-subtab') || 'daily';
-            if (typeof switchQueueTableTab === 'function') {
-                switchQueueTableTab(activeSubtab);
-            }
+            
 
             // BOOKING MODULE (Assistant Staff Operational Controls; Service Advisor, Owner, Admin View-Only)
             if (canViewOnline && document.getElementById('table-pending-express')) {
@@ -3953,7 +3950,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-slate-400 font-medium">No pending online bookings ${onlineQueueFilterMode === 'selected' ? `scheduled for ${currentQueueDate}` : ''}.</td></tr>`;
+                }).join('') || `<tr><td colspan="9" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border border-blue-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p class="text-xs font-bold text-slate-700">No Pending Online Bookings</p><p class="text-[11px] text-slate-400 font-medium">Inquiries submitted online will appear here in real time.</p></div></td></tr>`;
             }
 
             // DAILY INTAKES
@@ -4043,25 +4040,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 const getTableHeaderHtml = () => {
                     return `
                         <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
-                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center w-10 text-slate-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-2.5 py-2.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-black uppercase tracking-wider whitespace-nowrap">
+                                <th class="px-3 py-3.5 bg-slate-50 text-center w-10 text-slate-400 font-bold">#</th>
+                                <th onclick="toggleClaimStubSort()" class="px-3.5 py-3.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
                                     <span class="inline-flex items-center gap-1">
                                         Claim Stub
-                                        <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3 h-3 text-red-600"></i>
+                                        <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3.5 h-3.5 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
-                                <th class="px-3 py-2.5 bg-slate-50 min-w-[200px]">Model & Category</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Departure</th>
-                                <th class="px-3 py-2.5 bg-slate-50 min-w-[180px]">Evaluation / Diagnosis</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">Promised</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
-                                ${showGoal ? '<th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Status</th>
-                                <th class="px-2.5 py-2.5 bg-slate-50 text-center whitespace-nowrap min-w-[130px]">Location</th>
+                                <th class="px-3.5 py-3.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
+                                <th class="px-4 py-3.5 bg-slate-50 min-w-[240px]">Model & Category</th>
+                                <th class="px-3 py-3.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
+                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
+                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Departure</th>
+                                <th class="px-4 py-3.5 bg-slate-50 min-w-[210px]">Evaluation / Diagnosis</th>
+                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Promised</th>
+                                <th class="px-3 py-3.5 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
+                                ${showGoal ? '<th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
+                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap min-w-[145px]">Status</th>
+                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap min-w-[145px]">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -4523,11 +4520,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto max-h-[540px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs">
+                            <div class="overflow-x-auto min-h-[180px] max-h-[560px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
                                 <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
                                     <tbody class="divide-y divide-slate-100">
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-10 text-slate-400 font-medium">No active vehicles in queue for ${isShowingAllQueueDates ? 'any date' : currentQueueDate}.</td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center border border-slate-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><p class="text-xs font-bold text-slate-700">No Active Vehicles in Workshop Queue</p><p class="text-[11px] text-slate-400 font-medium">Select Today (${currentQueueDate}) or toggle "Show All Dates" to view intake records.</p></div></td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
@@ -4583,7 +4580,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     coPickerWrap.style.display = (carryOverFilterMode === 'active') ? 'none' : 'flex';
                 }
 
-                document.getElementById('table-carry-over').innerHTML = carryOverJobs.map((job, idx) => {
+                if (carryOverJobs.length === 0) {
+                    document.getElementById('table-carry-over').innerHTML = `<tr><td colspan="10" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center border border-amber-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><p class="text-xs font-bold text-slate-700">No Carry-Over Vehicles</p><p class="text-[11px] text-slate-400 font-medium">Vehicles requiring extended multi-day stays will appear here.</p></div></td></tr>`;
+                } else document.getElementById('table-carry-over').innerHTML = carryOverJobs.map((job, idx) => {
                     const isEditable = isSA;
                     
                     let actions = '';
