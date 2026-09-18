@@ -3710,52 +3710,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         };
 
         
-        window.switchQueueTableTab = function(tab) {
-            localStorage.setItem('hontech-queue-subtab', tab);
-            const bookingCard = document.getElementById('container-online-queue');
-            const dailyCard = document.getElementById('container-daily-intakes');
-            const carryCard = document.getElementById('container-carry-over');
-            
-            const btnDaily = document.getElementById('tab-btn-queue-daily');
-            const btnBooking = document.getElementById('tab-btn-queue-booking');
-            const btnCarry = document.getElementById('tab-btn-queue-carryover');
-            const btnAll = document.getElementById('tab-btn-queue-all');
-            
-            const buttons = [
-                { el: btnDaily, key: 'daily', activeClass: 'bg-red-600 text-white shadow-xs' },
-                { el: btnBooking, key: 'booking', activeClass: 'bg-blue-600 text-white shadow-xs' },
-                { el: btnCarry, key: 'carryover', activeClass: 'bg-amber-600 text-white shadow-xs' },
-                { el: btnAll, key: 'all', activeClass: 'bg-slate-900 text-white shadow-xs' }
-            ];
-            
-            buttons.forEach(b => {
-                if (!b.el) return;
-                b.el.className = `px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition flex items-center gap-2 cursor-pointer ${
-                    b.key === tab ? `${b.activeClass} font-black` : 'text-slate-600 hover:text-slate-900 hover:bg-white/80 font-bold'
-                }`;
-            });
-            
-            if (tab === 'daily') {
-                if (dailyCard) dailyCard.classList.remove('hidden');
-                if (bookingCard) bookingCard.classList.add('hidden');
-                if (carryCard) carryCard.classList.add('hidden');
-            } else if (tab === 'booking') {
-                if (dailyCard) dailyCard.classList.add('hidden');
-                if (bookingCard) bookingCard.classList.remove('hidden');
-                if (carryCard) carryCard.classList.add('hidden');
-            } else if (tab === 'carryover') {
-                if (dailyCard) dailyCard.classList.add('hidden');
-                if (bookingCard) bookingCard.classList.add('hidden');
-                if (carryCard) carryCard.classList.remove('hidden');
-            } else if (tab === 'all') {
-                if (dailyCard) dailyCard.classList.remove('hidden');
-                if (bookingCard) bookingCard.classList.remove('hidden');
-                if (carryCard) carryCard.classList.remove('hidden');
-            }
-            
-            if (window.lucide) lucide.createIcons();
-        };
-
         function renderStaffTables() {
             const isOwner = currentUserRole === 'owner';
             const isAdmin = currentUserRole === 'admin';
@@ -4520,11 +4474,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto min-h-[180px] max-h-[560px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
+                            <div class="overflow-x-auto min-h-[220px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-3">
                                 <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
                                     <tbody class="divide-y divide-slate-100">
-                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center border border-slate-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div><p class="text-xs font-bold text-slate-700">No Active Vehicles in Workshop Queue</p><p class="text-[11px] text-slate-400 font-medium">Select Today (${currentQueueDate}) or toggle "Show All Dates" to view intake records.</p></div></td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-14 text-slate-400 font-medium">
+                                            <div class="flex flex-col items-center justify-center gap-2.5 py-4">
+                                                <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center border border-red-100 shadow-2xs">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                                                </div>
+                                                <p class="text-sm font-bold text-slate-700">No Active Vehicles in Workshop Queue</p>
+                                                <p class="text-xs text-slate-400 font-medium">There are 0 active vehicles for ${isShowingAllQueueDates ? 'any date' : currentQueueDate}. Select "Today" or toggle "Show All Dates" to view intake records.</p>
+                                            </div>
+                                        </td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
@@ -4581,7 +4543,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 if (carryOverJobs.length === 0) {
-                    document.getElementById('table-carry-over').innerHTML = `<tr><td colspan="10" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center border border-amber-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><p class="text-xs font-bold text-slate-700">No Carry-Over Vehicles</p><p class="text-[11px] text-slate-400 font-medium">Vehicles requiring extended multi-day stays will appear here.</p></div></td></tr>`;
+                    document.getElementById('table-carry-over').innerHTML = `<tr><td colspan="10" class="text-center py-14 text-slate-400 font-medium">
+                                            <div class="flex flex-col items-center justify-center gap-2.5 py-4">
+                                                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center border border-amber-100 shadow-2xs">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                </div>
+                                                <p class="text-sm font-bold text-slate-700">No Carry-Over Vehicles</p>
+                                                <p class="text-xs text-slate-400 font-medium">Vehicles requiring extended multi-day workshop stays will appear here.</p>
+                                            </div>
+                                        </td></tr>`;
                 } else document.getElementById('table-carry-over').innerHTML = carryOverJobs.map((job, idx) => {
                     const isEditable = isSA;
                     

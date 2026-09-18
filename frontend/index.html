@@ -351,7 +351,7 @@
             overflow-x: hidden !important;
             box-sizing: border-box !important;
             padding: 1.5rem 2rem !important; /* 24px-32px comfortable viewport gutters */
-            background-color: #f8fafc !important; /* Premium clean slate backdrop */
+            background-color: #f8fafc !important; /* Premium clean slate canvas */
         }
         #section-queue {
             min-width: 0 !important;
@@ -362,45 +362,40 @@
             overflow-x: hidden !important;
             box-sizing: border-box !important;
         }
-        /* Universal sleek 6px custom scrollbar styling */
+        /* Universal sleek 6px custom scrollbars */
         .custom-scroll,
-        #section-queue div.overflow-x-auto,
-        #section-queue div.overflow-y-auto {
+        #section-queue div.overflow-x-auto {
             scrollbar-width: thin !important;
             scrollbar-color: #cbd5e1 #f8fafc !important;
         }
         .custom-scroll::-webkit-scrollbar,
-        #section-queue div.overflow-x-auto::-webkit-scrollbar,
-        #section-queue div.overflow-y-auto::-webkit-scrollbar {
+        #section-queue div.overflow-x-auto::-webkit-scrollbar {
             height: 6px !important;
             width: 6px !important;
         }
         .custom-scroll::-webkit-scrollbar-track,
-        #section-queue div.overflow-x-auto::-webkit-scrollbar-track,
-        #section-queue div.overflow-y-auto::-webkit-scrollbar-track {
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-track {
             background: #f8fafc !important;
             border-radius: 9999px !important;
         }
         .custom-scroll::-webkit-scrollbar-thumb,
-        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb,
-        #section-queue div.overflow-y-auto::-webkit-scrollbar-thumb {
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb {
             background: #cbd5e1 !important;
             border-radius: 9999px !important;
         }
         .custom-scroll::-webkit-scrollbar-thumb:hover,
-        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb:hover,
-        #section-queue div.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb:hover {
             background: #94a3b8 !important;
         }
-        /* Table scroll containers: enforce minimum height and scroll clearance */
+        /* Table containers: natural responsive height without inner vertical clipping */
         #container-online-queue,
         #container-daily-intakes,
         #container-carry-over {
             min-width: 0 !important;
             max-width: 100% !important;
             width: 100% !important;
-            overflow: hidden !important;
             box-sizing: border-box !important;
+            overflow: visible !important; /* Let tables display naturally */
         }
         #container-online-queue div.overflow-x-auto,
         #container-daily-intakes div.overflow-x-auto,
@@ -409,6 +404,7 @@
             max-width: 100% !important;
             min-height: 180px !important;
             overflow-x: auto !important;
+            overflow-y: visible !important;
             box-sizing: border-box !important;
             padding-bottom: 6px !important; /* Clearance so scrollbars never overlay row contents */
         }
@@ -3920,7 +3916,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="overflow-x-auto min-h-[180px] max-h-[460px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
+                    <div class="overflow-x-auto min-h-[180px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
                         <table class="w-full text-left min-w-full divide-y divide-slate-200">
                             <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
                                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-black uppercase tracking-wider whitespace-nowrap">
@@ -4010,7 +4006,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="overflow-x-auto min-h-[180px] max-h-[460px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
+                    <div class="overflow-x-auto min-h-[180px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-2">
                         <table class="w-full text-left min-w-full divide-y divide-slate-200">
                             <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
                                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-black uppercase tracking-wider whitespace-nowrap">
@@ -7491,7 +7487,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.46"></script>
+    <script src="js/app.js?v=2.47"></script>
 </body>
 
 </html>

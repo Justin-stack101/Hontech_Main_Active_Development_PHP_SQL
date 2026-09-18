@@ -4,6 +4,23 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Enterprise Data Table Layout, Natural Height & Full Responsiveness)
+
+### 📋 Enterprise Data Table Layout, Natural Height & Full Responsiveness (REV-088 / v5.88)
+* **Eliminated Inner Vertical Scroll Traps & Squashed Slits**:
+  - Removed nested `max-h-[...]` and `overflow-y-auto` constraints from all three table wrappers that previously trapped the mouse wheel and squashed Daily Intakes into an unreadable 25px slit or forced vertical scrollbars on 1-row Carry-Over tables.
+  - Each table now renders naturally at 100% readable height (`overflow-y: visible`), delegating page-level scrolling to `#main-content` like standard enterprise data dashboards (Stripe, Linear, GitHub).
+* **100% Horizontal Responsiveness & Clearance**:
+  - Standardized horizontal overflow wrapper with `overflow-x-auto min-h-[180px]` and 6px bottom clearance, ensuring smooth, non-intrusive 6px scrollbars only when the display is narrower than table columns.
+  - Preserved sticky table headers (`bg-slate-50/95 backdrop-blur-xs`) and high-contrast uppercase typography.
+* **High-Visibility Empty States with Centered Illustrations**:
+  - Added roomy `py-14` empty-state cards with 48px rounded-2xl icon containers and descriptive status guides for Daily Intakes, Booking Module, and Carry-Over Data.
+* **Automated Testing & Cache Invalidation**:
+  - All 61 test assertions pass across 26 test suites (`cmd /c npm test`).
+  - Cache buster bumped to `v=2.47` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Queue View Unified 3-Table Stack, Professional Spacing & Scrollbar Clearance)
 
 ### 📋 Queue View Unified 3-Table Stack, Professional Spacing & Scrollbar Clearance (REV-087 / v5.87)
