@@ -42,7 +42,7 @@ class Auth
 
         try {
             Env::load();
-            $jwtSecret = Env::get('JWT_SECRET', 'supersecretjwtkey12345!');
+            $jwtSecret = Env::get('JWT_SECRET', 'supersecretjwtkey12345_hontech_2026_jwt_secret_key!');
 
             $decoded = JWT::decode($token, new Key($jwtSecret, 'HS256'));
 
@@ -114,7 +114,7 @@ class Auth
     public static function generateToken(int $userId, string $role): void
     {
         Env::load();
-        $jwtSecret = Env::get('JWT_SECRET', 'supersecretjwtkey12345!');
+        $jwtSecret = Env::get('JWT_SECRET', 'supersecretjwtkey12345_hontech_2026_jwt_secret_key!');
         $appEnv    = Env::get('APP_ENV', 'development');
 
         $payload = [
