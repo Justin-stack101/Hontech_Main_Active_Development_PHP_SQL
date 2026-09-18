@@ -1,3 +1,23 @@
+## 📅 September 18, 2026 (Natural Claim Stub Sorting & Interactive Customer Lookup Link)
+
+### 📋 Natural Claim Stub Sorting & Interactive Customer Lookup Link (REV-095 / v5.95)
+* **Natural Alphanumeric Claim Stub Sorting Hierarchy (Module 6)**:
+  - Replaced standard ASCII string sorting in Daily Intakes with natural collation via `naturalStubSort(stubA, stubB)` using `{ numeric: true, sensitivity: 'base' }`.
+  - Guarantees logical sequence ordering for multi-digit claim stubs: `052226j1` < `052226j2` < `052226j9` < `052226j10` < `052226j11`, eliminating the notorious ASCII sorting flaw where `052226j10` sorted ahead of `052226j2`.
+  - Automatically invoked whenever Daily Intakes sorting is set to `claimStub`.
+* **Interactive Customer Lookup Dossier Quick-Link & Live Status Indicator (Module 7)**:
+  - Purged redundant printer button (`printJobClaimStubPDF`) from the Daily Intakes table cell, decluttering the queue row and reclaiming visual real estate.
+  - Replaced it with an interactive, clickable claim stub badge link (`openCustomerLookupForStub(stub, plate)`) featuring an external link indicator.
+  - Clicking navigates seamlessly to `#section-lookup`, populates the search query, matches the customer dossier via `customerLookupRegistry`, and smoothly scrolls the official HonTech Form 1/3 customer sheet into view.
+  - Injected `#dossier-live-status-badge` into the `#lookup-dossier-card` header in `frontend/index.html`.
+  - Updated `selectCustomerForLookup` to compute real-time workshop state across customer jobs, rendering a live status pill (e.g., `● ONSITE IN WORKSHOP · BAY 1` or `✓ SERVICED TODAY · RELEASED AT 15:25`).
+* **Automated Unit & Regression Testing**:
+  - Added Suite 24 (`AUT-FRONT-61`, `AUT-FRONT-62`, `AUT-FRONT-63`, `AUT-FRONT-64`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 79 automated unit, RBAC, and security regression tests pass across 33 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.54` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Zero-Typing Departure Clock Stamping & Same-Day Re-open Safeguards)
 
 ### 📋 Automatic Departure Clock Stamping & Same-Day Re-open (REV-094 / v5.94)

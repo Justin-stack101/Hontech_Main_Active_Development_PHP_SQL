@@ -486,6 +486,43 @@
             renderStaffTables();
         }
 
+        function naturalStubSort(stubA, stubB) {
+            if (!stubA && !stubB) return 0;
+            if (!stubA) return 1;
+            if (!stubB) return -1;
+            return String(stubA).localeCompare(String(stubB), undefined, { numeric: true, sensitivity: 'base' });
+        }
+        window.naturalStubSort = naturalStubSort;
+
+        function openCustomerLookupForStub(stub, plate) {
+            if (typeof showSection === 'function') {
+                showSection('lookup');
+            }
+            const searchInput = document.getElementById('lookup-search-input');
+            const queryVal = (plate || stub || '').trim();
+            if (searchInput) {
+                searchInput.value = queryVal;
+            }
+            if (typeof filterCustomerLookup === 'function') {
+                filterCustomerLookup();
+            }
+            const cleanPlate = (plate || '').trim().toUpperCase();
+            if (cleanPlate && typeof customerLookupRegistry !== 'undefined' && customerLookupRegistry[cleanPlate]) {
+                if (typeof selectCustomerForLookup === 'function') {
+                    selectCustomerForLookup(cleanPlate);
+                }
+            } else if (stub && typeof customerLookupRegistry !== 'undefined') {
+                const foundKey = Object.keys(customerLookupRegistry).find(k => {
+                    const c = customerLookupRegistry[k];
+                    return c && c.jobs && c.jobs.some(j => (j.claimStub === stub || j.claim_stub === stub || j.stub === stub));
+                });
+                if (foundKey && typeof selectCustomerForLookup === 'function') {
+                    selectCustomerForLookup(foundKey);
+                }
+            }
+        }
+        window.openCustomerLookupForStub = openCustomerLookupForStub;
+
         window.toggleClaimStubSort = function() {
             if (intakeSortBy === 'claimStub') {
                 intakeSortOrder = (intakeSortOrder === 'asc') ? 'desc' : 'asc';
@@ -4082,11 +4119,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         return intakeSortOrder === 'desc' ? (timeB - timeA) : (timeA - timeB);
                     });
                 } else {
-                    // claimStub sorting (handles alphanumeric claim stubs like 0816-001, 0816-010)
+                    // claimStub sorting (handles natural alphanumeric hierarchy e.g. 052226j1 < 052226j2 < 052226j10)
                     activeJobs.sort((a, b) => {
                         const stubA = a.claimStub || '';
                         const stubB = b.claimStub || '';
-                        return intakeSortOrder === 'desc' ? stubB.localeCompare(stubA) : stubA.localeCompare(stubB);
+                        return intakeSortOrder === 'desc' ? naturalStubSort(stubB, stubA) : naturalStubSort(stubA, stubB);
                     });
                 }
 
@@ -4159,13 +4196,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <!-- Row Number -->
                             <td class="px-3 py-5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
 
-                            <!-- Claim Stub & Audit History -->
-                            <td class="px-3.5 py-3.5 align-middle">
-                                <div class="flex items-center gap-1">
-                                    <button onclick="printJobClaimStubPDF('${job.id}')" class="inline-flex items-center gap-1.5 font-bold text-xs uppercase tracking-wide bg-slate-100/90 hover:bg-red-50 hover:text-red-700 hover:border-red-300 text-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs transition cursor-pointer active:scale-95" title="Click to print official Customer Claim Stub PDF">
-                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600"></i> ${job.claimStub || 'N/A'}
+                            <!-- Claim Stub & Audit History (Module 7 Interactive Customer Dossier Quick-Link) -->
+                            <td class="px-3.5 py-3.5 align-middle whitespace-nowrap">
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="openCustomerLookupForStub('${(job.claimStub || '').replace(/'/g, "\\'")}', '${(job.plate || '').replace(/'/g, "\\'")}')" 
+                                            class="inline-flex items-center gap-1.5 font-mono font-bold text-xs uppercase bg-slate-100/90 hover:bg-blue-50 text-slate-800 hover:text-blue-700 px-2.5 py-1 rounded-lg border border-slate-200 hover:border-blue-300 shadow-2xs transition cursor-pointer active:scale-95 group" 
+                                            title="Open Customer Dossier & Vehicle History">
+                                        <span class="group-hover:underline">${job.claimStub || 'N/A'}</span>
+                                        <i data-lucide="external-link" class="w-3 h-3 text-slate-400 group-hover:text-blue-600 transition"></i>
                                     </button>
-                                    <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-0.5 rounded text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0" title="View Audit History Trail">
+                                    <button type="button" onclick="openJobAuditHistoryModal('${job.id}')" class="p-1 rounded text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer shrink-0" title="View Audit History Trail">
                                         <i data-lucide="history" class="w-3 h-3"></i>
                                     </button>
                                 </div>
@@ -11121,6 +11161,35 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const initials = (cust.name || 'Customer').split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'CU';
             if (document.getElementById('dossier-avatar-initials')) {
                 document.getElementById('dossier-avatar-initials').innerText = initials;
+            }
+
+            // Live Workshop Telemetry Badge
+            const liveBadge = document.getElementById('dossier-live-status-badge');
+            if (liveBadge) {
+                const activeJob = cust.jobs.find(j => j.status !== 'Completed' && j.status !== 'Released');
+                const effectiveToday = typeof getEffectiveQueueDate === 'function' ? getEffectiveQueueDate() : new Date().toISOString().split('T')[0];
+                const releasedTodayJob = cust.jobs.find(j => {
+                    if (j.status !== 'Released') return false;
+                    const jDate = typeof getJobDate === 'function' ? getJobDate(j) : (j.dateReceived || j.date);
+                    return jDate === effectiveToday;
+                });
+
+                if (activeJob) {
+                    const loc = (!activeJob.location || activeJob.location === 'None') ? 'Waiting Area' : activeJob.location.replace(/^Lift/, 'Bay');
+                    const stub = (activeJob.claimStub || activeJob.claim_stub) ? ` · ${activeJob.claimStub || activeJob.claim_stub}` : '';
+                    liveBadge.className = 'px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs flex items-center gap-1.5';
+                    liveBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span>Onsite Workshop · ${loc}${stub}</span>`;
+                    liveBadge.classList.remove('hidden');
+                } else if (releasedTodayJob) {
+                    const dep = convertTimeTo24Hour(releasedTodayJob.departure) || releasedTodayJob.departure || 'Today';
+                    liveBadge.className = 'px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-300 shadow-2xs flex items-center gap-1.5';
+                    liveBadge.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3 text-emerald-600"></i><span>Serviced Today · Released at ${dep}</span>`;
+                    liveBadge.classList.remove('hidden');
+                } else {
+                    liveBadge.className = 'hidden';
+                    liveBadge.innerHTML = '';
+                }
+                if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
             }
 
             // Populate all 12 Authentic HonTech Form 1/3 Customer Details Fields

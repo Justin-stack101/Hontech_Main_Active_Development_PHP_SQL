@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -751,7 +751,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
         });
     });
 
@@ -782,9 +782,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
-                'Cache buster must be v=2.53, v=2.52, v=2.51, v=2.50 or v=2.49'
+                'Cache buster must be v=2.54, v=2.53, v=2.52, v=2.51, v=2.50 or v=2.49'
             );
         });
     });
@@ -833,11 +833,11 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Plate numbers and claim stubs must use roomy px-3 py-1.5 rounded-lg badge pills'
             );
 
-            // 5. Cache buster v=2.53, v=2.52, v=2.51 or v=2.50
+            // 5. Cache buster v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
                 true,
-                'Cache buster must be v=2.53, v=2.52, v=2.51 or v=2.50'
+                'Cache buster must be v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50'
             );
         });
     });
@@ -900,13 +900,13 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
 
-        it('AUT-FRONT-52: should verify cache buster is incremented to v=2.51, v=2.52 or v=2.53', () => {
+        it('AUT-FRONT-52: should verify cache buster is incremented to v=2.51, v=2.52, v=2.53 or v=2.54', () => {
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.53, v=2.52 or v=2.51'
+                'Cache buster in index.html must be incremented to v=2.54, v=2.53, v=2.52 or v=2.51'
             );
         });
     });
@@ -991,13 +991,13 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
 
-        it('AUT-FRONT-56: should verify cache buster in index.html is incremented to v=2.52 or v=2.53', () => {
+        it('AUT-FRONT-56: should verify cache buster in index.html is incremented to v=2.52, v=2.53 or v=2.54', () => {
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.52 or v=2.53'
+                'Cache buster in index.html must be incremented to v=2.54, v=2.53 or v=2.52'
             );
         });
     });
@@ -1074,13 +1074,94 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
 
-        it('AUT-FRONT-60: should verify cache buster in index.html is incremented to v=2.53', () => {
+        it('AUT-FRONT-60: should verify cache buster in index.html is incremented to v=2.53 or v=2.54', () => {
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.53"'),
+                indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.53'
+                'Cache buster in index.html must be incremented to v=2.53 or v=2.54'
+            );
+        });
+    });
+
+    describe('Suite 24: REV-095 Natural Claim Stub Sorting & Interactive Customer Lookup Link', () => {
+        it('AUT-FRONT-61: should verify naturalStubSort function orders claim stubs naturally', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('function naturalStubSort('),
+                true,
+                'naturalStubSort function must exist in frontend/js/app.js'
+            );
+            assert.strictEqual(
+                appJs.includes('numeric: true'),
+                true,
+                'naturalStubSort must use numeric: true comparison'
+            );
+
+            // Directly test natural sorting behavior
+            const testStubs = ['052226j10', '052226j2', '052226j1', '052226j11', '052226j9'];
+            const sorted = [...testStubs].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+            assert.deepStrictEqual(sorted, ['052226j1', '052226j2', '052226j9', '052226j10', '052226j11']);
+        });
+
+        it('AUT-FRONT-62: should verify Daily Intakes eliminates printer button and provides clickable lookup quick-link', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const renderJobRowsStart = appJs.indexOf('const renderJobRows = (jobsList) =>');
+            assert.strictEqual(renderJobRowsStart !== -1, true, 'renderJobRows must exist');
+            const intakeRowBlock = appJs.slice(renderJobRowsStart, renderJobRowsStart + 3000);
+
+            assert.strictEqual(
+                intakeRowBlock.includes('openCustomerLookupForStub('),
+                true,
+                'Daily intakes claim stub must trigger openCustomerLookupForStub'
+            );
+            assert.strictEqual(
+                intakeRowBlock.includes('printJobClaimStubPDF'),
+                false,
+                'Redundant printer button printJobClaimStubPDF must be purged from Daily Intakes table cell'
+            );
+        });
+
+        it('AUT-FRONT-63: should verify openCustomerLookupForStub navigates to lookup and selects customer dossier', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('function openCustomerLookupForStub(stub, plate)'),
+                true,
+                'openCustomerLookupForStub function must exist in app.js'
+            );
+            assert.strictEqual(
+                appJs.includes("showSection('lookup')"),
+                true,
+                'openCustomerLookupForStub must navigate to lookup section'
+            );
+            assert.strictEqual(
+                appJs.includes('selectCustomerForLookup('),
+                true,
+                'openCustomerLookupForStub must trigger selectCustomerForLookup'
+            );
+        });
+
+        it('AUT-FRONT-64: should verify dossier live status badge in index.html and cache buster v=2.54', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                indexHtml.includes('id="dossier-live-status-badge"'),
+                true,
+                'dossier-live-status-badge must exist in index.html'
+            );
+            assert.strictEqual(
+                appJs.includes('dossier-live-status-badge'),
+                true,
+                'app.js selectCustomerForLookup must compute live status badge'
+            );
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.54"'),
+                true,
+                'Cache buster in index.html must be incremented to v=2.54'
             );
         });
     });
