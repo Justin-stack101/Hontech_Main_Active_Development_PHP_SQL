@@ -350,13 +350,41 @@
             width: 100% !important;
             overflow-x: hidden !important;
             box-sizing: border-box !important;
+            padding: 1.5rem !important; /* 24px edge insets: prevents cards from touching screen borders */
+            background-color: #f8fafc !important; /* bg-slate-50 canvas backdrop */
         }
         #section-queue {
             min-width: 0 !important;
-            max-width: 100% !important;
+            max-width: 1680px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
             width: 100% !important;
             overflow-x: hidden !important;
             box-sizing: border-box !important;
+        }
+        /* Sleek modern 6px scrollbars to eliminate chunky Windows default scrollbars */
+        .custom-scroll::-webkit-scrollbar,
+        #section-queue div.overflow-x-auto::-webkit-scrollbar,
+        #section-queue div.overflow-y-auto::-webkit-scrollbar {
+            height: 6px !important;
+            width: 6px !important;
+        }
+        .custom-scroll::-webkit-scrollbar-track,
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-track,
+        #section-queue div.overflow-y-auto::-webkit-scrollbar-track {
+            background: #f1f5f9 !important;
+            border-radius: 9999px !important;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb,
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb,
+        #section-queue div.overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #cbd5e1 !important;
+            border-radius: 9999px !important;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover,
+        #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+        #section-queue div.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8 !important;
         }
         #container-online-queue,
         #container-daily-intakes,
@@ -3863,6 +3891,31 @@
 
             <!-- RECORDS & QUEUES VIEW -->
             <div id="section-queue" class="section-content hidden fade-in flex flex-col gap-5 w-full min-w-0 max-w-full overflow-hidden pb-8">
+
+                <!-- QUEUE VIEW MODULE SWITCHER DECK (TABS TO ELIMINATE 3-TABLE VERTICAL CRUSH) -->
+                <div id="queue-view-deck" class="flex flex-wrap items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-xs">
+                    <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+                        <button type="button" onclick="switchQueueTableTab('daily')" id="tab-btn-queue-daily" class="px-3.5 py-1.5 rounded-lg text-xs font-black uppercase tracking-wide transition flex items-center gap-2 bg-red-600 text-white shadow-xs cursor-pointer">
+                            <i data-lucide="list-todo" class="w-3.5 h-3.5"></i> Daily Intakes
+                            <span id="queue-tab-count-daily" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 text-white font-bold">--</span>
+                        </button>
+                        <button type="button" onclick="switchQueueTableTab('booking')" id="tab-btn-queue-booking" class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
+                            <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> Booking Module
+                            <span id="queue-tab-count-booking" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">--</span>
+                        </button>
+                        <button type="button" onclick="switchQueueTableTab('carryover')" id="tab-btn-queue-carryover" class="px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
+                            <i data-lucide="clock-alert" class="w-3.5 h-3.5"></i> Carry-Over Data
+                            <span id="queue-tab-count-carryover" class="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-200 text-slate-700 font-bold">--</span>
+                        </button>
+                        <button type="button" onclick="switchQueueTableTab('all')" id="tab-btn-queue-all" class="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition flex items-center gap-1.5 text-slate-500 hover:text-slate-900 hover:bg-white/80 cursor-pointer">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> View All 3
+                        </button>
+                    </div>
+                    <div class="hidden sm:flex items-center gap-2 text-[11px] font-bold text-slate-500 pr-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Queue Monitoring Active</span>
+                    </div>
+                </div>
 
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
@@ -7454,7 +7507,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.44"></script>
+    <script src="js/app.js?v=2.45"></script>
 </body>
 
 </html>

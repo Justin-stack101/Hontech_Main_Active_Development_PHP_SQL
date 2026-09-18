@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -692,6 +692,34 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 indexHtml.includes('text-slate-600 text-xs font-black uppercase tracking-wider'),
                 true,
                 'Table headers must use clear text-xs typography'
+            );
+        });
+    });
+
+    describe('Suite 17: Queue Layout Edge Insets, Slim Scrollbars & Sub-Tab Module Switcher (REV-086)', () => {
+        it('AUT-FRONT-46: should verify main-content edge padding, sleek custom scrollbars, and switchQueueTableTab switcher', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                indexHtml.includes('padding: 1.5rem !important;'),
+                true,
+                'main-content must have 1.5rem (24px) padding to prevent cards from touching window edges'
+            );
+            assert.strictEqual(
+                indexHtml.includes('height: 6px !important;'),
+                true,
+                'Custom sleek 6px scrollbars must be defined to eliminate bulky default scrollbars'
+            );
+            assert.strictEqual(
+                indexHtml.includes('id="queue-view-deck"'),
+                true,
+                'Queue view module switcher deck must exist'
+            );
+            assert.strictEqual(
+                appJs.includes('switchQueueTableTab'),
+                true,
+                'switchQueueTableTab callable must exist in app.js'
             );
         });
     });

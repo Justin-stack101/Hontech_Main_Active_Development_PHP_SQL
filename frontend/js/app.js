@@ -3709,6 +3709,53 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Deprecated queue tab switch stub
         };
 
+        
+        window.switchQueueTableTab = function(tab) {
+            localStorage.setItem('hontech-queue-subtab', tab);
+            const bookingCard = document.getElementById('container-online-queue');
+            const dailyCard = document.getElementById('container-daily-intakes');
+            const carryCard = document.getElementById('container-carry-over');
+            
+            const btnDaily = document.getElementById('tab-btn-queue-daily');
+            const btnBooking = document.getElementById('tab-btn-queue-booking');
+            const btnCarry = document.getElementById('tab-btn-queue-carryover');
+            const btnAll = document.getElementById('tab-btn-queue-all');
+            
+            const buttons = [
+                { el: btnDaily, key: 'daily', activeClass: 'bg-red-600 text-white shadow-xs' },
+                { el: btnBooking, key: 'booking', activeClass: 'bg-blue-600 text-white shadow-xs' },
+                { el: btnCarry, key: 'carryover', activeClass: 'bg-amber-600 text-white shadow-xs' },
+                { el: btnAll, key: 'all', activeClass: 'bg-slate-900 text-white shadow-xs' }
+            ];
+            
+            buttons.forEach(b => {
+                if (!b.el) return;
+                b.el.className = `px-3.5 py-1.5 rounded-lg text-xs uppercase tracking-wide transition flex items-center gap-2 cursor-pointer ${
+                    b.key === tab ? `${b.activeClass} font-black` : 'text-slate-600 hover:text-slate-900 hover:bg-white/80 font-bold'
+                }`;
+            });
+            
+            if (tab === 'daily') {
+                if (dailyCard) dailyCard.classList.remove('hidden');
+                if (bookingCard) bookingCard.classList.add('hidden');
+                if (carryCard) carryCard.classList.add('hidden');
+            } else if (tab === 'booking') {
+                if (dailyCard) dailyCard.classList.add('hidden');
+                if (bookingCard) bookingCard.classList.remove('hidden');
+                if (carryCard) carryCard.classList.add('hidden');
+            } else if (tab === 'carryover') {
+                if (dailyCard) dailyCard.classList.add('hidden');
+                if (bookingCard) bookingCard.classList.add('hidden');
+                if (carryCard) carryCard.classList.remove('hidden');
+            } else if (tab === 'all') {
+                if (dailyCard) dailyCard.classList.remove('hidden');
+                if (bookingCard) bookingCard.classList.remove('hidden');
+                if (carryCard) carryCard.classList.remove('hidden');
+            }
+            
+            if (window.lucide) lucide.createIcons();
+        };
+
         function renderStaffTables() {
             const isOwner = currentUserRole === 'owner';
             const isAdmin = currentUserRole === 'admin';
@@ -3756,10 +3803,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const techBoardEl = document.getElementById('container-tech-board');
             const periodicRecordsEl = document.getElementById('container-periodic-records');
 
+            // Sync Queue Subtab Badge Counts
+            const tabCountDaily = document.getElementById('queue-tab-count-daily');
+            const tabCountBooking = document.getElementById('queue-tab-count-booking');
+            const tabCountCarry = document.getElementById('queue-tab-count-carryover');
+            
+            if (tabCountDaily) tabCountDaily.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (!j.promisedDate && !j.carryOverStatus)).length;
+            if (tabCountBooking) tabCountBooking.innerText = pendingOnline.length;
+            if (tabCountCarry) tabCountCarry.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (j.promisedDate || j.carryOverStatus || j.status === 'Carry Over')).length;
+
             if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
             if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
+
+            // Apply active queue subtab mode (default to 'daily' for focused single-card view)
+            const activeSubtab = localStorage.getItem('hontech-queue-subtab') || 'daily';
+            if (typeof switchQueueTableTab === 'function') {
+                switchQueueTableTab(activeSubtab);
+            }
 
             // BOOKING MODULE (Assistant Staff Operational Controls; Service Advisor, Owner, Admin View-Only)
             if (canViewOnline && document.getElementById('table-pending-express')) {

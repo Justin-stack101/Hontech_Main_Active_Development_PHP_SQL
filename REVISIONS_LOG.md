@@ -4,6 +4,28 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Queue View Edge Insets, Sleek Scrollbars & Sub-Tab Module Switcher)
+
+### 📋 Queue View Edge Insets, Sleek Scrollbars & Sub-Tab Module Switcher (REV-086 / v5.86)
+* **24px Viewport Gutters & Inset Canvas**:
+  - Enforced strict `padding: 1.5rem !important;` (24px) on `#main-content`, completely eliminating the edge-to-edge 100% flush issue against the dark sidebar and browser window borders.
+  - Cards now float gracefully with visible rounded corners (`rounded-2xl`), soft shadows, and clean slate canvas borders.
+* **Sleek 6px Custom Scrollbars**:
+  - Replaced chunky 17px Windows default gray scrollbars across all table wrappers with custom 6px smooth pill scrollbars (`bg-slate-300` thumb on `bg-slate-100` track), eliminating horizontal scrollbar clutter.
+* **Queue View Module Switcher Deck (Sub-Tabs)**:
+  - Implemented an interactive Segmented Sub-Tab Switcher at the top of `#section-queue`:
+    - **Daily Intakes** (Active workshop queue, shown full-height by default).
+    - **Booking Module** (Online inquiries queue with live badge counter).
+    - **Carry-Over Data** (Extended stays with badge counter).
+    - **View All 3** (Stacked multi-table overview).
+  - Eliminates the vertical compression where 3 tables competed for viewport height on a single screen.
+* **Automated Unit Testing & Cache Invalidation**:
+  - Added Suite 17 (`AUT-FRONT-46`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 61 automated assertions pass across 26 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.45` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Daily Intakes & Queue Tables Scaled Typography & Prominent Value Sizing)
 
 ### 📋 Scaled Typography & Prominent Table Value Sizing (REV-085 / v5.85)
