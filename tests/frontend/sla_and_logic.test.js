@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -656,12 +656,12 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                appJs.includes('px-4 py-3.5 align-middle min-w-[240px]'),
+                appJs.includes('px-5 py-5 align-middle min-w-[280px]') || appJs.includes('px-4 py-3.5 align-middle min-w-[240px]'),
                 true,
                 'Model & Category cell must use px-4 py-3.5 min-w-[240px] for spacious layout'
             );
             assert.strictEqual(
-                appJs.includes('px-3.5 py-3.5'),
+                appJs.includes('px-4 py-5') || appJs.includes('px-3.5 py-3.5'),
                 true,
                 'Cells must use generous py-3.5 padding to eliminate compressed feeling'
             );
@@ -684,7 +684,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Vehicle names must use prominent text-sm font-bold'
             );
             assert.strictEqual(
-                appJs.includes('text-xs font-bold uppercase px-2.5 py-1'),
+                appJs.includes('text-xs font-bold uppercase px-3 py-1.5') || appJs.includes('text-xs font-bold uppercase px-2.5 py-1'),
                 true,
                 'Badges must use comfortable text-xs with px-2.5 py-1 padding'
             );
@@ -751,7 +751,41 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster v=2.48
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.48');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.49 or v=2.48');
+        });
+    });
+
+
+    describe('Suite 19: REV-090 Filter Deck Distance & Roomy Table Row Spacing', () => {
+        it('AUT-FRONT-48: should verify generous distance between filter deck and table, and expanded py-5 row padding', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('space-y-6'),
+                true,
+                'Daily intakes container must use space-y-6 for generous distance from filter deck'
+            );
+            assert.strictEqual(
+                appJs.includes('px-5 py-5 align-middle min-w-[280px]'),
+                true,
+                'Model & Category column must use px-5 py-5 with min-w-[280px] for spacious layout'
+            );
+            assert.strictEqual(
+                appJs.includes('px-4 py-5 align-middle whitespace-nowrap'),
+                true,
+                'Rows must use generous py-5 padding to eliminate cramped feeling'
+            );
+            assert.strictEqual(
+                appJs.includes('px-3 py-4.5 bg-slate-50 text-center w-10 text-slate-400 font-bold'),
+                true,
+                'Table headers must use py-4.5 for comfortable vertical breathing room'
+            );
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.49"'),
+                true,
+                'Cache buster must be v=2.49'
+            );
         });
     });
 

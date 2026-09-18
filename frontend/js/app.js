@@ -3780,7 +3780,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
                     const curLane = job.laneType || 'Flexible Lane';
                     return `
-                    <tr class="hover:bg-slate-50/70 transition-colors border-b border-slate-100 text-xs">
+                    <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 text-xs">
                         <td class="py-3 px-3 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
                         <td class="py-3 px-3.5 align-middle">
                             <div class="font-bold text-gray-900">${job.name}</div>
@@ -3994,25 +3994,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 const getTableHeaderHtml = () => {
                     return `
                         <thead class="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-xs">
-                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs font-black uppercase tracking-wider whitespace-nowrap">
-                                <th class="px-3 py-3.5 bg-slate-50 text-center w-10 text-slate-400 font-bold">#</th>
-                                <th onclick="toggleClaimStubSort()" class="px-3.5 py-3.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
-                                    <span class="inline-flex items-center gap-1">
+                                <th class="px-3 py-4.5 bg-slate-50 text-center w-10 text-slate-400 font-bold">#</th>
+                                <th onclick="toggleClaimStubSort()" class="px-4 py-4.5 bg-slate-50 cursor-pointer select-none hover:bg-slate-100 transition whitespace-nowrap" title="Click to toggle sorting">
+                                    <span class="inline-flex items-center gap-1.5">
                                         Claim Stub
                                         <i data-lucide="${intakeSortBy === 'claimStub' ? (intakeSortOrder === 'desc' ? 'arrow-down' : 'arrow-up') : 'arrow-up-down'}" class="w-3.5 h-3.5 text-red-600"></i>
                                     </span>
                                 </th>
-                                <th class="px-3.5 py-3.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
-                                <th class="px-4 py-3.5 bg-slate-50 min-w-[240px]">Model & Category</th>
-                                <th class="px-3 py-3.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
-                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
-                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Departure</th>
-                                <th class="px-4 py-3.5 bg-slate-50 min-w-[210px]">Evaluation / Diagnosis</th>
-                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">Promised</th>
-                                <th class="px-3 py-3.5 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
-                                ${showGoal ? '<th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
-                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap min-w-[145px]">Status</th>
-                                <th class="px-3.5 py-3.5 bg-slate-50 text-center whitespace-nowrap min-w-[145px]">Location</th>
+                                <th class="px-4 py-4.5 bg-slate-50 whitespace-nowrap">Plate No.</th>
+                                <th class="px-5 py-4.5 bg-slate-50 min-w-[280px]">Model & Category</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">Source</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">Arrival</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">Departure</th>
+                                <th class="px-5 py-4.5 bg-slate-50 min-w-[260px]">Evaluation / Diagnosis</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">Promised</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">C.O.</th>
+                                ${showGoal ? '<th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap">SLA (2h)</th>' : ''}
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap min-w-[155px]">Status</th>
+                                <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap min-w-[155px]">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -4055,9 +4054,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         const isEditable = isAssignedToMe;
 
                         return `
-                        <tr class="hover:bg-slate-50/70 transition-colors border-b border-gray-100/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
+                        <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 ${job.status === 'Ready' || job.status === 'Ready to Release' ? 'bg-emerald-50/30' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
                             <!-- Row Number -->
-                            <td class="px-3 py-3.5 align-middle text-center font-mono text-xs text-gray-400 font-bold">${idx + 1}</td>
+                            <td class="px-3 py-5 align-middle text-center font-mono text-xs text-slate-400 font-bold">${idx + 1}</td>
 
                             <!-- Claim Stub & Audit History -->
                             <td class="px-3.5 py-3.5 align-middle">
@@ -4084,16 +4083,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
                             
                             <!-- Model & Category & Express SLA Alert -->
-                            <td class="px-4 py-3.5 align-middle min-w-[240px]">
-                                <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5 mb-1.5">
+                            <td class="px-5 py-5 align-middle min-w-[280px]">
+                                <div class="font-bold text-slate-900 text-sm flex items-center gap-2 mb-2">
                                     <i data-lucide="car" class="w-4 h-4 text-slate-500 shrink-0"></i>
                                     <span class="truncate max-w-[210px] font-extrabold text-slate-900" title="${job.vehicle}">${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex flex-col items-start gap-1.5 mt-1.5">
+                                <div class="flex flex-col items-start gap-2 mt-2">
                                     <!-- Service Advisor Action / Status Badge -->
                                     ${isAssignedToMe ? `
-                                        <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold uppercase px-2.5 py-1 rounded-md shadow-2xs" title="Assigned to you">
+                                        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold uppercase px-3 py-1.5 rounded-lg shadow-2xs" title="Assigned to you">
                                             <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-600"></i>
                                             <span>My Job</span>
                                         </span>
@@ -4101,27 +4100,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <div class="inline-flex items-center gap-1.5">
                                             <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-800 border border-slate-200 text-xs font-semibold uppercase px-2.5 py-1 rounded-md shadow-2xs" title="Assigned to ${cleanJobSA}">
                                                 <i data-lucide="user" class="w-3.5 h-3.5 text-slate-500"></i>
-                                                <span class="truncate max-w-[85px]">${cleanJobSA}</span>
+                                                <span class="max-w-[160px] truncate">${cleanJobSA}</span>
                                             </span>
-                                            <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center text-[11px] font-bold uppercase bg-white hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-300 hover:border-slate-900 px-2 py-1 rounded-md transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
+                                            <button type="button" onclick="openTicketTakeoverModal('${job.id}')" class="inline-flex items-center text-xs font-bold uppercase bg-white hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-300 hover:border-slate-900 px-2.5 py-1.5 rounded-lg transition cursor-pointer shadow-2xs" title="Take over this vehicle ticket">
                                                 Take Over
                                             </button>
                                         </div>
                                     ` : (isSA && isUnassigned) ? `
-                                        <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1 text-xs font-bold uppercase bg-slate-900 hover:bg-black text-white px-2.5 py-1 rounded-md transition-all shadow-2xs cursor-pointer active:scale-95">
+                                        <button type="button" onclick="assignMeToJob('${job.id}')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg transition-all shadow-2xs cursor-pointer active:scale-95">
                                             <i data-lucide="user-plus" class="w-3.5 h-3.5 text-slate-300"></i>
                                             <span>Take Job</span>
                                         </button>
                                     ` : `
                                         <span class="inline-flex items-center gap-1 bg-gray-50 text-gray-700 border border-gray-200 text-xs font-medium uppercase px-2.5 py-1 rounded-md shadow-2xs">
                                             <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-                                            <span class="truncate max-w-[85px]">${cleanJobSA || 'Unassigned'}</span>
+                                            <span class="max-w-[160px] truncate">${cleanJobSA || 'Unassigned'}</span>
                                         </span>
                                     `}
 
                                     <!-- Service Category Selection -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-2.5 py-1 shadow-2xs transition cursor-pointer shrink-0" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-lg px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0" title="${job.category ? `Category: ${job.category}` : 'Category: OTHERS'} (Click to change)">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${['PMS', 'GRS', 'PMS & GRS', 'PMS AND GRS'].includes(job.category) ? job.category : 'OTHERS'}</span>
                                         <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
@@ -4133,7 +4132,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         </select>
                                     </div>
                                     ` : `
-                                    <span class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-md text-xs font-bold uppercase text-slate-700 shadow-2xs shrink-0">
+                                    <span class="inline-flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold uppercase text-slate-700 shadow-2xs shrink-0">
                                         <i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-500"></i>
                                         <span>${job.category || '-'}</span>
                                     </span>
@@ -4141,7 +4140,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                                     <!-- Lane Selection -->
                                     ${isEditable ? `
-                                    <div class="relative inline-flex items-center gap-1 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-md px-2.5 py-1 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
+                                    <div class="relative inline-flex items-center gap-1.5 bg-white hover:bg-slate-50 border border-slate-300 hover:border-red-500 rounded-lg px-3 py-1.5 shadow-2xs transition cursor-pointer shrink-0" title="Click to change Lane">
                                         <i data-lucide="route" class="w-3.5 h-3.5 text-red-600 shrink-0 pointer-events-none"></i>
                                         <span class="text-xs font-bold uppercase text-slate-800 pointer-events-none">${normalizeLaneType(job.laneType).replace(/\s*Lane/i, '')}</span>
                                         <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400 shrink-0 pointer-events-none"></i>
@@ -4166,14 +4165,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Arrival -->
-                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
+                            <td class="px-4 py-5 align-middle text-center whitespace-nowrap">
                                 <span class="block text-xs font-bold font-mono text-gray-700">${convertTimeTo24Hour(job.arrival) || job.arrival || '--:--'}</span>
                             </td>
                             
                             <!-- Departure -->
                             <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap">
                                 ${isEditable ? `
-                                <div class="inline-flex items-center bg-white border border-gray-300 hover:border-red-500 rounded-lg px-1.5 py-0.5 shadow-2xs transition group" title="Type departure time or pick from presets">
+                                <div class="inline-flex items-center bg-white border border-slate-300 hover:border-red-500 rounded-lg px-2.5 py-1.5 shadow-2xs transition group" title="Type departure time or pick from presets">
                                     <input type="text" 
                                            id="dep-input-${job.id}" 
                                            value="${convertTimeTo24Hour(job.departure) || ''}" 
@@ -4233,7 +4232,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap min-w-[145px]">
+                            <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
                                 ${isEditable ? `
                                 <div class="relative inline-flex items-center justify-between gap-1 border rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer min-w-[125px] max-w-[140px]" 
                                      style="${
@@ -4274,7 +4273,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </td>
 
                             <!-- Location -->
-                            <td class="px-3.5 py-3.5 align-middle text-center whitespace-nowrap min-w-[145px]">
+                            <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
                                 ${(() => {
                                     const isMonitoring = job.status === 'Monitoring';
                                     if (isEditable && isMonitoring) {
@@ -4363,7 +4362,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 : `Future: ${currentQueueDate} • ${filteredActiveJobs.length} Scheduled`;
 
                     dailyIntakesEl.innerHTML = `
-                        <div class="space-y-3.5">
+                        <div class="space-y-6">
                             <!-- Daily Intakes Header -->
                             <div class="flex flex-wrap items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
@@ -4474,7 +4473,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             </div>
 
-                            <div class="overflow-x-auto min-h-[220px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-2xs pb-3">
+                            <div class="overflow-x-auto min-h-[220px] border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2">
                                 <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
                                     <tbody class="divide-y divide-slate-100">
@@ -4628,13 +4627,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             `}
                         </td>
                         <!-- Service Advisor -->
-                        <td class="px-2.5 py-2.5 align-middle whitespace-nowrap">
+                        <td class="px-4 py-5 align-middle whitespace-nowrap">
                             <span class="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded">
                                 <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
                                 ${job.saName || 'Mark Bautista'}
                             </span>
                         </td>
-                        <td class="px-3 py-2.5 align-middle min-w-[160px] max-w-[200px]">
+                        <td class="px-4 py-5 align-middle min-w-[200px] max-w-[260px]">
                             ${isEditable ? `
                             <div class="eval-field-card">
                                 <svg class="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4659,7 +4658,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             </div>
                             `}
                         </td>
-                        <td class="px-2.5 py-2.5 align-middle text-center">
+                        <td class="px-4 py-5 align-middle text-center whitespace-nowrap min-w-[155px]">
                             ${isEditable ? `
                             <div class="relative inline-flex items-center justify-between gap-1 border border-amber-200 bg-amber-50/90 hover:bg-amber-100 hover:border-amber-300 text-amber-900 rounded-lg px-2 py-1 shadow-2xs transition cursor-pointer w-[145px]" title="Click to Change Carry-Over Status">
                                 <span class="font-bold text-[11px] uppercase flex-1 text-left truncate pointer-events-none">${job.carryOverStatus || 'Awaiting Parts'}</span>

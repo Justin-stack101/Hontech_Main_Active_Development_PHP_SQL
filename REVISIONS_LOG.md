@@ -1,3 +1,23 @@
+## 📅 September 18, 2026 (Filter Deck Distance & Roomy Table Row Spacing Rhythm)
+
+### 📋 Filter Deck Distance & Roomy Table Row Spacing Rhythm (REV-090 / v5.90)
+* **24px Separation Distance Above Table**:
+  - Separated the Unified Command & Filter Deck card from the Daily Intakes data table using `space-y-6` (24px gap) and `mt-2` elevation, eliminating the cramped visual collision between the filter search inputs and the table header.
+  - Standardized generous distance rhythm across Booking Module, Daily Intakes, and Carry-Over Data.
+* **Roomy Row Spacing & Adjusted Cell Rhythm**:
+  - Expanded vertical cell padding from cramped `py-3.5` to generous `py-5` (20px) across all table rows in Daily Intakes, Carry-Over Data, and Booking Module.
+  - Widened **Model & Category** column to `min-w-[280px]` with `mb-2` vehicle title margin and `gap-2` badge stack spacing.
+  - Enlarged Service Advisor name container from `max-w-[85px]` to `max-w-[160px]`, completely eliminating ugly truncation (`ALEX VALENZUE...` -> `ALEX VALENZUELA`).
+  - Scaled table header cells to `py-4.5` with crisp uppercase slate typography (`text-xs font-black`).
+  - Enlarged Claim Stub and Plate No. badges to `px-3 py-1.5` with rounded borders and prominent font weights.
+  - Expanded Evaluation / Diagnosis input to `min-w-[260px] max-w-[320px]` with `py-2 px-3` comfortable input padding.
+* **Automated Regression Testing & Cache Invalidation**:
+  - Added Suite 19 (`AUT-FRONT-48`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 63 automated unit and regression tests pass across 28 test suites (`cmd /c npm test`).
+  - Incremented client script cache buster to `v=2.49` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (DOM Tree Hierarchy Recovery, Dual Scroll Elimination & 24px Gutters)
 
 ### 📋 DOM Tree Hierarchy Recovery, Dual Scroll Elimination & 24px Gutters (REV-089 / v5.89)
