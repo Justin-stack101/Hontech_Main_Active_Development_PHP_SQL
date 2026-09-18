@@ -1,3 +1,25 @@
+## 📅 September 18, 2026 (DOM Tree Hierarchy Recovery, Dual Scroll Elimination & 24px Gutters)
+
+### 📋 DOM Tree Hierarchy Recovery, Dual Scroll Elimination & 24px Gutters (REV-089 / v5.89)
+* **Resolved Premature Closing `</div>` Tags & Broken DOM Nesting**:
+  - Identified critical structural bug where two redundant `</div>` tags at lines 3604–3605 prematurely closed `<main id="main-content">` and `<div id="app-main-wrapper">`.
+  - Because of this premature closing, `#section-queue`, `#section-intake`, and other major views were pushed out of `#app-main-wrapper` and placed directly inside `#app-shell` as sibling flex items alongside `#app-sidebar` in a horizontal flex layout (`flex-direction: row`).
+  - This caused `#section-queue` to sit directly flush (0px margin) against the dark sidebar and squashed `#app-main-wrapper` to 0px width (`w-0`), rendering the entire page structure defective.
+* **Eliminated Dual Scroll Phenomenon (Outer Spillover vs Inner Table Scroll)**:
+  - Discovered that the outer horizontal scroll was caused by `#section-queue` overflowing `#app-shell` horizontally as an orphaned sibling flex item, while the table inside `#section-queue` had its own horizontal scrollbar.
+  - By removing the two rogue `</div>` tags, updating `#app-main-wrapper` to `w-full max-w-full`, and keeping all views strictly enclosed inside `<main id="main-content">` (which enforces `overflow-x: hidden; overflow-y: auto;` with 24px–32px gutters), the double scroll has been 100% eliminated.
+  - The viewport now has a single vertical page scrollbar, while tables scroll horizontally within their dedicated containers only if table columns exceed the screen width.
+* **Verified Visual Excellence & Responsiveness in Chrome DevTools**:
+  - `#section-queue` is strictly inside `<main id="main-content">` with a generous width of `1120px+` and 24px padding on all sides.
+  - All 3 tables (**Booking Module**, **Daily Intakes - Marikina**, and **Carry-Over Data**) are rendered together cleanly without sub-tab buttons.
+  - Rows render at their natural 100% readable height with prominent typography and vertical column badges (`My Job` -> `Category/PMS` -> `Lane/Flexible`).
+* **Automated Unit Testing & Cache Invalidation**:
+  - Added Suite 18 (`AUT-FRONT-47`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 62 automated unit and regression tests pass across 27 test suites (`cmd /c npm test`).
+  - Incremented client script cache buster to `v=2.48` in `frontend/index.html`.
+
+---
+
 # HonTech Capstone Revisions Log
 
 This log documents all feature revisions, bugs resolved, and system updates completed for the HonTech Queue Monitoring System.

@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -730,4 +730,29 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
     });
+
+    describe('Suite 18: REV-089 DOM Hierarchy Recovery & Dual Scroll Elimination', () => {
+        it('AUT-FRONT-47: should verify section-queue is properly nested inside main-content without premature closing tags', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            
+            // Check that app-main-wrapper has w-full max-w-full and is not squashed
+            assert.strictEqual(
+                indexHtml.includes('id="app-main-wrapper" class="flex-1 min-w-0 flex flex-col h-full overflow-hidden w-full max-w-full"'),
+                true,
+                'app-main-wrapper must have w-full max-w-full'
+            );
+            
+            // Check that section-form13 does not have extra closing div tags dumping main-content
+            const form13Idx = indexHtml.indexOf('id="section-form13"');
+            const queueIdx = indexHtml.indexOf('id="section-queue"');
+            const mainCloseIdx = indexHtml.indexOf('</main>');
+            
+            assert.strictEqual(form13Idx !== -1 && queueIdx !== -1, true, 'Both sections must exist');
+            assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
+            
+            // Verify cache buster v=2.48
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be v=2.48');
+        });
+    });
+
 });
