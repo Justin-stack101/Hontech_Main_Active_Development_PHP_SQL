@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -751,7 +751,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
         });
     });
 
@@ -782,9 +782,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
-                'Cache buster must be v=2.51, v=2.50 or v=2.49'
+                'Cache buster must be v=2.52, v=2.51, v=2.50 or v=2.49'
             );
         });
     });
@@ -833,11 +833,11 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Plate numbers and claim stubs must use roomy px-3 py-1.5 rounded-lg badge pills'
             );
 
-            // 5. Cache buster v=2.50 or v=2.51
+            // 5. Cache buster v=2.52, v=2.51 or v=2.50
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
+                indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
                 true,
-                'Cache buster must be v=2.51 or v=2.50'
+                'Cache buster must be v=2.52, v=2.51 or v=2.50'
             );
         });
     });
@@ -900,15 +900,107 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             );
         });
 
-        it('AUT-FRONT-52: should verify cache buster is incremented to v=2.51', () => {
+        it('AUT-FRONT-52: should verify cache buster is incremented to v=2.51 or v=2.52', () => {
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.51"'),
+                indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
                 true,
-                'Cache buster in index.html must be incremented to v=2.51'
+                'Cache buster in index.html must be incremented to v=2.52 or v=2.51'
+            );
+        });
+    });
+
+    describe('Suite 22: REV-093 Status Terminology Upgrade ("Monitoring" ➔ "Processing") & Relaxing Lounge Voice Engine', () => {
+        it('AUT-FRONT-53: should verify isProcessingStatus helper exists and supports backward compatibility', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('function isProcessingStatus(status)'),
+                true,
+                'isProcessingStatus function must exist in frontend/js/app.js'
+            );
+            assert.strictEqual(
+                appJs.includes("status === 'Processing' || status === 'Monitoring'"),
+                true,
+                'isProcessingStatus must treat both Processing and Monitoring as active processing status'
+            );
+        });
+
+        it('AUT-FRONT-54: should verify table row status dropdown and workshop bay assignment use Processing terminology', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('<option value="Processing"'),
+                true,
+                'Daily intakes table status select must contain Processing option'
+            );
+            assert.strictEqual(
+                appJs.includes("Set Status to 'Processing' to assign a workshop bay."),
+                true,
+                'Locked workshop bay tooltip must instruct setting status to Processing'
+            );
+            assert.strictEqual(
+                appJs.includes('Status: ${curStatus} ➔ Promotes to Processing') || appJs.includes('Promotes to Processing'),
+                true,
+                'Bay allocation dispatch modal must promote waiting vehicles to Processing'
+            );
+        });
+
+        it('AUT-FRONT-55: should verify universal broadcast toast plaque, relaxing lounge chime and female voice selection', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const tvHtml = fs.readFileSync(path.resolve('frontend/tv.html'), 'utf8');
+
+            // 1. Toast markup in index.html
+            assert.strictEqual(
+                indexHtml.includes('id="universal-broadcast-alert-toast"'),
+                true,
+                'Universal broadcast alert toast markup must exist in index.html'
+            );
+
+            // 2. Toast functions in app.js
+            assert.strictEqual(
+                appJs.includes('function showUniversalBroadcastToast('),
+                true,
+                'showUniversalBroadcastToast function must exist in app.js'
+            );
+            assert.strictEqual(
+                appJs.includes('function dismissUniversalBroadcastToast()'),
+                true,
+                'dismissUniversalBroadcastToast function must exist in app.js'
+            );
+
+            // 3. Lounge chime theme in app.js and tv.html
+            assert.strictEqual(
+                appJs.includes("theme === 'lounge'"),
+                true,
+                'playAutomotiveChime must implement relaxing lounge theme'
+            );
+            assert.strictEqual(
+                tvHtml.includes('WORKSHOP PROCESSING'),
+                true,
+                'tv.html alert header and simulation must display WORKSHOP PROCESSING'
+            );
+
+            // 4. Soft female voice selection keywords
+            assert.strictEqual(
+                appJs.includes('femaleKeywords') || appJs.includes('zira'),
+                true,
+                'Speech engine must filter for soft female voices'
+            );
+        });
+
+        it('AUT-FRONT-56: should verify cache buster in index.html is incremented to v=2.52', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.52"'),
+                true,
+                'Cache buster in index.html must be incremented to v=2.52'
             );
         });
     });
 
 });
+

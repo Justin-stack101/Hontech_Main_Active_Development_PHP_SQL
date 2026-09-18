@@ -7476,10 +7476,30 @@
         </div>
     </div>
 
+    <!-- UNIVERSAL BROADCAST ALERT TOAST (Visible Across All Dashboard Views) -->
+    <div id="universal-broadcast-alert-toast" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-[999999] pointer-events-none transition-all duration-300 transform -translate-y-4 opacity-0">
+        <div class="pointer-events-auto bg-slate-900/95 backdrop-blur-md text-white border border-slate-700/80 shadow-2xl rounded-2xl px-5 py-3.5 flex items-center gap-4 min-w-[340px] max-w-lg">
+            <div id="univ-broadcast-icon-box" class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+                <i id="univ-broadcast-icon" data-lucide="volume-2" class="w-5 h-5"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-0.5">
+                    <span id="univ-broadcast-tag" class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">Workshop Announcement</span>
+                    <span id="univ-broadcast-plate" class="font-mono text-xs font-black text-amber-400">NDO 8492</span>
+                </div>
+                <p id="univ-broadcast-title" class="text-xs font-bold text-white truncate">Customer · Vehicle</p>
+                <p id="univ-broadcast-subtitle" class="text-[11px] text-slate-300 truncate">Now Under Processing · Bay 1</p>
+            </div>
+            <button onclick="dismissUniversalBroadcastToast()" class="text-slate-400 hover:text-white p-1 rounded-lg transition cursor-pointer" title="Dismiss">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.51"></script>
+    <script src="js/app.js?v=2.52"></script>
 </body>
 
 </html>

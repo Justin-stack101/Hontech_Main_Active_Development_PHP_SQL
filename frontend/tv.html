@@ -184,7 +184,7 @@
             <div class="bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.85),0_0_0_4px_rgba(185,28,28,1)] border-2 border-red-700 flex flex-col min-w-[380px] sm:min-w-[480px] md:min-w-[580px] max-w-[95vw]">
                 <!-- Top Red Header Strip -->
                 <div id="tv-ready-alert-header" class="bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700">
-                    <span id="tv-ready-alert-status-text" class="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-white">WORKSHOP MONITORING</span>
+                    <span id="tv-ready-alert-status-text" class="text-xs md:text-sm font-black uppercase tracking-[0.2em] text-white">WORKSHOP PROCESSING</span>
                     <div class="flex items-center gap-1.5 opacity-90 text-[11px] font-black uppercase tracking-widest text-red-100">
                         <i id="tv-ready-alert-icon" data-lucide="radio" class="w-4 h-4 text-white"></i>
                         <span>HONTECH LIVE</span>
@@ -292,8 +292,8 @@
                 <!-- 5 Event Buttons -->
                 <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 w-full flex-1">
                     <button onclick="triggerTVSimulationEvent('monitoring')" class="p-2.5 bg-slate-900 hover:bg-blue-950/80 border border-slate-800 hover:border-blue-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
-                        <span class="text-[9px] font-mono font-black text-blue-400 mb-1">01 · MONITOR</span>
-                        <span class="text-xs font-black uppercase group-hover:text-blue-300">Monitoring</span>
+                        <span class="text-[9px] font-mono font-black text-blue-400 mb-1">01 · PROCESS</span>
+                        <span class="text-xs font-black uppercase group-hover:text-blue-300">Processing</span>
                     </button>
                     <button onclick="triggerTVSimulationEvent('bay_assigned')" class="p-2.5 bg-slate-900 hover:bg-amber-950/80 border border-slate-800 hover:border-amber-500 text-white rounded-xl text-left transition cursor-pointer flex flex-col justify-between group">
                         <span class="text-[9px] font-mono font-black text-amber-400 mb-1">02 · BAY LOC</span>
@@ -457,44 +457,61 @@
         let previousMonitoringPlates = new Set();
         let isInitialLoad = true;
 
-        // Sound Chime generator
+        // Sound Chime generator (Relaxing Executive Lounge Chime)
         function playChime() {
             if (!tvAudioEnabled) return;
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
                 const now = ctx.currentTime;
                 
-                const playTone = (freq, start, duration) => {
+                // 3 mellow melodic lounge notes: C5 (523Hz), E5 (659Hz), G5 (784Hz)
+                const notes = [523.25, 659.25, 783.99];
+                notes.forEach((freq, idx) => {
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, start);
-                    gain.gain.setValueAtTime(0, start);
-                    gain.gain.linearRampToValueAtTime(0.25, start + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+                    gain.gain.setValueAtTime(0.22, now + idx * 0.14);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.14 + 0.85);
                     osc.connect(gain);
                     gain.connect(ctx.destination);
-                    osc.start(start);
-                    osc.stop(start + duration);
-                };
-
-                // 2-tone airport chime
-                playTone(587.33, now, 0.4);        // D5
-                playTone(880.00, now + 0.25, 0.6); // A5
+                    osc.start(now + idx * 0.14);
+                    osc.stop(now + idx * 0.14 + 0.9);
+                });
             } catch (e) {
                 console.warn('Audio context blocked until user interaction:', e);
             }
         }
 
-        // Web Speech TTS Voice announcement
+        // Web Speech TTS Voice announcement (Relaxing Soft Female Voice)
         function speakTVAnnouncement(text) {
             if (!tvAudioEnabled || !('speechSynthesis' in window)) return;
             try {
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(text);
-                utter.rate = 0.95;
-                utter.pitch = 1.0;
+                utter.rate = 0.88; // Relaxing cadence
+                utter.pitch = 1.05; // Soothing tone
                 utter.lang = 'en-US';
+
+                // Pick soft natural female voice if available
+                const voices = window.speechSynthesis.getVoices();
+                if (voices && voices.length > 0) {
+                    const femaleKeywords = ['zira', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'natasha', 'female', 'woman', 'google us english'];
+                    const bestVoice = voices.find(v => {
+                        const nameLower = v.name.toLowerCase();
+                        return (v.lang.startsWith('en') || v.lang.startsWith('fil') || v.lang.startsWith('tl')) && 
+                               femaleKeywords.some(k => nameLower.includes(k));
+                    }) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+
+                    if (bestVoice) utter.voice = bestVoice;
+                }
+
+                // Chrome Garbage Collection protection
+                window._activeUtterance = utter;
+                utter.onend = () => { window._activeUtterance = null; };
+                utter.onerror = () => { window._activeUtterance = null; };
+
                 window.speechSynthesis.speak(utter);
             } catch (e) {
                 console.warn('Speech synthesis error:', e);
@@ -723,12 +740,12 @@
                     model: mockJob.vehicle,
                     speechText: `Customer ${mockJob.customer}, vehicle ${mockJob.plate} is now ready for release. Please proceed to cashier.`
                 });
-            } else if (eventType === 'monitoring') {
+            } else if (eventType === 'monitoring' || eventType === 'processing') {
                 triggerTVAlertPlaque({
-                    statusText: 'WORKSHOP MONITORING',
+                    statusText: 'WORKSHOP PROCESSING',
                     plate: mockJob.plate,
                     model: mockJob.vehicle,
-                    speechText: `Vehicle ${mockJob.plate} is now under workshop monitoring in reception.`
+                    speechText: `Vehicle ${mockJob.plate} is now under workshop processing in reception.`
                 });
             } else if (eventType === 'bay_assigned') {
                 triggerTVAlertPlaque({
@@ -798,8 +815,8 @@
         function renderTVDisplay(jobs) {
             const allJobs = Array.isArray(jobs) ? jobs : [];
             
-            // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
-            const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');
+            // Group 1: Waiting Jobs (Upcoming Queue) - Processing AND Waiting status shows on TV waiting list
+            const waitingJobs = allJobs.filter(j => j.status === 'Processing' || j.status === 'Monitoring' || j.status === 'Waiting');
             // Group 2: Released (Ready, Ready to Release)
             const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
             // Group 3: Carry Over (Carry Over)
@@ -930,7 +947,7 @@
             // =========================================================
             // SLIDE 3: WORKSHOP SERVICE LANES MONITORING
             // =========================================================
-            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
+            const activeLaneJobs = allJobs.filter(j => (j.status === 'Processing' || j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
@@ -940,7 +957,7 @@
                 } else if (job.status === 'Waiting') {
                     statusBadge = `<span class="bg-gray-100 text-gray-900 border-2 border-gray-400 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
                 } else {
-                    statusBadge = `<span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">Monitoring</span>`;
+                    statusBadge = `<span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">${(job.status === 'Monitoring') ? 'Processing' : (job.status || 'Processing')}</span>`;
                 }
                 return `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
@@ -1019,10 +1036,10 @@
                 monitoringJobs.forEach(job => {
                     if (job.plate && !previousMonitoringPlates.has(job.plate)) {
                         triggerTVAlertPlaque({
-                            statusText: 'WORKSHOP MONITORING',
+                            statusText: 'WORKSHOP PROCESSING',
                             plate: job.plate,
                             model: job.vehicle || job.model || 'HONDA VEHICLE',
-                            speechText: `Vehicle ${job.plate} is now entering service in ${job.location || 'Workshop Bay'}.`
+                            speechText: `Vehicle ${job.plate} is now entering service processing in ${job.location || 'Workshop Bay'}.`
                         });
                     }
                 });

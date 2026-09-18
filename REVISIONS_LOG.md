@@ -1,3 +1,31 @@
+## 📅 September 18, 2026 (Status Upgrade to Processing, Lounge Voice Engine & Broadcast Toast)
+
+### 📋 Status Upgrade to Processing, Lounge Voice Engine & Broadcast Toast (REV-093 / v5.93)
+* **Status Terminology Migration from "Monitoring" ➔ "Processing"**:
+  - Migrated table row status dropdowns, badges, and bay allocation checks across `frontend/js/app.js` and `backend/controllers/JobController.php` from `"Monitoring"` to `"Processing"`.
+  - Added `isProcessingStatus(status)` helper to ensure complete backward compatibility with existing MySQL records storing `"Monitoring"`.
+  - Updated bay dispatch modal and location locks: assigning a bay requires or auto-promotes to `"Processing"`.
+  - Updated reports live metrics and subtext: `Currently in Bay (${processingCount} Processing)`.
+* **Relaxing Soft Female Voice Engine & Executive Lounge Chime**:
+  - Filtered Web Speech API voices to select soothing natural female voices (e.g., Zira, Samantha, Victoria, Karen, Jenny, Aria, Natasha, Google US English).
+  - Tuned broadcast speech parameters to a calm, relaxing tempo (`rate: 0.88`, `pitch: 1.05`).
+  - Added Chrome garbage collection guard (`window._activeUtterance`) to prevent speech cutoff during long announcements.
+  - Introduced default `"lounge"` chime theme (mellow harmonic triangle wave notes C5 523Hz -> E5 659Hz -> G5 784Hz with smooth 0.85s decay).
+  - Implemented multi-event user interaction listener (`click`, `keydown`, `touchstart`) to unlock browser AudioContext autoplay blocks.
+* **Universal Broadcast Alert Toast / Pop-up Plaque**:
+  - Injected `#universal-broadcast-alert-toast` fixed at top center (`z-[999999]`) of `frontend/index.html`.
+  - Integrated `showUniversalBroadcastToast(eventData)` across workshop announcements (`processing`, `bay_assigned`, `ready`, `carryover`, `return_active`).
+  - Equipped with auto-dismiss (6s), smooth slide-in/fade transitions, and dismiss button.
+* **Smart TV Monitor Display Sync (`frontend/tv.html`)**:
+  - Updated TV alert banners, simulation controls, and lane lists to `"WORKSHOP PROCESSING"`.
+  - Synced TV voice engine with the relaxing lounge chime and soft female voice profile.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 22 (`AUT-FRONT-53`, `AUT-FRONT-54`, `AUT-FRONT-55`, `AUT-FRONT-56`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 71 automated unit, RBAC, and security regression tests pass across 31 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.52` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Carry-Over Table Revisions & Remarks Migration)
 
 ### 📋 Carry-Over Table Revisions & Remarks Migration (REV-092 / v5.92)

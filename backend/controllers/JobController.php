@@ -329,11 +329,11 @@ class JobController
                     $vacateStmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id != ? AND (location = ? OR location = ? OR bay_assigned = ?) AND status NOT IN ('Completed', 'Released')");
                     $vacateStmt->execute([$job['id'], "Bay {$bayNum}", "Lift {$bayNum}", $bayNum]);
 
-                    $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'Monitoring' : $job['status'];
+                    $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'Processing' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ?, updated_at = NOW() WHERE id = ?');
                     $stmt->execute([$normalizedLocation, $bayNum, $newStatus, $job['id']]);
                 } else {
-                    // Selecting Waiting Area preserves existing status (e.g. Monitoring remains Monitoring)
+                    // Selecting Waiting Area preserves existing status (e.g. Processing remains Processing)
                     $stmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id = ?");
                     $stmt->execute([$job['id']]);
                 }
