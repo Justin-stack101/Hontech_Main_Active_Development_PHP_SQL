@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -669,6 +669,29 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 indexHtml.includes('p-5 rounded-2xl'),
                 true,
                 'Card containers must use generous p-5 padding'
+            );
+        });
+    });
+
+    describe('Suite 16: Scaled Typography & Prominent Table Value Sizing (REV-085)', () => {
+        it('AUT-FRONT-45: should verify table values and badges use prominent text-xs and text-sm sizing', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('font-bold text-slate-900 text-sm'),
+                true,
+                'Vehicle names must use prominent text-sm font-bold'
+            );
+            assert.strictEqual(
+                appJs.includes('text-xs font-bold uppercase px-2.5 py-1'),
+                true,
+                'Badges must use comfortable text-xs with px-2.5 py-1 padding'
+            );
+            assert.strictEqual(
+                indexHtml.includes('text-slate-600 text-xs font-black uppercase tracking-wider'),
+                true,
+                'Table headers must use clear text-xs typography'
             );
         });
     });

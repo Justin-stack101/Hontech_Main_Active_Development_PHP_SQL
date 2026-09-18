@@ -4,6 +4,24 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Daily Intakes & Queue Tables Scaled Typography & Prominent Value Sizing)
+
+### 📋 Scaled Typography & Prominent Table Value Sizing (REV-085 / v5.85)
+* **Scaled Typography & Value Readability**:
+  - Replaced tiny `text-[9px]`, `text-[9.5px]`, and `text-[10px]` font sizes across table values with prominent, easy-to-read typography:
+    - **Vehicle Name**: Scaled from `text-xs` to **`text-sm font-extrabold text-slate-900`** with `w-4 h-4` car icon.
+    - **Badges & Selectors (`My Job`, `PMS/GRS`, `Lane`)**: Scaled from `text-[9.5px]` to **`text-xs font-bold`** with comfortable `px-2.5 py-1` padding and `w-3.5 h-3.5` icons.
+    - **Plate Numbers & Claim Stubs**: Enhanced with `px-2.5 py-1 rounded-md font-bold text-xs/text-sm text-slate-900`.
+    - **Source Badge**: Scaled from `text-[9px]` to **`text-[11px] font-black px-2 py-1`**.
+    - **Status & Location Badges**: Scaled from `text-[10px]` to **`text-xs font-bold px-2.5 py-1.5`**.
+    - **Table Headers**: Scaled from `text-[10px]` to **`text-xs font-black uppercase tracking-wider`**.
+* **Automated Testing & Cache Invalidation**:
+  - Added Suite 16 (`AUT-FRONT-45`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 60 automated assertions pass across 25 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.44` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Daily Intakes & Queue Tables Expanded Spacing & Cell Breathing Room)
 
 ### 📋 Daily Intakes & Queue Tables Expanded Spacing & Cell Breathing Room (REV-084 / v5.84)
