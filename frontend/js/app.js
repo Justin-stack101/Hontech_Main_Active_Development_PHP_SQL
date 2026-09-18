@@ -4077,7 +4077,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <span class="truncate max-w-[190px] font-bold text-slate-900" title="${job.vehicle}">${job.vehicle}</span>
                                 </div>
                                 
-                                <div class="flex flex-wrap items-center gap-1">
+                                <div class="flex flex-col items-start gap-1 mt-1">
                                     <!-- Service Advisor Action / Status Badge -->
                                     ${isAssignedToMe ? `
                                         <span class="inline-flex items-center gap-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9.5px] font-bold uppercase px-1.5 py-0.5 rounded shadow-2xs" title="Assigned to you">

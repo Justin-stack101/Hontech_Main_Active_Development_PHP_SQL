@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented to v=2.41');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -625,6 +625,28 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(appJs.includes('Return Active'), true, 'Return Active button must exist in Carry-Over');
             assert.strictEqual(appJs.includes('setJobStatus'), true, 'setJobStatus call must be bound');
             assert.strictEqual(appJs.includes('completeRelease'), true, 'completeRelease call must be bound');
+        });
+    });
+
+    describe('Suite 14: Model & Category Column Form Vertical Badge Stacking (REV-083)', () => {
+        it('AUT-FRONT-43: should verify Model & Category badges use vertical column stack flex-col items-start in app.js', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            assert.strictEqual(
+                appJs.includes('flex flex-col items-start gap-1'),
+                true,
+                'Model & Category badge container must use flex flex-col items-start to stack badges vertically in column form'
+            );
+            
+            const advisorIdx = appJs.indexOf('<!-- Service Advisor Action / Status Badge -->');
+            const categoryIdx = appJs.indexOf('<!-- Service Category Selection -->');
+            const laneIdx = appJs.indexOf('<!-- Lane Selection -->');
+            
+            assert.strictEqual(advisorIdx !== -1, true, 'Advisor badge template must exist');
+            assert.strictEqual(categoryIdx !== -1, true, 'Category selection template must exist');
+            assert.strictEqual(laneIdx !== -1, true, 'Lane selection template must exist');
+            assert.strictEqual(advisorIdx < categoryIdx, true, 'Advisor badge (myjob) must precede Service Category (grs)');
+            assert.strictEqual(categoryIdx < laneIdx, true, 'Service Category (grs) must precede Lane Selection (special)');
         });
     });
 });

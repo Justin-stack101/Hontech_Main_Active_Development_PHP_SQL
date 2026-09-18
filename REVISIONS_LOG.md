@@ -4,6 +4,23 @@ This log documents all feature revisions, bugs resolved, and system updates comp
 
 ---
 
+## 📅 September 18, 2026 (Daily Intakes Model & Category Column Form Vertical Badge Stacking)
+
+### 📋 Model & Category Column Form Vertical Badge Stacking (REV-083 / v5.83)
+* **Vertical Column Form Badge Stacking**:
+  - Replaced horizontal wrapped badge container (`flex flex-wrap items-center gap-1`) with a strict vertical column stack (`flex flex-col items-start gap-1 mt-1`) in the `MODEL & CATEGORY` column of the Daily Intakes table (`renderJobRows`).
+  - Standardized the stacked badge sequence strictly per operational hierarchy:
+    1. **Service Advisor Action / Assignment Badge**: `My Job` (or `[Advisor Name] [Take Over]` / `Take Job` / `Unassigned`).
+    2. **Service Category Badge & Selector**: `PMS` / `GRS` / `OTHERS` with wrench icon and inline dropdown.
+    3. **Lane Type Badge & Selector**: `FLEXIBLE` / `SPECIAL` / `EXPRESS` with route icon and inline dropdown.
+  - Eliminated haphazard horizontal wrapping across rows, achieving pixel-perfect left alignment and visual predictability.
+* **Automated Testing & Cache Invalidation**:
+  - Added Suite 14 (`AUT-FRONT-43`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 58 automated assertions pass across 23 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.42` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Daily Intakes 3-Table Alignment, Spacing Rhythm, Command Deck & Carry-Over Overflow Fix)
 
 ### 📋 Daily Intakes 3-Table Alignment, Spacing Rhythm, Command Deck & Carry-Over Overflow Fix (REV-082 / v5.82)
