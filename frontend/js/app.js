@@ -11398,13 +11398,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-customer-name').innerText = cust.name || '—';
             }
             if (document.getElementById('dossier-customer-address')) {
-                document.getElementById('dossier-customer-address').innerText = cust.address || '___________________';
+                document.getElementById('dossier-customer-address').innerText = cust.address || '';
             }
             if (document.getElementById('dossier-customer-phone')) {
-                document.getElementById('dossier-customer-phone').innerText = cust.phone && cust.phone !== 'N/A' ? cust.phone : '___________________';
+                document.getElementById('dossier-customer-phone').innerText = cust.phone && cust.phone !== 'N/A' ? cust.phone : '';
             }
             if (document.getElementById('dossier-customer-email')) {
-                document.getElementById('dossier-customer-email').innerText = cust.email || latestJob.customer_email || latestJob.email || '___________________';
+                document.getElementById('dossier-customer-email').innerText = cust.email || latestJob.customer_email || latestJob.email || '';
             }
 
             // Column 2
@@ -11413,13 +11413,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             if (document.getElementById('dossier-km-reading')) {
                 const kmVal = cust.kmReading || latestJob.km_reading || latestJob.kmReading;
-                document.getElementById('dossier-km-reading').innerText = kmVal ? `${Number(kmVal).toLocaleString()} km` : '___________________';
+                document.getElementById('dossier-km-reading').innerText = kmVal ? `${Number(kmVal).toLocaleString()} km` : '';
             }
             if (document.getElementById('dossier-engine-no')) {
-                document.getElementById('dossier-engine-no').innerText = cust.engineNo || latestJob.engine_no || latestJob.engineNo || '___________________';
+                document.getElementById('dossier-engine-no').innerText = cust.engineNo || latestJob.engine_no || latestJob.engineNo || '';
             }
             if (document.getElementById('dossier-chassis-no')) {
-                document.getElementById('dossier-chassis-no').innerText = cust.chassisNo || latestJob.chassis_no || latestJob.chassisNo || latestJob.chassis || '___________________';
+                document.getElementById('dossier-chassis-no').innerText = cust.chassisNo || latestJob.chassis_no || latestJob.chassisNo || latestJob.chassis || '';
             }
 
             // Column 3
@@ -11427,13 +11427,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-vehicle-plate').innerText = cust.plate !== 'NO-PLATE' ? cust.plate : 'NO-PLATE';
             }
             if (document.getElementById('dossier-intake-date')) {
-                document.getElementById('dossier-intake-date').innerText = intakeDateFormatted;
+                document.getElementById('dossier-intake-date').innerText = intakeDateFormatted !== '___________________' ? intakeDateFormatted : '';
             }
             if (document.getElementById('dossier-promise-date')) {
-                document.getElementById('dossier-promise-date').innerText = promiseDateFormatted;
+                document.getElementById('dossier-promise-date').innerText = promiseDateFormatted !== '___________________' ? promiseDateFormatted : '';
             }
             if (document.getElementById('dossier-vehicle-color')) {
-                document.getElementById('dossier-vehicle-color').innerText = cust.color || latestJob.color || '___________________';
+                document.getElementById('dossier-vehicle-color').innerText = cust.color || latestJob.color || '';
             }
 
             if (document.getElementById('dossier-branch-text')) {

@@ -1,3 +1,23 @@
+## 📅 September 20, 2026 (Authentic 2025 RO Form 1/3 CUSTOMER DETAILS Layout in Customer Lookup)
+
+### 📋 Authentic 2025 RO Form 1/3 CUSTOMER DETAILS Layout (REV-100 / v5.100)
+* **Faithful Visual Representation of Printed Repair Order (Form 1/3)**:
+  - Overhauled `#lookup-dossier-card` in `frontend/index.html` to mirror the official printed format:
+    - **Header**: Authentic solid gray bar (`bg-[#c0c0c0]`) with black border and uppercase bold text: `CUSTOMER DETAILS`.
+    - **Outer Frame**: Solid black 2px border matching the official shop floor document.
+    - **3-Column Matrix**:
+      - Column 1: `Name`, `Address`, `Contact No.`, `E-Mail Add.`
+      - Column 2: `Year/Model`, `KM Reading`, `Engine No`, `Chassis No.`
+      - Column 3: `Plate No`, `Intake Date`, `Promise Date`, `Color`
+    - **Form-Line Underlining**: Each row features aligned colons (`:`) followed by authentic horizontal document underline borders (`border-b border-black`) that display vehicle records cleanly.
+  - Refined data population fallbacks in `frontend/js/app.js` (`selectCustomerForLookup`), rendering clean underlines without awkward `______` literal text spillover.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 29 (`AUT-FRONT-77`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 92 automated unit, RBAC, and security regression tests pass across 38 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.58` in `frontend/index.html`.
+
+---
+
 ## 📅 September 20, 2026 (Repository File Structure & Tooling Organization)
 
 ### 📋 Repository File Structure & Tooling Organization (REV-099 / v5.99)
