@@ -102,6 +102,20 @@ Whenever the AI is requested to make any changes (features, bug fixes, UI adjust
 
 ---
 
+## ⚡ Token Optimization: Strategy A — Surgical Line Slicing (Active Sprint Protocol)
+**Effective:** September 20–27, 2026 (7-Day Capstone Sprint)
+
+The AI **MUST** follow these lean operating rules to conserve API tokens and rate limits during the critical 1-week build sprint (Google Auth, Supabase, Vercel deployment):
+
+1. **Maximum 50-Line Inspection Rule**: Never read more than 50 lines of any file per `view_file` call. Use `grep_search` or `PowerShell Select-String` to locate exact line numbers first, then view only the targeted 30–50 line range.
+2. **No Full-File Reads**: Never inspect entire monolithic files (`app.js` @ 17,162 lines, `index.html` @ 7,536 lines). Always use pinpoint line ranges.
+3. **Compact Terminal Output**: When running `npm.cmd test`, use summary-level output. Do not dump the full 150-assertion verbose log into conversation context.
+4. **Batched Edits Over Sequential Prompts**: When multiple small edits target the same file, combine them into a single `multi_replace_file_content` call instead of multiple sequential tool calls.
+5. **Session Cycling After Each REV**: After completing and committing a revision (e.g. REV-098), the developer should start a fresh chat session. The AI resumes context from `REVISIONS_LOG.md` and `.agents/skills/` — not from accumulated chat history.
+6. **Full 6-Stage Lifecycle Preserved**: Strategy A does NOT reduce the quality, rigor, or completeness of the 6-stage closed-loop lifecycle. All automated testing (Stage 3), QA checklist sync (Stage 4), revisions logging (Stage 5), and Git commit traceability (Stage 6) execute identically.
+
+---
+
 ## 🌿 Development & Git Workflow
 1. **Terminal Development Standard**: Developers run local operations using `npm.cmd run dev` (which launches `php -S 0.0.0.0:8000 router.php`) and test via `npm.cmd test`.
 2. **Active Branch Discipline**: Ensure work is committed and pushed to the current working branch (e.g. `prototype_process` or `branch2-Security-Account-Recovery`).
