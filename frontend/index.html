@@ -2465,100 +2465,103 @@
 
                         <div id="lookup-dossier-card" class="hidden space-y-6">
                             <!-- OFFICIAL HONTECH 2025 RO FORM DOSSIER MASTER CONTAINER -->
-                            <div class="bg-white border-2 border-slate-900 rounded-2xl shadow-sm overflow-hidden space-y-0">
-                                <!-- Top Official Contact Bar -->
-                                <div class="px-4 py-2 bg-slate-50 border-b border-slate-900 flex flex-wrap items-center justify-between gap-2 text-xs font-mono font-bold text-slate-800">
-                                    <div class="flex items-center gap-2">
-                                        <i data-lucide="phone-call" class="w-4 h-4 text-red-600 shrink-0"></i>
-                                        <span class="tracking-tight text-slate-900 font-black">85644550 / 71219124 / 09458757441 / 09525065084 - VIBER</span>
+                            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden space-y-0">
+                                <!-- Sleek Top Contact Bar -->
+                                <div class="px-5 py-3 bg-gradient-to-r from-slate-900 to-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-white">
+                                    <div class="flex items-center gap-2 font-mono">
+                                        <div class="w-6 h-6 rounded-lg bg-red-600/20 text-red-400 flex items-center justify-center shrink-0">
+                                            <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                                        </div>
+                                        <span class="tracking-tight text-gray-200 font-semibold text-[11.5px]">85644550 / 71219124 / 09458757441 / 09525065084 - VIBER</span>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <span id="dossier-live-status-badge" class="hidden"></span>
-                                        <span id="dossier-branch-text" class="text-[10px] uppercase font-black text-slate-600 bg-white px-2 py-0.5 rounded border border-slate-300">Marikina Branch</span>
-                                        <span id="dossier-loyalty-badge" class="px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs">Initial Visit Record</span>
+                                        <span id="dossier-branch-text" class="text-[10.5px] uppercase font-bold text-gray-300 bg-white/10 px-2.5 py-1 rounded-lg border border-white/10">Marikina Branch</span>
+                                        <span id="dossier-loyalty-badge" class="px-3 py-1 rounded-lg text-[10.5px] font-black uppercase tracking-wider bg-red-600 text-white shadow-xs">Initial Visit Record</span>
                                     </div>
                                 </div>
 
-                                <!-- Official Gray Section Banner (Matches HonTech Form 1/3 Paper & Excel RO) -->
-                                <div class="bg-[#c0c0c0] border-b-2 border-slate-900 py-1.5 px-4 text-center select-none">
-                                    <h4 class="text-xs sm:text-sm font-black uppercase tracking-widest text-slate-950 font-sans">
-                                        CUSTOMER DETAILS
-                                    </h4>
+                                <!-- Sleek Sub-Header with Customer Details Title -->
+                                <div class="bg-gray-50 bg-[#c0c0c0]/15 border-b border-gray-100 px-5 py-2 flex items-center justify-between">
+                                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-800 flex items-center gap-1.5">
+                                        <i data-lucide="file-badge" class="w-3.5 h-3.5 text-red-600"></i> CUSTOMER DETAILS
+                                    </span>
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Verified Registry Dossier</span>
                                 </div>
 
-                                <!-- 3-Column Structured Spreadsheet Table / Grid -->
-                                <div class="p-4 sm:p-5 bg-white">
-                                    <div class="grid grid-cols-1 md:grid-cols-12 gap-y-3.5 md:gap-x-5 text-xs font-sans">
+                                <!-- Modern Card Content Area -->
+                                <div class="p-5 sm:p-6 bg-white">
+                                    <div class="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-x-6 text-xs">
                                         
-                                        <!-- Column 1 (Col 1-4) -->
-                                        <div class="md:col-span-4 space-y-3 md:border-r md:border-slate-300 md:pr-4">
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Name</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-customer-name" class="flex-1 font-black text-slate-950 truncate border-b border-slate-800 pb-0.5">Clarissa Villanueva</span>
+                                        <!-- Column 1: Customer Identity -->
+                                        <div class="md:col-span-4 space-y-3.5 md:border-r md:border-gray-100 md:pr-5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Customer Identity</span>
+                                                <i data-lucide="user" class="w-3.5 h-3.5 text-gray-300"></i>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Address</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-customer-address" class="flex-1 font-semibold text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Customer Name</span>
+                                                <span id="dossier-customer-name" class="block font-black text-gray-900 text-sm truncate">Clarissa Villanueva</span>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Contact No.</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-customer-phone" class="flex-1 font-mono font-bold text-slate-900 truncate border-b border-slate-800 pb-0.5">0932-888-9900</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Contact Phone</span>
+                                                <span id="dossier-customer-phone" class="block font-mono font-bold text-gray-800 text-xs truncate">0932-888-9900</span>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">E-Mail Add.</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-customer-email" class="flex-1 font-medium text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Address</span>
+                                                <span id="dossier-customer-address" class="block font-medium text-gray-700 text-xs truncate">Not Specified</span>
                                             </div>
-                                        </div>
-
-                                        <!-- Column 2 (Col 5-8) -->
-                                        <div class="md:col-span-4 space-y-3 md:border-r md:border-slate-300 md:pr-4">
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Year/Model</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-vehicle-model" class="flex-1 font-bold text-slate-900 truncate border-b border-slate-800 pb-0.5">Geely Coolray Sport</span>
-                                            </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">KM Reading</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-km-reading" class="flex-1 font-mono font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
-                                            </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Engine No</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-engine-no" class="flex-1 font-mono font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
-                                            </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Chassis No.</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-chassis-no" class="flex-1 font-mono font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Email Address</span>
+                                                <span id="dossier-customer-email" class="block font-medium text-gray-700 text-xs truncate">Not Specified</span>
                                             </div>
                                         </div>
 
-                                        <!-- Column 3 (Col 9-12) -->
-                                        <div class="md:col-span-4 space-y-3">
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Plate No</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-vehicle-plate" class="flex-1 font-mono font-black text-slate-950 text-sm tracking-wide truncate border-b border-slate-800 pb-0.5">CLA 2288</span>
+                                        <!-- Column 2: Vehicle Specs -->
+                                        <div class="md:col-span-4 space-y-3.5 md:border-r md:border-gray-100 md:pr-5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Vehicle Specs</span>
+                                                <i data-lucide="car" class="w-3.5 h-3.5 text-gray-300"></i>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Intake Date</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-intake-date" class="flex-1 font-mono font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">2026-09-17</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Make & Model</span>
+                                                <span id="dossier-vehicle-model" class="block font-bold text-gray-900 text-sm truncate">Geely Coolray Sport</span>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Promise Date</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-promise-date" class="flex-1 font-mono font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">2026-09-17</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Odometer (KM)</span>
+                                                <span id="dossier-km-reading" class="block font-mono font-bold text-gray-800 text-xs truncate">Not Stamped</span>
                                             </div>
-                                            <div class="flex items-baseline gap-1.5">
-                                                <span class="w-22 shrink-0 font-bold text-slate-800 text-[11px]">Color</span>
-                                                <span class="text-slate-500 font-bold shrink-0">:</span>
-                                                <span id="dossier-vehicle-color" class="flex-1 font-bold text-slate-800 truncate border-b border-slate-800 pb-0.5">___________________</span>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Engine Number</span>
+                                                <span id="dossier-engine-no" class="block font-mono font-bold text-gray-800 text-xs truncate">Not Stamped</span>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Chassis Number</span>
+                                                <span id="dossier-chassis-no" class="block font-mono font-bold text-gray-800 text-xs truncate">Not Stamped</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Column 3: Registration & Timeline -->
+                                        <div class="md:col-span-4 space-y-3.5">
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Intake Timeline</span>
+                                                <i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-300"></i>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">License Plate</span>
+                                                <span id="dossier-vehicle-plate" class="inline-block font-mono font-black text-gray-900 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded text-xs tracking-wider">CLA 2288</span>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Intake Date</span>
+                                                <span id="dossier-intake-date" class="block font-mono font-bold text-gray-800 text-xs truncate">2026-09-17</span>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Promise Date</span>
+                                                <span id="dossier-promise-date" class="block font-mono font-bold text-gray-800 text-xs truncate">2026-09-17</span>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <span class="text-[10px] font-semibold text-gray-500 block">Body Color</span>
+                                                <span id="dossier-vehicle-color" class="block font-medium text-gray-700 text-xs truncate">Not Stamped</span>
                                             </div>
                                         </div>
 
@@ -3629,6 +3632,34 @@
 
                         <!-- Hidden Inputs for Source Tracking -->
                         <input type="hidden" id="intake-source" value="Walk-in">
+
+                        <!-- Assistant Destination Table & Branch Controls -->
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div class="sm:col-span-7 space-y-1">
+                                <label class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider block">Destination Table</label>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" id="btn-dest-online" onclick="setAssistantDestination('online')"
+                                        class="flex-1 py-1.5 px-3 rounded-lg text-xs font-black uppercase tracking-wider transition bg-blue-600 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> Booking Module
+                                    </button>
+                                    <button type="button" id="btn-dest-daily" onclick="setAssistantDestination('daily')"
+                                        class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 flex items-center justify-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i> Daily Intakes
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-5 space-y-1">
+                                <label class="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider block">Target Branch</label>
+                                <div class="relative">
+                                    <select id="intake-target-branch"
+                                        class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-900 outline-none focus:border-red-600 transition cursor-pointer appearance-none">
+                                        <option value="Marikina Branch" selected>Marikina Branch</option>
+                                        <option value="East Branch">East Branch</option>
+                                    </select>
+                                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-2 pointer-events-none"></i>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Main 3-Column Inputs Grid -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -5143,7 +5174,7 @@
                     <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Full Legal / Display Name</label>
                     <input type="text" id="name-change-input"
                         class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
-                        placeholder="e.g. Mark Bautista">
+                        placeholder="e.g. Manney Sarol">
                     <p class="text-[10.5px] text-gray-400 mt-1 font-medium">This name will be displayed on all assigned job logs, claim stubs, and user profile badges.</p>
                 </div>
                 <div class="flex gap-3 justify-end pt-2">
@@ -7529,7 +7560,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.56"></script>
+    <script src="js/app.js?v=2.57"></script>
 </body>
 
 </html>

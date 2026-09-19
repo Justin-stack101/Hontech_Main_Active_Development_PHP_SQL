@@ -301,7 +301,7 @@
                         dateReceived: yestStr,
                         apptDate: yestStr,
                         evaluation: 'Historical Completed PMS Service 10k km',
-                        saName: 'Mark Bautista',
+                        saName: 'Manney Sarol',
                         branch: currentUserBranch || 'Marikina Branch'
                     },
                     {
@@ -338,7 +338,7 @@
                         dateReceived: yestStr,
                         promisedDate: todayStr,
                         evaluation: 'Awaiting alternator parts delivery',
-                        saName: 'Mark Bautista',
+                        saName: 'Manney Sarol',
                         branch: currentUserBranch || 'Marikina Branch'
                     },
 
@@ -359,7 +359,7 @@
                         dateReceived: todayStr,
                         apptDate: todayStr,
                         evaluation: 'Routine 20k check in Bay 1',
-                        saName: 'Mark Bautista',
+                        saName: 'Manney Sarol',
                         branch: currentUserBranch || 'Marikina Branch'
                     },
                     {
@@ -377,7 +377,7 @@
                         dateReceived: todayStr,
                         apptDate: todayStr,
                         evaluation: 'Brake pad replacement diagnostic',
-                        saName: 'Mark Bautista',
+                        saName: 'Manney Sarol',
                         branch: currentUserBranch || 'Marikina Branch'
                     },
                     {
@@ -2982,6 +2982,53 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.setupIntakeForm = setupIntakeForm;
 
+        function setAssistantDestination(dest) {
+            const btnOnline = document.getElementById('btn-dest-online');
+            const btnDaily = document.getElementById('btn-dest-daily');
+            const sourceInput = document.getElementById('intake-source');
+            const walkinFields = document.getElementById('div-walkin-fields');
+            const bookingFields = document.getElementById('div-booking-fields');
+            const walkinLaneWrap = document.getElementById('div-walkin-lane-wrap');
+            const bookingLaneWrap = document.getElementById('div-booking-lane-wrap');
+            const walkinStubWrap = document.getElementById('div-walkin-stub-wrap');
+            const bookingConfirmWrap = document.getElementById('div-booking-confirm-wrap');
+
+            if (dest === 'daily') {
+                if (btnDaily) {
+                    btnDaily.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-black uppercase tracking-wider transition bg-red-600 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer';
+                }
+                if (btnOnline) {
+                    btnOnline.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 flex items-center justify-center gap-1.5 cursor-pointer';
+                }
+                if (sourceInput) sourceInput.value = 'Walk-in';
+                if (walkinFields) walkinFields.classList.remove('hidden');
+                if (bookingFields) bookingFields.classList.add('hidden');
+                if (walkinLaneWrap) walkinLaneWrap.classList.remove('hidden');
+                if (bookingLaneWrap) bookingLaneWrap.classList.add('hidden');
+                if (walkinStubWrap) walkinStubWrap.classList.remove('hidden');
+                if (bookingConfirmWrap) bookingConfirmWrap.classList.add('hidden');
+                updateStubPreview();
+            } else {
+                if (btnOnline) {
+                    btnOnline.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-black uppercase tracking-wider transition bg-blue-600 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer';
+                }
+                if (btnDaily) {
+                    btnDaily.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 flex items-center justify-center gap-1.5 cursor-pointer';
+                }
+                if (sourceInput) sourceInput.value = 'Online';
+                if (walkinFields) walkinFields.classList.add('hidden');
+                if (bookingFields) bookingFields.classList.remove('hidden');
+                if (walkinLaneWrap) walkinLaneWrap.classList.add('hidden');
+                if (bookingLaneWrap) bookingLaneWrap.classList.remove('hidden');
+                if (walkinStubWrap) walkinStubWrap.classList.add('hidden');
+                if (bookingConfirmWrap) bookingConfirmWrap.classList.remove('hidden');
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+        window.setAssistantDestination = setAssistantDestination;
+
         async function processIntake() {
             const source = document.getElementById('intake-source')?.value || 'Walk-in';
             const date = document.getElementById('intake-date')?.value || new Date().toISOString().split('T')[0];
@@ -3129,9 +3176,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 laneType = normalizeLaneType(document.getElementById('intake-lane-type')?.value);
             }
 
+            const targetBranch = document.getElementById('intake-target-branch')?.value || currentUserBranch || 'Marikina Branch';
+
             const intakePayload = {
                 source, dateReceived: date, plate, name, contact, category, vehicle, concern,
-                arrival, apptDate, apptTime, confirmed, laneType, claimStub
+                arrival, apptDate, apptTime, confirmed, laneType, claimStub, branch: targetBranch
             };
 
             // ACTIVE DUPLICATE RECORD GUARD (Custom Glassmorphic Modal)
@@ -4859,7 +4908,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         <td class="px-4 py-5 align-middle whitespace-nowrap">
                             <span class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-2xs">
                                 <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-                                ${job.saName || 'Mark Bautista'}
+                                ${job.saName || 'Manney Sarol'}
                             </span>
                         </td>
                         <td class="px-4 py-5 align-middle min-w-[220px] max-w-[280px]">
@@ -16879,6 +16928,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 };
 
+                // Helper to lock worksheet against unauthorized cell edits upon export
+                const applySheetProtection = (doc) => {
+                    if (!doc) return;
+                    let existingProt = doc.getElementsByTagName('sheetProtection')[0];
+                    if (!existingProt) {
+                        existingProt = doc.createElementNS(SML_NS, 'sheetProtection');
+                        existingProt.setAttribute('sheet', '1');
+                        existingProt.setAttribute('objects', '1');
+                        existingProt.setAttribute('scenarios', '1');
+                        existingProt.setAttribute('selectLockedCells', '1');
+                        existingProt.setAttribute('selectUnlockedCells', '1');
+                        const ws = doc.documentElement;
+                        const pageMargins = doc.getElementsByTagName('pageMargins')[0];
+                        if (pageMargins) {
+                            ws.insertBefore(existingProt, pageMargins);
+                        } else {
+                            ws.appendChild(existingProt);
+                        }
+                    }
+                };
+
                 // 1. PATCH SHEET 1: Job_Order (sheet1.xml)
                 const sheet1File = zip.file('xl/worksheets/sheet1.xml');
                 if (sheet1File) {
@@ -16940,6 +17010,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
+                    applySheetProtection(sheet1Doc);
                     zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
                 }
 
@@ -16988,6 +17059,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
+                    applySheetProtection(qDoc);
                     zip.file(qConf.file, serializeSheet(qDoc));
                 }
 
@@ -17043,6 +17115,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
+                    applySheetProtection(bDoc);
                     zip.file(bConf.file, serializeSheet(bDoc));
                 }
 
@@ -17061,6 +17134,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet7Doc, 'C45', chkRemarks);
                     setCell(sheet7Doc, 'C48', sa);
 
+                    applySheetProtection(sheet7Doc);
                     zip.file('xl/worksheets/sheet7.xml', serializeSheet(sheet7Doc));
                 }
 

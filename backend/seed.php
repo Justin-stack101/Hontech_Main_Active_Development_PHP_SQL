@@ -22,21 +22,35 @@ echo "=== HonTech Database Seeder ===\n\n";
 // SEED USERS
 // =============================================
 $defaultUsers = [
+    // =========================================================================
+    // 📌 EMPLOYEE TEST NAMES (Preserved for Future QA & Development Reference)
+    // =========================================================================
+    // Owner:     Engr. Antonio Honrado       | owner@hontech.com       | Marikina Branch
+    // Admin:     Adrian Mendoza              | admin@hontech.com       | Marikina Branch
+    // SA1:       Mark Bautista               | sa@hontech.com          | Marikina Branch
+    // SA2:       Dayne Ramirez               | sa2@hontech.com         | Marikina Branch
+    // Assistant: Jessica Cruz                | staff@hontech.com       | Marikina Branch
+    // Tech:      Juan Santos                 | tech@hontech.com        | Marikina Branch
+    // Admin:     Adrian Mendoza              | admin.east@hontech.com  | East Branch
+    // SA1:       Alex Valenzuela             | sa.east@hontech.com     | East Branch
+    // SA2:       Carl Domingo                | sa2.east@hontech.com    | East Branch
+    // Assistant: Maria Aquino                | staff.east@hontech.com  | East Branch
+    // =========================================================================
+
     // 1. TOP GLOBAL EXECUTIVE
-    ['name' => 'Engr. Antonio Honrado',   'role' => 'owner',     'email' => 'owner@hontech.com',      'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Nicodemus L. De Guzman',  'role' => 'owner',     'email' => 'owner@hontech.com',      'password' => Env::get('OWNER_PASSWORD', 'owner123'), 'branch' => 'Marikina Branch'],
 
     // 2. MARIKINA MAIN BRANCH (Branch 1)
-    ['name' => 'Adrian Mendoza',          'role' => 'admin',     'email' => 'admin@hontech.com',      'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Mark Bautista',           'role' => 'sa',        'email' => 'sa@hontech.com',         'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
-    ['name' => 'Dayne Ramirez',           'role' => 'sa',        'email' => 'sa2@hontech.com',        'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
-    ['name' => 'Jessica Cruz',            'role' => 'assistant', 'email' => 'staff@hontech.com',      'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
-    ['name' => 'Juan Santos',             'role' => 'tech',      'email' => 'tech@hontech.com',       'password' => Env::get('TECH_PASSWORD', 'tech123'),   'branch' => 'Marikina Branch'],
+    ['name' => 'Laynie Espiritu',         'role' => 'admin',     'email' => 'admin@hontech.com',      'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'Marikina Branch'],
+    ['name' => 'Manney Sarol',            'role' => 'sa',        'email' => 'sa@hontech.com',         'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Marriel Ayo',             'role' => 'sa',        'email' => 'sa2@hontech.com',        'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'Marikina Branch'],
+    ['name' => 'Mhiecaella Parungao',     'role' => 'assistant', 'email' => 'staff@hontech.com',      'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'Marikina Branch'],
 
     // 3. EAST BRANCH (Branch 2 - Other Branch)
-    ['name' => 'Adrian Mendoza',          'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
-    ['name' => 'Alex Valenzuela',         'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
+    ['name' => 'Vic Godoy',               'role' => 'admin',     'email' => 'admin.east@hontech.com', 'password' => Env::get('ADMIN_PASSWORD', 'admin123'), 'branch' => 'East Branch'],
+    ['name' => 'Ed Marvin Malantay',      'role' => 'sa',        'email' => 'sa.east@hontech.com',    'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
     ['name' => 'Carl Domingo',            'role' => 'sa',        'email' => 'sa2.east@hontech.com',   'password' => Env::get('SA_PASSWORD', 'sa123'),       'branch' => 'East Branch'],
-    ['name' => 'Maria Aquino',            'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
+    ['name' => 'Mhiecaella Parungao',     'role' => 'assistant', 'email' => 'staff.east@hontech.com', 'password' => Env::get('STAFF_PASSWORD', 'staff123'), 'branch' => 'East Branch'],
 ];
 
 foreach ($defaultUsers as $u) {
@@ -91,7 +105,7 @@ $defaultJobs = [
         'arrival' => '09:00', 'claim_stub' => "{$todayCompact}-001",
         'parts_available' => 'Pending', 'evaluation' => 'Front Brake Pads Replacement',
         'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2003', 'source' => 'Walk-in', 'plate' => 'LMN 456', 'name' => 'Charlie Brown',
@@ -100,7 +114,7 @@ $defaultJobs = [
         'claim_stub' => "{$todayCompact}-002",
         'parts_available' => 'No', 'evaluation' => 'Front Bumper Painting & Curing',
         'status' => 'Carry Over', 'carry_over_status' => 'Awaiting Parts', 'promised_date' => $today, 'lane_type' => 'Flexible',
-        'remarks' => 'Paint curing delay', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'remarks' => 'Paint curing delay', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2025', 'source' => 'Walk-in', 'plate' => 'NDH 5521', 'name' => 'Diana Prince',
@@ -109,7 +123,7 @@ $defaultJobs = [
         'claim_stub' => "{$todayCompact}-011",
         'parts_available' => 'Yes', 'evaluation' => 'ECU Diagnostic & Harness Rewiring',
         'status' => 'Carry Over', 'carry_over_status' => 'Extended Repair', 'promised_date' => $today, 'lane_type' => 'Flexible',
-        'remarks' => 'Extended diagnostic trace required', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'remarks' => 'Extended diagnostic trace required', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2026', 'source' => 'Walk-in', 'plate' => 'BAT 999', 'name' => 'Bruce Wayne',
@@ -118,7 +132,7 @@ $defaultJobs = [
         'claim_stub' => "{$todayCompact}-012",
         'parts_available' => 'No', 'evaluation' => 'Brembo Calipers & Rotors Import Pending',
         'status' => 'Carry Over', 'carry_over_status' => 'Awaiting Parts', 'promised_date' => $today, 'lane_type' => 'Special Lane',
-        'remarks' => 'Custom parts arrival pending courier', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'remarks' => 'Custom parts arrival pending courier', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2004', 'source' => 'Walk-in', 'plate' => 'AAA 1111', 'name' => 'Dave Smith',
@@ -127,7 +141,7 @@ $defaultJobs = [
         'arrival' => '08:30', 'departure' => '10:30',
         'claim_stub' => "{$todayCompact}-003", 'evaluation' => '40K Heavy PMS Service Done',
         'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'ONL-1005', 'source' => 'Online', 'plate' => 'BBB 2222', 'name' => 'Elena Rostova',
@@ -136,7 +150,7 @@ $defaultJobs = [
         'arrival' => '10:00', 'departure' => '12:15',
         'claim_stub' => "{$todayCompact}-004", 'evaluation' => 'New Denso Alternator Installed',
         'status' => 'Completed', 'date_completed' => $today, 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2005', 'source' => 'Walk-in', 'plate' => 'NKO 4821', 'name' => 'Carlos Yulo',
@@ -145,7 +159,7 @@ $defaultJobs = [
         'arrival' => '08:15', 'claim_stub' => "{$todayCompact}-005",
         'evaluation' => 'Fully Synthetic Oil Change & Filter',
         'status' => 'Waiting', 'location' => 'None', 'lane_type' => 'PMS & GRS Lane',
-        'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2020', 'source' => 'Walk-in', 'plate' => 'WXY 9012', 'name' => 'Ramon Santos',
@@ -154,7 +168,7 @@ $defaultJobs = [
         'arrival' => '09:30', 'claim_stub' => "{$todayCompact}-006",
         'evaluation' => 'Clutch Disc & Release Bearing Replace',
         'status' => 'Monitoring', 'location' => 'Bay 2', 'bay_assigned' => 2,
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2021', 'source' => 'Walk-in', 'plate' => 'NDR 7741', 'name' => 'Maria Clara',
@@ -163,7 +177,7 @@ $defaultJobs = [
         'arrival' => '10:15', 'claim_stub' => "{$todayCompact}-007",
         'evaluation' => 'OBD Diagnostic Scan & HCF-2 Fluid Flush',
         'status' => 'Monitoring', 'location' => 'Bay 3', 'bay_assigned' => 3,
-        'lane_type' => 'Express Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Express Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2022', 'source' => 'Walk-in', 'plate' => 'ZTB 3319', 'name' => 'Juan Dela Cruz',
@@ -172,7 +186,7 @@ $defaultJobs = [
         'arrival' => '11:00', 'claim_stub' => "{$todayCompact}-008",
         'evaluation' => 'Aircon Leak Test & Freon Recharge Complete',
         'status' => 'Ready to Release', 'location' => 'None',
-        'lane_type' => 'Flexible', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Flexible', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2023', 'source' => 'Walk-in', 'plate' => 'KGB 8820', 'name' => 'Pedro Penduko',
@@ -181,7 +195,7 @@ $defaultJobs = [
         'arrival' => '11:30', 'claim_stub' => "{$todayCompact}-009",
         'evaluation' => 'Engine Flush & Brake Pad Service',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'Priority Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Priority Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2024', 'source' => 'Walk-in', 'plate' => 'NXX 1234', 'name' => 'Andres Bonifacio',
@@ -190,7 +204,7 @@ $defaultJobs = [
         'arrival' => '12:00', 'claim_stub' => "{$todayCompact}-010",
         'evaluation' => 'Front Shock Bushing Replace & Calibrate',
         'status' => 'Monitoring', 'location' => 'Bay 4', 'bay_assigned' => 4,
-        'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Special Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2027', 'source' => 'Walk-in', 'plate' => 'NDS 1024', 'name' => 'Mateo Santos',
@@ -199,7 +213,7 @@ $defaultJobs = [
         'arrival' => '08:45', 'claim_stub' => "{$todayCompact}-013",
         'evaluation' => '30k KM PMS + Fuel Filter Replacement',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'PMS & GRS Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2028', 'source' => 'Walk-in', 'plate' => 'CAR 8841', 'name' => 'Camille Rodriguez',
@@ -208,7 +222,7 @@ $defaultJobs = [
         'arrival' => '09:15', 'claim_stub' => "{$todayCompact}-014",
         'evaluation' => 'Front Shock Absorber & Stabilizer Link Replacement',
         'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
-        'lane_type' => 'Flexible Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Flexible Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2029', 'source' => 'Walk-in', 'plate' => 'GBR 7720', 'name' => 'Gabriel Cruz',
@@ -217,7 +231,7 @@ $defaultJobs = [
         'arrival' => '10:00', 'claim_stub' => "{$todayCompact}-015",
         'evaluation' => '20,000 KM Periodic Maintenance & Brake Service',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'Express Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+        'lane_type' => 'Express Lane', 'sa_name' => 'Marriel Ayo', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2030', 'source' => 'Walk-in', 'plate' => 'PAT 3390', 'name' => 'Patricia Lim',
@@ -226,7 +240,7 @@ $defaultJobs = [
         'arrival' => '10:30', 'claim_stub' => "{$todayCompact}-016",
         'evaluation' => 'Power Steering Fluid Flush & Belt Tensioner Adjustment',
         'status' => 'Monitoring', 'location' => 'Bay 2', 'bay_assigned' => 2,
-        'lane_type' => 'Special Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Special Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2031', 'source' => 'Walk-in', 'plate' => 'ROD 1105', 'name' => 'Rodrigo Roxas',
@@ -235,7 +249,7 @@ $defaultJobs = [
         'arrival' => '11:15', 'claim_stub' => "{$todayCompact}-017",
         'evaluation' => '50,000 KM Major PMS & Radiator Coolant Flush',
         'status' => 'Ready to Release', 'location' => 'None',
-        'lane_type' => 'Priority Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+        'lane_type' => 'Priority Lane', 'sa_name' => 'Marriel Ayo', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2032', 'source' => 'Walk-in', 'plate' => 'BEA 6623', 'name' => 'Beatrice Mendoza',
@@ -244,7 +258,7 @@ $defaultJobs = [
         'arrival' => '11:45', 'claim_stub' => "{$todayCompact}-018",
         'evaluation' => '4WD Transfer Case & Rear Differential Fluid Service',
         'status' => 'Monitoring', 'location' => 'Bay 3', 'bay_assigned' => 3,
-        'lane_type' => 'Flexible Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Flexible Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2033', 'source' => 'Walk-in', 'plate' => 'JON 4912', 'name' => 'Jonathan Tan',
@@ -253,7 +267,7 @@ $defaultJobs = [
         'arrival' => '12:15', 'claim_stub' => "{$todayCompact}-019",
         'evaluation' => '15,000 KM Periodic Maintenance & AC Filter Replace',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'Express Lane', 'sa_name' => 'Mark Bautista', 'branch' => 'Branch A'
+        'lane_type' => 'Express Lane', 'sa_name' => 'Manney Sarol', 'branch' => 'Branch A'
     ],
     [
         'job_id' => 'WLK-2034', 'source' => 'Walk-in', 'plate' => 'CLA 2288', 'name' => 'Clarissa Villanueva',
@@ -262,7 +276,7 @@ $defaultJobs = [
         'arrival' => '12:45', 'claim_stub' => "{$todayCompact}-020",
         'evaluation' => 'Turbo Boost Sensor Diagnostics & Throttle Body Cleaning',
         'status' => 'Waiting', 'location' => 'None',
-        'lane_type' => 'Special Lane', 'sa_name' => 'Dayne Ramirez', 'branch' => 'Branch A'
+        'lane_type' => 'Special Lane', 'sa_name' => 'Marriel Ayo', 'branch' => 'Branch A'
     ],
 
     // BRANCH B — TODAY (Active & Completed)
@@ -273,7 +287,7 @@ $defaultJobs = [
         'arrival' => '08:45', 'claim_stub' => "EAST-{$todayCompact}-001",
         'parts_available' => 'Yes', 'evaluation' => 'Replacing seal',
         'status' => 'Monitoring', 'location' => 'Bay 1', 'bay_assigned' => 1,
-        'sa_name' => 'Alex Valenzuela', 'branch' => 'Branch B'
+        'sa_name' => 'Ed Marvin Malantay', 'branch' => 'Branch B'
     ],
     [
         'job_id' => 'ONL-3002', 'source' => 'Online', 'plate' => 'EAS 202', 'name' => 'Sophia Loren',
@@ -289,7 +303,7 @@ $defaultJobs = [
         'arrival' => '09:15', 'departure' => '11:00',
         'claim_stub' => "EAST-{$todayCompact}-002",
         'status' => 'Completed', 'date_completed' => $today,
-        'sa_name' => 'Alex Valenzuela', 'branch' => 'Branch B'
+        'sa_name' => 'Ed Marvin Malantay', 'branch' => 'Branch B'
     ],
 
         // YESTERDAY

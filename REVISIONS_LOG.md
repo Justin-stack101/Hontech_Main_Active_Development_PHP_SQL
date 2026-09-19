@@ -1,3 +1,32 @@
+## 📅 September 20, 2026 (Excel Auto-Locking, Authentic Staff Roster, Modernized Lookup UI & Assistant Destination Switcher)
+
+### 📋 Excel Auto-Locking, Authentic Staff Roster, Modernized Lookup UI & Assistant Switcher (REV-098 / v5.98)
+* **Lossless Excel Multi-Sheet Export Auto-Locking (OpenXML sheetProtection)**:
+  - Upgraded `exportOfficialXLSX()` in `frontend/js/app.js` with `applySheetProtection(doc)` helper.
+  - Automatically injects OpenXML `<sheetProtection sheet="1" objects="1" scenarios="1" selectLockedCells="1" selectUnlockedCells="1"/>` tag into worksheets across `Job_Order`, `Quotation_No 1-3`, `Billing_No 1-2`, and `CheckList_Result` before serialization and ZIP compression.
+  - Ensures exported `.xlsx` workbooks open in Microsoft Excel with cell editing locked by default, protecting official calculated formulas and figures from accidental manual tampering.
+* **Authentic HonTech Staff Directory Synchronization & QA Test Names Preservation**:
+  - Updated `backend/seed.php` with official employee roster:
+    - **Marikina Main Branch**: Owner: Nicodemus L. De Guzman, Admin: Laynie Espiritu, SA1: Manney Sarol, SA2: Marriel Ayo, Assistant: Mhiecaella Parungao.
+    - **East Branch**: Admin: Vic Godoy, SA1: Ed Marvin Malantay, SA2: Carl Domingo, Assistant: Mhiecaella Parungao.
+  - Preserved original test employee names (`Engr. Antonio Honrado`, `Adrian Mendoza`, `Mark Bautista`, `Dayne Ramirez`, `Jessica Cruz`, `Juan Santos`, `Alex Valenzuela`, `Maria Aquino`) within an explicit developer reference comment block for future QA and testing benchmarks.
+  - Replaced legacy mock/fallback employee names across `frontend/js/app.js` and `frontend/index.html`.
+  - Re-seeded the local MySQL database with authentic names across active and historical job orders.
+* **Modernized Customer Lookup Dossier Profile Card (Clutter & Box Removal)**:
+  - Overhauled `#lookup-dossier-card` in `frontend/index.html`: eliminated heavy, bulky borders and repetitive underscore placeholder clutter (`___________________`).
+  - Implemented sleek modern profile card aesthetics with a gradient dark-slate contact top bar, inline category labels, and clean "Not Stamped" / "Not Specified" fallbacks.
+  - Preserved 100% of the underlying 12-field data bindings (`dossier-customer-name`, `dossier-customer-phone`, `dossier-vehicle-plate`, `dossier-km-reading`, etc.) and one-click action buttons (`⚡ Start New Service in Forms`, `🔁 Issue Back-Job in Forms`, `Copy Info`, `Passport PDF`).
+* **Assistant Intake Destination Table Switcher & Target Branch Selector**:
+  - Added segmented destination switcher pill buttons (`[📅 Booking Module]` vs. `[📋 Daily Intakes]`) to `#section-intake` in `frontend/index.html`.
+  - Implemented `setAssistantDestination(dest)` in `frontend/js/app.js` dynamically toggling form fields, timing pickers, lane dropdowns, and stub preview depending on destination.
+  - Added target branch selector (`Marikina Branch` vs. `East Branch`), correctly tagged into `intakePayload.branch` when submitted by Assistant staff.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 27 (`AUT-FRONT-73`, `AUT-FRONT-74`, `AUT-FRONT-75`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 90 automated unit, RBAC, and security regression tests pass across 36 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.57` in `frontend/index.html`.
+
+---
+
 ## 📅 September 19, 2026 (Dual-Mode TV Monitoring Audio-Visual Announcements & Silent SA Dashboard)
 
 ### 📋 Dual-Mode TV Monitoring Audio-Visual Alerts & Locked Female Persona (REV-097 / v5.97)
