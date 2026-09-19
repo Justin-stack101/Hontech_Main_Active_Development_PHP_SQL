@@ -453,15 +453,20 @@
         let sessionPollInterval = null;
         let tvAudioEnabled = true;
         let tvJobs = [];
-        let previousReadyPlates = new Set();
-        let previousMonitoringPlates = new Set();
+        let jobStateSnapshotMap = new Map();
         let isInitialLoad = true;
+        let tvAnnouncementQueue = [];
+        let isTVAnnouncementPlaying = false;
+        let tvAlertPlaqueTimer = null;
+        let _permanentFemaleVoice = null;
 
         // Sound Chime generator (Relaxing Executive Lounge Chime)
         function playChime() {
             if (!tvAudioEnabled) return;
             try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                const ctx = new AudioContextClass();
                 if (ctx.state === 'suspended') ctx.resume();
                 const now = ctx.currentTime;
                 
@@ -484,38 +489,128 @@
             }
         }
 
-        // Web Speech TTS Voice announcement (Relaxing Soft Female Voice)
-        function speakTVAnnouncement(text) {
-            if (!tvAudioEnabled || !('speechSynthesis' in window)) return;
+        // Single Permanent Female Voice Resolution (Guarantees same professional woman identity, never randomized)
+        function getPermanentFemaleVoice() {
+            if (_permanentFemaleVoice) return _permanentFemaleVoice;
+            if (!('speechSynthesis' in window)) return null;
+
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return null;
+
+            const femaleKeywords = [
+                'zira', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'natasha', 
+                'female', 'woman', 'girl', 'catherine', 'hazel', 'susan', 'linda', 
+                'heera', 'ayanda', 'google us english'
+            ];
+            const maleKeywords = [
+                'david', 'mark', 'george', 'guy', 'male', 'man', 'boy', 'richard', 
+                'james', 'stefan', 'ravi', 'sean', 'adam', 'paul'
+            ];
+
+            // 1. Strict Priority: Female voice in English or Filipino/Tagalog
+            let match = voices.find(v => {
+                const n = v.name.toLowerCase();
+                const l = v.lang.toLowerCase();
+                const isLang = l.startsWith('en') || l.startsWith('fil') || l.startsWith('tl');
+                return isLang && femaleKeywords.some(k => n.includes(k)) && !maleKeywords.some(m => n.includes(m));
+            });
+
+            // 2. Secondary Priority: Any English voice not containing male identifiers
+            if (!match) {
+                match = voices.find(v => {
+                    const n = v.name.toLowerCase();
+                    const l = v.lang.toLowerCase();
+                    return l.startsWith('en') && !maleKeywords.some(m => n.includes(m));
+                });
+            }
+
+            // 3. Fallback
+            if (!match && voices.length > 0) {
+                match = voices[0];
+            }
+
+            if (match) {
+                _permanentFemaleVoice = match;
+                window._permanentFemaleVoice = match;
+            }
+            return _permanentFemaleVoice;
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                getPermanentFemaleVoice();
+            };
+        }
+
+        // Spaced plate formatter for natural text-to-speech pronunciation
+        function formatPlateForSpeech(plate) {
+            if (!plate) return 'vehicle';
+            return String(plate).toUpperCase().split('').join(' ');
+        }
+
+        // Web Speech TTS Voice announcement (Relaxing Soft Female Voice with Callback)
+        function speakTVAnnouncement(text, onComplete) {
+            if (!tvAudioEnabled || !('speechSynthesis' in window)) {
+                if (typeof onComplete === 'function') onComplete();
+                return;
+            }
             try {
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(text);
-                utter.rate = 0.88; // Relaxing cadence
-                utter.pitch = 1.05; // Soothing tone
+                utter.rate = 0.88; // Relaxing, natural cadence
+                utter.pitch = 1.08; // Pleasant feminine pitch
                 utter.lang = 'en-US';
 
-                // Pick soft natural female voice if available
-                const voices = window.speechSynthesis.getVoices();
-                if (voices && voices.length > 0) {
-                    const femaleKeywords = ['zira', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'natasha', 'female', 'woman', 'google us english'];
-                    const bestVoice = voices.find(v => {
-                        const nameLower = v.name.toLowerCase();
-                        return (v.lang.startsWith('en') || v.lang.startsWith('fil') || v.lang.startsWith('tl')) && 
-                               femaleKeywords.some(k => nameLower.includes(k));
-                    }) || voices.find(v => v.lang.startsWith('en')) || voices[0];
-
-                    if (bestVoice) utter.voice = bestVoice;
-                }
+                const voice = getPermanentFemaleVoice();
+                if (voice) utter.voice = voice;
 
                 // Chrome Garbage Collection protection
                 window._activeUtterance = utter;
-                utter.onend = () => { window._activeUtterance = null; };
-                utter.onerror = () => { window._activeUtterance = null; };
+                utter.onend = () => { 
+                    window._activeUtterance = null;
+                    if (typeof onComplete === 'function') onComplete();
+                };
+                utter.onerror = () => { 
+                    window._activeUtterance = null; 
+                    if (typeof onComplete === 'function') onComplete();
+                };
 
                 window.speechSynthesis.speak(utter);
             } catch (e) {
                 console.warn('Speech synthesis error:', e);
+                if (typeof onComplete === 'function') onComplete();
             }
+        }
+
+        // Sequential Announcement Queue Processor (Eliminates Audio Collisions)
+        function enqueueTVAnnouncement(item) {
+            tvAnnouncementQueue.push(item);
+            if (!isTVAnnouncementPlaying) {
+                processNextTVAnnouncement();
+            }
+        }
+
+        function processNextTVAnnouncement() {
+            if (tvAnnouncementQueue.length === 0) {
+                isTVAnnouncementPlaying = false;
+                return;
+            }
+            isTVAnnouncementPlaying = true;
+            const item = tvAnnouncementQueue.shift();
+
+            // 1. Show Top Plaque Banner
+            triggerTVAlertPlaque(item);
+
+            // 2. Play Audio Chime
+            playChime();
+
+            // 3. Broadcast TTS Voice Announcement
+            setTimeout(() => {
+                speakTVAnnouncement(item.speechText, () => {
+                    // Speech finished: brief breathing pause before next item in queue
+                    setTimeout(processNextTVAnnouncement, 600);
+                });
+            }, 500);
         }
 
         function toggleTVAudio() {
@@ -822,8 +917,8 @@
             // Group 3: Carry Over (Carry Over)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
 
-            // Detect newly ready vehicles to trigger Chime and Voice
-            detectAndBroadcastAlerts(waitingJobs, releasedAll);
+            // Detect newly ready vehicles, bay allocations, and status changes to trigger Chime, Voice & Visual Plaque
+            detectAndBroadcastAlerts(allJobs);
 
             // =========================================================
             // SLIDE 2: UPCOMING QUEUE, READY TO CLAIM, & CARRY OVER
@@ -1014,58 +1109,136 @@
             }
         }
 
-        // Live Plaque Alert Detection
-        function detectAndBroadcastAlerts(monitoringJobs, readyJobs) {
-            const currentMonitoringPlates = new Set(monitoringJobs.map(j => j.plate));
-            const currentReadyPlates = new Set(readyJobs.map(j => j.plate));
+        // Live Deep State Alert Detection Engine (Tracks Status, Location & Bay Allocations)
+        function detectAndBroadcastAlerts(allJobs) {
+            const jobsList = Array.isArray(allJobs) ? allJobs : [];
 
-            if (!isInitialLoad) {
-                // Check newly ready vehicles
-                readyJobs.forEach(job => {
-                    if (job.plate && !previousReadyPlates.has(job.plate)) {
-                        triggerTVAlertPlaque({
-                            statusText: 'READY FOR RELEASE',
-                            plate: job.plate,
-                            model: job.vehicle || job.model || 'HONDA VEHICLE',
-                            speechText: `Customer ${job.customer || job.name || 'Vehicle Owner'}, vehicle ${job.plate} is now ready for release. Please proceed to cashier.`
-                        });
-                    }
+            if (isInitialLoad) {
+                jobsList.forEach(job => {
+                    const key = String(job.id || job.claimStub || job.plate);
+                    jobStateSnapshotMap.set(key, {
+                        status: job.status,
+                        location: job.location || '',
+                        bayAssigned: job.bayAssigned || job.bay_assigned || null,
+                        carryOverStatus: job.carryOverStatus || null
+                    });
                 });
-
-                // Check newly monitoring vehicles
-                monitoringJobs.forEach(job => {
-                    if (job.plate && !previousMonitoringPlates.has(job.plate)) {
-                        triggerTVAlertPlaque({
-                            statusText: 'WORKSHOP PROCESSING',
-                            plate: job.plate,
-                            model: job.vehicle || job.model || 'HONDA VEHICLE',
-                            speechText: `Vehicle ${job.plate} is now entering service processing in ${job.location || 'Workshop Bay'}.`
-                        });
-                    }
-                });
+                isInitialLoad = false;
+                return;
             }
 
-            previousReadyPlates = currentReadyPlates;
-            previousMonitoringPlates = currentMonitoringPlates;
-            isInitialLoad = false;
+            jobsList.forEach(job => {
+                const key = String(job.id || job.claimStub || job.plate);
+                const prev = jobStateSnapshotMap.get(key);
+
+                if (prev) {
+                    const prevLoc = String(prev.location || '').trim();
+                    const currLoc = String(job.location || '').trim();
+                    const prevStatus = prev.status;
+                    const currStatus = job.status;
+                    const customerName = job.customer || job.name || 'valued customer';
+                    const plateSpoken = formatPlateForSpeech(job.plate);
+                    const modelName = job.vehicle || job.model || 'HONDA VEHICLE';
+
+                    // 1. LOCATION / BAY TRANSITION (e.g. Waiting Area -> Bay 1, Bay 1 -> Bay 2)
+                    const isCurrBay = currLoc && currLoc !== 'None' && currLoc !== 'Waiting Area';
+                    if (isCurrBay && currLoc !== prevLoc) {
+                        const bayClean = currLoc.replace(/^lift/i, 'Bay ').replace(/^bay\s*/i, 'Bay ');
+                        const bayUpper = currLoc.toUpperCase().replace(/^LIFT\s*/, 'BAY-').replace(/^BAY\s*/, 'BAY-');
+                        enqueueTVAnnouncement({
+                            statusText: `ALLOCATED: ${bayUpper}`,
+                            plate: job.plate,
+                            model: modelName,
+                            theme: 'blue',
+                            speechText: `Attention please. Vehicle ${plateSpoken}, customer ${customerName}, has been allocated to ${bayClean}.`
+                        });
+                    }
+                    // 2. STATUS TRANSITION TO READY FOR RELEASE
+                    else if ((currStatus === 'Ready' || currStatus === 'Ready to Release') && prevStatus !== 'Ready' && prevStatus !== 'Ready to Release') {
+                        enqueueTVAnnouncement({
+                            statusText: 'READY FOR RELEASE',
+                            plate: job.plate,
+                            model: modelName,
+                            theme: 'emerald',
+                            speechText: `Attention please. Customer ${customerName}, vehicle ${plateSpoken} is now ready for release. Please proceed to the cashier.`
+                        });
+                    }
+                    // 3. STATUS TRANSITION TO WORKSHOP PROCESSING
+                    else if ((currStatus === 'Processing' || currStatus === 'Monitoring') && prevStatus !== 'Processing' && prevStatus !== 'Monitoring' && prevStatus !== 'Ready' && prevStatus !== 'Ready to Release') {
+                        const locText = (currLoc && currLoc !== 'None') ? currLoc.replace(/^lift/i, 'Bay ') : 'workshop reception';
+                        enqueueTVAnnouncement({
+                            statusText: 'WORKSHOP PROCESSING',
+                            plate: job.plate,
+                            model: modelName,
+                            theme: 'red',
+                            speechText: `Attention please. Vehicle ${plateSpoken} is now entering workshop processing in ${locText}.`
+                        });
+                    }
+                    // 4. STATUS TRANSITION TO CARRY-OVER
+                    else if ((currStatus === 'Carry Over' || Boolean(job.carryOverStatus)) && prevStatus !== 'Carry Over' && !prev.carryOverStatus) {
+                        enqueueTVAnnouncement({
+                            statusText: 'CARRY-OVER VEHICLE',
+                            plate: job.plate,
+                            model: modelName,
+                            theme: 'amber',
+                            speechText: `Attention please. Vehicle ${plateSpoken} has been logged as carry over awaiting parts or extended service.`
+                        });
+                    }
+                    // 5. STATUS TRANSITION TO RELEASED
+                    else if ((currStatus === 'Released' || currStatus === 'Completed') && prevStatus !== 'Released' && prevStatus !== 'Completed') {
+                        enqueueTVAnnouncement({
+                            statusText: 'OFFICIALLY RELEASED',
+                            plate: job.plate,
+                            model: modelName,
+                            theme: 'emerald',
+                            speechText: `Attention please. Vehicle ${plateSpoken}, customer ${customerName}, has been officially released. Thank you for choosing HonTech AutoCenter.`
+                        });
+                    }
+                }
+
+                // Update snapshot for next diff
+                jobStateSnapshotMap.set(key, {
+                    status: job.status,
+                    location: job.location || '',
+                    bayAssigned: job.bayAssigned || job.bay_assigned || null,
+                    carryOverStatus: job.carryOverStatus || null
+                });
+            });
         }
 
-        function triggerTVAlertPlaque({ statusText, plate, model, speechText }) {
+        function triggerTVAlertPlaque({ statusText, plate, model, theme, speechText }) {
             const banner = document.getElementById('tv-ready-alert-banner');
             if (!banner) return;
-            document.getElementById('tv-ready-alert-status-text').innerText = statusText;
-            document.getElementById('tv-ready-alert-plate').innerText = plate;
-            document.getElementById('tv-ready-alert-model').innerText = model;
+            const statusEl = document.getElementById('tv-ready-alert-status-text');
+            const plateEl = document.getElementById('tv-ready-alert-plate');
+            const modelEl = document.getElementById('tv-ready-alert-model');
+            const headerEl = document.getElementById('tv-ready-alert-header');
+
+            if (statusEl) statusEl.innerText = statusText || 'WORKSHOP ANNOUNCEMENT';
+            if (plateEl) plateEl.innerText = plate || 'HONTECH';
+            if (modelEl) modelEl.innerText = model || 'HONDA VEHICLE';
+
+            const activeTheme = theme || 'red';
+            if (headerEl) {
+                if (activeTheme === 'blue') {
+                    headerEl.className = 'bg-blue-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-blue-700';
+                } else if (activeTheme === 'emerald') {
+                    headerEl.className = 'bg-emerald-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-emerald-700';
+                } else if (activeTheme === 'amber') {
+                    headerEl.className = 'bg-amber-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-amber-700';
+                } else {
+                    headerEl.className = 'bg-red-600 px-6 py-2.5 flex items-center justify-between text-white border-b border-red-700';
+                }
+            }
 
             banner.classList.remove('hidden');
-            playChime();
-            setTimeout(() => {
-                speakTVAnnouncement(speechText);
-            }, 500);
+            banner.classList.add('tv-plaque-animate');
 
-            setTimeout(() => {
+            if (tvAlertPlaqueTimer) clearTimeout(tvAlertPlaqueTimer);
+            tvAlertPlaqueTimer = setTimeout(() => {
                 banner.classList.add('hidden');
-            }, 9000);
+                banner.classList.remove('tv-plaque-animate');
+            }, 8500);
         }
 
         // Live Clock & Date Update (Matches Uppercase 24h HH:mm format from User Screenshot)

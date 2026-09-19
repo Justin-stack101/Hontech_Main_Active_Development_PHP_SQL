@@ -1,3 +1,25 @@
+## 📅 September 19, 2026 (Dual-Mode TV Monitoring Audio-Visual Announcements & Silent SA Dashboard)
+
+### 📋 Dual-Mode TV Monitoring Audio-Visual Alerts & Locked Female Persona (REV-097 / v5.97)
+* **Dual-Mode TV Monitoring Location & Status Audio-Visual Alerts**:
+  - Upgraded both TV monitoring modes—the Standalone TV Kiosk (`frontend/tv.html`) and the In-App TV Monitor (`#section-tv` in `frontend/index.html` / `app.js`).
+  - Added deep cross-poll state snapshot diff engine (`jobStateSnapshotMap` and `detectAndBroadcastAlerts`) in `tv.html` that actively tracks both workshop bay transitions (`currLoc !== prevLoc`) and status transitions (`Processing`, `Ready for Release`, `Carry-Over`, `Released`).
+  - Moving a vehicle to any bay (e.g. `Bay 1`, `Bay 2`, `Bay 3`, etc.) instantly triggers the 3-tone chime, displays the dynamic blue alert plaque banner (`ALLOCATED: BAY-0X`), and broadcasts the spoken voice announcement.
+  - Implemented sequential announcement queue (`enqueueTVAnnouncement` & `processNextTVAnnouncement`) in `tv.html` preventing audio and speech collision when multiple vehicles update in rapid succession.
+* **Permanent Single Woman's Voice Persona (Never Randomized)**:
+  - Implemented `getPermanentFemaleVoice()` with strict female keyword priority (`zira`, `samantha`, `victoria`, `karen`, `jenny`, `aria`, `natasha`, etc.) and hard-coded blacklist excluding male voices (`david`, `mark`, `george`, `guy`, `richard`, `james`, `paul`, etc.).
+  - Permanently locks the selected voice instance across the entire browser session (`_permanentFemaleVoice`), guaranteeing 100% consistent female identity without voice switching or randomization.
+* **Silent Service Advisor Dashboard vs. Auditory TV Protocol**:
+  - Enforced strict operational silence on the Service Advisor dashboard (`#section-queue`, `#section-form13`) to prevent audio disruptions during face-to-face customer consultations.
+  - Audio chimes and speech synthesis only fire locally when the TV module is active (`isTVModuleActive()`).
+  - All status and location actions on the SA dashboard continue to display the visual floating alert plaque (`#universal-broadcast-alert-toast`) at the top center of the screen with zero auditory disturbance.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 26 (`AUT-FRONT-69`, `AUT-FRONT-70`, `AUT-FRONT-71`, `AUT-FRONT-72`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 87 automated unit, RBAC, and security regression tests pass across 35 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.56` in `frontend/index.html`.
+
+---
+
 ## 📅 September 18, 2026 (Express 2-Hour SLA Overrun Trigger & Simple Tabular Owner/Admin Audit Hub)
 
 ### 📋 Express 2-Hour SLA Overrun Trigger & Simple Tabular Audit Hub (REV-096 / v5.96)

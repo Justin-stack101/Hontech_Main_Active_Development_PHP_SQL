@@ -3198,7 +3198,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (field === 'location' && value) {
                     if (typeof value === 'string' && (value.toLowerCase().startsWith('bay') || value.toLowerCase().startsWith('lift'))) {
-                        playBayDispatchSound();
                         if (job) announceBayAllocation(job, value.replace(/^lift/i, 'Bay '));
                     } else if (value === 'None' || value === 'Waiting Area') {
                         if (job) announceVehicleProcessing(job, 'Waiting Area');
@@ -8727,8 +8726,65 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.dismissUniversalBroadcastToast = dismissUniversalBroadcastToast;
 
+        function isTVModuleActive() {
+            const secTV = document.getElementById('section-tv');
+            return Boolean(secTV && !secTV.classList.contains('hidden'));
+        }
+        window.isTVModuleActive = isTVModuleActive;
+
+        let _appPermanentFemaleVoice = null;
+        function getPermanentFemaleVoice() {
+            if (_appPermanentFemaleVoice) return _appPermanentFemaleVoice;
+            if (!('speechSynthesis' in window)) return null;
+
+            const voices = window.speechSynthesis.getVoices();
+            if (!voices || voices.length === 0) return null;
+
+            const femaleKeywords = [
+                'zira', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'natasha', 
+                'female', 'woman', 'girl', 'catherine', 'hazel', 'susan', 'linda', 
+                'heera', 'ayanda', 'google us english'
+            ];
+            const maleKeywords = [
+                'david', 'mark', 'george', 'guy', 'male', 'man', 'boy', 'richard', 
+                'james', 'stefan', 'ravi', 'sean', 'adam', 'paul'
+            ];
+
+            let match = voices.find(v => {
+                const n = v.name.toLowerCase();
+                const l = v.lang.toLowerCase();
+                const isLang = l.startsWith('en') || l.startsWith('fil') || l.startsWith('tl');
+                return isLang && femaleKeywords.some(k => n.includes(k)) && !maleKeywords.some(m => n.includes(m));
+            });
+
+            if (!match) {
+                match = voices.find(v => {
+                    const n = v.name.toLowerCase();
+                    const l = v.lang.toLowerCase();
+                    return l.startsWith('en') && !maleKeywords.some(m => n.includes(m));
+                });
+            }
+
+            if (!match && voices.length > 0) {
+                match = voices[0];
+            }
+
+            if (match) {
+                _appPermanentFemaleVoice = match;
+                window._permanentFemaleVoice = match;
+            }
+            return _appPermanentFemaleVoice;
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                getPermanentFemaleVoice();
+            };
+        }
+
         function speakTVAnnouncement(text, options = {}) {
-            if (!tvVoiceEnabled) return;
+            // Sound and TTS Voice strictly disabled on non-TV modules (e.g. SA dashboard)
+            if (!tvVoiceEnabled || !isTVModuleActive()) return;
             if (!('speechSynthesis' in window)) {
                 console.warn('Speech synthesis not supported in this browser.');
                 return;
@@ -8740,21 +8796,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.rate = options.rate !== undefined ? options.rate : 0.88; // Relaxing, pleasant broadcast cadence
-                utterance.pitch = options.pitch !== undefined ? options.pitch : 1.05; // Slightly elevated soothing tone
+                utterance.pitch = options.pitch !== undefined ? options.pitch : 1.08; // Pleasant feminine pitch
                 utterance.volume = options.volume !== undefined ? options.volume : 1.0;
 
-                // Pick relaxing soft natural female voice if available
-                const voices = window.speechSynthesis.getVoices();
-                if (voices && voices.length > 0) {
-                    const femaleKeywords = ['zira', 'samantha', 'victoria', 'karen', 'jenny', 'aria', 'natasha', 'female', 'woman', 'google us english'];
-                    const bestVoice = voices.find(v => {
-                        const nameLower = v.name.toLowerCase();
-                        return (v.lang.startsWith('en') || v.lang.startsWith('fil') || v.lang.startsWith('tl')) && 
-                               femaleKeywords.some(k => nameLower.includes(k));
-                    }) || voices.find(v => v.lang.startsWith('en')) || voices[0];
-
-                    if (bestVoice) utterance.voice = bestVoice;
-                }
+                const voice = getPermanentFemaleVoice();
+                if (voice) utterance.voice = voice;
 
                 // Chrome Garbage Collection protection
                 window._activeUtterance = utterance;
@@ -8779,15 +8825,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const loc = locationName || job.location || 'the workshop queue';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
             
-            const message = `Attention please. Customer ${customer}, vehicle ${plateSpoken}, is now under processing in ${loc}.`;
-            speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner({
-                type: 'processing',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName,
-                location: loc
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Customer ${customer}, vehicle ${plateSpoken}, is now under processing in ${loc}.`;
+                speakTVAnnouncement(message);
+                triggerTVSlideAlertBanner({
+                    type: 'processing',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName,
+                    location: loc
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'processing',
                 plate: job.plate,
@@ -8806,16 +8856,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const bay = bayName || job.location || 'Bay 1';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is assigned to ${bay}.`;
-            playBayDispatchSound();
-            speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner({
-                type: 'bay_assigned',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName,
-                location: bay
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is assigned to ${bay}.`;
+                playBayDispatchSound();
+                speakTVAnnouncement(message);
+                triggerTVSlideAlertBanner({
+                    type: 'bay_assigned',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName,
+                    location: bay
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'bay_assigned',
                 plate: job.plate,
@@ -8833,15 +8887,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const stubText = job.claimStub ? `Claim stub ${job.claimStub}.` : '';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now ready for release. ${stubText} Please proceed to the service counter.`;
-            speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner({
-                type: 'ready',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName,
-                claimStub: job.claimStub
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, is now ready for release. ${stubText} Please proceed to the service counter.`;
+                speakTVAnnouncement(message);
+                triggerTVSlideAlertBanner({
+                    type: 'ready',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName,
+                    claimStub: job.claimStub
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'ready',
                 plate: job.plate,
@@ -8858,14 +8916,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const customer = job.customer || job.name || 'valued customer';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been officially released. Thank you for choosing HonTech AutoCenter.`;
-            speakTVAnnouncement(message, { chimeTheme: 'lounge' });
-            triggerTVSlideAlertBanner({
-                type: 'released',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been officially released. Thank you for choosing HonTech AutoCenter.`;
+                playReleaseConfirmSound();
+                speakTVAnnouncement(message, { chimeTheme: 'lounge' });
+                triggerTVSlideAlertBanner({
+                    type: 'released',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'released',
                 plate: job.plate,
@@ -8882,15 +8945,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const reason = job.carryOverStatus || job.reason || 'Awaiting Parts';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been moved to carry over due to ${reason}.`;
-            speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner({
-                type: 'carryover',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName,
-                reason: reason
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has been moved to carry over due to ${reason}.`;
+                speakTVAnnouncement(message);
+                triggerTVSlideAlertBanner({
+                    type: 'carryover',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName,
+                    reason: reason
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'carryover',
                 plate: job.plate,
@@ -8907,14 +8974,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const customer = job.customer || job.name || 'valued customer';
             const vehicleName = job.vehicle || job.model || 'Honda Civic RS';
 
-            const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has returned to the active service queue.`;
-            speakTVAnnouncement(message);
-            triggerTVSlideAlertBanner({
-                type: 'return_active',
-                plate: job.plate,
-                customer: customer,
-                vehicle: vehicleName
-            });
+            // Audio & Slide banner only trigger within active TV module
+            if (isTVModuleActive()) {
+                const message = `Attention please. Vehicle ${plateSpoken}, customer ${customer}, has returned to the active service queue.`;
+                speakTVAnnouncement(message);
+                triggerTVSlideAlertBanner({
+                    type: 'return_active',
+                    plate: job.plate,
+                    customer: customer,
+                    vehicle: vehicleName
+                });
+            }
+            // Visual notification toast always displays at top center (silent on SA dashboard)
             showUniversalBroadcastToast({
                 type: 'return_active',
                 plate: job.plate,
