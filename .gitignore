@@ -42,3 +42,4 @@ storage/
 *.cache
 scratch/
 tunnel_out.txt
+cloudflared.exe
