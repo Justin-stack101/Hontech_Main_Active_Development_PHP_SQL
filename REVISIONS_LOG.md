@@ -1,3 +1,23 @@
+## 📅 September 20, 2026 (Repository File Structure & Tooling Organization)
+
+### 📋 Repository File Structure & Tooling Organization (REV-099 / v5.99)
+* **Root Directory Restructuring & Tooling Segregation**:
+  - Created a dedicated `scripts/` directory and segregated loose execution scripts:
+    - Moved `start_lan_server.bat` to `scripts/start_lan_server.bat`.
+    - Moved `backup_database.bat` to `scripts/backup_database.bat`.
+    - Moved `tunnel.js` to `scripts/tunnel.js`.
+  - Updated `package.json` script target `"tunnel": "node scripts/tunnel.js"`.
+  - Removed duplicate 55 MB `cloudflared.exe` binary from the repository root (preserved in `tools/cloudflared.exe` and git-ignored).
+* **Isolation of Legacy Prototypes and External Design Documents**:
+  - Created `archive/` and `archive/legacy_prototypes/`.
+  - Archived unrelated Unity C# game design document (`PSYCHOLOGICAL_GAMES_MASTER_PLAN.md`).
+  - Archived inactive prototype mockups from `frontend/OthersPrototype` (`multibranch_demo.html`, `prototype.html`, `prototype_chatbot.html`, `prototype_priority.html`, `prototype_skipped.html`, `user_agreement.html`).
+* **Automated Unit & Regression Testing**:
+  - Added Suite 28 (`AUT-FRONT-76`) in `tests/frontend/sla_and_logic.test.js` validating the presence of `scripts/`, updated `package.json` command, and complete eradication of root binaries and stray documents.
+  - All 91 automated unit, RBAC, and security regression tests pass across 37 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Excel Auto-Locking, Authentic Staff Roster, Modernized Lookup UI & Assistant Destination Switcher)
 
 ### 📋 Excel Auto-Locking, Authentic Staff Roster, Modernized Lookup UI & Assistant Switcher (REV-098 / v5.98)

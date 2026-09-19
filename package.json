@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "php -S 0.0.0.0:8000 router.php",
     "start": "php -S 0.0.0.0:8000 router.php",
-    "tunnel": "node tunnel.js",
+    "tunnel": "node scripts/tunnel.js",
     "build:sass": "sass frontend/scss/main.scss frontend/css/main.css",
     "watch:sass": "sass --watch frontend/scss/main.scss frontend/css/main.css",
     "test:frontend": "node --test tests/frontend/*.test.js",

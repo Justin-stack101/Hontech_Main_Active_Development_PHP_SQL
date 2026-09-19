@@ -1426,6 +1426,37 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
         });
     });
 
+    describe('Suite 28: REV-099 Repository File Structure & Tooling Organization', () => {
+        it('AUT-FRONT-76: should verify scripts/ directory exists and package.json references scripts/tunnel.js', () => {
+            const pkgJson = JSON.parse(fs.readFileSync(path.resolve('package.json'), 'utf8'));
+            assert.strictEqual(
+                pkgJson.scripts.tunnel,
+                'node scripts/tunnel.js',
+                'package.json tunnel script must reference scripts/tunnel.js'
+            );
+            assert.strictEqual(
+                fs.existsSync(path.resolve('scripts/start_lan_server.bat')),
+                true,
+                'start_lan_server.bat must be located in scripts/'
+            );
+            assert.strictEqual(
+                fs.existsSync(path.resolve('scripts/backup_database.bat')),
+                true,
+                'backup_database.bat must be located in scripts/'
+            );
+            assert.strictEqual(
+                fs.existsSync(path.resolve('cloudflared.exe')),
+                false,
+                'cloudflared.exe must not be duplicated in root directory'
+            );
+            assert.strictEqual(
+                fs.existsSync(path.resolve('PSYCHOLOGICAL_GAMES_MASTER_PLAN.md')),
+                false,
+                'PSYCHOLOGICAL_GAMES_MASTER_PLAN.md must not be in root directory'
+            );
+        });
+    });
+
 });
 
 
