@@ -1591,6 +1591,50 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
         });
     });
 
+    describe('Suite 32: REV-104 Step 1 Workshop Monitoring First Workflow & Daily Claim Stub Ranking', () => {
+        it('AUT-FRONT-80: should verify monitoring card is Card #1 before job header, contains full-width register button, and claim stub ranks J1, J2, J3', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+            const jobController = fs.readFileSync(path.resolve('backend/controllers/JobController.php'), 'utf8');
+            const jobRepo = fs.readFileSync(path.resolve('backend/repositories/JobRepository.php'), 'utf8');
+
+            // 1. Verify Card Order: #f13-monitoring-dispatch-card appears before #f13-input-job-no
+            const monitoringCardIdx = indexHtml.indexOf('id="f13-monitoring-dispatch-card"');
+            const jobNoIdx = indexHtml.indexOf('id="f13-input-job-no"');
+            assert.strictEqual(monitoringCardIdx !== -1 && jobNoIdx !== -1, true, 'Both monitoring card and job-no input must exist');
+            assert.strictEqual(monitoringCardIdx < jobNoIdx, true, 'Workshop Monitoring Card must be positioned above Job Order Header as Step 1');
+
+            // 2. Verify Integrated Registration Button inside Monitoring Card
+            assert.strictEqual(
+                indexHtml.includes('id="f13-btn-register-ro-card"'),
+                true,
+                'index.html must include #f13-btn-register-ro-card inside the monitoring card'
+            );
+            assert.strictEqual(
+                appJs.includes('f13-btn-register-ro-card'),
+                true,
+                'app.js registerStudioROToSystem must bind #f13-btn-register-ro-card to disabled/loading lifecycle'
+            );
+
+            // 3. Verify Daily Claim Stub -J Ranking Logic in app.js and JobController
+            assert.strictEqual(
+                appJs.includes('[-_]?j') && appJs.includes('${prefix}'),
+                true,
+                'app.js must strictly match daily J-ranked stubs'
+            );
+            assert.strictEqual(
+                appJs.includes('return `${prefix}-J${nextIdx}`'),
+                true,
+                'generateNextStudioClaimStub must produce uppercase -J daily ranking format'
+            );
+            assert.strictEqual(
+                jobController.includes("'-J' . ($count + 1)"),
+                true,
+                'JobController generateStubNumber must produce uppercase -J ranking'
+            );
+        });
+    });
+
 });
 
 

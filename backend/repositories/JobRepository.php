@@ -68,9 +68,19 @@ class JobRepository
 
     public function getNextStubCount(string $datePrefix): int
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) as cnt FROM jobs WHERE claim_stub LIKE ?");
-        $stmt->execute([$datePrefix . '-%']);
-        $row = $stmt->fetch();
-        return (int)($row['cnt'] ?? 0);
+        $stmt = $this->db->prepare("SELECT claim_stub FROM jobs WHERE claim_stub LIKE ?");
+        $stmt->execute([$datePrefix . '%']);
+        $rows = $stmt->fetchAll();
+        $max = 0;
+        foreach ($rows as $r) {
+            $stub = $r['claim_stub'] ?? '';
+            if (preg_match('/^' . preg_quote($datePrefix, '/') . '[-_]?j(\d+)$/i', $stub, $m)) {
+                $idx = (int)$m[1];
+                if ($idx > $max) {
+                    $max = $idx;
+                }
+            }
+        }
+        return $max;
     }
 }

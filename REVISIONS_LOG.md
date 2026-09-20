@@ -1,3 +1,22 @@
+## 📅 September 20, 2026 (Step 1 Workshop Monitoring First Workflow & Daily Claim Stub Ranking)
+
+### 📋 Step 1 Workshop Monitoring First Workflow & Daily Claim Stub Ranking (REV-104 / v5.104)
+* **Step 1 Workshop Monitoring First Layout**:
+  - Re-anchored `#f13-monitoring-dispatch-card` as Card #1 directly at the top of Form 1/3 interactive editor (`#form13-editor-pane`) in `frontend/index.html`.
+  - Service Advisors now encounter the monitoring dispatch parameters as their primary step upon vehicle arrival before navigating to job details or customer specifics.
+* **Integrated Prominent System Registration Button**:
+  - Integrated full-width crimson action button (`#f13-btn-register-ro-card`) directly into the base of `#f13-monitoring-dispatch-card`:
+    `[ 💾 Register Repair Order to System ]` (matching the layout and visual weight of the Online Booking Form registration trigger).
+  - Bound `#f13-btn-register-ro-card` to `registerStudioROToSystem()` in `frontend/js/app.js` with loading state disabling, error handling, and smooth focus redirection to missing inputs (`Plate Number`, `Customer Name`, or `Vehicle Model`).
+* **Daily Claim Stub Ranking Engine (`092026-J1` > `J2` > `J3`)**:
+  - Upgraded `generateNextStudioClaimStub()` in `frontend/js/app.js`: isolates daily `J` sequence matching from legacy seed `-001` numbers; calculates today's prefix (`MMDDYY`) and auto-ranks sequential intakes as `092026-J1`, `092026-J2`, `092026-J3`.
+  - Upgraded `JobController::generateStubNumber` and `JobRepository::getNextStubCount` in `backend/controllers/JobController.php` and `backend/repositories/JobRepository.php` to consistently produce `${datePrefix}-J{$nextNum}`.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 32 (`AUT-FRONT-80`) in `tests/frontend/sla_and_logic.test.js` validating card hierarchy order, button presence, and daily `-J` ranking engine.
+  - All 95 automated unit, RBAC, and security regression tests pass across 41 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Professional White Aesthetic Redesign of Workshop Monitoring Dispatch Card)
 
 ### 📋 Professional White Aesthetic Redesign of Workshop Monitoring Card (REV-103 / v5.103)

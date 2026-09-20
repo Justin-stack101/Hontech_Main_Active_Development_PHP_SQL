@@ -12982,10 +12982,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const jobsList = Array.isArray(window.allJobs) ? window.allJobs : [];
             let maxIndex = 0;
-            const regex = new RegExp(`^${prefix}[-_]?j?(\\d+)$`, 'i');
+            // Match specifically daily J-ranking stubs for today (e.g. 092026-J1, 092026J1, 092026-j2)
+            const regex = new RegExp(`^${prefix}[-_]?j(\\d+)$`, 'i');
 
             jobsList.forEach(job => {
-                const stub = String(job.claim_stub || job.claimStub || job.job_id || job.id || '').trim();
+                const stub = String(job.claim_stub || job.claimStub || '').trim();
                 const match = stub.match(regex);
                 if (match && match[1]) {
                     const idx = parseInt(match[1], 10);
@@ -12995,8 +12996,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
-            const nextIdx = maxIndex > 0 ? maxIndex + 1 : (jobsList.filter(j => (j.date_received || j.created_at || '').startsWith(now.toISOString().split('T')[0])).length + 1);
-            return `${prefix}-j${nextIdx}`;
+            const nextIdx = maxIndex + 1;
+            return `${prefix}-J${nextIdx}`;
         }
         window.generateNextStudioClaimStub = generateNextStudioClaimStub;
 
@@ -14449,15 +14450,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const floorStatus = document.getElementById('f13-input-status')?.value || 'Waiting';
             const carryOver = document.getElementById('f13-input-carry-over')?.value || 'No';
 
-            if (!plate) return showSystemToast('Plate Number is required to register Repair Order.', 'error');
-            if (!name) return showSystemToast('Customer Full Name is required.', 'error');
-            if (!vehicle) return showSystemToast('Vehicle Model is required.', 'error');
+            if (!plate) {
+                document.getElementById('f13-input-plate')?.focus();
+                return showSystemToast('Plate Number is required to register Repair Order.', 'error');
+            }
+            if (!name) {
+                document.getElementById('f13-input-name')?.focus();
+                return showSystemToast('Customer Full Name is required.', 'error');
+            }
+            if (!vehicle) {
+                document.getElementById('f13-input-model')?.focus();
+                return showSystemToast('Vehicle Model is required.', 'error');
+            }
 
             const regBtnTop = document.getElementById('btn-register-ro-top');
             const regBtnEditor = document.getElementById('f13-btn-register-ro');
+            const regBtnCard = document.getElementById('f13-btn-register-ro-card');
             const pushBtn = document.getElementById('f13-btn-push-bay');
 
-            [regBtnTop, regBtnEditor, pushBtn].forEach(btn => {
+            [regBtnTop, regBtnEditor, regBtnCard, pushBtn].forEach(btn => {
                 if (btn) {
                     btn.disabled = true;
                     btn.classList.add('opacity-50', 'pointer-events-none');
@@ -14527,7 +14538,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 console.error('1-Button RO Registration failed:', err);
                 showSystemToast(err.message || 'Failed to register Repair Order to system.', 'error');
             } finally {
-                [regBtnTop, regBtnEditor, pushBtn].forEach(btn => {
+                [regBtnTop, regBtnEditor, regBtnCard, pushBtn].forEach(btn => {
                     if (btn) {
                         btn.disabled = false;
                         btn.classList.remove('opacity-50', 'pointer-events-none');
