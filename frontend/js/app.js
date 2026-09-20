@@ -13121,22 +13121,38 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 ];
             }
 
-            // Bind reactive input listeners for instant zero-latency mirroring
-            const onReactiveJobOrderInput = () => {
+            // Responsive debounced PDF compiler for live typing connection (REV-111)
+            let f13PdfDebounceTimer = null;
+            function scheduleForm13PDFRefresh(delay = 350) {
+                clearTimeout(f13PdfDebounceTimer);
+                f13PdfDebounceTimer = setTimeout(() => {
+                    if (typeof generateForm13PDF === 'function') {
+                        generateForm13PDF(false);
+                    }
+                }, delay);
+            }
+            window.scheduleForm13PDFRefresh = scheduleForm13PDFRefresh;
+
+            // Bind reactive input listeners for instant zero-latency mirroring & live PDF typing sync
+            const onReactiveJobOrderInput = (e) => {
                 syncJobOrderFieldsToQuote();
                 syncJobOrderFieldsToBilling();
                 syncJobOrderFieldsToChecklist();
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
+                const isImmediate = e && (e.type === 'blur' || e.type === 'change');
+                scheduleForm13PDFRefresh(isImmediate ? 0 : 350);
             };
             window.onReactiveJobOrderInput = onReactiveJobOrderInput;
+
             const inputIds = [
                 'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
                 'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
                 'f13-input-engine', 'f13-input-chassis', 'f13-input-intake-date', 'f13-input-promise-date',
                 'f13-input-category', 'f13-input-concern', 'f13-input-diagnostic',
-                'f13-input-sa', 'f13-input-mechanic', 'f13-input-assessor', 'f13-input-manager'
+                'f13-input-sa', 'f13-input-mechanic', 'f13-input-assessor', 'f13-input-manager',
+                'f13-input-claim-stub', 'f13-input-arrival-time', 'f13-input-source', 'f13-input-target-branch'
             ];
 
             inputIds.forEach(id => {
@@ -13144,6 +13160,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (el && !el.dataset.f13Bound) {
                     el.addEventListener('input', onReactiveJobOrderInput);
                     el.addEventListener('change', onReactiveJobOrderInput);
+                    el.addEventListener('blur', onReactiveJobOrderInput);
                     el.dataset.f13Bound = 'true';
                 }
             });
@@ -13170,6 +13187,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(150);
         }
         window.addForm13PartRow = addForm13PartRow;
 
@@ -13183,6 +13201,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(150);
         }
         window.addForm13MaterialRow = addForm13MaterialRow;
 
@@ -13191,6 +13210,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(150);
         }
         window.removeForm13PartRow = removeForm13PartRow;
 
@@ -13199,6 +13219,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(150);
         }
         window.removeForm13MaterialRow = removeForm13MaterialRow;
 
@@ -13211,6 +13232,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(250);
         }
         window.updateForm13PartField = updateForm13PartField;
 
@@ -13223,6 +13245,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             calcForm13Totals();
             syncForm13Canvas();
+            scheduleForm13PDFRefresh(250);
         }
         window.updateForm13MaterialField = updateForm13MaterialField;
 
@@ -13680,8 +13703,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextFit(combinedVehicle, 355, 77.6, 160, 7.5, true);
             whiteOut(170, 68, 80, 7);
             drawTextFit(sa, 175, 69.1, 100, 7.5, true);
-            drawText(intakeDate, 95, 59, 7.5);
-            const stubId = 'CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821');
+            const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
             drawText(stubId, 355, 59, 8, true, darkInk);
 
             return await doc.save();
@@ -17329,6 +17351,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
+                    // Calculate parts & materials totals
+                    let pTotal = 0;
+                    (window.form13Parts || []).forEach(p => pTotal += (Number(p.qty) || 1) * (Number(p.price) || 0));
+                    let mTotal = 0;
+                    (window.form13Materials || []).forEach(m => mTotal += (Number(m.qty) || 1) * (Number(m.price) || 0));
+                    setCell(sheet1Doc, 'G53', pTotal, true);
+                    setCell(sheet1Doc, 'K53', mTotal, true);
+                    setCell(sheet1Doc, 'K54', pTotal + mTotal, true);
+
+                    // Personnel & Signatures
+                    const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
+                    const assessor = getVal('f13-input-assessor') || 'Parts Controller';
+                    const manager = getVal('f13-input-manager') || 'General Manager';
+                    setCell(sheet1Doc, 'C55', sa);
+                    setCell(sheet1Doc, 'F55', mechanic);
+                    setCell(sheet1Doc, 'I55', assessor);
+                    setCell(sheet1Doc, 'K55', manager);
+
+                    // Customer Claim Stub at bottom of Form 1/3
+                    const claimStubId = getVal('f13-input-claim-stub') || jobNo;
+                    setCell(sheet1Doc, 'C58', name);
+                    setCell(sheet1Doc, 'H58', (plate + ' ' + model).trim());
+                    setCell(sheet1Doc, 'K58', claimStubId);
+                    setCell(sheet1Doc, 'C59', date);
+                    setCell(sheet1Doc, 'H59', sa);
+
                     applySheetProtection(sheet1Doc);
                     zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
                 }
@@ -17366,17 +17414,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                     // Inject items for this page (20 items max per sheet: rows 15 to 34)
                     const pageItems = quoteItems.slice(qConf.startIdx, qConf.startIdx + 20);
+                    let pageSubtotal = 0;
                     pageItems.forEach((it, idx) => {
                         const rIdx = 15 + idx;
                         if (rIdx <= 52) {
                             setCell(qDoc, 'A' + rIdx, it.desc || it.description || '');
                             const qty = Number(it.qty) || 1;
                             const price = Number(it.price || it.unitPrice || 0);
+                            const total = qty * price;
+                            pageSubtotal += total;
                             setCell(qDoc, 'C' + rIdx, qty, true);
                             setCell(qDoc, 'F' + rIdx, price, true);
-                            setCell(qDoc, 'H' + rIdx, qty * price, true);
+                            setCell(qDoc, 'H' + rIdx, total, true);
                         }
                     });
+
+                    setCell(qDoc, 'H35', pageSubtotal, true);
+                    let quoteGrandTotal = 0;
+                    quoteItems.forEach(it => {
+                        quoteGrandTotal += (Number(it.qty) || 1) * Number(it.price || it.unitPrice || 0);
+                    });
+                    setCell(qDoc, 'H36', quoteGrandTotal, true);
+                    setCell(qDoc, 'B38', sa);
 
                     applySheetProtection(qDoc);
                     zip.file(qConf.file, serializeSheet(qDoc));
@@ -17434,6 +17493,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
+                    setCell(bDoc, 'B40', sa);
+
                     applySheetProtection(bDoc);
                     zip.file(bConf.file, serializeSheet(bDoc));
                 }
@@ -17449,6 +17510,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet7Doc, 'C6', plate);
                     setCell(sheet7Doc, 'D7', model);
                     setCell(sheet7Doc, 'K7', km);
+                    setCell(sheet7Doc, 'C12', 'Fuel Level: ' + (window.checklistFuelLevel || '1/2'));
+
+                    // Inject 15 inspection check status results (rows 15-40)
+                    (window.checklistInspectionPoints || []).forEach((pt, idx) => {
+                        const rIdx = 15 + idx;
+                        if (rIdx <= 40) {
+                            setCell(sheet7Doc, 'B' + rIdx, pt.label || pt.desc || pt.name || '');
+                            setCell(sheet7Doc, 'H' + rIdx, (pt.status || 'Good').toUpperCase());
+                        }
+                    });
+
                     const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
                     setCell(sheet7Doc, 'C45', chkRemarks);
                     setCell(sheet7Doc, 'C48', sa);

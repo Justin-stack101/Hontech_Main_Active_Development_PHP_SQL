@@ -1,3 +1,25 @@
+## 📅 September 20, 2026 (Form 1/3 Live Typing-to-PDF Connection & Full Multi-Sheet Excel Injection)
+
+### 📋 Form 1/3 Live Typing-to-PDF Connection & Full Multi-Sheet Excel Injection (REV-111 / v5.111)
+* **Real-Time Live Typing-to-PDF Synchronization (`frontend/js/app.js`)**:
+  - Implemented `scheduleForm13PDFRefresh(delay)` using a smart 350ms keystroke debounce for typing and 0ms immediate execution on `blur` or `change` events.
+  - Bound `input`, `change`, and `blur` events across all Form 1/3 fields (Customer Name, Contact, Address, Email, Plate Number, Vehicle Model, Color, KM Reading, Engine, Chassis, Intake Date, Promise Date, Concern, Diagnostic, Service Advisor, Mechanic, Assessor, Manager, Claim Stub ID, Arrival Time, Intake Source, Target Branch).
+  - Wired `scheduleForm13PDFRefresh(150)` to fire automatically whenever parts or materials items are added, removed, or updated in the editor table.
+  - Live PDF preview iframe (`#f13-pdf-iframe`) re-renders seamlessly as the Service Advisor types, displaying the customer dossier, vehicle dossier, diagnostics, parts, materials, and customer claim stub with zero keystroke latency.
+* **Comprehensive Multi-Sheet Excel Injection Across All 7 Sheets (`frontend/js/app.js`)**:
+  - Upgraded `exportOfficialXLSX()` to inject live system data across every tab in `Current_2025 BLANK RO UPDATED.xlsx`:
+    - **Sheet 1 (`Job_Order` - `sheet1.xml`):** Header, Customer & Vehicle dossier, Concern, Diagnostics, Parts (D27:G52), Materials (H27:K52), Parts Total (`G53`), Materials Total (`K53`), Grand Total (`K54`), Staff signatures (SA `C55`, Mechanic `F55`, Assessor `I55`, Manager `K55`), and Customer Claim Stub (`C58`, `H58`, `K58`, `C59`, `H59`).
+    - **Sheets 2–4 (`Quotation_No 1-3` - `sheet2.xml`, `sheet3.xml`, `sheet4.xml`):** Quote header, Customer & Vehicle dossier, Quote items (A15:H34), Page Subtotal (`H35`), Quote Grand Total (`H36`), and SA signature (`B38`).
+    - **Sheets 5–6 (`Billing_No 1-2` - `sheet5.xml`, `sheet6.xml`):** Billing header, Customer & Vehicle dossier, Grand Total Due (`C14`), Billing line items (A17:H36), and Cashier/SA signature (`B40`).
+    - **Sheet 7 (`CheckList_Result` - `sheet7.xml`):** Customer (`C5`), Date (`L5`), Plate (`C6`), Model (`D7`), KM (`K7`), Fuel Level (`C12`), 15 inspection points status (`PASS`, `ATTENTION`, `DEFECT`), Remarks (`C45`), and Inspector/SA signature (`C48`).
+  - Preserved multi-layer OpenXML sheet protection (`password="DB3E"`, `selectLockedCells="1"`, `formatCells="0"`, `fileSharing readOnlyRecommended="1"`, `workbookProtection lockStructure="1"`).
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 39 (`AUT-FRONT-88`) asserting `scheduleForm13PDFRefresh`, live claim stub extraction in `compileForm13PDFBytes`, full multi-sheet injection across sheets 1-7 in `exportOfficialXLSX`, and cache buster `v=2.67`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.67`.
+  - All 102 automated unit, RBAC, and security regression tests pass across 48 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Form 1/3 Floating Sticky Bar Removal & Header Action Consolidation)
 
 ### 📋 Form 1/3 Floating Sticky Bar Removal & Action Consolidation (REV-110 / v5.110)
