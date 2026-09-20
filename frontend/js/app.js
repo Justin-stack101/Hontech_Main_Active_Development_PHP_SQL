@@ -17182,7 +17182,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 };
 
-                // Helper to lock worksheet against unauthorized cell edits upon export
+                // Helper to lock worksheet against unauthorized cell edits upon export (REV-107)
                 const applySheetProtection = (doc) => {
                     if (!doc) return;
                     let existingProt = doc.getElementsByTagName('sheetProtection')[0];
@@ -17191,12 +17191,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         existingProt.setAttribute('sheet', '1');
                         existingProt.setAttribute('objects', '1');
                         existingProt.setAttribute('scenarios', '1');
+                        existingProt.setAttribute('password', 'DB3E');
                         existingProt.setAttribute('selectLockedCells', '1');
                         existingProt.setAttribute('selectUnlockedCells', '1');
+                        existingProt.setAttribute('formatCells', '0');
+                        existingProt.setAttribute('formatColumns', '0');
+                        existingProt.setAttribute('formatRows', '0');
+                        existingProt.setAttribute('insertColumns', '0');
+                        existingProt.setAttribute('insertRows', '0');
+                        existingProt.setAttribute('deleteColumns', '0');
+                        existingProt.setAttribute('deleteRows', '0');
+
                         const ws = doc.documentElement;
-                        const pageMargins = doc.getElementsByTagName('pageMargins')[0];
-                        if (pageMargins) {
-                            ws.insertBefore(existingProt, pageMargins);
+                        // In OpenXML CT_Worksheet, sheetProtection MUST strictly precede mergeCells
+                        const mergeCells = doc.getElementsByTagName('mergeCells')[0];
+                        const sheetData = doc.getElementsByTagName('sheetData')[0];
+                        if (mergeCells) {
+                            ws.insertBefore(existingProt, mergeCells);
+                        } else if (sheetData && sheetData.nextSibling) {
+                            ws.insertBefore(existingProt, sheetData.nextSibling);
                         } else {
                             ws.appendChild(existingProt);
                         }
@@ -17392,10 +17405,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     zip.file('xl/worksheets/sheet7.xml', serializeSheet(sheet7Doc));
                 }
 
-                // 5. UPDATE WORKBOOK CALCULATION PROPERTIES FOR AUTOMATIC FORMULA EVALUATION
+                // 5. UPDATE WORKBOOK PROPERTIES FOR FORMULA EVALUATION, READ-ONLY SHARING & STRUCTURE PROTECTION (REV-107)
                 const wbFile = zip.file('xl/workbook.xml');
                 if (wbFile) {
                     let wbStr = await wbFile.async('text');
+                    if (!wbStr.includes('<fileSharing')) {
+                        wbStr = wbStr.replace('<workbookPr/>', '<fileSharing readOnlyRecommended="1" userName="HonTech AutoCenter"/><workbookPr/>');
+                    }
+                    if (!wbStr.includes('<workbookProtection')) {
+                        wbStr = wbStr.replace('<workbookPr/>', '<workbookPr/><workbookProtection lockStructure="1" lockWindows="1" workbookPassword="DB3E"/>');
+                    }
                     if (wbStr.includes('<calcPr/>')) {
                         wbStr = wbStr.replace('<calcPr/>', '<calcPr fullCalcOnLoad="1"/>');
                     } else if (wbStr.includes('<calcPr ') && !wbStr.includes('fullCalcOnLoad')) {
