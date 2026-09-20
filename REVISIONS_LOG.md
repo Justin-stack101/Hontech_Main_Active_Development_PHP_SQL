@@ -1,3 +1,21 @@
+## 📅 September 20, 2026 (Form 1/3 Floating Sticky Bar Removal & Header Action Consolidation)
+
+### 📋 Form 1/3 Floating Sticky Bar Removal & Action Consolidation (REV-110 / v5.110)
+* **Removal of Redundant Floating Sticky Bottom Bar (`frontend/index.html`)**:
+  - Permanently removed the sticky bottom floating action toolbar (`<div class="sticky bottom-14 ...">`) in `#form13-editor-pane` that previously hovered over inputs while scrolling and duplicated Register RO, Reset, and Print actions.
+  - Leaves the Form 1/3 editor cleanly unobstructed throughout scrolling.
+* **Top Tab Bar Print Integration (`frontend/index.html`)**:
+  - Integrated `[Print Form 1/3]` directly into the master top tab bar (`#form-top-tab-bar`) action cluster alongside Save Draft, Export .xlsx, Register RO, and Preview Toggle.
+* **Header & Preview Action Consolidation (`frontend/index.html`)**:
+  - Enhanced `[Print Form 1/3]` in `#form13-canvas-toolbar` (the PDF preview header) with high-contrast styling and direct access.
+  - Linked `[Reset Form]` in the Form 1/3 Studio header card (`#card-f13-editor`) to `resetForm13Studio()` with confirmation protection.
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 38 (`AUT-FRONT-87`) asserting removal of `sticky bottom-14`, presence of Print button in top tab bar, Reset button in header, and cache buster `v=2.66`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.66`.
+  - All 101 automated unit, RBAC, and security regression tests pass across 47 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (2025 RO Excel Studio Unified Professional Redesign & Alignment)
 
 ### 📋 2025 RO Excel Studio Unified Professional Redesign & Alignment (REV-109 / v5.109)

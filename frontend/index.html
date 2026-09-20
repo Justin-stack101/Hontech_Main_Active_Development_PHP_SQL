@@ -2680,10 +2680,13 @@
                         </button>
                     </div>
 
-                    <!-- Right Controls: Save Draft, Export Official .xlsx & Toggle Preview -->
+                    <!-- Right Controls: Save Draft, Export Official .xlsx, Print & Toggle Preview -->
                     <div class="flex items-center gap-2 flex-wrap">
                         <button type="button" onclick="toggleStudioPDFPreview()" id="btn-toggle-studio-preview" class="px-2.5 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Toggle side-by-side PDF preview">
                             <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-600"></i> <span id="label-toggle-studio-preview">Hide Preview</span>
+                        </button>
+                        <button type="button" onclick="printForm13()" class="px-2.5 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Print Form 1/3 & Customer Claim Stub">
+                            <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-600"></i> <span class="hidden lg:inline">Print Form 1/3</span><span class="lg:hidden">Print</span>
                         </button>
                         <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1.5 text-xs font-bold text-emerald-700 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Save draft to local storage">
                             <i data-lucide="save" class="w-3.5 h-3.5 text-emerald-600"></i> Save Draft
@@ -2902,8 +2905,8 @@
                                     <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Save offline draft to local browser storage">
                                         <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
                                     </button>
-                                    <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-300 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Reset all fields to clean 2025 blank template">
-                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Template
+                                    <button type="button" onclick="resetForm13Studio()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-300 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Reset Form 1/3 inputs to blank">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Form
                                     </button>
                                     <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs" title="Export exact official 2025 Excel Workbook (.xlsx)">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
@@ -3153,22 +3156,6 @@
                             </div>
                         </div>
 
-                        <!-- Sticky Studio Action Toolbar -->
-                        <div class="sticky bottom-14 bg-white/95 backdrop-blur-md border border-gray-200 rounded-2xl p-3.5 shadow-lg flex flex-wrap items-center justify-between gap-3 z-20 mb-4">
-                            <button type="button" onclick="resetForm13Studio()" class="px-4 py-2.5 rounded-xl border border-gray-300 hover:bg-gray-100 text-gray-700 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer active:scale-95">
-                                <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
-                            </button>
-                            
-                            <div class="flex items-center gap-2.5">
-                                <button type="button" onclick="printForm13()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-2 shadow-xs cursor-pointer active:scale-95">
-                                    <i data-lucide="printer" class="w-4 h-4"></i> Print Form 1/3 & Claim Stub
-                                </button>
-                                <button type="button" id="f13-btn-push-bay" onclick="registerStudioROToSystem()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider transition flex items-center gap-2 shadow-md shadow-red-600/30 cursor-pointer active:scale-95">
-                                    <i data-lucide="save" class="w-4 h-4"></i> 💾 Register Repair Order to System
-                                </button>
-                            </div>
-                        </div>
-
                     </div>
                     </div>
 
@@ -3191,8 +3178,8 @@
                                 <button type="button" onclick="generateForm13PDF(true)" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
                                 </button>
-                                <button type="button" onclick="printForm13()" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 font-bold transition flex items-center gap-1.5 cursor-pointer">
-                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
+                                <button type="button" onclick="printForm13()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs" title="Print Form 1/3 & Claim Stub">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-700"></i> Print Form 1/3
                                 </button>
                                 <button type="button" onclick="toggleForm13DocumentPane()" class="p-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-800 transition flex items-center cursor-pointer" title="Hide Document Preview">
                                     <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
@@ -7679,7 +7666,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.65"></script>
+    <script src="js/app.js?v=2.66"></script>
 </body>
 
 </html>
