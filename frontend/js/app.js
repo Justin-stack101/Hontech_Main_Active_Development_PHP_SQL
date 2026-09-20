@@ -17360,22 +17360,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet1Doc, 'K53', mTotal, true);
                     setCell(sheet1Doc, 'K54', pTotal + mTotal, true);
 
-                    // Personnel & Signatures
+                    // Personnel & Signatures (Exact template lines above titles)
                     const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
-                    const assessor = getVal('f13-input-assessor') || 'Parts Controller';
+                    const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
                     const manager = getVal('f13-input-manager') || 'General Manager';
-                    setCell(sheet1Doc, 'C55', sa);
-                    setCell(sheet1Doc, 'F55', mechanic);
-                    setCell(sheet1Doc, 'I55', assessor);
-                    setCell(sheet1Doc, 'K55', manager);
 
-                    // Customer Claim Stub at bottom of Form 1/3
+                    // Row 53: Above C54 (Auto Mechanic) & I54 (Parts/Materials Controller)
+                    setCell(sheet1Doc, 'C53', mechanic);
+                    setCell(sheet1Doc, 'I53', assessor);
+
+                    // Certificate of Completion / Acceptance (Rows 57-62)
+                    setCell(sheet1Doc, 'C58', sa); // Above C59 Service Advisor (Recommending Approval)
+                    setCell(sheet1Doc, 'H58', mechanic || 'Chief, Auto Mechanic'); // Above H59 Chief, Auto Mechanic (Approved by)
+                    setCell(sheet1Doc, 'C61', name); // Above C62 Customer's Name & Signature (CONFORME)
+                    setCell(sheet1Doc, 'H61', manager); // Above H62 General Manager (Concurred by)
+
+                    // Customer Claim Stub (Rows 70-72)
                     const claimStubId = getVal('f13-input-claim-stub') || jobNo;
-                    setCell(sheet1Doc, 'C58', name);
-                    setCell(sheet1Doc, 'H58', (plate + ' ' + model).trim());
-                    setCell(sheet1Doc, 'K58', claimStubId);
-                    setCell(sheet1Doc, 'C59', date);
-                    setCell(sheet1Doc, 'H59', sa);
+                    setCell(sheet1Doc, 'C70', name);
+                    setCell(sheet1Doc, 'I70', (plate + ' / ' + model).trim());
+                    setCell(sheet1Doc, 'C71', sa);
+                    setCell(sheet1Doc, 'C72', date);
+                    setCell(sheet1Doc, 'I72', claimStubId);
 
                     applySheetProtection(sheet1Doc);
                     zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
@@ -17417,14 +17423,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     let pageSubtotal = 0;
                     pageItems.forEach((it, idx) => {
                         const rIdx = 15 + idx;
-                        if (rIdx <= 52) {
-                            setCell(qDoc, 'A' + rIdx, it.desc || it.description || '');
+                        if (rIdx <= 44) {
+                            const desc = it.desc || it.description || '';
                             const qty = Number(it.qty) || 1;
-                            const price = Number(it.price || it.unitPrice || 0);
-                            const total = qty * price;
+                            const frt = Number(it.frt) || 0;
+                            const labor = Number(it.labor) || 0;
+                            let parts = Number(it.parts !== undefined ? it.parts : 0);
+                            let materials = Number(it.materials !== undefined ? it.materials : 0);
+                            if (parts === 0 && materials === 0 && labor === 0) {
+                                parts = Number(it.price || it.unitPrice || 0);
+                            }
+                            const total = (labor + parts + materials) > 0 ? (labor + parts + materials) * qty : ((Number(it.price) || 0) * qty);
                             pageSubtotal += total;
+
+                            setCell(qDoc, 'A' + rIdx, desc);
                             setCell(qDoc, 'C' + rIdx, qty, true);
-                            setCell(qDoc, 'F' + rIdx, price, true);
+                            if (frt > 0) setCell(qDoc, 'D' + rIdx, frt, true);
+                            if (labor > 0) setCell(qDoc, 'E' + rIdx, labor, true);
+                            if (parts > 0) setCell(qDoc, 'F' + rIdx, parts, true);
+                            if (materials > 0) setCell(qDoc, 'G' + rIdx, materials, true);
                             setCell(qDoc, 'H' + rIdx, total, true);
                         }
                     });
@@ -17432,7 +17449,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(qDoc, 'H35', pageSubtotal, true);
                     let quoteGrandTotal = 0;
                     quoteItems.forEach(it => {
-                        quoteGrandTotal += (Number(it.qty) || 1) * Number(it.price || it.unitPrice || 0);
+                        const qQty = Number(it.qty) || 1;
+                        const qLabor = Number(it.labor) || 0;
+                        let qParts = Number(it.parts !== undefined ? it.parts : 0);
+                        let qMaterials = Number(it.materials !== undefined ? it.materials : 0);
+                        if (qParts === 0 && qMaterials === 0 && qLabor === 0) {
+                            qParts = Number(it.price || it.unitPrice || 0);
+                        }
+                        quoteGrandTotal += (qLabor + qParts + qMaterials) > 0 ? (qLabor + qParts + qMaterials) * qQty : ((Number(it.price) || 0) * qQty);
                     });
                     setCell(qDoc, 'H36', quoteGrandTotal, true);
                     setCell(qDoc, 'B38', sa);
@@ -17448,7 +17472,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 let billGrandTotal = 0;
                 billItems.forEach(it => {
-                    billGrandTotal += (Number(it.qty) || 1) * Number(it.price || 0);
+                    const bQty = Number(it.qty) || 1;
+                    const bLabor = Number(it.labor) || 0;
+                    let bParts = Number(it.parts !== undefined ? it.parts : 0);
+                    let bMaterials = Number(it.materials !== undefined ? it.materials : 0);
+                    if (bParts === 0 && bMaterials === 0 && bLabor === 0) {
+                        bParts = Number(it.price || 0);
+                    }
+                    billGrandTotal += (bLabor + bParts + bMaterials) > 0 ? (bLabor + bParts + bMaterials) * bQty : (Number(it.price || 0) * bQty);
                 });
 
                 // 3. PATCH BILLING SHEETS: sheet5.xml (Billing_No 1), sheet6.xml (Billing_No 2)
@@ -17483,13 +17514,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const pageItems = billItems.slice(bConf.startIdx, bConf.startIdx + 20);
                     pageItems.forEach((it, idx) => {
                         const rIdx = 17 + idx;
-                        if (rIdx <= 52) {
-                            setCell(bDoc, 'A' + rIdx, it.desc || '');
+                        if (rIdx <= 44) {
+                            const desc = it.desc || it.description || '';
                             const qty = Number(it.qty) || 1;
-                            const price = Number(it.price) || 0;
+                            const frt = Number(it.frt) || 0;
+                            const labor = Number(it.labor) || 0;
+                            let parts = Number(it.parts !== undefined ? it.parts : 0);
+                            let materials = Number(it.materials !== undefined ? it.materials : 0);
+                            if (parts === 0 && materials === 0 && labor === 0) {
+                                parts = Number(it.price || 0);
+                            }
+                            const total = (labor + parts + materials) > 0 ? (labor + parts + materials) * qty : ((Number(it.price) || 0) * qty);
+
+                            setCell(bDoc, 'A' + rIdx, desc);
                             setCell(bDoc, 'C' + rIdx, qty, true);
-                            setCell(bDoc, 'F' + rIdx, price, true);
-                            setCell(bDoc, 'H' + rIdx, qty * price, true);
+                            if (frt > 0) setCell(bDoc, 'D' + rIdx, frt, true);
+                            if (labor > 0) setCell(bDoc, 'E' + rIdx, labor, true);
+                            if (parts > 0) setCell(bDoc, 'F' + rIdx, parts, true);
+                            if (materials > 0) setCell(bDoc, 'G' + rIdx, materials, true);
+                            setCell(bDoc, 'H' + rIdx, total, true);
                         }
                     });
 
@@ -17506,7 +17549,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const sheet7Doc = parser.parseFromString(sheet7Str, 'text/xml');
 
                     setCell(sheet7Doc, 'C5', name);
-                    setCell(sheet7Doc, 'L5', date);
+                    setCell(sheet7Doc, 'M5', date);
                     setCell(sheet7Doc, 'C6', plate);
                     setCell(sheet7Doc, 'D7', model);
                     setCell(sheet7Doc, 'K7', km);

@@ -1,3 +1,31 @@
+## 📅 September 20, 2026 (Precise Excel Cell Coordinates & Multi-Column Pricing Export Across All Sheets)
+
+### 📋 Precise Excel Cell Coordinates & Multi-Column Pricing Export Across All Sheets (REV-112 / v5.112)
+* **Authentic Job_Order Signature & Customer Claim Stub Ground-Truth Alignment (`frontend/js/app.js`)**:
+  - Ground-truth analyzed `xl/worksheets/sheet1.xml` from official template `Current_2025 BLANK RO UPDATED.xlsx` to map exact signature and claim stub coordinates:
+    - **Row 53:** Injected Mechanic signature above `C54` label (`Auto Mechanic`) and Parts Assessor signature above `I54` label (`Parts/Materials Controller`).
+    - **Row 58:** Injected Service Advisor signature into `C58` above `C59` label (`Service Advisor` / Recommending Approval), and Chief Mechanic into `H58` above `H59` label (`Chief, Auto Mechanic` / Approved by).
+    - **Row 61:** Injected Customer Name into `C61` above `C62` label (`Customer's Name & Signature` / CONFORME), and General Manager into `H61` above `H62` label (`General Manager` / Concurred by).
+    - **Rows 70–72 (Customer Claim Stub):** Injected Customer Name into `C70` (beside `B70` label `Name :`), Plate No./Model into `I70` (beside `G70` label `Plate No./Year/Model :`), Service Advisor into `C71` (beside `B71` label `Service Advisor :`), Date into `C72` (beside `B72` label `Date:`), and Claim Stub Tracking ID into `I72` (beside `G72` label `Claim Stub :`).
+* **Multi-Column Quotation & Billing Item Pricing Architecture (`frontend/js/app.js`)**:
+  - Re-architected Quotation (`sheet2.xml`, `sheet3.xml`, `sheet4.xml`) and Billing (`sheet5.xml`, `sheet6.xml`) row injection loops to map each line item across all standard OpenXML columns:
+    - Column `A`: Item Description (`desc` / `description`)
+    - Column `C`: Quantity (`qty`)
+    - Column `D`: Flat Rate Time / Labor FRT (`frt`)
+    - Column `E`: Labor Amount (`labor`)
+    - Column `F`: Parts Amount (`parts` or unit `price`)
+    - Column `G`: Materials Amount (`materials`)
+    - Column `H`: Total Line Amount (`total = (labor + parts + materials) * qty`)
+  - Resolved `0.00` price anomaly caused by generic item price property extraction; now dynamically resolves parts, labor, materials, and generic fallback amounts.
+* **CheckList_Result Inspection Date Header Fix (`frontend/js/app.js`)**:
+  - Relocated inspection date write target from cell `L5` to `M5`, preserving the pre-printed `DATE` text label at `L5`.
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 40 (`AUT-FRONT-89`) asserting exact signature cell injection (`C58`, `C61`, `H58`, `H61`), claim stub coordinates (`C70`, `I70`, `C71`, `C72`, `I72`), multi-column pricing columns (`D`, `E`, `F`, `G`, `H`), Checklist date in `M5`, and cache buster `v=2.68`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.68`.
+  - All 103 automated unit, RBAC, and security regression tests pass across 49 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Form 1/3 Live Typing-to-PDF Connection & Full Multi-Sheet Excel Injection)
 
 ### 📋 Form 1/3 Live Typing-to-PDF Connection & Full Multi-Sheet Excel Injection (REV-111 / v5.111)

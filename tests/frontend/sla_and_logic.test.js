@@ -608,7 +608,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(indexHtml.includes('border-t-blue-600'), true, 'Booking Module must have blue accent header');
             assert.strictEqual(indexHtml.includes('border-t-red-600'), true, 'Daily Intakes must have red accent header');
             assert.strictEqual(indexHtml.includes('border-t-amber-500'), true, 'Carry-Over Data must have amber accent header');
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"') || indexHtml.includes('src="js/app.js?v=2.47"') || indexHtml.includes('src="js/app.js?v=2.46"') || indexHtml.includes('src="js/app.js?v=2.45"') || indexHtml.includes('src="js/app.js?v=2.44"') || indexHtml.includes('src="js/app.js?v=2.43"') || indexHtml.includes('src="js/app.js?v=2.42"') || indexHtml.includes('src="js/app.js?v=2.41"'), true, 'Cache buster must be incremented');
         });
 
         it('AUT-FRONT-41: should verify unified command deck and standardized table header across queue views', () => {
@@ -751,7 +751,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(queueIdx < mainCloseIdx, true, 'section-queue must be inside <main id="main-content"> before </main>');
             
             // Verify cache buster
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"') || indexHtml.includes('src="js/app.js?v=2.48"'), true, 'Cache buster must be incremented');
         });
     });
 
@@ -782,7 +782,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Table headers must use py-4.5 for comfortable vertical breathing room'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"') || indexHtml.includes('src="js/app.js?v=2.49"'),
                 true,
                 'Cache buster must be v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.56, v=2.55, v=2.54, v=2.53, v=2.52, v=2.51, v=2.50 or v=2.49'
             );
@@ -835,7 +835,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
 
             // 5. Cache buster
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"') || indexHtml.includes('src="js/app.js?v=2.50"'),
                 true,
                 'Cache buster must be v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.56, v=2.55, v=2.54, v=2.53, v=2.52, v=2.51 or v=2.50'
             );
@@ -902,7 +902,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"') || indexHtml.includes('src="js/app.js?v=2.51"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.56, v=2.55, v=2.54, v=2.53, v=2.52 or v=2.51'
             );
@@ -993,7 +993,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"') || indexHtml.includes('src="js/app.js?v=2.52"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.56, v=2.55, v=2.54, v=2.53 or v=2.52'
             );
@@ -1076,7 +1076,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.53"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.56, v=2.55, v=2.53 or v=2.54'
             );
@@ -1157,7 +1157,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'app.js selectCustomerForLookup must compute live status badge'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.56"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.54"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.56"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.54, v=2.55 or v=2.56'
             );
@@ -1234,7 +1234,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'db-tab-express must contain dedicated table-express-delays-body'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.56"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.55"') || indexHtml.includes('src="js/app.js?v=2.56"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57, v=2.55 or v=2.56'
             );
@@ -1326,7 +1326,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
 
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.56"'),
                 true,
                 'Cache buster in index.html must be incremented to v=2.61, v=2.60, v=2.59, v=2.58, v=2.57 or v=2.56'
             );
@@ -1419,7 +1419,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'setAssistantDestination must be implemented in app.js'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.58"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"') || indexHtml.includes('src="js/app.js?v=2.57"') || indexHtml.includes('src="js/app.js?v=2.58"'),
                 true,
                 'Cache buster must be v=2.57, v=2.58, v=2.59, v=2.60 or v=2.61 in index.html'
             );
@@ -1482,7 +1482,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'All 12 dossier DOM field IDs must be preserved for dynamic data binding'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.59"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.58"') || indexHtml.includes('src="js/app.js?v=2.59"'),
                 true,
                 'Cache buster must be incremented to v=2.58, v=2.59, v=2.60 or v=2.61 in index.html'
             );
@@ -1522,7 +1522,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'JobRepository must support branch filtering for SA and Assistant multi-branch querying'
             );
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"') || indexHtml.includes('src="js/app.js?v=2.60"') || indexHtml.includes('src="js/app.js?v=2.59"'),
                 true,
                 'Cache buster must be incremented to v=2.59, v=2.60 or v=2.61 in index.html'
             );
@@ -1658,7 +1658,7 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             assert.strictEqual(intakeStart < queueStart && queueStart < baysStart && baysStart < mainEnd, true, 'Sections must be ordered sequentially inside main-content');
 
             // 3. Verify cache buster
-            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"'), true, 'Cache buster must be incremented to v=2.61');
+            assert.strictEqual(indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.61"'), true, 'Cache buster must be incremented to v=2.61');
         });
     });
 
@@ -1705,9 +1705,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
 
             // 4. Verify Cache Buster
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"') || indexHtml.includes('src="js/app.js?v=2.62"'),
                 true,
-                'Cache buster must be incremented to v=2.62 or v=2.63'
+                'Cache buster must be incremented to v=2.62 or higher'
             );
         });
     });
@@ -1755,9 +1755,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
 
             // 4. Verify Cache Buster
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"') || indexHtml.includes('src="js/app.js?v=2.63"'),
                 true,
-                'Cache buster must be incremented to v=2.63'
+                'Cache buster must be incremented to v=2.63 or higher'
             );
         });
     });
@@ -1812,11 +1812,11 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Top tab bar Register RO button must include responsive text span'
             );
 
-            // 5. Verify cache buster v=2.65 or v=2.64
+            // 5. Verify cache buster v=2.65 or higher
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"') || indexHtml.includes('src="js/app.js?v=2.64"'),
                 true,
-                'Cache buster must be incremented to v=2.65'
+                'Cache buster must be incremented to v=2.65 or higher'
             );
         });
     });
@@ -1894,11 +1894,11 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Monitoring dispatch card must use 2-column layout for full option text visibility'
             );
 
-            // 5. Verify cache buster v=2.66 or v=2.65
+            // 5. Verify cache buster v=2.66 or higher
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"') || indexHtml.includes('src="js/app.js?v=2.65"'),
                 true,
-                'Cache buster must be incremented to v=2.65 or v=2.66'
+                'Cache buster must be incremented to v=2.65 or higher'
             );
         });
     });
@@ -1928,11 +1928,11 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'Form 1/3 Studio header card must offer Reset Form button'
             );
 
-            // 4. Verify cache buster v=2.67 or v=2.66
+            // 4. Verify cache buster v=2.67 or higher
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"') || indexHtml.includes('src="js/app.js?v=2.66"'),
                 true,
-                'Cache buster must be incremented to v=2.66 or v=2.67'
+                'Cache buster must be incremented to v=2.66 or higher'
             );
         });
     });
@@ -1973,9 +1973,9 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'exportOfficialXLSX must inject materials total into Sheet 1 K53'
             );
             assert.strictEqual(
-                appJs.includes("setCell(sheet1Doc, 'C58', name)"),
+                appJs.includes("setCell(sheet1Doc, 'C58', sa)"),
                 true,
-                'exportOfficialXLSX must inject customer claim stub into Sheet 1 C58'
+                'exportOfficialXLSX must inject service advisor into Sheet 1 C58'
             );
             assert.strictEqual(
                 appJs.includes("setCell(sheet7Doc, 'C12', 'Fuel Level: ' + (window.checklistFuelLevel || '1/2'))"),
@@ -1983,11 +1983,103 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
                 'exportOfficialXLSX must inject fuel level into Sheet 7 C12'
             );
 
-            // 4. Verify cache buster v=2.67
+            // 4. Verify cache buster v=2.67 or v=2.68
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.67"'),
+                indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.68"') || indexHtml.includes('src="js/app.js?v=2.67"'),
                 true,
-                'Cache buster must be incremented to v=2.67'
+                'Cache buster must be incremented to v=2.67 or v=2.68'
+            );
+        });
+    });
+
+    describe('Suite 40: REV-112 Precise Excel Cell Coordinate Injection & Multi-Column Pricing Architecture', () => {
+        it('AUT-FRONT-89: Verifies exact signature alignments, customer claim stub cells, multi-column pricing (A, C, D, E, F, G, H), and checklist date M5', () => {
+            const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // 1. Verify Job_Order authentic signature cell coordinates (Row 53, 58, 61)
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'C58', sa)"),
+                true,
+                'exportOfficialXLSX must inject Service Advisor into C58 (Recommending Approval)'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'C61', name)"),
+                true,
+                'exportOfficialXLSX must inject Customer Name into C61 (CONFORME)'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'H58', mechanic || 'Chief, Auto Mechanic')"),
+                true,
+                'exportOfficialXLSX must inject Chief Mechanic into H58 (Approved by)'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'H61', manager)"),
+                true,
+                'exportOfficialXLSX must inject General Manager into H61 (Concurred by)'
+            );
+
+            // 2. Verify Job_Order customer claim stub coordinates (Rows 70-72)
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'C70', name)"),
+                true,
+                'exportOfficialXLSX must inject Claim Stub customer name into C70'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'I70', (plate + ' / ' + model).trim())"),
+                true,
+                'exportOfficialXLSX must inject Claim Stub plate/model into I70'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'C71', sa)"),
+                true,
+                'exportOfficialXLSX must inject Claim Stub SA into C71'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(sheet1Doc, 'I72', claimStubId)"),
+                true,
+                'exportOfficialXLSX must inject Claim Stub ID into I72'
+            );
+
+            // 3. Verify Quotation & Billing multi-column pricing engine
+            assert.strictEqual(
+                appJs.includes("if (frt > 0) setCell(qDoc, 'D' + rIdx, frt, true);"),
+                true,
+                'exportOfficialXLSX must inject FRT into Column D'
+            );
+            assert.strictEqual(
+                appJs.includes("if (labor > 0) setCell(qDoc, 'E' + rIdx, labor, true);"),
+                true,
+                'exportOfficialXLSX must inject Labor into Column E'
+            );
+            assert.strictEqual(
+                appJs.includes("if (parts > 0) setCell(qDoc, 'F' + rIdx, parts, true);"),
+                true,
+                'exportOfficialXLSX must inject Parts into Column F'
+            );
+            assert.strictEqual(
+                appJs.includes("if (materials > 0) setCell(qDoc, 'G' + rIdx, materials, true);"),
+                true,
+                'exportOfficialXLSX must inject Materials into Column G'
+            );
+            assert.strictEqual(
+                appJs.includes("setCell(qDoc, 'H' + rIdx, total, true);"),
+                true,
+                'exportOfficialXLSX must inject Total into Column H'
+            );
+
+            // 4. Verify Checklist Date written to M5 (L5 is label)
+            assert.strictEqual(
+                appJs.includes("setCell(sheet7Doc, 'M5', date)"),
+                true,
+                'exportOfficialXLSX must inject inspection date into M5 without overwriting L5 label'
+            );
+
+            // 5. Verify cache buster v=2.68
+            assert.strictEqual(
+                indexHtml.includes('src="js/app.js?v=2.68"'),
+                true,
+                'Cache buster must be incremented to v=2.68'
             );
         });
     });
