@@ -1,3 +1,45 @@
+## 📅 September 21, 2026 (SA 2025 RO Studio Live Multi-Sheet PDF Preview Sync, Exact Coordinates & 7-Sheet XLSX Export)
+
+### 📋 SA 2025 RO Studio Live Multi-Sheet PDF Preview Sync, Exact Coordinates & 7-Sheet XLSX Export (REV-114 / v5.114)
+* **Instant Reactive Studio Cascading (`frontend/js/app.js`)**:
+  - Implemented `syncJobOrderItemsToQuoteAndBilling()` connecting Form 1/3 Job Order input fields, parts, and materials to Quotation (`form23Items`) and Billing (`billingItems`) in real time.
+  - Sourced Parts and Materials from Job Order with confirmed `0.00` default labor rates, eliminating redundant double-entry for Service Advisors while allowing custom labor or item pricing adjustments.
+  - Extended live typing listeners to all interactive inputs on Quotation, Billing, and Checklist views (`syncQuoteFieldsToJobOrder()`, `syncBillingToJobOrder()`, `syncChecklistCanvas()`).
+* **Universal Debounced Multi-Sheet PDF Preview Engine (`frontend/js/app.js` & `frontend/index.html`)**:
+  - Implemented `scheduleFormStudioPdfRefresh(delay = 350)` ensuring responsive debounced live compilation (350ms on keystroke, 0ms on change/blur) targeted dynamically to whichever worksheet tab is currently active (`form13`, `form23`, `billing`, `checklist`).
+  - Added subtle, sleek green live-sync indicator pills (`#f13-live-sync-badge`, `#f23-live-sync-badge`, `#bill-live-sync-badge`, `#chk-live-sync-badge`) inside each PDF preview header with an animated emerald pulse dot.
+  - Bound tab activation switches in `switchFormStudioSheet()` to re-render fresh PDF previews instantly with zero latency when navigating between sheets.
+* **Exact PDF Coordinates & Authentic Plain Text Signatures (`frontend/js/app.js`)**:
+  - Aligned exact coordinates for Quotation PDF (`compileQuotePDFBytes`): Quote No (420, 776.6), Date (440, 744.3), Job No (440, 734.7), Promise Date (440, 725.2), Customer dossier, 24 item rows (startY 649.2, step 9.56), subtotals, 12% VAT, grand total, and plain text signatures (`sa` at 70, 165; `manager` at 330, 165; `customer` at 70, 125).
+  - Aligned exact coordinates for Billing PDF (`compileBillingPDFBytes`): Billing No (420, 776.6), Date (440, 746.0), Job No (440, 736.5), Quote No (440, 727.0), dossier, 24 item rows (startY 629.5, step 9.56), subtotals, 12% VAT, grand total banner (210, 658.0), and plain text signature (`sa` at 70, 215).
+  - Maintained authentic plain text signatures without fake cursive graphics as confirmed by stakeholder directives.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 42 (`AUT-FRONT-91`) validating reactive data cascading, live sync badges, universal debounced scheduler, exact PDF coordinates, and cache buster `v=2.70`.
+  - All 105 automated tests pass across 51 test suites with zero failures (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.70`.
+
+---
+
+## 📅 September 20, 2026 (Quotation 1-3 & Billing 1-2 Mirrored Multi-Sheet Excel Export & Coordinates Alignment)
+
+### 📋 Quotation 1-3 & Billing 1-2 Mirrored Multi-Sheet Excel Export & Coordinates Alignment (REV-113 / v5.113)
+* **Unified Line Item Sourcing & Multi-Worksheet Mirroring (`frontend/js/app.js`)**:
+  - Addressed the user issue where exported `.xlsx` workbooks only populated Quotation 1 and left Quotation 2, Quotation 3, and Billing sheets empty.
+  - Implemented `unifiedItems` resolution in `exportOfficialXLSX()` that automatically cascades across whichever line items data source is actively populated (`window.form23Items`, `window.form13Parts` / `window.form13Materials`, or `window.billingItems`).
+  - Purged static hardcoded dummy items from global array initializers (`window.form23Items` and `window.billingItems`), ensuring clean initial states that reset faithfully in `resetWorkbookToTemplate()`.
+  - Mirrored line items across all 3 Quotation worksheets (`sheet2.xml`, `sheet3.xml`, `sheet4.xml`) across rows 15 to 44, injecting Description (Col `A`), Quantity (Col `C`), FRT (Col `D`), Labor (Col `E`), Parts (Col `F`), Materials (Col `G`), and Total (Col `H`).
+  - Mirrored line items across both Billing worksheets (`sheet5.xml`, `sheet6.xml`) across rows 17 to 52 with matching column mappings.
+* **Exact OpenXML Formula & Signature Alignment (`frontend/js/app.js`)**:
+  - Ground-truth mapped rows 45 to 49 in Quotation sheets as native template SUM formulas (`H45: SUM(E15:E44)`, `H46: (H45*12%)`, `H47: SUM(G15:G44)`, `H48: SUM(F15:F44)`, `H49: SUM(H45:H48)`); eliminated legacy manual writes to `H35` and `H36` that corrupted line items.
+  - Injected authentic Quotation signatures to Row 62 (`A62` for Service Advisor, `F62` for General Manager) and Row 65 (`A65` for Customer Conforme).
+  - Injected authentic Billing signature to Row 60 (`A60` for Service Advisor / Cashier), preventing corruption of item row 40 (`B40`).
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 41 (`AUT-FRONT-90`) verifying quotation mirroring (sheets 2–4), billing mirroring (sheets 5–6), unified item resolution, clean array initializers, and cache buster `v=2.69`.
+  - All 104 automated tests pass across 50 test suites (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.69`.
+
+---
+
 ## 📅 September 20, 2026 (Precise Excel Cell Coordinates & Multi-Column Pricing Export Across All Sheets)
 
 ### 📋 Precise Excel Cell Coordinates & Multi-Column Pricing Export Across All Sheets (REV-112 / v5.112)

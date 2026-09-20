@@ -13138,11 +13138,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncJobOrderFieldsToQuote();
                 syncJobOrderFieldsToBilling();
                 syncJobOrderFieldsToChecklist();
+                syncJobOrderItemsToQuoteAndBilling();
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
                 const isImmediate = e && (e.type === 'blur' || e.type === 'change');
-                scheduleForm13PDFRefresh(isImmediate ? 0 : 350);
+                scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
             };
             window.onReactiveJobOrderInput = onReactiveJobOrderInput;
 
@@ -13165,6 +13166,48 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
+            // Bind reactive listeners for Quotation inputs
+            const quoteInputIds = [
+                'f23-input-date', 'f23-input-job-no', 'f23-input-name', 'f23-input-plate',
+                'f23-input-address', 'f23-input-model', 'f23-input-contact', 'f23-input-color'
+            ];
+            quoteInputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.dataset.f23Bound) {
+                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.dataset.f23Bound = 'true';
+                }
+            });
+
+            // Bind reactive listeners for Billing inputs
+            const billInputIds = [
+                'bill-input-date', 'bill-input-job-no', 'bill-input-quote-no', 'bill-input-name',
+                'bill-input-contact', 'bill-input-address', 'bill-input-plate', 'bill-input-model',
+                'bill-input-color', 'bill-input-km', 'bill-input-discount'
+            ];
+            billInputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.dataset.billBound) {
+                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.dataset.billBound = 'true';
+                }
+            });
+
+            // Bind reactive listeners for Checklist inputs
+            const chkInputIds = [
+                'chk-input-name', 'chk-input-date', 'chk-input-plate', 'chk-input-km', 'chk-input-remarks'
+            ];
+            chkInputIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.dataset.chkBound) {
+                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(); });
+                    el.dataset.chkBound = 'true';
+                }
+            });
+
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
@@ -13177,6 +13220,73 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.initForm13Studio = initForm13Studio;
 
+        // Auto-cascading synchronization of line items across Job Order, Quotation, and Billing
+        function syncJobOrderItemsToQuoteAndBilling() {
+            const parts = Array.isArray(window.form13Parts) ? window.form13Parts : [];
+            const materials = Array.isArray(window.form13Materials) ? window.form13Materials : [];
+
+            // 1. Mirror to Quotation items with confirmed 0.00 labor default
+            const mirroredQuoteItems = [];
+            parts.forEach((p, idx) => {
+                mirroredQuoteItems.push({
+                    id: 'p-' + (p.id || idx + 1),
+                    desc: p.desc || '',
+                    qty: Number(p.qty) || 1,
+                    frt: 0.2,
+                    labor: 0.00,
+                    parts: Number(p.price) || 0,
+                    materials: 0.00,
+                    price: Number(p.price) || 0
+                });
+            });
+            materials.forEach((m, idx) => {
+                mirroredQuoteItems.push({
+                    id: 'm-' + (m.id || idx + 1),
+                    desc: m.desc || '',
+                    qty: Number(m.qty) || 1,
+                    frt: 0.1,
+                    labor: 0.00,
+                    parts: 0.00,
+                    materials: Number(m.price) || 0,
+                    price: Number(m.price) || 0
+                });
+            });
+
+            window.form23Items = mirroredQuoteItems;
+            if (typeof renderForm23Rows === 'function') renderForm23Rows();
+            if (typeof calcForm23Totals === 'function') calcForm23Totals();
+            if (typeof syncForm23Canvas === 'function') syncForm23Canvas();
+
+            // 2. Mirror to Billing items with confirmed 0.00 labor default
+            const mirroredBillItems = [];
+            parts.forEach(p => {
+                mirroredBillItems.push({
+                    desc: p.desc || '',
+                    qty: Number(p.qty) || 1,
+                    labor: 0.00,
+                    parts: Number(p.price) || 0,
+                    materials: 0.00,
+                    price: Number(p.price) || 0
+                });
+            });
+            materials.forEach(m => {
+                mirroredBillItems.push({
+                    desc: m.desc || '',
+                    qty: Number(m.qty) || 1,
+                    labor: 0.00,
+                    parts: 0.00,
+                    materials: Number(m.price) || 0,
+                    price: Number(m.price) || 0
+                });
+            });
+
+            window.billingItems = mirroredBillItems;
+            if (typeof renderBillingRows === 'function') renderBillingRows();
+            if (typeof calcBillingTotals === 'function') calcBillingTotals();
+            if (typeof syncBillingCanvas === 'function') syncBillingCanvas();
+        }
+        window.syncJobOrderItemsToQuoteAndBilling = syncJobOrderItemsToQuoteAndBilling;
+
         function addForm13PartRow(desc = '', qty = 1, price = 0) {
             window.form13Parts.push({
                 id: Date.now() + Math.random(),
@@ -13187,7 +13297,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(150);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(150);
         }
         window.addForm13PartRow = addForm13PartRow;
 
@@ -13201,7 +13313,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(150);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(150);
         }
         window.addForm13MaterialRow = addForm13MaterialRow;
 
@@ -13210,7 +13324,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(150);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(150);
         }
         window.removeForm13PartRow = removeForm13PartRow;
 
@@ -13219,7 +13335,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             renderForm13Rows();
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(150);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(150);
         }
         window.removeForm13MaterialRow = removeForm13MaterialRow;
 
@@ -13232,7 +13350,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(250);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(250);
         }
         window.updateForm13PartField = updateForm13PartField;
 
@@ -13245,7 +13365,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             calcForm13Totals();
             syncForm13Canvas();
-            scheduleForm13PDFRefresh(250);
+            syncJobOrderItemsToQuoteAndBilling();
+            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh(250);
         }
         window.updateForm13MaterialField = updateForm13MaterialField;
 
@@ -13827,6 +13949,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const contact = getVal('f23-input-contact') || getVal('f13-input-contact') || '';
             const color = getVal('f23-input-color') || getVal('f13-input-color') || '';
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+            const manager = getVal('f13-input-manager') || 'General Manager';
 
             // Meta Header
             drawText(quoteNo, 420, 776.6, 8.5, true, darkInk);
@@ -13843,7 +13966,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextFit(color, 380, 677.3, 120, 7.5, false);
 
             // Table Line Items (Up to 24 rows on template)
-            const items = window.form23Items || [];
+            const items = (window.form23Items && window.form23Items.length > 0)
+                ? window.form23Items
+                : ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0))
+                    ? [...(window.form13Parts || []), ...(window.form13Materials || [])]
+                    : (window.billingItems || []);
+
             let totalLabor = 0;
             let totalParts = 0;
             let totalMats = 0;
@@ -13856,21 +13984,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const ry = startY - (idx * rowStep);
                 const desc = it.desc || '';
                 const qty = Number(it.qty) || 1;
-                const price = Number(it.price) || 0;
-                const rowTotal = qty * price;
 
-                const isLabor = it.desc && (it.desc.toLowerCase().includes('labor') || it.desc.toLowerCase().includes('service') || it.desc.toLowerCase().includes('cleaning') || it.desc.toLowerCase().includes('alignment'));
-                const isMat = it.desc && (it.desc.toLowerCase().includes('fluid') || it.desc.toLowerCase().includes('oil') || it.desc.toLowerCase().includes('flush') || it.desc.toLowerCase().includes('gas'));
+                const isLabor = desc && (desc.toLowerCase().includes('labor') || desc.toLowerCase().includes('service') || desc.toLowerCase().includes('cleaning') || desc.toLowerCase().includes('alignment'));
+                const isMat = desc && (desc.toLowerCase().includes('fluid') || desc.toLowerCase().includes('oil') || desc.toLowerCase().includes('flush') || desc.toLowerCase().includes('gas'));
 
-                let laborAmt = Number(it.labor) || 0;
-                let partsAmt = Number(it.parts) || 0;
-                let matsAmt = Number(it.materials) || 0;
+                let laborRate = Number(it.labor) || 0;
+                let partsRate = Number(it.parts !== undefined ? it.parts : 0);
+                let matsRate = Number(it.materials !== undefined ? it.materials : 0);
 
-                if (!laborAmt && !partsAmt && !matsAmt) {
-                    if (isLabor) laborAmt = rowTotal;
-                    else if (isMat) matsAmt = rowTotal;
-                    else partsAmt = rowTotal;
+                if (!laborRate && !partsRate && !matsRate) {
+                    const raw = Number(it.price || 0);
+                    if (isLabor) laborRate = raw;
+                    else if (isMat) matsRate = raw;
+                    else partsRate = raw;
                 }
+
+                const laborAmt = laborRate * qty;
+                const partsAmt = partsRate * qty;
+                const matsAmt = matsRate * qty;
+                const rowTotal = laborAmt + partsAmt + matsAmt;
 
                 totalLabor += laborAmt;
                 totalParts += partsAmt;
@@ -13897,9 +14029,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 465, 326.3, 8, true, darkInk);
             }
 
-            // Signatures
+            // Authentic Plain Text Signatures (Rows 61-66)
             drawTextFit(sa, 70, 165, 140, 7.5, true);
-            drawTextFit('GENERAL MANAGER', 330, 165, 140, 7.5, true);
+            drawTextFit(manager, 330, 165, 140, 7.5, true);
             drawTextFit(name, 70, 125, 140, 7.5, true);
 
             return await doc.save();
@@ -14039,7 +14171,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextFit(km, 380, 669.5, 120, 7.5, false);
 
             // Table Line Items (Up to 24 rows)
-            const items = window.billingItems || [];
+            const items = (window.billingItems && window.billingItems.length > 0)
+                ? window.billingItems
+                : (window.form23Items && window.form23Items.length > 0)
+                    ? window.form23Items
+                    : ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0))
+                        ? [...(window.form13Parts || []), ...(window.form13Materials || [])]
+                        : [];
+
             let totalLabor = 0;
             let totalParts = 0;
             let totalMats = 0;
@@ -14052,19 +14191,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const ry = startY - (idx * rowStep);
                 const desc = it.desc || '';
                 const qty = Number(it.qty) || 1;
-                const price = Number(it.price) || 0;
-                const rowTotal = qty * price;
 
-                const isLabor = it.desc && (it.desc.toLowerCase().includes('labor') || it.desc.toLowerCase().includes('service') || it.desc.toLowerCase().includes('cleaning') || it.desc.toLowerCase().includes('alignment'));
-                const isMat = it.desc && (it.desc.toLowerCase().includes('fluid') || it.desc.toLowerCase().includes('oil') || it.desc.toLowerCase().includes('flush') || it.desc.toLowerCase().includes('gas'));
+                const isLabor = desc && (desc.toLowerCase().includes('labor') || desc.toLowerCase().includes('service') || desc.toLowerCase().includes('cleaning') || desc.toLowerCase().includes('alignment'));
+                const isMat = desc && (desc.toLowerCase().includes('fluid') || desc.toLowerCase().includes('oil') || desc.toLowerCase().includes('flush') || desc.toLowerCase().includes('gas'));
 
-                let laborAmt = 0;
-                let partsAmt = 0;
-                let matsAmt = 0;
+                let laborRate = Number(it.labor) || 0;
+                let partsRate = Number(it.parts !== undefined ? it.parts : 0);
+                let matsRate = Number(it.materials !== undefined ? it.materials : 0);
 
-                if (isLabor) laborAmt = rowTotal;
-                else if (isMat) matsAmt = rowTotal;
-                else partsAmt = rowTotal;
+                if (!laborRate && !partsRate && !matsRate) {
+                    const raw = Number(it.price || 0);
+                    if (isLabor) laborRate = raw;
+                    else if (isMat) matsRate = raw;
+                    else partsRate = raw;
+                }
+
+                const laborAmt = laborRate * qty;
+                const partsAmt = partsRate * qty;
+                const matsAmt = matsRate * qty;
+                const rowTotal = laborAmt + partsAmt + matsAmt;
 
                 totalLabor += laborAmt;
                 totalParts += partsAmt;
@@ -14093,7 +14238,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawText('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 210, 658.0, 7.5, true, darkInk);
             }
 
-            // Signatures
+            // Authentic Plain Text Signatures (Row 60 above Service Advisor)
             drawTextFit(sa, 70, 215, 140, 7.5, true);
 
             return await doc.save();
@@ -14339,7 +14484,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         // Universal Debounced Form Studio PDF Auto-Refresher
         let formStudioPdfDebounceTimer = null;
-        function scheduleFormStudioPdfRefresh() {
+        function scheduleFormStudioPdfRefresh(delay = 350) {
             if (formStudioPdfDebounceTimer) clearTimeout(formStudioPdfDebounceTimer);
             formStudioPdfDebounceTimer = setTimeout(() => {
                 const active = currentFormStudioActiveSheet || 'form13';
@@ -14352,7 +14497,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 } else if (active === 'checklist') {
                     generateChecklistPDF(false);
                 }
-            }, 350);
+            }, delay);
         }
         window.scheduleFormStudioPdfRefresh = scheduleFormStudioPdfRefresh;
 
@@ -14678,12 +14823,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // FORM 2/3 (QUOTATION) STUDIO & EXCEL-STYLE WORKBOOK MULTI-SHEET ENGINE
         // =========================================================================
         let currentFormStudioActiveSheet = 'form13';
-        window.form23Items = [
-            { id: 1, desc: 'Fully Synthetic Motor Oil 5W-30 (4L)', qty: 1, frt: 0.5, labor: 350.00, parts: 1850.00, materials: 0.00 },
-            { id: 2, desc: 'OEM Engine Oil Filter Element', qty: 1, frt: 0.2, labor: 150.00, parts: 450.00, materials: 0.00 },
-            { id: 3, desc: 'Engine Flush Treatment (300ml)', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 250.00 },
-            { id: 4, desc: 'Brake Cleaner Aerosol Spray', qty: 1, frt: 0.1, labor: 0.00, parts: 0.00, materials: 200.00 }
-        ];
+        window.form23Items = window.form23Items || [];
 
         const allFormWorkbookSheets = [
             { key: 'form13', id: 'tab-sheet-joborder', label: 'Job_Order' },
@@ -14696,12 +14836,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // HONTECH 2025 QUOTATION_NO (SHEET 2) INTERACTIVE ENGINE
         // =========================================================================
-        window.form23Items = window.form23Items || [
-            { desc: 'PMS Minor Service Package (Oil, Filter, Inspection)', qty: 1, price: 2800 },
-            { desc: 'Fully Synthetic 5W-30 Motor Oil (4 Liters)', qty: 4, price: 650 },
-            { desc: 'OEM Genuine Oil Filter Replacement', qty: 1, price: 450 },
-            { desc: 'Brake Fluid Flush & Clean', qty: 1, price: 850 }
-        ];
+        window.form23Items = window.form23Items || [];
 
         function switchFormStudioSheet(sheetKey) {
             const tabs = [
@@ -14753,12 +14888,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Trigger bidirectional sync and canvas renders
             if (sheetKey === 'form23' || sheetKey === 'quote') {
                 syncJobOrderFieldsToQuote();
+                syncJobOrderItemsToQuoteAndBilling();
                 renderForm23Rows();
                 calcForm23Totals();
                 syncForm23Canvas();
                 generateQuotePDF(false);
             } else if (sheetKey === 'billing') {
                 syncJobOrderFieldsToBilling();
+                syncJobOrderItemsToQuoteAndBilling();
                 renderBillingRows();
                 calcBillingTotals();
                 syncBillingCanvas();
@@ -15069,12 +15206,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // HONTECH 2025 BILLING_NO (SHEET 3) INTERACTIVE ENGINE
         // =========================================================================
-        window.billingItems = window.billingItems || [
-            { desc: 'Comprehensive Diagnostics & Periodic Maintenance Service', qty: 1, price: 2800 },
-            { desc: 'Fully Synthetic 5W-30 Motor Oil (4 Liters)', qty: 4, price: 650 },
-            { desc: 'OEM Genuine Oil Filter Element', qty: 1, price: 450 },
-            { desc: 'Brake Caliper Servicing & System Bleeding', qty: 1, price: 1200 }
-        ];
+        window.billingItems = window.billingItems || [];
 
         function syncJobOrderFieldsToBilling() {
             const getVal = id => (document.getElementById(id)?.value || '').trim();
@@ -15456,7 +15588,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.setAllChecklistItems = setAllChecklistItems;
 
         function renderChecklistTable() {
-            const container = document.getElementById('chk-items-container');
+            const container = document.getElementById('chk-items-container') || document.getElementById('checklist-items-container');
             if (!container) return;
 
             container.innerHTML = '';
@@ -17112,6 +17244,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             window.form13Parts = [];
             window.form13Materials = [];
             window.form23Items = [];
+            window.billingItems = [];
 
             renderForm13Rows();
             calcForm13Totals();
@@ -17387,21 +17520,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
                 }
 
-                // Gather quote items
-                const quoteItems = (window.form23Items && window.form23Items.length > 0)
-                    ? window.form23Items
-                    : [...(window.form13Parts || []), ...(window.form13Materials || [])];
+                // Gather unified repair order items across Form 1/3, Quotation, and Billing
+                let unifiedItems = [];
+                if (window.form23Items && window.form23Items.length > 0) {
+                    unifiedItems = window.form23Items;
+                } else if ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0)) {
+                    unifiedItems = [...(window.form13Parts || []), ...(window.form13Materials || [])];
+                } else if (window.billingItems && window.billingItems.length > 0) {
+                    unifiedItems = window.billingItems;
+                }
+
+                // Calculate grand total of unified items
+                let unifiedGrandTotal = 0;
+                unifiedItems.forEach(it => {
+                    const uQty = Number(it.qty) || 1;
+                    const uLabor = Number(it.labor) || 0;
+                    let uParts = Number(it.parts !== undefined ? it.parts : 0);
+                    let uMaterials = Number(it.materials !== undefined ? it.materials : 0);
+                    if (uParts === 0 && uMaterials === 0 && uLabor === 0) {
+                        uParts = Number(it.price || it.unitPrice || 0);
+                    }
+                    unifiedGrandTotal += (uLabor + uParts + uMaterials) > 0 ? (uLabor + uParts + uMaterials) * uQty : ((Number(it.price) || 0) * uQty);
+                });
 
                 // 2. PATCH QUOTATION SHEETS: sheet2.xml (Quotation_No 1), sheet3.xml (Quotation_No 2), sheet4.xml (Quotation_No 3)
+                // Auto-sync and mirror full quotation items across all 3 sheets per user directive
                 const quoteSheets = [
-                    { file: 'xl/worksheets/sheet2.xml', startIdx: 0 },
-                    { file: 'xl/worksheets/sheet3.xml', startIdx: 20 },
-                    { file: 'xl/worksheets/sheet4.xml', startIdx: 40 }
+                    'xl/worksheets/sheet2.xml',
+                    'xl/worksheets/sheet3.xml',
+                    'xl/worksheets/sheet4.xml'
                 ];
 
                 for (let qIdx = 0; qIdx < quoteSheets.length; qIdx++) {
-                    const qConf = quoteSheets[qIdx];
-                    const qFile = zip.file(qConf.file);
+                    const qFilePath = quoteSheets[qIdx];
+                    const qFile = zip.file(qFilePath);
                     if (!qFile) continue;
 
                     const qStr = await qFile.async('text');
@@ -17418,10 +17570,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(qDoc, 'B12', contact);
                     setCell(qDoc, 'G12', color);
 
-                    // Inject items for this page (20 items max per sheet: rows 15 to 34)
-                    const pageItems = quoteItems.slice(qConf.startIdx, qConf.startIdx + 20);
-                    let pageSubtotal = 0;
-                    pageItems.forEach((it, idx) => {
+                    // Inject up to 30 items per sheet across rows 15 to 44
+                    unifiedItems.slice(0, 30).forEach((it, idx) => {
                         const rIdx = 15 + idx;
                         if (rIdx <= 44) {
                             const desc = it.desc || it.description || '';
@@ -17434,7 +17584,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 parts = Number(it.price || it.unitPrice || 0);
                             }
                             const total = (labor + parts + materials) > 0 ? (labor + parts + materials) * qty : ((Number(it.price) || 0) * qty);
-                            pageSubtotal += total;
 
                             setCell(qDoc, 'A' + rIdx, desc);
                             setCell(qDoc, 'C' + rIdx, qty, true);
@@ -17446,51 +17595,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
-                    setCell(qDoc, 'H35', pageSubtotal, true);
-                    let quoteGrandTotal = 0;
-                    quoteItems.forEach(it => {
-                        const qQty = Number(it.qty) || 1;
-                        const qLabor = Number(it.labor) || 0;
-                        let qParts = Number(it.parts !== undefined ? it.parts : 0);
-                        let qMaterials = Number(it.materials !== undefined ? it.materials : 0);
-                        if (qParts === 0 && qMaterials === 0 && qLabor === 0) {
-                            qParts = Number(it.price || it.unitPrice || 0);
-                        }
-                        quoteGrandTotal += (qLabor + qParts + qMaterials) > 0 ? (qLabor + qParts + qMaterials) * qQty : ((Number(it.price) || 0) * qQty);
-                    });
-                    setCell(qDoc, 'H36', quoteGrandTotal, true);
-                    setCell(qDoc, 'B38', sa);
+                    // Authentic Quotation signatures (Rows 61-66)
+                    setCell(qDoc, 'A62', sa);      // Service Advisor (Prepared by)
+                    setCell(qDoc, 'F62', manager); // General Manager (Approved by)
+                    setCell(qDoc, 'A65', name);    // Customer Conforme
 
                     applySheetProtection(qDoc);
-                    zip.file(qConf.file, serializeSheet(qDoc));
+                    zip.file(qFilePath, serializeSheet(qDoc));
                 }
 
-                // Gather billing items
-                const billItems = (window.billingItems && window.billingItems.length > 0)
-                    ? window.billingItems
-                    : [...(window.form13Parts || []), ...(window.form13Materials || [])];
-
-                let billGrandTotal = 0;
-                billItems.forEach(it => {
-                    const bQty = Number(it.qty) || 1;
-                    const bLabor = Number(it.labor) || 0;
-                    let bParts = Number(it.parts !== undefined ? it.parts : 0);
-                    let bMaterials = Number(it.materials !== undefined ? it.materials : 0);
-                    if (bParts === 0 && bMaterials === 0 && bLabor === 0) {
-                        bParts = Number(it.price || 0);
-                    }
-                    billGrandTotal += (bLabor + bParts + bMaterials) > 0 ? (bLabor + bParts + bMaterials) * bQty : (Number(it.price || 0) * bQty);
-                });
-
                 // 3. PATCH BILLING SHEETS: sheet5.xml (Billing_No 1), sheet6.xml (Billing_No 2)
+                // Auto-sync and mirror full billing items across both sheets per user directive
                 const billSheets = [
-                    { file: 'xl/worksheets/sheet5.xml', startIdx: 0 },
-                    { file: 'xl/worksheets/sheet6.xml', startIdx: 20 }
+                    'xl/worksheets/sheet5.xml',
+                    'xl/worksheets/sheet6.xml'
                 ];
 
                 for (let bIdx = 0; bIdx < billSheets.length; bIdx++) {
-                    const bConf = billSheets[bIdx];
-                    const bFile = zip.file(bConf.file);
+                    const bFilePath = billSheets[bIdx];
+                    const bFile = zip.file(bFilePath);
                     if (!bFile) continue;
 
                     const bStr = await bFile.async('text');
@@ -17508,13 +17631,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(bDoc, 'G12', color);
                     setCell(bDoc, 'B13', email);
                     setCell(bDoc, 'G13', km);
-                    setCell(bDoc, 'C14', billGrandTotal, true);
+                    setCell(bDoc, 'C14', unifiedGrandTotal, true);
 
-                    // Inject items for this page (20 items max per sheet: rows 17 to 36)
-                    const pageItems = billItems.slice(bConf.startIdx, bConf.startIdx + 20);
-                    pageItems.forEach((it, idx) => {
+                    // Inject up to 36 items per sheet across rows 17 to 52
+                    unifiedItems.slice(0, 36).forEach((it, idx) => {
                         const rIdx = 17 + idx;
-                        if (rIdx <= 44) {
+                        if (rIdx <= 52) {
                             const desc = it.desc || it.description || '';
                             const qty = Number(it.qty) || 1;
                             const frt = Number(it.frt) || 0;
@@ -17536,10 +17658,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     });
 
-                    setCell(bDoc, 'B40', sa);
+                    // Authentic Billing signature (Row 60 above Service Advisor)
+                    setCell(bDoc, 'A60', sa);
 
                     applySheetProtection(bDoc);
-                    zip.file(bConf.file, serializeSheet(bDoc));
+                    zip.file(bFilePath, serializeSheet(bDoc));
                 }
 
                 // 4. PATCH SHEET 7: CheckList_Result (sheet7.xml)
