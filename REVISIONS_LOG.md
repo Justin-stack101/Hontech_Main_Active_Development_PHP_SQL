@@ -1,3 +1,21 @@
+## 📅 September 21, 2026 (SA 2025 RO Studio Follow-Along Sticky PDF Preview & Viewport Height Across All Sheets)
+
+### 📋 SA 2025 RO Studio Follow-Along Sticky PDF Preview & Viewport Height Across All Sheets (REV-116 / v5.116)
+* **Viewport-Pinned Sticky Follow-Along Architecture (`frontend/index.html`)**:
+  - Addressed user feedback requesting the right-side PDF preview to dynamically follow along as the Service Advisor scrolls down through lengthy form inputs.
+  - Upgraded right-side canvas panes (`#form13-canvas-pane`, `#form23-canvas-pane`, `#billing-canvas-pane`, `#checklist-canvas-pane`) with `xl:sticky xl:top-14 xl:self-start`.
+  - Positioned the sticky top baseline at `top-14` (`56px`), docking smoothly directly underneath the sticky workbook tab bar (`#form-top-tab-bar`).
+  - Preserved responsive mobile/tablet layout (`< 1280px`), allowing elements to stack naturally without obstructing mobile form controls.
+* **Ergonomic Viewport Container Sizing (`frontend/index.html`)**:
+  - Re-architected PDF viewer containers (`#f13-pdf-viewer-wrap`, `#f23-pdf-viewer-wrap`, `#billing-pdf-viewer-wrap`, `#checklist-pdf-viewer-wrap`) to use adaptive viewport sizing `h-[calc(100vh-8.5rem)] min-h-[580px]`.
+  - Allowed iframes (`#f13-pdf-iframe`, `#f23-pdf-iframe`, `#billing-pdf-iframe`, `#checklist-pdf-iframe`) to expand to `h-full min-h-[560px]`, eliminating dual page-level scroll collisions and keeping toolbar controls in full view.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 44 (`AUT-FRONT-93`) verifying sticky follow-along classes, adaptive viewport container heights, and cache buster `v=2.72`.
+  - All 107 automated tests pass across 53 test suites with zero failures (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.72`.
+
+---
+
 ## 📅 September 21, 2026 (SA 2025 RO Studio XLSX Export Personnel Scoping Fix)
 
 ### 📋 SA 2025 RO Studio XLSX Export Personnel Scoping Fix (REV-115 / v5.115)

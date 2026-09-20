@@ -3162,7 +3162,7 @@
                     <!-- ==========================================
                          RIGHT COLUMN: 1:1 LIVE FORM 1/3 CANVAS SHEET
                          ========================================== -->
-                    <div id="form13-canvas-pane" class="xl:col-span-5 space-y-3">
+                    <div id="form13-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
                         <!-- Canvas Control Toolbar -->
                         <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3189,8 +3189,8 @@
                         </div>
 
                         <!-- Real PDF Viewer Container -->
-                        <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                            <iframe id="f13-pdf-iframe" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
+                        <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
+                            <iframe id="f13-pdf-iframe" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
                         </div>
                     </div>
                     </div>
@@ -3347,7 +3347,7 @@
                         </div>
 
                                                 <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
-                        <div id="form23-canvas-pane" class="xl:col-span-5 space-y-3">
+                        <div id="form23-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
                             <!-- Control Bar -->
                             <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                                 <div class="flex items-center gap-2">
@@ -3371,8 +3371,8 @@
                             </div>
 
                             <!-- PDF Format View Container -->
-                            <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                                <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
+                            <div id="f23-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
+                                <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
                             </div>
                         </div>
                     </div>
@@ -3539,7 +3539,7 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC BILLING PHYSICAL CANVAS -->
-                    <div id="billing-canvas-pane" class="xl:col-span-5 space-y-3">
+                    <div id="billing-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
                         <!-- Control Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3563,8 +3563,8 @@
                         </div>
 
                         <!-- PDF Format View Container -->
-                        <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                            <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
+                        <div id="billing-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
+                            <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -3671,7 +3671,7 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC CHECKLIST PHYSICAL CANVAS -->
-                    <div id="checklist-canvas-pane" class="xl:col-span-5 space-y-3">
+                    <div id="checklist-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
                         <!-- Control Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3695,8 +3695,8 @@
                         </div>
 
                         <!-- PDF Format View Container -->
-                        <div class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 min-h-[860px] flex flex-col">
-                            <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 min-h-[840px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
+                        <div id="checklist-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
+                            <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -7670,7 +7670,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.71"></script>
+    <script src="js/app.js?v=2.72"></script>
 </body>
 
 </html>
