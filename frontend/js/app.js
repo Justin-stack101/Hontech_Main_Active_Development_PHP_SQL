@@ -3954,6 +3954,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
             }
 
+            // Sync with Monitoring Dispatch Card
+            const fSource = document.getElementById('f13-input-source');
+            if (fSource) fSource.value = 'Online';
+            const fBranch = document.getElementById('f13-input-target-branch');
+            if (fBranch && job.branch) {
+                Array.from(fBranch.options).forEach(opt => {
+                    if (opt.value.toLowerCase().includes(job.branch.toLowerCase()) || job.branch.toLowerCase().includes(opt.value.toLowerCase())) {
+                        fBranch.value = opt.value;
+                    }
+                });
+            }
+
             // Synchronize with other Studio sheets (Quotation, Billing, Checklist)
             if (typeof syncJobOrderFieldsToQuote === 'function') syncJobOrderFieldsToQuote();
             if (typeof syncJobOrderFieldsToBilling === 'function') syncJobOrderFieldsToBilling();
@@ -12942,6 +12954,63 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.switchForm13View = switchForm13View;
 
+        function getStudioCurrentClockTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+        window.getStudioCurrentClockTime = getStudioCurrentClockTime;
+
+        function stampStudioArrivalClock() {
+            const arrivalEl = document.getElementById('f13-input-arrival-time');
+            if (arrivalEl) {
+                arrivalEl.value = getStudioCurrentClockTime();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast(`Arrival time stamped: ${arrivalEl.value}`, 'info', 'Clock Stamped');
+                }
+            }
+        }
+        window.stampStudioArrivalClock = stampStudioArrivalClock;
+
+        function generateNextStudioClaimStub() {
+            const now = new Date();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const yy = String(now.getFullYear()).slice(-2);
+            const prefix = `${mm}${dd}${yy}`;
+
+            const jobsList = Array.isArray(window.allJobs) ? window.allJobs : [];
+            let maxIndex = 0;
+            const regex = new RegExp(`^${prefix}[-_]?j?(\\d+)$`, 'i');
+
+            jobsList.forEach(job => {
+                const stub = String(job.claim_stub || job.claimStub || job.job_id || job.id || '').trim();
+                const match = stub.match(regex);
+                if (match && match[1]) {
+                    const idx = parseInt(match[1], 10);
+                    if (!isNaN(idx) && idx > maxIndex) {
+                        maxIndex = idx;
+                    }
+                }
+            });
+
+            const nextIdx = maxIndex > 0 ? maxIndex + 1 : (jobsList.filter(j => (j.date_received || j.created_at || '').startsWith(now.toISOString().split('T')[0])).length + 1);
+            return `${prefix}-j${nextIdx}`;
+        }
+        window.generateNextStudioClaimStub = generateNextStudioClaimStub;
+
+        function refreshStudioClaimStub() {
+            const stubEl = document.getElementById('f13-input-claim-stub');
+            if (stubEl) {
+                stubEl.value = generateNextStudioClaimStub();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast(`Next sequential claim stub generated: ${stubEl.value}`, 'info', 'Claim Stub Generated');
+                }
+            }
+        }
+        window.refreshStudioClaimStub = refreshStudioClaimStub;
+
         function initForm13Studio() {
             const today = new Date().toISOString().split('T')[0];
 
@@ -12957,6 +13026,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const promiseDateInput = document.getElementById('f13-input-promise-date');
             if (promiseDateInput && !promiseDateInput.value) promiseDateInput.value = today;
+
+            // Workshop Monitoring & Daily Intakes Dispatch Defaults (Auto-Prefilled)
+            const claimStubInput = document.getElementById('f13-input-claim-stub');
+            if (claimStubInput && (!claimStubInput.value || claimStubInput.value === '')) {
+                claimStubInput.value = generateNextStudioClaimStub();
+            }
+
+            const arrivalTimeInput = document.getElementById('f13-input-arrival-time');
+            if (arrivalTimeInput && (!arrivalTimeInput.value || arrivalTimeInput.value === '')) {
+                arrivalTimeInput.value = getStudioCurrentClockTime();
+            }
+
+            const branchInput = document.getElementById('f13-input-target-branch');
+            if (branchInput && !branchInput.value) {
+                branchInput.value = 'Marikina Branch';
+            }
 
             // Default signatories
             const saInput = document.getElementById('f13-input-sa');
@@ -14353,6 +14438,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const saName = (document.getElementById('f13-input-sa')?.value || '').trim();
             const customJobId = (document.getElementById('f13-input-job-no')?.value || '').trim();
 
+            // Workshop Monitoring & Daily Intakes Dispatch Dossier
+            const claimStub = (document.getElementById('f13-input-claim-stub')?.value || '').trim() || generateNextStudioClaimStub();
+            const source = document.getElementById('f13-input-source')?.value || 'Walk-in';
+            const targetBranch = document.getElementById('f13-input-target-branch')?.value || 'Marikina Branch';
+            const laneType = document.getElementById('f13-input-lane-type')?.value || 'Flexible Lane';
+            const bayLocation = document.getElementById('f13-input-bay-location')?.value || 'None';
+            const partsStatus = document.getElementById('f13-input-parts-status')?.value || 'Yes';
+            const arrivalTime = (document.getElementById('f13-input-arrival-time')?.value || '').trim() || getStudioCurrentClockTime();
+            const floorStatus = document.getElementById('f13-input-status')?.value || 'Waiting';
+            const carryOver = document.getElementById('f13-input-carry-over')?.value || 'No';
+
             if (!plate) return showSystemToast('Plate Number is required to register Repair Order.', 'error');
             if (!name) return showSystemToast('Customer Full Name is required.', 'error');
             if (!vehicle) return showSystemToast('Vehicle Model is required.', 'error');
@@ -14369,13 +14465,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
 
             try {
-                const arrivalTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                 const isBackJobActive = Boolean(window.currentStudioBackJob?.isBackJob);
                 const parentJobId = window.currentStudioBackJob?.parentJobId || null;
                 const backjobReason = window.currentStudioBackJob?.reason || null;
 
                 const payload = {
                     jobId: customJobId || undefined,
+                    claimStub: claimStub,
                     plate: plate,
                     name: name,
                     address: address,
@@ -14390,12 +14486,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     concern: concern,
                     evaluation: evaluation,
                     saName: saName || undefined,
-                    source: isBackJobActive ? 'Back-job' : 'Walk-in',
+                    source: isBackJobActive ? 'Back-job' : source,
+                    branch: targetBranch,
+                    laneType: laneType,
+                    bayLocation: bayLocation,
+                    partsStatus: partsStatus,
+                    arrival: arrivalTime,
+                    status: floorStatus,
+                    carryOver: carryOver,
                     isBackjob: isBackJobActive ? 1 : 0,
                     parentJobId: parentJobId,
-                    backjobReason: backjobReason,
-                    laneType: 'Regular',
-                    arrival: arrivalTime
+                    backjobReason: backjobReason
                 };
 
                 const createdJob = await apiRequest('/api/jobs', {
@@ -14416,7 +14517,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof renderTableDailyIntakes === 'function') renderTableDailyIntakes();
 
                 const assignedJobId = createdJob?.data?.jobId || createdJob?.data?.job_id || createdJob?.jobId || customJobId || 'RO-REGISTERED';
-                showSystemToast(`Repair Order [${assignedJobId}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
+                showSystemToast(`Repair Order [${assignedJobId} / Stub: ${claimStub}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
 
                 // Keep SA in studio view
                 if (typeof switchFormStudioSheet === 'function') {
@@ -14447,6 +14548,31 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el) el.value = '';
             });
+
+            // Reset Monitoring Dispatch Card
+            const claimStubInput = document.getElementById('f13-input-claim-stub');
+            if (claimStubInput) claimStubInput.value = generateNextStudioClaimStub();
+
+            const arrivalTimeInput = document.getElementById('f13-input-arrival-time');
+            if (arrivalTimeInput) arrivalTimeInput.value = getStudioCurrentClockTime();
+
+            const sourceInput = document.getElementById('f13-input-source');
+            if (sourceInput) sourceInput.value = 'Walk-in';
+
+            const laneInput = document.getElementById('f13-input-lane-type');
+            if (laneInput) laneInput.value = 'Flexible Lane';
+
+            const bayInput = document.getElementById('f13-input-bay-location');
+            if (bayInput) bayInput.value = 'None';
+
+            const partsInput = document.getElementById('f13-input-parts-status');
+            if (partsInput) partsInput.value = 'Yes';
+
+            const statusInput = document.getElementById('f13-input-status');
+            if (statusInput) statusInput.value = 'Waiting';
+
+            const carryOverInput = document.getElementById('f13-input-carry-over');
+            if (carryOverInput) carryOverInput.value = 'No';
 
             const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
             const jobNoInput = document.getElementById('f13-input-job-no');
