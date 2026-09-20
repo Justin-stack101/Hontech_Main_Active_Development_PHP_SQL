@@ -1,3 +1,18 @@
+## 📅 September 21, 2026 (SA 2025 RO Studio XLSX Export Personnel Scoping Fix)
+
+### 📋 SA 2025 RO Studio XLSX Export Personnel Scoping Fix (REV-115 / v5.115)
+* **Personnel Variable Hoisting in `exportOfficialXLSX` (`frontend/js/app.js`)**:
+  - Resolved runtime `ReferenceError: manager is not defined` triggered when clicking `[Export Official .xlsx]`.
+  - Hoisted `manager`, `mechanic`, and `assessor` variable declarations out of the block-scoped `if (sheet1File)` conditional block into the outer function scope of `exportOfficialXLSX()` alongside `sa`.
+  - Maintained fallback defaults (`'General Manager'`, `'Auto Mechanic'`, `'Parts/Materials Controller'`) and robust fallback logic using `getVal()`.
+  - Successfully preserved downstream multi-sheet injection into Quotation copy sheets (`qDoc` / `sheet2.xml`, `sheet3.xml`, `sheet4.xml` at cell `F62`) and Job Order (`sheet1.xml` at cells `C53` and `I53`).
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 43 (`AUT-FRONT-92`) asserting outer variable scoping for `manager`, `mechanic`, and `assessor`, verification of Quotation `F62` injection, and cache buster `v=2.71`.
+  - All 106 automated tests pass across 52 test suites with zero failures (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.71`.
+
+---
+
 ## 📅 September 21, 2026 (SA 2025 RO Studio Live Multi-Sheet PDF Preview Sync, Exact Coordinates & 7-Sheet XLSX Export)
 
 ### 📋 SA 2025 RO Studio Live Multi-Sheet PDF Preview Sync, Exact Coordinates & 7-Sheet XLSX Export (REV-114 / v5.114)

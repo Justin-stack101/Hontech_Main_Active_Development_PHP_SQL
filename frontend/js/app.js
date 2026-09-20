@@ -17305,6 +17305,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const concern = getVal('f13-input-concern') || '';
                 const diag = getVal('f13-input-diagnostic') || '';
                 const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+                const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
+                const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
+                const manager = getVal('f13-input-manager') || 'General Manager';
 
                 const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
                 const billingNo = 'BL-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
@@ -17494,10 +17497,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet1Doc, 'K54', pTotal + mTotal, true);
 
                     // Personnel & Signatures (Exact template lines above titles)
-                    const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
-                    const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
-                    const manager = getVal('f13-input-manager') || 'General Manager';
-
                     // Row 53: Above C54 (Auto Mechanic) & I54 (Parts/Materials Controller)
                     setCell(sheet1Doc, 'C53', mechanic);
                     setCell(sheet1Doc, 'I53', assessor);
