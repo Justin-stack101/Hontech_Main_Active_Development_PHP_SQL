@@ -50,7 +50,7 @@ class JobController
         $repo = new JobRepository($db);
         $count = $repo->getNextStubCount($datePrefix);
 
-        return $datePrefix . '-J' . ($count + 1);
+        return $datePrefix . 'J' . ($count + 1);
     }
 
     /**

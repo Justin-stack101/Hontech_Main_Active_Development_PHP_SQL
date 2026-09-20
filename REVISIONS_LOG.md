@@ -1,3 +1,24 @@
+## 📅 September 20, 2026 (Form 1/3 Studio Right-Side PDF Preview & Hyphen-Free Daily Claim Stub Ranking)
+
+### 📋 Form 1/3 Studio Right-Side PDF Preview & Hyphen-Free Claim Stub Ranking (REV-106 / v5.106)
+* **Form 1/3 Studio Right-Side PDF Preview Restoration (`frontend/index.html`)**:
+  - Diagnosed structural layout root cause: `#form13-editor-pane` was missing its closing `</div>` before `#form13-canvas-pane`, which caused the canvas pane (containing the official Form 1/3 PDF iframe preview) to become accidentally nested inside the 6-column editor pane at its very bottom, leaving the entire right 6 columns of the 12-column grid completely blank.
+  - Inserted the closing `</div>` for `#form13-editor-pane` immediately following `#card-f13-editor`.
+  - Removed redundant `</div>` at the bottom of `#section-form13` to preserve perfect 0-delta DOM container balances across all 4 worksheet views (`view-sheet-form13`, `view-sheet-quote`, `view-sheet-billing`, `view-sheet-checklist`).
+  - Restored side-by-side layout: Left column hosts the Form 1/3 interactive editor, while right column renders `#form13-canvas-pane` with live PDF preview toolbar (`[Full PDF]`, `[Download PDF]`, `[Print]`, `[Hide]`) and embedded `assets/form13_template.pdf` iframe (`508px × 848px`).
+* **Hyphen-Free Daily Claim Stub Ranking (`092026J1` > `J2` > `J3`)**:
+  - Removed hyphen from claim stub generator outputs in `frontend/js/app.js` (`generateNextStudioClaimStub()`) and `backend/controllers/JobController.php` (`generateStubNumber()`): now formats daily intakes strictly as `MMDDYYJ1`, `092026J2`, `092026J3`.
+  - Updated input placeholder in `#f13-input-claim-stub` to `e.g. 092026J1`.
+  - Preserved backward-compatible regex matching `^${prefix}[-_]?j(\d+)$` so legacy records remain fully accessible in natural claim stub sorting and search.
+* **Ergonomic Typography Polish**:
+  - Added `whitespace-nowrap text-[10px]` to Arrival Time label in `#f13-monitoring-dispatch-card` to eliminate awkward multi-line wrapping ("AR RIVAL TIME (CLOCK IN)").
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 34 (`AUT-FRONT-83`) asserting that `form13-editor-pane` and `form13-canvas-pane` are direct sibling columns in the 12-column grid, PDF iframe embeds `form13_template.pdf`, and claim stub generator returns `092026J1` without hyphen.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.62`.
+  - All 97 automated unit, RBAC, and security regression tests pass across 43 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Form 1/3 Studio Closing Div Balance & Universal Module Visibility Restored)
 
 ### 📋 Form 1/3 Studio Closing Div Balance & Universal Module Visibility Restored (REV-105 / v5.105)

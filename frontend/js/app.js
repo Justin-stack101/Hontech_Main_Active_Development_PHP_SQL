@@ -12997,7 +12997,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
 
             const nextIdx = maxIndex + 1;
-            return `${prefix}-J${nextIdx}`;
+            return `${prefix}J${nextIdx}`;
         }
         window.generateNextStudioClaimStub = generateNextStudioClaimStub;
 
