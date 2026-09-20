@@ -1,3 +1,26 @@
+## 📅 September 20, 2026 (Studio Layout Alignment & Edge Responsiveness Polish at 100% Zoom)
+
+### 📋 2025 RO Studio Layout Alignment & Edge Responsiveness Polish (REV-108 / v5.108)
+* **Workshop Monitoring Dispatch Card Grid Alignment (`frontend/index.html`)**:
+  - Eliminated label-overflow text collision caused by `whitespace-nowrap` on `ARRIVAL TIME (CLOCK IN) *` colliding with `INITIAL FLOOR STATUS` on compact column viewports (~160px width in `#form13-editor-pane`).
+  - Standardized all 9 field label containers with uniform `h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1`:
+    - Row 1: `Claim Stub ID *`, `Intake Source`, `Target Branch *`
+    - Row 2: `Lane Type *`, `Workshop Bay`, `Parts Availability`
+    - Row 3: `Arrival Time *`, `Floor Status`, `Carry-Over (C.O.)`
+  - Polished input and select element heights and padding (`px-3 py-2 text-xs border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500`) ensuring straight, uniform horizontal baselines across all 3 columns.
+  - Refactored card header to `flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap`, cleanly separating title typography and the `Auto-Prefilled` pulse indicator.
+* **Top Tab Bar Responsiveness on 100% Zoom (`frontend/index.html`)**:
+  - Updated `#form-top-tab-bar` right action button cluster with `flex-wrap gap-2` and adaptive responsive text spans:
+    - Export button: renders `Export Official .xlsx` on larger displays and `Export .xlsx` on narrower viewports.
+    - Register RO button (`#btn-register-ro-top`): renders `💾 Register Repair Order to System` on `xl:` and scales gracefully to `💾 Register RO` on narrower displays.
+  - Prevents action buttons from overflowing past the right margin or getting clipped in Microsoft Edge at 100% display zoom.
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 36 (`AUT-FRONT-85`) asserting that `whitespace-nowrap` is removed from Arrival Time, uniform `h-5` label containers are utilized, all 9 monitoring IDs are preserved, responsive text spans are active, and cache buster is `v=2.64`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.64`.
+  - All 99 automated unit, RBAC, and security regression tests pass across 45 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Excel Export Schema-Compliant Multi-Layer Tamper-Proof Locking)
 
 ### 📋 Excel Export Schema-Compliant Multi-Layer Tamper-Proof Locking (REV-107 / v5.107)

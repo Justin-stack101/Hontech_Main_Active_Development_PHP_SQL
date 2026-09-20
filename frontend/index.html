@@ -2681,15 +2681,15 @@
                     </div>
 
                     <!-- Right Controls: Save Draft & Export Official .xlsx -->
-                    <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-3 py-1.5 text-xs font-bold text-emerald-700 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs" title="Save draft to local storage">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1.5 text-xs font-bold text-emerald-700 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Save draft to local storage">
                             <i data-lucide="save" class="w-3.5 h-3.5 text-emerald-600"></i> Save Draft
                         </button>
-                        <button type="button" onclick="exportOfficialXLSX()" class="px-3.5 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs" title="Export 1:1 official multi-sheet workbook">
-                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> Export Official .xlsx
+                        <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Export 1:1 official multi-sheet workbook">
+                            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600"></i> <span class="hidden md:inline">Export Official .xlsx</span><span class="md:hidden">Export .xlsx</span>
                         </button>
-                        <button type="button" onclick="registerStudioROToSystem()" id="btn-register-ro-top" class="px-3.5 py-1.5 text-xs font-black text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-xs" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
-                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 💾 Register Repair Order to System
+                        <button type="button" onclick="registerStudioROToSystem()" id="btn-register-ro-top" class="px-3 py-1.5 text-xs font-black text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-xs whitespace-nowrap" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> <span class="hidden xl:inline">💾 Register Repair Order to System</span><span class="xl:hidden">💾 Register RO</span>
                         </button>
                     </div>
                 </div>
@@ -2725,46 +2725,46 @@
                         </div>
                         
                         <!-- WORKSHOP MONITORING & DAILY INTAKES DISPATCH DOSSIER CARD (STEP 1) -->
-                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
                             <!-- Card Header Bar -->
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
-                                        <i data-lucide="gauge" class="w-5 h-5"></i>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-9 h-9 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
+                                        <i data-lucide="gauge" class="w-4.5 h-4.5"></i>
                                     </div>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight">Workshop Monitoring & Daily Intakes Dispatch</h3>
-                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Prefilled
-                                            </span>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <h3 class="text-xs sm:text-sm font-black text-gray-900 uppercase tracking-tight">Workshop Monitoring & Daily Intakes</h3>
                                         </div>
-                                        <p class="text-xs text-gray-500 font-medium">Log and configure vehicle dispatch parameters for daily monitoring.</p>
+                                        <p class="text-[11px] text-gray-500 font-medium truncate">Configure vehicle dispatch parameters for daily monitoring</p>
                                     </div>
                                 </div>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Prefilled
+                                </span>
                             </div>
 
-                            <!-- Form Grid Rows -->
-                            <div class="space-y-3.5">
+                            <!-- Form Grid Rows with Strict Single-Line Labels & Unified Heights -->
+                            <div class="space-y-3">
                                 <!-- Top Row: Claim Stub, Source & Target Branch -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Claim Stub ID <span class="text-red-500">*</span>
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026J1" 
-                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-mono font-bold text-xs text-gray-900 uppercase shadow-2xs outline-none transition" title="Customer Claim Stub identifier for Floor Queue">
+                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 uppercase shadow-2xs outline-none transition" title="Customer Claim Stub identifier for Floor Queue">
                                             <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
                                                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Intake Source
                                         </label>
-                                        <select id="f13-input-source" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-source" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Walk-in" selected>Walk-in Customer</option>
                                             <option value="Online">Online Booking Inquiry</option>
                                             <option value="Returning">Returning / Repeat Customer</option>
@@ -2772,10 +2772,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Target Branch <span class="text-red-500">*</span>
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
                                         </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Marikina Branch" selected>Marikina Main Branch</option>
                                             <option value="East Branch">East Branch</option>
                                         </select>
@@ -2783,12 +2783,12 @@
                                 </div>
 
                                 <!-- Middle Row: Lane Classification, Bay Location & Parts Stock -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Lane Type <span class="text-red-500">*</span>
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Lane Type <span class="text-red-500 ml-0.5">*</span>
                                         </label>
-                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Flexible Lane" selected>Flexible Lane</option>
                                             <option value="Express Lane">Express Lane (60m SLA)</option>
                                             <option value="PMS & GRS Lane">PMS & GRS Lane</option>
@@ -2798,10 +2798,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Initial Workshop Bay
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Workshop Bay
                                         </label>
-                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="None" selected>None (Unallocated / Staging)</option>
                                             <option value="Bay 1">Bay 1 (2-Post Lift)</option>
                                             <option value="Bay 2">Bay 2 (2-Post Lift)</option>
@@ -2815,10 +2815,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Parts Availability
                                         </label>
-                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Yes" selected>Yes — In Stock</option>
                                             <option value="Pending Supplier Courier">Pending Supplier Courier</option>
                                             <option value="Special Order">Special Order Required</option>
@@ -2828,24 +2828,24 @@
                                 </div>
 
                                 <!-- Bottom Row: Arrival Time, Initial Status & Carry-Over -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10px] font-bold text-gray-600 uppercase tracking-wider mb-1 whitespace-nowrap">
-                                            Arrival Time (Clock In) <span class="text-red-500">*</span>
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Arrival Time <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp">
+                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp (Clock In)">
                                             <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
                                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Initial Floor Status
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                            Floor Status
                                         </label>
-                                        <select id="f13-input-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Waiting" selected>Waiting (In Queue)</option>
                                             <option value="Processing">Processing (In Service)</option>
                                             <option value="Pending Parts">Pending Parts</option>
@@ -2853,10 +2853,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Carry-Over (C.O.)
                                         </label>
-                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="No" selected>No (Standard Same-Day Job)</option>
                                             <option value="Yes">Yes (Overnight Carry-Over)</option>
                                         </select>
@@ -7721,7 +7721,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.63"></script>
+    <script src="js/app.js?v=2.64"></script>
 </body>
 
 </html>
