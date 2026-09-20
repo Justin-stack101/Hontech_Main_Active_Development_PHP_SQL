@@ -4883,7 +4883,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <div class="overflow-x-auto max-h-[500px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2">
                                 <table class="w-full text-left min-w-full divide-y divide-slate-200">
                                     ${getTableHeaderHtml()}
-                                    <tbody class="divide-y divide-slate-100">
+                                    <tbody id="table-daily-intakes" class="divide-y divide-slate-100">
                                         ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 13 : 12}" class="text-center py-14 text-slate-400 font-medium">
                                             <div class="flex flex-col items-center justify-center gap-2.5 py-4">
                                                 <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center border border-red-100 shadow-2xs">

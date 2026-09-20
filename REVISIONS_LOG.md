@@ -1,3 +1,20 @@
+## 📅 September 20, 2026 (Form 1/3 Studio Closing Div Balance & Universal Module Visibility Restored)
+
+### 📋 Form 1/3 Studio Closing Div Balance & Universal Module Visibility Restored (REV-105 / v5.105)
+* **DOM Hierarchy Isolation & Closing Div Fix (`frontend/index.html`)**:
+  - Resolved critical structural DOM nesting defect where an unclosed `<div>` in `#section-form13` (at line 3754) caused 7 downstream primary application modules (`#section-intake`, `#section-queue`, `#section-bays`, `#section-tv`, `#section-profile`, `#section-settings`, `#section-support`) to become accidentally nested inside `#section-form13`.
+  - Because `.section-content.hidden { display: none !important; }` is applied globally when switching tabs away from Form 1/3 Studio, this nesting trapped the child modules in an inherited `display: none`, making Daily Intakes, Workshop Bay Status, Online Bookings, and Master Queue appear completely invisible/blank for Assistant and Service Advisor roles.
+  - Inserted the required closing `</div>` to cleanly terminate `#section-form13`; verified all section containers are direct sibling elements under `<main id="main-content">` with a balanced 0 unclosed div delta across all view containers.
+* **Table Body ID Restoration (`frontend/js/app.js`)**:
+  - Restored `id="table-daily-intakes"` on the dynamically generated `<tbody>` inside `renderStaffTables()`.
+  - Ensured seamless element access for all role-specific table population routines and dynamic intake updates.
+* **Automated Unit & Regression Testing (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 33 (`AUT-FRONT-82`) in `tests/frontend/sla_and_logic.test.js` validating that `#section-form13` is closed before `#section-intake`, `#section-queue`, and `#section-bays`, and that none of these sections are nested inside `#section-form13`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.61` and updated all version check assertions across the test suite.
+  - All 96 automated unit, RBAC, and security regression tests pass across 42 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Step 1 Workshop Monitoring First Workflow & Daily Claim Stub Ranking)
 
 ### 📋 Step 1 Workshop Monitoring First Workflow & Daily Claim Stub Ranking (REV-104 / v5.104)
