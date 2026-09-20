@@ -12854,7 +12854,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (isForm13DocHidden) {
                 if (canvasPane) canvasPane.classList.add('hidden');
                 if (editorPane) {
-                    editorPane.classList.remove('xl:col-span-6');
+                    editorPane.classList.remove('xl:col-span-7', 'xl:col-span-6');
                     editorPane.classList.add('xl:col-span-12');
                 }
                 toggleBtns.forEach(btn => {
@@ -12867,7 +12867,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (canvasPane) canvasPane.classList.remove('hidden');
                 if (editorPane) {
                     editorPane.classList.remove('xl:col-span-12');
-                    editorPane.classList.add('xl:col-span-6');
+                    editorPane.classList.add('xl:col-span-7');
                 }
                 toggleBtns.forEach(btn => {
                     btn.innerHTML = `<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide Preview`;
@@ -12883,6 +12883,58 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
         }
         window.toggleForm13DocumentPane = toggleForm13DocumentPane;
+
+        let isStudioPreviewCollapsed = false;
+        function toggleStudioPDFPreview() {
+            isStudioPreviewCollapsed = !isStudioPreviewCollapsed;
+            const panes = [
+                { editor: 'form13-editor-pane', canvas: 'form13-canvas-pane' },
+                { editor: 'form23-editor-pane', canvas: 'form23-canvas-pane' },
+                { editor: 'billing-editor-pane', canvas: 'billing-canvas-pane' },
+                { editor: 'checklist-editor-pane', canvas: 'checklist-canvas-pane' }
+            ];
+
+            const labelEl = document.getElementById('label-toggle-studio-preview');
+            const btnEl = document.getElementById('btn-toggle-studio-preview');
+
+            panes.forEach(p => {
+                const ed = document.getElementById(p.editor);
+                const cv = document.getElementById(p.canvas);
+                if (ed) {
+                    if (isStudioPreviewCollapsed) {
+                        ed.classList.remove('xl:col-span-7', 'xl:col-span-6');
+                        ed.classList.add('xl:col-span-12');
+                    } else {
+                        ed.classList.remove('xl:col-span-12');
+                        ed.classList.add('xl:col-span-7');
+                    }
+                }
+                if (cv) {
+                    if (isStudioPreviewCollapsed) {
+                        cv.classList.add('hidden');
+                    } else {
+                        cv.classList.remove('hidden');
+                    }
+                }
+            });
+
+            if (labelEl) {
+                labelEl.innerText = isStudioPreviewCollapsed ? 'Show Preview' : 'Hide Preview';
+            }
+            if (btnEl) {
+                const icon = btnEl.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', isStudioPreviewCollapsed ? 'eye-off' : 'eye');
+                }
+            }
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+            showSystemToast(
+                isStudioPreviewCollapsed ? 'PDF preview collapsed. Editor expanded to full width.' : 'Side-by-side PDF preview restored.',
+                'info',
+                'Studio Layout'
+            );
+        }
+        window.toggleStudioPDFPreview = toggleStudioPDFPreview;
 
         function openForm13EnlargeModal() {
             const modal = document.getElementById('modal-f13-enlarge');

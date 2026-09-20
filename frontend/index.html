@@ -2680,8 +2680,11 @@
                         </button>
                     </div>
 
-                    <!-- Right Controls: Save Draft & Export Official .xlsx -->
+                    <!-- Right Controls: Save Draft, Export Official .xlsx & Toggle Preview -->
                     <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" onclick="toggleStudioPDFPreview()" id="btn-toggle-studio-preview" class="px-2.5 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Toggle side-by-side PDF preview">
+                            <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-600"></i> <span id="label-toggle-studio-preview">Hide Preview</span>
+                        </button>
                         <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1.5 text-xs font-bold text-emerald-700 bg-white hover:bg-emerald-50 border border-emerald-300 rounded-lg transition active:scale-95 flex items-center gap-1.5 cursor-pointer shadow-2xs whitespace-nowrap" title="Save draft to local storage">
                             <i data-lucide="save" class="w-3.5 h-3.5 text-emerald-600"></i> Save Draft
                         </button>
@@ -2701,7 +2704,7 @@
                     <!-- ==========================================
                          LEFT COLUMN: SA SMART INTERACTIVE EDITOR
                          ========================================== -->
-                    <div id="form13-editor-pane" class="xl:col-span-6 space-y-5">
+                    <div id="form13-editor-pane" class="xl:col-span-7 space-y-5">
                         
                         <!-- Back-Job Warranty Return Alert Banner (Active when customer is returning for warranty back-job) -->
                         <div id="f13-backjob-banner" class="hidden bg-gradient-to-r from-amber-50 to-red-50 border-2 border-red-500 rounded-2xl p-4 shadow-sm">
@@ -2744,12 +2747,12 @@
                                 </span>
                             </div>
 
-                            <!-- Form Grid Rows with Strict Single-Line Labels & Unified Heights -->
-                            <div class="space-y-3">
-                                <!-- Top Row: Claim Stub, Source & Target Branch -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
+                            <!-- Form Grid: Ergonomic 2-Column Layout with Full Option Visibility -->
+                            <div class="space-y-3.5">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                    <!-- Row 1: Claim Stub & Arrival Time (Auto-filled / Stamped) -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
                                             Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <div class="relative">
@@ -2761,7 +2764,30 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                            Arrival Time (Clock In) <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
+                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp (Clock In)">
+                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
+                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Row 2: Target Branch & Intake Source -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
+                                            <option value="East Branch">East Branch</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
                                             Intake Source
                                         </label>
                                         <select id="f13-input-source" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
@@ -2771,22 +2797,11 @@
                                             <option value="Fleet">Fleet Account</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
-                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
-                                            <option value="East Branch">East Branch</option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <!-- Middle Row: Lane Classification, Bay Location & Parts Stock -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
+                                    <!-- Row 3: Lane Classification & Bay Location -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Lane Type <span class="text-red-500 ml-0.5">*</span>
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                            Lane Classification <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <select id="f13-input-lane-type" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Flexible Lane" selected>Flexible Lane</option>
@@ -2798,8 +2813,8 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Workshop Bay
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                            Workshop Bay Location
                                         </label>
                                         <select id="f13-input-bay-location" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="None" selected>None (Unallocated / Staging)</option>
@@ -2814,8 +2829,10 @@
                                             <option value="Parking / Staging">Staging / Parking Slot</option>
                                         </select>
                                     </div>
+
+                                    <!-- Row 4: Parts Stock & Initial Floor Status -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
                                             Parts Availability
                                         </label>
                                         <select id="f13-input-parts-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
@@ -2825,25 +2842,9 @@
                                             <option value="Customer Supplied">Customer Supplied Parts</option>
                                         </select>
                                     </div>
-                                </div>
-
-                                <!-- Bottom Row: Arrival Time, Initial Status & Carry-Over -->
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Arrival Time <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp (Clock In)">
-                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
-                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
-                                            Floor Status
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                            Initial Floor Status
                                         </label>
                                         <select id="f13-input-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Waiting" selected>Waiting (In Queue)</option>
@@ -2852,8 +2853,10 @@
                                             <option value="Quality Control">Quality Control</option>
                                         </select>
                                     </div>
+
+                                    <!-- Row 5: Carry-Over (C.O.) & Quick Dispatch Note -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
                                             Carry-Over (C.O.)
                                         </label>
                                         <select id="f13-input-carry-over" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
@@ -2861,10 +2864,14 @@
                                             <option value="Yes">Yes (Overnight Carry-Over)</option>
                                         </select>
                                     </div>
+                                    <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 mt-auto">
+                                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                        <span>Auto-syncs Floor Queue, TV Monitor, and MySQL database.</span>
+                                    </div>
                                 </div>
 
                                 <!-- Integrated Register RO to System Button (Prominent Action Bar) -->
-                                <div class="pt-1">
+                                <div class="pt-1.5">
                                     <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
                                         <i data-lucide="save" class="w-4 h-4"></i> 💾 Register Repair Order to System
                                     </button>
@@ -3168,7 +3175,7 @@
                     <!-- ==========================================
                          RIGHT COLUMN: 1:1 LIVE FORM 1/3 CANVAS SHEET
                          ========================================== -->
-                    <div id="form13-canvas-pane" class="xl:col-span-6 space-y-3">
+                    <div id="form13-canvas-pane" class="xl:col-span-5 space-y-3">
                         <!-- Canvas Control Toolbar -->
                         <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3207,7 +3214,7 @@
                     <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
                         <!-- LEFT COLUMN: SA QUOTATION SMART INTERACTIVE EDITOR -->
-                        <div id="form23-editor-pane" class="xl:col-span-6 space-y-5">
+                        <div id="form23-editor-pane" class="xl:col-span-7 space-y-5">
                             
                             <!-- Quotation Header & Actions Bar -->
                             <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
@@ -3352,7 +3359,7 @@
                         </div>
 
                                                 <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
-                        <div id="form23-canvas-pane" class="xl:col-span-6 space-y-3">
+                        <div id="form23-canvas-pane" class="xl:col-span-5 space-y-3">
                             <!-- Control Bar -->
                             <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                                 <div class="flex items-center gap-2">
@@ -3389,7 +3396,7 @@
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
                     <!-- LEFT COLUMN: SA BILLING SMART INTERACTIVE EDITOR -->
-                    <div id="billing-editor-pane" class="xl:col-span-6 space-y-5">
+                    <div id="billing-editor-pane" class="xl:col-span-7 space-y-5">
                         
                         <!-- Billing Header & Actions Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
@@ -3543,7 +3550,7 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC BILLING PHYSICAL CANVAS -->
-                    <div id="billing-canvas-pane" class="xl:col-span-6 space-y-3">
+                    <div id="billing-canvas-pane" class="xl:col-span-5 space-y-3">
                         <!-- Control Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3579,7 +3586,7 @@
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
                     <!-- LEFT COLUMN: SA CHECKLIST SMART INTERACTIVE EDITOR -->
-                    <div id="checklist-editor-pane" class="xl:col-span-6 space-y-5">
+                    <div id="checklist-editor-pane" class="xl:col-span-7 space-y-5">
                         
                         <!-- Checklist Header & Actions Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
@@ -3674,7 +3681,7 @@
                     </div>
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC CHECKLIST PHYSICAL CANVAS -->
-                    <div id="checklist-canvas-pane" class="xl:col-span-6 space-y-3">
+                    <div id="checklist-canvas-pane" class="xl:col-span-5 space-y-3">
                         <!-- Control Bar -->
                         <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
                             <div class="flex items-center gap-2">
@@ -3703,55 +3710,6 @@
                     </div>
                     </div>
                 </div>
-            
-            <!-- GOOGLE SHEETS AUTHENTIC WORKBOOK BOTTOM BAR -->
-            <div id="form-workbook-bottom-bar" class="sticky bottom-0 z-30 bg-[#f8f9fa] border-t border-[#dadce0] px-2 py-1 flex items-center justify-between gap-2 shadow-md mt-6 select-none font-sans">
-                <!-- Left Controls: Add, All Sheets Menu, Scroll Nav -->
-                <div class="flex items-center gap-1 shrink-0">
-                    <button type="button" onclick="promptAddNewFormSheet()" class="w-7 h-7 rounded hover:bg-[#e8eaed] text-[#5f6368] hover:text-[#202124] flex items-center justify-center transition cursor-pointer" title="Add Sheet">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                    </button>
-                    <div class="relative">
-                        <button type="button" onclick="toggleAllSheetsMenu(event)" class="w-7 h-7 rounded hover:bg-[#e8eaed] text-[#5f6368] hover:text-[#202124] flex items-center justify-center transition cursor-pointer" title="All Sheets">
-                            <i data-lucide="menu" class="w-4 h-4"></i>
-                        </button>
-                        <!-- All Sheets Popup Menu -->
-                        <div id="dropdown-all-sheets" class="hidden absolute bottom-full left-0 mb-1 w-64 bg-white border border-[#dadce0] rounded-lg shadow-xl py-1 z-50 max-h-64 overflow-y-auto">
-                            <div class="px-3 py-1.5 border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Workbook Sheets</div>
-                            <div id="all-sheets-menu-list" class="divide-y divide-gray-50"></div>
-                        </div>
-                    </div>
-                    <button type="button" onclick="scrollSheetTabs('left')" class="w-6 h-7 rounded hover:bg-[#e8eaed] text-[#5f6368] hover:text-[#202124] flex items-center justify-center transition cursor-pointer" title="Scroll Tabs Left">
-                        <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
-                    </button>
-                    <button type="button" onclick="scrollSheetTabs('right')" class="w-6 h-7 rounded hover:bg-[#e8eaed] text-[#5f6368] hover:text-[#202124] flex items-center justify-center transition cursor-pointer" title="Scroll Tabs Right">
-                        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-
-                <!-- Scrollable Tabs Strip with 4 Core Official 2025 SA Sheets -->
-                <div id="form-sheet-tabs-scroll" class="flex-1 flex items-center gap-0.5 overflow-x-auto no-scrollbar py-0.5 px-1 scroll-smooth">
-                    <button type="button" id="tab-sheet-joborder" onclick="switchFormStudioSheet('form13')" class="px-3 py-1 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs">
-                        <span>Job_Order</span><span class="text-[10px] text-[#1a73e8] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-quote" onclick="switchFormStudioSheet('form23')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>Quotation_No</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-billing" onclick="switchFormStudioSheet('billing')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>Billing_No</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                    <button type="button" id="tab-sheet-checklist" onclick="switchFormStudioSheet('checklist')" class="px-3 py-1 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                        <span>CheckList_Result</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                    </button>
-                </div>
-
-                <!-- Right Indicator Badge -->
-                <div class="shrink-0 hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-white border border-[#dadce0] rounded text-[10px] font-mono text-gray-500 shadow-2xs">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>2025 Excel Mode (Offline Active)</span>
-                </div>
-            </div>
-
             </div>
 
             <!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
@@ -7721,7 +7679,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.64"></script>
+    <script src="js/app.js?v=2.65"></script>
 </body>
 
 </html>

@@ -1,3 +1,31 @@
+## 📅 September 20, 2026 (2025 RO Excel Studio Unified Professional Redesign & Alignment)
+
+### 📋 2025 RO Excel Studio Unified Professional Redesign & Alignment (REV-109 / v5.109)
+* **Unified 7/5 Column Ergonomic Split Across All 4 Worksheets (`frontend/index.html`)**:
+  - Upgraded grid column distribution across all four authentic operational worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) from rigid 50/50 (`xl:col-span-6 / xl:col-span-6`) to an ergonomic 7/5 ratio (`xl:col-span-7 / xl:col-span-5`).
+  - Expands the interactive editor pane to ~650px (giving form controls ample breathing room on 100% zoom laptops in Microsoft Edge) while allocating ~450px to the official PDF format preview canvas.
+* **Ergonomic 2-Column Workshop Monitoring Card Grid (`frontend/index.html`)**:
+  - Eliminated the cramped 3-column (~150px) layout in `#f13-monitoring-dispatch-card` that previously caused severe option text truncation (`Marikina Main B...`, `None (Unalloca...`, `Waiting (In Que...`, `No (Standard S...`).
+  - Reorganized the 9 dispatch parameters into an organized 2-column matrix (`sm:grid-cols-2 gap-3.5`):
+    - Row 1: **Claim Stub ID** (with regenerate button) | **Arrival Time (Clock In)** (with live clock stamping button)
+    - Row 2: **Target Branch** | **Intake Source**
+    - Row 3: **Lane Classification** | **Workshop Bay Location**
+    - Row 4: **Parts Availability** | **Initial Floor Status**
+    - Row 5: **Carry-Over (C.O.)** | **Automated Floor Queue & TV Sync Notice**
+    - Row 6: Full-width prominent `[💾 Register Repair Order to System]` button.
+  - Widens each field column to ~320px, allowing long option titles ("Marikina Main Branch", "None (Unallocated / Staging)", "Express Lane (60m SLA)", "Pending Supplier Courier") to render 100% complete without clipping.
+* **Removal of Redundant Sticky Bottom Sheet Bar (`frontend/index.html`)**:
+  - Permanently removed `#form-workbook-bottom-bar` (`sticky bottom-0`) which previously hovered over the bottom of the page, obscuring inputs and eating 48px of vertical screen height. The sticky top bar (`#form-top-tab-bar`) remains the single, authoritative Google Sheets-style tab navigation.
+* **Studio-Wide PDF Preview Toggle (`frontend/js/app.js`, `frontend/index.html`)**:
+  - Added `#btn-toggle-studio-preview` to the top tab bar action cluster with live state handling (`toggleStudioPDFPreview()`).
+  - Allows Service Advisors on compact laptops to instantly collapse the right-side PDF preview and expand the editor to full 12-column width (`xl:col-span-12`) on demand, or restore the 7/5 side-by-side view with a single click.
+* **Automated Regression Suite (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 37 (`AUT-FRONT-86`) asserting 7/5 column split across all 4 sheet views, 2-column monitoring layout, removal of `#form-workbook-bottom-bar`, presence of `#btn-toggle-studio-preview`, and cache buster `v=2.65`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.65`.
+  - All 100 automated unit, RBAC, and security regression tests pass across 46 test suites (`npm.cmd test`).
+
+---
+
 ## 📅 September 20, 2026 (Studio Layout Alignment & Edge Responsiveness Polish at 100% Zoom)
 
 ### 📋 2025 RO Studio Layout Alignment & Edge Responsiveness Polish (REV-108 / v5.108)
