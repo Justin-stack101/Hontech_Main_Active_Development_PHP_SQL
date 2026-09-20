@@ -1,3 +1,25 @@
+## 📅 September 20, 2026 (Assistant & SA Multi-Branch Online Booking Selection & Form Dispatch)
+
+### 📋 Assistant & SA Multi-Branch Online Booking Module Selection & Form Dispatch (REV-101 / v5.101)
+* **Multi-Branch Online Booking Module Toolbar & Filters**:
+  - Implemented an interactive segmented branch control (`All Branches`, `📍 Marikina Main`, `📍 East Branch`) in the Booking Module header (`#container-online-queue`) in `frontend/index.html`.
+  - Added state variable `onlineBranchFilter` and management handlers `setOnlineBranchFilter` and `syncOnlineBranchFilterUI` in `frontend/js/app.js`.
+  - Enabled Assistant (`Mhiecaella Parungao`) and Service Advisors to view, partition, and triage online booking inquiries across both Marikina Main Branch and East Branch seamlessly.
+* **Row-Level Branch Assignment & Visual Indicators**:
+  - Added a dedicated `Branch` column to the Booking Module table with color-coded styling (`📍 Marikina Main` in blue and `📍 East Branch` in purple).
+  - Provided Assistant and Service Advisors with an inline branch selector dropdown in each table row, allowing instantaneous reassignment of booking inquiries between branches (`updateJobField(job.id, 'branch', value)`).
+* **1-Click [📝 Load to Form 1/3 (RO)] Dispatch Action**:
+  - Implemented `loadOnlineBookingToForm13(jobId)`: Service Advisors can click `[📝 Load to RO]` on any pending online booking row to automatically switch to the 2025 RO Excel Studio (`#section-form13`) and populate Customer Name, Contact Number, Plate Number, Vehicle Model, Customer Concern, Appointment Date, and Category into Form 1/3 editor fields and synchronize across sheets (`syncJobOrderFieldsToQuote`, `syncJobOrderFieldsToBilling`, `syncJobOrderFieldsToChecklist`).
+* **Backend Multi-Branch Query & Permission Updates**:
+  - Updated `JobRepository::getFilteredJobs` in `backend/repositories/JobRepository.php` to allow SAs and Assistants to retrieve records across branches or query specific branches via `?branch=`.
+  - Updated `JobController.php` (`updateField`, `updateStatus`, `deleteJob`) to grant SAs and Assistants permission to manage and dispatch cross-branch online booking inquiries.
+* **Automated Unit & Regression Testing**:
+  - Added Suite 30 (`AUT-FRONT-78`) in `tests/frontend/sla_and_logic.test.js`.
+  - All 93 automated unit, RBAC, and security regression tests pass across 39 test suites (`npm.cmd test`).
+  - Incremented client script cache buster to `v=2.59` in `frontend/index.html`.
+
+---
+
 ## 📅 September 20, 2026 (Authentic 2025 RO Form 1/3 CUSTOMER DETAILS Layout in Customer Lookup)
 
 ### 📋 Authentic 2025 RO Form 1/3 CUSTOMER DETAILS Layout (REV-100 / v5.100)

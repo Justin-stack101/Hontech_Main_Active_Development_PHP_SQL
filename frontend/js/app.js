@@ -75,6 +75,7 @@
         let currentQueueDate = getEffectiveQueueDate();
         let isShowingAllQueueDates = false;
         let onlineQueueFilterMode = 'selected'; // 'selected' or 'all'
+        let onlineBranchFilter = 'all'; // 'all', 'Marikina Branch', 'East Branch'
         let carryOverFilterMode = 'active'; // 'active', 'promised', 'received'
         let carryOverFilterDate = getEffectiveQueueDate();
         let includeCarryOverInDailyIntakes = false;
@@ -134,6 +135,38 @@
             onlineQueueFilterMode = (onlineQueueFilterMode === 'selected') ? 'all' : 'selected';
             renderStaffTables();
         };
+
+        window.setOnlineBranchFilter = function(branch) {
+            onlineBranchFilter = branch || 'all';
+            syncOnlineBranchFilterUI();
+            renderStaffTables();
+        };
+
+        function syncOnlineBranchFilterUI() {
+            const btnAll = document.getElementById('btn-ob-branch-all');
+            const btnMarikina = document.getElementById('btn-ob-branch-marikina');
+            const btnEast = document.getElementById('btn-ob-branch-east');
+
+            if (btnAll) {
+                const isSel = (onlineBranchFilter === 'all');
+                btnAll.className = isSel 
+                    ? 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer bg-white text-slate-900 shadow-2xs'
+                    : 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900';
+            }
+            if (btnMarikina) {
+                const isSel = (onlineBranchFilter === 'Marikina Branch' || onlineBranchFilter === 'Branch A' || onlineBranchFilter === 'Marikina');
+                btnMarikina.className = isSel
+                    ? 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer bg-white text-blue-700 shadow-2xs border border-blue-200/60'
+                    : 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900';
+            }
+            if (btnEast) {
+                const isSel = (onlineBranchFilter === 'East Branch' || onlineBranchFilter === 'Branch B' || onlineBranchFilter === 'East');
+                btnEast.className = isSel
+                    ? 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer bg-white text-purple-700 shadow-2xs border border-purple-200/60'
+                    : 'px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900';
+            }
+        }
+        window.syncOnlineBranchFilterUI = syncOnlineBranchFilterUI;
 
         window.setCarryOverFilterMode = function(mode) {
             carryOverFilterMode = mode;
@@ -3882,6 +3915,54 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
+        function loadOnlineBookingToForm13(jobId) {
+            const safeJobs = Array.isArray(allJobs) ? allJobs : [];
+            const job = safeJobs.find(j => String(j.id) === String(jobId) || String(j.job_id) === String(jobId));
+            if (!job) {
+                showSystemToast('Booking record not found.', 'error');
+                return;
+            }
+
+            // Switch to 2025 RO Excel Studio sheet
+            if (typeof showSection === 'function') {
+                showSection('form13');
+            }
+            if (typeof switchFormStudioSheet === 'function') {
+                switchFormStudioSheet('form13');
+            }
+
+            // Prefill Form 1/3 Editor fields
+            const fName = document.getElementById('f13-input-name');
+            const fContact = document.getElementById('f13-input-contact');
+            const fPlate = document.getElementById('f13-input-plate');
+            const fModel = document.getElementById('f13-input-model');
+            const fConcern = document.getElementById('f13-input-concern');
+            const fDate = document.getElementById('f13-input-intake-date');
+            const fCategory = document.getElementById('f13-input-category');
+
+            if (fName) fName.value = job.customerName || job.name || '';
+            if (fContact) fContact.value = job.phone || job.contact || '';
+            if (fPlate) fPlate.value = job.plate || '';
+            if (fModel) fModel.value = job.vehicle || job.model || '';
+            if (fConcern) fConcern.value = job.evaluation || job.complaint || job.notes || (job.category ? `Online Inquired: ${job.category}` : '');
+            if (fDate) fDate.value = job.apptDate || getEffectiveQueueDate();
+            if (fCategory && job.category) {
+                Array.from(fCategory.options).forEach(opt => {
+                    if (opt.value.toLowerCase() === job.category.toLowerCase() || opt.text.toLowerCase().includes(job.category.toLowerCase())) {
+                        fCategory.value = opt.value;
+                    }
+                });
+            }
+
+            // Synchronize with other Studio sheets (Quotation, Billing, Checklist)
+            if (typeof syncJobOrderFieldsToQuote === 'function') syncJobOrderFieldsToQuote();
+            if (typeof syncJobOrderFieldsToBilling === 'function') syncJobOrderFieldsToBilling();
+            if (typeof syncJobOrderFieldsToChecklist === 'function') syncJobOrderFieldsToChecklist();
+
+            showSystemToast(`Loaded online booking for ${job.customerName || job.plate || 'Customer'} into 2025 RO Excel Studio.`, 'success', 'Form 1/3 Ready');
+        }
+        window.loadOnlineBookingToForm13 = loadOnlineBookingToForm13;
+
         function calculateGoalStatusForJob(job) {
             const isPMS = job.category && job.category.toUpperCase().includes('PMS');
             const isExpress = job.laneType && (job.laneType === 'Express' || job.laneType === 'Express Lane');
@@ -3933,11 +4014,24 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     : 'px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-wider rounded-lg border border-slate-900 bg-slate-900 text-white transition cursor-pointer shadow-2xs';
             }
 
+            syncOnlineBranchFilterUI();
+
             let pendingOnline = safeJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
             if (onlineQueueFilterMode === 'selected') {
                 pendingOnline = pendingOnline.filter(j => {
                     const jDate = getJobDate(j);
                     return !jDate || jDate === currentQueueDate;
+                });
+            }
+            if (onlineBranchFilter && onlineBranchFilter !== 'all') {
+                pendingOnline = pendingOnline.filter(j => {
+                    const b = (j.branch || 'Marikina Branch').toLowerCase();
+                    if (onlineBranchFilter.toLowerCase().includes('marikina') || onlineBranchFilter.toLowerCase().includes('branch a')) {
+                        return b.includes('marikina') || b.includes('branch a') || !j.branch;
+                    } else if (onlineBranchFilter.toLowerCase().includes('east') || onlineBranchFilter.toLowerCase().includes('branch b')) {
+                        return b.includes('east') || b.includes('branch b');
+                    }
+                    return b === onlineBranchFilter.toLowerCase();
                 });
             }
 
@@ -3969,14 +4063,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (techBoardEl) techBoardEl.classList.toggle('hidden', !isTech);
             if (periodicRecordsEl) periodicRecordsEl.classList.toggle('hidden', !(isOwner || isAdmin));
 
-            // Apply active queue subtab mode (default to 'daily' for focused single-card view)
-            
-
             // BOOKING MODULE (Assistant Staff Operational Controls; Service Advisor, Owner, Admin View-Only)
             if (canViewOnline && document.getElementById('table-pending-express')) {
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map((job, idx) => {
                     const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
                     const curLane = job.laneType || 'Flexible Lane';
+                    const curBranch = (job.branch === 'East Branch' || job.branch === 'Branch B') ? 'East Branch' : 'Marikina Branch';
+                    const isEastBranch = (curBranch === 'East Branch');
+                    const canEditBranch = isAsst || isSA;
                     return `
                     <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 text-xs">
                         <td class="px-3 py-5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
@@ -3989,6 +4083,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                         <td class="px-4 py-5 align-middle min-w-[200px]">
                             <span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle || ''}">${job.vehicle || 'Unknown Vehicle'}</span>
+                        </td>
+                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
+                            ${canEditBranch ? `
+                                <select onchange="updateJobField('${job.id}', 'branch', this.value)" class="table-select text-xs font-bold py-1 px-2.5 rounded-lg border border-slate-200 cursor-pointer shadow-2xs ${isEastBranch ? 'text-purple-700 bg-purple-50/70 border-purple-200' : 'text-blue-700 bg-blue-50/70 border-blue-200'}" title="Assign Inquiry Branch">
+                                    <option value="Marikina Branch" ${!isEastBranch ? 'selected' : ''}>📍 Marikina Main</option>
+                                    <option value="East Branch" ${isEastBranch ? 'selected' : ''}>📍 East Branch</option>
+                                </select>
+                            ` : `
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${isEastBranch ? 'bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs' : 'bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs'}">
+                                    <span class="w-1.5 h-1.5 rounded-full ${isEastBranch ? 'bg-purple-500' : 'bg-blue-500'}"></span>
+                                    ${isEastBranch ? 'East Branch' : 'Marikina Main'}
+                                </span>
+                            `}
                         </td>
                         <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
                             ${isReadOnlyOnline ? `
@@ -4026,7 +4133,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             <line x1="3" y1="10" x2="21" y2="10"></line>
                                         </svg>
                                         <input type="date" value="${job.apptDate || ''}" 
-                                            onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
+                                             onchange="updateJobField('${job.id}', 'apptDate', this.value)" 
                                             class="appt-date-input" 
                                             title="Select Appointment Date">
                                     </div>
@@ -4074,22 +4181,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
                         </td>
                         <td class="px-4 py-5 text-right align-middle">
-                            <div class="flex items-center justify-end gap-2">
-                                ${isReadOnlyOnline ? `
-                                    <span class="text-xs font-bold text-slate-400 italic">View Only</span>
-                                ` : `
-                                    <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1.5 cursor-pointer">
+                            <div class="flex items-center justify-end gap-1.5">
+                                ${isSA ? `
+                                    <button type="button" onclick="loadOnlineBookingToForm13('${job.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Load customer and vehicle data into Form 1/3 Studio">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Load to RO
+                                    </button>
+                                    <button type="button" onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Confirm and activate intake">
                                         <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
                                     </button>
-                                    <button onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition flex items-center justify-center cursor-pointer shadow-2xs" title="Delete Booking">
+                                ` : (isAsst ? `
+                                    <button type="button" onclick="loadOnlineBookingToForm13('${job.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Load customer and vehicle data into Form 1/3 Studio">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Load to RO
+                                    </button>
+                                    <button type="button" onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
+                                    </button>
+                                    <button type="button" onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition flex items-center justify-center cursor-pointer shadow-2xs" title="Delete Booking">
                                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     </button>
-                                `}
+                                ` : `
+                                    <span class="text-xs font-bold text-slate-400 italic">View Only</span>
+                                `)}
                             </div>
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="9" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border border-blue-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p class="text-xs font-bold text-slate-700">No Pending Online Bookings</p><p class="text-[11px] text-slate-400 font-medium">Inquiries submitted online will appear here in real time.</p></div></td></tr>`;
+                }).join('') || `<tr><td colspan="10" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border border-blue-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p class="text-xs font-bold text-slate-700">No Pending Online Bookings</p><p class="text-[11px] text-slate-400 font-medium">Inquiries submitted online will appear here in real time.</p></div></td></tr>`;
             }
 
             // DAILY INTAKES

@@ -3930,7 +3930,7 @@
                 <!-- ONLINE BOOKING MODULE TABLE (Assistant/Owner View) -->
                 <div id="container-online-queue"
                     class="bg-white border border-slate-200 border-t-4 border-t-blue-600 p-5 rounded-2xl shadow-sm flex flex-col w-full max-w-full overflow-hidden">
-                    <div class="flex items-center justify-between gap-3 mb-3">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
                         <div class="flex items-center gap-3">
                             <div class="p-2 bg-blue-50 border border-blue-100 rounded-xl text-blue-600 shadow-2xs">
                                 <i data-lucide="calendar-clock" class="w-4 h-4"></i>
@@ -3940,7 +3940,19 @@
                                 <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Pending Online Inquiries</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <!-- Branch Filter Segmented Control -->
+                            <div class="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-2xs text-xs font-bold" id="online-branch-filter-group">
+                                <button type="button" onclick="setOnlineBranchFilter('all')" id="btn-ob-branch-all" class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer bg-white text-slate-900 shadow-2xs">
+                                    All Branches
+                                </button>
+                                <button type="button" onclick="setOnlineBranchFilter('Marikina Branch')" id="btn-ob-branch-marikina" class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900">
+                                    📍 Marikina Main
+                                </button>
+                                <button type="button" onclick="setOnlineBranchFilter('East Branch')" id="btn-ob-branch-east" class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900">
+                                    📍 East Branch
+                                </button>
+                            </div>
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200/80 shadow-2xs">
                                 <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span> Online Queue
                             </span>
@@ -3954,6 +3966,7 @@
                                     <th class="px-4 py-4.5 bg-slate-50">Customer Name</th>
                                     <th class="px-4 py-4.5 bg-slate-50">Plate No.</th>
                                     <th class="px-4 py-4.5 bg-slate-50 min-w-[200px]">Model</th>
+                                    <th class="px-4 py-4.5 bg-slate-50 text-center">Branch</th>
                                     <th class="px-4 py-4.5 bg-slate-50 text-center">Lane Type</th>
                                     <th class="px-4 py-4.5 bg-slate-50 whitespace-nowrap">Appointment</th>
                                     <th class="px-4 py-4.5 bg-slate-50 min-w-[220px]">Evaluation / Notes</th>
@@ -7560,7 +7573,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.58"></script>
+    <script src="js/app.js?v=2.59"></script>
 </body>
 
 </html>
