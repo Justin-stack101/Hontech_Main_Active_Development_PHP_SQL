@@ -2795,48 +2795,46 @@
                         </div>
 
                         <!-- WORKSHOP MONITORING & DAILY INTAKES DISPATCH DOSSIER CARD -->
-                        <div id="f13-monitoring-dispatch-card" class="bg-white border-2 border-slate-900 rounded-2xl shadow-sm overflow-hidden space-y-0">
+                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
                             <!-- Card Header Bar -->
-                            <div class="bg-gradient-to-r from-red-600 via-slate-900 to-slate-900 px-5 py-3 text-white flex flex-wrap items-center justify-between gap-3">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-red-200 border border-white/10">
-                                        <i data-lucide="gauge" class="w-4 h-4 text-white"></i>
+                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
+                                        <i data-lucide="gauge" class="w-5 h-5"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <h3 class="text-xs font-black uppercase tracking-wider text-white">Workshop Monitoring & Daily Intakes Dispatch</h3>
-                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Auto-Prefilled
+                                            <h3 class="text-sm font-black text-gray-900 uppercase tracking-tight">Workshop Monitoring & Daily Intakes Dispatch</h3>
+                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Prefilled
                                             </span>
                                         </div>
-                                        <p class="text-[10px] text-slate-300 font-medium">Single Source of Truth for Daily Intakes Queue, TV Monitor & Bay Allocation</p>
+                                        <p class="text-xs text-gray-500 font-medium">Log and configure vehicle dispatch parameters for daily monitoring.</p>
                                     </div>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10.5px] font-mono font-bold text-slate-300">Live Workshop Dispatch</span>
                                 </div>
                             </div>
 
-                            <div class="p-4.5 space-y-4 bg-slate-50/40">
+                            <!-- Form Grid Rows -->
+                            <div class="space-y-3.5">
                                 <!-- Top Row: Claim Stub, Source & Target Branch -->
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Claim Stub ID <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026-j1" 
-                                                class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-black text-xs text-red-700 uppercase shadow-2xs outline-none transition" title="Customer Claim Stub identifier for Floor Queue">
-                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2 top-2 text-slate-400 hover:text-slate-700 cursor-pointer" title="Regenerate Next Sequential Stub">
+                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-mono font-bold text-xs text-gray-900 uppercase shadow-2xs outline-none transition" title="Customer Claim Stub identifier for Floor Queue">
+                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
                                                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Intake Source
                                         </label>
-                                        <select id="f13-input-source" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-slate-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-source" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="Walk-in" selected>Walk-in Customer</option>
                                             <option value="Online">Online Booking Inquiry</option>
                                             <option value="Returning">Returning / Repeat Customer</option>
@@ -2844,12 +2842,12 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Target Branch <span class="text-red-500">*</span>
                                         </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-blue-700 shadow-2xs outline-none transition cursor-pointer">
-                                            <option value="Marikina Branch" selected>📍 Marikina Main Branch</option>
-                                            <option value="East Branch">📍 East Branch</option>
+                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
+                                            <option value="East Branch">East Branch</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2857,23 +2855,23 @@
                                 <!-- Middle Row: Lane Classification, Bay Location & Parts Stock -->
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Lane Type <span class="text-red-500">*</span>
                                         </label>
-                                        <select id="f13-input-lane-type" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-slate-800 shadow-2xs outline-none transition cursor-pointer">
-                                            <option value="Express Lane">⚡ Express Lane (60m SLA)</option>
-                                            <option value="PMS & GRS Lane">🔧 PMS & GRS Lane</option>
-                                            <option value="Flexible Lane" selected>🔄 Flexible Lane</option>
-                                            <option value="Regular Lane">🚗 Regular Lane</option>
-                                            <option value="Priority Lane">⭐ Priority Lane</option>
-                                            <option value="Special Lane">🛡️ Special Lane</option>
+                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                            <option value="Flexible Lane" selected>Flexible Lane</option>
+                                            <option value="Express Lane">Express Lane (60m SLA)</option>
+                                            <option value="PMS & GRS Lane">PMS & GRS Lane</option>
+                                            <option value="Regular Lane">Regular Lane</option>
+                                            <option value="Priority Lane">Priority Lane</option>
+                                            <option value="Special Lane">Special Lane</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Initial Workshop Bay
                                         </label>
-                                        <select id="f13-input-bay-location" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-slate-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="None" selected>None (Unallocated / Staging)</option>
                                             <option value="Bay 1">Bay 1 (2-Post Lift)</option>
                                             <option value="Bay 2">Bay 2 (2-Post Lift)</option>
@@ -2887,14 +2885,14 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Parts Availability
                                         </label>
-                                        <select id="f13-input-parts-status" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-emerald-700 shadow-2xs outline-none transition cursor-pointer">
-                                            <option value="Yes" selected>✅ Yes — In Stock</option>
-                                            <option value="Pending Supplier Courier">⏳ Pending Supplier Courier</option>
-                                            <option value="Special Order">📦 Special Order Required</option>
-                                            <option value="Customer Supplied">👤 Customer Supplied Parts</option>
+                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                            <option value="Yes" selected>Yes — In Stock</option>
+                                            <option value="Pending Supplier Courier">Pending Supplier Courier</option>
+                                            <option value="Special Order">Special Order Required</option>
+                                            <option value="Customer Supplied">Customer Supplied Parts</option>
                                         </select>
                                     </div>
                                 </div>
@@ -2902,35 +2900,35 @@
                                 <!-- Bottom Row: Arrival Time, Initial Status & Carry-Over -->
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Arrival Time (Clock In) <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-slate-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp">
-                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2 top-2 text-slate-400 hover:text-slate-700 cursor-pointer" title="Stamp Current Clock Time">
+                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp">
+                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
                                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Initial Floor Status
                                         </label>
-                                        <select id="f13-input-status" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-slate-800 shadow-2xs outline-none transition cursor-pointer">
-                                            <option value="Waiting" selected>⏳ Waiting (In Queue)</option>
-                                            <option value="Processing">⚙️ Processing (In Service)</option>
-                                            <option value="Pending Parts">📦 Pending Parts</option>
-                                            <option value="Quality Control">🔍 Quality Control</option>
+                                        <select id="f13-input-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                            <option value="Waiting" selected>Waiting (In Queue)</option>
+                                            <option value="Processing">Processing (In Service)</option>
+                                            <option value="Pending Parts">Pending Parts</option>
+                                            <option value="Quality Control">Quality Control</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-black text-slate-700 uppercase tracking-wider mb-1">
+                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">
                                             Carry-Over (C.O.)
                                         </label>
-                                        <select id="f13-input-carry-over" class="w-full bg-white border border-slate-300 focus:border-red-500 rounded-xl px-3 py-2 font-bold text-xs text-slate-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3.5 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
                                             <option value="No" selected>No (Standard Same-Day Job)</option>
-                                            <option value="Yes">⚠️ Yes (Overnight Carry-Over)</option>
+                                            <option value="Yes">Yes (Overnight Carry-Over)</option>
                                         </select>
                                     </div>
                                 </div>
