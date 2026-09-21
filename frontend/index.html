@@ -7623,47 +7623,6 @@
                 <iframe id="f13-enlarge-pdf-iframe" class="w-full h-full border-0 rounded-2xl bg-white shadow-xl" src="about:blank" title="Enlarged Form 1/3 PDF Viewer"></iframe>
             </div>
         </div>
-                            class="w-full bg-white border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-bold text-xs text-slate-900 transition cursor-pointer appearance-none">
-                            <option value="Required Parts Delay / Not In Stock">Required Parts Delay / Not In Stock</option>
-                            <option value="Additional Deep Diagnostics Required">Additional Deep Diagnostics Required</option>
-                            <option value="Customer Requested Scope Change / Additional Work">Customer Requested Scope Change / Additional Work</option>
-                            <option value="Technician Bay Bottleneck / Lift Availability">Technician Bay Bottleneck / Lift Availability</option>
-                            <option value="Unforeseen Mechanical Complications">Unforeseen Mechanical Complications</option>
-                            <option value="Others">Others (Specify Custom Reason)</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 pointer-events-none absolute right-3.5 top-3"></i>
-                    </div>
-                </div>
-
-                <!-- Custom Reason Input (Revealed on Others) -->
-                <div id="modal-delay-custom-wrap" class="space-y-1.5 hidden">
-                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                        Specify Custom Reason <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="modal-delay-custom-input" placeholder="e.g. Additional electrical inspection requested..."
-                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl px-3.5 py-2.5 outline-none font-medium text-xs text-slate-900 transition">
-                </div>
-
-                <!-- Detailed Explanation Textarea -->
-                <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                        Diagnostic Remarks & Operational Notes <span class="text-red-500">*</span>
-                    </label>
-                    <textarea id="modal-delay-details" rows="3" placeholder="Provide notes on the vehicle status or why additional service time is required..."
-                        class="w-full bg-white border border-slate-300 focus:border-amber-500 rounded-xl p-3 outline-none font-medium text-xs text-slate-900 transition custom-scroll resize-none"></textarea>
-                </div>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="bg-slate-50 px-6 py-4 border-t border-slate-150 flex items-center justify-end gap-2.5 shrink-0">
-                <button type="button" onclick="closeExpressDelayModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-wider transition cursor-pointer">
-                    Cancel
-                </button>
-                <button type="button" onclick="submitExpressDelayReport()" id="btn-submit-express-delay" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer">
-                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Save Progress Note
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- 2. SYSTEM-WIDE REASON-REQUIRED EDIT PROMPT MODAL -->

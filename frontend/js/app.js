@@ -13145,14 +13145,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (e && e.target && typeof applyStudioFieldMagnification === 'function' && e.type !== 'blur') {
                     applyStudioFieldMagnification(e.target);
                 }
-                if (e && e.type === 'blur') {
-                    setTimeout(() => {
-                        const active = document.activeElement;
-                        if (!active || !STUDIO_MAGNIFIER_ZONES[active.id]) {
-                            resetStudioMagnification();
-                        }
-                    }, 1200);
-                }
                 const isImmediate = e && (e.type === 'blur' || e.type === 'change');
                 scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
             };
@@ -13195,12 +13187,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.addEventListener('blur', () => {
                         syncQuoteFieldsToJobOrder();
                         scheduleFormStudioPdfRefresh(0);
-                        setTimeout(() => {
-                            const active = document.activeElement;
-                            if (!active || !getStudioZoneForElement(active)) {
-                                resetStudioMagnification();
-                            }
-                        }, 1200);
                     });
                     el.dataset.f23Bound = 'true';
                 }
@@ -13221,12 +13207,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.addEventListener('blur', () => {
                         syncBillingToJobOrder();
                         scheduleFormStudioPdfRefresh(0);
-                        setTimeout(() => {
-                            const active = document.activeElement;
-                            if (!active || !getStudioZoneForElement(active)) {
-                                resetStudioMagnification();
-                            }
-                        }, 1200);
                     });
                     el.dataset.billBound = 'true';
                 }
@@ -13245,12 +13225,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.addEventListener('blur', () => {
                         syncChecklistCanvas();
                         scheduleFormStudioPdfRefresh(0);
-                        setTimeout(() => {
-                            const active = document.activeElement;
-                            if (!active || !getStudioZoneForElement(active)) {
-                                resetStudioMagnification();
-                            }
-                        }, 1200);
                     });
                     el.dataset.chkBound = 'true';
                 }
@@ -14862,9 +14836,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.STUDIO_HARDCODED_SECTIONS = STUDIO_HARDCODED_SECTIONS;
 
         function getActiveStudioSheet() {
-            if (document.getElementById('checklist-canvas-pane') && !document.getElementById('checklist-canvas-pane').classList.contains('hidden')) return 'checklist';
-            if (document.getElementById('billing-canvas-pane') && !document.getElementById('billing-canvas-pane').classList.contains('hidden')) return 'billing';
-            if (document.getElementById('f23-quote-canvas-pane') && !document.getElementById('f23-quote-canvas-pane').classList.contains('hidden')) return 'quote';
+            if (window.currentFormStudioActiveSheet) return window.currentFormStudioActiveSheet;
+            if (document.getElementById('view-sheet-checklist') && !document.getElementById('view-sheet-checklist').classList.contains('hidden')) return 'checklist';
+            if (document.getElementById('view-sheet-billing') && !document.getElementById('view-sheet-billing').classList.contains('hidden')) return 'billing';
+            if (document.getElementById('view-sheet-quote') && !document.getElementById('view-sheet-quote').classList.contains('hidden')) return 'quote';
             return 'form13';
         }
         window.getActiveStudioSheet = getActiveStudioSheet;
