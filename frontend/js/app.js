@@ -14650,20 +14650,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el) {
                     el.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
-                    if (level <= 1.0) {
-                        el.style.transformOrigin = 'center top';
-                        el.style.transform = 'scale(1.0)';
-                    } else {
-                        el.style.transform = `scale(${level})`;
-                    }
+                    el.style.transformOrigin = 'center top';
+                    el.style.transform = 'scale(1.0)'; // 100% Crisp Native Vector DPI (Zero Blurriness)
                 }
             });
-            if (level <= 1.0) {
-                const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
-                huds.forEach(hid => {
-                    const h = document.getElementById(hid);
-                    if (h) h.classList.add('hidden');
-                });
+            if (level > 1.0) {
+                isStudioAutoMagnifyEnabled = true;
+                localStorage.setItem('hontech_studio_auto_magnify', 'true');
+                updateStudioAutoMagnifyUI();
+                const active = document.activeElement;
+                if (active && (STUDIO_MAGNIFIER_ZONES[active.id] || active.id?.startsWith('f13-') || active.id?.startsWith('f23-') || active.id?.startsWith('bill-') || active.id?.startsWith('chk-'))) {
+                    applyStudioFieldMagnification(active);
+                }
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast(`High-Definition Loupe Magnifier active (${Math.round(level * 100)}% field legibility).`, 'success', 'Inspector Active');
+                }
+            } else {
+                isStudioAutoMagnifyEnabled = false;
+                localStorage.setItem('hontech_studio_auto_magnify', 'false');
+                updateStudioAutoMagnifyUI();
+                resetStudioMagnification();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast('Returned to 100% Fit crisp vector view.', 'info', 'Magnifier OFF');
+                }
             }
         }
         window.setStudioManualZoom = setStudioManualZoom;
@@ -14681,7 +14690,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
             huds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
+                if (el) {
+                    el.classList.add('hidden');
+                    el.style.display = 'none';
+                }
             });
         }
         window.resetStudioMagnification = resetStudioMagnification;
@@ -14693,40 +14705,72 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
             const zone = STUDIO_MAGNIFIER_ZONES[inputId];
-            if (!zone) return;
 
             let iframeId = 'f13-pdf-iframe';
             let hudId = 'f13-field-magnifier-hud';
             let hudFieldId = 'f13-hud-field-name';
             let hudValId = 'f13-hud-field-value';
 
-            if (zone.sheet === 'quote') {
+            const sheetType = zone?.sheet || (inputId.startsWith('f23-') ? 'quote' : inputId.startsWith('bill-') ? 'billing' : inputId.startsWith('chk-') ? 'checklist' : 'form13');
+
+            if (sheetType === 'quote') {
                 iframeId = 'f23-pdf-iframe';
                 hudId = 'f23-field-magnifier-hud';
                 hudFieldId = 'f23-hud-field-name';
                 hudValId = 'f23-hud-field-value';
-            } else if (zone.sheet === 'billing') {
+            } else if (sheetType === 'billing') {
                 iframeId = 'billing-pdf-iframe';
                 hudId = 'billing-field-magnifier-hud';
                 hudFieldId = 'billing-hud-field-name';
                 hudValId = 'billing-hud-field-value';
-            } else if (zone.sheet === 'checklist') {
+            } else if (sheetType === 'checklist') {
                 iframeId = 'checklist-pdf-iframe';
                 hudId = 'checklist-field-magnifier-hud';
                 hudFieldId = 'checklist-hud-field-name';
                 hudValId = 'checklist-hud-field-value';
             }
 
+            // Keep iframe preview at 100% Crisp Native Vector Resolution (No blurry CSS transform stretching)
             const iframe = document.getElementById(iframeId);
             if (iframe) {
                 iframe.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
-                iframe.style.transformOrigin = `${zone.x} ${zone.y}`;
-                iframe.style.transform = `scale(${zone.scale || activeStudioZoomScale})`;
+                iframe.style.transformOrigin = 'center top';
+                iframe.style.transform = 'scale(1.0)';
             }
 
-            // Loupe HUD permanently suppressed per user directive to keep document preview 100% clean
+            // High-Definition Field Inspector Loupe Lens (Instant 0ms Keystroke Feedback)
+            const allHuds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
+            allHuds.forEach(hid => {
+                const h = document.getElementById(hid);
+                if (h && hid !== hudId) {
+                    h.classList.add('hidden');
+                    h.style.display = 'none';
+                }
+            });
+
             const hud = document.getElementById(hudId);
-            if (hud) hud.classList.add('hidden');
+            const hudFieldName = document.getElementById(hudFieldId);
+            const hudVal = document.getElementById(hudValId);
+
+            if (hud) {
+                hud.classList.remove('hidden');
+                hud.style.display = 'flex';
+
+                if (hudFieldName) {
+                    const fallbackLabel = inputId ? inputId.replace(/^(f13|f23|bill|chk)-input-/, '').replace(/-/g, ' ').toUpperCase() : 'ACTIVE FIELD';
+                    hudFieldName.textContent = zone?.label || fallbackLabel;
+                }
+
+                if (hudVal) {
+                    const inputEl = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+                    const val = forceVal !== null ? forceVal : (inputEl ? (inputEl.value ?? '') : '');
+                    if (!val || val.toString().trim() === '') {
+                        hudVal.innerHTML = '<span class="italic text-slate-400 font-normal text-xs md:text-sm tracking-normal">Waiting for input...</span>';
+                    } else {
+                        hudVal.textContent = val.toString();
+                    }
+                }
+            }
         }
         window.applyStudioFieldMagnification = applyStudioFieldMagnification;
 

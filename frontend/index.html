@@ -3199,13 +3199,30 @@
 
                         <!-- Real PDF Viewer Container with Active Field Loupe HUD -->
                         <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <!-- Field Inspection Loupe HUD (Permanently hidden per user directive) -->
-                            <div id="f13-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
-                                <div class="flex items-center gap-2 overflow-hidden">
-                                    <span class="px-1.5 py-0.5 bg-red-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f13-hud-field-name">FIELD</span>
-                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f13-hud-field-value">Typing preview...</span>
+                            <!-- Field Inspection Loupe HUD (Solution A: Razor-Sharp High-Definition Keystroke Inspector) -->
+                            <div id="f13-field-magnifier-hud" class="hidden mb-2 px-3.5 py-2.5 bg-slate-950/95 border border-amber-500/40 rounded-xl text-white shadow-2xl backdrop-blur-md transition-all duration-200 shrink-0 z-20">
+                                <div class="flex items-center justify-between gap-3 w-full">
+                                    <div class="flex items-center gap-2.5 min-w-0 overflow-hidden">
+                                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/50 flex items-center justify-center shrink-0">
+                                            <i data-lucide="zoom-in" class="w-4 h-4 text-amber-400"></i>
+                                        </div>
+                                        <div class="flex flex-col min-w-0">
+                                            <div class="flex items-center gap-2">
+                                                <span id="f13-hud-field-name" class="px-2 py-0.5 bg-red-600/90 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0">JOB ORDER FIELD</span>
+                                                <span class="text-[10px] text-amber-400/90 font-medium">Loupe Inspector Active</span>
+                                            </div>
+                                            <div id="f13-hud-field-value" class="font-mono font-bold text-amber-300 text-sm md:text-base truncate mt-0.5 tracking-wide">Typing preview...</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-600/40 items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>100% Crisp Vector
+                                        </span>
+                                        <button type="button" onclick="toggleStudioAutoMagnify()" class="p-1 text-slate-400 hover:text-white rounded transition cursor-pointer" title="Dismiss Magnifier">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <span class="text-[10px] text-emerald-400 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Magnified 185%</span>
                             </div>
                             <iframe id="f13-pdf-iframe" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
                         </div>
@@ -3393,12 +3410,29 @@
 
                             <!-- PDF Format View Container -->
                             <div id="f23-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                                <div id="f23-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
-                                    <div class="flex items-center gap-2 overflow-hidden">
-                                        <span class="px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f23-hud-field-name">FIELD</span>
-                                        <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f23-hud-field-value">Typing preview...</span>
+                                <div id="f23-field-magnifier-hud" class="hidden mb-2 px-3.5 py-2.5 bg-slate-950/95 border border-blue-500/40 rounded-xl text-white shadow-2xl backdrop-blur-md transition-all duration-200 shrink-0 z-20">
+                                    <div class="flex items-center justify-between gap-3 w-full">
+                                        <div class="flex items-center gap-2.5 min-w-0 overflow-hidden">
+                                            <div class="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/50 flex items-center justify-center shrink-0">
+                                                <i data-lucide="zoom-in" class="w-4 h-4 text-blue-400"></i>
+                                            </div>
+                                            <div class="flex flex-col min-w-0">
+                                                <div class="flex items-center gap-2">
+                                                    <span id="f23-hud-field-name" class="px-2 py-0.5 bg-blue-600/90 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0">QUOTATION FIELD</span>
+                                                    <span class="text-[10px] text-blue-300 font-medium">Loupe Inspector Active</span>
+                                                </div>
+                                                <div id="f23-hud-field-value" class="font-mono font-bold text-amber-300 text-sm md:text-base truncate mt-0.5 tracking-wide">Typing preview...</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-950 text-blue-300 border border-blue-600/40 items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>100% Crisp Vector
+                                            </span>
+                                            <button type="button" onclick="toggleStudioAutoMagnify()" class="p-1 text-slate-400 hover:text-white rounded transition cursor-pointer" title="Dismiss Magnifier">
+                                                <i data-lucide="x" class="w-4 h-4"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <span class="text-[10px] text-blue-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>Magnified 185%</span>
                                 </div>
                                 <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="Quotation_No Official PDF"></iframe>
                             </div>
@@ -3597,12 +3631,29 @@
 
                         <!-- PDF Format View Container -->
                         <div id="billing-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <div id="billing-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
-                                <div class="flex items-center gap-2 overflow-hidden">
-                                    <span class="px-1.5 py-0.5 bg-purple-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="billing-hud-field-name">FIELD</span>
-                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="billing-hud-field-value">Typing preview...</span>
+                            <div id="billing-field-magnifier-hud" class="hidden mb-2 px-3.5 py-2.5 bg-slate-950/95 border border-purple-500/40 rounded-xl text-white shadow-2xl backdrop-blur-md transition-all duration-200 shrink-0 z-20">
+                                <div class="flex items-center justify-between gap-3 w-full">
+                                    <div class="flex items-center gap-2.5 min-w-0 overflow-hidden">
+                                        <div class="w-7 h-7 rounded-lg bg-purple-500/20 border border-purple-500/50 flex items-center justify-center shrink-0">
+                                            <i data-lucide="zoom-in" class="w-4 h-4 text-purple-400"></i>
+                                        </div>
+                                        <div class="flex flex-col min-w-0">
+                                            <div class="flex items-center gap-2">
+                                                <span id="billing-hud-field-name" class="px-2 py-0.5 bg-purple-600/90 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0">BILLING FIELD</span>
+                                                <span class="text-[10px] text-purple-300 font-medium">Loupe Inspector Active</span>
+                                            </div>
+                                            <div id="billing-hud-field-value" class="font-mono font-bold text-amber-300 text-sm md:text-base truncate mt-0.5 tracking-wide">Typing preview...</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-600/40 items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>100% Crisp Vector
+                                        </span>
+                                        <button type="button" onclick="toggleStudioAutoMagnify()" class="p-1 text-slate-400 hover:text-white rounded transition cursor-pointer" title="Dismiss Magnifier">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <span class="text-[10px] text-purple-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>Magnified 185%</span>
                             </div>
                             <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="Billing_No Official PDF"></iframe>
                         </div>
@@ -3762,12 +3813,29 @@
 
                         <!-- PDF Format View Container -->
                         <div id="checklist-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <div id="checklist-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
-                                <div class="flex items-center gap-2 overflow-hidden">
-                                    <span class="px-1.5 py-0.5 bg-amber-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="checklist-hud-field-name">FIELD</span>
-                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="checklist-hud-field-value">Typing preview...</span>
+                            <div id="checklist-field-magnifier-hud" class="hidden mb-2 px-3.5 py-2.5 bg-slate-950/95 border border-amber-500/40 rounded-xl text-white shadow-2xl backdrop-blur-md transition-all duration-200 shrink-0 z-20">
+                                <div class="flex items-center justify-between gap-3 w-full">
+                                    <div class="flex items-center gap-2.5 min-w-0 overflow-hidden">
+                                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/50 flex items-center justify-center shrink-0">
+                                            <i data-lucide="zoom-in" class="w-4 h-4 text-amber-400"></i>
+                                        </div>
+                                        <div class="flex flex-col min-w-0">
+                                            <div class="flex items-center gap-2">
+                                                <span id="checklist-hud-field-name" class="px-2 py-0.5 bg-amber-600/90 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0">CHECKLIST FIELD</span>
+                                                <span class="text-[10px] text-amber-300 font-medium">Loupe Inspector Active</span>
+                                            </div>
+                                            <div id="checklist-hud-field-value" class="font-mono font-bold text-amber-300 text-sm md:text-base truncate mt-0.5 tracking-wide">Typing preview...</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 shrink-0">
+                                        <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-600/40 items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>100% Crisp Vector
+                                        </span>
+                                        <button type="button" onclick="toggleStudioAutoMagnify()" class="p-1 text-slate-400 hover:text-white rounded transition cursor-pointer" title="Dismiss Magnifier">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <span class="text-[10px] text-amber-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>Magnified 185%</span>
                             </div>
                             <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="CheckList_Result Official PDF"></iframe>
                         </div>
@@ -7743,7 +7811,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.81"></script>
+    <script src="js/app.js?v=2.82"></script>
 </body>
 
 </html>
