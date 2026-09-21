@@ -13279,14 +13279,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             }
                         }
                     });
-                    container.addEventListener('focusout', () => {
-                        setTimeout(() => {
-                            const active = document.activeElement;
-                            if (!active || !getStudioZoneForElement(active)) {
-                                resetStudioMagnification();
-                            }
-                        }, 1200);
-                    });
                     container.dataset.magDelegated = 'true';
                 }
             };
@@ -14850,6 +14842,96 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.resetStudioMagnification = resetStudioMagnification;
 
+        // =========================================================================
+        // HARDCODED SECTION-LOCK MAGNIFICATION ENGINE (REV-130)
+        // =========================================================================
+        const STUDIO_HARDCODED_SECTIONS = {
+            'fit': { yRatio: 0.0, scale: 0.5, label: 'FULL FIT' },
+            'customer': { yRatio: 0.0, scale: 0.88, label: 'CUSTOMER & VEHICLE' },
+            'diagnostic': { yRatio: 0.25, scale: 0.88, label: 'CONCERN & DIAGNOSIS' },
+            'table': { yRatio: 0.50, scale: 0.88, label: 'PARTS & MATERIALS TABLE' },
+            'totals': { yRatio: 0.72, scale: 0.88, label: 'SETTLEMENT TOTALS' },
+            'signatures': { yRatio: 0.85, scale: 0.88, label: 'SIGNATURES & CONFORME' },
+            'claim_stub': { yRatio: 1.00, scale: 0.88, label: 'CUSTOMER CLAIM STUB' },
+            // Checklist specific sections
+            'chk_interior': { yRatio: 0.20, scale: 0.88, label: 'INTERIOR INSPECTION' },
+            'chk_underhood': { yRatio: 0.45, scale: 0.88, label: 'UNDERHOOD & FLUIDS' },
+            'chk_underchassis': { yRatio: 0.68, scale: 0.88, label: 'UNDERCHASSIS & BRAKES' },
+            'chk_bottom': { yRatio: 1.00, scale: 0.88, label: 'REMARKS & FUEL GAUGE' }
+        };
+        window.STUDIO_HARDCODED_SECTIONS = STUDIO_HARDCODED_SECTIONS;
+
+        function getActiveStudioSheet() {
+            if (document.getElementById('checklist-canvas-pane') && !document.getElementById('checklist-canvas-pane').classList.contains('hidden')) return 'checklist';
+            if (document.getElementById('billing-canvas-pane') && !document.getElementById('billing-canvas-pane').classList.contains('hidden')) return 'billing';
+            if (document.getElementById('f23-quote-canvas-pane') && !document.getElementById('f23-quote-canvas-pane').classList.contains('hidden')) return 'quote';
+            return 'form13';
+        }
+        window.getActiveStudioSheet = getActiveStudioSheet;
+
+        function lockStudioSection(sectionKey, sheetOverride = null) {
+            const sheet = sheetOverride || getActiveStudioSheet();
+            let iframeId = 'f13-pdf-iframe';
+            if (sheet === 'quote' || sheet === 'f23') iframeId = 'f23-pdf-iframe';
+            else if (sheet === 'billing') iframeId = 'billing-pdf-iframe';
+            else if (sheet === 'checklist') iframeId = 'checklist-pdf-iframe';
+
+            const iframe = document.getElementById(iframeId);
+            if (!iframe) return;
+
+            const section = STUDIO_HARDCODED_SECTIONS[sectionKey] || STUDIO_HARDCODED_SECTIONS['customer'];
+            const scale = section.scale || 0.88;
+
+            if (sectionKey === 'fit') {
+                iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                iframe.style.transformOrigin = '0 0';
+                iframe.style.transform = 'translate(0px, 0px) scale(0.5)';
+                return;
+            }
+
+            const wrap = iframe.parentElement;
+            const containerW = wrap && wrap.clientWidth > 0 ? wrap.clientWidth : 480;
+            const containerH = wrap && wrap.clientHeight > 0 ? wrap.clientHeight : 580;
+            const iframeW = (iframe.offsetWidth && iframe.offsetWidth > 0) ? iframe.offsetWidth : (containerW * 2);
+            const iframeH = (iframe.offsetHeight && iframe.offsetHeight > 0) ? iframe.offsetHeight : (containerH * 2);
+
+            // Exact horizontal center
+            const targetX = (containerW - (scale * iframeW)) / 2;
+
+            // Hardcoded calibrated vertical translation: 0 (top) down to maxScrollY (bottom)
+            const maxScrollY = containerH - (scale * iframeH);
+            const targetY = section.yRatio * maxScrollY;
+
+            iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+            iframe.style.imageRendering = '-webkit-optimize-contrast';
+            iframe.style.webkitFontSmoothing = 'antialiased';
+            iframe.style.transformOrigin = '0 0';
+            iframe.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px) scale(${scale})`;
+        }
+        window.lockStudioSection = lockStudioSection;
+
+        function mapElementToSectionKey(el) {
+            if (!el) return 'customer';
+            const id = typeof el === 'string' ? el : (el.id || '');
+            if (id.includes('claim-stub') || id.includes('arrival-time')) return 'claim_stub';
+            if (id.includes('sa') || id.includes('mechanic') || id.includes('assessor') || id.includes('manager')) return 'signatures';
+            if (id.includes('discount') || id.includes('total')) return 'totals';
+            if (id.includes('concern') || id.includes('diagnostic') || id.includes('category')) return 'diagnostic';
+            
+            // Middle tables
+            if (typeof el === 'object' && el.closest) {
+                if (el.closest('#f13-parts-table-body') || el.closest('#f13-parts-table') || el.closest('#f13-materials-table-body') || el.closest('#f13-materials-table') || el.closest('#f23-quote-items-tbody') || el.closest('#bill-items-table-body')) {
+                    return 'table';
+                }
+                if (el.closest('#chk-editor-interior')) return 'chk_interior';
+                if (el.closest('#chk-editor-battery') || el.closest('#chk-editor-hood')) return 'chk_underhood';
+                if (el.closest('#chk-editor-under') || id === 'chk-brakes-not-inspected') return 'chk_underchassis';
+                if (el.closest('.chk-fuel-btn') || id.includes('fuel') || id.includes('remark')) return 'chk_bottom';
+            }
+            return 'customer';
+        }
+        window.mapElementToSectionKey = mapElementToSectionKey;
+
         function applyStudioFieldMagnification(elementOrId, forceVal = null) {
             if (!isStudioAutoMagnifyEnabled) {
                 resetStudioMagnification();
@@ -14859,67 +14941,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
             const zone = getStudioZoneForElement(el) || STUDIO_MAGNIFIER_ZONES[inputId];
 
-            let iframeId = 'f13-pdf-iframe';
             const sheetType = zone?.sheet || (inputId.startsWith('f23-') ? 'quote' : inputId.startsWith('bill-') ? 'billing' : inputId.startsWith('chk-') ? 'checklist' : 'form13');
 
-            if (sheetType === 'quote') {
-                iframeId = 'f23-pdf-iframe';
-            } else if (sheetType === 'billing') {
-                iframeId = 'billing-pdf-iframe';
-            } else if (sheetType === 'checklist') {
-                iframeId = 'checklist-pdf-iframe';
-            }
+            // Map element directly to hardcoded section key and lock it
+            const sectionKey = mapElementToSectionKey(el);
+            lockStudioSection(sectionKey, sheetType);
 
-            // Permanently suppress Loupe HUD per user directive to prevent visual clutter
-            const allHuds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
-            allHuds.forEach(hid => {
-                const h = document.getElementById(hid);
-                if (h) {
-                    h.classList.add('hidden');
-                    h.style.display = 'none';
-                }
-            });
-
-            // Mathematical Camera Viewport Centering Engine
-            // Calculates exact translation so target section (top, middle tables, signatures, bottom claim stub)
-            // glides smoothly into the center of the visible preview window
-            const iframe = document.getElementById(iframeId);
-            if (iframe) {
-                const wrap = iframe.parentElement;
-                const containerW = wrap ? wrap.clientWidth : 480;
-                const containerH = wrap ? wrap.clientHeight : 580;
-                const iframeW = iframe.offsetWidth || (containerW * 2);
-                const iframeH = iframe.offsetHeight || (containerH * 2);
-
-                const scale = zone?.scale || activeStudioZoomScale || 0.88;
-                const px = parseFloat(zone?.x || '50%') / 100;
-                const py = parseFloat(zone?.y || '18%') / 100;
-
-                // Center target coordinate in visible viewport
-                let targetX = (containerW / 2) - (scale * px * iframeW);
-                let targetY = (containerH / 2) - (scale * py * iframeH);
-
-                // Clamp bounds so document stays cleanly framed
-                const minX = containerW - (scale * iframeW);
-                const minY = containerH - (scale * iframeH);
-                targetX = Math.min(0, Math.max(minX, targetX));
-                targetY = Math.min(0, Math.max(minY, targetY));
-
-                iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-                iframe.style.imageRendering = '-webkit-optimize-contrast';
-                iframe.style.webkitFontSmoothing = 'antialiased';
-                iframe.style.transformOrigin = '0 0';
-                iframe.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px) scale(${scale})`;
-            }
-
-            // Natural Auto-Reset Rule: While typing, keeps view focused on target area.
-            // After 3.5s of typing inactivity, smoothly glides back naturally to full Fit view.
+            // Clear any lingering timers to enforce Permanent Lock (no jumping back while typing/reading)
             if (studioMagnifierNaturalResetTimer) {
                 clearTimeout(studioMagnifierNaturalResetTimer);
+                studioMagnifierNaturalResetTimer = null;
             }
-            studioMagnifierNaturalResetTimer = setTimeout(() => {
-                resetStudioMagnification();
-            }, 3500);
         }
         window.applyStudioFieldMagnification = applyStudioFieldMagnification;
 

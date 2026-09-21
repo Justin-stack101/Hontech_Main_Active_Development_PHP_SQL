@@ -1,3 +1,31 @@
+## 📅 September 21, 2026 (Hardcoded Section-Lock Navigation, Permanent Document Lock & 1-Click Quick-Lock Pills)
+
+### 📋 Hardcoded Section-Lock Navigation & Permanent Magnification Engine (REV-130 / v5.130)
+* **Permanent Document Section Lock (`frontend/js/app.js`)**:
+  - Resolved user issue where the document auto-magnifier was having a hard time locking onto sections because of premature 3.5-second auto-reset timeouts and 1.2-second blur resets that caused the preview to zoom back out while reading or thinking.
+  - Decommissioned premature auto-reset timers in `applyStudioFieldMagnification` and `delegateStudioContainer`: focusing or typing in any section locks the viewer onto that section **permanently** until another section is focused or the user clicks `[🔍 Fit]`.
+* **Hardcoded Calibrated Vertical Lock Anchors (`frontend/js/app.js`)**:
+  - Implemented `STUDIO_HARDCODED_SECTIONS` with exact calibrated vertical scroll ratios:
+    - `customer`: $0.00$ ($0\text{px}$ top customer dossier & vehicle details)
+    - `diagnostic`: $0.25$ (Customer concern & initial diagnosis)
+    - `table`: $0.50$ (Middle Parts Table, Consumables Table, Quotation Items, Billing Items)
+    - `totals`: $0.72$ (Estimated Job Order Total, VAT, Billing discount & net settlement)
+    - `signatures`: $0.85$ (Service Advisor, Mechanic, Assessor, General Manager signatures)
+    - `claim_stub`: $1.00$ (Customer Claim Stub ID, Clock-in Time, and Claim Stub footer at document bottom)
+    - Checklist equivalents: `chk_interior` ($0.20$), `chk_underhood` ($0.45$), `chk_underchassis` ($0.68$), `chk_bottom` ($1.00$).
+  - Implemented `lockStudioSection(sectionKey, sheetOverride)` calculating exact horizontal center $T_x = \frac{W_c - (\text{scale} \times W_i)}{2}$ and exact vertical translation $T_y = \text{yRatio} \times (H_c - (\text{scale} \times H_i))$.
+  - Implemented `mapElementToSectionKey(el)` mapping any focused input or repeater table row directly to its hardcoded section anchor.
+* **1-Click Quick-Lock Navigation Pills (`frontend/index.html`)**:
+  - Equipped all 4 sheet PDF viewports (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) with an ergonomic 1-click Quick Lock navigation pill bar directly above the viewer.
+  - Provides instant 1-click jump-and-lock pills: `[🔍 Fit]`, `[👤 Customer]`, `[📋 Scope]`, `[🔧 Parts Table]`, `[✍️ Signatures]`, `[🎟️ Claim Stub]`.
+* **Automated Unit Testing & Quality Assurance (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 54 (`AUT-FRONT-103`) asserting `STUDIO_HARDCODED_SECTIONS`, `lockStudioSection`, `mapElementToSectionKey`, Quick-Lock navigation pills across all 4 sheets, and cache buster `v=2.86`.
+  - All 117 automated unit tests pass with 100% compliance across 58 suites (`npm.cmd test`).
+  - Synced QA testing row `SA-STU-59` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.86`.
+
+---
+
 ## 📅 September 21, 2026 (Full-Form Dynamic Follow-Along Auto-Magnifier with Mathematical Camera Centering)
 
 ### 📋 Full-Form Dynamic Follow-Along Auto-Magnifier (REV-129 / v5.129)
