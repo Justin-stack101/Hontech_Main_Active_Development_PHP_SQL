@@ -19,6 +19,7 @@
     "localtunnel": "^2.0.2"
   },
   "devDependencies": {
+    "pdf-lib": "^1.17.1",
     "sass": "^1.75.0"
   }
 }
