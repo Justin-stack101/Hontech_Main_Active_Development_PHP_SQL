@@ -13728,9 +13728,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextCenter(intakeDate, 505, 767.6, 7.5, true, darkInk);
 
             // 2. Customer Details
-            drawTextFit(name, 134, 723.3, 140, 7.5, true);
+            drawTextFit(name, 134, 723.3, 140, 7.5, false);
             drawTextFit(model, 348, 723.3, 72, 7.5, false, darkInk);
-            drawTextFit(plate, 472, 723.3, 48, 8, true);
+            drawTextFit(plate, 472, 723.3, 48, 7.5, false);
 
             drawTextFit(address, 134, 715.2, 140, 7, false);
             drawTextFit(km, 348, 715.2, 72, 7.5, false);
@@ -13753,7 +13753,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // 4. Interviewed by (cover placeholder Roman Sarol and center name above Service Advisor)
             whiteOut(145, 582.8, 80, 7);
-            drawTextCenter(sa, 184, 583.5, 7.5, true);
+            drawTextCenter(sa, 184, 583.5, 7.5, false);
 
             // 5. Diagnostics
             if (diagnostic) {
@@ -13778,7 +13778,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextFit((p.desc || ''), 190.5, ry, 48, 6.5);
                 drawTextCenter(String(qty), 245, ry, 6.5);
                 drawTextRight(price.toFixed(2), 293, ry, 6.5);
-                drawTextRight(amt.toFixed(2), 350, ry, 6.5, true);
+                drawTextRight(amt.toFixed(2), 350, ry, 6.5, false);
             });
 
             (window.form13Materials || []).forEach((m, i) => {
@@ -13792,16 +13792,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextFit((m.desc || ''), 355.5, ry, 52, 6.5);
                 drawTextCenter(String(qty), 415, ry, 6.5);
                 drawTextRight(price.toFixed(2), 471, ry, 6.5);
-                drawTextRight(amt.toFixed(2), 520, ry, 6.5, true);
+                drawTextRight(amt.toFixed(2), 520, ry, 6.5, false);
             });
 
             // Subtotals & Total
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 7, true);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 7, false);
             }
 
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 7, true);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 7, false);
             }
 
             const grandTotal = partsTotal + matsTotal;
@@ -13810,21 +13810,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             // Signatures
-            drawTextCenter(mechanic, 184, 279.8, 7, true);
-            drawTextCenter(assessor, 462, 279.8, 7, true);
+            drawTextCenter(mechanic, 184, 279.8, 7.2, false);
+            drawTextCenter(assessor, 462, 279.8, 7.2, false);
 
             whiteOut(150, 204, 70, 8);
-            drawTextCenter(sa, 184, 206, 7.5, true);
-            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7.5, true);
-            drawTextCenter(name, 184, 169.5, 7.5, true);
-            drawTextCenter(manager, 413, 169.5, 7.5, true);
+            drawTextCenter(sa, 184, 206, 7.2, false);
+            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7.2, false);
+            drawTextCenter(name, 184, 169.5, 7.2, false);
+            drawTextCenter(manager, 413, 169.5, 7.2, false);
 
             // 7. Filipino Claim stub
-            drawTextFit(name, 134, 77.6, 140, 7.5, true);
+            drawTextFit(name, 134, 77.6, 140, 7.5, false);
             const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-            drawTextFit(combinedVehicle, 355, 77.6, 160, 7.5, true);
+            drawTextFit(combinedVehicle, 355, 77.6, 160, 7.5, false);
             whiteOut(170, 68, 80, 7);
-            drawTextFit(sa, 175, 69.1, 100, 7.5, true);
+            drawTextFit(sa, 175, 69.1, 100, 7.5, false);
             const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
             drawText(stubId, 355, 59, 8, true, darkInk);
 
@@ -13952,14 +13952,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const manager = getVal('f13-input-manager') || 'General Manager';
 
             // Meta Header
-            drawText(quoteNo, 420, 776.6, 8.5, true, darkInk);
+            drawText(quoteNo, 420, 776.6, 8, false, darkInk);
             drawText(date, 440, 744.3, 7.5, false, darkInk);
             drawText(jobNo, 440, 734.7, 7.5, false, darkInk);
             drawText(promiseDate, 440, 725.2, 7.5, false, darkInk);
 
             // Customer Details
-            drawTextFit(name, 115, 696.5, 180, 7.5, true);
-            drawTextFit(plate, 380, 696.5, 120, 8, true);
+            drawTextFit(name, 115, 696.5, 180, 7.5, false);
+            drawTextFit(plate, 380, 696.5, 120, 7.5, false);
             drawTextFit(address, 115, 686.9, 180, 7, false);
             drawTextFit(model, 380, 686.9, 120, 7.5, false);
             drawTextFit(contact, 115, 677.3, 180, 7.5, false);
@@ -14013,16 +14013,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
                 if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
                 if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
-                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, true);
+                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
             });
 
             // Subtotals
-            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.5, true);
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.2, false);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;
-            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 355.0, 7.5, true);
-            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 345.5, 7.5, true);
-            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 335.9, 7.5, true);
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 355.0, 7.2, false);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 345.5, 7.2, false);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 335.9, 7.2, false);
 
             const grandTotal = subtotal + vat12;
             if (grandTotal > 0) {
@@ -14030,9 +14030,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             // Authentic Plain Text Signatures (Rows 61-66)
-            drawTextFit(sa, 70, 165, 140, 7.5, true);
-            drawTextFit(manager, 330, 165, 140, 7.5, true);
-            drawTextFit(name, 70, 125, 140, 7.5, true);
+            drawTextFit(sa, 70, 165, 140, 7.2, false);
+            drawTextFit(manager, 330, 165, 140, 7.2, false);
+            drawTextFit(name, 70, 125, 140, 7.2, false);
 
             return await doc.save();
         }
@@ -14155,14 +14155,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Meta Header
-            drawText(billingNo, 420, 776.6, 8.5, true, darkInk);
+            drawText(billingNo, 420, 776.6, 8, false, darkInk);
             drawText(date, 440, 746.0, 7.5, false, darkInk);
             drawText(jobNo, 440, 736.5, 7.5, false, darkInk);
             drawText(quoteNo, 440, 727.0, 7.5, false, darkInk);
 
             // Customer Details
-            drawTextFit(name, 115, 698.2, 180, 7.5, true);
-            drawTextFit(plate, 380, 698.2, 120, 8, true);
+            drawTextFit(name, 115, 698.2, 180, 7.5, false);
+            drawTextFit(plate, 380, 698.2, 120, 7.5, false);
             drawTextFit(address, 115, 688.6, 180, 7, false);
             drawTextFit(model, 380, 688.6, 120, 7.5, false);
             drawTextFit(contact, 115, 679.0, 180, 7.5, false);
@@ -14220,16 +14220,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
                 if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
                 if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
-                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, true);
+                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
             });
 
             // Subtotals
-            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 285.3, 7.5, true);
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 285.3, 7.2, false);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;
-            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 275.7, 7.5, true);
-            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 266.1, 7.5, true);
-            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 254.9, 7.5, true);
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 275.7, 7.2, false);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 266.1, 7.2, false);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 254.9, 7.2, false);
 
             const grandTotal = subtotal + vat12;
             if (grandTotal > 0) {
@@ -14239,7 +14239,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             // Authentic Plain Text Signatures (Row 60 above Service Advisor)
-            drawTextFit(sa, 70, 215, 140, 7.5, true);
+            drawTextFit(sa, 70, 215, 140, 7.2, false);
 
             return await doc.save();
         }
@@ -14352,9 +14352,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Top Header Info
-            drawTextFit(name, 120, 733.4, 250, 7.5, true);
+            drawTextFit(name, 120, 733.4, 250, 7.5, false);
             drawText(date, 460, 733.4, 7.5, false, darkInk);
-            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 8, true);
+            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 7.5, false);
             drawTextFit(model, 120, 709.3, 200, 7.5, false);
 
             // Fuel Level Marker (Clean pill selector)

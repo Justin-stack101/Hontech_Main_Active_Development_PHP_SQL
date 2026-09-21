@@ -1,3 +1,23 @@
+## 📅 September 21, 2026 (SA 2025 RO Studio PDF Typography & Non-Bold Formatting Alignment with Excel Template)
+
+### 📋 SA 2025 RO Studio PDF Typography & Non-Bold Formatting Alignment with Excel Template (REV-117 / v5.117)
+* **Ground-Truth Excel Typography & Font-Weight Inspection (`frontend/assets/Current_2025 BLANK RO UPDATED.xlsx`)**:
+  - Inspected OpenXML styles (`xl/styles.xml`) and worksheets (`sheet1.xml`, `sheet2.xml`, `sheet5.xml`, `sheet7.xml`) to determine the staff's exact requested formatting.
+  - Confirmed customer dossier cells (Name, Plate, Address, Contact, Date, Model), line items (Description, Qty, Labor, Parts, Materials, Totals), and personnel signatures are standard unbolded cells (`bold=False`, `Arial 10pt / 9pt` or `Segoe UI 8pt`).
+  - Preserved bold emphasis on Grand Totals (`isBold = true` / `fontBold`) for official audit compliance, financial clarity, and customer billing legibility.
+* **Universal Non-Bold Weight Alignment Across All 4 PDF Compilers (`frontend/js/app.js`)**:
+  - `compileForm13PDFBytes` (Job Order): Switched customer dossier (`name`, `model`, `plate`, `address`, `km`, `intakeDate`, `contact`, `engine`, `promiseDate`, `email`, `chassis`, `color`), line item amounts, subtotals, interviewed-by SA, personnel signatures (`mechanic`, `assessor`, `sa`, `Chief Mechanic`, `customer`, `manager`), and Filipino claim stub to clean regular weight (`isBold: false`, `7.5pt` / `7.2pt` / `6.5pt`).
+  - `compileQuotePDFBytes` (Quotation): Switched Quote No (`quoteNo`), customer dossier, row item totals, subtotal metrics, and staff signatures (`sa`, `manager`, `name`) to regular non-bold font (`isBold: false`, `7.5pt` / `7.2pt` / `6.8pt`). Grand Total remains bold.
+  - `compileBillingPDFBytes` (Billing): Switched Billing No (`billingNo`), customer dossier, row item totals, subtotal breakdown, and Service Advisor signature (`sa`) to regular non-bold weight (`isBold: false`, `7.5pt` / `7.2pt` / `6.8pt`). Grand Total and Row 14 header banner remain bold.
+  - `compileChecklistPDFBytes` (15-Point Checklist): Rendered customer name, plate/km, and date in clean regular non-bold font (`isBold: false`, `7.5pt`).
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 45 (`AUT-FRONT-94`) asserting authentic regular non-bold fonts and exact text sizes across all 4 sheet compilers and verifying cache buster `v=2.73`.
+  - Updated Suite 42 signature checks to accept both standard weights.
+  - All 108 automated tests pass across 54 test suites with zero failures (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.73`.
+
+---
+
 ## 📅 September 21, 2026 (SA 2025 RO Studio Follow-Along Sticky PDF Preview & Viewport Height Across All Sheets)
 
 ### 📋 SA 2025 RO Studio Follow-Along Sticky PDF Preview & Viewport Height Across All Sheets (REV-116 / v5.116)
