@@ -14577,69 +14577,69 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // SENIOR SERVICE ADVISOR ADAPTIVE AUTO-MAGNIFIER & GLIDE ENGINE (REV-122)
         // =========================================================================
         let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') === 'true'; // Defaults to FALSE (100% Crisp Vector View)
-        let activeStudioZoomScale = 1.55;
+        let activeStudioZoomScale = 0.88;
         let studioMagnifierNaturalResetTimer = null;
 
         const STUDIO_MAGNIFIER_ZONES = {
             // Sheet 1: Job_Order Form 1/3
-            'f13-input-job-no': { x: '50%', y: '8%', scale: 1.55, sheet: 'form13', label: 'JOB ORDER NO' },
-            'f13-input-intake-date': { x: '50%', y: '8%', scale: 1.55, sheet: 'form13', label: 'DATE' },
-            'f13-input-claim-stub': { x: '50%', y: '88%', scale: 1.55, sheet: 'form13', label: 'CLAIM STUB ID' },
-            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 1.55, sheet: 'form13', label: 'ARRIVAL TIME' },
+            'f13-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'JOB ORDER NO' },
+            'f13-input-intake-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'DATE' },
+            'f13-input-claim-stub': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'CLAIM STUB ID' },
+            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'ARRIVAL TIME' },
             
             // Customer Details (Upper document area)
-            'f13-input-name': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'CUSTOMER NAME' },
-            'f13-input-contact': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'CONTACT NUMBER' },
-            'f13-input-address': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'CUSTOMER ADDRESS' },
-            'f13-input-email': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'CUSTOMER EMAIL' },
-            'f13-input-plate': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'PLATE NUMBER' },
-            'f13-input-model': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'MAKE / MODEL' },
-            'f13-input-color': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'VEHICLE COLOR' },
-            'f13-input-km': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'ODOMETER (KM)' },
-            'f13-input-engine': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'ENGINE NO' },
-            'f13-input-chassis': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'CHASSIS NO' },
-            'f13-input-promise-date': { x: '50%', y: '18%', scale: 1.55, sheet: 'form13', label: 'PROMISE DATE' },
+            'f13-input-name': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER NAME' },
+            'f13-input-contact': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CONTACT NUMBER' },
+            'f13-input-address': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER ADDRESS' },
+            'f13-input-email': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER EMAIL' },
+            'f13-input-plate': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'PLATE NUMBER' },
+            'f13-input-model': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'MAKE / MODEL' },
+            'f13-input-color': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'VEHICLE COLOR' },
+            'f13-input-km': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'ODOMETER (KM)' },
+            'f13-input-engine': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'ENGINE NO' },
+            'f13-input-chassis': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CHASSIS NO' },
+            'f13-input-promise-date': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
 
             // Service Category & Scope of Work
-            'f13-input-category': { x: '50%', y: '28%', scale: 1.55, sheet: 'form13', label: 'SERVICE CATEGORY' },
-            'f13-input-concern': { x: '50%', y: '28%', scale: 1.55, sheet: 'form13', label: 'CUSTOMER CONCERN' },
-            'f13-input-diagnostic': { x: '50%', y: '36%', scale: 1.55, sheet: 'form13', label: 'INITIAL DIAGNOSIS' },
+            'f13-input-category': { x: '50%', y: '28%', scale: 0.88, sheet: 'form13', label: 'SERVICE CATEGORY' },
+            'f13-input-concern': { x: '50%', y: '28%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER CONCERN' },
+            'f13-input-diagnostic': { x: '50%', y: '36%', scale: 0.88, sheet: 'form13', label: 'INITIAL DIAGNOSIS' },
 
             // Signatures & Conforme
-            'f13-input-sa': { x: '50%', y: '68%', scale: 1.55, sheet: 'form13', label: 'SERVICE ADVISOR' },
-            'f13-input-mechanic': { x: '50%', y: '68%', scale: 1.55, sheet: 'form13', label: 'LEAD MECHANIC' },
-            'f13-input-assessor': { x: '50%', y: '68%', scale: 1.55, sheet: 'form13', label: 'INSURANCE ASSESSOR' },
-            'f13-input-manager': { x: '50%', y: '68%', scale: 1.55, sheet: 'form13', label: 'GENERAL MANAGER' },
+            'f13-input-sa': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'SERVICE ADVISOR' },
+            'f13-input-mechanic': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'LEAD MECHANIC' },
+            'f13-input-assessor': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'INSURANCE ASSESSOR' },
+            'f13-input-manager': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'GENERAL MANAGER' },
 
             // Sheet 2: Quotation_No
-            'f23-input-date': { x: '50%', y: '8%', scale: 1.55, sheet: 'quote', label: 'DATE' },
-            'f23-input-job-no': { x: '50%', y: '8%', scale: 1.55, sheet: 'quote', label: 'JOB ORDER NO' },
-            'f23-input-name': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'CUSTOMER NAME' },
-            'f23-input-plate': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'PLATE NUMBER' },
-            'f23-input-model': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'MODEL' },
-            'f23-input-contact': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'CONTACT' },
-            'f23-input-address': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'ADDRESS' },
-            'f23-input-color': { x: '50%', y: '16%', scale: 1.55, sheet: 'quote', label: 'COLOR' },
+            'f23-input-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'DATE' },
+            'f23-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'JOB ORDER NO' },
+            'f23-input-name': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'CUSTOMER NAME' },
+            'f23-input-plate': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'PLATE NUMBER' },
+            'f23-input-model': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'MODEL' },
+            'f23-input-contact': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'CONTACT' },
+            'f23-input-address': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'ADDRESS' },
+            'f23-input-color': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'COLOR' },
 
             // Sheet 3: Billing_No
-            'bill-input-date': { x: '50%', y: '8%', scale: 1.55, sheet: 'billing', label: 'BILLING DATE' },
-            'bill-input-job-no': { x: '50%', y: '8%', scale: 1.55, sheet: 'billing', label: 'JOB ORDER NO' },
-            'bill-input-quote-no': { x: '50%', y: '8%', scale: 1.55, sheet: 'billing', label: 'QUOTATION NO' },
-            'bill-input-name': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'CUSTOMER NAME' },
-            'bill-input-plate': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'PLATE NUMBER' },
-            'bill-input-model': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'MODEL' },
-            'bill-input-contact': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'CONTACT' },
-            'bill-input-address': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'ADDRESS' },
-            'bill-input-color': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'COLOR' },
-            'bill-input-km': { x: '50%', y: '16%', scale: 1.55, sheet: 'billing', label: 'KM READING' },
-            'bill-input-discount': { x: '50%', y: '23%', scale: 1.55, sheet: 'billing', label: 'DISCOUNT %' },
+            'bill-input-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'BILLING DATE' },
+            'bill-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'JOB ORDER NO' },
+            'bill-input-quote-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'QUOTATION NO' },
+            'bill-input-name': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'CUSTOMER NAME' },
+            'bill-input-plate': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'PLATE NUMBER' },
+            'bill-input-model': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'MODEL' },
+            'bill-input-contact': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'CONTACT' },
+            'bill-input-address': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'ADDRESS' },
+            'bill-input-color': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'COLOR' },
+            'bill-input-km': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'KM READING' },
+            'bill-input-discount': { x: '50%', y: '23%', scale: 0.88, sheet: 'billing', label: 'DISCOUNT %' },
 
             // Sheet 4: CheckList_Result
-            'chk-input-name': { x: '50%', y: '5%', scale: 1.55, sheet: 'checklist', label: 'CUSTOMER NAME' },
-            'chk-input-date': { x: '50%', y: '5%', scale: 1.55, sheet: 'checklist', label: 'DATE' },
-            'chk-input-plate': { x: '50%', y: '5%', scale: 1.55, sheet: 'checklist', label: 'PLATE NUMBER' },
-            'chk-input-km': { x: '50%', y: '5%', scale: 1.55, sheet: 'checklist', label: 'ODOMETER (KM)' },
-            'chk-input-remarks': { x: '50%', y: '68%', scale: 1.55, sheet: 'checklist', label: 'CHECKLIST REMARKS' }
+            'chk-input-name': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'CUSTOMER NAME' },
+            'chk-input-date': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'DATE' },
+            'chk-input-plate': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'PLATE NUMBER' },
+            'chk-input-km': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'ODOMETER (KM)' },
+            'chk-input-remarks': { x: '50%', y: '68%', scale: 0.88, sheet: 'checklist', label: 'CHECKLIST REMARKS' }
         };
         window.STUDIO_MAGNIFIER_ZONES = STUDIO_MAGNIFIER_ZONES;
 
@@ -14680,7 +14680,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.toggleStudioAutoMagnify = toggleStudioAutoMagnify;
 
         function setStudioManualZoom(level) {
-            activeStudioZoomScale = level;
+            activeStudioZoomScale = level > 1.0 ? 0.88 : 0.5;
             if (level > 1.0) {
                 isStudioAutoMagnifyEnabled = true;
                 localStorage.setItem('hontech_studio_auto_magnify', 'true');
@@ -14695,13 +14695,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         if (el) {
                             el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
                             el.style.imageRendering = '-webkit-optimize-contrast';
+                            el.style.webkitFontSmoothing = 'antialiased';
                             el.style.transformOrigin = '50% 18%';
-                            el.style.transform = `scale(${level})`;
+                            el.style.transform = 'scale(0.88)';
                         }
                     });
                 }
                 if (typeof showSystemToast === 'function') {
-                    showSystemToast(`Auto-Magnifier active (${Math.round(level * 100)}% crisp document zoom).`, 'success', 'Inspector Active');
+                    showSystemToast('Auto-Magnifier active (High-Definition Super-Sampling crisp zoom).', 'success', 'Inspector Active');
                 }
             } else {
                 isStudioAutoMagnifyEnabled = false;
@@ -14725,8 +14726,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el) {
                     el.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
-                    el.style.transformOrigin = 'center top';
-                    el.style.transform = 'scale(1.0)';
+                    el.style.transformOrigin = '0 0';
+                    el.style.transform = 'scale(0.5)';
                 }
             });
             const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
@@ -14776,7 +14777,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 iframe.style.imageRendering = '-webkit-optimize-contrast';
                 iframe.style.webkitFontSmoothing = 'antialiased';
                 iframe.style.transformOrigin = `${zone?.x || '50%'} ${zone?.y || '18%'}`;
-                iframe.style.transform = `scale(${zone?.scale || activeStudioZoomScale || 1.55})`;
+                iframe.style.transform = `scale(${zone?.scale || activeStudioZoomScale || 0.88})`;
             }
 
             // Natural Auto-Reset Rule: While typing, keeps view focused on target area.
