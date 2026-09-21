@@ -14541,7 +14541,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // SENIOR SERVICE ADVISOR ADAPTIVE AUTO-MAGNIFIER & GLIDE ENGINE (REV-122)
         // =========================================================================
-        let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') !== 'false'; // Defaults to TRUE
+        let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') === 'true'; // Defaults to FALSE (100% Crisp Vector View)
         let activeStudioZoomScale = 1.85;
 
         const STUDIO_MAGNIFIER_ZONES = {
@@ -14687,7 +14687,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.resetStudioMagnification = resetStudioMagnification;
 
         function applyStudioFieldMagnification(elementOrId, forceVal = null) {
-            if (!isStudioAutoMagnifyEnabled) return;
+            if (!isStudioAutoMagnifyEnabled) {
+                resetStudioMagnification();
+                return;
+            }
             const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
             const zone = STUDIO_MAGNIFIER_ZONES[inputId];
             if (!zone) return;

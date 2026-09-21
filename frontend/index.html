@@ -3173,9 +3173,9 @@
                                 <span id="f13-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Live Synced</span>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
-                                <!-- Senior Auto-Magnify Controls -->
-                                <button type="button" id="btn-studio-auto-magnify" onclick="toggleStudioAutoMagnify()" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 text-xs" title="Toggle Adaptive Auto-Magnifier for Senior Service Advisors">
-                                    <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i> <span id="label-studio-auto-magnify">Auto-Magnify: ON</span>
+                                <!-- Senior Auto-Magnify Controls (Defaults to OFF for 100% Crisp Vector Resolution) -->
+                                <button type="button" id="btn-studio-auto-magnify" onclick="toggleStudioAutoMagnify()" class="px-2.5 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 text-xs" title="Toggle Adaptive Auto-Magnifier for Senior Service Advisors">
+                                    <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i> <span id="label-studio-auto-magnify">Auto-Magnify: OFF</span>
                                 </button>
                                 <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
                                     <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
@@ -7743,7 +7743,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.80"></script>
+    <script src="js/app.js?v=2.81"></script>
 </body>
 
 </html>
