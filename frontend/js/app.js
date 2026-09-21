@@ -13159,12 +13159,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             window.onReactiveJobOrderInput = onReactiveJobOrderInput;
 
             const inputIds = [
+                'f13-input-job-no', 'f13-input-intake-date', 'f13-input-promise-date', 'f13-input-category',
+                'f13-input-target-branch', 'f13-input-source', 'f13-input-lane-type', 'f13-input-bay-location',
+                'f13-input-parts-status', 'f13-input-status', 'f13-input-carry-over',
                 'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
                 'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
-                'f13-input-engine', 'f13-input-chassis', 'f13-input-intake-date', 'f13-input-promise-date',
-                'f13-input-category', 'f13-input-concern', 'f13-input-diagnostic',
+                'f13-input-engine', 'f13-input-chassis',
+                'f13-input-concern', 'f13-input-diagnostic',
                 'f13-input-sa', 'f13-input-mechanic', 'f13-input-assessor', 'f13-input-manager',
-                'f13-input-claim-stub', 'f13-input-arrival-time', 'f13-input-source', 'f13-input-target-branch'
+                'f13-input-claim-stub', 'f13-input-arrival-time'
             ];
 
             inputIds.forEach(id => {
@@ -13180,7 +13183,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Bind reactive listeners for Quotation inputs
             const quoteInputIds = [
-                'f23-input-date', 'f23-input-job-no', 'f23-input-name', 'f23-input-plate',
+                'f23-input-quote-no', 'f23-input-date', 'f23-input-job-no', 'f23-input-name', 'f23-input-plate',
                 'f23-input-address', 'f23-input-model', 'f23-input-contact', 'f23-input-color'
             ];
             quoteInputIds.forEach(id => {
@@ -13194,7 +13197,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         scheduleFormStudioPdfRefresh(0);
                         setTimeout(() => {
                             const active = document.activeElement;
-                            if (!active || !STUDIO_MAGNIFIER_ZONES[active.id]) {
+                            if (!active || !getStudioZoneForElement(active)) {
                                 resetStudioMagnification();
                             }
                         }, 1200);
@@ -13205,7 +13208,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Bind reactive listeners for Billing inputs
             const billInputIds = [
-                'bill-input-date', 'bill-input-job-no', 'bill-input-quote-no', 'bill-input-name',
+                'bill-input-billing-no', 'bill-input-date', 'bill-input-job-no', 'bill-input-quote-no', 'bill-input-name',
                 'bill-input-contact', 'bill-input-address', 'bill-input-plate', 'bill-input-model',
                 'bill-input-color', 'bill-input-km', 'bill-input-discount'
             ];
@@ -13220,7 +13223,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         scheduleFormStudioPdfRefresh(0);
                         setTimeout(() => {
                             const active = document.activeElement;
-                            if (!active || !STUDIO_MAGNIFIER_ZONES[active.id]) {
+                            if (!active || !getStudioZoneForElement(active)) {
                                 resetStudioMagnification();
                             }
                         }, 1200);
@@ -13231,7 +13234,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Bind reactive listeners for Checklist inputs
             const chkInputIds = [
-                'chk-input-name', 'chk-input-date', 'chk-input-plate', 'chk-input-km', 'chk-input-remarks'
+                'chk-input-name', 'chk-input-date', 'chk-input-plate', 'chk-input-km', 'chk-brakes-not-inspected', 'chk-input-remarks'
             ];
             chkInputIds.forEach(id => {
                 const el = document.getElementById(id);
@@ -13244,7 +13247,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         scheduleFormStudioPdfRefresh(0);
                         setTimeout(() => {
                             const active = document.activeElement;
-                            if (!active || !STUDIO_MAGNIFIER_ZONES[active.id]) {
+                            if (!active || !getStudioZoneForElement(active)) {
                                 resetStudioMagnification();
                             }
                         }, 1200);
@@ -13252,6 +13255,46 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     el.dataset.chkBound = 'true';
                 }
             });
+
+            // Attach Delegated Listeners for Middle Tables and Checklist Items
+            const delegateStudioContainer = (containerId, defaultZoneKey) => {
+                const container = document.getElementById(containerId);
+                if (container && !container.dataset.magDelegated) {
+                    container.addEventListener('focusin', (e) => {
+                        if (typeof applyStudioFieldMagnification === 'function') {
+                            applyStudioFieldMagnification(e.target || defaultZoneKey);
+                        }
+                    });
+                    container.addEventListener('input', (e) => {
+                        if (typeof applyStudioFieldMagnification === 'function') {
+                            applyStudioFieldMagnification(e.target || defaultZoneKey);
+                        }
+                        scheduleFormStudioPdfRefresh(350);
+                    });
+                    container.addEventListener('click', (e) => {
+                        if (typeof applyStudioFieldMagnification === 'function') {
+                            const zone = getStudioZoneForElement(e.target);
+                            if (zone) {
+                                applyStudioFieldMagnification(e.target);
+                            }
+                        }
+                    });
+                    container.addEventListener('focusout', () => {
+                        setTimeout(() => {
+                            const active = document.activeElement;
+                            if (!active || !getStudioZoneForElement(active)) {
+                                resetStudioMagnification();
+                            }
+                        }, 1200);
+                    });
+                    container.dataset.magDelegated = 'true';
+                }
+            };
+            delegateStudioContainer('f13-parts-table-body', 'f13-parts-section');
+            delegateStudioContainer('f13-materials-table-body', 'f13-materials-section');
+            delegateStudioContainer('f23-quote-items-tbody', 'f23-items-section');
+            delegateStudioContainer('bill-items-table-body', 'bill-items-section');
+            delegateStudioContainer('checklist-editor-pane', 'chk-input-remarks');
 
             renderForm13Rows();
             calcForm13Totals();
@@ -14584,34 +14627,48 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Sheet 1: Job_Order Form 1/3
             'f13-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'JOB ORDER NO' },
             'f13-input-intake-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'DATE' },
-            'f13-input-claim-stub': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'CLAIM STUB ID' },
-            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'ARRIVAL TIME' },
-            
+            'f13-input-promise-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
+            'f13-input-target-branch': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'TARGET BRANCH' },
+            'f13-input-source': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'SOURCE' },
+            'f13-input-lane-type': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'LANE TYPE' },
+            'f13-input-bay-location': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'BAY LOCATION' },
+            'f13-input-parts-status': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'PARTS STATUS' },
+            'f13-input-status': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'JOB STATUS' },
+            'f13-input-carry-over': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'CARRY OVER' },
+
             // Customer Details (Upper document area)
-            'f13-input-name': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER NAME' },
-            'f13-input-contact': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CONTACT NUMBER' },
-            'f13-input-address': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER ADDRESS' },
-            'f13-input-email': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER EMAIL' },
-            'f13-input-plate': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'PLATE NUMBER' },
-            'f13-input-model': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'MAKE / MODEL' },
-            'f13-input-color': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'VEHICLE COLOR' },
-            'f13-input-km': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'ODOMETER (KM)' },
-            'f13-input-engine': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'ENGINE NO' },
-            'f13-input-chassis': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'CHASSIS NO' },
-            'f13-input-promise-date': { x: '50%', y: '18%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
+            'f13-input-name': { x: '50%', y: '17%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER NAME' },
+            'f13-input-contact': { x: '50%', y: '17%', scale: 0.88, sheet: 'form13', label: 'CONTACT NUMBER' },
+            'f13-input-address': { x: '50%', y: '17%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER ADDRESS' },
+            'f13-input-email': { x: '50%', y: '17%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER EMAIL' },
+            'f13-input-plate': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'PLATE NUMBER' },
+            'f13-input-model': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'MAKE / MODEL' },
+            'f13-input-color': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'VEHICLE COLOR' },
+            'f13-input-km': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'ODOMETER (KM)' },
+            'f13-input-engine': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'ENGINE NO' },
+            'f13-input-chassis': { x: '50%', y: '22%', scale: 0.88, sheet: 'form13', label: 'CHASSIS NO' },
 
             // Service Category & Scope of Work
-            'f13-input-category': { x: '50%', y: '28%', scale: 0.88, sheet: 'form13', label: 'SERVICE CATEGORY' },
-            'f13-input-concern': { x: '50%', y: '28%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER CONCERN' },
+            'f13-input-category': { x: '50%', y: '30%', scale: 0.88, sheet: 'form13', label: 'SERVICE CATEGORY' },
+            'f13-input-concern': { x: '50%', y: '32%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER CONCERN' },
             'f13-input-diagnostic': { x: '50%', y: '36%', scale: 0.88, sheet: 'form13', label: 'INITIAL DIAGNOSIS' },
 
-            // Signatures & Conforme
-            'f13-input-sa': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'SERVICE ADVISOR' },
-            'f13-input-mechanic': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'LEAD MECHANIC' },
-            'f13-input-assessor': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'INSURANCE ASSESSOR' },
-            'f13-input-manager': { x: '50%', y: '68%', scale: 0.88, sheet: 'form13', label: 'GENERAL MANAGER' },
+            // Middle Tables
+            'f13-parts-section': { x: '50%', y: '48%', scale: 0.88, sheet: 'form13', label: 'PARTS TABLE' },
+            'f13-materials-section': { x: '50%', y: '58%', scale: 0.88, sheet: 'form13', label: 'MATERIALS / SCOPE' },
+
+            // Signatures & Conforme (Bottom Section)
+            'f13-input-sa': { x: '50%', y: '74%', scale: 0.88, sheet: 'form13', label: 'SERVICE ADVISOR' },
+            'f13-input-mechanic': { x: '50%', y: '74%', scale: 0.88, sheet: 'form13', label: 'LEAD MECHANIC' },
+            'f13-input-assessor': { x: '50%', y: '74%', scale: 0.88, sheet: 'form13', label: 'INSURANCE ASSESSOR' },
+            'f13-input-manager': { x: '50%', y: '74%', scale: 0.88, sheet: 'form13', label: 'GENERAL MANAGER' },
+
+            // Customer Claim Stub (Very Bottom of Document)
+            'f13-input-claim-stub': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'CLAIM STUB ID' },
+            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'ARRIVAL TIME' },
 
             // Sheet 2: Quotation_No
+            'f23-input-quote-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'QUOTATION NO' },
             'f23-input-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'DATE' },
             'f23-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'JOB ORDER NO' },
             'f23-input-name': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'CUSTOMER NAME' },
@@ -14620,8 +14677,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             'f23-input-contact': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'CONTACT' },
             'f23-input-address': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'ADDRESS' },
             'f23-input-color': { x: '50%', y: '16%', scale: 0.88, sheet: 'quote', label: 'COLOR' },
+            'f23-items-section': { x: '50%', y: '50%', scale: 0.88, sheet: 'quote', label: 'QUOTATION ITEMS' },
 
             // Sheet 3: Billing_No
+            'bill-input-billing-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'BILLING NO' },
             'bill-input-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'BILLING DATE' },
             'bill-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'JOB ORDER NO' },
             'bill-input-quote-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'billing', label: 'QUOTATION NO' },
@@ -14632,16 +14691,66 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             'bill-input-address': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'ADDRESS' },
             'bill-input-color': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'COLOR' },
             'bill-input-km': { x: '50%', y: '16%', scale: 0.88, sheet: 'billing', label: 'KM READING' },
-            'bill-input-discount': { x: '50%', y: '23%', scale: 0.88, sheet: 'billing', label: 'DISCOUNT %' },
+            'bill-input-discount': { x: '50%', y: '76%', scale: 0.88, sheet: 'billing', label: 'DISCOUNT & TOTALS' },
+            'bill-items-section': { x: '50%', y: '52%', scale: 0.88, sheet: 'billing', label: 'BILLING ITEMS' },
 
             // Sheet 4: CheckList_Result
-            'chk-input-name': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'CUSTOMER NAME' },
-            'chk-input-date': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'DATE' },
-            'chk-input-plate': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'PLATE NUMBER' },
-            'chk-input-km': { x: '50%', y: '5%', scale: 0.88, sheet: 'checklist', label: 'ODOMETER (KM)' },
-            'chk-input-remarks': { x: '50%', y: '68%', scale: 0.88, sheet: 'checklist', label: 'CHECKLIST REMARKS' }
+            'chk-input-name': { x: '50%', y: '6%', scale: 0.88, sheet: 'checklist', label: 'CUSTOMER NAME' },
+            'chk-input-date': { x: '50%', y: '6%', scale: 0.88, sheet: 'checklist', label: 'DATE' },
+            'chk-input-plate': { x: '50%', y: '6%', scale: 0.88, sheet: 'checklist', label: 'PLATE NUMBER' },
+            'chk-input-km': { x: '50%', y: '6%', scale: 0.88, sheet: 'checklist', label: 'ODOMETER (KM)' },
+            'chk-brakes-not-inspected': { x: '50%', y: '62%', scale: 0.88, sheet: 'checklist', label: 'BRAKES CHECK' },
+            'chk-input-remarks': { x: '50%', y: '78%', scale: 0.88, sheet: 'checklist', label: 'CHECKLIST REMARKS' }
         };
         window.STUDIO_MAGNIFIER_ZONES = STUDIO_MAGNIFIER_ZONES;
+
+        function getStudioZoneForElement(el) {
+            if (!el) return null;
+            const id = typeof el === 'string' ? el : (el.id || '');
+            if (id && STUDIO_MAGNIFIER_ZONES[id]) {
+                return STUDIO_MAGNIFIER_ZONES[id];
+            }
+            if (typeof el === 'object' && el.closest) {
+                if (el.closest('#f13-parts-table-body') || el.closest('#f13-parts-table')) {
+                    return STUDIO_MAGNIFIER_ZONES['f13-parts-section'];
+                }
+                if (el.closest('#f13-materials-table-body') || el.closest('#f13-materials-table')) {
+                    return STUDIO_MAGNIFIER_ZONES['f13-materials-section'];
+                }
+                if (el.closest('#f23-quote-items-tbody') || el.closest('#table-f23-quote-items')) {
+                    return STUDIO_MAGNIFIER_ZONES['f23-items-section'];
+                }
+                if (el.closest('#bill-items-table-body') || el.closest('#billing-items-table')) {
+                    return STUDIO_MAGNIFIER_ZONES['bill-items-section'];
+                }
+                if (el.closest('#checklist-editor-pane')) {
+                    if (el.closest('#chk-editor-interior')) {
+                        return { x: '50%', y: '22%', scale: 0.88, sheet: 'checklist', label: 'INTERIOR INSPECTION' };
+                    }
+                    if (el.closest('#chk-editor-battery')) {
+                        return { x: '50%', y: '35%', scale: 0.88, sheet: 'checklist', label: 'BATTERY & ELECTRICAL' };
+                    }
+                    if (el.closest('#chk-editor-hood')) {
+                        return { x: '50%', y: '48%', scale: 0.88, sheet: 'checklist', label: 'UNDERHOOD & FLUIDS' };
+                    }
+                    if (el.closest('#chk-editor-under')) {
+                        return { x: '50%', y: '65%', scale: 0.88, sheet: 'checklist', label: 'UNDERCHASSIS & TIRES' };
+                    }
+                    if (el.closest('.chk-fuel-btn') || id.includes('fuel')) {
+                        return { x: '50%', y: '84%', scale: 0.88, sheet: 'checklist', label: 'FUEL GAUGE LEVEL' };
+                    }
+                    if (el.closest('#chk-remarks-wrap') || id.includes('remark')) {
+                        return STUDIO_MAGNIFIER_ZONES['chk-input-remarks'];
+                    }
+                    return { x: '50%', y: '45%', scale: 0.88, sheet: 'checklist', label: 'CHECKLIST INSPECTION' };
+                }
+                if (el.closest('#form13-editor-pane')) {
+                    return { x: '50%', y: '32%', scale: 0.88, sheet: 'form13', label: 'JOB ORDER DETAILS' };
+                }
+            }
+            return null;
+        }
+        window.getStudioZoneForElement = getStudioZoneForElement;
 
         function updateStudioAutoMagnifyUI() {
             const btn = document.getElementById('btn-studio-auto-magnify');
@@ -14672,7 +14781,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     showSystemToast('Auto-Magnify enabled. Preview will smoothly glide and magnify active document areas for Senior legibility.', 'success', 'Auto-Zoom ON');
                 }
                 const active = document.activeElement;
-                if (active && active.id && STUDIO_MAGNIFIER_ZONES[active.id]) {
+                if (active && (STUDIO_MAGNIFIER_ZONES[active.id] || getStudioZoneForElement(active))) {
                     applyStudioFieldMagnification(active);
                 }
             }
@@ -14686,18 +14795,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 localStorage.setItem('hontech_studio_auto_magnify', 'true');
                 updateStudioAutoMagnifyUI();
                 const active = document.activeElement;
-                if (active && (STUDIO_MAGNIFIER_ZONES[active.id] || active.id?.startsWith('f13-') || active.id?.startsWith('f23-') || active.id?.startsWith('bill-') || active.id?.startsWith('chk-'))) {
+                if (active && (STUDIO_MAGNIFIER_ZONES[active.id] || getStudioZoneForElement(active) || active.id?.startsWith('f13-') || active.id?.startsWith('f23-') || active.id?.startsWith('bill-') || active.id?.startsWith('chk-'))) {
                     applyStudioFieldMagnification(active);
                 } else {
                     const iframes = ['f13-pdf-iframe', 'f23-pdf-iframe', 'billing-pdf-iframe', 'checklist-pdf-iframe'];
                     iframes.forEach(id => {
                         const el = document.getElementById(id);
                         if (el) {
-                            el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                            el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
                             el.style.imageRendering = '-webkit-optimize-contrast';
                             el.style.webkitFontSmoothing = 'antialiased';
-                            el.style.transformOrigin = '50% 18%';
-                            el.style.transform = 'scale(0.88)';
+                            el.style.transformOrigin = '0 0';
+                            el.style.transform = 'translate(0px, 0px) scale(0.88)';
                         }
                     });
                 }
@@ -14725,9 +14834,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             iframes.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
-                    el.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+                    el.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
                     el.style.transformOrigin = '0 0';
-                    el.style.transform = 'scale(0.5)';
+                    el.style.transform = 'translate(0px, 0px) scale(0.5)';
                 }
             });
             const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
@@ -14746,8 +14855,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 resetStudioMagnification();
                 return;
             }
+            const el = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
             const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
-            const zone = STUDIO_MAGNIFIER_ZONES[inputId];
+            const zone = getStudioZoneForElement(el) || STUDIO_MAGNIFIER_ZONES[inputId];
 
             let iframeId = 'f13-pdf-iframe';
             const sheetType = zone?.sheet || (inputId.startsWith('f23-') ? 'quote' : inputId.startsWith('bill-') ? 'billing' : inputId.startsWith('chk-') ? 'checklist' : 'form13');
@@ -14770,18 +14880,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
-            // Direct Document Auto-Zoom: Smoothly glide & center on the target document section with crisp vector rendering
+            // Mathematical Camera Viewport Centering Engine
+            // Calculates exact translation so target section (top, middle tables, signatures, bottom claim stub)
+            // glides smoothly into the center of the visible preview window
             const iframe = document.getElementById(iframeId);
             if (iframe) {
-                iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                const wrap = iframe.parentElement;
+                const containerW = wrap ? wrap.clientWidth : 480;
+                const containerH = wrap ? wrap.clientHeight : 580;
+                const iframeW = iframe.offsetWidth || (containerW * 2);
+                const iframeH = iframe.offsetHeight || (containerH * 2);
+
+                const scale = zone?.scale || activeStudioZoomScale || 0.88;
+                const px = parseFloat(zone?.x || '50%') / 100;
+                const py = parseFloat(zone?.y || '18%') / 100;
+
+                // Center target coordinate in visible viewport
+                let targetX = (containerW / 2) - (scale * px * iframeW);
+                let targetY = (containerH / 2) - (scale * py * iframeH);
+
+                // Clamp bounds so document stays cleanly framed
+                const minX = containerW - (scale * iframeW);
+                const minY = containerH - (scale * iframeH);
+                targetX = Math.min(0, Math.max(minX, targetX));
+                targetY = Math.min(0, Math.max(minY, targetY));
+
+                iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
                 iframe.style.imageRendering = '-webkit-optimize-contrast';
                 iframe.style.webkitFontSmoothing = 'antialiased';
-                iframe.style.transformOrigin = `${zone?.x || '50%'} ${zone?.y || '18%'}`;
-                iframe.style.transform = `scale(${zone?.scale || activeStudioZoomScale || 0.88})`;
+                iframe.style.transformOrigin = '0 0';
+                iframe.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px) scale(${scale})`;
             }
 
             // Natural Auto-Reset Rule: While typing, keeps view focused on target area.
-            // After 3.5s of typing inactivity, smoothly glides back naturally to 100% Fit view.
+            // After 3.5s of typing inactivity, smoothly glides back naturally to full Fit view.
             if (studioMagnifierNaturalResetTimer) {
                 clearTimeout(studioMagnifierNaturalResetTimer);
             }

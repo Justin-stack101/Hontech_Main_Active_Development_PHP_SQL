@@ -1,3 +1,26 @@
+## 📅 September 21, 2026 (Full-Form Dynamic Follow-Along Auto-Magnifier with Mathematical Camera Centering)
+
+### 📋 Full-Form Dynamic Follow-Along Auto-Magnifier (REV-129 / v5.129)
+* **Mathematical Camera Viewport Centering Engine (`frontend/js/app.js`)**:
+  - Solved the limitation where document auto-zoom only locked onto Customer Name and Address (`y: 18%`), leaving the middle tables, signatures, and bottom claim stub unmagnified or clipped out of view.
+  - Replaced pure `transform-origin` scaling with an exact mathematical camera translation engine:
+    Target $X = \frac{\text{Container Width}}{2} - \text{Scale} \times (p_x \times \text{Iframe Width})$
+    Target $Y = \frac{\text{Container Height}}{2} - \text{Scale} \times (p_y \times \text{Iframe Height})$
+  - Clamps boundaries dynamically to preserve clean document framing (`Math.min(0, Math.max(min, target))`), rendering via hardware-accelerated `translate(targetX, targetY) scale(scale)` with top-left origin (`0 0`).
+  - Seamlessly slides any targeted section—from top metadata (8%), customer dossier (17%-22%), diagnostic scope (32%), middle parts/materials tables (48%-58%), signatures (74%), down to the bottom customer claim stub (88%)—directly into the vertical center of the preview viewport.
+* **Full-Form Zone Mapping & Dynamic Table Delegation (`frontend/js/app.js`)**:
+  - Expanded `STUDIO_MAGNIFIER_ZONES` with comprehensive coordinate mapping across all 4 worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`).
+  - Implemented `getStudioZoneForElement(el)` with container hierarchy resolution (`closest('#f13-parts-table-body')`, `closest('#f13-materials-table-body')`, `closest('#f23-quote-items-tbody')`, `closest('#bill-items-table-body')`, `closest('#chk-editor-interior')`, `closest('#chk-editor-battery')`, `closest('#chk-editor-hood')`, `closest('#chk-editor-under')`, `.chk-fuel-btn`).
+  - Added robust event delegation (`focusin`, `input`, `click`, `focusout`) on dynamic table bodies and checklist buttons so adding or editing rows immediately centers the document preview on that exact section.
+  - Retained natural 3.5s inactivity glide-back return to `translate(0px, 0px) scale(0.5)` full document view.
+* **Automated Unit Testing & Quality Assurance (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 53 (`AUT-FRONT-102`) asserting full-form zone coverage, table row delegation, mathematical camera centering calculation, and cache buster `v=2.85`.
+  - All 116 automated unit tests pass with 100% compliance across 58 suites (`npm.cmd test`).
+  - Synced QA testing row `SA-STU-58` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.85`.
+
+---
+
 ## 📅 September 21, 2026 (Option 1: High-Definition Super-Sampling Crisp Zoom for Senior Service Advisor Studio)
 
 ### 📋 Option 1 High-Definition Super-Sampling Crisp Zoom (REV-128 / v5.128)
