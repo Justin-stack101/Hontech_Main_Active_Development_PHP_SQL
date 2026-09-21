@@ -17263,7 +17263,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         async function getOfficialXlsxTemplateBuffer() {
             if (cachedOfficialXlsxArrayBuffer) return cachedOfficialXlsxArrayBuffer;
             try {
-                const response = await fetch('assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx');
+                const response = await fetch('assets/Current_2025%20BLANK%20RO%20UPDATED_V1.xlsx');
                 if (!response.ok) throw new Error('HTTP error ' + response.status + ' loading official template');
                 cachedOfficialXlsxArrayBuffer = await response.arrayBuffer();
                 return cachedOfficialXlsxArrayBuffer;
@@ -17285,7 +17285,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const templateBuffer = await getOfficialXlsxTemplateBuffer();
                 if (!templateBuffer) {
-                    throw new Error('Unable to access official template: Current_2025 BLANK RO UPDATED.xlsx');
+                    throw new Error('Unable to access official template: Current_2025 BLANK RO UPDATED_V1.xlsx');
                 }
 
                 const getVal = id => (document.getElementById(id)?.value || '').trim();
@@ -17670,25 +17670,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const sheet7Str = await sheet7File.async('text');
                     const sheet7Doc = parser.parseFromString(sheet7Str, 'text/xml');
 
-                    setCell(sheet7Doc, 'C5', name);
-                    setCell(sheet7Doc, 'M5', date);
-                    setCell(sheet7Doc, 'C6', plate);
-                    setCell(sheet7Doc, 'D7', model);
-                    setCell(sheet7Doc, 'K7', km);
-                    setCell(sheet7Doc, 'C12', 'Fuel Level: ' + (window.checklistFuelLevel || '1/2'));
-
-                    // Inject 15 inspection check status results (rows 15-40)
-                    (window.checklistInspectionPoints || []).forEach((pt, idx) => {
-                        const rIdx = 15 + idx;
-                        if (rIdx <= 40) {
-                            setCell(sheet7Doc, 'B' + rIdx, pt.label || pt.desc || pt.name || '');
-                            setCell(sheet7Doc, 'H' + rIdx, (pt.status || 'Good').toUpperCase());
-                        }
-                    });
+                    // V1 Dynamic Template Formulas & Data Sync:
+                    // C2: =Job_Order!C10 (Customer Name), AD2: =Job_Order!K5 (Date)
+                    // C3: =Job_Order!K10 (Plate No), C4: =Job_Order!H10 (Vehicle Model)
+                    // M59: Service Advisor Inspector, M63: =Job_Order!C10 (Customer Conforme)
+                    // M41: Inspection Remarks
+                    setCell(sheet7Doc, 'C2', name);
+                    setCell(sheet7Doc, 'AD2', date);
+                    setCell(sheet7Doc, 'C3', plate);
+                    setCell(sheet7Doc, 'C4', model);
+                    setCell(sheet7Doc, 'M59', sa);
+                    setCell(sheet7Doc, 'M63', name);
 
                     const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
-                    setCell(sheet7Doc, 'C45', chkRemarks);
-                    setCell(sheet7Doc, 'C48', sa);
+                    setCell(sheet7Doc, 'M41', chkRemarks);
 
                     applySheetProtection(sheet7Doc);
                     zip.file('xl/worksheets/sheet7.xml', serializeSheet(sheet7Doc));
