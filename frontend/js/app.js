@@ -15615,10 +15615,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xs font-bold text-gray-800">${point.name}</span>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Good')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isGood ? 'bg-emerald-600 text-white shadow-xs' : 'bg-gray-100 hover:bg-emerald-50 text-gray-600'}">Good</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Attention')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isAttn ? 'bg-amber-500 text-white shadow-xs' : 'bg-gray-100 hover:bg-amber-50 text-gray-600'}">Attention</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Defect')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isDefect ? 'bg-red-600 text-white shadow-xs' : 'bg-gray-100 hover:bg-red-50 text-gray-600'}">Defect</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'N/A')" class="px-2 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${isNA ? 'bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-500'}">N/A</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Good')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isGood ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-gray-100 hover:bg-emerald-50 text-gray-600'}">✓ Good</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Attention')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isAttn ? 'bg-amber-500 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-gray-100 hover:bg-amber-50 text-gray-600'}">⚠ Attention</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Defect')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isDefect ? 'bg-red-600 text-white shadow-xs ring-2 ring-red-400/40' : 'bg-gray-100 hover:bg-red-50 text-gray-600'}">✕ Defect</button>
+                            <button type="button" onclick="setChecklistStatus('${point.id}', 'N/A')" class="px-2 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${isNA ? 'bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-500'}">— N/A</button>
                         </div>
                     </div>
                     <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Inspection notes or findings..." class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition">
@@ -17684,6 +17684,66 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                     const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
                     setCell(sheet7Doc, 'M41', chkRemarks);
+                    setCell(sheet7Doc, 'C63', sa);
+                    setCell(sheet7Doc, 'B53', chkRemarks);
+
+                    // Fuel Level Selection Marking (Row 4)
+                    const fuelLevel = window.checklistFuelLevel || '1/2';
+                    const fuelMap = { 'E': 'Y4', '1/4': 'AB4', '1/2': 'AF4', '3/4': 'AH4', 'F': 'AL4' };
+                    Object.entries(fuelMap).forEach(([lvl, cellRef]) => {
+                        if (fuelLevel === lvl) {
+                            setCell(sheet7Doc, cellRef, `✓ ${lvl}`);
+                        } else {
+                            setCell(sheet7Doc, cellRef, lvl);
+                        }
+                    });
+
+                    // Multi-Point Inspection Checkmarks on Color Status Boxes (Green / Yellow / Red)
+                    const gridMap = {
+                        'lights_ext':  { good: ['I9'],  attn: ['J9'],  defect: ['K9'] },
+                        'horn_wipers': { good: ['I13', 'I18'], attn: ['J13', 'J18'], defect: ['K13', 'K18'] },
+                        'ac_cooling':  { good: ['I22'], attn: ['J22'], defect: ['K22'] },
+                        'battery':     { good: ['E28'], attn: ['E28'], defect: ['E30'] },
+                        'eng_oil':     { good: ['I36', 'I49'], attn: ['J36', 'J49'], defect: ['K36', 'K49'] },
+                        'brk_fluid':   { good: ['I46'], attn: ['J46'], defect: ['K46'] },
+                        'coolant':     { good: ['I42'], attn: ['J42'], defect: ['K42'] },
+                        'suspension':  { good: ['I47'], attn: ['J47'], defect: ['K47'] },
+                        'exhaust':     { good: ['I48'], attn: ['J48'], defect: ['K48'] },
+                        'tire_fl':     { good: ['M10'], attn: ['N10'], defect: ['O10'] },
+                        'tire_fr':     { good: ['AI10'], attn: ['AK10'], defect: ['AN10'] },
+                        'tire_rl':     { good: ['M15'], attn: ['N15'], defect: ['O15'] },
+                        'tire_rr':     { good: ['AI15'], attn: ['AK15'], defect: ['AN15'] },
+                        'spare_tire':  { good: ['M21'], attn: ['N21'], defect: ['O21'] },
+                        'brakes_pads': {
+                            good: ['M31', 'AI31', 'M35', 'AI35'],
+                            attn: ['N31', 'AK31', 'N35', 'AK35'],
+                            defect: ['O31', 'AN31', 'O35', 'AN35']
+                        }
+                    };
+
+                    (window.checklistInspectionPoints || []).forEach(pt => {
+                        const mapping = gridMap[pt.id];
+                        if (!mapping) return;
+                        const status = (pt.status || 'Good').toLowerCase();
+                        let targetCells = [];
+                        if (status === 'good' || status === 'ok' || status === 'satisfactory') {
+                            targetCells = mapping.good;
+                        } else if (status === 'attention' || status === 'attn' || status === 'warning') {
+                            targetCells = mapping.attn;
+                        } else if (status === 'defect' || status === 'bad' || status === 'immediate') {
+                            targetCells = mapping.defect;
+                        }
+                        (targetCells || []).forEach(cellRef => {
+                            setCell(sheet7Doc, cellRef, '✓');
+                        });
+                    });
+
+                    const allGood = (window.checklistInspectionPoints || []).every(p => p.status === 'Good');
+                    if (allGood) {
+                        ['I11', 'I16', 'I20', 'I40', 'I44', 'I50'].forEach(cellRef => {
+                            setCell(sheet7Doc, cellRef, '✓');
+                        });
+                    }
 
                     applySheetProtection(sheet7Doc);
                     zip.file('xl/worksheets/sheet7.xml', serializeSheet(sheet7Doc));

@@ -3653,9 +3653,22 @@
 
                         <!-- Multi-Point Inspection Categories Grid -->
                         <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
-                            <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-3">
-                                <i data-lucide="list-checks" class="w-4 h-4 text-amber-600"></i> Inspection Checkpoints
-                            </h3>
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-3">
+                                <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
+                                    <i data-lucide="list-checks" class="w-4 h-4 text-amber-600"></i> Inspection Checkpoints (15 Points)
+                                </h3>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="setAllChecklistItems('Good')" class="px-2.5 py-1 rounded-lg text-[10.5px] font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition cursor-pointer flex items-center gap-1 shadow-2xs" title="Mark all 15 checkpoints as Good / Satisfactory">
+                                        <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i> All Good
+                                    </button>
+                                    <button type="button" onclick="setAllChecklistItems('Attention')" class="px-2 py-1 rounded-lg text-[10.5px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 transition cursor-pointer flex items-center gap-1" title="Mark all checkpoints as Attention">
+                                        <i data-lucide="alert-triangle" class="w-3 h-3 text-amber-600"></i> All Attn
+                                    </button>
+                                    <button type="button" onclick="setAllChecklistItems('N/A')" class="px-2 py-1 rounded-lg text-[10.5px] font-bold bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 transition cursor-pointer" title="Clear / Reset all marks">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
 
                             <div id="checklist-items-container" class="space-y-3 max-h-[380px] overflow-y-auto custom-scroll pr-1">
                                 <!-- Dynamically populated inspection checkpoints with OK / ATTN / DEFECT buttons -->
@@ -7670,7 +7683,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.74"></script>
+    <script src="js/app.js?v=2.75"></script>
 </body>
 
 </html>
