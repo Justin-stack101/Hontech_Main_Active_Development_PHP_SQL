@@ -15464,25 +15464,46 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.syncBillingCanvas = syncBillingCanvas;
 
         // =========================================================================
-        // HONTECH 2025 CHECKLIST_RESULT (SHEET 4) INTERACTIVE ENGINE
+        // HONTECH 2025 CHECKLIST_RESULT (SHEET 4/7) INTERACTIVE ENGINE
         // =========================================================================
-        window.checklistInspectionPoints = window.checklistInspectionPoints || [
+        const defaultChecklistPoints = [
+            { id: 'lights_ext', group: 'Exterior & Electrical', name: 'Exterior Headlights, Tail Lights & Turn Signals', status: 'Good', notes: 'All bulbs operational' },
+            { id: 'interior_light', group: 'Exterior & Electrical', name: 'Interior Light & Dashboard Bulbs', status: 'Good', notes: 'Dome & dash lamps clear' },
+            { id: 'horn_wipers', group: 'Interior & Controls', name: 'Windshield Washer Spray & Wiper Blades', status: 'Good', notes: 'Wipers clean with no streaks' },
+            { id: 'parking_brake', group: 'Interior & Controls', name: 'Parking Brake Lever & Cable Tension', status: 'Good', notes: 'Holds firmly on incline' },
+            { id: 'horn_op', group: 'Interior & Controls', name: 'Horn Operation & Warning Alert', status: 'Good', notes: 'Audible and responsive' },
+            { id: 'clutch_op', group: 'Interior & Controls', name: 'Clutch Operation & Pedal Travel (M/T)', status: 'Good', notes: 'Smooth engagement' },
+            { id: 'ac_cooling', group: 'Interior & Controls', name: 'Air Conditioning & Micron Cabin Filter', status: 'Good', notes: 'Blows cold at 6°C vent test' },
+            { id: 'battery', group: 'Battery & Electrical', name: 'Battery Health & Terminal Cables', status: 'Good', notes: '12.6V resting charge, tight clamps' },
             { id: 'eng_oil', group: 'Fluids & Engine Bay', name: 'Engine Motor Oil (Level & Condition)', status: 'Good', notes: 'Level optimal at full dipstick mark' },
-            { id: 'brk_fluid', group: 'Fluids & Engine Bay', name: 'Brake Fluid (Level & Clarity)', status: 'Good', notes: 'DOT-4 clear, within max limit' },
+            { id: 'air_filter', group: 'Fluids & Engine Bay', name: 'Engine Air Filter Condition & Housing Box', status: 'Good', notes: 'Clean element, no debris' },
             { id: 'coolant', group: 'Fluids & Engine Bay', name: 'Radiator Coolant & Expansion Reservoir', status: 'Good', notes: 'No leaks, coolant pink' },
-            { id: 'battery', group: 'Electrical & Ignition', name: 'Battery Health & Terminal Cables', status: 'Good', notes: '12.6V resting charge, tight clamps' },
-            { id: 'lights_ext', group: 'Electrical & Ignition', name: 'Exterior Headlights, Tail Lights & Turn Signals', status: 'Good', notes: 'All bulbs operational' },
-            { id: 'ac_cooling', group: 'Interior & Controls', name: 'Air Conditioning Temperature & Blower', status: 'Good', notes: 'Blows cold at 6°C vent test' },
-            { id: 'horn_wipers', group: 'Interior & Controls', name: 'Horn, Wipers & Windshield Washer Spray', status: 'Good', notes: 'Wipers clean with no streaks' },
+            { id: 'hydraulic_clutch', group: 'Fluids & Engine Bay', name: 'Hydraulic Clutch Reservoir Fluid (M/T Vehicles)', status: 'Good', notes: 'Fluid level at max line' },
+            { id: 'brk_fluid', group: 'Underchassis & Fluids', name: 'Brake Lines, Hoses & Reservoir Fluid', status: 'Good', notes: 'No leaks, clear fluid' },
+            { id: 'suspension', group: 'Underchassis & Fluids', name: 'Front & Rear Shock Absorbers / Bushings', status: 'Good', notes: 'No oil weeping or clunking' },
+            { id: 'exhaust', group: 'Underchassis & Fluids', name: 'Exhaust Piping & Catalytic Muffler', status: 'Good', notes: 'Mounts secure, no exhaust leak' },
+            { id: 'fluid_leaks', group: 'Underchassis & Fluids', name: 'Engine Oil and/or Fluid Leaks Inspection', status: 'Good', notes: 'Underbody pan dry' },
+            { id: 'drive_shaft', group: 'Underchassis & Fluids', name: 'Drive Shaft Boots & Constant Velocity Joints', status: 'Good', notes: 'Boots intact, no tears' },
             { id: 'tire_fl', group: 'Tires & Brakes', name: 'Front Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
             { id: 'tire_fr', group: 'Tires & Brakes', name: 'Front Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
             { id: 'tire_rl', group: 'Tires & Brakes', name: 'Rear Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
             { id: 'tire_rr', group: 'Tires & Brakes', name: 'Rear Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
             { id: 'spare_tire', group: 'Tires & Brakes', name: 'Spare Tire, Jack & Lug Wrench Kit', status: 'Good', notes: 'Complete in trunk compartment' },
-            { id: 'brakes_pads', group: 'Tires & Brakes', name: 'Brake Pads & Disc Rotors Inspection', status: 'Good', notes: 'Pads at ~70% remaining life' },
-            { id: 'suspension', group: 'Underchassis', name: 'Front & Rear Shock Absorbers / Bushings', status: 'Good', notes: 'No oil weeping or clunking' },
-            { id: 'exhaust', group: 'Underchassis', name: 'Exhaust Piping & Catalytic Muffler', status: 'Good', notes: 'Mounts secure, no exhaust leak' }
+            { id: 'brakes_pads', group: 'Tires & Brakes', name: 'Brake Pads & Disc Rotors Inspection', status: 'Good', notes: 'Pads at ~70% remaining life' }
         ];
+
+        // Ensure all registered points exist even when loaded from cached draft
+        if (!window.checklistInspectionPoints || !Array.isArray(window.checklistInspectionPoints)) {
+            window.checklistInspectionPoints = defaultChecklistPoints;
+        } else {
+            defaultChecklistPoints.forEach(dp => {
+                if (!window.checklistInspectionPoints.some(ep => ep.id === dp.id)) {
+                    window.checklistInspectionPoints.push({ ...dp });
+                }
+            });
+        }
+
+        window.checklistBrakesNotInspected = window.checklistBrakesNotInspected || false;
 
         window.checklistFuelLevel = window.checklistFuelLevel || '1/2';
 
@@ -15551,6 +15572,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             scheduleFormStudioPdfRefresh();
         }
         window.setChecklistFuel = setChecklistFuel;
+
+        function toggleChecklistBrakesNotInspected(checked) {
+            window.checklistBrakesNotInspected = Boolean(checked);
+            const bp = (window.checklistInspectionPoints || []).find(p => p.id === 'brakes_pads');
+            if (bp) {
+                if (checked) {
+                    bp.prevStatus = bp.status;
+                    bp.status = 'N/A';
+                    bp.notes = 'Brakes not inspected on this visit';
+                } else {
+                    bp.status = bp.prevStatus || 'Good';
+                    bp.notes = 'Pads at ~70% remaining life';
+                }
+            }
+            renderChecklistTable();
+            syncChecklistCanvas();
+            saveWorkbookDraftOffline(true);
+            scheduleFormStudioPdfRefresh();
+        }
+        window.toggleChecklistBrakesNotInspected = toggleChecklistBrakesNotInspected;
 
         function setChecklistStatus(itemId, status) {
             const item = (window.checklistInspectionPoints || []).find(p => p.id === itemId);
@@ -17700,20 +17741,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                     // Multi-Point Inspection Checkmarks on Color Status Boxes (Green / Yellow / Red)
                     const gridMap = {
-                        'lights_ext':  { good: ['I9'],  attn: ['J9'],  defect: ['K9'] },
-                        'horn_wipers': { good: ['I13', 'I18'], attn: ['J13', 'J18'], defect: ['K13', 'K18'] },
-                        'ac_cooling':  { good: ['I22'], attn: ['J22'], defect: ['K22'] },
-                        'battery':     { good: ['E28'], attn: ['E28'], defect: ['E30'] },
-                        'eng_oil':     { good: ['I36', 'I49'], attn: ['J36', 'J49'], defect: ['K36', 'K49'] },
-                        'brk_fluid':   { good: ['I46'], attn: ['J46'], defect: ['K46'] },
-                        'coolant':     { good: ['I42'], attn: ['J42'], defect: ['K42'] },
-                        'suspension':  { good: ['I47'], attn: ['J47'], defect: ['K47'] },
-                        'exhaust':     { good: ['I48'], attn: ['J48'], defect: ['K48'] },
-                        'tire_fl':     { good: ['M10'], attn: ['N10'], defect: ['O10'] },
-                        'tire_fr':     { good: ['AI10'], attn: ['AK10'], defect: ['AN10'] },
-                        'tire_rl':     { good: ['M15'], attn: ['N15'], defect: ['O15'] },
-                        'tire_rr':     { good: ['AI15'], attn: ['AK15'], defect: ['AN15'] },
-                        'spare_tire':  { good: ['M21'], attn: ['N21'], defect: ['O21'] },
+                        'lights_ext':       { good: ['I9'],  attn: ['J9'],  defect: ['K9'] },
+                        'interior_light':   { good: ['I11'], attn: ['J11'], defect: ['K11'] },
+                        'horn_wipers':      { good: ['I13'], attn: ['J13'], defect: ['K13'] },
+                        'parking_brake':    { good: ['I16'], attn: ['J16'], defect: ['K16'] },
+                        'horn_op':          { good: ['I18'], attn: ['J18'], defect: ['K18'] },
+                        'clutch_op':        { good: ['I20'], attn: ['J20'], defect: ['K20'] },
+                        'ac_cooling':       { good: ['I22'], attn: ['J22'], defect: ['K22'] },
+                        'battery':          { good: ['E28'], attn: ['E28'], defect: ['E30'] },
+                        'eng_oil':          { good: ['I36'], attn: ['J36'], defect: ['K36'] },
+                        'air_filter':       { good: ['I40'], attn: ['J40'], defect: ['K40'] },
+                        'coolant':          { good: ['I42'], attn: ['J42'], defect: ['K42'] },
+                        'hydraulic_clutch': { good: ['I44'], attn: ['J44'], defect: ['K44'] },
+                        'brk_fluid':        { good: ['I46'], attn: ['J46'], defect: ['K46'] },
+                        'suspension':       { good: ['I47'], attn: ['J47'], defect: ['K47'] },
+                        'exhaust':          { good: ['I48'], attn: ['J48'], defect: ['K48'] },
+                        'fluid_leaks':      { good: ['I49'], attn: ['J49'], defect: ['K49'] },
+                        'drive_shaft':      { good: ['I50'], attn: ['J50'], defect: ['K50'] },
+                        'tire_fl':          { good: ['M10'],  attn: ['N10'],  defect: ['O10'] },
+                        'tire_fr':          { good: ['AI10'], attn: ['AK10'], defect: ['AN10'] },
+                        'tire_rl':          { good: ['M15'],  attn: ['N15'],  defect: ['O15'] },
+                        'tire_rr':          { good: ['AI15'], attn: ['AK15'], defect: ['AN15'] },
+                        'spare_tire':       { good: ['M21'],  attn: ['N21'],  defect: ['O21'] },
                         'brakes_pads': {
                             good: ['M31', 'AI31', 'M35', 'AI35'],
                             attn: ['N31', 'AK31', 'N35', 'AK35'],
@@ -17721,7 +17770,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     };
 
+                    const brakesNotInspected = Boolean(window.checklistBrakesNotInspected);
+
                     (window.checklistInspectionPoints || []).forEach(pt => {
+                        if (pt.id === 'brakes_pads' && brakesNotInspected) {
+                            return; // Brakes not inspected, skip stamping individual brake color boxes
+                        }
                         const mapping = gridMap[pt.id];
                         if (!mapping) return;
                         const status = (pt.status || 'Good').toLowerCase();
@@ -17738,11 +17792,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         });
                     });
 
-                    const allGood = (window.checklistInspectionPoints || []).every(p => p.status === 'Good');
-                    if (allGood) {
-                        ['I11', 'I16', 'I20', 'I40', 'I44', 'I50'].forEach(cellRef => {
-                            setCell(sheet7Doc, cellRef, '✓');
-                        });
+                    // Brakes Not Inspected on this visit (M37)
+                    if (brakesNotInspected) {
+                        setCell(sheet7Doc, 'M37', '[✓] Brakes not inspected on this visit');
+                    } else {
+                        setCell(sheet7Doc, 'M37', '[   ] Brakes not inspected on this visit');
                     }
 
                     applySheetProtection(sheet7Doc);

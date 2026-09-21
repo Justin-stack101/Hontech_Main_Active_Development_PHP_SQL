@@ -1,3 +1,24 @@
+## 📅 September 21, 2026 (SA Checklist Completeness & Stamping for Interior Light, Hydraulic Clutch, Drive Shaft, and Brakes Not Inspected)
+
+### 📋 SA Checklist Completeness & Stamping for Interior Light, Hydraulic Clutch, Drive Shaft, and Brakes Not Inspected (REV-120 / v5.120)
+* **Specific Checklist Inspection Checkpoint Additions & Mapping (`frontend/js/app.js` & `frontend/index.html`)**:
+  - Expanded vehicle receiving inspection points to explicitly register and color-stamp specific mechanical and electrical components:
+    - `interior_light`: Interior Dome & Courtesy Light (Sheet 7 Row 11: Green `I11`, Yellow `J11`, Red `K11`).
+    - `hydraulic_clutch`: Hydraulic Clutch Reservoir Fluid (Sheet 7 Row 44: Green `I44`, Yellow `J44`, Red `K44`).
+    - `drive_shaft`: Drive Shaft Boots & Constant Velocity Joints (Sheet 7 Row 50: Green `I50`, Yellow `J50`, Red `K50`).
+    - Added dedicated checkpoint rows for `parking_brake` (Row 16: `I16`/`J16`/`K16`), `horn_op` (Row 18: `I18`/`J18`/`K18`), `clutch_op` (Row 20: `I20`/`J20`/`K20`), `air_filter` (Row 40: `I40`/`J40`/`K40`), and `fluid_leaks` (Row 49: `I49`/`J49`/`K49`).
+* **Brakes Not Inspected on This Visit Toggle & Excel Stamping (`frontend/index.html` & `frontend/js/app.js`)**:
+  - Implemented interactive checkbox `#chk-brakes-not-inspected` with reactive state synchronization `window.checklistBrakesNotInspected` and handler `toggleChecklistBrakesNotInspected(checked)`.
+  - When enabled, automatically marks brake pad inspection item as N/A with status "Brakes not inspected on this visit" and skips individual wheel brake pad color box stamping (`M31`, `AI31`, `M35`, `AI35`).
+  - Injects `[✓] Brakes not inspected on this visit` into Sheet 7 cell `M37` (merged `M37:W39`) upon export; injects `[   ] Brakes not inspected on this visit` when unchecked.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 48 (`AUT-FRONT-97`) validating `interior_light`, `hydraulic_clutch`, `drive_shaft`, `chk-brakes-not-inspected` UI element, `toggleChecklistBrakesNotInspected` handler, `M37` stamping, and cache buster `v=2.76`.
+  - Updated all preceding test suites to seamlessly support cache buster `v=2.76`.
+  - All 111 automated assertions across 57 test suites pass with 100% compliance (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.76`.
+
+---
+
 ## 📅 September 21, 2026 (SA 2025 RO Studio Receiving Checklist Color Status Stamping & Studio Controls)
 
 ### 📋 SA 2025 RO Studio Receiving Checklist Color Status Stamping & Studio Controls (REV-119 / v5.119)
