@@ -13142,6 +13142,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
+                if (e && e.target && typeof applyStudioFieldMagnification === 'function') {
+                    applyStudioFieldMagnification(e.target);
+                }
                 const isImmediate = e && (e.type === 'blur' || e.type === 'change');
                 scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
             };
@@ -13159,6 +13162,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             inputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f13Bound) {
+                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('input', onReactiveJobOrderInput);
                     el.addEventListener('change', onReactiveJobOrderInput);
                     el.addEventListener('blur', onReactiveJobOrderInput);
@@ -13174,7 +13178,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             quoteInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f23Bound) {
-                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(); });
                     el.dataset.f23Bound = 'true';
                 }
@@ -13189,7 +13194,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             billInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.billBound) {
-                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(); });
                     el.dataset.billBound = 'true';
                 }
@@ -13202,7 +13208,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             chkInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.chkBound) {
-                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(); });
+                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(); });
                     el.dataset.chkBound = 'true';
                 }
@@ -14528,6 +14535,202 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.generateChecklistPDF = generateChecklistPDF;
 
+        // =========================================================================
+        // SENIOR SERVICE ADVISOR ADAPTIVE AUTO-MAGNIFIER & GLIDE ENGINE (REV-122)
+        // =========================================================================
+        let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') !== 'false'; // Defaults to TRUE
+        let activeStudioZoomScale = 1.85;
+
+        const STUDIO_MAGNIFIER_ZONES = {
+            // Sheet 1: Job_Order Form 1/3
+            'f13-input-job-no': { x: '50%', y: '8%', scale: 1.75, sheet: 'form13', label: 'JOB ORDER NO' },
+            'f13-input-intake-date': { x: '50%', y: '8%', scale: 1.75, sheet: 'form13', label: 'DATE' },
+            'f13-input-claim-stub': { x: '50%', y: '88%', scale: 1.85, sheet: 'form13', label: 'CLAIM STUB ID' },
+            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 1.85, sheet: 'form13', label: 'ARRIVAL TIME' },
+            
+            // Customer Details (Upper document area)
+            'f13-input-name': { x: '25%', y: '16%', scale: 1.85, sheet: 'form13', label: 'CUSTOMER NAME' },
+            'f13-input-contact': { x: '25%', y: '18%', scale: 1.85, sheet: 'form13', label: 'CONTACT NUMBER' },
+            'f13-input-address': { x: '25%', y: '17%', scale: 1.85, sheet: 'form13', label: 'CUSTOMER ADDRESS' },
+            'f13-input-email': { x: '25%', y: '19%', scale: 1.85, sheet: 'form13', label: 'CUSTOMER EMAIL' },
+            'f13-input-plate': { x: '55%', y: '16%', scale: 1.85, sheet: 'form13', label: 'PLATE NUMBER' },
+            'f13-input-model': { x: '45%', y: '16%', scale: 1.85, sheet: 'form13', label: 'MAKE / MODEL' },
+            'f13-input-color': { x: '55%', y: '18%', scale: 1.85, sheet: 'form13', label: 'VEHICLE COLOR' },
+            'f13-input-km': { x: '45%', y: '17%', scale: 1.85, sheet: 'form13', label: 'ODOMETER (KM)' },
+            'f13-input-engine': { x: '45%', y: '18%', scale: 1.85, sheet: 'form13', label: 'ENGINE NO' },
+            'f13-input-chassis': { x: '45%', y: '19%', scale: 1.85, sheet: 'form13', label: 'CHASSIS NO' },
+            'f13-input-promise-date': { x: '55%', y: '17%', scale: 1.85, sheet: 'form13', label: 'PROMISE DATE' },
+
+            // Service Category & Scope of Work
+            'f13-input-category': { x: '25%', y: '23%', scale: 1.8, sheet: 'form13', label: 'SERVICE CATEGORY' },
+            'f13-input-concern': { x: '30%', y: '27%', scale: 1.8, sheet: 'form13', label: 'CUSTOMER CONCERN' },
+            'f13-input-diagnostic': { x: '30%', y: '34%', scale: 1.8, sheet: 'form13', label: 'INITIAL DIAGNOSIS' },
+
+            // Signatures & Conforme
+            'f13-input-sa': { x: '25%', y: '68%', scale: 1.75, sheet: 'form13', label: 'SERVICE ADVISOR' },
+            'f13-input-mechanic': { x: '25%', y: '65%', scale: 1.75, sheet: 'form13', label: 'LEAD MECHANIC' },
+            'f13-input-assessor': { x: '55%', y: '65%', scale: 1.75, sheet: 'form13', label: 'INSURANCE ASSESSOR' },
+            'f13-input-manager': { x: '55%', y: '68%', scale: 1.75, sheet: 'form13', label: 'GENERAL MANAGER' },
+
+            // Sheet 2: Quotation_No
+            'f23-input-date': { x: '70%', y: '8%', scale: 1.75, sheet: 'quote', label: 'DATE' },
+            'f23-input-job-no': { x: '70%', y: '10%', scale: 1.75, sheet: 'quote', label: 'JOB ORDER NO' },
+            'f23-input-name': { x: '25%', y: '16%', scale: 1.85, sheet: 'quote', label: 'CUSTOMER NAME' },
+            'f23-input-plate': { x: '55%', y: '16%', scale: 1.85, sheet: 'quote', label: 'PLATE NUMBER' },
+            'f23-input-model': { x: '55%', y: '17%', scale: 1.85, sheet: 'quote', label: 'MODEL' },
+            'f23-input-contact': { x: '25%', y: '18%', scale: 1.85, sheet: 'quote', label: 'CONTACT' },
+            'f23-input-address': { x: '25%', y: '17%', scale: 1.85, sheet: 'quote', label: 'ADDRESS' },
+            'f23-input-color': { x: '55%', y: '18%', scale: 1.85, sheet: 'quote', label: 'COLOR' },
+
+            // Sheet 3: Billing_No
+            'bill-input-date': { x: '70%', y: '8%', scale: 1.75, sheet: 'billing', label: 'BILLING DATE' },
+            'bill-input-job-no': { x: '70%', y: '10%', scale: 1.75, sheet: 'billing', label: 'JOB ORDER NO' },
+            'bill-input-quote-no': { x: '70%', y: '11%', scale: 1.75, sheet: 'billing', label: 'QUOTATION NO' },
+            'bill-input-name': { x: '25%', y: '15%', scale: 1.85, sheet: 'billing', label: 'CUSTOMER NAME' },
+            'bill-input-plate': { x: '55%', y: '15%', scale: 1.85, sheet: 'billing', label: 'PLATE NUMBER' },
+            'bill-input-model': { x: '55%', y: '16%', scale: 1.85, sheet: 'billing', label: 'MODEL' },
+            'bill-input-contact': { x: '25%', y: '17%', scale: 1.85, sheet: 'billing', label: 'CONTACT' },
+            'bill-input-address': { x: '25%', y: '16%', scale: 1.85, sheet: 'billing', label: 'ADDRESS' },
+            'bill-input-color': { x: '55%', y: '17%', scale: 1.85, sheet: 'billing', label: 'COLOR' },
+            'bill-input-km': { x: '55%', y: '18%', scale: 1.85, sheet: 'billing', label: 'KM READING' },
+            'bill-input-discount': { x: '65%', y: '23%', scale: 1.75, sheet: 'billing', label: 'DISCOUNT %' },
+
+            // Sheet 4: CheckList_Result
+            'chk-input-name': { x: '25%', y: '4%', scale: 1.85, sheet: 'checklist', label: 'CUSTOMER NAME' },
+            'chk-input-date': { x: '70%', y: '4%', scale: 1.85, sheet: 'checklist', label: 'DATE' },
+            'chk-input-plate': { x: '25%', y: '6%', scale: 1.85, sheet: 'checklist', label: 'PLATE NUMBER' },
+            'chk-input-km': { x: '45%', y: '6%', scale: 1.85, sheet: 'checklist', label: 'ODOMETER (KM)' },
+            'chk-input-remarks': { x: '35%', y: '70%', scale: 1.75, sheet: 'checklist', label: 'CHECKLIST REMARKS' }
+        };
+        window.STUDIO_MAGNIFIER_ZONES = STUDIO_MAGNIFIER_ZONES;
+
+        function updateStudioAutoMagnifyUI() {
+            const btn = document.getElementById('btn-studio-auto-magnify');
+            const label = document.getElementById('label-studio-auto-magnify');
+            if (btn && label) {
+                if (isStudioAutoMagnifyEnabled) {
+                    btn.className = 'px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 text-xs';
+                    label.textContent = 'Auto-Magnify: ON';
+                } else {
+                    btn.className = 'px-2.5 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 text-xs';
+                    label.textContent = 'Auto-Magnify: OFF';
+                }
+            }
+        }
+        window.updateStudioAutoMagnifyUI = updateStudioAutoMagnifyUI;
+
+        function toggleStudioAutoMagnify() {
+            isStudioAutoMagnifyEnabled = !isStudioAutoMagnifyEnabled;
+            localStorage.setItem('hontech_studio_auto_magnify', isStudioAutoMagnifyEnabled ? 'true' : 'false');
+            updateStudioAutoMagnifyUI();
+            if (!isStudioAutoMagnifyEnabled) {
+                resetStudioMagnification();
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast('Auto-Magnify disabled. PDF preview returned to 100% Fit.', 'info', 'Auto-Zoom OFF');
+                }
+            } else {
+                if (typeof showSystemToast === 'function') {
+                    showSystemToast('Auto-Magnify enabled. Preview will smoothly glide and magnify active document areas for Senior legibility.', 'success', 'Auto-Zoom ON');
+                }
+                const active = document.activeElement;
+                if (active && active.id && STUDIO_MAGNIFIER_ZONES[active.id]) {
+                    applyStudioFieldMagnification(active);
+                }
+            }
+        }
+        window.toggleStudioAutoMagnify = toggleStudioAutoMagnify;
+
+        function setStudioManualZoom(level) {
+            activeStudioZoomScale = level;
+            const iframes = ['f13-pdf-iframe', 'f23-pdf-iframe', 'billing-pdf-iframe', 'checklist-pdf-iframe'];
+            iframes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
+                    if (level <= 1.0) {
+                        el.style.transformOrigin = 'center top';
+                        el.style.transform = 'scale(1.0)';
+                    } else {
+                        el.style.transform = `scale(${level})`;
+                    }
+                }
+            });
+            if (level <= 1.0) {
+                const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
+                huds.forEach(hid => {
+                    const h = document.getElementById(hid);
+                    if (h) h.classList.add('hidden');
+                });
+            }
+        }
+        window.setStudioManualZoom = setStudioManualZoom;
+
+        function resetStudioMagnification(sheet = null) {
+            const iframes = ['f13-pdf-iframe', 'f23-pdf-iframe', 'billing-pdf-iframe', 'checklist-pdf-iframe'];
+            iframes.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+                    el.style.transformOrigin = 'center top';
+                    el.style.transform = 'scale(1.0)';
+                }
+            });
+            const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
+            huds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+        }
+        window.resetStudioMagnification = resetStudioMagnification;
+
+        function applyStudioFieldMagnification(elementOrId, forceVal = null) {
+            if (!isStudioAutoMagnifyEnabled) return;
+            const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
+            const zone = STUDIO_MAGNIFIER_ZONES[inputId];
+            if (!zone) return;
+
+            let iframeId = 'f13-pdf-iframe';
+            let hudId = 'f13-field-magnifier-hud';
+            let hudFieldId = 'f13-hud-field-name';
+            let hudValId = 'f13-hud-field-value';
+
+            if (zone.sheet === 'quote') {
+                iframeId = 'f23-pdf-iframe';
+                hudId = 'f23-field-magnifier-hud';
+                hudFieldId = 'f23-hud-field-name';
+                hudValId = 'f23-hud-field-value';
+            } else if (zone.sheet === 'billing') {
+                iframeId = 'billing-pdf-iframe';
+                hudId = 'billing-field-magnifier-hud';
+                hudFieldId = 'billing-hud-field-name';
+                hudValId = 'billing-hud-field-value';
+            } else if (zone.sheet === 'checklist') {
+                iframeId = 'checklist-pdf-iframe';
+                hudId = 'checklist-field-magnifier-hud';
+                hudFieldId = 'checklist-hud-field-name';
+                hudValId = 'checklist-hud-field-value';
+            }
+
+            const iframe = document.getElementById(iframeId);
+            if (iframe) {
+                iframe.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1)';
+                iframe.style.transformOrigin = `${zone.x} ${zone.y}`;
+                iframe.style.transform = `scale(${zone.scale || activeStudioZoomScale})`;
+            }
+
+            const hud = document.getElementById(hudId);
+            const hudField = document.getElementById(hudFieldId);
+            const hudVal = document.getElementById(hudValId);
+            if (hud && hudField && hudVal) {
+                const inputEl = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+                const currentVal = forceVal !== null ? forceVal : (inputEl ? inputEl.value : '');
+                hudField.textContent = zone.label || 'FIELD';
+                hudVal.textContent = currentVal ? currentVal : '(blank)';
+                hud.classList.remove('hidden');
+            }
+        }
+        window.applyStudioFieldMagnification = applyStudioFieldMagnification;
+
         // Universal Debounced Form Studio PDF Auto-Refresher
         let formStudioPdfDebounceTimer = null;
         function scheduleFormStudioPdfRefresh(delay = 350) {
@@ -14959,6 +15162,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
                 lucide.createIcons();
+            }
+
+            if (typeof resetStudioMagnification === 'function') {
+                resetStudioMagnification();
+            }
+            if (typeof updateStudioAutoMagnifyUI === 'function') {
+                updateStudioAutoMagnifyUI();
             }
         }
         window.switchFormStudioSheet = switchFormStudioSheet;

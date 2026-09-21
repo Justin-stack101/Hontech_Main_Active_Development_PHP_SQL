@@ -3173,6 +3173,15 @@
                                 <span id="f13-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Live Synced</span>
                             </div>
                             <div class="flex flex-wrap items-center gap-2">
+                                <!-- Senior Auto-Magnify Controls -->
+                                <button type="button" id="btn-studio-auto-magnify" onclick="toggleStudioAutoMagnify()" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 text-xs" title="Toggle Adaptive Auto-Magnifier for Senior Service Advisors">
+                                    <i data-lucide="zoom-in" class="w-3.5 h-3.5"></i> <span id="label-studio-auto-magnify">Auto-Magnify: ON</span>
+                                </button>
+                                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
+                                    <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
+                                    <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                                    <button type="button" onclick="setStudioManualZoom(2.25)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="225% Macro Close-Up">225%</button>
+                                </div>
                                 <a href="assets/form13_template.pdf" target="_blank" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Enlarge Document to Fullscreen High-Definition View">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
@@ -3188,9 +3197,17 @@
                             </div>
                         </div>
 
-                        <!-- Real PDF Viewer Container -->
+                        <!-- Real PDF Viewer Container with Active Field Loupe HUD -->
                         <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <iframe id="f13-pdf-iframe" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
+                            <!-- Field Inspection Loupe HUD -->
+                            <div id="f13-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                                <div class="flex items-center gap-2 overflow-hidden">
+                                    <span class="px-1.5 py-0.5 bg-red-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f13-hud-field-name">FIELD</span>
+                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f13-hud-field-value">Typing preview...</span>
+                                </div>
+                                <span class="text-[10px] text-emerald-400 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Magnified 185%</span>
+                            </div>
+                            <iframe id="f13-pdf-iframe" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" src="assets/form13_template.pdf#toolbar=1&navpanes=0" title="HonTech Form 1/3 PDF Viewer"></iframe>
                         </div>
                     </div>
                     </div>
@@ -3358,6 +3375,10 @@
                                     <span id="f23-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>Live Synced</span>
                                 </div>
                                 <div class="flex items-center gap-2">
+                                    <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
+                                        <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
+                                        <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                                    </div>
                                     <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf" target="_blank" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                     </a>
@@ -3372,7 +3393,14 @@
 
                             <!-- PDF Format View Container -->
                             <div id="f23-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                                <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="Quotation_No Official PDF"></iframe>
+                                <div id="f23-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                                    <div class="flex items-center gap-2 overflow-hidden">
+                                        <span class="px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f23-hud-field-name">FIELD</span>
+                                        <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f23-hud-field-value">Typing preview...</span>
+                                    </div>
+                                    <span class="text-[10px] text-blue-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>Magnified 185%</span>
+                                </div>
+                                <iframe id="f23-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Quotation_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="Quotation_No Official PDF"></iframe>
                             </div>
                         </div>
                     </div>
@@ -3551,6 +3579,10 @@
                                 <span id="bill-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>Live Synced</span>
                             </div>
                             <div class="flex items-center gap-2">
+                                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
+                                    <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
+                                    <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                                </div>
                                 <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf" target="_blank" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
@@ -3565,7 +3597,14 @@
 
                         <!-- PDF Format View Container -->
                         <div id="billing-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="Billing_No Official PDF"></iframe>
+                            <div id="billing-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                                <div class="flex items-center gap-2 overflow-hidden">
+                                    <span class="px-1.5 py-0.5 bg-purple-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="billing-hud-field-name">FIELD</span>
+                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="billing-hud-field-value">Typing preview...</span>
+                                </div>
+                                <span class="text-[10px] text-purple-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>Magnified 185%</span>
+                            </div>
+                            <iframe id="billing-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20Billing_No.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="Billing_No Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -3705,6 +3744,10 @@
                                 <span id="chk-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Live Synced</span>
                             </div>
                             <div class="flex items-center gap-2">
+                                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
+                                    <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
+                                    <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                                </div>
                                 <a href="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf" target="_blank" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </a>
@@ -3719,7 +3762,14 @@
 
                         <!-- PDF Format View Container -->
                         <div id="checklist-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" title="CheckList_Result Official PDF"></iframe>
+                            <div id="checklist-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                                <div class="flex items-center gap-2 overflow-hidden">
+                                    <span class="px-1.5 py-0.5 bg-amber-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="checklist-hud-field-name">FIELD</span>
+                                    <span class="font-mono font-bold text-amber-300 text-sm truncate" id="checklist-hud-field-value">Typing preview...</span>
+                                </div>
+                                <span class="text-[10px] text-amber-300 font-bold shrink-0 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>Magnified 185%</span>
+                            </div>
+                            <iframe id="checklist-pdf-iframe" src="assets/Current_2025%20BLANK%20RO%20UPDATED.xlsx%20-%20CheckList_Result.pdf#toolbar=1&navpanes=0" class="w-full flex-1 h-full min-h-[560px] rounded-xl border border-gray-200 bg-white" style="transform-origin: center top; transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), transform-origin 0.32s cubic-bezier(0.16, 1, 0.3, 1);" title="CheckList_Result Official PDF"></iframe>
                         </div>
                     </div>
                     </div>
@@ -7693,7 +7743,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.77"></script>
+    <script src="js/app.js?v=2.78"></script>
 </body>
 
 </html>
