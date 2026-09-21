@@ -13937,6 +13937,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawText(s, { x, y, size, font: f, color });
             };
 
+            const drawTextCenter = (str, centerX, y, size = 7, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: centerX - (w / 2), y, size, font: f, color });
+            };
+
+            const whiteout = (x, y, width, height) => {
+                page.drawRectangle({ x, y, width, height, color: rgb(1, 1, 1) });
+            };
+
             const getVal = id => (document.getElementById(id)?.value || '').trim();
             const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
             const date = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
@@ -13980,6 +13992,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const rowStep = 9.56;
             const maxRows = 24;
 
+            // Clear pre-printed template rows 15-38
+            for (let r = 0; r < maxRows; r++) {
+                const ry = startY - (r * rowStep);
+                whiteout(70, ry - 2, 405, rowStep);
+            }
+
             items.slice(0, maxRows).forEach((it, idx) => {
                 const ry = startY - (idx * rowStep);
                 const desc = it.desc || '';
@@ -14010,13 +14028,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 drawTextFit(desc, 72, ry, 115, 6.8, false);
                 drawTextCenter(String(qty), 200, ry, 6.5);
+                if (it.frt !== undefined && it.frt !== '') {
+                    drawTextCenter(Number(it.frt).toFixed(1), 237, ry, 6.5);
+                }
                 if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
                 if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
                 if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
                 drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
             });
 
-            // Subtotals
+            // Clear and draw subtotals
+            whiteout(420, 320, 55, 50);
             if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.2, false);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;
@@ -14030,9 +14052,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             // Authentic Plain Text Signatures (Rows 61-66)
-            drawTextFit(sa, 70, 165, 140, 7.2, false);
-            drawTextFit(manager, 330, 165, 140, 7.2, false);
-            drawTextFit(name, 70, 125, 140, 7.2, false);
+            drawTextFit(sa, 70, 145, 140, 7.2, false);
+            drawTextFit(manager, 330, 145, 140, 7.2, false);
+            drawTextFit(name, 200, 95, 200, 7.5, false);
 
             return await doc.save();
         }
@@ -14139,6 +14161,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawText(s, { x, y, size, font: f, color });
             };
 
+            const drawTextCenter = (str, centerX, y, size = 7, isBold = false, color = darkInk) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                const w = f.widthOfTextAtSize(s, size);
+                page.drawText(s, { x: centerX - (w / 2), y, size, font: f, color });
+            };
+
+            const whiteout = (x, y, width, height) => {
+                page.drawRectangle({ x, y, width, height, color: rgb(1, 1, 1) });
+            };
+
             const getVal = id => (document.getElementById(id)?.value || '').trim();
             const billingNo = getVal('bill-input-billing-no') || 'BL-2026-0001';
             const date = getVal('bill-input-date') || new Date().toISOString().split('T')[0];
@@ -14155,20 +14189,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Meta Header
-            drawText(billingNo, 420, 776.6, 8, false, darkInk);
-            drawText(date, 440, 746.0, 7.5, false, darkInk);
-            drawText(jobNo, 440, 736.5, 7.5, false, darkInk);
-            drawText(quoteNo, 440, 727.0, 7.5, false, darkInk);
+            drawText(billingNo, 475, 763.2, 8, false, darkInk);
+            drawText(date, 495, 726.1, 7.5, false, darkInk);
+            drawText(jobNo, 495, 714.5, 7.5, false, darkInk);
+            drawText(quoteNo, 495, 703.0, 7.5, false, darkInk);
 
             // Customer Details
-            drawTextFit(name, 115, 698.2, 180, 7.5, false);
-            drawTextFit(plate, 380, 698.2, 120, 7.5, false);
-            drawTextFit(address, 115, 688.6, 180, 7, false);
-            drawTextFit(model, 380, 688.6, 120, 7.5, false);
-            drawTextFit(contact, 115, 679.0, 180, 7.5, false);
-            drawTextFit(color, 380, 679.0, 120, 7.5, false);
-            drawTextFit(email, 115, 669.5, 180, 7, false);
-            drawTextFit(km, 380, 669.5, 120, 7.5, false);
+            drawTextFit(name, 80, 668.2, 240, 7.5, false);
+            drawTextFit(plate, 400, 668.2, 140, 7.5, false);
+            drawTextFit(address, 80, 656.6, 240, 7, false);
+            drawTextFit(model, 400, 656.6, 140, 7.5, false);
+            drawTextFit(contact, 80, 645.0, 240, 7.5, false);
+            drawTextFit(color, 400, 645.0, 140, 7.5, false);
+            drawTextFit(email, 80, 633.5, 240, 7, false);
+            drawTextFit(km, 400, 633.5, 140, 7.5, false);
 
             // Table Line Items (Up to 24 rows)
             const items = (window.billingItems && window.billingItems.length > 0)
@@ -14183,9 +14217,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let totalParts = 0;
             let totalMats = 0;
 
-            const startY = 629.5;
-            const rowStep = 9.56;
+            const startY = 585.1;
+            const rowStep = 11.58;
             const maxRows = 24;
+
+            // Clear pre-printed template rows
+            for (let r = 0; r < maxRows; r++) {
+                const ry = startY - (r * rowStep);
+                whiteout(25, ry - 2, 530, rowStep);
+            }
 
             items.slice(0, maxRows).forEach((it, idx) => {
                 const ry = startY - (idx * rowStep);
@@ -14215,31 +14255,37 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 totalParts += partsAmt;
                 totalMats += matsAmt;
 
-                drawTextFit(desc, 72, ry, 115, 6.8, false);
-                drawTextCenter(String(qty), 200, ry, 6.5);
-                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
-                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
-                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
-                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
+                drawTextFit(desc, 25, ry, 150, 6.8, false);
+                drawTextCenter(String(qty), 195, ry, 6.5);
+                if (it.frt !== undefined && it.frt !== '') {
+                    drawTextCenter(Number(it.frt).toFixed(1), 238, ry, 6.5);
+                }
+                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 318, ry, 6.5);
+                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 390, ry, 6.5);
+                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 460, ry, 6.5);
+                drawTextRight(rowTotal.toFixed(2), 545, ry, 6.8, false);
             });
 
             // Subtotals
-            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 285.3, 7.2, false);
+            whiteout(500, 115, 55, 60);
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 545, 168.1, 7.2, false);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;
-            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 275.7, 7.2, false);
-            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 266.1, 7.2, false);
-            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 254.9, 7.2, false);
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 545, 156.5, 7.2, false);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 545, 144.9, 7.2, false);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 545, 131.3, 7.2, false);
 
-            const grandTotal = subtotal + vat12;
+            const discount = Number(document.getElementById('bill-input-discount')?.value) || 0;
+            const grandTotal = Math.max(0, subtotal + vat12 - discount);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 465, 245.3, 8, true, darkInk);
-                // Also stamp amount banner in row 14
-                drawText('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 210, 658.0, 7.5, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 545, 119.6, 8, true, darkInk);
+                // Also clear template amount banner and stamp formatted grand total in row 14
+                whiteout(185, 616, 40, 12);
+                drawText('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 188, 619.8, 7.5, true, darkInk);
             }
 
-            // Authentic Plain Text Signatures (Row 60 above Service Advisor)
-            drawTextFit(sa, 70, 215, 140, 7.2, false);
+            // Authentic Plain Text Signatures (above Service Advisor line at y=82.7)
+            drawTextFit(sa, 88, 95, 140, 7.2, false);
 
             return await doc.save();
         }
@@ -15291,7 +15337,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.syncBillingToJobOrder = syncBillingToJobOrder;
 
         function renderBillingRows() {
-            const tbody = document.getElementById('bill-items-tbody');
+            const tbody = document.getElementById('bill-items-table-body') || document.getElementById('bill-items-tbody');
             if (!tbody) return;
 
             tbody.innerHTML = '';
@@ -15363,22 +15409,47 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.updateBillingItem = updateBillingItem;
 
         function calcBillingTotals() {
+            let partsSubtotal = 0;
+            let laborSubtotal = 0;
             let total = 0;
+            const discount = Number(document.getElementById('bill-input-discount')?.value) || 0;
+
             (window.billingItems || []).forEach(item => {
-                total += (Number(item.qty) || 1) * (Number(item.price) || 0);
+                const qty = Number(item.qty) || 1;
+                const price = Number(item.price) || 0;
+                const amt = qty * price;
+                total += amt;
+                const desc = (item.desc || '').toLowerCase();
+                const isLabor = desc.includes('labor') || desc.includes('service') || desc.includes('repair') || desc.includes('package') || desc.includes('cleaning') || desc.includes('alignment');
+                if (isLabor) {
+                    laborSubtotal += amt;
+                } else {
+                    partsSubtotal += amt;
+                }
             });
 
-            const formatted = '₱' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const totalEl = document.getElementById('bill-grand-total');
-            if (totalEl) totalEl.innerText = formatted;
+            const grandTotal = Math.max(0, total - discount);
+            const fmt = val => '₱' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const partsEl = document.getElementById('bill-summary-parts');
+            if (partsEl) partsEl.innerText = fmt(partsSubtotal);
+
+            const laborEl = document.getElementById('bill-summary-labor');
+            if (laborEl) laborEl.innerText = fmt(laborSubtotal);
+
+            const totalEl = document.getElementById('bill-summary-grand-total');
+            if (totalEl) totalEl.innerText = fmt(grandTotal);
+
+            const fallbackTotalEl = document.getElementById('bill-grand-total');
+            if (fallbackTotalEl) fallbackTotalEl.innerText = fmt(grandTotal);
 
             const badgeEl = document.getElementById('bill-total-preview-badge');
-            if (badgeEl) badgeEl.innerText = formatted;
+            if (badgeEl) badgeEl.innerText = fmt(grandTotal);
 
             const cvGrandTotal = document.getElementById('cv-bill-grand-total');
-            if (cvGrandTotal) cvGrandTotal.innerText = formatted;
+            if (cvGrandTotal) cvGrandTotal.innerText = fmt(grandTotal);
 
-            return total;
+            return grandTotal;
         }
         window.calcBillingTotals = calcBillingTotals;
 

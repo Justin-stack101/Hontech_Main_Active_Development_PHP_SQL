@@ -1,3 +1,28 @@
+## 📅 September 21, 2026 (Quotation_No & Billing_No Dynamic PDF Compilers & Interactive Form Alignment)
+
+### 📋 Quotation_No & Billing_No Dynamic PDF Compilers & Interactive Form Alignment (REV-121 / v5.121)
+* **Quotation_No & Billing_No Dynamic PDF Compilers (`frontend/js/app.js`)**:
+  - Resolved fatal runtime crash (`ReferenceError: drawTextCenter is not defined`) by defining `drawTextCenter` and localized `whiteout` rectangular masking in both `compileQuotePDFBytes` and `compileBillingPDFBytes`.
+  - Cleared pre-printed `0.00` placeholders on blank PDF templates before drawing real line items, eliminating numerical collisions.
+  - Aligned Billing PDF coordinates directly with the ground-truth layout of `Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf`:
+    - Meta Header: Billing No `(475, 763.2)`, Date `(495, 726.1)`, Job No `(495, 714.5)`, Quote No `(495, 703.0)`.
+    - Customer Details: Name `(80, 668.2)`, Plate `(400, 668.2)`, Address `(80, 656.6)`, Model `(400, 656.6)`, Contact `(80, 645.0)`, Color `(400, 645.0)`, Email `(80, 633.5)`, Km Reading `(400, 633.5)`.
+    - Amount Banner (Row 14): Masked pre-printed `0` and stamped formatted grand total `(188, 619.8)`.
+    - Table Line Items: `startY = 585.1`, `rowStep = 11.58` across 24 rows, with FRT at `x=238`, labor at `x=318`, parts at `x=390`, materials at `x=460`, and row total at `x=545`.
+    - Subtotals: Labor `(545, 168.1)`, VAT 12% `(545, 156.5)`, Materials `(545, 144.9)`, Parts `(545, 131.3)`, Total `(545, 119.6)`.
+    - Signatures: Service Advisor placed cleanly above `Service Advisor` line at `(88, 95)`.
+* **Billing Studio Interactive Form & Financial Summary Matrix (`frontend/index.html` & `frontend/js/app.js`)**:
+  - Fixed table body DOM lookup in `renderBillingRows()` to target `document.getElementById('bill-items-table-body') || document.getElementById('bill-items-tbody')`, restoring line item rendering in the Billing Studio.
+  - Aligned Billing table `<thead>` with 6 columns by adding `<th class="py-2.5 px-3 w-10 text-center">#</th>`.
+  - Re-engineered `calcBillingTotals()` to calculate parts subtotal, labor subtotal, apply discount, and update `#bill-summary-parts`, `#bill-summary-labor`, and `#bill-summary-grand-total`.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Added Suite 49 (`AUT-FRONT-98`) asserting `drawTextCenter`, `whiteout`, exact Billing PDF coordinates (`585.1`, `11.58`, `168.1`, `119.6`), table body lookup, and cache buster `v=2.77`.
+  - Updated preceding test suites to seamlessly support cache buster `v=2.77`.
+  - All 112 automated unit tests across 58 suites pass with 100% compliance (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.77`.
+
+---
+
 ## 📅 September 21, 2026 (SA Checklist Completeness & Stamping for Interior Light, Hydraulic Clutch, Drive Shaft, and Brakes Not Inspected)
 
 ### 📋 SA Checklist Completeness & Stamping for Interior Light, Hydraulic Clutch, Drive Shaft, and Brakes Not Inspected (REV-120 / v5.120)
