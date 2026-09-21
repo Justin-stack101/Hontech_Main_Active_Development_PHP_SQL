@@ -14718,15 +14718,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 iframe.style.transform = `scale(${zone.scale || activeStudioZoomScale})`;
             }
 
-            const hud = document.getElementById(hudId);
-            const hudField = document.getElementById(hudFieldId);
-            const hudVal = document.getElementById(hudValId);
-            if (hud && hudField && hudVal) {
-                const inputEl = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
-                const currentVal = forceVal !== null ? forceVal : (inputEl ? inputEl.value : '');
-                hudField.textContent = zone.label || 'FIELD';
-                hudVal.textContent = currentVal ? currentVal : '(blank)';
-                hud.classList.remove('hidden');
+            // Option A: Pure document auto-glide and auto-magnify directly on the PDF
+            if (window.showStudioMagnifierLoupeHud) {
+                const hud = document.getElementById(hudId);
+                const hudField = document.getElementById(hudFieldId);
+                const hudVal = document.getElementById(hudValId);
+                if (hud && hudField && hudVal) {
+                    const inputEl = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
+                    const currentVal = forceVal !== null ? forceVal : (inputEl ? inputEl.value : '');
+                    hudField.textContent = zone.label || 'FIELD';
+                    hudVal.textContent = currentVal ? currentVal : '(blank)';
+                    hud.classList.remove('hidden');
+                }
             }
         }
         window.applyStudioFieldMagnification = applyStudioFieldMagnification;
