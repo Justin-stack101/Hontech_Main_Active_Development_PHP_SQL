@@ -1,3 +1,22 @@
+## 📅 September 21, 2026 (Senior Service Advisor 5-Second Timed Auto-Magnifier Rule & Stutter-Free Typing Refresh)
+
+### 📋 Senior Service Advisor 5-Second Timed Auto-Magnifier Rule & Debounced Typing Refresh (REV-123 / v5.123)
+* **Senior SA 5-Second Auto-Reset Timer Rule (`frontend/js/app.js`)**:
+  - Implemented `studioMagnifier5sResetTimer` tracking active keypress and focus interactions across all 4 worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`).
+  - When typing or focusing any mapped field, preview instantly zooms in wider (185%–200% scale) directly onto the corresponding document coordinates with immediate live text reflection in the Loupe HUD.
+  - Automatically starts a 5-second countdown timer (`5000ms`). Every keystroke resets the timer, keeping the view stable, wide, and magnified while the Senior SA is typing.
+  - Once typing is paused or completed, after 5 seconds of inactivity, smoothly glides and scales back to standard view (Fit 100%, scale 1.0, transform-origin center top).
+* **Elimination of PDF Reload Flashing & Restarts (`frontend/js/app.js`)**:
+  - Solved the issue where the PDF iframe was restarting and reloading every 350ms during active keystrokes, which caused Chrome's native PDF plugin to unload, flash grey, and show loading spinners.
+  - Upgraded `scheduleFormStudioPdfRefresh(delay = 350)` with `effectiveDelay`: while `studioMagnifier5sResetTimer` is active, background PDF recompilation is debounced to 5000ms.
+  - Immediate flush (0ms / 100ms) is preserved for `blur` and `change` events when the advisor shifts between fields or submits.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Updated Suite 50 (`AUT-FRONT-99`) asserting `studioMagnifier5sResetTimer`, 5-second auto-reset timer rule, `effectiveDelay` debounce during active typing, and cache buster `v=2.79`.
+  - All 113 automated unit tests across 58 suites pass with 100% compliance (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.79`.
+
+---
+
 ## 📅 September 21, 2026 (Senior Service Advisor Adaptive Auto-Magnifier, Section Gliding & Studio Zoom Engine)
 
 ### 📋 Senior Service Advisor Adaptive Auto-Magnifier & Studio Zoom Controls (REV-122 / v5.122)
