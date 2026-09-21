@@ -13179,9 +13179,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f23Bound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(5000); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(100); });
-                    el.addEventListener('blur', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(100); });
+                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(400); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(0); });
+                    el.addEventListener('blur', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.dataset.f23Bound = 'true';
                 }
             });
@@ -13196,9 +13196,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.billBound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(5000); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(100); });
-                    el.addEventListener('blur', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(100); });
+                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(400); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(0); });
+                    el.addEventListener('blur', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.dataset.billBound = 'true';
                 }
             });
@@ -13211,9 +13211,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.chkBound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(5000); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(100); });
-                    el.addEventListener('blur', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(100); });
+                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(400); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(0); });
+                    el.addEventListener('blur', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(0); });
                     el.dataset.chkBound = 'true';
                 }
             });
@@ -14543,7 +14543,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') !== 'false'; // Defaults to TRUE
         let activeStudioZoomScale = 1.85;
-        let studioMagnifier5sResetTimer = null;
 
         const STUDIO_MAGNIFIER_ZONES = {
             // Sheet 1: Job_Order Form 1/3
@@ -14670,10 +14669,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.setStudioManualZoom = setStudioManualZoom;
 
         function resetStudioMagnification(sheet = null) {
-            if (studioMagnifier5sResetTimer) {
-                clearTimeout(studioMagnifier5sResetTimer);
-                studioMagnifier5sResetTimer = null;
-            }
             const iframes = ['f13-pdf-iframe', 'f23-pdf-iframe', 'billing-pdf-iframe', 'checklist-pdf-iframe'];
             iframes.forEach(id => {
                 const el = document.getElementById(id);
@@ -14726,35 +14721,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 iframe.style.transform = `scale(${zone.scale || activeStudioZoomScale})`;
             }
 
-            // High-legibility Loupe HUD: directly displays typed text instantly with zero reload stutter
+            // Loupe HUD permanently suppressed per user directive to keep document preview 100% clean
             const hud = document.getElementById(hudId);
-            const hudField = document.getElementById(hudFieldId);
-            const hudVal = document.getElementById(hudValId);
-            if (hud && hudField && hudVal) {
-                const inputEl = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
-                const currentVal = forceVal !== null ? forceVal : (inputEl ? inputEl.value : '');
-                hudField.textContent = zone.label || 'FIELD';
-                hudVal.textContent = currentVal ? currentVal : '(typing...)';
-                hud.classList.remove('hidden');
-            }
-
-            // Timed 5-Second Rule: Once pressed or typed, magnifies wider directly on the field,
-            // refreshes on every subsequent keystroke, and after 5s of inactivity smoothly goes back to normal.
-            if (studioMagnifier5sResetTimer) {
-                clearTimeout(studioMagnifier5sResetTimer);
-            }
-            studioMagnifier5sResetTimer = setTimeout(() => {
-                resetStudioMagnification();
-            }, 5000);
+            if (hud) hud.classList.add('hidden');
         }
         window.applyStudioFieldMagnification = applyStudioFieldMagnification;
 
         // Universal Debounced Form Studio PDF Auto-Refresher
-        // Default delay 350ms, with 5000ms debounce during active typing to eliminate restarts
+        // Smooth 350ms debounce during active typing so user sees typed text directly on the document
         let formStudioPdfDebounceTimer = null;
         function scheduleFormStudioPdfRefresh(delay = 350) {
             if (formStudioPdfDebounceTimer) clearTimeout(formStudioPdfDebounceTimer);
-            const effectiveDelay = (studioMagnifier5sResetTimer && delay > 0) ? 5000 : delay;
             formStudioPdfDebounceTimer = setTimeout(() => {
                 const active = currentFormStudioActiveSheet || 'form13';
                 if (active === 'form13' || active === 'joborder') {
@@ -14766,7 +14743,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 } else if (active === 'checklist') {
                     generateChecklistPDF(false);
                 }
-            }, effectiveDelay);
+            }, delay);
         }
         window.scheduleFormStudioPdfRefresh = scheduleFormStudioPdfRefresh;
 

@@ -1,3 +1,23 @@
+## 📅 September 21, 2026 (Pure Follow-Along Auto-Magnifier, Suppressed Loupe HUD & Seamless Document Typing Sync)
+
+### 📋 Pure Follow-Along Auto-Magnifier & Clean Real-Time Document Typing Sync (REV-124 / v5.124)
+* **Suppressed Loupe HUD Overlay (`frontend/index.html` & `frontend/js/app.js`)**:
+  - Permanently suppressed the floating black Loupe HUD banner overlay (`#f13-field-magnifier-hud`, `#f23-field-magnifier-hud`, `#billing-field-magnifier-hud`, `#checklist-field-magnifier-hud`) across all 4 sheet views per explicit user directive (`style="display: none !important;"`).
+  - Removed UI unhiding in `applyStudioFieldMagnification`, keeping the live document PDF preview completely clean, unobstructed, and authentic.
+* **Removal of 5-Second Auto-Reset Timer Rule (`frontend/js/app.js`)**:
+  - Completely decommissioned `studioMagnifier5sResetTimer` and its 5000ms timeout reset logic per user request.
+  - As the advisor types into or focuses each form input (Name, Contact, Plate, Scope, Diagnostics, Signatures, Claim Stub), the right-hand PDF preview smoothly glides and scales to follow the active document section.
+  - The preview stays stably locked onto that section as long as the user is working in it, without prematurely reverting back to 100% Fit.
+* **Real-Time Follow-Along Document Typing Sync (`frontend/js/app.js`)**:
+  - Restored responsive 350ms debounced PDF recompilation across Job Order, Quotation, Billing, and Checklist inputs, eliminating the previous 5000ms delay that froze typing reflection.
+  - Immediate flush (0ms) on `blur` and `change` events ensures newly entered data renders cleanly onto the document canvas when transitioning between fields.
+* **Automated Regression Testing & Quality Verification (`tests/frontend/sla_and_logic.test.js`)**:
+  - Updated Suite 50 (`AUT-FRONT-99`) asserting follow-along field magnification, permanently suppressed Loupe HUD, absence of 5s reset timer, and cache buster `v=2.80`.
+  - All 113 automated unit tests across 58 suites pass with 100% compliance (`npm.cmd test`).
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.80`.
+
+---
+
 ## 📅 September 21, 2026 (Senior Service Advisor 5-Second Timed Auto-Magnifier Rule & Stutter-Free Typing Refresh)
 
 ### 📋 Senior Service Advisor 5-Second Timed Auto-Magnifier Rule & Debounced Typing Refresh (REV-123 / v5.123)

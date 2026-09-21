@@ -3199,8 +3199,8 @@
 
                         <!-- Real PDF Viewer Container with Active Field Loupe HUD -->
                         <div id="f13-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <!-- Field Inspection Loupe HUD -->
-                            <div id="f13-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                            <!-- Field Inspection Loupe HUD (Permanently hidden per user directive) -->
+                            <div id="f13-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
                                 <div class="flex items-center gap-2 overflow-hidden">
                                     <span class="px-1.5 py-0.5 bg-red-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f13-hud-field-name">FIELD</span>
                                     <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f13-hud-field-value">Typing preview...</span>
@@ -3393,7 +3393,7 @@
 
                             <!-- PDF Format View Container -->
                             <div id="f23-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                                <div id="f23-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                                <div id="f23-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
                                     <div class="flex items-center gap-2 overflow-hidden">
                                         <span class="px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="f23-hud-field-name">FIELD</span>
                                         <span class="font-mono font-bold text-amber-300 text-sm truncate" id="f23-hud-field-value">Typing preview...</span>
@@ -3597,7 +3597,7 @@
 
                         <!-- PDF Format View Container -->
                         <div id="billing-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <div id="billing-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                            <div id="billing-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
                                 <div class="flex items-center gap-2 overflow-hidden">
                                     <span class="px-1.5 py-0.5 bg-purple-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="billing-hud-field-name">FIELD</span>
                                     <span class="font-mono font-bold text-amber-300 text-sm truncate" id="billing-hud-field-value">Typing preview...</span>
@@ -3762,7 +3762,7 @@
 
                         <!-- PDF Format View Container -->
                         <div id="checklist-pdf-viewer-wrap" class="w-full bg-slate-900/5 rounded-2xl border-2 border-gray-300 overflow-hidden shadow-lg p-1.5 h-[calc(100vh-8.5rem)] min-h-[580px] flex flex-col">
-                            <div id="checklist-field-magnifier-hud" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
+                            <div id="checklist-field-magnifier-hud" style="display: none !important;" class="hidden mb-1 px-3 py-1.5 bg-slate-900/95 text-white rounded-xl text-xs flex items-center justify-between shadow-md border border-slate-700 backdrop-blur-xs transition-all duration-200 shrink-0 z-10">
                                 <div class="flex items-center gap-2 overflow-hidden">
                                     <span class="px-1.5 py-0.5 bg-amber-600 text-white text-[10px] font-black rounded uppercase tracking-wider shrink-0" id="checklist-hud-field-name">FIELD</span>
                                     <span class="font-mono font-bold text-amber-300 text-sm truncate" id="checklist-hud-field-value">Typing preview...</span>
@@ -7743,7 +7743,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.79"></script>
+    <script src="js/app.js?v=2.80"></script>
 </body>
 
 </html>
