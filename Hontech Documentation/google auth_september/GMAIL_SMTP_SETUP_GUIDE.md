@@ -34,7 +34,7 @@ In the project root directory, update your `.env` configuration file:
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=jakenolasco.jn5@gmail.com
-SMTP_PASS=ktnwiapbjozkfuqy
+SMTP_PASS=YOUR_16_CHAR_GOOGLE_APP_PASSWORD
 SMTP_FROM_EMAIL=jakenolasco.jn5@gmail.com
 ```
 
@@ -52,7 +52,7 @@ $mail->isSMTP();
 $mail->Host       = 'smtp.gmail.com';
 $mail->SMTPAuth   = true;
 $mail->Username   = 'jakenolasco.jn5@gmail.com';
-$mail->Password   = 'ktnwiapbjozkfuqy';
+$mail->Password   = 'YOUR_16_CHAR_GOOGLE_APP_PASSWORD';
 $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
 $mail->Port       = 587;
 

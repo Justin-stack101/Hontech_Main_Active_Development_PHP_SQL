@@ -6,6 +6,9 @@
 
 ---
 
+> [!IMPORTANT]
+> **Where the project actually is (2026-09-22):** still inside **Phase 1/2** (core workshop baseline + hardening) on the `prototype_process` branch of this repo. Phase 3 (Google OAuth2 sandboxing) has UI scaffolding only — the server-side token verification described below is not implemented. Phase 4/5 (production hardening, client handover) have not started. Account-recovery hardening is being done ahead of schedule, directly in the core repo rather than a sandbox branch, because the previous implementation had an active account-takeover hole. See [`HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md`](../02_Architecture_and_Engineering/HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md) for the item-by-item status.
+
 ## 1. Executive Summary & Engineering Philosophy
 
 This document outlines the **Stage-Gated Software Development Lifecycle (SDLC)** and **Sandboxing Protocol** for the HonTech AutoCenter Management System.

@@ -4,6 +4,9 @@
 > [!NOTE]
 > This master document consolidates all security specifications, authentication controls, account recovery workflows, Google API integrations, and data disaster recovery protocols into a single authoritative reference, removing duplicate and repeated content.
 
+> [!WARNING]
+> This document describes the **target** security architecture. It does not track what is actually implemented in the code today. Before relying on any claim below, check [`HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md`](./HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md) — the ground-truth tracker, kept in sync with the code, of what's implemented, what's partial, and what's still only planned.
+
 ---
 
 ## 1. 🔐 Authentication & Access Security Architecture

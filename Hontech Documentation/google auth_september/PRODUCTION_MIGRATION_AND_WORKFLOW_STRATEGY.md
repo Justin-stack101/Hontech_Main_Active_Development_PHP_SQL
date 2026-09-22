@@ -109,7 +109,7 @@ Best if your original codebase has diverged or if you want to inspect and test e
    SMTP_HOST="smtp.gmail.com"
    SMTP_PORT=587
    SMTP_USER="justine03k@gmail.com"
-   SMTP_PASS="ktnwiapbjozkfuqy"
+   SMTP_PASS="YOUR_16_CHAR_GOOGLE_APP_PASSWORD"
    SMTP_FROM_EMAIL="justine03k@gmail.com"
    SMTP_FROM_NAME="HonTech AutoCenter Security"
    ```

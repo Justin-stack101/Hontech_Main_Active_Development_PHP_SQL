@@ -143,7 +143,7 @@ To solve the common production failure where staff lose access to Google Authent
 | Metric / Feature | Default PHP `mail()` (sendmail) | Google SMTP Relay (`smtp.gmail.com:587`) |
 | :--- | :--- | :--- |
 | **Source IP Reputation** | Localhost residential IP (Flagged as SPAM / Dropped by Spamhaus) | Google trusted IP ranges |
-| **Authentication** | Unauthenticated plaintext | Google App Password (`ktnwiapbjozkfuqy`) with TLS 1.3 |
+| **Authentication** | Unauthenticated plaintext | Google App Password (`YOUR_16_CHAR_GOOGLE_APP_PASSWORD`) with TLS 1.3 |
 | **SPF / DKIM / DMARC** | Fails alignment (Sender domain mismatch) | Passes DKIM signing via Google Workspace/Gmail headers |
 | **Delivery Latency** | 20–120 seconds (often blackholed) | < 2 seconds direct to recipient inbox |
 

@@ -2,6 +2,9 @@
 
 Welcome to the **Vercel & Supabase Cloud Documentation Hub** for the **HonTech AutoCenter Web-Based Vehicle Intake & Queue Monitoring System**.
 
+> [!IMPORTANT]
+> **Status as of 2026-09-22: Not started.** The `vercel_supabase` / `hontech-vercel-supabase` repo described below has not been created yet. Current priority is hardening the local PHP/MySQL prototype's authentication and account recovery — tracked in [`../Technical/02_Architecture_and_Engineering/HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md`](../Technical/02_Architecture_and_Engineering/HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md). This whole document series stays accurate as a **plan to execute later** ("someday," per project owner) — start from [`06_FUTURE_STEP_BY_STEP_ACTION_PLAN.md`](./06_FUTURE_STEP_BY_STEP_ACTION_PLAN.md) when that day comes.
+
 ---
 
 ## 📚 Complete Document Series Index
