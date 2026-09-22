@@ -13368,18 +13368,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
-                if (e && e.target && typeof applyStudioFieldMagnification === 'function' && e.type !== 'blur') {
-                    applyStudioFieldMagnification(e.target);
-                }
-                // Blur/change no longer force a 0ms PDF reload — an instant reload here races with the next
-                // field's focus-triggered camera lock (reading iframe geometry mid-reload), which is what caused
-                // the magnifier to intermittently show a blank/stuck preview when tabbing between fields.
-                //
-                // The PDF preview is frozen entirely during 'input' (i.e. while a field is still focused and
-                // being typed into): reloading the iframe src on every keystroke pause forces the browser's
-                // PDF viewer to reset to its default zoom before the lock can be re-applied, which is what made
-                // the magnifier visibly snap back to normal size while typing. The preview simply catches up
-                // to the latest text once the field is committed via 'change' or loses focus via 'blur'.
+                // REV-141: Auto-magnifier decommissioned. Steady 100% aspect-fit PDF preview.
                 if (e && e.type !== 'input') {
                     const isImmediate = e.type === 'change';
                     scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
@@ -13402,7 +13391,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             inputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f13Bound) {
-                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('input', onReactiveJobOrderInput);
                     el.addEventListener('change', onReactiveJobOrderInput);
                     el.addEventListener('blur', onReactiveJobOrderInput);
@@ -13418,13 +13406,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             quoteInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f23Bound) {
-                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); });
                     el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncQuoteFieldsToJobOrder();
-                        // Debounced, not instant — an immediate reload here races with the next field's
-                        // focus-triggered camera lock and causes the magnifier to show a blank/stuck preview.
                         scheduleFormStudioPdfRefresh(350);
                     });
                     el.dataset.f23Bound = 'true';
@@ -13440,8 +13425,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             billInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.billBound) {
-                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncBillingToJobOrder(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncBillingToJobOrder(); });
                     el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncBillingToJobOrder();
@@ -13458,8 +13442,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             chkInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.chkBound) {
-                    el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncChecklistCanvas(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncChecklistCanvas(); });
                     el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncChecklistCanvas();
@@ -13473,29 +13456,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const delegateStudioContainer = (containerId, defaultZoneKey) => {
                 const container = document.getElementById(containerId);
                 if (container && !container.dataset.magDelegated) {
-                    container.addEventListener('focusin', (e) => {
-                        if (typeof applyStudioFieldMagnification === 'function') {
-                            applyStudioFieldMagnification(e.target || defaultZoneKey);
-                        }
-                    });
-                    container.addEventListener('input', (e) => {
-                        if (typeof applyStudioFieldMagnification === 'function') {
-                            applyStudioFieldMagnification(e.target || defaultZoneKey);
-                        }
-                        // No PDF reload while actively typing a table cell — see onReactiveJobOrderInput
-                        // for why: reloading the iframe resets its zoom before the lock can reapply. The
-                        // preview catches up on focusout below instead.
-                    });
                     container.addEventListener('focusout', () => {
                         scheduleFormStudioPdfRefresh(350);
-                    });
-                    container.addEventListener('click', (e) => {
-                        if (typeof applyStudioFieldMagnification === 'function') {
-                            const zone = getStudioZoneForElement(e.target);
-                            if (zone) {
-                                applyStudioFieldMagnification(e.target);
-                            }
-                        }
                     });
                     container.dataset.magDelegated = 'true';
                 }
@@ -14872,8 +14834,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // SENIOR SERVICE ADVISOR ADAPTIVE AUTO-MAGNIFIER & GLIDE ENGINE (REV-131)
         // =========================================================================
-        let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') !== 'false'; // Defaults to TRUE (Senior SA Auto-Magnifier Active)
-        let activeStudioZoomScale = 1.85;
+        let isStudioAutoMagnifyEnabled = false; // Decommissioned in REV-141: Steady 100% Fit Preview
+        let activeStudioZoomScale = 1.0;
         let studioMagnifierNaturalResetTimer = null;
 
         const STUDIO_MAGNIFIER_ZONES = {
@@ -15135,58 +15097,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.getActiveStudioSheet = getActiveStudioSheet;
 
         function lockStudioSection(sectionKey, sheetOverride = null) {
+            // Decommissioned in REV-141: Auto-magnifier and camera locks removed for rock-steady 100% fit PDF preview
             const sheet = sheetOverride || getActiveStudioSheet();
             let iframeId = 'f13-pdf-iframe';
             if (sheet === 'quote' || sheet === 'f23') iframeId = 'f23-pdf-iframe';
             else if (sheet === 'billing') iframeId = 'billing-pdf-iframe';
             else if (sheet === 'checklist') iframeId = 'checklist-pdf-iframe';
 
-            // Remember the last requested lock so a PDF reload (which happens async, mid-typing) can
-            // re-apply the correct camera position once the new document has actually finished loading,
-            // instead of leaving whatever position happened to be computed against stale/mid-reload geometry.
-            window.studioLastLockedSection = { key: sectionKey, sheet, iframeId };
-
             const iframe = document.getElementById(iframeId);
-            if (!iframe) return;
-
-            const section = STUDIO_HARDCODED_SECTIONS[sectionKey] || STUDIO_HARDCODED_SECTIONS['customer'];
-            const scale = section.scale || 1.85;
-
-            // Note: the iframe's box is already sized to match the real PDF page's aspect ratio by
-            // applyStudioAspectFit, called BEFORE the PDF was (re)loaded into it (see generateForm13PDF and
-            // its quote/billing/checklist equivalents). Resizing here, after the fact, would not work —
-            // PDFium only fits its render to the iframe's box at load time, so resizing an iframe that has
-            // already finished loading does not make it re-fit; the box must be correct before navigation.
-
-            if (sectionKey === 'fit') {
-                iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-                iframe.style.transformOrigin = '0 0';
+            if (iframe) {
                 iframe.style.transform = 'translate(0px, 0px) scale(1)';
-                return;
+                iframe.style.transformOrigin = '0 0';
             }
-
-            const wrap = iframe.parentElement;
-            const containerW = wrap && wrap.clientWidth > 0 ? wrap.clientWidth : 480;
-            const containerH = wrap && wrap.clientHeight > 0 ? wrap.clientHeight : 580;
-            const iframeW = (iframe.offsetWidth && iframe.offsetWidth > 0) ? iframe.offsetWidth : containerW;
-            const iframeH = (iframe.offsetHeight && iframe.offsetHeight > 0) ? iframe.offsetHeight : containerH;
-
-            // Exact horizontal center
-            const targetX = (containerW - (scale * iframeW)) / 2;
-
-            // Vertical translation: 0 (top of page) down to maxScrollY (bottom of page). Now accurate
-            // because iframeH is the real page height (via applyStudioAspectFit above), not a padded guess.
-            const maxScrollY = containerH - (scale * iframeH);
-            const targetY = section.yRatio * maxScrollY;
-
-            iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            iframe.style.imageRendering = '-webkit-optimize-contrast';
-            iframe.style.webkitFontSmoothing = 'antialiased';
-            iframe.style.transformOrigin = '0 0';
-            iframe.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px) scale(${scale})`;
         }
+        window.lockStudioSection = lockStudioSection;
 
-        // Resizes the iframe's own CSS box to match the real PDF page's aspect ratio exactly (letterboxed
+        // Sizes the iframe's layout box so its aspect ratio matches the compiled PDF's real page size (centered
         // within the wrap, like object-fit: contain), so PDFium's internal "Fit" rendering fills that box
         // with zero blank padding. Falls back to leaving the iframe at its current size if the page's real
         // dimensions aren't known yet (before the first PDF compile has run).
@@ -15210,81 +15136,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             iframe.style.width = `${Math.round(fitW)}px`;
             iframe.style.height = `${Math.round(fitH)}px`;
+            iframe.style.transform = 'translate(0px, 0px) scale(1)';
+            iframe.style.transformOrigin = '0 0';
         }
         window.applyStudioAspectFit = applyStudioAspectFit;
-        window.lockStudioSection = lockStudioSection;
 
-        // A PDF reload (iframe.src reassignment) happens asynchronously after the user has already moved on
-        // to a new field. If the camera lock for that new field was computed while the previous reload was
-        // still in flight, it reads stale/mid-reload iframe geometry and lands on a blank or wrong position.
-        // Re-applying the last requested lock once the reload's 'load' event actually fires guarantees the
-        // final camera position always matches the fully-rendered document.
         function reapplyStudioLockAfterReload(iframe, sheet) {
             if (!iframe) return;
             const onLoaded = () => {
                 iframe.removeEventListener('load', onLoaded);
-                requestAnimationFrame(() => {
-                    // The iframe was already resized (via applyStudioAspectFit) before this reload started,
-                    // so by the time 'load' fires here, PDFium has rendered into the correctly-sized box.
-                    const last = window.studioLastLockedSection;
-                    if (isStudioAutoMagnifyEnabled && last && last.sheet === sheet) {
-                        lockStudioSection(last.key, sheet);
-                    }
-                });
             };
             iframe.addEventListener('load', onLoaded);
         }
         window.reapplyStudioLockAfterReload = reapplyStudioLockAfterReload;
 
         function mapElementToSectionKey(el) {
-            if (!el) return 'customer';
-            const id = typeof el === 'string' ? el : (el.id || '');
-            if (id.includes('claim-stub') || id.includes('arrival-time')) return 'claim_stub';
-            if (id.includes('sa') || id.includes('mechanic') || id.includes('assessor') || id.includes('manager')) return 'signatures';
-            if (id.includes('discount') || id.includes('total')) return 'totals';
-            if (id.includes('concern') || id.includes('diagnostic') || id.includes('category')) return 'diagnostic';
-            
-            // Direct ID matches for tables and checklist
-            if (id.includes('part') || id.includes('material') || id.includes('quote-item') || id.includes('bill-item')) return 'table';
-            if (id.includes('interior')) return 'chk_interior';
-            if (id.includes('battery') || id.includes('hood') || id.includes('fluid')) return 'chk_underhood';
-            if (id.includes('under') || id.includes('brake') || id.includes('tire') || id === 'chk-brakes-not-inspected') return 'chk_underchassis';
-            if (id.includes('fuel') || id.includes('remark')) return 'chk_bottom';
-
-            // Middle tables & hierarchy matches
-            if (typeof el === 'object' && el.closest) {
-                if (el.closest('#f13-parts-table-body') || el.closest('#f13-parts-table') || el.closest('#f13-materials-table-body') || el.closest('#f13-materials-table') || el.closest('#f23-quote-items-tbody') || el.closest('#bill-items-table-body')) {
-                    return 'table';
-                }
-                if (el.closest('#chk-editor-interior')) return 'chk_interior';
-                if (el.closest('#chk-editor-battery') || el.closest('#chk-editor-hood')) return 'chk_underhood';
-                if (el.closest('#chk-editor-under')) return 'chk_underchassis';
-                if (el.closest('.chk-fuel-btn') || el.closest('#chk-fuel-container')) return 'chk_bottom';
-            }
-            return 'customer';
+            return 'fit';
         }
         window.mapElementToSectionKey = mapElementToSectionKey;
 
         function applyStudioFieldMagnification(elementOrId, forceVal = null) {
-            if (!isStudioAutoMagnifyEnabled) {
-                resetStudioMagnification();
-                return;
-            }
-            const el = typeof elementOrId === 'string' ? document.getElementById(elementOrId) : elementOrId;
-            const inputId = typeof elementOrId === 'string' ? elementOrId : (elementOrId?.id || '');
-            const zone = getStudioZoneForElement(el) || STUDIO_MAGNIFIER_ZONES[inputId];
-
-            const sheetType = zone?.sheet || (inputId.startsWith('f23-') ? 'quote' : inputId.startsWith('bill-') ? 'billing' : inputId.startsWith('chk-') ? 'checklist' : 'form13');
-
-            // Map element directly to hardcoded section key and lock it
-            const sectionKey = mapElementToSectionKey(el);
-            lockStudioSection(sectionKey, sheetType);
-
-            // Clear any lingering timers to enforce Permanent Lock (no jumping back while typing/reading)
-            if (studioMagnifierNaturalResetTimer) {
-                clearTimeout(studioMagnifierNaturalResetTimer);
-                studioMagnifierNaturalResetTimer = null;
-            }
+            // Decommissioned in REV-141: Auto-magnifier and camera locks removed for rock-steady 100% fit PDF preview
+            return;
         }
         window.applyStudioFieldMagnification = applyStudioFieldMagnification;
 

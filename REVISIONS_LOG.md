@@ -1,5 +1,28 @@
 ## 📅 September 22, 2026 (Master Queue Branch-Lock, Auto-Magnifier Overhaul, PDF Alignment, Full-PDF Views & Branch-Scoped RBAC)
 
+### 📋 Decommission Auto-Magnifier & Typing Camera Locks for Steady PDF Preview (REV-141)
+* **Objective & Context**: Decommission the complex auto-magnifier and typing camera/section locks across all 4 worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) in the 2025 RO Studio. The dynamic transforms and letterbox calculations caused typing conflicts and layout jitter. Removing these locks provides a rock-steady, 100% aspect-fit vector preview without camera jumps or black voids, refocusing development on core business foundations.
+* **Core Changes Made**:
+  - `frontend/index.html`:
+    - Removed the `#btn-studio-auto-magnify` toggle button and manual zoom presets (`Fit / 185% / 225%`) from the preview header, leaving clean, uncluttered action buttons (`Maximize PDF`, `Full PDF`, `Download PDF`).
+    - Incremented cache buster to `v=2.95`.
+  - `frontend/js/app.js`:
+    - Set `isStudioAutoMagnifyEnabled = false`.
+    - Removed `focus` and `input` event listeners calling `applyStudioFieldMagnification` across all form fields and delegated tables.
+    - Simplified `applyStudioFieldMagnification()` and `lockStudioSection()` to safe no-ops that enforce steady `scale(1)` viewports without camera displacement.
+    - Refactored `applyStudioAspectFit()` to maintain a stable, centered, letterbox-free aspect fit.
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Updated Suite 49 assertions (`AUT-FRONT-99` through `AUT-FRONT-104`) to reflect the decommissioned auto-magnifier and steady preview state.
+    - Added `AUT-FRONT-105` (REV-140) and `AUT-FRONT-106` (REV-141).
+    - Batch-updated cache buster checks to accept `v=2.95`.
+* **Automated & Manual QA Verification**:
+  - 100% automated test suite passing: 124/124 tests across 60 suites (`npm.cmd test`).
+  - Synced `SA-17` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.95`.
+* **GitHub Commit**: Pending (REV-141).
+
+---
+
 ### 📋 2025 RO Studio Maximized PDF View, Live Full PDF In New Tab & Decommission Section Lock Bars (REV-140)
 * **Objective & Context**: Address 3 explicit user-requested enhancements to the 2025 RO Studio:
   1. Remove the section-lock navigation pill strip (`Lock: Fit, Customer, Scope, Parts Table, Signatures, Claim Stub`) from the PDF preview panes across all 4 worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) to eliminate visual clutter and expand vertical viewport height.
