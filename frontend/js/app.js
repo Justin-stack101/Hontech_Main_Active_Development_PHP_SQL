@@ -2970,6 +2970,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const concernField = document.getElementById('div-concern-field');
             if (concernField) concernField.classList.add('hidden');
 
+            const destinationWrap = document.getElementById('intake-destination-wrap');
+            const targetBranchWrap = document.getElementById('intake-target-branch-wrap');
+            const targetBranchSelect = document.getElementById('intake-target-branch');
+
             if (role === 'assistant') {
                 if (title) title.innerText = 'Online Booking Form';
                 if (subtitle) subtitle.innerText = 'LOG ONLINE INQUIRIES TO BOOKING MODULE.';
@@ -2986,6 +2990,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Register to System';
                 selectQuickApptSlot('09:30');
+
+                // Assistant handles Online Booking Module only — no Destination Table UI needed at all.
+                if (destinationWrap) destinationWrap.classList.add('hidden');
+                if (targetBranchWrap) targetBranchWrap.className = 'sm:col-span-12 space-y-1';
+                setAssistantDestination('online');
+
+                // Assistant dispatches bookings to either branch, so the receiving branch's SA sees it in their Booking Module.
+                if (targetBranchSelect) {
+                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">East Branch</option>';
+                    targetBranchSelect.disabled = false;
+                    targetBranchSelect.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
             } else if (role === 'sa') {
                 if (title) title.innerText = 'Vehicle Intake Form';
                 if (subtitle) subtitle.innerText = 'LOG PHYSICAL VEHICLE RECEPTION TO WORKSHOP QUEUE.';
@@ -3002,6 +3018,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (submitBtn) submitBtn.className = 'w-full py-3.5 bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black uppercase text-sm tracking-wider rounded-xl shadow-md shadow-red-600/20 transition flex items-center justify-center gap-2 cursor-pointer';
                 if (submitText) submitText.innerText = 'Register to System';
                 updateStubPreview();
+
+                // SA keeps the full Destination Table (Booking Module + Daily Intakes) and multi-branch dispatch.
+                if (destinationWrap) destinationWrap.classList.remove('hidden');
+                if (targetBranchWrap) targetBranchWrap.className = 'sm:col-span-5 space-y-1';
+                if (targetBranchSelect) {
+                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">East Branch</option>';
+                    targetBranchSelect.disabled = false;
+                    targetBranchSelect.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
             }
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -4074,7 +4099,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const curLane = job.laneType || 'Flexible Lane';
                     const curBranch = (job.branch === 'East Branch' || job.branch === 'Branch B') ? 'East Branch' : 'Marikina Branch';
                     const isEastBranch = (curBranch === 'East Branch');
-                    const canEditBranch = isAsst || isSA;
+                    // Branch is fixed once the Assistant creates the booking via the Online Booking Form's Target Branch field — it is never changed afterward in this table.
                     return `
                     <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 text-xs">
                         <td class="px-3 py-5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
@@ -4088,27 +4113,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         <td class="px-4 py-5 align-middle min-w-[200px]">
                             <span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle || ''}">${job.vehicle || 'Unknown Vehicle'}</span>
                         </td>
-                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
-                            ${canEditBranch ? `
-                                <select onchange="updateJobField('${job.id}', 'branch', this.value)" class="table-select text-xs font-bold py-1 px-2.5 rounded-lg border border-slate-200 cursor-pointer shadow-2xs ${isEastBranch ? 'text-purple-700 bg-purple-50/70 border-purple-200' : 'text-blue-700 bg-blue-50/70 border-blue-200'}" title="Assign Inquiry Branch">
-                                    <option value="Marikina Branch" ${!isEastBranch ? 'selected' : ''}>📍 Marikina Main</option>
-                                    <option value="East Branch" ${isEastBranch ? 'selected' : ''}>📍 East Branch</option>
-                                </select>
-                            ` : `
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold ${isEastBranch ? 'bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs' : 'bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs'}">
-                                    <span class="w-1.5 h-1.5 rounded-full ${isEastBranch ? 'bg-purple-500' : 'bg-blue-500'}"></span>
-                                    ${isEastBranch ? 'East Branch' : 'Marikina Main'}
-                                </span>
-                            `}
+                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap min-w-[150px]">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap ${isEastBranch ? 'bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs' : 'bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs'}">
+                                <span class="w-1.5 h-1.5 rounded-full ${isEastBranch ? 'bg-purple-500' : 'bg-blue-500'}"></span>
+                                ${isEastBranch ? 'East Branch' : 'Marikina Main'}
+                            </span>
                         </td>
-                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
+                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap min-w-[150px]">
                             ${isReadOnlyOnline ? `
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase ${isExpress ? 'bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs' : 'bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs'}">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase whitespace-nowrap ${isExpress ? 'bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs' : 'bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs'}">
                                     <span class="w-1.5 h-1.5 rounded-full ${isExpress ? 'bg-amber-500' : 'bg-slate-400'}"></span>
                                     ${curLane}
                                 </span>
                             ` : `
-                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-semibold py-1.5 px-2.5 rounded-lg border border-slate-200 bg-white cursor-pointer shadow-2xs">
+                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-semibold py-1.5 px-3 rounded-lg border border-slate-200 bg-white cursor-pointer shadow-2xs w-full min-w-[140px]">
                                     <option value="Flexible Lane" ${curLane === 'Flexible Lane' ? 'selected' : ''}>Flexible Lane</option>
                                     <option value="Express Lane" ${curLane === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                     <option value="Regular Lane" ${curLane === 'Regular Lane' ? 'selected' : ''}>Regular Lane</option>
@@ -4181,31 +4199,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </div>
                             `}
                         </td>
-                        <td class="px-4 py-5 text-center align-middle">
+                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap">
                             <input type="checkbox" ${job.confirmed ? 'checked' : ''} ${isReadOnlyOnline ? 'disabled' : `onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)"`} class="w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 ${isReadOnlyOnline ? 'cursor-not-allowed' : 'cursor-pointer'}" title="${job.confirmed ? 'Confirmed Booking' : 'Pending Confirmation'}">
                         </td>
                         <td class="px-4 py-5 text-right align-middle">
                             <div class="flex items-center justify-end gap-1.5">
-                                ${isSA ? `
-                                    <button type="button" onclick="loadOnlineBookingToForm13('${job.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Load customer and vehicle data into Form 1/3 Studio">
-                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Load to RO
-                                    </button>
-                                    <button type="button" onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Confirm and activate intake">
-                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
-                                    </button>
-                                ` : (isAsst ? `
-                                    <button type="button" onclick="loadOnlineBookingToForm13('${job.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1 cursor-pointer" title="Load customer and vehicle data into Form 1/3 Studio">
-                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Load to RO
-                                    </button>
-                                    <button type="button" onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-2xs hover:shadow-md flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
-                                    </button>
-                                    <button type="button" onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-500 hover:bg-rose-50 p-1.5 rounded-lg transition flex items-center justify-center cursor-pointer shadow-2xs" title="Delete Booking">
-                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                ${isAsst ? `
+                                    <button type="button" onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-600 hover:bg-rose-50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition cursor-pointer shadow-2xs" title="Delete Booking">
+                                        Delete
                                     </button>
                                 ` : `
                                     <span class="text-xs font-bold text-slate-400 italic">View Only</span>
-                                `)}
+                                `}
                             </div>
                         </td>
                     </tr>
@@ -4296,7 +4301,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     });
                 }
 
-                const showGoal = isOwnerOrAdmin || isAsst || isSA;
+                const showGoal = isOwnerOrAdmin || isSA; // Only the SA can file an SLA delay report; Assistant has no reporting ability.
 
                                 const getTableHeaderHtml = () => {
                     return `
@@ -13697,6 +13702,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const doc = await PDFDocument.load(templateBuffer);
             const page = doc.getPages()[0];
+            window.studioPageDimensions = window.studioPageDimensions || {};
+            window.studioPageDimensions.form13 = { w: page.getWidth(), h: page.getHeight() };
 
             const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
@@ -13908,6 +13915,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     currentForm13PdfBlobUrl = URL.createObjectURL(pdfBlob);
                     const iframe = document.getElementById('f13-pdf-iframe');
                     if (iframe) {
+                        // Resize BEFORE the fresh navigation, not after — PDFium only fits its render to
+                        // the iframe's box at load time; resizing an already-loaded PDF iframe via CSS does
+                        // not make it re-fit, so the resize must happen before src is (re)assigned.
+                        if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'form13');
+                        if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'form13');
                         iframe.src = currentForm13PdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                     const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
@@ -13951,6 +13963,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const doc = await PDFDocument.load(templateBuffer);
             const page = doc.getPages()[0];
+            window.studioPageDimensions = window.studioPageDimensions || {};
+            window.studioPageDimensions.quote = { w: page.getWidth(), h: page.getHeight() };
             const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
@@ -14136,6 +14150,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     currentQuotePdfBlobUrl = URL.createObjectURL(pdfBlob);
                     const iframe = document.getElementById('f23-pdf-iframe');
                     if (iframe) {
+                        if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'quote');
+                        if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'quote');
                         iframe.src = currentQuotePdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                 }
@@ -14175,6 +14191,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const doc = await PDFDocument.load(templateBuffer);
             const page = doc.getPages()[0];
+            window.studioPageDimensions = window.studioPageDimensions || {};
+            window.studioPageDimensions.billing = { w: page.getWidth(), h: page.getHeight() };
             const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
@@ -14367,6 +14385,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     currentBillingPdfBlobUrl = URL.createObjectURL(pdfBlob);
                     const iframe = document.getElementById('billing-pdf-iframe');
                     if (iframe) {
+                        if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'billing');
+                        if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'billing');
                         iframe.src = currentBillingPdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                 }
@@ -14406,6 +14426,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const doc = await PDFDocument.load(templateBuffer);
             const page = doc.getPages()[0];
+            window.studioPageDimensions = window.studioPageDimensions || {};
+            window.studioPageDimensions.checklist = { w: page.getWidth(), h: page.getHeight() };
             const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
@@ -14568,6 +14590,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     currentChecklistPdfBlobUrl = URL.createObjectURL(pdfBlob);
                     const iframe = document.getElementById('checklist-pdf-iframe');
                     if (iframe) {
+                        if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'checklist');
+                        if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'checklist');
                         iframe.src = currentChecklistPdfBlobUrl + '#toolbar=1&navpanes=0';
                     }
                 }
@@ -14581,7 +14605,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // SENIOR SERVICE ADVISOR ADAPTIVE AUTO-MAGNIFIER & GLIDE ENGINE (REV-131)
         // =========================================================================
         let isStudioAutoMagnifyEnabled = localStorage.getItem('hontech_studio_auto_magnify') !== 'false'; // Defaults to TRUE (Senior SA Auto-Magnifier Active)
-        let activeStudioZoomScale = 0.88;
+        let activeStudioZoomScale = 1.85;
         let studioMagnifierNaturalResetTimer = null;
 
         const STUDIO_MAGNIFIER_ZONES = {
@@ -14750,7 +14774,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.toggleStudioAutoMagnify = toggleStudioAutoMagnify;
 
         function setStudioManualZoom(level) {
-            activeStudioZoomScale = level > 1.0 ? 0.88 : 0.5;
+            activeStudioZoomScale = level;
             if (level > 1.0) {
                 isStudioAutoMagnifyEnabled = true;
                 localStorage.setItem('hontech_studio_auto_magnify', 'true');
@@ -14767,7 +14791,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             el.style.imageRendering = '-webkit-optimize-contrast';
                             el.style.webkitFontSmoothing = 'antialiased';
                             el.style.transformOrigin = '0 0';
-                            el.style.transform = 'translate(0px, 0px) scale(0.88)';
+                            el.style.transform = `translate(0px, 0px) scale(${level})`;
                         }
                     });
                 }
@@ -14797,7 +14821,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (el) {
                     el.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
                     el.style.transformOrigin = '0 0';
-                    el.style.transform = 'translate(0px, 0px) scale(0.5)';
+                    el.style.transform = 'translate(0px, 0px) scale(1)';
                 }
             });
             const huds = ['f13-field-magnifier-hud', 'f23-field-magnifier-hud', 'billing-field-magnifier-hud', 'checklist-field-magnifier-hud'];
@@ -14814,19 +14838,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // HARDCODED SECTION-LOCK MAGNIFICATION ENGINE (REV-130)
         // =========================================================================
+        // Scale values are real CSS zoom multipliers (1.85 = 185%) applied directly to a normal-sized iframe —
+        // not the fake 0.5/0.88 values previously calibrated against a broken 200%-oversized iframe canvas,
+        // which caused PDFium to render the page as a tiny thumbnail (or fully blank once panned past it).
         const STUDIO_HARDCODED_SECTIONS = {
-            'fit': { yRatio: 0.0, scale: 0.5, label: 'FULL FIT' },
-            'customer': { yRatio: 0.0, scale: 0.88, label: 'CUSTOMER & VEHICLE' },
-            'diagnostic': { yRatio: 0.25, scale: 0.88, label: 'CONCERN & DIAGNOSIS' },
-            'table': { yRatio: 0.50, scale: 0.88, label: 'PARTS & MATERIALS TABLE' },
-            'totals': { yRatio: 0.72, scale: 0.88, label: 'SETTLEMENT TOTALS' },
-            'signatures': { yRatio: 0.85, scale: 0.88, label: 'SIGNATURES & CONFORME' },
-            'claim_stub': { yRatio: 1.00, scale: 0.88, label: 'CUSTOMER CLAIM STUB' },
+            'fit': { yRatio: 0.0, scale: 1.0, label: 'FULL FIT' },
+            'customer': { yRatio: 0.0, scale: 1.85, label: 'CUSTOMER & VEHICLE' },
+            'diagnostic': { yRatio: 0.25, scale: 1.85, label: 'CONCERN & DIAGNOSIS' },
+            'table': { yRatio: 0.50, scale: 1.85, label: 'PARTS & MATERIALS TABLE' },
+            'totals': { yRatio: 0.72, scale: 1.85, label: 'SETTLEMENT TOTALS' },
+            'signatures': { yRatio: 0.85, scale: 1.85, label: 'SIGNATURES & CONFORME' },
+            'claim_stub': { yRatio: 1.00, scale: 1.85, label: 'CUSTOMER CLAIM STUB' },
             // Checklist specific sections
-            'chk_interior': { yRatio: 0.20, scale: 0.88, label: 'INTERIOR INSPECTION' },
-            'chk_underhood': { yRatio: 0.45, scale: 0.88, label: 'UNDERHOOD & FLUIDS' },
-            'chk_underchassis': { yRatio: 0.68, scale: 0.88, label: 'UNDERCHASSIS & BRAKES' },
-            'chk_bottom': { yRatio: 1.00, scale: 0.88, label: 'REMARKS & FUEL GAUGE' }
+            'chk_interior': { yRatio: 0.20, scale: 1.85, label: 'INTERIOR INSPECTION' },
+            'chk_underhood': { yRatio: 0.45, scale: 1.85, label: 'UNDERHOOD & FLUIDS' },
+            'chk_underchassis': { yRatio: 0.68, scale: 1.85, label: 'UNDERCHASSIS & BRAKES' },
+            'chk_bottom': { yRatio: 1.00, scale: 1.85, label: 'REMARKS & FUEL GAUGE' }
         };
         window.STUDIO_HARDCODED_SECTIONS = STUDIO_HARDCODED_SECTIONS;
 
@@ -14846,29 +14873,41 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             else if (sheet === 'billing') iframeId = 'billing-pdf-iframe';
             else if (sheet === 'checklist') iframeId = 'checklist-pdf-iframe';
 
+            // Remember the last requested lock so a PDF reload (which happens async, mid-typing) can
+            // re-apply the correct camera position once the new document has actually finished loading,
+            // instead of leaving whatever position happened to be computed against stale/mid-reload geometry.
+            window.studioLastLockedSection = { key: sectionKey, sheet, iframeId };
+
             const iframe = document.getElementById(iframeId);
             if (!iframe) return;
 
             const section = STUDIO_HARDCODED_SECTIONS[sectionKey] || STUDIO_HARDCODED_SECTIONS['customer'];
-            const scale = section.scale || 0.88;
+            const scale = section.scale || 1.85;
+
+            // Note: the iframe's box is already sized to match the real PDF page's aspect ratio by
+            // applyStudioAspectFit, called BEFORE the PDF was (re)loaded into it (see generateForm13PDF and
+            // its quote/billing/checklist equivalents). Resizing here, after the fact, would not work —
+            // PDFium only fits its render to the iframe's box at load time, so resizing an iframe that has
+            // already finished loading does not make it re-fit; the box must be correct before navigation.
 
             if (sectionKey === 'fit') {
                 iframe.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
                 iframe.style.transformOrigin = '0 0';
-                iframe.style.transform = 'translate(0px, 0px) scale(0.5)';
+                iframe.style.transform = 'translate(0px, 0px) scale(1)';
                 return;
             }
 
             const wrap = iframe.parentElement;
             const containerW = wrap && wrap.clientWidth > 0 ? wrap.clientWidth : 480;
             const containerH = wrap && wrap.clientHeight > 0 ? wrap.clientHeight : 580;
-            const iframeW = (iframe.offsetWidth && iframe.offsetWidth > 0) ? iframe.offsetWidth : (containerW * 2);
-            const iframeH = (iframe.offsetHeight && iframe.offsetHeight > 0) ? iframe.offsetHeight : (containerH * 2);
+            const iframeW = (iframe.offsetWidth && iframe.offsetWidth > 0) ? iframe.offsetWidth : containerW;
+            const iframeH = (iframe.offsetHeight && iframe.offsetHeight > 0) ? iframe.offsetHeight : containerH;
 
             // Exact horizontal center
             const targetX = (containerW - (scale * iframeW)) / 2;
 
-            // Hardcoded calibrated vertical translation: 0 (top) down to maxScrollY (bottom)
+            // Vertical translation: 0 (top of page) down to maxScrollY (bottom of page). Now accurate
+            // because iframeH is the real page height (via applyStudioAspectFit above), not a padded guess.
             const maxScrollY = containerH - (scale * iframeH);
             const targetY = section.yRatio * maxScrollY;
 
@@ -14878,7 +14917,56 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             iframe.style.transformOrigin = '0 0';
             iframe.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px) scale(${scale})`;
         }
+
+        // Resizes the iframe's own CSS box to match the real PDF page's aspect ratio exactly (letterboxed
+        // within the wrap, like object-fit: contain), so PDFium's internal "Fit" rendering fills that box
+        // with zero blank padding. Falls back to leaving the iframe at its current size if the page's real
+        // dimensions aren't known yet (before the first PDF compile has run).
+        function applyStudioAspectFit(iframe, sheet) {
+            const dims = window.studioPageDimensions && window.studioPageDimensions[sheet];
+            const wrap = iframe && iframe.parentElement;
+            if (!dims || !dims.w || !dims.h || !wrap) return;
+            const containerW = wrap.clientWidth;
+            const containerH = wrap.clientHeight;
+            if (!containerW || !containerH) return;
+
+            const pageAspect = dims.w / dims.h;
+            const containerAspect = containerW / containerH;
+            let fitW, fitH;
+            if (containerAspect > pageAspect) {
+                fitH = containerH;
+                fitW = containerH * pageAspect;
+            } else {
+                fitW = containerW;
+                fitH = containerW / pageAspect;
+            }
+            iframe.style.width = `${Math.round(fitW)}px`;
+            iframe.style.height = `${Math.round(fitH)}px`;
+        }
+        window.applyStudioAspectFit = applyStudioAspectFit;
         window.lockStudioSection = lockStudioSection;
+
+        // A PDF reload (iframe.src reassignment) happens asynchronously after the user has already moved on
+        // to a new field. If the camera lock for that new field was computed while the previous reload was
+        // still in flight, it reads stale/mid-reload iframe geometry and lands on a blank or wrong position.
+        // Re-applying the last requested lock once the reload's 'load' event actually fires guarantees the
+        // final camera position always matches the fully-rendered document.
+        function reapplyStudioLockAfterReload(iframe, sheet) {
+            if (!iframe) return;
+            const onLoaded = () => {
+                iframe.removeEventListener('load', onLoaded);
+                requestAnimationFrame(() => {
+                    // The iframe was already resized (via applyStudioAspectFit) before this reload started,
+                    // so by the time 'load' fires here, PDFium has rendered into the correctly-sized box.
+                    const last = window.studioLastLockedSection;
+                    if (isStudioAutoMagnifyEnabled && last && last.sheet === sheet) {
+                        lockStudioSection(last.key, sheet);
+                    }
+                });
+            };
+            iframe.addEventListener('load', onLoaded);
+        }
+        window.reapplyStudioLockAfterReload = reapplyStudioLockAfterReload;
 
         function mapElementToSectionKey(el) {
             if (!el) return 'customer';
