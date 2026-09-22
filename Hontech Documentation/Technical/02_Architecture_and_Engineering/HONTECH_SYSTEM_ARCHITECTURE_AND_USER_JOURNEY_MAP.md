@@ -283,3 +283,6 @@ This blueprint constitutes the **official engineering baseline** for the HonTech
 For the definitive role-by-role execution flow, the 1-button unified registration architecture, the retirement of redundant intake forms, and the complete 10-field alignment matrix between the 2025 RO Excel Studio, the Daily Intakes Monitoring Queue, and Customer Lookup, refer to the companion standard:
 👉 **[`HONTECH_STAFF_PROGRESS_WORKFLOW_AND_FOUNDATIONS.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/HONTECH_STAFF_PROGRESS_WORKFLOW_AND_FOUNDATIONS.md)**.
 
+For the permanent mathematical coordinate matrix, viewport translation formulas, and revival guide for the Service Advisor Auto-Magnifier and Document Camera-Lock engine (shelved in REV-141), refer to the engineering blueprint:
+👉 **[`HONTECH_2025_RO_STUDIO_AUTO_MAGNIFIER_AND_CAMERA_LOCK_BLUEPRINT.md`](file:///c:/xampp/htdocs/CapstoneOfficial2_Development_Part-2-Hontech_Prototype_Process/Hontech%20Documentation/Technical/02_Architecture_and_Engineering/HONTECH_2025_RO_STUDIO_AUTO_MAGNIFIER_AND_CAMERA_LOCK_BLUEPRINT.md)**.
+
