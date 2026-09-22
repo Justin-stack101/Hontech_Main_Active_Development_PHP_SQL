@@ -1,3 +1,86 @@
+## 📅 September 22, 2026 (Master Queue Branch-Lock, Auto-Magnifier Overhaul, PDF Alignment, Full-PDF Views & Branch-Scoped RBAC)
+
+### 📋 Branch-Scoped Data Isolation, Per-Branch Workshop Bay Settings & Role-Gated Module Access (REV-139)
+* **Objective & Context**: Owner previously could see both branches (correct), but Admin could see and edit *every* branch's job data through the same `/api/jobs` endpoint — there was no server-side branch boundary for Admin at all outside the analytics report. The Workshop Bay ceiling was a single global `localStorage` value with no branch awareness and no server persistence, so two branches sharing one browser profile would silently share (or clobber) the same bay count, and it reset per device. Customer Lookup and TV Monitor had no role restriction beyond which nav buttons happened to be rendered. This revision enforces: Admin sees/edits only their own branch; Owner still sees both; Owner has zero functionality in the Workshop Bay module; Admin sets the per-branch bay ceiling; SA's active bay count is server-clamped to it; Customer Lookup is SA-only; TV Monitor is SA/Assistant-only.
+* **Core Changes Made**:
+  - `backend/repositories/JobRepository.php` — `getFilteredJobs()`: Admin is now unconditionally filtered to their own branch (no `?branch=` override possible); Owner/Assistant/SA keep the existing optional branch-filter behavior.
+  - `backend/controllers/JobController.php` — removed `admin` from the branch-ownership exemption list on all 3 job-mutation branch-security checks (create/update/status-change), so an Admin can no longer edit another branch's job.
+  - New `backend/repositories/BayRepository.php` + `backend/controllers/BayController.php` + 3 routes in `backend/index.php` (`GET /api/bays/settings`, `POST /api/bays/settings/limit` admin-only, `POST /api/bays/settings/active` sa-only) — a new `branch_bay_settings` DB table (added via `backend/migration.php`) replaces the old global-only `localStorage` bay ceiling with a real per-branch server setting. Owner is rejected with 403 on every bay endpoint, even though route-level `Auth::requireRole()` already excludes it.
+  - `frontend/js/app.js` — `buildNavbar()`: removed "Workshop Bays" and "TV Monitor" from Owner's nav; removed "Customer Lookup" and "TV Monitor" from Admin's nav; removed "Customer Lookup" from Assistant's nav. `showSection()` gained guards for `'bays'` (blocks Assistant + Owner) and `'lookup'` (SA only); `openTVBroadcastHubModal()` gained a role guard (SA/Assistant only).
+  - `frontend/js/app.js` — `setFacilityMaxBayLimit`/`promptCustomCeilingLimit`/`stepWorkshopBayCount`/`promptCustomBayCount`/`handleWorkshopBayCountChange`/`updateBayControlsVisibility`: removed Owner from every "can configure bays" branch (Admin-only ceiling, SA-only active count); each write now also persists to the new backend endpoint. New `syncBaySettingsFromServer()` refreshes the local cache from the branch's server-side truth on every login, so a different device/SA at the same branch sees the Admin's actual configured ceiling instead of a stale local value.
+  - **Bug fix**: `currentUserBranch` was declared once (`let currentUserBranch = 'Marikina Branch'`) but never reassigned anywhere in the codebase — every logged-in user's frontend branch context silently stayed "Marikina Branch" regardless of their real branch. Fixed across all 4 login paths (`processLogin`, auto-login via `/api/auth/me`, Google sandbox login, MFA verify).
+* **Automated & Manual QA Verification**:
+  - Live-tested via curl with real seeded accounts across both branches: Marikina Admin's `/api/jobs` returned only `Marikina Branch` rows (36), East Admin's returned only `East Branch` rows (2), Owner's returned both (38 combined).
+  - Marikina Admin attempting to `PATCH` an East Branch job's status correctly received `403`.
+  - Owner correctly received `403` on `GET`/`POST /api/bays/settings*`; Assistant correctly received `403`; Marikina Admin and East Admin each set an independent bay ceiling (6 vs 9) with zero cross-branch bleed; SA's active-count request of `99` correctly clamped server-side to the branch's ceiling.
+  - Live headless-browser nav/section verification across all 4 roles confirmed: Owner's nav has no Workshop Bays/Customer Lookup/TV Monitor and all 3 sections/modal are blocked; Admin's nav has Workshop Bays but no Customer Lookup/TV Monitor; Assistant's nav has TV Monitor but no Customer Lookup/Bay Status; SA retains full access to all three.
+  - Full automated suite: 124/124 tests passing (`npm.cmd test`).
+* **Cache Busting**: `js/app.js?v=2.93`.
+* **GitHub Commit**: `d73493c`.
+
+---
+
+### 📋 Full-PDF Enlarge Modal Views for Quotation, Billing & Checklist + Duplicate Modal Cleanup (REV-138)
+* **Objective & Context**: All 4 sheet "Full PDF" buttons were plain `<a href="assets/..._template.pdf" target="_blank">` links to the *static, unfilled* template asset — clicking it never showed the user's actual data. A fully-built fullscreen "enlarge" modal (with live PDF, Download, Print) already existed in the HTML/JS for Job Order only, but nothing ever called it.
+* **Core Changes Made**:
+  - `frontend/index.html` — replaced the 4 static template links with buttons calling `openForm13EnlargeModal()` / `openQuoteEnlargeModal()` / `openBillingEnlargeModal()` / `openChecklistEnlargeModal()`; added 3 new fullscreen modals (`modal-f23-enlarge`, `modal-billing-enlarge`, `modal-checklist-enlarge`) mirroring the existing Job Order one.
+  - `frontend/js/app.js` — added the 3 new open/close function pairs; each `open*EnlargeModal()` now regenerates the PDF first (`await generate*PDF(false)`) so the enlarged view always reflects the latest typed data, not a stale blob; generalized the ESC-to-close handler to cover all 4 modals.
+  - Discovered and removed an accidental full duplicate of ~150 lines of modal HTML (the enlarge modal, the audit-history modal, and the edit-reason-prompt modal each appeared twice verbatim with clashing `id`s) while adding the new modals in that same region of `frontend/index.html`.
+* **Automated & Manual QA Verification**:
+  - Live headless-browser test opened all 4 enlarge modals in sequence and confirmed each iframe loaded a real `blob:` PDF (not `about:blank`), and confirmed every previously-duplicated `id` now appears exactly once in the DOM.
+* **Cache Busting**: `js/app.js?v=2.92`.
+* **GitHub Commit**: `6b398d0`.
+
+---
+
+### 📋 Job Order PDF Field & Signature Alignment Fixes (REV-137)
+* **Objective & Context**: User-reported misaligned PDF fields matched screenshots exactly: the Customer Details block was drawn one full row too high (the Name value floated above the "Name" label entirely, overlapping the header divider, and every label below it showed the *next* field's value instead of its own). Separately, Parts/Materials Amount cells and several signature lines showed doubled/overlapping text.
+* **Core Changes Made**:
+  - `frontend/js/app.js` — `compileForm13PDFBytes()`: shifted the 4-row Customer Details block (Name/Address/Contact/Email × Year-Model/Plate/KM/Intake-Date/Engine/Promise-Date/Chassis/Color) down by one row (`723.3→715.2`, `715.2→707.1`, `707.1→698.9`, and a previously-missing 5th row at `698.9→690.8`), so each value now lands on its own label's line.
+  - Added targeted `whiteOut()` rectangles before drawing Parts/Materials row amounts — the template pre-prints a `"0.00"` placeholder in every Amount cell that was peeking out from under real totals once a row had data.
+  - Added `whiteOut()` before the Diagnosed-by/Assessed-by (mechanic/assessor) and Concurred-by (manager) signature draws — the template pre-prints the role label directly under these lines, which doubled up visibly with the drawn value whenever it defaulted to placeholder text identical to the label.
+  - Removed an erroneous `drawTextCenter('Chief, Auto Mechanic', ...)` call with no backing input field that was redundantly duplicating the template's own printed "Chief, Auto Mechanic / Authorized AM" label.
+* **Automated & Manual QA Verification**:
+  - Diagnosed by extracting the actual PDF content stream (`Tm`/`Tj` operators) via `pdf-lib` rather than trusting screenshots, after discovering an earlier headless-browser verification pass had been serving a cached pre-fix `app.js` — confirmed with a fresh, cache-disabled browser profile that all corrected Y-coordinates and whiteout rectangles are present in the generated PDF.
+  - Updated `AUT-FRONT-94` to assert the corrected `715.2` Y-coordinates instead of the old `723.3`.
+  - Full suite: 103/103 tests passing.
+* **Cache Busting**: `js/app.js?v=2.91`.
+* **GitHub Commit**: `e96b1a3`.
+
+---
+
+### 📋 PDF Auto-Magnifier Typing Freeze Fix (REV-136)
+* **Objective & Context**: User reported that typing into a job-order field caused the zoomed document preview to snap back to normal size and stay there. Root cause: the live-preview feature fully reloaded the PDF iframe (`iframe.src = ...`) on every ~350–600ms typing pause; reloading a PDF always resets the browser's built-in viewer to default zoom before the app's JS could re-lock it, and rapid successive reloads while still typing made that re-lock unreliable.
+* **Core Changes Made**:
+  - `frontend/js/app.js` — `onReactiveJobOrderInput()` and the Quotation/Billing/Checklist field input handlers no longer trigger a PDF reload on the `'input'` event (only on `'change'`/`'blur'`, i.e. when the field is committed or loses focus); the zoom lock itself (`applyStudioFieldMagnification`) still runs synchronously on every keystroke with no reload involved, so it stays instantly responsive. Added an equivalent `focusout`-based refresh for the delegated Parts/Materials/Checklist table-row containers, which previously had no other trigger once their `input` reload was removed.
+* **Automated & Manual QA Verification**:
+  - Live headless-browser test typed a full sentence character-by-character into the Diagnostic field, sampling the iframe's `transform` style 9 times during typing — it stayed at `scale(1.85)` the entire time (never reverted to `scale(1)`), and remained correctly locked after the field lost focus and the preview reloaded.
+  - Updated `AUT-FRONT-99` to accept the new `e.type !== 'input'` guard pattern.
+  - Full suite: 103/103 tests passing.
+* **Cache Busting**: `js/app.js?v=2.90`.
+* **GitHub Commit**: `4e45274`.
+
+---
+
+### 📋 Auto-Magnifier Camera-Lock Overhaul & Master Queue Branch-Lock (REV-135)
+* **Objective & Context**: Two bundled fixes addressing the reported bug where the magnifier only targeted the top-left of the document instead of the whole page, plus a Master Queue table hardening pass done in the same work session.
+* **Core Changes Made — Auto-magnifier camera-lock overhaul**:
+  - Root cause was a "200% oversized iframe + CSS 0.5 downscale" super-sampling trick that made PDFium render the page as a tiny thumbnail with unpredictable letterboxing, so pixel-based pan math overshot into blank/black space for lower sections (Signatures, Claim Stub).
+  - Replaced it with normal-sized iframes (`w-full h-full`) and real CSS zoom multipliers (`scale(1.85)` instead of the fake `0.88` calibrated against the broken canvas).
+  - Added `applyStudioAspectFit()`, which sizes each iframe's box to the real PDF page's aspect ratio (read from `pdf-lib` at compile time) before every (re)load, eliminating the unmeasurable letterboxing padding.
+  - Added `reapplyStudioLockAfterReload()` to re-apply the last requested camera lock once an async PDF reload's `'load'` event actually fires, instead of computing the lock against stale/mid-reload geometry.
+* **Core Changes Made — Master Queue & SLA reporting**:
+  - Branch is now fixed once an Assistant creates a booking via the Online Booking Form's Target Branch field; removed the per-row branch-reassignment dropdown from the Master Queue table (now a read-only badge).
+  - Restricted SLA delay-report filing to SA (and Owner/Admin) only; Assistant no longer has that ability.
+  - Simplified the Assistant's Online Booking Form: hid the Destination Table toggle entirely (Assistant only ever dispatches to the Booking Module) and widened the Target Branch field to fill the row.
+* **Automated & Manual QA Verification**:
+  - Updated `AUT-FRONT-65`, `AUT-FRONT-78`, `AUT-FRONT-100` through `AUT-FRONT-103` to match the new assertions.
+  - Full suite: 103/103 tests passing.
+* **Cache Busting**: `js/app.js?v=2.89`.
+* **GitHub Commit**: `4a2cf22`.
+
+---
+
 ## 📅 September 22, 2026 (Account Recovery Security Hardening, Booking Form Fixes & Security Documentation Tracker)
 
 ### 📋 Security Implementation Status Tracker & Leaked SMTP Secret Redaction (REV-134)
