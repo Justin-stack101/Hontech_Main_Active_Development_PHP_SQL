@@ -13142,8 +13142,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (e && e.target && typeof applyStudioFieldMagnification === 'function' && e.type !== 'blur') {
                     applyStudioFieldMagnification(e.target);
                 }
-                const isImmediate = e && (e.type === 'blur' || e.type === 'change');
-                scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
+                // Blur/change no longer force a 0ms PDF reload — an instant reload here races with the next
+                // field's focus-triggered camera lock (reading iframe geometry mid-reload), which is what caused
+                // the magnifier to intermittently show a blank/stuck preview when tabbing between fields.
+                //
+                // The PDF preview is frozen entirely during 'input' (i.e. while a field is still focused and
+                // being typed into): reloading the iframe src on every keystroke pause forces the browser's
+                // PDF viewer to reset to its default zoom before the lock can be re-applied, which is what made
+                // the magnifier visibly snap back to normal size while typing. The preview simply catches up
+                // to the latest text once the field is committed via 'change' or loses focus via 'blur'.
+                if (e && e.type !== 'input') {
+                    const isImmediate = e.type === 'change';
+                    scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
+                }
             };
             window.onReactiveJobOrderInput = onReactiveJobOrderInput;
 
@@ -13179,11 +13190,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f23Bound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(600); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncQuoteFieldsToJobOrder();
-                        scheduleFormStudioPdfRefresh(0);
+                        // Debounced, not instant — an immediate reload here races with the next field's
+                        // focus-triggered camera lock and causes the magnifier to show a blank/stuck preview.
+                        scheduleFormStudioPdfRefresh(350);
                     });
                     el.dataset.f23Bound = 'true';
                 }
@@ -13199,11 +13212,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.billBound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(600); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncBillingToJobOrder(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncBillingToJobOrder();
-                        scheduleFormStudioPdfRefresh(0);
+                        scheduleFormStudioPdfRefresh(350);
                     });
                     el.dataset.billBound = 'true';
                 }
@@ -13217,11 +13230,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const el = document.getElementById(id);
                 if (el && !el.dataset.chkBound) {
                     el.addEventListener('focus', () => { if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
-                    el.addEventListener('input', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(600); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
+                    el.addEventListener('input', () => { syncChecklistCanvas(); if (typeof applyStudioFieldMagnification === 'function') applyStudioFieldMagnification(el); });
                     el.addEventListener('change', () => { syncChecklistCanvas(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncChecklistCanvas();
-                        scheduleFormStudioPdfRefresh(0);
+                        scheduleFormStudioPdfRefresh(350);
                     });
                     el.dataset.chkBound = 'true';
                 }
@@ -13240,7 +13253,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         if (typeof applyStudioFieldMagnification === 'function') {
                             applyStudioFieldMagnification(e.target || defaultZoneKey);
                         }
-                        scheduleFormStudioPdfRefresh(600);
+                        // No PDF reload while actively typing a table cell — see onReactiveJobOrderInput
+                        // for why: reloading the iframe resets its zoom before the lock can reapply. The
+                        // preview catches up on focusout below instead.
+                    });
+                    container.addEventListener('focusout', () => {
+                        scheduleFormStudioPdfRefresh(350);
                     });
                     container.addEventListener('click', (e) => {
                         if (typeof applyStudioFieldMagnification === 'function') {
