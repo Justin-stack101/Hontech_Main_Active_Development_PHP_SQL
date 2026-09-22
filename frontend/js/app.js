@@ -13802,21 +13802,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextCenter(intakeDate, 505, 767.6, 7.5, true, darkInk);
 
             // 2. Customer Details
-            drawTextFit(name, 134, 723.3, 140, 7.5, false);
-            drawTextFit(model, 348, 723.3, 72, 7.5, false, darkInk);
-            drawTextFit(plate, 472, 723.3, 48, 7.5, false);
+            // Row y-values were one full row (~8.1pt) too high, landing each value above its label line —
+            // Name floated above the header divider entirely, and every label below it showed the NEXT
+            // field's value (Name showed Address, Address showed Contact, etc). Shifted the whole 4-row
+            // block down by one row so each value sits on its own label's line, and added the missing 5th
+            // row position (previously absent) for Email/Chassis/Color.
+            drawTextFit(name, 134, 715.2, 140, 7.5, false);
+            drawTextFit(model, 348, 715.2, 72, 7.5, false, darkInk);
+            drawTextFit(plate, 472, 715.2, 48, 7.5, false);
 
-            drawTextFit(address, 134, 715.2, 140, 7, false);
-            drawTextFit(km, 348, 715.2, 72, 7.5, false);
-            drawTextFit(intakeDate, 472, 715.2, 48, 7, false);
+            drawTextFit(address, 134, 707.1, 140, 7, false);
+            drawTextFit(km, 348, 707.1, 72, 7.5, false);
+            drawTextFit(intakeDate, 472, 707.1, 48, 7, false);
 
-            drawTextFit(contact, 134, 707.1, 140, 7.5, false);
-            drawTextFit(engine, 348, 707.1, 72, 7, false);
-            drawTextFit(promiseDate, 472, 707.1, 48, 7, false);
+            drawTextFit(contact, 134, 698.9, 140, 7.5, false);
+            drawTextFit(engine, 348, 698.9, 72, 7, false);
+            drawTextFit(promiseDate, 472, 698.9, 48, 7, false);
 
-            drawTextFit(email, 136, 698.9, 138, 7, false);
-            drawTextFit(chassis, 348, 698.9, 72, 7, false);
-            drawTextFit(color, 475, 698.9, 46, 7, false, darkInk);
+            drawTextFit(email, 136, 690.8, 138, 7, false);
+            drawTextFit(chassis, 348, 690.8, 72, 7, false);
+            drawTextFit(color, 475, 690.8, 46, 7, false, darkInk);
 
             // 3. Concern Box
             if (concern) {
@@ -13852,6 +13857,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextFit((p.desc || ''), 190.5, ry, 48, 6.5);
                 drawTextCenter(String(qty), 245, ry, 6.5);
                 drawTextRight(price.toFixed(2), 293, ry, 6.5);
+                // The template pre-prints a "0.00" placeholder in every Amount cell; it sits slightly lower
+                // than our text baseline and peeks out from under/below the real amount once a row has data
+                // (e.g. "450.00" over "0.00"). Cover just the cell interior (inset from the grid lines) before
+                // drawing the real total so the placeholder doesn't show through.
+                whiteOut(297, ry - 1.5, 54, 7.5);
                 drawTextRight(amt.toFixed(2), 350, ry, 6.5, false);
             });
 
@@ -13866,6 +13876,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextFit((m.desc || ''), 355.5, ry, 52, 6.5);
                 drawTextCenter(String(qty), 415, ry, 6.5);
                 drawTextRight(price.toFixed(2), 471, ry, 6.5);
+                whiteOut(474, ry - 1.5, 47, 7.5);
                 drawTextRight(amt.toFixed(2), 520, ry, 6.5, false);
             });
 
@@ -13884,13 +13895,23 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
 
             // Signatures
+            // The template pre-prints the role placeholders ("Auto Mechanic" / "Parts/Materials Controller")
+            // directly under these signature lines; without a whiteout first, the real name/default value we
+            // draw on top lands at nearly the same spot and doubles up with the printed label (most visible
+            // when the field is left blank, since our fallback text is literally the same string).
+            whiteOut(150, 278.8, 70, 8);
+            whiteOut(428, 278.8, 70, 8);
             drawTextCenter(mechanic, 184, 279.8, 7.2, false);
             drawTextCenter(assessor, 462, 279.8, 7.2, false);
 
+            // Certificate of Completion signature block. The "Approved by" slot (413, 206) has no backing
+            // input field — it used to redraw the literal string 'Chief, Auto Mechanic', which just duplicated
+            // the template's own printed role label underneath it ("Chief, Auto Mechanic / Authorized AM"),
+            // so it's left blank for a physical signature instead of removed outright.
             whiteOut(150, 204, 70, 8);
             drawTextCenter(sa, 184, 206, 7.2, false);
-            drawTextCenter('Chief, Auto Mechanic', 413, 206, 7.2, false);
             drawTextCenter(name, 184, 169.5, 7.2, false);
+            whiteOut(378, 167.5, 70, 8);
             drawTextCenter(manager, 413, 169.5, 7.2, false);
 
             // 7. Filipino Claim stub
