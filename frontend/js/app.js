@@ -12985,6 +12985,117 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.toggleStudioPDFPreview = toggleStudioPDFPreview;
 
+        let isStudioPDFMaximized = false;
+        function toggleStudioMaximizedPDF() {
+            isStudioPDFMaximized = !isStudioPDFMaximized;
+            const sheets = [
+                { editor: 'form13-editor-pane', canvas: 'form13-canvas-pane', iframe: 'f13-pdf-iframe', key: 'form13' },
+                { editor: 'form23-editor-pane', canvas: 'form23-canvas-pane', iframe: 'f23-pdf-iframe', key: 'quote' },
+                { editor: 'billing-editor-pane', canvas: 'billing-canvas-pane', iframe: 'billing-pdf-iframe', key: 'billing' },
+                { editor: 'checklist-editor-pane', canvas: 'checklist-canvas-pane', iframe: 'checklist-pdf-iframe', key: 'checklist' }
+            ];
+            sheets.forEach(s => {
+                const ed = document.getElementById(s.editor);
+                const cv = document.getElementById(s.canvas);
+                if (ed) {
+                    if (isStudioPDFMaximized) {
+                        ed.classList.add('hidden');
+                    } else {
+                        ed.classList.remove('hidden');
+                    }
+                }
+                if (cv) {
+                    if (isStudioPDFMaximized) {
+                        cv.classList.remove('xl:col-span-5');
+                        cv.classList.add('xl:col-span-12');
+                    } else {
+                        cv.classList.remove('xl:col-span-12');
+                        cv.classList.add('xl:col-span-5');
+                    }
+                }
+            });
+
+            // Update top bar button
+            const topBtn = document.getElementById('btn-maximize-studio-pdf');
+            const topLabel = document.getElementById('label-maximize-studio-pdf');
+            if (topLabel) {
+                topLabel.innerText = isStudioPDFMaximized ? 'Normal View' : 'Maximize PDF';
+            }
+            if (topBtn) {
+                const icon = topBtn.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', isStudioPDFMaximized ? 'minimize-2' : 'maximize-2');
+                }
+                if (isStudioPDFMaximized) {
+                    topBtn.classList.add('bg-red-50', 'text-red-700', 'border-red-300');
+                    topBtn.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+                } else {
+                    topBtn.classList.remove('bg-red-50', 'text-red-700', 'border-red-300');
+                    topBtn.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+                }
+            }
+
+            // Update canvas toolbar buttons
+            document.querySelectorAll('.btn-canvas-maximize-pdf').forEach(btn => {
+                const lbl = btn.querySelector('.label-canvas-maximize-pdf');
+                if (lbl) lbl.innerText = isStudioPDFMaximized ? 'Normal View' : 'Maximize';
+                const icon = btn.querySelector('i');
+                if (icon) icon.setAttribute('data-lucide', isStudioPDFMaximized ? 'minimize-2' : 'maximize-2');
+                if (isStudioPDFMaximized) {
+                    btn.classList.add('bg-red-50', 'text-red-700', 'border-red-300');
+                    btn.classList.remove('bg-slate-100', 'text-slate-800', 'border-slate-300');
+                } else {
+                    btn.classList.remove('bg-red-50', 'text-red-700', 'border-red-300');
+                    btn.classList.add('bg-slate-100', 'text-slate-800', 'border-slate-300');
+                }
+            });
+
+            // Re-fit active iframe aspect ratio
+            const activeSheet = typeof getActiveStudioSheet === 'function' ? getActiveStudioSheet() : 'form13';
+            let activeIframeId = 'f13-pdf-iframe';
+            if (activeSheet === 'quote' || activeSheet === 'f23') activeIframeId = 'f23-pdf-iframe';
+            else if (activeSheet === 'billing') activeIframeId = 'billing-pdf-iframe';
+            else if (activeSheet === 'checklist') activeIframeId = 'checklist-pdf-iframe';
+            const activeIframe = document.getElementById(activeIframeId);
+            if (activeIframe && typeof applyStudioAspectFit === 'function') {
+                applyStudioAspectFit(activeIframe, activeSheet);
+            }
+
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+            showSystemToast(
+                isStudioPDFMaximized ? 'PDF canvas expanded to full view (forms hidden).' : 'Normal side-by-side view restored.',
+                'info',
+                'Studio Layout'
+            );
+        }
+        window.toggleStudioMaximizedPDF = toggleStudioMaximizedPDF;
+
+        async function openActivePDFInNewTab(sheet = null) {
+            const targetSheet = sheet || (typeof getActiveStudioSheet === 'function' ? getActiveStudioSheet() : 'form13');
+            let url = null;
+            if (targetSheet === 'form13') {
+                if (typeof generateForm13PDF === 'function') await generateForm13PDF(false);
+                url = currentForm13PdfBlobUrl;
+            } else if (targetSheet === 'quote' || targetSheet === 'f23') {
+                if (typeof generateQuotePDF === 'function') await generateQuotePDF(false);
+                url = currentQuotePdfBlobUrl;
+            } else if (targetSheet === 'billing') {
+                if (typeof generateBillingPDF === 'function') await generateBillingPDF(false);
+                url = currentBillingPdfBlobUrl;
+            } else if (targetSheet === 'checklist') {
+                if (typeof generateChecklistPDF === 'function') await generateChecklistPDF(false);
+                url = currentChecklistPdfBlobUrl;
+            }
+
+            if (url) {
+                window.open(url, '_blank');
+                showSystemToast('Opened live PDF in a separate browser tab.', 'success', 'Full PDF');
+            } else {
+                showSystemToast('PDF is currently compiling. Please try again in a moment.', 'info', 'Compiling');
+            }
+        }
+        window.openActivePDFInNewTab = openActivePDFInNewTab;
+
         async function openForm13EnlargeModal() {
             const modal = document.getElementById('modal-f13-enlarge');
             const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');

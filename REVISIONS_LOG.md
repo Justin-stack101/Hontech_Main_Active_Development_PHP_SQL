@@ -1,5 +1,33 @@
 ## 📅 September 22, 2026 (Master Queue Branch-Lock, Auto-Magnifier Overhaul, PDF Alignment, Full-PDF Views & Branch-Scoped RBAC)
 
+### 📋 2025 RO Studio Maximized PDF View, Live Full PDF In New Tab & Decommission Section Lock Bars (REV-140)
+* **Objective & Context**: Address 3 explicit user-requested enhancements to the 2025 RO Studio:
+  1. Remove the section-lock navigation pill strip (`Lock: Fit, Customer, Scope, Parts Table, Signatures, Claim Stub`) from the PDF preview panes across all 4 worksheets (`Job_Order`, `Quotation_No`, `Billing_No`, `CheckList_Result`) to eliminate visual clutter and expand vertical viewport height.
+  2. Implement an ergonomic "Maximize PDF" toggle in the sticky top tab bar and canvas toolbars that collapses the left-hand form editor panes (`xl:col-span-7`) and expands the PDF preview canvas to full 12-column width (`xl:col-span-12`) with high vertical clearance, with seamless 1-click restore to normal side-by-side editing.
+  3. Ensure that when users access the Full PDF preview (both in fullscreen enlarge modals and via direct New Tab buttons), it compiles and displays dynamic live in-memory form data with full customer/vehicle dossier, line items, and signatures rather than a static blank template.
+* **Core Changes Made**:
+  - `frontend/index.html`:
+    - Added `#btn-maximize-studio-pdf` to the sticky top tab bar (`#form-top-tab-bar`).
+    - Added `.btn-canvas-maximize-pdf` action buttons to the preview canvas toolbars across all 4 sheets.
+    - Added `New Tab` buttons (`openActivePDFInNewTab()`) across all 4 fullscreen enlarge modals (`modal-f13-enlarge`, `modal-f23-enlarge`, `modal-billing-enlarge`, `modal-checklist-enlarge`).
+    - Decommissioned and removed obsolete `lockStudioSection(...)` quick-lock pill strips across all 4 worksheets.
+    - Incremented cache buster to `v=2.94`.
+  - `frontend/js/app.js`:
+    - Implemented `toggleStudioMaximizedPDF()`: toggles `hidden` on editor panes (`form13-editor-pane`, etc.), expands canvas panes to `xl:col-span-12`, updates button labels/icons (`Maximize PDF` ↔ `Normal View`), calls `applyStudioAspectFit()`, and displays intuitive toast feedback.
+    - Implemented `openActivePDFInNewTab()`: dynamically compiles fresh PDF bytes via `generate*PDF(false)` with live form inputs, generates an in-memory Blob URL, and opens it directly in a new browser tab with native zoom and print controls.
+    - Exported both functions onto `window` scope.
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Updated Suite 49 assertion in `AUT-FRONT-103` to verify backward compatibility of `lockStudioSection`.
+    - Added `AUT-FRONT-105` test case verifying maximized PDF toggle, live full PDF new tab viewer, removal of lock pills, and cache buster `v=2.94`.
+    - Batch-updated cache buster assertions to accept `v=2.94`.
+* **Automated & Manual QA Verification**:
+  - 100% automated test suite passing: 124/124 tests across 60 suites (`npm.cmd test`).
+  - Synced `SA-16` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.94`.
+* **GitHub Commit**: Pending (REV-140).
+
+---
+
 ### 📋 Branch-Scoped Data Isolation, Per-Branch Workshop Bay Settings & Role-Gated Module Access (REV-139)
 * **Objective & Context**: Owner previously could see both branches (correct), but Admin could see and edit *every* branch's job data through the same `/api/jobs` endpoint — there was no server-side branch boundary for Admin at all outside the analytics report. The Workshop Bay ceiling was a single global `localStorage` value with no branch awareness and no server persistence, so two branches sharing one browser profile would silently share (or clobber) the same bay count, and it reset per device. Customer Lookup and TV Monitor had no role restriction beyond which nav buttons happened to be rendered. This revision enforces: Admin sees/edits only their own branch; Owner still sees both; Owner has zero functionality in the Workshop Bay module; Admin sets the per-branch bay ceiling; SA's active bay count is server-clamped to it; Customer Lookup is SA-only; TV Monitor is SA/Assistant-only.
 * **Core Changes Made**:
