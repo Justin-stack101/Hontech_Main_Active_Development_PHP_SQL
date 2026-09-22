@@ -1,3 +1,48 @@
+## 📅 September 22, 2026 (Account Recovery Security Hardening, Booking Form Fixes & Security Documentation Tracker)
+
+### 📋 Security Implementation Status Tracker & Leaked SMTP Secret Redaction (REV-134)
+* **Ground-Truth Security Tracker (`Hontech Documentation/Technical/02_Architecture_and_Engineering/HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md`)**:
+  - Added a new tracker distinguishing what is actually implemented in code (✅), partially implemented (🟡), or still only planned (❌) across account recovery, Google Sign-In, MFA, sessions, and secrets hygiene — the existing `HONTECH_SECURITY_AND_ACCOUNT_RECOVERY_MASTER.md` describes target architecture only and had drifted from the real codebase.
+  - Recorded 3 open decisions for the project owner: self-service reset scope by role, revoking the leaked Gmail app password, and Google ID-token verification timing.
+  - Linked from `HONTECH_SECURITY_AND_ACCOUNT_RECOVERY_MASTER.md` with an explicit drift warning, and annotated `HONTECH_STAGE_GATE_PRODUCTION_ROADMAP_AND_SANDBOXING_STANDARD.md` and `Vercel_and_Supabase_Cloud_Architecture/README.md` with current phase status (cloud repo not yet created).
+* **Secrets Hygiene**:
+  - Redacted a real Gmail SMTP app password that had been committed in plaintext across 4 files under `Hontech Documentation/google auth_september/` (introduced in commit `a1641b8`), replacing it with a placeholder. The value remains in git history and requires revocation at `myaccount.google.com/apppasswords`.
+
+---
+
+### 📋 Password-Reset Account-Takeover Fix & Developer Route Lockdown (REV-133)
+* **Critical Fix (`backend/controllers/PasswordResetController.php`)**:
+  - Closed an account-takeover hole where `forgot-password` returned the reset token and OTP directly in the API response, and `reset-password` accepted the OTP alone with no email binding — anyone who knew a staff email could take over that account. Both endpoints previously didn't even function (they called `UserRepository` methods that no longer existed).
+  - Rewrote the flow: a 6-digit code is emailed only, never returned by the API; reset requires email + code together; identical generic response for known/unknown/inactive/rate-limited accounts to prevent email enumeration.
+* **Cryptography & Storage (`backend/utils/SecurityUtils.php`, `backend/repositories/UserRepository.php`)**:
+  - Added `generateNumericCode()` (`random_int`, not `mt_rand`), `hashOneTimeCode()` (HMAC-SHA256 keyed with `JWT_SECRET`, bound to the account email), and `validatePasswordStrength()` (min 10 chars, needs a letter + a number, rejects email-derived and common passwords).
+  - Replaced `findByResetToken()`/`findByResetOtp()` (lookup by secret alone) with `saveResetCodeHash()`/`incrementResetAttempts()`/`clearResetCode()`/`updatePasswordAndClearResetCode()`, all keyed by user id after an email lookup.
+  - Codes expire after 15 minutes, are single-use, lock after 5 wrong guesses, and have a 60s resend cooldown; comparison uses `hash_equals()`.
+* **Schema (`database.sql`, `backend/migration.php`)**:
+  - Added `reset_otp` (64-char hash), `reset_token_expires_at`, `reset_attempts` columns; migration clears any legacy plaintext codes on upgrade.
+* **Developer Sandbox Lockdown (`backend/index.php`)**:
+  - `/api/auth/developer/*` (emailed-code viewer, DB reset/seed, audit log clear) now 404s unless `APP_ENV=development`. Previously reachable in any environment.
+* **Automated Unit Testing & Quality Assurance (`tests/security/recovery_and_secrets.test.js`)**:
+  - New 6-test regression suite: fails the build if a reset secret is ever returned in an API response, if lookup-by-code-alone reappears, or if an SMTP/Google secret gets committed to the repo.
+  - All 124 automated unit tests pass with 100% compliance across 60 suites (`npm.cmd test`).
+  - Synced QA testing rows `SEC-62` and `SEC-63` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Not yet done**: Google Sign-In still trusts a client-submitted email with no server-side ID token verification; MFA verify still accepts a bare `userId` with no password step or attempt throttling; login has no rate limiting. Tracked in `HONTECH_SECURITY_IMPLEMENTATION_STATUS_AND_NEXT_STEPS.md`.
+
+---
+
+### 📋 Assistant Online Booking Form Field Alignment & Multi-Day Test Data Seeder (REV-132)
+* **Assistant Online Booking Form (`frontend/index.html`, `frontend/js/app.js`)**:
+  - Fixed inconsistent input heights across the Destination Table, Target Branch, appointment time, lane type, and Confirmed Booking fields.
+  - Kept the destination toggle buttons (`Booking Module` / `Daily Intakes`) a consistent size across state changes instead of reflowing on click.
+* **Multi-Day Test Data Seeder (`backend/seed_test_days.php`)**:
+  - Seeds 26 realistic jobs across 09/20–09/22 (walk-ins, online bookings, carry-overs, completions) for exercising the claim stub and Booking Module features.
+  - Scoped entirely to `job_id LIKE 'TST-%'` rows; safe to re-run or clean up with `--clean`.
+* **Automated Unit Testing & Quality Assurance**:
+  - Synced QA testing row `AST-61` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Incremented client script cache buster in `frontend/index.html` to `v=2.88`.
+
+---
+
 ## 📅 September 22, 2026 (High-Definition Vector PDF Templates & Senior SA Auto-Magnifier Active Engine)
 
 ### 📋 High-Definition Vector PDF Templates & Senior SA Auto-Magnifier Overhaul (REV-131 / v5.131)
