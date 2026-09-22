@@ -127,6 +127,18 @@ try {
         echo "SUCCESS: Seeded Branch B.\n";
     }
 
+    // 5. Create branch_bay_settings table (per-branch Workshop Bay ceiling, Admin-configured only;
+    // Owner has no functionality in this module and active_bay_count is the SA's operational choice
+    // within the Admin-set max_bay_limit ceiling for their own branch)
+    $db->exec("CREATE TABLE IF NOT EXISTS `branch_bay_settings` (
+        `branch` VARCHAR(100) NOT NULL PRIMARY KEY,
+        `max_bay_limit` INT NOT NULL DEFAULT 6,
+        `active_bay_count` INT NOT NULL DEFAULT 6,
+        `updated_by` INT NULL DEFAULT NULL,
+        `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+    echo "SUCCESS: `branch_bay_settings` table verified/created.\n";
+
     echo "SUCCESS: Migration completed successfully!\n";
 
 } catch (Exception $e) {

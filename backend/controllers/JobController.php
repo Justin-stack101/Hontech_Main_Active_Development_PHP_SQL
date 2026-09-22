@@ -265,8 +265,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches)
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants and SAs can manage Online bookings across branches).
+            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
+            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -434,8 +436,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches)
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants and SAs can manage Online bookings across branches).
+            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
+            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -568,8 +572,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches)
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants and SAs can manage Online bookings across branches).
+            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
+            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;

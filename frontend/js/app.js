@@ -1523,6 +1523,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (user) {
                         currentUserName = user.name;
                         currentUserEmail = user.email || 'user@hontech.com';
+                        currentUserBranch = user.branch || 'Marikina Branch';
                         await handleLogin(user.role);
                     }
                 } catch (e) {
@@ -1630,6 +1631,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 currentUserName = res.name;
                 currentUserEmail = res.email || 'user@hontech.com';
+                currentUserBranch = res.branch || 'Marikina Branch';
                 await handleLogin(res.role);
                 showSystemToast('Logged in successfully.', 'success', 'Access Granted');
             } catch (err) {
@@ -1708,6 +1710,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             currentUserRole = role;
             document.getElementById('auth-view').classList.add('hidden');
             document.getElementById('app-shell').classList.remove('hidden');
+
+            // Pull this branch's Admin-configured bay ceiling before the nav/sections render, so the
+            // Bay Status module reflects the server's branch-scoped truth rather than stale local values.
+            if (typeof syncBaySettingsFromServer === 'function') {
+                await syncBaySettingsFromServer();
+            }
 
             await loadData();
             if (role === 'owner' || role === 'admin') {
@@ -1829,8 +1837,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
             }
             if (document.getElementById('settings-bay-config-container')) {
-                // Both Owner and Administrator have authority to configure facility max capacity ceiling
-                document.getElementById('settings-bay-config-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
+                // Owner has no functionality in the Workshop Bay module — only Admin configures the
+                // per-branch bay ceiling.
+                document.getElementById('settings-bay-config-container').style.display = isAdmin ? 'block' : 'none';
             }
             updateBayControlsVisibility(role);
 
@@ -1842,18 +1851,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
-                // Owner: Analytics, Workshop Bays (Authority Configuration), Staff Access, Records, TV Monitor
+                // Owner: Analytics, Staff Access, Records. Owner has no functionality in the Workshop
+                // Bay module (Admin-only, per-branch), and no TV Monitor access (SA/Assistant only).
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
-                navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
-                navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
-                sidebarNavHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-800 flex items-center gap-3 text-slate-300 text-[13.5px] cursor-pointer"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1865,19 +1871,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.remove('hidden');
                 }
 
+                // Admin: Analytics (own branch only), Workshop Bays (sets the branch's bay ceiling),
+                // Staff Access, Records. No Customer Lookup (SA-only) and no TV Monitor (SA/Assistant only).
                 navHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4"></i> Analytics</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Workshop Bays</button>`;
-                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('staff', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Staff Access</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4"></i> Records</button>`;
-                navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('dashboard', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="pie-chart" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Analytics</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Workshop Bays</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('staff', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="users" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Staff Access</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="database" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Records</span></button>`;
-                sidebarNavHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-800 flex items-center gap-3 text-slate-300 text-[13.5px] cursor-pointer"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 defaultView = 'dashboard';
             }
@@ -1889,15 +1893,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Assistant Order: 1. Online Bookings, 2. Master Queue, 3. Customer Lookup, 4. TV Monitor (Bay Status excluded per specification)
+                // Assistant Order: 1. Online Bookings, 2. Master Queue, 3. TV Monitor (Bay Status excluded
+                // per specification; Customer Lookup is now SA-only, not shown here)
                 navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
-                navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Master Queue</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-800 flex items-center gap-3 text-slate-300 text-[13.5px] cursor-pointer"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
 
                 setupIntakeForm('assistant');
@@ -1979,6 +1982,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 currentUserRole = '';
                 currentUserName = '';
                 currentUserEmail = '';
+                currentUserBranch = 'Marikina Branch';
                 document.getElementById('login-pass').value = '';
                 localStorage.removeItem('hontech-active-section');
 
@@ -2237,16 +2241,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         function showSection(id, btnElement) {
-            // Guard: Assistant does not have Bay Status reader permissions
-            if (id === 'bays' && currentUserRole === 'assistant') {
-                showSystemToast('Access Restricted: Assistant role does not have Bay Status reader access.', 'warning', 'Permission Denied');
-                showSection('intake');
+            // Role-appropriate fallback section to redirect to when a guard below blocks access,
+            // since 'intake' isn't reachable for every role (e.g. Owner/Admin have no Online Bookings nav).
+            const fallbackSectionForRole = () => {
+                if (currentUserRole === 'owner' || currentUserRole === 'admin') return 'dashboard';
+                if (currentUserRole === 'sa') return 'form13';
+                return 'intake';
+            };
+
+            // Guard: Assistant does not have Bay Status reader permissions; Owner has no functionality
+            // in the Workshop Bay module at all (Admin configures it, SA operates within it).
+            if (id === 'bays' && (currentUserRole === 'assistant' || currentUserRole === 'owner')) {
+                showSystemToast('Access Restricted: this role does not have Bay Status access.', 'warning', 'Permission Denied');
+                showSection(fallbackSectionForRole());
                 return;
             }
 
             if (id === 'form13' && currentUserRole !== 'sa' && currentUserRole !== 'admin' && currentUserRole !== 'owner') {
                 showSystemToast('Access Restricted: 2025 RO Interactive Excel Studio is strictly reserved for Service Advisors.', 'warning', 'Permission Denied');
                 showSection('intake');
+                return;
+            }
+
+            // Guard: Customer Lookup is fully reserved for Service Advisors only.
+            if (id === 'lookup' && currentUserRole !== 'sa') {
+                showSystemToast('Access Restricted: Customer Lookup is reserved for Service Advisors.', 'warning', 'Permission Denied');
+                showSection(fallbackSectionForRole());
                 return;
             }
 
@@ -8503,6 +8523,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.HontechTVBroadcastManager = HontechTVBroadcastManager;
 
         function openTVBroadcastHubModal() {
+            // TV Monitor is reserved for Service Advisor and Assistant roles only.
+            if (currentUserRole !== 'sa' && currentUserRole !== 'assistant') {
+                showSystemToast('Access Restricted: TV Monitor is reserved for Service Advisor and Assistant roles.', 'warning', 'Permission Denied');
+                return;
+            }
             const modal = document.getElementById('modal-tv-broadcast-hub');
             if (modal) {
                 modal.classList.remove('hidden');
@@ -9737,6 +9762,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             startTVAutoScroll();
         }
 
+        // Server-backed per-branch cache. localStorage remains the synchronous read path used by the
+        // many render functions below, but it is now just a cache of the branch-scoped value the
+        // backend returned — see syncBaySettingsFromServer(), called on login and after every write.
         function getFacilityMaxBayLimit() {
             const stored = parseInt(localStorage.getItem('hontech_max_bay_limit'), 10);
             if (!isNaN(stored) && stored >= 1 && stored <= 50) {
@@ -9746,22 +9774,38 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.getFacilityMaxBayLimit = getFacilityMaxBayLimit;
 
+        // Fetches the authoritative bay ceiling/active-count for the current user's own branch from
+        // the backend and refreshes the local cache, so a different device/SA at the same branch picks
+        // up whatever the branch's Admin configured, instead of being stuck on stale local values.
+        // Owner has no functionality in this module and is skipped entirely.
+        async function syncBaySettingsFromServer() {
+            if (currentUserRole === 'owner' || !currentUserRole) return;
+            try {
+                const res = await apiRequest('/api/bays/settings');
+                if (res && typeof res.maxBayLimit === 'number') {
+                    localStorage.setItem('hontech_max_bay_limit', String(res.maxBayLimit));
+                    localStorage.setItem('hontech_workshop_bay_count', String(res.activeBayCount));
+                }
+            } catch (e) {
+                // Offline or first-run: keep whatever is already cached locally
+            }
+        }
+        window.syncBaySettingsFromServer = syncBaySettingsFromServer;
+
         function setFacilityMaxBayLimit(val) {
-            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
-                showSystemToast('Only Owner and Administrator can configure facility maximum capacity ceiling.', 'warning', 'Higher Authority Required');
+            if (currentUserRole !== 'admin') {
+                showSystemToast(currentUserRole === 'owner'
+                    ? 'Owners do not have access to Workshop Bay configuration.'
+                    : 'Only the branch Administrator can configure the bay capacity ceiling.', 'warning', 'Higher Authority Required');
                 return;
             }
             const maxVal = Math.min(50, Math.max(1, parseInt(val, 10) || 6));
             localStorage.setItem('hontech_max_bay_limit', maxVal.toString());
-            
-            // Set current active bays to the new limit (or clamp if exceeding)
-            const currentActive = getWorkshopBayCount();
-            if (currentActive > maxVal) {
-                localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
-            } else if (currentUserRole === 'admin' || currentUserRole === 'owner') {
-                // When Admin/Owner sets the ceiling, sync active bays to it
-                localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
-            }
+            // Admin setting the ceiling also syncs active bays to it
+            localStorage.setItem('hontech_workshop_bay_count', maxVal.toString());
+
+            // Persist to the branch-scoped backend setting; UI already updated optimistically above.
+            apiRequest('/api/bays/settings/limit', { method: 'POST', body: { maxBayLimit: maxVal } }).catch(() => {});
 
             initWorkshopBaySettings();
             if (typeof renderWorkshopBaysModule === 'function') renderWorkshopBaysModule();
@@ -9770,14 +9814,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (typeof renderReportDataModule === 'function') renderReportDataModule();
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
-            showSystemToast(`Facility capacity ceiling set to ${maxVal} bays. Service Advisors can choose between 1 and ${maxVal} bays.`, 'success', 'Ceiling Configured');
+            showSystemToast(`Branch bay ceiling set to ${maxVal} bays. Service Advisors at this branch can choose between 1 and ${maxVal} bays.`, 'success', 'Ceiling Configured');
         }
         window.setFacilityMaxBayLimit = setFacilityMaxBayLimit;
         window.handleAdminBayCapacityChange = setFacilityMaxBayLimit;
 
         function promptCustomCeilingLimit() {
-            if (currentUserRole !== 'admin' && currentUserRole !== 'owner') {
-                showSystemToast('Only Owner and Administrator can configure facility maximum capacity ceiling.', 'warning', 'Higher Authority Required');
+            if (currentUserRole !== 'admin') {
+                showSystemToast(currentUserRole === 'owner'
+                    ? 'Owners do not have access to Workshop Bay configuration.'
+                    : 'Only the branch Administrator can configure the bay capacity ceiling.', 'warning', 'Higher Authority Required');
                 return;
             }
             const current = getFacilityMaxBayLimit();
@@ -9804,11 +9850,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.getWorkshopBayCount = getWorkshopBayCount;
 
         function stepWorkshopBayCount(delta) {
-            if (currentUserRole === 'assistant') {
-                showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
+            if (currentUserRole === 'assistant' || currentUserRole === 'owner') {
+                showSystemToast('This role is not authorized to configure workshop bays.', 'warning', 'Authority Required');
                 return;
             }
-            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+            if (currentUserRole === 'admin') {
                 const currentLimit = getFacilityMaxBayLimit();
                 const nextLimit = Math.min(50, Math.max(1, currentLimit + Number(delta || 0)));
                 setFacilityMaxBayLimit(nextLimit);
@@ -9826,11 +9872,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.stepWorkshopBayCount = stepWorkshopBayCount;
 
         function promptCustomBayCount() {
-            if (currentUserRole === 'assistant') {
-                showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
+            if (currentUserRole === 'assistant' || currentUserRole === 'owner') {
+                showSystemToast('This role is not authorized to configure workshop bays.', 'warning', 'Authority Required');
                 return;
             }
-            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+            if (currentUserRole === 'admin') {
                 promptCustomCeilingLimit();
                 return;
             }
@@ -9852,26 +9898,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.openCustomBayCapacityModal = promptCustomBayCount;
 
         function handleWorkshopBayCountChange(newCount) {
-            if (currentUserRole === 'assistant') {
-                showSystemToast('Assistant staff are not authorized to configure active workshop bays.', 'warning', 'Authority Required');
+            if (currentUserRole === 'assistant' || currentUserRole === 'owner') {
+                showSystemToast('This role is not authorized to configure workshop bays.', 'warning', 'Authority Required');
                 return;
             }
-            
-            // If Owner or Admin is changing capacity, this configures the facility ceiling rule for SAs!
-            if (currentUserRole === 'admin' || currentUserRole === 'owner') {
+
+            // If Admin is changing capacity, this configures the branch's bay ceiling rule for SAs!
+            if (currentUserRole === 'admin') {
                 setFacilityMaxBayLimit(newCount);
                 return;
             }
 
-            // For Service Advisor, active bay selection is strictly bounded by the Owner/Admin ceiling:
+            // For Service Advisor, active bay selection is strictly bounded by the Admin's branch ceiling:
             const maxLimit = getFacilityMaxBayLimit();
             const requested = parseInt(newCount, 10) || 1;
             if (requested > maxLimit) {
-                showSystemToast(`Cannot exceed facility maximum ceiling of ${maxLimit} bays configured by Owner/Admin.`, 'warning', 'Ceiling Reached');
+                showSystemToast(`Cannot exceed branch bay ceiling of ${maxLimit} bays configured by the Admin.`, 'warning', 'Ceiling Reached');
             }
             const num = Math.min(maxLimit, Math.max(1, requested));
             localStorage.setItem('hontech_workshop_bay_count', num.toString());
-            
+
+            // Persist to the branch-scoped backend setting; UI already updated optimistically above.
+            apiRequest('/api/bays/settings/active', { method: 'POST', body: { activeBayCount: num } }).catch(() => {});
+
             initWorkshopBaySettings();
             
             try {
@@ -9892,18 +9941,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
 
-            showSystemToast(`Service Advisor set active floor capacity to ${num} bays (within Owner/Admin ceiling of ${maxLimit}).`, 'success', 'Bays Configured');
+            showSystemToast(`Service Advisor set active floor capacity to ${num} bays (within Admin ceiling of ${maxLimit} for this branch).`, 'success', 'Bays Configured');
         }
         window.handleWorkshopBayCountChange = handleWorkshopBayCountChange;
 
         function updateBayControlsVisibility(role) {
             const currentRole = role || currentUserRole;
-            const isOwnerOrAdmin = (currentRole === 'owner' || currentRole === 'admin');
+            // Owner has no functionality in the Workshop Bay module — only Admin configures it.
+            const isAdmin = (currentRole === 'admin');
             const isSA = (currentRole === 'sa');
 
             const adminCard = document.getElementById('bays-admin-control-card');
             if (adminCard) {
-                if (isOwnerOrAdmin) {
+                if (isAdmin) {
                     adminCard.classList.remove('hidden');
                     adminCard.style.display = 'block';
                 } else {
@@ -10912,6 +10962,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 currentUserName = res.name;
                 currentUserEmail = res.email || 'user@hontech.com';
+                currentUserBranch = res.branch || 'Marikina Branch';
                 handleLogin(res.role);
                 showSystemToast('Logged in via Google Sandbox.', 'success', 'Google Authenticated');
             } catch (err) {
@@ -10963,6 +11014,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 currentUserName = user.name;
                 currentUserEmail = user.email || 'user@hontech.com';
+                currentUserBranch = user.branch || 'Marikina Branch';
                 handleLogin(user.role);
 
                 // Reset Login Form views

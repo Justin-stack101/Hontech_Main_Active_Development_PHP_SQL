@@ -31,7 +31,17 @@ class JobRepository
         // Branch partitioning logic
         $targetBranch = $branchFilter ?? ($_GET['branch'] ?? null);
 
-        if ($user['role'] === 'owner' || $user['role'] === 'admin' || $user['role'] === 'assistant' || $user['role'] === 'sa') {
+        if ($user['role'] === 'admin') {
+            // Admins are strictly confined to their own branch's data and cannot escape it via a
+            // ?branch= override — only the Owner role is allowed to see/switch between both branches.
+            $userBranch = $user['branch'] ?? 'Marikina Branch';
+            if (empty($userBranch) || $userBranch === 'Branch A' || $userBranch === 'Marikina' || $userBranch === 'Marikina Branch') {
+                $conditions[] = "(branch = 'Marikina Branch' OR branch = 'Branch A' OR branch = 'Marikina' OR branch IS NULL OR branch = '')";
+            } else {
+                $conditions[] = "branch = ?";
+                $params[]     = $userBranch;
+            }
+        } elseif ($user['role'] === 'owner' || $user['role'] === 'assistant' || $user['role'] === 'sa') {
             if (!empty($targetBranch) && !in_array(strtolower($targetBranch), ['all', 'combined', 'both'], true)) {
                 if ($targetBranch === 'Branch A' || $targetBranch === 'Marikina' || $targetBranch === 'Marikina Branch') {
                     $conditions[] = "(branch = 'Marikina Branch' OR branch = 'Branch A' OR branch = 'Marikina' OR branch IS NULL OR branch = '')";
@@ -40,7 +50,9 @@ class JobRepository
                     $params[]     = $targetBranch;
                 }
             }
-            // If no specific branch query filter is supplied, SA / Assistant / Admin / Owner receive records so client-side can partition or switch branches seamlessly
+            // If no specific branch query filter is supplied, SA / Assistant / Owner receive records so
+            // client-side can partition or switch branches seamlessly. Owner is the only role that can
+            // legitimately see both branches at once this way.
         } else {
             $userBranch = $user['branch'] ?? 'Marikina Branch';
             if (empty($userBranch) || $userBranch === 'Branch A' || $userBranch === 'Marikina' || $userBranch === 'Marikina Branch') {

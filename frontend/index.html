@@ -4881,7 +4881,8 @@
                     </div>
                 </div>
 
-                <!-- Admin/Owner Floor Capacity Configuration Card (Full Presets & Scaling Controls) -->
+                <!-- Admin Floor Capacity Configuration Card (Full Presets & Scaling Controls). Owner has no
+                     functionality in this module — visibility is gated purely on isAdmin in buildNavbar(). -->
                 <div id="bays-admin-control-card" class="bg-white border border-slate-200 p-5 md:p-6 rounded-2xl shadow-2xs space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-4">
                         <div class="flex items-center gap-3">
@@ -4890,7 +4891,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Floor Capacity Configuration</h3>
-                                <p id="bays-admin-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Choose Active Workshop Bays for Today (1 to 20 Bays Allowed by Owner/Admin)</p>
+                                <p id="bays-admin-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Set this branch's bay ceiling (1 to 20 Bays)</p>
                             </div>
                         </div>
                         <span id="bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-800 border border-slate-200 px-3 py-1 rounded-full">4 Bays Active</span>
@@ -4915,7 +4916,7 @@
                             </div>
                         </div>
 
-                        <!-- Quick Presets Container (Dynamically bounded by Owner/Admin ceiling) -->
+                        <!-- Quick Presets Container (Dynamically bounded by the branch Admin's ceiling) -->
                         <div id="bays-presets-container" class="lg:col-span-7 flex flex-wrap items-center gap-2 pt-2 lg:pt-5">
                             <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-1">Ceiling Presets:</span>
                             <button type="button" onclick="handleAdminBayCapacityChange(2)" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold text-xs text-slate-700 transition cursor-pointer">2 Bays</button>
@@ -4942,7 +4943,7 @@
                             </div>
                             <div>
                                 <h3 class="text-base font-black uppercase tracking-tight text-slate-900">Total Active Bays</h3>
-                                <p id="bays-sa-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">6</span> Bays allowed by Owner/Admin)</p>
+                                <p id="bays-sa-control-card-subtext" class="text-xs text-slate-500 font-medium mt-0.5">Select operational service bays for today (1 to <span class="sa-bays-max-rule-num">6</span> Bays allowed by the branch Admin)</p>
                             </div>
                         </div>
                         <span id="sa-bays-module-count-badge" class="self-start sm:self-auto text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-full">4 Bays Active</span>
@@ -5109,7 +5110,7 @@
                         </div>
                     </div>
 
-                    <!-- Workshop Capacity & Bay Allocation (Owner / Admin Authority) -->
+                    <!-- Workshop Capacity & Bay Allocation (Admin Authority only — Owner has no functionality here) -->
                     <div id="settings-bay-config-container" class="bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center justify-between border-b border-gray-150 pb-4">
                             <div class="flex items-center gap-3">
@@ -7771,7 +7772,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.92"></script>
+    <script src="js/app.js?v=2.93"></script>
 </body>
 
 </html>

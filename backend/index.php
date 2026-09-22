@@ -16,6 +16,7 @@ use App\Middleware\Auth;
 use App\Controllers\AuthController;
 use App\Controllers\JobController;
 use App\Controllers\BranchController;
+use App\Controllers\BayController;
 use App\Controllers\StaffController;
 use App\Controllers\PasswordResetController;
 use App\Controllers\DeveloperController;
@@ -420,6 +421,23 @@ if ($method === 'DELETE' && preg_match('#^/branches/(\d+)$#', $route, $m)) {
 if ($method === 'POST' && preg_match('#^/branches/(\d+)/restore$#', $route, $m)) {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
     BranchController::restoreBranch($m[1]);
+    exit;
+}
+
+// --- Protected Workshop Bay Routes (Owner has no functionality here, enforced in the controller too) ---
+if ($method === 'GET' && $route === '/bays/settings') {
+    if (!Auth::requireRole(['admin', 'assistant', 'sa'])) exit;
+    BayController::getSettings();
+    exit;
+}
+if ($method === 'POST' && $route === '/bays/settings/limit') {
+    if (!Auth::requireRole(['admin'])) exit;
+    BayController::setMaxBayLimit();
+    exit;
+}
+if ($method === 'POST' && $route === '/bays/settings/active') {
+    if (!Auth::requireRole(['sa'])) exit;
+    BayController::setActiveBayCount();
     exit;
 }
 
