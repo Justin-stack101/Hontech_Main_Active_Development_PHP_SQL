@@ -12933,17 +12933,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.toggleStudioPDFPreview = toggleStudioPDFPreview;
 
-        function openForm13EnlargeModal() {
+        async function openForm13EnlargeModal() {
             const modal = document.getElementById('modal-f13-enlarge');
             const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
             const jobNo = document.getElementById('f13-input-job-no')?.value || 'HT-JO-0001';
-            
+
             if (document.getElementById('f13-enlarge-title-jo')) {
                 document.getElementById('f13-enlarge-title-jo').innerText = jobNo;
             }
 
+            // Regenerate first so the enlarged view always reflects whatever was just typed, even if the
+            // debounced live-preview refresh hasn't caught up yet.
+            if (typeof generateForm13PDF === 'function') await generateForm13PDF(false);
+
             if (enlargeIframe && currentForm13PdfBlobUrl) {
-                enlargeIframe.src = currentForm13PdfBlobUrl;
+                enlargeIframe.src = currentForm13PdfBlobUrl + '#toolbar=1&navpanes=0';
             }
 
             if (modal) {
@@ -12961,13 +12965,75 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.closeForm13EnlargeModal = closeForm13EnlargeModal;
 
-        // Listen for ESC to close enlarge modal
+        // Quotation, Billing, and Checklist "Full PDF" enlarge modals (mirrors the Form 1/3 pattern above).
+        // Each shows the actual live-compiled document (from its own current*PdfBlobUrl), not a static
+        // blank template — the buttons used to link straight to the unfilled template PDF asset instead.
+        async function openQuoteEnlargeModal() {
+            const modal = document.getElementById('modal-f23-enlarge');
+            const enlargeIframe = document.getElementById('f23-enlarge-pdf-iframe');
+            const quoteNo = document.getElementById('f23-input-quote-no')?.value || 'QT-0000';
+            const titleEl = document.getElementById('f23-enlarge-title');
+            if (titleEl) titleEl.innerText = quoteNo;
+            if (typeof generateQuotePDF === 'function') await generateQuotePDF(false);
+            if (enlargeIframe && currentQuotePdfBlobUrl) enlargeIframe.src = currentQuotePdfBlobUrl + '#toolbar=1&navpanes=0';
+            if (modal) modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        window.openQuoteEnlargeModal = openQuoteEnlargeModal;
+
+        function closeQuoteEnlargeModal() {
+            const modal = document.getElementById('modal-f23-enlarge');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeQuoteEnlargeModal = closeQuoteEnlargeModal;
+
+        async function openBillingEnlargeModal() {
+            const modal = document.getElementById('modal-billing-enlarge');
+            const enlargeIframe = document.getElementById('billing-enlarge-pdf-iframe');
+            const billingNo = document.getElementById('bill-input-billing-no')?.value || 'BL-0000';
+            const titleEl = document.getElementById('billing-enlarge-title');
+            if (titleEl) titleEl.innerText = billingNo;
+            if (typeof generateBillingPDF === 'function') await generateBillingPDF(false);
+            if (enlargeIframe && currentBillingPdfBlobUrl) enlargeIframe.src = currentBillingPdfBlobUrl + '#toolbar=1&navpanes=0';
+            if (modal) modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        window.openBillingEnlargeModal = openBillingEnlargeModal;
+
+        function closeBillingEnlargeModal() {
+            const modal = document.getElementById('modal-billing-enlarge');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeBillingEnlargeModal = closeBillingEnlargeModal;
+
+        async function openChecklistEnlargeModal() {
+            const modal = document.getElementById('modal-checklist-enlarge');
+            const enlargeIframe = document.getElementById('checklist-enlarge-pdf-iframe');
+            if (typeof generateChecklistPDF === 'function') await generateChecklistPDF(false);
+            if (enlargeIframe && currentChecklistPdfBlobUrl) enlargeIframe.src = currentChecklistPdfBlobUrl + '#toolbar=1&navpanes=0';
+            if (modal) modal.classList.remove('hidden');
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }
+        window.openChecklistEnlargeModal = openChecklistEnlargeModal;
+
+        function closeChecklistEnlargeModal() {
+            const modal = document.getElementById('modal-checklist-enlarge');
+            if (modal) modal.classList.add('hidden');
+        }
+        window.closeChecklistEnlargeModal = closeChecklistEnlargeModal;
+
+        // Listen for ESC to close whichever enlarge modal is currently open
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' || e.key === 'Esc') {
-                const modal = document.getElementById('modal-f13-enlarge');
-                if (modal && !modal.classList.contains('hidden')) {
-                    closeForm13EnlargeModal();
-                }
+                [
+                    ['modal-f13-enlarge', closeForm13EnlargeModal],
+                    ['modal-f23-enlarge', closeQuoteEnlargeModal],
+                    ['modal-billing-enlarge', closeBillingEnlargeModal],
+                    ['modal-checklist-enlarge', closeChecklistEnlargeModal]
+                ].forEach(([id, closeFn]) => {
+                    const modal = document.getElementById(id);
+                    if (modal && !modal.classList.contains('hidden')) closeFn();
+                });
             }
         });
 
