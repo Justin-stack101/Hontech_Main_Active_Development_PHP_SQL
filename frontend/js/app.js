@@ -1670,12 +1670,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     body: { email }
                 });
 
-                showSystemToast(res.message, 'success', 'Reset Code Generated');
-
-                // Dev auto-fill convenience
-                if (res.token) {
-                    document.getElementById('reset-token').value = res.token;
-                }
+                showSystemToast(res.message, 'success', 'Check Your Email');
 
                 document.getElementById('forgot-step-1').classList.add('hidden');
                 document.getElementById('forgot-step-2').classList.remove('hidden');
@@ -1697,13 +1692,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             try {
                 const res = await apiRequest('/api/auth/reset-password', {
                     method: 'POST',
-                    body: { email, token, newPassword }
+                    body: { email, otp: token.trim(), newPassword }
                 });
 
                 showSystemToast(res.message, 'success', 'Password Updated');
                 toggleForgotForm(false);
                 document.getElementById('login-email').value = email;
-                document.getElementById('login-pass').value = newPassword;
+                document.getElementById('login-pass').value = '';
             } catch (err) {
                 showSystemToast(err.message || 'Failed to reset password.', 'error', 'Reset Failed');
             }
@@ -3026,13 +3021,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const walkinStubWrap = document.getElementById('div-walkin-stub-wrap');
             const bookingConfirmWrap = document.getElementById('div-booking-confirm-wrap');
 
+            const destBtnBase = 'flex-1 h-9 px-3 rounded-lg text-[11px] font-bold uppercase tracking-wide whitespace-nowrap transition flex items-center justify-center gap-1.5 cursor-pointer';
+            const destBtnIdle = `${destBtnBase} bg-white text-slate-700 border border-slate-200 hover:bg-slate-100`;
+            const destBtnOnline = `${destBtnBase} bg-blue-600 text-white border border-blue-600 shadow-xs`;
+            const destBtnDaily = `${destBtnBase} bg-red-600 text-white border border-red-600 shadow-xs`;
+
             if (dest === 'daily') {
-                if (btnDaily) {
-                    btnDaily.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-black uppercase tracking-wider transition bg-red-600 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer';
-                }
-                if (btnOnline) {
-                    btnOnline.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 flex items-center justify-center gap-1.5 cursor-pointer';
-                }
+                if (btnDaily) btnDaily.className = destBtnDaily;
+                if (btnOnline) btnOnline.className = destBtnIdle;
                 if (sourceInput) sourceInput.value = 'Walk-in';
                 if (walkinFields) walkinFields.classList.remove('hidden');
                 if (bookingFields) bookingFields.classList.add('hidden');
@@ -3042,12 +3038,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (bookingConfirmWrap) bookingConfirmWrap.classList.add('hidden');
                 updateStubPreview();
             } else {
-                if (btnOnline) {
-                    btnOnline.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-black uppercase tracking-wider transition bg-blue-600 text-white shadow-xs flex items-center justify-center gap-1.5 cursor-pointer';
-                }
-                if (btnDaily) {
-                    btnDaily.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 flex items-center justify-center gap-1.5 cursor-pointer';
-                }
+                if (btnOnline) btnOnline.className = destBtnOnline;
+                if (btnDaily) btnDaily.className = destBtnIdle;
                 if (sourceInput) sourceInput.value = 'Online';
                 if (walkinFields) walkinFields.classList.add('hidden');
                 if (bookingFields) bookingFields.classList.remove('hidden');
