@@ -66,7 +66,15 @@ if ($route === '') $route = '/';
 
 // --- AUTH ROUTES ---
 
-// Developer sandbox email routes (public)
+// Developer sandbox routes expose emailed security codes and destructive tools:
+// they only exist in the development environment.
+if (str_starts_with($route, '/auth/developer/') && Env::get('APP_ENV', 'development') !== 'development') {
+    http_response_code(404);
+    echo json_encode(['message' => 'Not found.']);
+    exit;
+}
+
+// Developer sandbox email routes (development only)
 if ($method === 'GET' && $route === '/auth/developer/emails') {
     DeveloperController::getSimulatedEmails();
     exit;

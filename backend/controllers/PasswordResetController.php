@@ -8,11 +8,22 @@ use App\Utils\SecurityUtils;
 
 /**
  * Password Recovery & Reset Controller
- * 
- * Handles password recovery requests, verification tokens, and password updates.
+ *
+ * Self-service recovery via a 6-digit one-time code sent to the account email.
+ * - The code is never returned by the API; it is only delivered by email.
+ * - Only a keyed hash of the code is stored, bound to the account email.
+ * - Codes expire after 15 minutes, work once, and lock after 5 wrong guesses.
+ * - Responses never reveal whether an email address is registered.
  */
 class PasswordResetController
 {
+    private const CODE_TTL_SECONDS        = 900; // 15 minutes
+    private const RESEND_COOLDOWN_SECONDS = 60;
+    private const MAX_ATTEMPTS            = 5;
+
+    private const GENERIC_REQUEST_MESSAGE = 'If an account exists for that email, a 6-digit reset code has been sent.';
+    private const INVALID_CODE_MESSAGE    = 'Invalid or expired reset code.';
+
     /**
      * POST /api/auth/forgot-password
      */
@@ -20,38 +31,34 @@ class PasswordResetController
     {
         try {
             $input = json_decode(file_get_contents('php://input'), true) ?? [];
-            $email = trim($input['email'] ?? '');
+            $email = strtolower(trim($input['email'] ?? ''));
 
-            if (empty($email)) {
+            if ($email === '') {
                 ApiResponse::badRequest('Email address is required.');
                 return;
             }
 
             $userRepo = new UserRepository();
-            $user = $userRepo->findByEmail($email);
+            $user     = $userRepo->findByEmail($email);
 
-            if (!$user) {
-                // Return generic success to prevent email enumeration attacks
-                ApiResponse::json(['message' => 'If an account exists with that email, a password reset link has been sent.']);
-                return;
+            if ($user && (int)$user['is_active'] === 1 && !self::isWithinResendCooldown($user)) {
+                $code      = SecurityUtils::generateNumericCode(6);
+                $expiresAt = date('Y-m-d H:i:s', time() + self::CODE_TTL_SECONDS);
+
+                $userRepo->saveResetCodeHash(
+                    (int)$user['id'],
+                    SecurityUtils::hashOneTimeCode($user['email'], $code),
+                    $expiresAt
+                );
+
+                EmailUtils::sendPasswordResetEmail($user['email'], $user['name'], $code);
             }
 
-            $token = SecurityUtils::generateToken(32);
-            $otp = sprintf('%06d', mt_rand(0, 999999));
-            $expiresAt = date('Y-m-d H:i:s', time() + 3600); // 1 hour validity
-
-            $userRepo->savePasswordResetToken($user['id'], $token, $otp, $expiresAt);
-
-            // Dispatch simulated email
-            EmailUtils::sendPasswordResetEmail($user['email'], $user['name'], $token, $otp);
-
-            ApiResponse::json([
-                'message' => 'Password reset instructions have been sent to your email.',
-                'token'   => $token,
-                'otp'     => $otp
-            ]);
-        } catch (\Exception $e) {
-            ApiResponse::serverError('Error processing forgot password request.', $e->getMessage());
+            // Identical response for known, unknown, inactive and rate-limited accounts.
+            ApiResponse::json(['message' => self::GENERIC_REQUEST_MESSAGE]);
+        } catch (\Throwable $e) {
+            error_log('[forgot-password] ' . $e->getMessage());
+            ApiResponse::serverError('Unable to process the password reset request right now.');
         }
     }
 
@@ -62,41 +69,68 @@ class PasswordResetController
     {
         try {
             $input    = json_decode(file_get_contents('php://input'), true) ?? [];
-            $token    = trim($input['token'] ?? $input['resetToken'] ?? '');
-            $otp      = trim($input['otp'] ?? $input['code'] ?? $input['pin'] ?? '');
-            $password = $input['newPassword'] ?? $input['password'] ?? '';
+            $email    = strtolower(trim($input['email'] ?? ''));
+            $code     = trim((string)($input['otp'] ?? $input['code'] ?? ''));
+            $password = (string)($input['newPassword'] ?? '');
 
-            if (empty($password)) {
-                ApiResponse::badRequest('New password is required.');
+            if ($email === '' || $code === '' || $password === '') {
+                ApiResponse::badRequest('Email, reset code and new password are required.');
+                return;
+            }
+
+            $policyError = SecurityUtils::validatePasswordStrength($password, $email);
+            if ($policyError !== null) {
+                ApiResponse::badRequest($policyError);
                 return;
             }
 
             $userRepo = new UserRepository();
-            $user = null;
+            $user     = $userRepo->findByEmail($email);
 
-            if (!empty($token)) {
-                $user = $userRepo->findByResetToken($token);
-            } elseif (!empty($otp)) {
-                $user = $userRepo->findByResetOtp($otp);
-            }
-
-            if (!$user) {
-                ApiResponse::badRequest('Invalid or expired password reset request.');
+            if (
+                !$user
+                || (int)$user['is_active'] !== 1
+                || empty($user['reset_otp'])
+                || empty($user['reset_token_expires_at'])
+                || strtotime($user['reset_token_expires_at']) < time()
+                || (int)$user['reset_attempts'] >= self::MAX_ATTEMPTS
+            ) {
+                ApiResponse::badRequest(self::INVALID_CODE_MESSAGE);
                 return;
             }
 
-            // Check expiration
-            if (strtotime($user['reset_token_expires_at']) < time()) {
-                ApiResponse::badRequest('Password reset token has expired. Please request a new one.');
+            $expected = SecurityUtils::hashOneTimeCode($user['email'], $code);
+            if (!hash_equals($user['reset_otp'], $expected)) {
+                $userRepo->incrementResetAttempts((int)$user['id']);
+                if ((int)$user['reset_attempts'] + 1 >= self::MAX_ATTEMPTS) {
+                    // Too many wrong guesses: burn the code so a new one must be requested.
+                    $userRepo->clearResetCode((int)$user['id']);
+                }
+                ApiResponse::badRequest(self::INVALID_CODE_MESSAGE);
                 return;
             }
 
-            $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 10]);
-            $userRepo->updatePasswordAndClearResetTokens($user['id'], $hashed);
+            $hashed = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+            $userRepo->updatePasswordAndClearResetCode((int)$user['id'], $hashed);
 
-            ApiResponse::json(['message' => 'Your password has been reset successfully. You may now log in with your new password.']);
-        } catch (\Exception $e) {
-            ApiResponse::serverError('Error resetting password.', $e->getMessage());
+            EmailUtils::sendPasswordChangedNotice($user['email'], $user['name']);
+
+            ApiResponse::json(['message' => 'Your password has been reset successfully. You may now sign in with your new password.']);
+        } catch (\Throwable $e) {
+            error_log('[reset-password] ' . $e->getMessage());
+            ApiResponse::serverError('Unable to reset the password right now.');
         }
+    }
+
+    /**
+     * A code was issued less than RESEND_COOLDOWN_SECONDS ago (issue time = expiry - TTL).
+     */
+    private static function isWithinResendCooldown(array $user): bool
+    {
+        if (empty($user['reset_otp']) || empty($user['reset_token_expires_at'])) {
+            return false;
+        }
+        $issuedAt = strtotime($user['reset_token_expires_at']) - self::CODE_TTL_SECONDS;
+        return $issuedAt > (time() - self::RESEND_COOLDOWN_SECONDS);
     }
 }

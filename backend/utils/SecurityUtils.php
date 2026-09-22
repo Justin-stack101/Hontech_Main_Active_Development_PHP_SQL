@@ -104,4 +104,54 @@ class SecurityUtils
 
         return $codes;
     }
+
+    /**
+     * Cryptographically secure numeric one-time code (e.g. 6-digit reset code)
+     */
+    public static function generateNumericCode(int $digits = 6): string
+    {
+        return str_pad((string)random_int(0, (10 ** $digits) - 1), $digits, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Keyed hash of a one-time code, bound to the account email.
+     * Only this hash is stored, so a database leak does not expose live codes.
+     */
+    public static function hashOneTimeCode(string $email, string $code): string
+    {
+        $secret = \App\Config\Env::get('JWT_SECRET', '');
+        if ($secret === '') {
+            throw new \RuntimeException('JWT_SECRET must be configured to issue one-time codes.');
+        }
+        return hash_hmac('sha256', strtolower($email) . '|' . trim($code), $secret);
+    }
+
+    /**
+     * Password policy check. Returns an error message, or null when acceptable.
+     */
+    public static function validatePasswordStrength(string $password, string $email = ''): ?string
+    {
+        if (strlen($password) < 10) {
+            return 'Password must be at least 10 characters long.';
+        }
+        if (strlen($password) > 128) {
+            return 'Password must be 128 characters or fewer.';
+        }
+        if (!preg_match('/[A-Za-z]/', $password) || !preg_match('/\d/', $password)) {
+            return 'Password must contain at least one letter and one number.';
+        }
+
+        $lower = strtolower($password);
+        $localPart = strtolower(explode('@', $email)[0] ?? '');
+        if (strlen($localPart) >= 3 && str_contains($lower, $localPart)) {
+            return 'Password must not contain your email name.';
+        }
+
+        $common = ['password123', 'password1234', '1234567890', 'qwerty12345', 'hontech1234', 'admin12345', 'letmein1234'];
+        if (in_array($lower, $common, true)) {
+            return 'That password is too common. Please choose a stronger one.';
+        }
+
+        return null;
+    }
 }

@@ -19,9 +19,14 @@ CREATE TABLE IF NOT EXISTS `users` (
     `branch`                    VARCHAR(100) NOT NULL DEFAULT 'Branch A',
     `is_active`                 TINYINT(1) NOT NULL DEFAULT 1,
 
-    -- Password Reset (disabled but schema preserved)
+    -- Password Reset (legacy columns, unused)
     `reset_password_token`      VARCHAR(255) NULL DEFAULT NULL,
     `reset_password_expires`    DATETIME NULL DEFAULT NULL,
+
+    -- Password Reset one-time code (HMAC-SHA256 hash only, 15-minute expiry, 5-attempt lockout)
+    `reset_otp`                 VARCHAR(64) NULL DEFAULT NULL,
+    `reset_token_expires_at`    DATETIME NULL DEFAULT NULL,
+    `reset_attempts`            TINYINT UNSIGNED NOT NULL DEFAULT 0,
 
     -- Google SSO Integration
     `google_id`                 VARCHAR(255) NULL DEFAULT NULL,

@@ -164,4 +164,40 @@ HTML;
 
         return true;
     }
+
+    /**
+     * Password reset code email (the code is never returned by the API)
+     */
+    public static function sendPasswordResetEmail(string $to, string $name, string $otp): bool
+    {
+        return self::sendEmail([
+            'to'      => $to,
+            'subject' => 'HonTech Security: Your Password Reset Code',
+            'text'    => "Hi {$name}, your password reset code is: {$otp}. It expires in 15 minutes.",
+            'html'    => self::generateSupercellEmailHtml([
+                'title'      => 'Password Reset Code',
+                'bodyText'   => "Hi {$name}, enter the code below on the HonTech sign-in screen to choose a new password.",
+                'code'       => $otp,
+                'footerText' => 'This code is valid for 15 minutes and can be used once. If you did not request a password reset, you can ignore this email and your password will stay the same.'
+            ])
+        ]);
+    }
+
+    /**
+     * Confirmation notice after a successful password reset
+     */
+    public static function sendPasswordChangedNotice(string $to, string $name): bool
+    {
+        return self::sendEmail([
+            'to'      => $to,
+            'subject' => 'HonTech Security: Your Password Was Changed',
+            'text'    => "Hi {$name}, your HonTech password was just changed. If this was not you, contact your administrator immediately.",
+            'html'    => self::generateSupercellEmailHtml([
+                'title'      => 'Password Changed',
+                'bodyText'   => "Hi {$name}, your HonTech password was just changed. If this was not you, contact your system administrator immediately.",
+                'code'       => null,
+                'footerText' => 'This is an automated security notice.'
+            ])
+        ]);
+    }
 }

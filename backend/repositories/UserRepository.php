@@ -20,7 +20,7 @@ class UserRepository
 
     public function findById(int $id): ?array
     {
-        $stmt = $this->db->prepare('SELECT id, name, email, password, role, branch, is_active, backup_email, mfa_enabled, mfa_secret, backup_codes, google_id, google_email, is_online, last_active, reset_token, reset_otp, reset_token_expires_at FROM users WHERE id = ? AND is_deleted = 0');
+        $stmt = $this->db->prepare('SELECT id, name, email, password, role, branch, is_active, backup_email, mfa_enabled, mfa_secret, backup_codes, google_id, google_email, is_online, last_active FROM users WHERE id = ? AND is_deleted = 0');
         $stmt->execute([$id]);
         $user = $stmt->fetch();
         return $user ?: null;
@@ -38,22 +38,6 @@ class UserRepository
     {
         $stmt = $this->db->prepare('SELECT * FROM users WHERE google_id = ? AND is_deleted = 0');
         $stmt->execute([$googleId]);
-        $user = $stmt->fetch();
-        return $user ?: null;
-    }
-
-    public function findByResetToken(string $token): ?array
-    {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE reset_token = ? AND is_deleted = 0');
-        $stmt->execute([$token]);
-        $user = $stmt->fetch();
-        return $user ?: null;
-    }
-
-    public function findByResetOtp(string $otp): ?array
-    {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE reset_otp = ? AND is_deleted = 0');
-        $stmt->execute([$otp]);
         $user = $stmt->fetch();
         return $user ?: null;
     }
@@ -111,15 +95,30 @@ class UserRepository
         return $stmt->execute([$hashedPassword, $userId]);
     }
 
-    public function savePasswordResetToken(int $userId, string $token, string $otp, string $expiresAt): bool
+    /**
+     * Store the HMAC of a freshly issued reset code (never the code itself) and reset the attempt counter.
+     */
+    public function saveResetCodeHash(int $userId, string $codeHash, string $expiresAt): bool
     {
-        $stmt = $this->db->prepare('UPDATE users SET reset_token = ?, reset_otp = ?, reset_token_expires_at = ? WHERE id = ?');
-        return $stmt->execute([$token, $otp, $expiresAt, $userId]);
+        $stmt = $this->db->prepare('UPDATE users SET reset_otp = ?, reset_token_expires_at = ?, reset_attempts = 0 WHERE id = ?');
+        return $stmt->execute([$codeHash, $expiresAt, $userId]);
     }
 
-    public function updatePasswordAndClearResetTokens(int $userId, string $hashedPassword): bool
+    public function incrementResetAttempts(int $userId): bool
     {
-        $stmt = $this->db->prepare('UPDATE users SET password = ?, reset_token = NULL, reset_otp = NULL, reset_token_expires_at = NULL WHERE id = ?');
+        $stmt = $this->db->prepare('UPDATE users SET reset_attempts = reset_attempts + 1 WHERE id = ?');
+        return $stmt->execute([$userId]);
+    }
+
+    public function clearResetCode(int $userId): bool
+    {
+        $stmt = $this->db->prepare('UPDATE users SET reset_otp = NULL, reset_token_expires_at = NULL, reset_attempts = 0 WHERE id = ?');
+        return $stmt->execute([$userId]);
+    }
+
+    public function updatePasswordAndClearResetCode(int $userId, string $hashedPassword): bool
+    {
+        $stmt = $this->db->prepare('UPDATE users SET password = ?, reset_otp = NULL, reset_token_expires_at = NULL, reset_attempts = 0 WHERE id = ?');
         return $stmt->execute([$hashedPassword, $userId]);
     }
 }
