@@ -24,7 +24,7 @@
   - 138/138 tests passing (`npm.cmd test`); live API end-to-end run against the dev server passed 8/8 (dispatch, Marikina SA read/edit/convert blocked, Regalado SA converts in place, no duplicate, re-convert rejected).
   - Synced `AST-62`, `SA-18`, `SA-19` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
 * **Cache Busting**: `js/app.js?v=2.96`.
-* **GitHub Commit**: `HEAD`.
+* **GitHub Commit**: `9a7ca22`.
 
 ---
 
