@@ -203,8 +203,52 @@ class JobController
                 }
             }
 
+            // REV-142: SA "Load to 2025 RO Studio" handover — the pending Online booking row is promoted
+            // into the active workshop job (keeping its job_id and audit trail) instead of inserting a
+            // duplicate, which also clears it from the pending Booking Module list.
+            $fromBookingId = !empty($input['fromBookingId']) ? trim((string)$input['fromBookingId']) : null;
+            if ($fromBookingId !== null && $user['role'] === 'sa') {
+                $db   = Database::getConnection();
+                $stmt = $db->prepare("SELECT * FROM jobs WHERE (id = ? OR job_id = ?) AND is_deleted = 0 AND source = 'Online' AND status = 'Pending'");
+                $stmt->execute([$fromBookingId, $fromBookingId]);
+                $booking = $stmt->fetch();
+
+                if (!$booking) {
+                    http_response_code(404);
+                    echo json_encode(['message' => 'Online booking not found or already registered to the workshop floor.']);
+                    return;
+                }
+                if (!JobRepository::isSameBranch($booking['branch'] ?? '', $user['branch'] ?? '')) {
+                    http_response_code(403);
+                    echo json_encode(['message' => 'Access forbidden. This online booking belongs to another branch.']);
+                    return;
+                }
+
+                $convertedStatus = ($initialStatus === 'Pending') ? 'Waiting' : $initialStatus;
+                $stmt = $db->prepare(
+                    'UPDATE jobs SET plate = ?, name = ?, address = ?, contact = ?, vehicle = ?, km_reading = ?,
+                        engine_no = ?, color = ?, category = ?, concern = ?, evaluation = ?, lane_type = ?,
+                        date_received = ?, promised_date = ?, arrival = ?, claim_stub = ?, status = ?,
+                        confirmed = 1, sa_name = ?
+                     WHERE id = ? AND is_deleted = 0'
+                );
+                $stmt->execute([
+                    $plate, $name, $address, $contact, $vehicle, $kmReading,
+                    $engineNo, $color, $category, $concern, $evaluation, $laneType,
+                    $dateReceived, $promisedDate, $finalArrival ?: date('H:i'),
+                    $claimStub ?: self::generateStubNumber(), $convertedStatus,
+                    $customSa ?: ($user['name'] ?? ''),
+                    $booking['id']
+                ]);
+
+                $stmt = $db->prepare('SELECT * FROM jobs WHERE id = ?');
+                $stmt->execute([$booking['id']]);
+                echo json_encode(self::normalizeJob($stmt->fetch()));
+                return;
+            }
+
             // Branch assignment based on role
-            $finalBranch = ($user['role'] === 'owner' || $user['role'] === 'admin' || $user['role'] === 'assistant')
+            $finalBranch =($user['role'] === 'owner' || $user['role'] === 'admin' || $user['role'] === 'assistant')
                 ? ($branch ?: 'Branch A')
                 : ($user['branch'] ?: 'Branch A');
 
@@ -265,10 +309,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches).
-            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
-            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
-            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants dispatch Online bookings across branches). Admins and SAs
+            // only ever manage their own branch's jobs — including Online bookings (REV-142 branch
+            // lock) — matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !JobRepository::isSameBranch($job['branch'] ?? '', $user['branch'] ?? '')) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -436,10 +480,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches).
-            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
-            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
-            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants dispatch Online bookings across branches). Admins and SAs
+            // only ever manage their own branch's jobs — including Online bookings (REV-142 branch
+            // lock) — matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !JobRepository::isSameBranch($job['branch'] ?? '', $user['branch'] ?? '')) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -572,10 +616,10 @@ class JobController
                 return;
             }
 
-            // Branch Security (Assistants and SAs can manage Online bookings across branches).
-            // Admins are intentionally NOT exempted here: an admin must only ever manage their own
-            // branch's jobs, matching the read-side branch scoping in JobRepository::getFilteredJobs.
-            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !($user['role'] === 'sa' && ($job['source'] ?? '') === 'Online') && $job['branch'] !== $user['branch']) {
+            // Branch Security (Assistants dispatch Online bookings across branches). Admins and SAs
+            // only ever manage their own branch's jobs — including Online bookings (REV-142 branch
+            // lock) — matching the read-side branch scoping in JobRepository::getFilteredJobs.
+            if ($user['role'] !== 'owner' && $user['role'] !== 'assistant' && !JobRepository::isSameBranch($job['branch'] ?? '', $user['branch'] ?? '')) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;

@@ -387,6 +387,10 @@
         #section-queue div.overflow-x-auto::-webkit-scrollbar-thumb:hover {
             background: #94a3b8 !important;
         }
+        /* REV-142: SA "Online Bookings" view shows only the Booking Module card of #section-queue */
+        #section-queue.queue-focus-online > :not(#container-online-queue) {
+            display: none !important;
+        }
         /* Table containers: natural responsive height without inner vertical clipping */
         #container-online-queue,
         #container-daily-intakes,
@@ -3906,7 +3910,7 @@
                                     <select id="intake-target-branch"
                                         class="w-full h-9 bg-white border border-slate-200 rounded-lg px-3 pr-8 text-xs font-bold text-slate-900 outline-none focus:border-red-600 transition cursor-pointer appearance-none">
                                         <option value="Marikina Branch" selected>Marikina Branch</option>
-                                        <option value="East Branch">East Branch</option>
+                                        <option value="East Branch">Regalado Branch</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                                 </div>
@@ -4200,12 +4204,14 @@
                                     All Branches
                                 </button>
                                 <button type="button" onclick="setOnlineBranchFilter('Marikina Branch')" id="btn-ob-branch-marikina" class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900">
-                                    📍 Marikina Main
+                                    Marikina Branch
                                 </button>
                                 <button type="button" onclick="setOnlineBranchFilter('East Branch')" id="btn-ob-branch-east" class="px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer text-slate-600 hover:text-slate-900">
-                                    📍 East Branch
+                                    Regalado Branch
                                 </button>
                             </div>
+                            <!-- REV-142: Static top-right branch indicator (text only: no emoji, no pulsing/blinking dot) -->
+                            <span id="online-queue-branch-badge" class="inline-flex items-center px-3 py-1.5 rounded-lg border border-slate-900 bg-slate-900 text-white text-xs font-bold uppercase tracking-wider whitespace-nowrap shadow-2xs">Marikina Branch · Online Queue</span>
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[480px] overflow-y-auto border border-slate-200 rounded-xl custom-scroll bg-white shadow-sm pb-4 mt-2">
@@ -4216,7 +4222,6 @@
                                     <th class="px-4 py-4.5 bg-slate-50">Customer Name</th>
                                     <th class="px-4 py-4.5 bg-slate-50">Plate No.</th>
                                     <th class="px-4 py-4.5 bg-slate-50 min-w-[200px] whitespace-nowrap">Model</th>
-                                    <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap min-w-[150px]">Branch</th>
                                     <th class="px-4 py-4.5 bg-slate-50 text-center whitespace-nowrap min-w-[150px]">Lane Type</th>
                                     <th class="px-4 py-4.5 bg-slate-50 whitespace-nowrap">Appointment</th>
                                     <th class="px-4 py-4.5 bg-slate-50 min-w-[220px]">Evaluation / Notes</th>
@@ -7745,7 +7750,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=2.95"></script>
+    <script src="js/app.js?v=2.96"></script>
 </body>
 
 </html>

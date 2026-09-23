@@ -45,7 +45,18 @@
         let currentUserName = '';
         let currentUserEmail = '';
         let currentUserBranch = 'Marikina Branch';
+        // REV-142: Pending Online booking currently loaded into the 2025 RO Studio (SA handover)
+        let activeOnlineBookingId = null;
         let bays = [null, null, null, null];
+
+        // REV-142: Stored branch values ('East Branch', legacy 'Branch A'/'Branch B') mapped to display names
+        function getBranchDisplayName(branch) {
+            const b = String(branch || '').toLowerCase();
+            if (b === 'all') return 'All Branches';
+            if (b.includes('east') || b.includes('regalado') || b.includes('branch b')) return 'Regalado Branch';
+            return 'Marikina Branch';
+        }
+        window.getBranchDisplayName = getBranchDisplayName;
 
         let tvSlideIndex = 0;
         let tvInterval = null;
@@ -143,6 +154,19 @@
         };
 
         function syncOnlineBranchFilterUI() {
+            // REV-142: SA is hard-locked to their own branch's Booking Module, so the switcher is hidden for them.
+            const filterGroup = document.getElementById('online-branch-filter-group');
+            if (filterGroup) {
+                filterGroup.classList.toggle('hidden', currentUserRole === 'sa');
+            }
+
+            // REV-142: Static top-right branch indicator (text only — no emoji, no pulsing dot)
+            const branchBadge = document.getElementById('online-queue-branch-badge');
+            if (branchBadge) {
+                const badgeBranch = (currentUserRole === 'sa') ? (currentUserBranch || 'Marikina Branch') : onlineBranchFilter;
+                branchBadge.innerText = `${getBranchDisplayName(badgeBranch)} · Online Queue`;
+            }
+
             const btnAll = document.getElementById('btn-ob-branch-all');
             const btnMarikina = document.getElementById('btn-ob-branch-marikina');
             const btnEast = document.getElementById('btn-ob-branch-east');
@@ -1914,15 +1938,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Service Advisor Order: 1. 2025 RO Excel Studio, 2. Daily Intakes / Master Queue, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
+                // Service Advisor Order: 1. 2025 RO Excel Studio, 2. Daily Intakes / Master Queue, 3. Online Bookings (own branch), 4. Customer Lookup, 5. Bay Status, 6. TV Monitor
                 navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
+                navHTML += `<button onclick="showSection('online-bookings', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-clock" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('online-bookings', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="calendar-clock" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-800 flex items-center gap-3 text-slate-300 text-[13.5px] cursor-pointer"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
@@ -1947,7 +1973,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 let targetView = localStorage.getItem('hontech-active-section');
                 
                 // Verify if the target section is valid and exists in the DOM. Do not auto-load TV on startup.
-                if (!targetView || !document.getElementById(`section-${targetView}`) || targetView === 'tv') {
+                const targetSectionKey = (targetView === 'online-bookings') ? 'queue' : targetView; // REV-142 virtual view
+                if (!targetView || !document.getElementById(`section-${targetSectionKey}`) || targetView === 'tv') {
                     targetView = defaultView;
                 }
                 
@@ -2270,15 +2297,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return;
             }
 
+            // REV-142: 'online-bookings' is a focused view of the Booking Module card inside #section-queue
+            const isOnlineBookingsView = (id === 'online-bookings');
+            if (isOnlineBookingsView && !['sa', 'assistant', 'owner', 'admin'].includes(currentUserRole)) {
+                showSystemToast('Access Restricted: this role does not have Online Bookings access.', 'warning', 'Permission Denied');
+                showSection(fallbackSectionForRole());
+                return;
+            }
+
             // Save current section to local storage for persistence across reloads
             if (id !== 'tv') {
                 localStorage.setItem('hontech-last-module', id);
             }
             localStorage.setItem('hontech-active-section', id);
-            
+
             document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
-            const targetSec = document.getElementById(`section-${id}`);
+            const targetSec = document.getElementById(`section-${isOnlineBookingsView ? 'queue' : id}`);
             if (targetSec) targetSec.classList.remove('hidden');
+            const queueSec = document.getElementById('section-queue');
+            if (queueSec) queueSec.classList.toggle('queue-focus-online', isOnlineBookingsView);
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-red-50', 'text-red-600', 'bg-gray-100', 'text-gray-900');
@@ -2305,6 +2342,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'lookup': 'Customer History & Back-Job Lookup',
                 'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
+                'online-bookings': 'Online Bookings · Booking Module',
                 'tv': 'Service Monitor · Waiting Lounge TV',
                 'profile': 'My Security & Profile Settings',
                 'settings': 'Account Settings',
@@ -2361,7 +2399,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
                 })();
             }
-            if (id === 'queue') {
+            if (id === 'queue' || isOnlineBookingsView) {
                 (async () => {
                     try {
                         await loadData();
@@ -3018,7 +3056,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 // Assistant dispatches bookings to either branch, so the receiving branch's SA sees it in their Booking Module.
                 if (targetBranchSelect) {
-                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">East Branch</option>';
+                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">Regalado Branch</option>';
                     targetBranchSelect.disabled = false;
                     targetBranchSelect.classList.remove('opacity-70', 'cursor-not-allowed');
                 }
@@ -3043,7 +3081,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (destinationWrap) destinationWrap.classList.remove('hidden');
                 if (targetBranchWrap) targetBranchWrap.className = 'sm:col-span-5 space-y-1';
                 if (targetBranchSelect) {
-                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">East Branch</option>';
+                    targetBranchSelect.innerHTML = '<option value="Marikina Branch" selected>Marikina Branch</option><option value="East Branch">Regalado Branch</option>';
                     targetBranchSelect.disabled = false;
                     targetBranchSelect.classList.remove('opacity-70', 'cursor-not-allowed');
                 }
@@ -3141,10 +3179,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         body: payload
                     });
 
+                    if (payload.source === 'Online') {
+                        // REV-142: Point the Booking Module at the dispatch branch so the new record is visible
+                        onlineBranchFilter = payload.branch || 'all';
+                    }
                     await loadData();
                     renderStaffTables();
                     showSection('queue');
-                    showSystemToast(`Vehicle ${payload.plate} registered successfully. Added to Daily Intakes.`, 'success', 'Intake Completed');
+                    if (payload.source === 'Online') {
+                        showSystemToast(`Vehicle ${payload.plate} registered to ${getBranchDisplayName(payload.branch)} Booking Module.`, 'success', 'Booking Dispatched');
+                    } else {
+                        showSystemToast(`Vehicle ${payload.plate} registered successfully. Added to Daily Intakes.`, 'success', 'Intake Completed');
+                    }
 
                     ['plate', 'name', 'contact', 'vehicle', 'concern'].forEach(id => {
                         const el = document.getElementById(`intake-${id}`);
@@ -3959,6 +4005,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 showSystemToast('Booking record not found.', 'error');
                 return;
             }
+            // REV-142: An SA may only take over bookings dispatched to their own branch
+            if (currentUserRole === 'sa' && getBranchDisplayName(job.branch) !== getBranchDisplayName(currentUserBranch)) {
+                showSystemToast(`This booking was dispatched to ${getBranchDisplayName(job.branch)}.`, 'warning', 'Branch Locked');
+                return;
+            }
+
+            // REV-142: Tag the studio session so Register converts this booking instead of creating a duplicate
+            activeOnlineBookingId = job.id;
 
             // Switch to 2025 RO Excel Studio sheet
             if (typeof showSection === 'function') {
@@ -3977,11 +4031,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const fDate = document.getElementById('f13-input-intake-date');
             const fCategory = document.getElementById('f13-input-category');
 
+            // Keep the Job Order number aligned with the booking record it will be converted into
+            const fJobNo = document.getElementById('f13-input-job-no');
+            if (fJobNo && job.id) fJobNo.value = job.id;
             if (fName) fName.value = job.customerName || job.name || '';
             if (fContact) fContact.value = job.phone || job.contact || '';
             if (fPlate) fPlate.value = job.plate || '';
             if (fModel) fModel.value = job.vehicle || job.model || '';
-            if (fConcern) fConcern.value = job.evaluation || job.complaint || job.notes || (job.category ? `Online Inquired: ${job.category}` : '');
+            if (fConcern) fConcern.value = job.concern || job.evaluation || job.complaint || job.notes || (job.category ? `Online Inquired: ${job.category}` : '');
             if (fDate) fDate.value = job.apptDate || getEffectiveQueueDate();
             if (fCategory && job.category) {
                 Array.from(fCategory.options).forEach(opt => {
@@ -4008,7 +4065,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (typeof syncJobOrderFieldsToBilling === 'function') syncJobOrderFieldsToBilling();
             if (typeof syncJobOrderFieldsToChecklist === 'function') syncJobOrderFieldsToChecklist();
 
-            showSystemToast(`Loaded online booking for ${job.customerName || job.plate || 'Customer'} into 2025 RO Excel Studio.`, 'success', 'Form 1/3 Ready');
+            showSystemToast(`Loaded online booking for ${job.customerName || job.name || job.plate || 'Customer'} into 2025 RO Excel Studio.`, 'success', 'Form 1/3 Ready');
         }
         window.loadOnlineBookingToForm13 = loadOnlineBookingToForm13;
 
@@ -4072,16 +4129,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     return !jDate || jDate === currentQueueDate;
                 });
             }
-            if (onlineBranchFilter && onlineBranchFilter !== 'all') {
-                pendingOnline = pendingOnline.filter(j => {
-                    const b = (j.branch || 'Marikina Branch').toLowerCase();
-                    if (onlineBranchFilter.toLowerCase().includes('marikina') || onlineBranchFilter.toLowerCase().includes('branch a')) {
-                        return b.includes('marikina') || b.includes('branch a') || !j.branch;
-                    } else if (onlineBranchFilter.toLowerCase().includes('east') || onlineBranchFilter.toLowerCase().includes('branch b')) {
-                        return b.includes('east') || b.includes('branch b');
-                    }
-                    return b === onlineBranchFilter.toLowerCase();
-                });
+            // REV-142: SA is hard-locked to their own branch's online bookings (no manual override);
+            // Assistant/Owner/Admin keep the branch switcher since the Assistant dispatches to both branches.
+            const effectiveOnlineBranchFilter = isSA ? (currentUserBranch || 'Marikina Branch') : onlineBranchFilter;
+            if (effectiveOnlineBranchFilter && effectiveOnlineBranchFilter !== 'all') {
+                const targetBranchName = getBranchDisplayName(effectiveOnlineBranchFilter);
+                pendingOnline = pendingOnline.filter(j => getBranchDisplayName(j.branch) === targetBranchName);
             }
 
             const rowOccupiedBays = {};
@@ -4117,27 +4170,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map((job, idx) => {
                     const isExpress = (job.laneType === 'Express Lane' || job.laneType === 'Express');
                     const curLane = job.laneType || 'Flexible Lane';
-                    const curBranch = (job.branch === 'East Branch' || job.branch === 'Branch B') ? 'East Branch' : 'Marikina Branch';
-                    const isEastBranch = (curBranch === 'East Branch');
-                    // Branch is fixed once the Assistant creates the booking via the Online Booking Form's Target Branch field — it is never changed afterward in this table.
+                    // REV-142: No per-row Branch column — the active branch is shown once in the card's top-right badge.
                     return `
                     <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-200/80 text-xs">
                         <td class="px-3 py-5 text-center font-mono text-xs text-slate-400 font-bold align-middle">${idx + 1}</td>
                         <td class="px-4 py-5 align-middle">
-                            <span class="font-bold text-slate-900 text-xs block">${job.customerName || 'Online Inquirer'}</span>
-                            <span class="text-[11px] text-slate-500 font-medium">${job.phone || ''}</span>
+                            <span class="font-bold text-slate-900 text-xs block">${job.customerName || job.name || 'Online Inquirer'}</span>
+                            <span class="text-[11px] text-slate-500 font-medium">${job.phone || job.contact || ''}</span>
                         </td>
                         <td class="px-4 py-5 align-middle">
                             <span class="inline-flex items-center justify-center font-mono font-bold text-xs uppercase bg-slate-100 text-slate-800 px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs">${job.plate || 'NO PLATE'}</span>
                         </td>
                         <td class="px-4 py-5 align-middle min-w-[200px]">
                             <span class="text-slate-900 text-xs font-bold block max-w-[220px] truncate" title="${job.vehicle || ''}">${job.vehicle || 'Unknown Vehicle'}</span>
-                        </td>
-                        <td class="px-4 py-5 text-center align-middle whitespace-nowrap min-w-[150px]">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap ${isEastBranch ? 'bg-purple-50 text-purple-700 border border-purple-200 shadow-2xs' : 'bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs'}">
-                                <span class="w-1.5 h-1.5 rounded-full ${isEastBranch ? 'bg-purple-500' : 'bg-blue-500'}"></span>
-                                ${isEastBranch ? 'East Branch' : 'Marikina Main'}
-                            </span>
                         </td>
                         <td class="px-4 py-5 text-center align-middle whitespace-nowrap min-w-[150px]">
                             ${isReadOnlyOnline ? `
@@ -4228,6 +4273,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                     <button type="button" onclick="removeJob('${job.id}')" class="border border-rose-200 hover:border-rose-500 text-rose-600 hover:bg-rose-50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition cursor-pointer shadow-2xs" title="Delete Booking">
                                         Delete
                                     </button>
+                                ` : isSA ? `
+                                    <button type="button" onclick="loadOnlineBookingToForm13('${job.id}')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wide transition shadow-sm flex items-center gap-1.5 cursor-pointer" title="Load this booking into Form 1/3 of the 2025 RO Studio">
+                                        <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Load to RO Studio
+                                    </button>
                                 ` : `
                                     <span class="text-xs font-bold text-slate-400 italic">View Only</span>
                                 `}
@@ -4235,7 +4284,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="10" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border border-blue-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p class="text-xs font-bold text-slate-700">No Pending Online Bookings</p><p class="text-[11px] text-slate-400 font-medium">Inquiries submitted online will appear here in real time.</p></div></td></tr>`;
+                }).join('') || `<tr><td colspan="9" class="text-center py-12 text-slate-400 font-medium"><div class="flex flex-col items-center justify-center gap-2 py-3"><div class="w-9 h-9 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center border border-blue-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg></div><p class="text-xs font-bold text-slate-700">No Pending Online Bookings</p><p class="text-[11px] text-slate-400 font-medium">Inquiries submitted online will appear here in real time.</p></div></td></tr>`;
             }
 
             // DAILY INTAKES
@@ -15409,12 +15458,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     backjobReason: backjobReason
                 };
 
+                // REV-142: Convert the loaded Online booking in place (clears it from the pending Booking Module).
+                // Only honoured while that booking is still pending and the plate was not swapped for another vehicle.
+                const loadedBooking = activeOnlineBookingId
+                    ? (Array.isArray(allJobs) ? allJobs : []).find(j => String(j.id) === String(activeOnlineBookingId) && j.source === 'Online' && j.status === 'Pending')
+                    : null;
+                const isBookingHandover = Boolean(loadedBooking && !isBackJobActive && String(loadedBooking.plate || '').toUpperCase().trim() === plate);
+                if (isBookingHandover) {
+                    payload.fromBookingId = loadedBooking.id;
+                    payload.source = 'Online';
+                    if (!payload.status || payload.status === 'Pending') payload.status = 'Waiting';
+                }
+
                 const createdJob = await apiRequest('/api/jobs', {
                     method: 'POST',
                     body: payload
                 });
 
-                // Clear back-job tracking state once saved
+                // Clear online-booking handover and back-job tracking state once saved
+                activeOnlineBookingId = null;
                 if (typeof cancelStudioBackJobMode === 'function') {
                     cancelStudioBackJobMode(false);
                 }
@@ -15427,7 +15489,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof renderTableDailyIntakes === 'function') renderTableDailyIntakes();
 
                 const assignedJobId = createdJob?.data?.jobId || createdJob?.data?.job_id || createdJob?.jobId || customJobId || 'RO-REGISTERED';
-                showSystemToast(`Repair Order [${assignedJobId} / Stub: ${claimStub}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
+                if (isBookingHandover) {
+                    showSystemToast(`Online booking ${assignedJobId} (Stub: ${claimStub}) registered to the workshop floor and cleared from the Booking Module.`, 'success', 'Booking Handover Complete');
+                } else {
+                    showSystemToast(`Repair Order [${assignedJobId} / Stub: ${claimStub}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
+                }
 
                 // Keep SA in studio view
                 if (typeof switchFormStudioSheet === 'function') {

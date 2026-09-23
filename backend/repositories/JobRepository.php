@@ -53,6 +53,15 @@ class JobRepository
             // If no specific branch query filter is supplied, SA / Assistant / Owner receive records so
             // client-side can partition or switch branches seamlessly. Owner is the only role that can
             // legitimately see both branches at once this way.
+
+            // REV-142: Pending Online bookings are dispatched by the Assistant to exactly one branch's
+            // Booking Module. A Service Advisor only ever receives their own branch's pending bookings;
+            // other records stay cross-branch so Customer Lookup history keeps working.
+            if ($user['role'] === 'sa') {
+                [$branchSql, $branchParams] = self::branchMatchSql($user['branch'] ?? '');
+                $conditions[] = "(NOT (source = 'Online' AND status = 'Pending') OR {$branchSql})";
+                array_push($params, ...$branchParams);
+            }
         } else {
             $userBranch = $user['branch'] ?? 'Marikina Branch';
             if (empty($userBranch) || $userBranch === 'Branch A' || $userBranch === 'Marikina' || $userBranch === 'Marikina Branch') {
@@ -68,6 +77,36 @@ class JobRepository
         $stmt = $this->db->prepare("SELECT * FROM jobs {$where} ORDER BY updated_at DESC");
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Builds a parameterized SQL condition matching every stored alias of a branch
+     * (legacy 'Branch A' / 'Branch B' values and the Regalado display name included).
+     *
+     * @return array{0: string, 1: array}
+     */
+    public static function branchMatchSql(?string $branch): array
+    {
+        $normalized = BayRepository::normalizeBranch($branch);
+        if ($normalized === 'Marikina Branch') {
+            return ["(branch = 'Marikina Branch' OR branch = 'Branch A' OR branch = 'Marikina' OR branch IS NULL OR branch = '')", []];
+        }
+        if (in_array($normalized, ['East Branch', 'Regalado Branch', 'Regalado'], true)) {
+            return ["(branch = 'East Branch' OR branch = 'Branch B' OR branch = 'Regalado Branch' OR branch = 'Regalado')", []];
+        }
+        return ["branch = ?", [$normalized]];
+    }
+
+    /**
+     * True when two stored branch values refer to the same physical branch.
+     */
+    public static function isSameBranch(?string $a, ?string $b): bool
+    {
+        $canon = static function (?string $branch): string {
+            $normalized = BayRepository::normalizeBranch($branch);
+            return in_array($normalized, ['Regalado Branch', 'Regalado'], true) ? 'East Branch' : $normalized;
+        };
+        return $canon($a) === $canon($b);
     }
 
     public function findById(int|string $id): ?array

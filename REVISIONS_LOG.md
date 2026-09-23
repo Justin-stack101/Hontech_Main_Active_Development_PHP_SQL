@@ -1,3 +1,33 @@
+## 📅 September 23, 2026 (Assistant Branch Dispatch & SA Branch-Locked Online Booking Handover)
+
+### 📋 Assistant Branch Dispatch & SA Branch-Locked Online Booking Module to 2025 RO Studio Flow (REV-142)
+* **Objective & Context**: Close the loop between the Assistant logging an online inquiry and the Service Advisor receiving the customer at the shop. The Assistant dispatches each booking to one branch; when the customer arrives ("I have an online booking"), the SA of *that* branch finds it in their Online Bookings module and hands it into the 2025 RO Excel Studio in one click. Previously SAs had no Online Bookings entry point, could see and edit every branch's online bookings, the Load-to-Studio function existed but had no button, and registering from the Studio created a duplicate job while the booking stayed pending.
+* **Core Changes Made**:
+  - `backend/repositories/JobRepository.php`:
+    - `getFilteredJobs()` now withholds other branches' **pending Online bookings** from the `sa` role (server-side, no API leakage). Other records stay cross-branch so Customer Lookup history is unaffected.
+    - New `branchMatchSql()` (parameterized alias-aware branch condition: `Marikina Branch`/`Branch A`/`Marikina`/empty and `East Branch`/`Branch B`/`Regalado Branch`) and `isSameBranch()` helpers.
+  - `backend/controllers/JobController.php`:
+    - Removed the SA cross-branch Online-booking write exemption from `updateJobField`, `setJobStatus` and `deleteJob`; all three now use the alias-aware `JobRepository::isSameBranch()` guard.
+    - `createJob()` accepts `fromBookingId` (SA only): the pending Online booking is **converted in place** (same `job_id`, status `Waiting`, claim stub issued, `confirmed = 1`) instead of inserting a duplicate. Rejects other-branch bookings (403) and already-registered bookings (404).
+  - `frontend/js/app.js`:
+    - SA navbar: new **Online Bookings** entry (`calendar-clock`) in header and sidebar → virtual `online-bookings` view showing only `#container-online-queue` (reload-safe).
+    - Booking Module: SA hard-locked to own branch (branch switcher hidden for SA); Branch column removed; static text-only badge `#online-queue-branch-badge` shows `<Branch> · Online Queue`; SA rows get **Load to RO Studio**.
+    - `loadOnlineBookingToForm13()`: SA branch guard, tags `activeOnlineBookingId`, prefills Job No with the booking ID plus name/contact/plate/model/concern/date/category.
+    - `registerStudioROToSystem()`: sends `fromBookingId` only while the loaded booking is still pending and the plate still matches (stale tags cannot convert the wrong booking); shows *Booking Handover Complete*.
+    - `processIntake()`: Online submissions toast `Vehicle <PLATE> registered to <Branch> Booking Module.` and point the Booking Module at the dispatch branch.
+    - New `getBranchDisplayName()` helper (`East Branch` → `Regalado Branch`); Assistant Target Branch option relabelled *Regalado Branch* (stored value unchanged).
+    - Fix: Booking Module rows showed *Online Inquirer* and no phone because they read `customerName`/`phone`; now fall back to the API's `name`/`contact`.
+  - `frontend/index.html`: removed the Booking Module `Branch` header, added the top-right badge, removed 📍 emojis from the branch switcher, added `.queue-focus-online` CSS, relabelled the static Target Branch option.
+* **Automated & Manual QA Verification**:
+  - New `tests/frontend/app.test.js` (`AUT-FRONT-107`–`112`), `tests/frontend/ro_studio.test.js` (`AUT-FRONT-113`–`115`), `tests/security/branch_isolation.test.js` (`SEC-BR-01`–`05`, executes the PHP branch helpers).
+  - `AUT-FRONT-78` updated: the REV-101 Branch column assertion now asserts the column is gone and the badge exists.
+  - 138/138 tests passing (`npm.cmd test`); live API end-to-end run against the dev server passed 8/8 (dispatch, Marikina SA read/edit/convert blocked, Regalado SA converts in place, no duplicate, re-convert rejected).
+  - Synced `AST-62`, `SA-18`, `SA-19` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.96`.
+* **GitHub Commit**: `HEAD`.
+
+---
+
 ## 📅 September 22, 2026 (Master Queue Branch-Lock, Auto-Magnifier Overhaul, PDF Alignment, Full-PDF Views & Branch-Scoped RBAC)
 
 ### 📋 Decommission Auto-Magnifier & Typing Camera Locks for Steady PDF Preview (REV-141)
