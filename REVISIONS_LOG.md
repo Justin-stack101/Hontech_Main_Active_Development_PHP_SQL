@@ -1,3 +1,46 @@
+## 📅 September 24, 2026 (Form 1/3 PDF Comprehensive Typography, Centered Concern, Grid Calibration & Ghost Elimination)
+
+### 📋 Form 1/3 PDF Comprehensive Typography, Centered Concern, Grid Calibration & Ghost Elimination (REV-149)
+* **Objective & Context**: In direct response to user revisions on Form 1/3 (Job Order) PDF formatting, eliminate all remaining template coordinate misalignments: enforce uniform unbolded typography across all 12 customer detail fields, horizontally and vertically center customer request service/concern text inside the concern box, correct the Service Advisor "Interviewed by" baseline from floating in the air down to the true line with standard font size, fill missing customer authorization signature with masked template ghost, align diagnostic result cleanly below the header bar, recalibrate Parts & Materials rows to the exact 7.32pt template grid with Amount ghost whiteouts, center all 6 signature slots above their respective underlines, and completely overhaul the bottom Filipino claim stub by masking all 5 pre-printed ghost placeholders (`"0"`, `"0"`, `"0"`, `"1/0/1900"`, `"0"`) and positioning Name, Plate, Model, SA, Date, and Claim Stub ID on their authentic baselines.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - **Customer Details**: Standardized all 12 fields (Name, Address, Contact, Email, Model, Plate, KM, Intake Date, Promise Date, Engine, Chassis, Color) to uniform unbolded 6.2pt typography (`fontNorm`, `isBold: false`).
+    - **Customer Service Concern**: Centered each line horizontally (`centerX = 298.5`) and vertically within the concern box (`Y = 600..610`) using dynamic word wrapping and centering.
+    - **Interviewed by**: Lowered baseline from floating `Y = 583.5` down to `Y = 549.5` directly above the Service Advisor underline (`Y = 548.0`) at standard `6.5 pt` font, centered at `X = 187.5`.
+    - **Authorization Signature**: Masked template pre-printed `"0"` ghost at `X = 301.39, Y = 511.03` with whiteout and centered customer name at `X = 300.0, Y = 511.5`.
+    - **Diagnostic Result**: Lowered start baseline from `Y = 498` down to `Y = 466.0` inside the white diagnostic box below the header.
+    - **Parts & Materials Table**: Recalibrated row step from `8.1 pt` to the exact **`7.32 pt`** template grid (`ROW_Y = [469.0, 461.7, 454.4, ... 308.0]`), added inset whiteouts across all 23 rows in Amount columns to mask pre-printed `"0.00"` ghosts, and centered subtotals.
+    - **Signatures Alignment**: Centered all 6 signatures on their lines: Diagnosed by (`X = 215.0, Y = 274.8`), Assessed by (`X = 467.5, Y = 274.8`), Recommending Approval (`X = 215.0, Y = 207.8`), Approved by Chief Mechanic (`X = 442.5, Y = 207.8`), Conforme Customer Signature (`X = 215.0, Y = 174.8`, masking template `"0"` ghost), and Concurred by General Manager (`X = 442.5, Y = 174.8`).
+    - **Filipino Claim Stub Overhaul**: Masked all 5 template ghost placeholders (`Y = 92.5` and `Y = 74.8`) and placed data on true rows: Name (`X = 152, Y = 92.8`), Plate No (`X = 396.5, Y = 92.8`), Year/Model (`X = 482.5, Y = 92.8`), SA (`X = 152, Y = 84.0`), Date (`X = 215.5, Y = 75.0`), and Claim Stub ID (`X = 446.5, Y = 75.0`).
+  - `frontend/index.html`:
+    - Added 1-click fast preset chips (`[+ Oil Filter ₱450]`, `[+ Brake Pads ₱1,850]`, `[+ Spark Plugs ₱1,200]`, `[+ Air Filter ₱650]` for Parts; `[+ Synthetic Oil ₱1,850]`, `[+ Brake Cleaner ₱350]`, `[+ Engine Flush ₱480]`, `[+ Coolant ₱380]` for Materials) to make data entry 1-click simple for the SA.
+    - Incremented script cache buster query parameter to `v=3.02`.
+  - `tests/frontend/app.test.js` & `tests/frontend/sla_and_logic.test.js`:
+    - Added comprehensive unit test `AUT-FRONT-116` validating all 8 Form 1/3 PDF formatting rules.
+    - Updated `AUT-FRONT-94` and `AUT-FRONT-106` to verify calibrated 6.2pt uniform typography and centered concern layout.
+    - Updated cache buster checks across all test suites to recognize `v=3.02`.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `SA-25` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-149` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.02`.
+* **GitHub Commit**: Pending.
+
+---
+
+### 📋 2025 RO Excel Studio Unlocked Top Meta Bars & Custom Number Preservation (REV-148)
+* **Objective & Context**: Unlock Job Order No, Quotation No, and Billing No top meta input fields for free manual editing, and preserve custom numbers across form sheet switches, live PDF renders, offline drafts, and Excel exports without reactive overwriting.
+* **Core Changes Made**:
+  - `frontend/index.html`: Removed `readonly` locks and disabled styling from `#f13-input-job-no`, `#f23-input-quote-no`, and `#bill-input-billing-no`; styled with clean `bg-white`.
+  - `frontend/js/app.js`: Added `autoDerived` dataset logic so manual typing is preserved; updated `saveWorkbookDraftOffline` and `loadWorkbookDraftOffline` to store and restore custom numbers; updated `exportOfficialXLSX` to extract custom inputs.
+  - Added unit test `AUT-FRONT-115` in `tests/frontend/app.test.js`.
+  - Synced `SA-24` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-148` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.01`.
+* **GitHub Commit**: Pending.
+
+---
+
 ## 📅 September 24, 2026 (Quotation PDF Ghost Placeholder Masking & Subtotals Alignment Overhaul)
 
 ### 📋 Quotation PDF Ghost Placeholder Masking & Subtotals Alignment Overhaul (REV-147)

@@ -65,7 +65,7 @@ describe('REV-142 Online Booking Module (frontend)', () => {
     });
 
     it('AUT-FRONT-112: cache buster bumped to v=2.98 or higher', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=3.00"') || indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
+        assert.ok(indexHtml.includes('src="js/app.js?v=3.02"') || indexHtml.includes('src="js/app.js?v=3.01"') || indexHtml.includes('src="js/app.js?v=3.00"') || indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {
@@ -88,6 +88,121 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.ok(
             indexHtml.includes('Web-Based <br>Operations and <br>Real-Time Queue <br><span class="text-red-500">Management System</span>'),
             'Login marketing hero must display official system title with styled accent'
+        );
+    });
+
+    it('AUT-FRONT-115: REV-148 Unlocked Editable Top Meta Bars (Job Order No, Quotation No, Billing No)', () => {
+        assert.ok(
+            indexHtml.includes('id="f13-input-job-no" placeholder="e.g. HT-JO-0001" class="w-full bg-white'),
+            'f13-input-job-no must be editable with bg-white styling and without readonly'
+        );
+        assert.ok(
+            indexHtml.includes('id="f23-input-quote-no" placeholder="e.g. QT-2026-0001" class="w-full bg-white'),
+            'f23-input-quote-no must be editable with bg-white styling and without readonly'
+        );
+        assert.ok(
+            indexHtml.includes('id="bill-input-billing-no" placeholder="e.g. BL-2026-0001" class="w-full bg-white'),
+            'bill-input-billing-no must be editable with bg-white styling and without readonly'
+        );
+        assert.ok(
+            appJs.includes("if (id === 'f23-input-quote-no') delete el.dataset.autoDerived;"),
+            'Quotation number listener must clear autoDerived on manual typing'
+        );
+        assert.ok(
+            appJs.includes("if (id === 'bill-input-billing-no') delete el.dataset.autoDerived;"),
+            'Billing number listener must clear autoDerived on manual typing'
+        );
+        assert.ok(
+            appJs.includes("if (quoteEl && (!quoteEl.value || quoteEl.dataset.autoDerived === 'true'))"),
+            'syncJobOrderFieldsToQuote must not overwrite customized quote numbers'
+        );
+        assert.ok(
+            appJs.includes("if (billEl && (!billEl.value || billEl.dataset.autoDerived === 'true'))"),
+            'syncJobOrderFieldsToBilling must not overwrite customized billing numbers'
+        );
+        assert.ok(
+            appJs.includes("const quoteNo = getVal('f23-input-quote-no') ||"),
+            'exportOfficialXLSX must extract custom quoteNo from input'
+        );
+        assert.ok(
+            appJs.includes("const billingNo = getVal('bill-input-billing-no') ||"),
+            'exportOfficialXLSX must extract custom billingNo from input'
+        );
+    });
+
+    it('AUT-FRONT-116: REV-149 Form 1/3 PDF Formatting, Exact Coordinates, Center Alignment & Ghost Elimination', () => {
+        // 1. Verify customer details use uniform unbolded typography
+        assert.ok(
+            appJs.includes("drawTextFit(plate, 464, 715.8, 44, 6.2, false, darkInk, 5.0);"),
+            'Customer details must have plate rendered in regular font without bolding'
+        );
+
+        // 2. Verify concern box is horizontally centered
+        assert.ok(
+            appJs.includes("drawTextCenter(lineStr, 298.5, startY - (idx * lineH), 6.5, false, darkInk);"),
+            'Customer concern lines must be centered horizontally at 298.5'
+        );
+
+        // 3. Verify Interviewed by proper baseline and Authorization customer name
+        assert.ok(
+            appJs.includes("drawTextCenter(sa, 187.5, 549.5, 6.5, false);"),
+            'Interviewed by SA must sit on Y=549.5 baseline with 6.5pt font'
+        );
+        assert.ok(
+            appJs.includes("whiteOut(240, 510.0, 120, 8);") &&
+            appJs.includes("drawTextCenter(name, 300.0, 511.5, 6.5, false);"),
+            'Authorization signature must mask template 0 ghost and center customer name at X=300'
+        );
+
+        // 4. Verify Diagnostic box starts cleanly below the header bar
+        assert.ok(
+            appJs.includes("x: 86, y: 466, size: 6.2, font: fontNorm, maxWidth: 95"),
+            'Diagnostic text must start at Y=466 below header bar'
+        );
+
+        // 5. Verify Parts & Materials true 7.32pt row step and amount ghost whiteout
+        assert.ok(
+            appJs.includes("469.0, 461.7, 454.4, 447.1, 439.7"),
+            'ROW_Y must follow 7.32pt step starting at 469.0'
+        );
+        assert.ok(
+            appJs.includes("whiteOut(304, ry - 1.2, 45, 6.8);") &&
+            appJs.includes("whiteOut(475, ry - 1.2, 37, 6.8);"),
+            'Amount columns must mask pre-printed 0.00 ghosts'
+        );
+
+        // 6. Verify 1-click fast preset chips in index.html
+        assert.ok(
+            indexHtml.includes("onclick=\"addForm13PartRow('Engine Oil Filter', 1, 450)\""),
+            'index.html must provide 1-click preset for Engine Oil Filter'
+        );
+        assert.ok(
+            indexHtml.includes("onclick=\"addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)\""),
+            'index.html must provide 1-click preset for Synthetic Oil'
+        );
+
+        // 7. Verify signatures alignments
+        assert.ok(
+            appJs.includes("drawTextCenter(mechanic, 215.0, 274.8, 6.5, false);") &&
+            appJs.includes("drawTextCenter(assessor, 467.5, 274.8, 6.5, false);") &&
+            appJs.includes("drawTextCenter(sa, 215.0, 207.8, 6.5, false);") &&
+            appJs.includes("drawTextCenter(mechanic, 442.5, 207.8, 6.5, false);") &&
+            appJs.includes("drawTextCenter(name, 215.0, 174.8, 6.5, false);") &&
+            appJs.includes("drawTextCenter(manager, 442.5, 174.8, 6.5, false);"),
+            'All signature names must be centered above their respective underlines'
+        );
+
+        // 8. Verify Filipino Claim stub ghost masking and exact coordinate placement
+        assert.ok(
+            appJs.includes("whiteOut(148, 92.0, 138, 7.5);") &&
+            appJs.includes("whiteOut(368, 74.0, 157, 7.5);") &&
+            appJs.includes("drawTextFit(name, 152, 92.8, 132, 6.2, false);") &&
+            appJs.includes("drawTextCenter(plate, 396.5, 92.8, 6.2, false);") &&
+            appJs.includes("drawTextCenter(model, 482.5, 92.8, 6.2, false);") &&
+            appJs.includes("drawTextFit(sa, 152, 84.0, 132, 6.2, false);") &&
+            appJs.includes("drawTextCenter(intakeDate, 215.5, 75.0, 6.2, false);") &&
+            appJs.includes("drawTextCenter(stubId, 446.5, 75.0, 7.0, true);"),
+            'Filipino claim stub must mask all 5 ghost placeholders and place data on true lines'
         );
     });
 });

@@ -2865,7 +2865,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order No.</label>
-                                    <input type="text" id="f13-input-job-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-red-500 outline-none transition" readonly>
+                                    <input type="text" id="f13-input-job-no" placeholder="e.g. HT-JO-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-red-500 outline-none transition">
                                 </div>
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Intake Date</label>
@@ -2998,6 +2998,15 @@
                                 </button>
                             </div>
 
+                            <!-- 1-Click Fast Presets -->
+                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
+                                <button type="button" onclick="addForm13PartRow('Engine Oil Filter', 1, 450)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Oil Filter (₱450)</button>
+                                <button type="button" onclick="addForm13PartRow('Brake Pads (Front Set)', 1, 1850)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Brake Pads (₱1,850)</button>
+                                <button type="button" onclick="addForm13PartRow('Spark Plugs (Set of 4)', 1, 1200)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Spark Plugs (₱1,200)</button>
+                                <button type="button" onclick="addForm13PartRow('Air Filter Element', 1, 650)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Air Filter (₱650)</button>
+                            </div>
+
                             <div class="overflow-x-auto">
                                 <table class="w-full text-xs text-left">
                                     <thead>
@@ -3035,6 +3044,15 @@
                                 <button type="button" onclick="addForm13MaterialRow()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Material Item
                                 </button>
+                            </div>
+
+                            <!-- 1-Click Fast Presets -->
+                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
+                                <button type="button" onclick="addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Synthetic Oil (₱1,850)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Brake & Parts Cleaner', 1, 350)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Brake Cleaner (₱350)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Engine Flush Treatment', 1, 480)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Engine Flush (₱480)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Radiator Coolant (1L)', 1, 380)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Coolant (₱380)</button>
                             </div>
 
                             <div class="overflow-x-auto">
@@ -3210,7 +3228,7 @@
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                                     <div>
                                         <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation No.</label>
-                                        <input type="text" id="f23-input-quote-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-blue-500 outline-none transition" readonly>
+                                        <input type="text" id="f23-input-quote-no" placeholder="e.g. QT-2026-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-blue-500 outline-none transition">
                                     </div>
                                     <div>
                                         <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Date</label>
@@ -3218,7 +3236,7 @@
                                     </div>
                                     <div>
                                         <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
-                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
                                     </div>
                                 </div>
                             </div>
@@ -3426,7 +3444,7 @@
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing No.</label>
-                                    <input type="text" id="bill-input-billing-no" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:bg-white focus:border-purple-500 outline-none transition" readonly>
+                                    <input type="text" id="bill-input-billing-no" placeholder="e.g. BL-2026-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-purple-500 outline-none transition">
                                 </div>
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Date</label>
@@ -3434,11 +3452,11 @@
                                 </div>
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
-                                    <input type="text" id="bill-input-job-no" oninput="syncBillingCanvas()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-purple-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                    <input type="text" id="bill-input-job-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-purple-500 outline-none transition" placeholder="HT-JO-XXXX">
                                 </div>
                                 <div>
                                     <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quote Ref</label>
-                                    <input type="text" id="bill-input-quote-no" oninput="syncBillingCanvas()" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:bg-white focus:border-purple-500 outline-none transition" placeholder="QT-2026-XXXX">
+                                    <input type="text" id="bill-input-quote-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-purple-500 outline-none transition" placeholder="QT-2026-XXXX">
                                 </div>
                             </div>
                         </div>
@@ -7683,7 +7701,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.00"></script>
+    <script src="js/app.js?v=3.02"></script>
 </body>
 
 </html>

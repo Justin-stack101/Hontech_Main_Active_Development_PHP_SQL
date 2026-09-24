@@ -13294,7 +13294,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             quoteInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.f23Bound) {
-                    el.addEventListener('input', () => { syncQuoteFieldsToJobOrder(); });
+                    el.addEventListener('input', () => {
+                        if (id === 'f23-input-quote-no') delete el.dataset.autoDerived;
+                        syncQuoteFieldsToJobOrder();
+                    });
                     el.addEventListener('change', () => { syncQuoteFieldsToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncQuoteFieldsToJobOrder();
@@ -13313,7 +13316,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             billInputIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && !el.dataset.billBound) {
-                    el.addEventListener('input', () => { syncBillingToJobOrder(); });
+                    el.addEventListener('input', () => {
+                        if (id === 'bill-input-billing-no') delete el.dataset.autoDerived;
+                        syncBillingToJobOrder();
+                    });
                     el.addEventListener('change', () => { syncBillingToJobOrder(); scheduleFormStudioPdfRefresh(0); });
                     el.addEventListener('blur', () => {
                         syncBillingToJobOrder();
@@ -13883,46 +13889,78 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // 2. Customer Details
             // Pre-printed underlines are spaced at 7.78pt intervals (Y = 714.5, 706.7, 699.0, 691.2).
             // Baselines sit +1.3pt above each line to prevent lines piercing through text.
-            // Sizing: 6.5pt clean regular sans-serif matching official template (6.2pt for address/email);
-            // Plate No bolded for quick reading; auto-shrink down to 5.2pt prevents column collision.
-            drawTextFit(name, 148, 715.8, 138, 6.5, false, darkInk, 5.2);
-            drawTextFit(model, 350, 715.8, 62, 6.5, false, darkInk, 5.2);
-            drawTextFit(plate, 464, 715.8, 44, 6.5, true, darkInk, 5.2);
+            // Standardized: All 12 customer detail fields use the EXACT SAME font and size (6.2pt regular, NO BOLDING).
+            drawTextFit(name, 148, 715.8, 138, 6.2, false, darkInk, 5.0);
+            drawTextFit(model, 350, 715.8, 62, 6.2, false, darkInk, 5.0);
+            drawTextFit(plate, 464, 715.8, 44, 6.2, false, darkInk, 5.0);
 
             drawTextFit(address, 148, 708.0, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(km, 350, 708.0, 62, 6.5, false, darkInk, 5.2);
-            drawTextFit(intakeDate, 464, 708.0, 44, 6.5, false, darkInk, 5.2);
+            drawTextFit(km, 350, 708.0, 62, 6.2, false, darkInk, 5.0);
+            drawTextFit(intakeDate, 464, 708.0, 44, 6.2, false, darkInk, 5.0);
 
-            drawTextFit(contact, 148, 700.3, 138, 6.5, false, darkInk, 5.2);
-            drawTextFit(engine, 350, 700.3, 62, 6.5, false, darkInk, 5.2);
-            drawTextFit(promiseDate, 464, 700.3, 44, 6.5, false, darkInk, 5.2);
+            drawTextFit(contact, 148, 700.3, 138, 6.2, false, darkInk, 5.0);
+            drawTextFit(engine, 350, 700.3, 62, 6.2, false, darkInk, 5.0);
+            drawTextFit(promiseDate, 464, 700.3, 44, 6.2, false, darkInk, 5.0);
 
             drawTextFit(email, 148, 692.5, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(chassis, 350, 692.5, 62, 6.5, false, darkInk, 5.2);
-            drawTextFit(color, 464, 692.5, 44, 6.5, false, darkInk, 5.2);
+            drawTextFit(chassis, 350, 692.5, 62, 6.2, false, darkInk, 5.0);
+            drawTextFit(color, 464, 692.5, 44, 6.2, false, darkInk, 5.0);
 
-            // 3. Concern Box (Header bottom line is Y=665.4, Left border X=88.6, Right X=508.5)
+            // 3. Customer Concern / Description Box (Centered horizontally and vertically inside box Y: 575..627)
             if (concern) {
-                page.drawText(concern, {
-                    x: 94, y: 652, size: 6.8, font: fontNorm, maxWidth: 405, lineHeight: 9.0
+                const words = concern.split(/\s+/);
+                const lines = [];
+                let curLine = '';
+                const maxW = 390;
+                words.forEach(w => {
+                    const test = curLine ? (curLine + ' ' + w) : w;
+                    if (fontNorm.widthOfTextAtSize(test, 6.5) <= maxW) {
+                        curLine = test;
+                    } else {
+                        if (curLine) lines.push(curLine);
+                        curLine = w;
+                    }
+                });
+                if (curLine) lines.push(curLine);
+
+                const lineH = 8.5;
+                const totalH = lines.length * lineH;
+                const startY = 605 + (totalH / 2) - lineH;
+                lines.slice(0, 5).forEach((lineStr, idx) => {
+                    drawTextCenter(lineStr, 298.5, startY - (idx * lineH), 6.5, false, darkInk);
                 });
             }
 
-            // 4. Interviewed by (cover placeholder Roman Sarol and center name above Service Advisor)
-            whiteOut(145, 582.8, 80, 7);
-            drawTextCenter(sa, 184, 583.5, 7.5, false);
+            // 4. Interviewed by (proper baseline Y = 549.5 directly above Service Advisor underline)
+            whiteOut(145, 548.5, 85, 7.5);
+            drawTextCenter(sa, 187.5, 549.5, 6.5, false);
 
-            // 5. Diagnostics
+            // 4b. Authorization: Customer Name and Signature (mask template pre-printed "0" and center name)
+            whiteOut(240, 510.0, 120, 8);
+            drawTextCenter(name, 300.0, 511.5, 6.5, false);
+
+            // 5. Diagnostics (properly placed below the DIAGNOSTIC RESULT header bar)
             if (diagnostic) {
                 page.drawText(diagnostic, {
-                    x: 81, y: 498, size: 6.5, font: fontNorm, maxWidth: 100, lineHeight: 8.5
+                    x: 86, y: 466, size: 6.2, font: fontNorm, maxWidth: 95, lineHeight: 8.5
                 });
             }
 
-            // 6. Parts & Materials (Clean vector grid alignment without destructive whiteouts)
-            const ROW_Y = [494.4, 486.3, 478.2, 470.1, 462.0, 453.8, 445.7, 437.6, 429.5, 421.4, 413.3, 405.2, 397.1, 389.0, 380.9, 372.8, 364.7, 356.6, 348.5, 340.4, 332.2, 324.1, 317.0];
+            // 6. Parts & Materials (Exact 7.32pt template row grid matching template lines)
+            const ROW_Y = [
+                469.0, 461.7, 454.4, 447.1, 439.7, 432.4, 425.1, 417.8,
+                410.5, 403.1, 395.8, 388.5, 381.2, 373.9, 366.5, 359.2,
+                351.9, 344.6, 337.3, 330.0, 322.6, 315.3, 308.0
+            ];
             let partsTotal = 0;
             let matsTotal = 0;
+
+            // Inset whiteout to mask template pre-printed "0.00" placeholders across all 23 rows in Amount columns
+            for (let r = 0; r < ROW_Y.length; r++) {
+                const ry = ROW_Y[r];
+                whiteOut(304, ry - 1.2, 45, 6.8);
+                whiteOut(475, ry - 1.2, 37, 6.8);
+            }
 
             (window.form13Parts || []).forEach((p, i) => {
                 if (i >= ROW_Y.length) return;
@@ -13932,15 +13970,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 partsTotal += amt;
 
-                drawTextFit((p.desc || ''), 190.5, ry, 48, 6.5);
-                drawTextCenter(String(qty), 245, ry, 6.5);
-                drawTextRight(price.toFixed(2), 293, ry, 6.5);
-                // The template pre-prints a "0.00" placeholder in every Amount cell; it sits slightly lower
-                // than our text baseline and peeks out from under/below the real amount once a row has data
-                // (e.g. "450.00" over "0.00"). Cover just the cell interior (inset from the grid lines) before
-                // drawing the real total so the placeholder doesn't show through.
-                whiteOut(297, ry - 1.5, 54, 7.5);
-                drawTextRight(amt.toFixed(2), 350, ry, 6.5, false);
+                drawTextFit((p.desc || ''), 190.5, ry, 48, 6.2);
+                drawTextCenter(String(qty), 245, ry, 6.2);
+                drawTextRight(price.toFixed(2), 293, ry, 6.2);
+                if (amt > 0) {
+                    drawTextRight(amt.toFixed(2), 346, ry, 6.2, false);
+                }
             });
 
             (window.form13Materials || []).forEach((m, i) => {
@@ -13951,55 +13986,75 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 matsTotal += amt;
 
-                drawTextFit((m.desc || ''), 355.5, ry, 52, 6.5);
-                drawTextCenter(String(qty), 415, ry, 6.5);
-                drawTextRight(price.toFixed(2), 471, ry, 6.5);
-                whiteOut(474, ry - 1.5, 47, 7.5);
-                drawTextRight(amt.toFixed(2), 520, ry, 6.5, false);
+                drawTextFit((m.desc || ''), 355.5, ry, 52, 6.2);
+                drawTextCenter(String(qty), 415, ry, 6.2);
+                drawTextRight(price.toFixed(2), 471, ry, 6.2);
+                if (amt > 0) {
+                    drawTextRight(amt.toFixed(2), 510, ry, 6.2, false);
+                }
             });
 
-            // Subtotals & Total
+            // Subtotals & Total (cleanly mask pre-printed "-" and align totals)
+            whiteOut(300, 297.0, 48, 8);
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 347, 307.5, 7, false);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 298.5, 6.5, false);
             }
 
+            whiteOut(475, 297.0, 38, 8);
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 517, 306.5, 7, false);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 510, 298.5, 6.5, false);
             }
 
             const grandTotal = partsTotal + matsTotal;
+            whiteOut(470, 289.5, 43, 9);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 514, 297.5, 8, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 512, 291.0, 7.2, true, darkInk);
             }
 
-            // Signatures
-            // The template pre-prints the role placeholders ("Auto Mechanic" / "Parts/Materials Controller")
-            // directly under these signature lines; without a whiteout first, the real name/default value we
-            // draw on top lands at nearly the same spot and doubles up with the printed label (most visible
-            // when the field is left blank, since our fallback text is literally the same string).
-            whiteOut(150, 278.8, 70, 8);
-            whiteOut(428, 278.8, 70, 8);
-            drawTextCenter(mechanic, 184, 279.8, 7.2, false);
-            drawTextCenter(assessor, 462, 279.8, 7.2, false);
+            // Signatures block
+            // Mask role template labels underneath underlines and draw names centered on lines
+            whiteOut(150, 274.0, 130, 8);
+            drawTextCenter(mechanic, 215.0, 274.8, 6.5, false);
 
-            // Certificate of Completion signature block. The "Approved by" slot (413, 206) has no backing
-            // input field — it used to redraw the literal string 'Chief, Auto Mechanic', which just duplicated
-            // the template's own printed role label underneath it ("Chief, Auto Mechanic / Authorized AM"),
-            // so it's left blank for a physical signature instead of removed outright.
-            whiteOut(150, 204, 70, 8);
-            drawTextCenter(sa, 184, 206, 7.2, false);
-            drawTextCenter(name, 184, 169.5, 7.2, false);
-            whiteOut(378, 167.5, 70, 8);
-            drawTextCenter(manager, 413, 169.5, 7.2, false);
+            whiteOut(415, 274.0, 105, 8);
+            drawTextCenter(assessor, 467.5, 274.8, 6.5, false);
 
-            // 7. Filipino Claim stub
-            drawTextFit(name, 134, 77.6, 140, 7.5, false);
-            const combinedVehicle = [plate, model].filter(Boolean).join(' / ');
-            drawTextFit(combinedVehicle, 355, 77.6, 160, 7.5, false);
-            whiteOut(170, 68, 80, 7);
-            drawTextFit(sa, 175, 69.1, 100, 7.5, false);
+            // Certificate of Completion block
+            whiteOut(150, 207.0, 130, 8);
+            drawTextCenter(sa, 215.0, 207.8, 6.5, false);
+
+            // Approved by Chief Mechanic
+            whiteOut(375, 207.0, 135, 8);
+            drawTextCenter(mechanic, 442.5, 207.8, 6.5, false);
+
+            // CONFORME (Customer) - mask template "0" ghost
+            whiteOut(150, 173.5, 130, 8);
+            drawTextCenter(name, 215.0, 174.8, 6.5, false);
+
+            // Concurred by (Manager)
+            whiteOut(375, 173.5, 135, 8);
+            drawTextCenter(manager, 442.5, 174.8, 6.5, false);
+
+            // 7. Filipino Claim stub (all 5 pre-printed ghost placeholders masked and coordinates calibrated)
+            whiteOut(148, 92.0, 138, 7.5);
+            whiteOut(368, 92.0, 58, 7.5);
+            whiteOut(435, 92.0, 90, 7.5);
+            whiteOut(148, 83.5, 138, 7.5);
+            whiteOut(148, 74.0, 138, 7.5);
+            whiteOut(368, 74.0, 157, 7.5);
+
+            // Row 1 (Y = 92.8)
+            drawTextFit(name, 152, 92.8, 132, 6.2, false);
+            drawTextCenter(plate, 396.5, 92.8, 6.2, false);
+            drawTextCenter(model, 482.5, 92.8, 6.2, false);
+
+            // Row 2 (Y = 83.8)
+            drawTextFit(sa, 152, 84.0, 132, 6.2, false);
+
+            // Row 3 (Y = 75.0)
+            drawTextCenter(intakeDate, 215.5, 75.0, 6.2, false);
             const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
-            drawText(stubId, 355, 59, 8, true, darkInk);
+            drawTextCenter(stubId, 446.5, 75.0, 7.0, true);
 
             return await doc.save();
         }
@@ -15585,7 +15640,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
             const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
 
-            setVal('f23-input-quote-no', quoteNo);
+            const quoteEl = document.getElementById('f23-input-quote-no');
+            if (quoteEl && (!quoteEl.value || quoteEl.dataset.autoDerived === 'true')) {
+                quoteEl.value = quoteNo;
+                quoteEl.dataset.autoDerived = 'true';
+            }
             setVal('f23-input-date', date);
             setVal('f23-input-job-no', jobNo);
 
@@ -15641,6 +15700,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             setVal('f13-input-color', getVal('f23-input-color'));
             setVal('f13-input-email', getVal('f23-input-email'));
             setVal('f13-input-km', getVal('f23-input-km'));
+
+            const quoteNo = getVal('f23-input-quote-no');
+            if (quoteNo) setVal('bill-input-quote-no', quoteNo);
+            const quoteJobRef = getVal('f23-input-job-no');
+            if (quoteJobRef) setVal('bill-input-job-no', quoteJobRef);
 
             syncForm23Canvas();
             saveWorkbookDraftOffline(true);
@@ -15874,10 +15938,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
             const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
-            const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
+            const quoteNo = getVal('f23-input-quote-no') || ('QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001'));
             const billingNo = 'BL-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
 
-            setVal('bill-input-billing-no', billingNo);
+            const billEl = document.getElementById('bill-input-billing-no');
+            if (billEl && (!billEl.value || billEl.dataset.autoDerived === 'true')) {
+                billEl.value = billingNo;
+                billEl.dataset.autoDerived = 'true';
+            }
             setVal('bill-input-date', date);
             setVal('bill-input-job-no', jobNo);
             setVal('bill-input-quote-no', quoteNo);
@@ -17865,6 +17933,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     mechanic: getVal('f13-input-mechanic'),
                     assessor: getVal('f13-input-assessor'),
                     manager: getVal('f13-input-manager'),
+                    quoteNo: getVal('f23-input-quote-no'),
+                    billingNo: getVal('bill-input-billing-no'),
+                    quoteJobRef: getVal('f23-input-job-no'),
+                    billingJobRef: getVal('bill-input-job-no'),
+                    billingQuoteRef: getVal('bill-input-quote-no'),
                     parts: window.form13Parts || [],
                     materials: window.form13Materials || [],
                     quoteItems: window.form23Items || [],
@@ -17917,6 +17990,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 setVal('f13-input-mechanic', draft.mechanic);
                 setVal('f13-input-assessor', draft.assessor);
                 setVal('f13-input-manager', draft.manager);
+                if (draft.quoteNo) setVal('f23-input-quote-no', draft.quoteNo);
+                if (draft.billingNo) setVal('bill-input-billing-no', draft.billingNo);
+                if (draft.quoteJobRef) setVal('f23-input-job-no', draft.quoteJobRef);
+                if (draft.billingJobRef) setVal('bill-input-job-no', draft.billingJobRef);
+                if (draft.billingQuoteRef) setVal('bill-input-quote-no', draft.billingQuoteRef);
 
                 if (Array.isArray(draft.parts)) window.form13Parts = draft.parts;
                 if (Array.isArray(draft.materials)) window.form13Materials = draft.materials;
@@ -17963,6 +18041,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const promiseDateEl = document.getElementById('f13-input-promise-date');
             if (promiseDateEl) promiseDateEl.value = today;
+
+            const quoteNoInput = document.getElementById('f23-input-quote-no');
+            if (quoteNoInput) {
+                quoteNoInput.value = `QT-${today.slice(0, 4)}-${randSuffix}`;
+                quoteNoInput.dataset.autoDerived = 'true';
+            }
+
+            const billNoInput = document.getElementById('bill-input-billing-no');
+            if (billNoInput) {
+                billNoInput.value = `BL-${today.slice(0, 4)}-${randSuffix}`;
+                billNoInput.dataset.autoDerived = 'true';
+            }
+
+            const quoteJobRefInput = document.getElementById('f23-input-job-no');
+            if (quoteJobRefInput) quoteJobRefInput.value = `HT-JO-${randSuffix}`;
+
+            const billJobRefInput = document.getElementById('bill-input-job-no');
+            if (billJobRefInput) billJobRefInput.value = `HT-JO-${randSuffix}`;
+
+            const billQuoteRefInput = document.getElementById('bill-input-quote-no');
+            if (billQuoteRefInput) billQuoteRefInput.value = `QT-${today.slice(0, 4)}-${randSuffix}`;
 
             window.form13Parts = [];
             window.form13Materials = [];
@@ -18032,8 +18131,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
                 const manager = getVal('f13-input-manager') || 'General Manager';
 
-                const quoteNo = 'QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
-                const billingNo = 'BL-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001');
+                const quoteNo = getVal('f23-input-quote-no') || ('QT-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001'));
+                const billingNo = getVal('bill-input-billing-no') || ('BL-' + date.slice(0, 4) + '-' + (jobNo.replace(/[^0-9]/g, '') || '0001'));
 
                 // Load the pristine template zip from arrayBuffer
                 const zip = new JSZip();
