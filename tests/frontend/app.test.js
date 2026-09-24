@@ -64,8 +64,8 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.ok(appJs.includes("onlineBranchFilter = payload.branch || 'all';"));
     });
 
-    it('AUT-FRONT-112: cache buster bumped to v=2.97', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=2.97"'));
+    it('AUT-FRONT-112: cache buster bumped to v=2.98', () => {
+        assert.ok(indexHtml.includes('src="js/app.js?v=2.98"'));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {
@@ -78,5 +78,16 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.ok(saBlock.includes("showSection('lookup'"), 'Must include Customer Lookup');
         assert.ok(saBlock.includes("showSection('bays'"), 'Must include Bay Status');
         assert.ok(saBlock.includes("openTVBroadcastHubModal()"), 'Must include TV Monitor');
+    });
+
+    it('AUT-FRONT-114: Login page and document title reflect the official capstone system title', () => {
+        assert.ok(
+            indexHtml.includes('<title>HonTech — Web-Based Operations and Real-Time Queue Management System</title>'),
+            'Document title must match official system title'
+        );
+        assert.ok(
+            indexHtml.includes('Web-Based <br>Operations and <br>Real-Time Queue <br><span class="text-red-500">Management System</span>'),
+            'Login marketing hero must display official system title with styled accent'
+        );
     });
 });

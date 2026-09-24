@@ -1,3 +1,26 @@
+## 📅 September 24, 2026 (Official System Title Branding on Login Page & Document Title)
+
+### 📋 Official System Title Branding on Login Page & Document Title (REV-144)
+* **Objective & Context**: In response to explicit user instruction, update the official title of the system across the application login screen and browser document title to: **"Web-Based Operations and Real-Time Queue Management System"**. This aligns the capstone prototype branding with the official academic and corporate research title.
+* **Core Changes Made**:
+  - `frontend/index.html`:
+    - Updated HTML `<title>` tag on line 10 to: `<title>HonTech — Web-Based Operations and Real-Time Queue Management System</title>`.
+    - Updated the left hero marketing header (`<h1>`) on lines 499-503 to display `Web-Based <br>Operations and <br>Real-Time Queue <br><span class="text-red-500">Management System</span>`.
+    - Preserved rich dark-mode typography, drop shadow, italic styling, and accented red highlight on `Management System`.
+    - Bumped script cache buster query parameter to `v=2.98`.
+  - `tests/frontend/app.test.js`:
+    - Updated `AUT-FRONT-112` cache buster assertion for `v=2.98`.
+    - Added `AUT-FRONT-114` verifying that the document title and login marketing header display the exact official system title with styled markup.
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Updated cache buster compatibility checks in Suites 49-55 to recognize `v=2.98`.
+* **Automated & Manual QA Verification**:
+  - 140/140 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `AUTH-30` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.98`.
+* **GitHub Commit**: `f2f2723`.
+
+---
+
 ## 📅 September 24, 2026 (Consolidated Daily Intakes Online Module & Clean Service Advisor Navigation)
 
 ### 📋 Consolidated Daily Intakes Online Module & Clean Service Advisor Navigation (REV-143)
