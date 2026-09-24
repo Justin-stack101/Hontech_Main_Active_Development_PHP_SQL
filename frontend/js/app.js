@@ -14143,26 +14143,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
             const manager = getVal('f13-input-manager') || 'General Manager';
 
-            // Meta Header
+            // Meta Header — clear the full right-side header data column (Date, JO#, Promise)
+            // to remove pre-printed "0" placeholders before drawing real values.
+            whiteout(420, 720, 100, 62);
             drawText(quoteNo, 420, 775.5, 8, true, darkInk);
             drawText(date, 470, 743.5, 7.5, false, darkInk);
-            whiteout(475, 729.5, 65, 10);
             drawText(jobNo, 485, 734.0, 7.5, true, darkInk);
             drawText(promiseDate, 470, 724.6, 7.5, false, darkInk);
 
-            // Customer Details (with non-destructive placeholder masking)
-            whiteout(115, 692.0, 205, 9);
-            whiteout(375, 692.0, 125, 9);
+            // Customer Details (with non-destructive placeholder masking).
+            // The template pre-prints "0" placeholders in every data cell of the
+            // customer details grid. A single wide whiteout per row (from the label
+            // right-edge at X≈110 to the page right margin at X≈510) ensures no stray
+            // "0" ghosts survive between the left and right column groups.
+
+            // Row 1: Name + Plate No
+            whiteout(110, 692.0, 400, 9);
             drawTextFit(name, 115, 696.3, 180, 6.5, false, darkInk, 5.2);
             drawTextFit(plate, 380, 696.3, 120, 6.5, true, darkInk, 5.2);
 
-            whiteout(115, 682.5, 205, 9);
-            whiteout(375, 682.5, 125, 9);
+            // Row 2: Address + Year/Model
+            whiteout(110, 682.5, 400, 9);
             drawTextFit(address, 115, 686.8, 180, 6.2, false, darkInk, 5.0);
             drawTextFit(model, 380, 686.8, 120, 6.5, false, darkInk, 5.2);
 
-            whiteout(115, 673.0, 205, 9);
-            whiteout(375, 673.0, 125, 9);
+            // Row 3: Contact No + Color
+            whiteout(110, 673.0, 400, 9);
             drawTextFit(contact, 115, 677.4, 180, 6.5, false, darkInk, 5.2);
             drawTextFit(color, 380, 677.4, 120, 6.5, false, darkInk, 5.2);
 
@@ -14181,12 +14187,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const rowStep = 9.46;
             const maxRows = 24;
 
-            // Clear pre-printed template rows 15-38 (targeted insets preserve grid borders)
+            // Clear ALL pre-printed template placeholder text in every row cell.
+            // The Quotation_No template pre-prints "0" in QTY cells and "0.00" in every
+            // numeric column (FRT, LABOR, PARTS, MATERIALS, AMOUNT). We must whiteout every
+            // column's interior (inset ~1pt from grid lines) so these ghosts never show through.
+            // Column interiors (approximate X positions from template grid):
+            //   PARTS/MATERIAL desc: X=72,  W=120
+            //   QTY:                 X=192, W=22
+            //   FRT:                 X=218, W=28
+            //   LABOR:               X=248, W=35
+            //   PARTS:               X=300, W=48
+            //   MATERIALS:           X=360, W=45
+            //   AMOUNT:              X=410, W=60
             for (let r = 0; r < maxRows; r++) {
                 const ry = startY - (r * rowStep);
-                whiteout(72, ry - 1.5, 120, 8.5);
-                whiteout(265, ry - 1.5, 45, 8.5);
-                whiteout(440, ry - 1.5, 65, 8.5);
+                whiteout(72, ry - 1.5, 120, 8.5);   // PARTS/MATERIAL desc
+                whiteout(192, ry - 1.5, 22, 8.5);    // QTY
+                whiteout(218, ry - 1.5, 28, 8.5);    // FRT
+                whiteout(248, ry - 1.5, 35, 8.5);    // LABOR
+                whiteout(300, ry - 1.5, 48, 8.5);    // PARTS
+                whiteout(360, ry - 1.5, 45, 8.5);    // MATERIALS
+                whiteout(410, ry - 1.5, 60, 8.5);    // AMOUNT
             }
 
             items.slice(0, maxRows).forEach((it, idx) => {
@@ -14225,11 +14246,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
                 if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
                 if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
-                drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
+                // Only draw the row total when it has a real value; template "0.00" is
+                // already cleared by the whiteout loop above so blank rows stay clean.
+                if (rowTotal > 0) drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
             });
 
-            // Clear and draw subtotals
-            whiteout(420, 320, 55, 50);
+            // Clear pre-printed subtotal / summary placeholders.
+            // The template pre-prints "0.00" in every summary cell; wipe the full
+            // right-side summary block (spanning all 5 summary lines from about Y=320 to Y=370).
+            whiteout(300, 318, 175, 56);
+
             if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.2, false);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;

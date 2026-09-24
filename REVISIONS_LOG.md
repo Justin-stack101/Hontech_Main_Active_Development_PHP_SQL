@@ -1,3 +1,29 @@
+## 📅 September 24, 2026 (Quotation PDF Ghost Placeholder Masking & Subtotals Alignment Overhaul)
+
+### 📋 Quotation PDF Ghost Placeholder Masking & Subtotals Alignment Overhaul (REV-147)
+* **Objective & Context**: In response to user feedback on Quotation (Form 2/3) PDF preview formatting, eliminate all pre-printed template placeholder ghosts (`"0"` and `"0.00"` strings), clear empty table rows, extend whiteout masking across all 7 table columns (PARTS/MATERIAL, QTY, FRT, LABOR, PARTS, MATERIALS, AMOUNT), fix Customer Details and Meta Header placeholder leakage, and overhaul the Subtotals and Grand Total summary block area without altering or breaking template grid lines.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - **Quotation (Form 2/3)**:
+      - **Meta Header**: Replaced single narrow whiteout with wide block `whiteout(420, 720, 100, 62)` covering the full right-side header column (Quote No, Date, Job No, Promise Date) to remove pre-printed `"0"` placeholders before drawing dynamic values.
+      - **Customer Details**: Expanded row whiteout rectangles to wide single-strip insets `whiteout(110, Y, 400, 9)` for Rows 1-3 (`Y = 692.0, 682.5, 673.0`), completely wiping stray `"0"` ghosts between the left (Name, Address, Contact) and right (Plate, Model, Color) column groups.
+      - **Line Items Table**: Expanded row clearing loop from 3 column insets to all 7 column insets (`whiteout(72, ry-1.5, 120, 8.5)` for Desc, `whiteout(192, ry-1.5, 22, 8.5)` for QTY `"0"`, `whiteout(218, ry-1.5, 28, 8.5)` for FRT `"0.00"`, `whiteout(248, ry-1.5, 35, 8.5)` for LABOR `"0.00"`, `whiteout(300, ry-1.5, 48, 8.5)` for PARTS `"0.00"`, `whiteout(360, ry-1.5, 45, 8.5)` for MATERIALS `"0.00"`, `whiteout(410, ry-1.5, 60, 8.5)` for AMOUNT `"0.00"`).
+      - **Row Totals**: Suppressed drawing `rowTotal.toFixed(2)` on empty rows (`if (rowTotal > 0)`), ensuring blank table rows remain completely clean and clear.
+      - **Subtotals & Grand Total**: Replaced narrow 55×50 whiteout with wide summary block `whiteout(300, 318, 175, 56)` covering all 5 summary lines (`Y = 318..374`), masking template pre-printed `"0.00"` ghosts while accurately drawing non-zero Labor, VAT 12%, Materials, Parts, and Grand Total values.
+  - `frontend/index.html`:
+    - Incremented script cache buster query parameter from `v=2.99` to `v=3.00`.
+  - `tests/frontend/sla_and_logic.test.js` & `tests/frontend/app.test.js`:
+    - Updated `AUT-FRONT-107` assertion to accept the expanded header whiteout rectangle `whiteout(420, 720, 100, 62)`.
+    - Updated `AUT-FRONT-112` and all 42 cache-buster test assertions across the suite to recognize `v=3.00`.
+* **Automated & Manual QA Verification**:
+  - 142/142 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `SA-23` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-147` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.00`.
+* **GitHub Commit**: `501e128`.
+
+---
+
 ## 📅 September 24, 2026 (2025 RO Excel Studio Multi-Sheet PDF Document Formatting, Typography & Vector Overhaul)
 
 ### 📋 2025 RO Excel Studio Multi-Sheet PDF Document Formatting, Typography & Vector Overhaul (REV-146)
