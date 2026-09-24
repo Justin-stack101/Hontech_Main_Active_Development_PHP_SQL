@@ -13906,7 +13906,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             drawTextFit(chassis, 350, 692.5, 62, 6.2, false, darkInk, 5.0);
             drawTextFit(color, 464, 692.5, 44, 6.2, false, darkInk, 5.0);
 
-            // 3. Customer Concern / Description Box (Centered horizontally and vertically inside box Y: 575..627)
+            // 3. Customer Concern / Description Box (Centered horizontally X=307.5 and vertically inside box Y: 610..660, center Y=635.0)
             if (concern) {
                 const words = concern.split(/\s+/);
                 const lines = [];
@@ -13923,43 +13923,40 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
                 if (curLine) lines.push(curLine);
 
-                const lineH = 8.5;
+                const lineH = 9.0;
                 const totalH = lines.length * lineH;
-                const startY = 605 + (totalH / 2) - lineH;
+                const startY = 635.0 + (totalH / 2) - lineH + 2;
                 lines.slice(0, 5).forEach((lineStr, idx) => {
-                    drawTextCenter(lineStr, 298.5, startY - (idx * lineH), 6.5, false, darkInk);
+                    drawTextCenter(lineStr, 307.5, startY - (idx * lineH), 6.5, false, darkInk);
                 });
             }
 
-            // 4. Interviewed by (proper baseline Y = 549.5 directly above Service Advisor underline)
-            whiteOut(145, 548.5, 85, 7.5);
-            drawTextCenter(sa, 187.5, 549.5, 6.5, false);
+            // 4. Interviewed by (Underline at Y = 582.0, runs X = 148..245, Service Advisor label at Y = 575.0)
+            whiteOut(148, 582.5, 96, 7.5);
+            drawTextCenter(sa, 196.5, 583.5, 6.5, false);
 
-            // 4b. Authorization: Customer Name and Signature (mask template pre-printed "0" and center name)
-            whiteOut(240, 510.0, 120, 8);
-            drawTextCenter(name, 300.0, 511.5, 6.5, false);
+            // 4b. Authorization: Customer Name and Signature (Underline at Y = 544.0, ghost '0' at X = 301.4, Y = 545.0)
+            whiteOut(285, 542.6, 35, 10.0);
+            drawTextCenter(name, 302.5, 545.5, 6.5, false);
 
             // 5. Diagnostics (properly placed below the DIAGNOSTIC RESULT header bar)
             if (diagnostic) {
                 page.drawText(diagnostic, {
-                    x: 86, y: 466, size: 6.2, font: fontNorm, maxWidth: 95, lineHeight: 8.5
+                    x: 86, y: 492, size: 6.2, font: fontNorm, maxWidth: 95, lineHeight: 8.5
                 });
             }
 
             // 6. Parts & Materials (Exact 7.32pt template row grid matching template lines)
-            const ROW_Y = [
-                469.0, 461.7, 454.4, 447.1, 439.7, 432.4, 425.1, 417.8,
-                410.5, 403.1, 395.8, 388.5, 381.2, 373.9, 366.5, 359.2,
-                351.9, 344.6, 337.3, 330.0, 322.6, 315.3, 308.0
-            ];
+            // 6. Parts & Materials (Exact 7.32pt template row grid matching template lines starting at 495.5)
+            const ROW_Y = Array.from({ length: 23 }, (_, i) => +(495.5 - i * 7.32).toFixed(1));
             let partsTotal = 0;
             let matsTotal = 0;
 
             // Inset whiteout to mask template pre-printed "0.00" placeholders across all 23 rows in Amount columns
             for (let r = 0; r < ROW_Y.length; r++) {
                 const ry = ROW_Y[r];
-                whiteOut(304, ry - 1.2, 45, 6.8);
-                whiteOut(475, ry - 1.2, 37, 6.8);
+                whiteOut(304, ry - 1.0, 45, 6.8);
+                whiteOut(475, ry - 1.0, 37, 6.8);
             }
 
             (window.form13Parts || []).forEach((p, i) => {
@@ -13995,66 +13992,56 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
 
             // Subtotals & Total (cleanly mask pre-printed "-" and align totals)
-            whiteOut(300, 297.0, 48, 8);
+            whiteOut(300, 319.0, 48, 8);
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 298.5, 6.5, false);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 320.5, 6.5, false);
             }
 
-            whiteOut(475, 297.0, 38, 8);
+            whiteOut(475, 319.0, 38, 8);
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 510, 298.5, 6.5, false);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 510, 320.5, 6.5, false);
             }
 
             const grandTotal = partsTotal + matsTotal;
-            whiteOut(470, 289.5, 43, 9);
+            whiteOut(470, 311.5, 43, 9);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 512, 291.0, 7.2, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 512, 313.0, 7.2, true, darkInk);
             }
 
-            // Signatures block
-            // Mask role template labels underneath underlines and draw names centered on lines
-            whiteOut(150, 274.0, 130, 8);
-            drawTextCenter(mechanic, 215.0, 274.8, 6.5, false);
+            // Signatures block (Diagnosed by & Assessed by underlines at Y = 290.0)
+            drawTextCenter(mechanic, 200.0, 292.0, 6.5, false);
+            drawTextCenter(assessor, 442.5, 292.0, 6.5, false);
 
-            whiteOut(415, 274.0, 105, 8);
-            drawTextCenter(assessor, 467.5, 274.8, 6.5, false);
+            // Certificate of Completion block (Underlines at Y = 222.0)
+            drawTextCenter(sa, 200.0, 223.5, 6.5, false);
+            drawTextCenter(mechanic, 442.5, 223.5, 6.5, false);
 
-            // Certificate of Completion block
-            whiteOut(150, 207.0, 130, 8);
-            drawTextCenter(sa, 215.0, 207.8, 6.5, false);
-
-            // Approved by Chief Mechanic
-            whiteOut(375, 207.0, 135, 8);
-            drawTextCenter(mechanic, 442.5, 207.8, 6.5, false);
-
-            // CONFORME (Customer) - mask template "0" ghost
-            whiteOut(150, 173.5, 130, 8);
-            drawTextCenter(name, 215.0, 174.8, 6.5, false);
+            // CONFORME (Customer) - mask template "0" ghost at X = 195.3, Y = 183.0 (Underlines at Y = 181.0)
+            whiteOut(185, 181.8, 30, 8.5);
+            drawTextCenter(name, 200.0, 182.5, 6.5, false);
 
             // Concurred by (Manager)
-            whiteOut(375, 173.5, 135, 8);
-            drawTextCenter(manager, 442.5, 174.8, 6.5, false);
+            drawTextCenter(manager, 442.5, 182.5, 6.5, false);
 
             // 7. Filipino Claim stub (all 5 pre-printed ghost placeholders masked and coordinates calibrated)
-            whiteOut(148, 92.0, 138, 7.5);
-            whiteOut(368, 92.0, 58, 7.5);
-            whiteOut(435, 92.0, 90, 7.5);
-            whiteOut(148, 83.5, 138, 7.5);
-            whiteOut(148, 74.0, 138, 7.5);
-            whiteOut(368, 74.0, 157, 7.5);
+            whiteOut(148, 98.5, 138, 7.5);
+            whiteOut(368, 98.5, 155, 7.5);
+            whiteOut(148, 88.5, 138, 7.5);
+            whiteOut(148, 79.5, 138, 7.5);
+            whiteOut(368, 79.5, 155, 7.5);
 
-            // Row 1 (Y = 92.8)
-            drawTextFit(name, 152, 92.8, 132, 6.2, false);
-            drawTextCenter(plate, 396.5, 92.8, 6.2, false);
-            drawTextCenter(model, 482.5, 92.8, 6.2, false);
+            // Row 1 (Y = 99.5)
+            drawTextFit(name, 152, 99.5, 132, 6.2, false);
+            drawTextCenter(plate, 396.5, 99.5, 6.2, false);
+            drawTextCenter(model, 482.5, 99.5, 6.2, false);
 
-            // Row 2 (Y = 83.8)
-            drawTextFit(sa, 152, 84.0, 132, 6.2, false);
+            // Row 2 (Y = 89.5)
+            drawTextFit(sa, 152, 89.5, 132, 6.2, false);
 
-            // Row 3 (Y = 75.0)
-            drawTextCenter(intakeDate, 215.5, 75.0, 6.2, false);
+            // Row 3 (Y = 80.5)
+            drawTextCenter(intakeDate, 215.5, 80.5, 6.2, false);
             const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
-            drawTextCenter(stubId, 446.5, 75.0, 7.0, true);
+            drawTextCenter(stubId, 446.5, 80.5, 7.0, true);
 
             return await doc.save();
         }

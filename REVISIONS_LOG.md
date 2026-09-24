@@ -1,3 +1,28 @@
+## 📅 September 24, 2026 (Form 1/3 PDF Pixel-Perfect Visual Calibration for Customer Concern, Interviewed By, Authorization & Signatures)
+
+### 📋 Form 1/3 PDF Pixel-Perfect Visual Calibration for Customer Concern, Interviewed By, Authorization & Signatures (REV-150)
+* **Objective & Context**: In direct response to user visual feedback on Form 1/3 (Job Order) PDF preview formatting, eliminate all remaining coordinate misalignments caused by embedded PDF XObject coordinate translations:
+  1. Fix Customer Concern / Description of Requested Service: previously drawn outside the box and overlapping the "NOTE" legal text; calibrated to sit centered horizontally and vertically directly inside the white Concern Box (`X = 307.5`, `startY = 635.0` within `Y: 610..660`).
+  2. Fix "Interviewed by" Service Advisor name: previously shifted down to the wrong baseline over the Parts header; calibrated to rest directly above the `Interviewed by: ____________________ Service Advisor` underline (`X = 196.5, Y = 583.5` with `whiteOut(148, 582.5, 96, 7.5)`).
+  3. Fix "Customer Name and Signature" under Authorization: previously displaced with pre-printed ghost `"0"` visible; calibrated to sit directly above the `Customer Name and Signature` underline (`X = 302.5, Y = 545.5`) with pre-printed ghost `"0"` 100% masked (`whiteOut(285, 542.6, 35, 10.0)`).
+  4. Parts & Materials Table: Recalibrated `ROW_Y` array to start at `Y = 495.5` with `7.32 pt` pitch and masked `"0.00"` ghosts with targeted insets (`whiteOut(304, ry - 1.0, 45, 6.8)` and `whiteOut(475, ry - 1.0, 37, 6.8)`).
+  5. Calibrate Lower Signatures: Diagnosed by (`X = 200.0, Y = 292.0`), Assessed by (`X = 442.5, Y = 292.0`), Recommending Approval (`X = 200.0, Y = 223.5`), Approved by Chief Mechanic (`X = 442.5, Y = 223.5`), Conforme Customer (`X = 200.0, Y = 182.5`), Concurred by Manager (`X = 442.5, Y = 182.5`).
+  6. Calibrate Filipino Claim Stub: Baselines aligned at `Y = 99.5`, `Y = 89.5`, and `Y = 80.5` with all 5 pre-printed ghost placeholders cleanly masked.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Updated `compileForm13PDFBytes()` with visually verified coordinates across all sections.
+  - `frontend/index.html`: Incremented cache buster query parameter to `v=3.03`.
+  - `tests/frontend/app.test.js`: Updated `AUT-FRONT-112` and `AUT-FRONT-116` with calibrated coordinates and `v=3.03`.
+  - `tests/frontend/sla_and_logic.test.js`: Updated `AUT-FRONT-94` and `AUT-FRONT-106` assertions to recognize calibrated coordinates.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated tests passing across 63 suites (`npm.cmd test`).
+  - Visually verified via headless Chrome rendering and screenshot inspection.
+  - Synced `SA-26` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-150` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.03`.
+* **GitHub Commit**: `1a8c60e`.
+
+---
+
 ## 📅 September 24, 2026 (Form 1/3 PDF Comprehensive Typography, Centered Concern, Grid Calibration & Ghost Elimination)
 
 ### 📋 Form 1/3 PDF Comprehensive Typography, Centered Concern, Grid Calibration & Ghost Elimination (REV-149)
