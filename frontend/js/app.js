@@ -13882,36 +13882,35 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
             const manager = getVal('f13-input-manager') || 'General Manager';
 
-            // 1. Header (Job No underline at Y=780.0, Date box at X=462.4, Y=756.0-765.1)
-            drawTextCenter(jobNo, 485.5, 781.5, 8.0, true, darkInk);
-            drawTextCenter(intakeDate, 485.8, 758.2, 7.0, true, darkInk);
+            // 1. Header (Job No underline at Y=790.38, Date underline at Y=765.11)
+            drawTextCenter(jobNo, 498.8, 792.2, 8.0, true, darkInk);
+            drawTextCenter(intakeDate, 498.8, 767.0, 7.0, true, darkInk);
 
             // 2. Customer Details
-            // Pre-printed underlines are spaced at 7.78pt intervals (Y = 714.5, 706.7, 699.0, 691.2).
-            // Baselines sit +1.3pt above each line to prevent lines piercing through text.
-            // Standardized: All 12 customer detail fields use the EXACT SAME font and size (6.2pt regular, NO BOLDING).
-            drawTextFit(name, 148, 715.8, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(model, 350, 715.8, 62, 6.2, false, darkInk, 5.0);
-            drawTextFit(plate, 464, 715.8, 44, 6.2, false, darkInk, 5.0);
+            // Pre-printed underlines are spaced at 8.11pt intervals (Y = 721.72, 713.61, 705.50, 697.40).
+            // Baselines sit +1.8pt above each line.
+            drawTextFit(name, 140, 723.5, 146, 6.2, false, darkInk, 4.8);
+            drawTextFit(model, 355, 723.5, 66, 6.2, false, darkInk, 4.8);
+            drawTextFit(plate, 475, 723.5, 47, 6.2, false, darkInk, 4.8);
 
-            drawTextFit(address, 148, 708.0, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(km, 350, 708.0, 62, 6.2, false, darkInk, 5.0);
-            drawTextFit(intakeDate, 464, 708.0, 44, 6.2, false, darkInk, 5.0);
+            drawTextFit(address, 140, 715.4, 146, 6.2, false, darkInk, 4.8);
+            drawTextFit(km, 355, 715.4, 66, 6.2, false, darkInk, 4.8);
+            drawTextFit(intakeDate, 475, 715.4, 47, 6.2, false, darkInk, 4.8);
 
-            drawTextFit(contact, 148, 700.3, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(engine, 350, 700.3, 62, 6.2, false, darkInk, 5.0);
-            drawTextFit(promiseDate, 464, 700.3, 44, 6.2, false, darkInk, 5.0);
+            drawTextFit(contact, 140, 707.3, 146, 6.2, false, darkInk, 4.8);
+            drawTextFit(engine, 355, 707.3, 66, 6.2, false, darkInk, 4.8);
+            drawTextFit(promiseDate, 475, 707.3, 47, 6.2, false, darkInk, 4.8);
 
-            drawTextFit(email, 148, 692.5, 138, 6.2, false, darkInk, 5.0);
-            drawTextFit(chassis, 350, 692.5, 62, 6.2, false, darkInk, 5.0);
-            drawTextFit(color, 464, 692.5, 44, 6.2, false, darkInk, 5.0);
+            drawTextFit(email, 140, 699.2, 146, 6.2, false, darkInk, 4.8);
+            drawTextFit(chassis, 355, 699.2, 66, 6.2, false, darkInk, 4.8);
+            drawTextFit(color, 475, 699.2, 47, 6.2, false, darkInk, 4.8);
 
-            // 3. Customer Concern / Description Box (Centered horizontally X=307.5 and vertically inside box Y: 610..660, center Y=635.0)
+            // 3. Customer Concern / Description Box (Centered horizontally X=299.4, box Y: 614.4..670.2, center Y=642.3)
             if (concern) {
                 const words = concern.split(/\s+/);
                 const lines = [];
                 let curLine = '';
-                const maxW = 390;
+                const maxW = 430;
                 words.forEach(w => {
                     const test = curLine ? (curLine + ' ' + w) : w;
                     if (fontNorm.widthOfTextAtSize(test, 6.5) <= maxW) {
@@ -13925,29 +13924,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 const lineH = 9.0;
                 const totalH = lines.length * lineH;
-                const startY = 635.0 + (totalH / 2) - lineH + 2;
+                const startY = 642.3 + (totalH / 2) - lineH + 2;
                 lines.slice(0, 5).forEach((lineStr, idx) => {
-                    drawTextCenter(lineStr, 307.5, startY - (idx * lineH), 6.5, false, darkInk);
+                    drawTextCenter(lineStr, 299.4, startY - (idx * lineH), 6.5, false, darkInk);
                 });
             }
 
-            // 4. Interviewed by (Underline at Y = 582.0, runs X = 148..245, Service Advisor label at Y = 575.0)
-            whiteOut(148, 582.5, 96, 7.5);
-            drawTextCenter(sa, 196.5, 583.5, 6.5, false);
+            // 4. Interviewed by (Underline at Y = 582.0, runs X = 137..232, Service Advisor label at Y = 575.3)
+            whiteOut(138, 582.5, 93, 7.5);
+            drawTextCenter(sa, 184.7, 583.8, 6.5, false);
 
-            // 4b. Authorization: Customer Name and Signature (Underline at Y = 544.0, ghost '0' at X = 301.4, Y = 545.0)
-            whiteOut(285, 542.6, 35, 10.0);
-            drawTextCenter(name, 302.5, 545.5, 6.5, false);
+            // 4b. Authorization: Customer Name and Signature (Underline at Y = 540.5, runs X = 186..403)
+            whiteOut(240, 541.0, 110, 8.0);
+            drawTextCenter(name, 294.65, 542.3, 6.5, false);
 
             // 5. Diagnostics (properly placed below the DIAGNOSTIC RESULT header bar)
             if (diagnostic) {
                 page.drawText(diagnostic, {
-                    x: 86, y: 492, size: 6.2, font: fontNorm, maxWidth: 95, lineHeight: 8.5
+                    x: 78, y: 492, size: 6.0, font: fontNorm, maxWidth: 104, lineHeight: 8.2
                 });
             }
 
-            // 6. Parts & Materials (True 7.78pt template grid starting at Y = 497.75)
-            const ROW_Y = Array.from({ length: 23 }, (_, i) => +(497.75 - i * 7.78).toFixed(2));
+            // 6. Parts & Materials (True 8.11pt template grid starting at Y = 494.6)
+            const ROW_Y = Array.from({ length: 23 }, (_, i) => +(494.6 - i * 8.11).toFixed(2));
             let partsTotal = 0;
             let matsTotal = 0;
 
@@ -13959,13 +13958,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 partsTotal += amt;
 
-                drawTextFit((p.desc || ''), 190.5, ry, 48, 6.2);
-                drawTextCenter(String(qty), 245, ry, 6.2);
-                drawTextRight(price.toFixed(2), 293, ry, 6.2);
+                drawTextFit((p.desc || ''), 188.0, ry, 42.5, 6.0, false, darkInk, 4.8);
+                drawTextCenter(String(qty), 241.7, ry, 6.0);
+                drawTextRight(price.toFixed(2), 286.0, ry, 6.0);
                 if (amt > 0) {
-                    // Targeted whiteout strictly inside cell padding to mask pre-printed 0.00 without touching horizontal or vertical grid lines
-                    whiteOut(326, ry - 0.5, 22, 5.8);
-                    drawTextRight(amt.toFixed(2), 346, ry, 6.2, false);
+                    whiteOut(288.5, ry - 0.5, 62, 6.5);
+                    drawTextRight(amt.toFixed(2), 350.5, ry, 6.0, false);
                 }
             });
 
@@ -13977,69 +13975,68 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const amt = qty * price;
                 matsTotal += amt;
 
-                drawTextFit((m.desc || ''), 355.5, ry, 52, 6.2);
-                drawTextCenter(String(qty), 415, ry, 6.2);
-                drawTextRight(price.toFixed(2), 471, ry, 6.2);
+                drawTextFit((m.desc || ''), 355.0, ry, 46.0, 6.0, false, darkInk, 4.8);
+                drawTextCenter(String(qty), 412.5, ry, 6.0);
+                drawTextRight(price.toFixed(2), 471.5, ry, 6.0);
                 if (amt > 0) {
-                    // Targeted whiteout strictly inside cell padding to mask pre-printed 0.00 without touching horizontal or vertical grid lines
-                    whiteOut(488, ry - 0.5, 22, 5.8);
-                    drawTextRight(amt.toFixed(2), 508, ry, 6.2, false);
+                    whiteOut(474.5, ry - 0.5, 48, 6.5);
+                    drawTextRight(amt.toFixed(2), 521.5, ry, 6.0, false);
                 }
             });
 
-            // Subtotals & Totals (Cleanly mask only the pre-printed "-" inside the boxes, preserving all borders)
-            // Parts Subtotal Box: X=288.3 to 348.4, Y=314.65 to 323.71
-            whiteOut(290, 315.5, 56, 7.2);
+            // Subtotals & Totals (Cleanly mask only the pre-printed characters inside the boxes)
+            // Parts Subtotal Box: X=287.2 to 353.5, Y=305.19 to 314.72
+            whiteOut(288.5, 306.0, 63.5, 8.0);
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 317.5, 6.5, false);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 350.5, 307.2, 6.5, false);
             }
 
-            // Materials Subtotal Box: X=462.7 to 508.2, Y=314.91 to 323.71
-            whiteOut(464, 315.7, 43, 7.2);
+            // Materials Subtotal Box: X=473.7 to 523.8, Y=305.19 to 314.72
+            whiteOut(475.0, 306.0, 47.5, 8.0);
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 506, 317.5, 6.5, false);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.5, 307.2, 6.5, false);
             }
 
-            // Grand Total Box: X=462.7 to 508.2, Y=306.87 to 314.91
+            // Grand Total Box: X=473.7 to 523.8, Y=297.08 to 305.19
             const grandTotal = partsTotal + matsTotal;
-            whiteOut(464, 307.8, 43, 6.2);
+            whiteOut(475.0, 298.0, 47.5, 6.5);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 506, 309.5, 7.0, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.5, 299.1, 6.8, true, darkInk);
             }
 
-            // Signatures block: Diagnosed by & Assessed by (Underlines at Y = 288.5, baseline Y = 290.0)
-            drawTextCenter(mechanic, 200.0, 290.0, 6.5, false);
-            drawTextCenter(assessor, 435.0, 290.0, 6.5, false);
+            // Signatures block: Diagnosed by & Assessed by (Underlines at Y = 278.24)
+            drawTextCenter(mechanic, 184.7, 280.0, 6.5, false);
+            drawTextCenter(assessor, 463.2, 280.0, 6.5, false);
 
-            // Certificate of Completion block: Recommending Approval & Approved by (Underlines at Y = 219.0, baseline Y = 220.5)
-            drawTextCenter(sa, 200.0, 220.5, 6.5, false);
-            drawTextCenter(mechanic, 435.0, 220.5, 6.5, false);
+            // Certificate of Acceptance block: Recommending Approval & Approved by (Underlines at Y = 204.33)
+            drawTextCenter(sa, 184.7, 206.1, 6.5, false);
+            drawTextCenter(mechanic, 413.65, 206.1, 6.5, false);
 
-            // CONFORME (Customer) & Concurred by (Manager): Underlines at Y = 185.0, baseline Y = 186.5
-            // Mask template ghost "0" at X = 189.9, Y = 185.4
-            whiteOut(180, 185.5, 30, 7.5);
-            drawTextCenter(name, 200.0, 186.5, 6.5, false);
-            drawTextCenter(manager, 435.0, 186.5, 6.5, false);
+            // CONFORME (Customer) & Concurred by (Manager): Underlines at Y = 167.14
+            whiteOut(138, 168.0, 93, 7.5);
+            drawTextCenter(name, 184.7, 169.0, 6.5, false);
+            drawTextCenter(manager, 413.65, 169.0, 6.5, false);
 
-            // 7. Filipino Claim stub (all 5 pre-printed ghost placeholders masked and coordinates calibrated)
-            whiteOut(148, 98.5, 138, 7.5);
-            whiteOut(368, 98.5, 155, 7.5);
-            whiteOut(148, 88.5, 138, 7.5);
-            whiteOut(148, 79.5, 138, 7.5);
-            whiteOut(368, 79.5, 155, 7.5);
+            // 7. Filipino Claim stub (calibrated to Y = 76.06, 66.04, 56.03)
+            whiteOut(138, 76.8, 149, 7.5);
+            whiteOut(354, 76.8, 168, 7.5);
+            whiteOut(138, 66.8, 149, 7.5);
+            whiteOut(354, 66.8, 168, 7.5);
+            whiteOut(138, 56.8, 149, 7.5);
+            whiteOut(354, 56.8, 168, 7.5);
 
-            // Row 1 (Y = 99.5)
-            drawTextFit(name, 152, 99.5, 132, 6.2, false);
-            drawTextCenter(plate, 396.5, 99.5, 6.2, false);
-            drawTextCenter(model, 482.5, 99.5, 6.2, false);
+            // Row 1 (Y = 77.9)
+            drawTextFit(name, 140, 77.9, 146, 6.2, false);
+            drawTextCenter(plate, 378.1, 77.9, 6.2, false);
+            drawTextCenter(model, 472.75, 77.9, 6.2, false);
 
-            // Row 2 (Y = 89.5)
-            drawTextFit(sa, 152, 89.5, 132, 6.2, false);
+            // Row 2 (Y = 67.8)
+            drawTextFit(sa, 140, 67.8, 146, 6.2, false);
 
-            // Row 3 (Y = 80.5)
-            drawTextCenter(intakeDate, 215.5, 80.5, 6.2, false);
+            // Row 3 (Y = 57.8)
+            drawTextCenter(intakeDate, 212.6, 57.8, 6.2, false);
             const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
-            drawTextCenter(stubId, 446.5, 80.5, 7.0, true);
+            drawTextCenter(stubId, 438.45, 57.8, 7.0, true);
 
             return await doc.save();
         }

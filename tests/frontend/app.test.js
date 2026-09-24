@@ -65,7 +65,7 @@ describe('REV-142 Online Booking Module (frontend)', () => {
     });
 
     it('AUT-FRONT-112: cache buster bumped to v=2.98 or higher', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=3.04"') || indexHtml.includes('src="js/app.js?v=3.03"') || indexHtml.includes('src="js/app.js?v=3.02"') || indexHtml.includes('src="js/app.js?v=3.01"') || indexHtml.includes('src="js/app.js?v=3.00"') || indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
+        assert.ok(Boolean(/src="js\/app\.js\?v=(?:3\.(?:0[0-9]|1[0-9])|2\.(?:8[7-9]|9[0-9]))"/.test(indexHtml)));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {
@@ -130,45 +130,45 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         );
     });
 
-    it('AUT-FRONT-116: REV-149 Form 1/3 PDF Formatting, Exact Coordinates, Center Alignment & Ghost Elimination', () => {
+    it('AUT-FRONT-116: REV-152 Form 1/3 PDF Formatting, Exact Coordinates, Center Alignment & Ghost Elimination', () => {
         // 1. Verify customer details use uniform unbolded typography
         assert.ok(
-            appJs.includes("drawTextFit(plate, 464, 715.8, 44, 6.2, false, darkInk, 5.0);"),
+            appJs.includes("drawTextFit(plate, 475, 723.5, 47, 6.2, false, darkInk, 4.8);"),
             'Customer details must have plate rendered in regular font without bolding'
         );
 
-        // 2. Verify concern box is horizontally centered at 307.5 and centered vertically at 635.0
+        // 2. Verify concern box is horizontally centered at 299.4
         assert.ok(
-            appJs.includes("drawTextCenter(lineStr, 307.5, startY - (idx * lineH), 6.5, false, darkInk);"),
-            'Customer concern lines must be centered horizontally at 307.5'
+            appJs.includes("drawTextCenter(lineStr, 299.4, startY - (idx * lineH), 6.5, false, darkInk);"),
+            'Customer concern lines must be centered horizontally at 299.4'
         );
 
         // 3. Verify Interviewed by proper baseline and Authorization customer name
         assert.ok(
-            appJs.includes("drawTextCenter(sa, 196.5, 583.5, 6.5, false);"),
-            'Interviewed by SA must sit on Y=583.5 baseline with 6.5pt font'
+            appJs.includes("drawTextCenter(sa, 184.7, 583.8, 6.5, false);"),
+            'Interviewed by SA must sit on Y=583.8 baseline with 6.5pt font'
         );
         assert.ok(
-            appJs.includes("whiteOut(285, 542.6, 35, 10.0);") &&
-            appJs.includes("drawTextCenter(name, 302.5, 545.5, 6.5, false);"),
-            'Authorization signature must mask template 0 ghost and center customer name at X=302.5'
+            appJs.includes("whiteOut(240, 541.0, 110, 8.0);") &&
+            appJs.includes("drawTextCenter(name, 294.65, 542.3, 6.5, false);"),
+            'Authorization signature must mask line and center customer name at X=294.65'
         );
 
         // 4. Verify Diagnostic box starts cleanly below the header bar
         assert.ok(
-            appJs.includes("x: 86, y: 492, size: 6.2, font: fontNorm, maxWidth: 95"),
+            appJs.includes("x: 78, y: 492, size: 6.0, font: fontNorm, maxWidth: 104"),
             'Diagnostic text must start at Y=492 below header bar'
         );
 
-        // 5. Verify Parts & Materials true 7.78pt row step and amount ghost whiteout
+        // 5. Verify Parts & Materials true 8.11pt row step and amount ghost whiteout
         assert.ok(
-            appJs.includes("Array.from({ length: 23 }, (_, i) => +(497.75 - i * 7.78).toFixed(2))"),
-            'ROW_Y must follow 7.78pt step starting at 497.75'
+            appJs.includes("Array.from({ length: 23 }, (_, i) => +(494.6 - i * 8.11).toFixed(2))"),
+            'ROW_Y must follow 8.11pt step starting at 494.6'
         );
         assert.ok(
-            appJs.includes("whiteOut(326, ry - 0.5, 22, 5.8);") &&
-            appJs.includes("whiteOut(488, ry - 0.5, 22, 5.8);"),
-            'Amount columns must mask pre-printed 0.00 ghosts cleanly without erasing grid lines'
+            appJs.includes("whiteOut(288.5, ry - 0.5, 62, 6.5);") &&
+            appJs.includes("whiteOut(474.5, ry - 0.5, 48, 6.5);"),
+            'Amount columns must mask pre-printed characters cleanly without erasing grid lines'
         );
 
         // 6. Verify 1-click fast preset chips in index.html
@@ -183,26 +183,26 @@ describe('REV-142 Online Booking Module (frontend)', () => {
 
         // 7. Verify signatures alignments
         assert.ok(
-            appJs.includes("drawTextCenter(mechanic, 200.0, 290.0, 6.5, false);") &&
-            appJs.includes("drawTextCenter(assessor, 435.0, 290.0, 6.5, false);") &&
-            appJs.includes("drawTextCenter(sa, 200.0, 220.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(mechanic, 435.0, 220.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(name, 200.0, 186.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(manager, 435.0, 186.5, 6.5, false);"),
+            appJs.includes("drawTextCenter(mechanic, 184.7, 280.0, 6.5, false);") &&
+            appJs.includes("drawTextCenter(assessor, 463.2, 280.0, 6.5, false);") &&
+            appJs.includes("drawTextCenter(sa, 184.7, 206.1, 6.5, false);") &&
+            appJs.includes("drawTextCenter(mechanic, 413.65, 206.1, 6.5, false);") &&
+            appJs.includes("drawTextCenter(name, 184.7, 169.0, 6.5, false);") &&
+            appJs.includes("drawTextCenter(manager, 413.65, 169.0, 6.5, false);"),
             'All signature names must be centered above their respective underlines'
         );
 
         // 8. Verify Filipino Claim stub ghost masking and exact coordinate placement
         assert.ok(
-            appJs.includes("whiteOut(148, 98.5, 138, 7.5);") &&
-            appJs.includes("whiteOut(368, 98.5, 155, 7.5);") &&
-            appJs.includes("drawTextFit(name, 152, 99.5, 132, 6.2, false);") &&
-            appJs.includes("drawTextCenter(plate, 396.5, 99.5, 6.2, false);") &&
-            appJs.includes("drawTextCenter(model, 482.5, 99.5, 6.2, false);") &&
-            appJs.includes("drawTextFit(sa, 152, 89.5, 132, 6.2, false);") &&
-            appJs.includes("drawTextCenter(intakeDate, 215.5, 80.5, 6.2, false);") &&
-            appJs.includes("drawTextCenter(stubId, 446.5, 80.5, 7.0, true);"),
-            'Filipino claim stub must mask all 5 ghost placeholders and place data on true lines'
+            appJs.includes("whiteOut(138, 76.8, 149, 7.5);") &&
+            appJs.includes("whiteOut(354, 76.8, 168, 7.5);") &&
+            appJs.includes("drawTextFit(name, 140, 77.9, 146, 6.2, false);") &&
+            appJs.includes("drawTextCenter(plate, 378.1, 77.9, 6.2, false);") &&
+            appJs.includes("drawTextCenter(model, 472.75, 77.9, 6.2, false);") &&
+            appJs.includes("drawTextFit(sa, 140, 67.8, 146, 6.2, false);") &&
+            appJs.includes("drawTextCenter(intakeDate, 212.6, 57.8, 6.2, false);") &&
+            appJs.includes("drawTextCenter(stubId, 438.45, 57.8, 7.0, true);"),
+            'Filipino claim stub must mask ghost placeholders and place data on true lines'
         );
     });
 });

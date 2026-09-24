@@ -1,3 +1,34 @@
+## 📅 September 25, 2026 (Current_2025 BLANK RO UPDATED_v3 Job_Order_Wide Official Template Migration & Precision Calibration)
+
+### 📋 Current_2025 BLANK RO UPDATED_v3 Job_Order_Wide Template Migration & Precision Calibration (REV-152)
+* **Objective & Context**: In direct response to user request, migrated Form 1/3 (Job Order) from the previous narrow-column PDF to the user's authentic new format `Current_2025 BLANK RO UPDATED_v3.xlsx - Job_Order_Wide.pdf`:
+  1. **Asset Organization & Cleanup**: Relocated the user's PDF from `Hontech Documentation/` into `frontend/assets/Current_2025 BLANK RO UPDATED_v3.xlsx - Job_Order_Wide.pdf`, overwritten `frontend/assets/form13_template.pdf` and `frontend/assets/form13_template_hd.pdf` with this current version, and purged the temporary upload from the documentation folder so repository structure remains clean and organized.
+  2. **Direct Vector PDF Geometry**: Unlike older scanned templates, the new v3 Wide template is a direct native vector PDF exported from Excel (595 x 842 pt A4) with high-res company logo assets and wider table description columns, eliminating text clipping and ellipsis (`...`) truncation.
+  3. **Affine Coordinate Mapping & Line Extraction**: Extracted exact vector geometry from the PDF content stream and calibrated all field injection baselines in `compileForm13PDFBytes()`:
+     - Header: Job Order No (`X = 498.8, Y = 792.2`, 8.0pt bold) and Date (`X = 498.8, Y = 767.0`, 7.0pt true) directly above printed underlines.
+     - Customer Dossier: 12 fields spaced at authentic `8.11 pt` intervals (`Y = 723.5, 715.4, 707.3, 699.2`) with `146 pt` width for Name/Address/Contact/Email, `66 pt` for Model/KM/Engine/Chassis, and `47 pt` for Plate/Intake/Promise/Color (6.2pt regular, auto-shrink down to 4.8pt).
+     - Customer Concern Box: Centered horizontally at `X = 299.4` with max width expanded to `430 pt` (box bounds `Y: 614.4..670.2`, center `Y = 642.3`).
+     - Interviewed by: Aligned above Service Advisor underline at `X = 184.7, Y = 583.8`.
+     - Authorization: Customer signature centered at `X = 294.65, Y = 542.3`.
+     - Diagnostics: Starting below header bar at `X = 78, Y = 492`, max width `104 pt`.
+     - Parts & Materials Table: 23 table rows at exact `8.11 pt` pitch starting at `Y = 494.6` (`ROW_Y = Array.from({ length: 23 }, (_, i) => +(494.6 - i * 8.11).toFixed(2))`) with wide description column and non-destructive whiteouts masking only active amount cells.
+     - Subtotals & Totals: Parts Subtotal (`X = 350.5, Y = 307.2`), Materials Subtotal (`X = 521.5, Y = 307.2`), and Grand Total (`X = 521.5, Y = 299.1`) cleanly bounded inside boxes.
+     - Lower Signatures: Diagnosed by / Assessed by (`Y = 280.0`), Recommending / Approved by (`Y = 206.1`), Conforme / Concurred by (`Y = 169.0`) resting directly above underlines without horizontal line slicing.
+     - Filipino Claim Stub: All 3 rows aligned with template underlines (`Y = 77.9, 67.8, 57.8`) with pre-printed placeholder ghosts masked.
+* **Core Changes Made**:
+  - `frontend/assets/`: Installed `Current_2025 BLANK RO UPDATED_v3.xlsx - Job_Order_Wide.pdf`, updated `form13_template.pdf` and `form13_template_hd.pdf`.
+  - `frontend/js/app.js`: Updated `compileForm13PDFBytes()` with exact coordinates, expanded description columns, and zero text truncation.
+  - `frontend/index.html`: Incremented cache buster to `v=3.05`.
+  - `tests/frontend/app.test.js` & `tests/frontend/sla_and_logic.test.js`: Updated `AUT-FRONT-112`, `AUT-FRONT-116`, `AUT-FRONT-23`, `AUT-FRONT-94`, `AUT-FRONT-104`, and `AUT-FRONT-106` with calibrated coordinates and `v=3.05`.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+  - Synced `SA-28` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-152` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.05`.
+* **GitHub Commit**: Pending remote sync.
+
+---
+
 ## 📅 September 24, 2026 (Form 1/3 PDF Table Grid Integrity & Lower Signatures Calibration)
 
 ### 📋 Form 1/3 PDF Table Grid Integrity, Whiteout Elimination & Signatures Calibration (REV-151)
