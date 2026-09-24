@@ -25,7 +25,7 @@
   - Synced `SA-28` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
   - Synced `REV-152` into `Revisions checklist.csv`.
 * **Cache Busting**: `js/app.js?v=3.05`.
-* **GitHub Commit**: Pending remote sync.
+* **GitHub Commit**: `25735b5`.
 
 ---
 
