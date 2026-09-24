@@ -14144,18 +14144,27 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const manager = getVal('f13-input-manager') || 'General Manager';
 
             // Meta Header
-            drawText(quoteNo, 420, 776.6, 8, true, darkInk);
-            drawText(date, 440, 744.3, 7.5, false, darkInk);
-            drawText(jobNo, 440, 734.7, 7.5, true, darkInk);
-            drawText(promiseDate, 440, 725.2, 7.5, false, darkInk);
+            drawText(quoteNo, 420, 775.5, 8, true, darkInk);
+            drawText(date, 470, 743.5, 7.5, false, darkInk);
+            whiteout(475, 729.5, 65, 10);
+            drawText(jobNo, 485, 734.0, 7.5, true, darkInk);
+            drawText(promiseDate, 470, 724.6, 7.5, false, darkInk);
 
-            // Customer Details
-            drawTextFit(name, 115, 696.5, 180, 6.5, false, darkInk, 5.2);
-            drawTextFit(plate, 380, 696.5, 120, 6.5, true, darkInk, 5.2);
-            drawTextFit(address, 115, 686.9, 180, 6.2, false, darkInk, 5.0);
-            drawTextFit(model, 380, 686.9, 120, 6.5, false, darkInk, 5.2);
-            drawTextFit(contact, 115, 677.3, 180, 6.5, false, darkInk, 5.2);
-            drawTextFit(color, 380, 677.3, 120, 6.5, false, darkInk, 5.2);
+            // Customer Details (with non-destructive placeholder masking)
+            whiteout(115, 692.0, 205, 9);
+            whiteout(375, 692.0, 125, 9);
+            drawTextFit(name, 115, 696.3, 180, 6.5, false, darkInk, 5.2);
+            drawTextFit(plate, 380, 696.3, 120, 6.5, true, darkInk, 5.2);
+
+            whiteout(115, 682.5, 205, 9);
+            whiteout(375, 682.5, 125, 9);
+            drawTextFit(address, 115, 686.8, 180, 6.2, false, darkInk, 5.0);
+            drawTextFit(model, 380, 686.8, 120, 6.5, false, darkInk, 5.2);
+
+            whiteout(115, 673.0, 205, 9);
+            whiteout(375, 673.0, 125, 9);
+            drawTextFit(contact, 115, 677.4, 180, 6.5, false, darkInk, 5.2);
+            drawTextFit(color, 380, 677.4, 120, 6.5, false, darkInk, 5.2);
 
             // Table Line Items (Up to 24 rows on template)
             const items = (window.form23Items && window.form23Items.length > 0)
@@ -14168,14 +14177,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let totalParts = 0;
             let totalMats = 0;
 
-            const startY = 649.2;
-            const rowStep = 9.56;
+            const startY = 649.1;
+            const rowStep = 9.46;
             const maxRows = 24;
 
-            // Clear pre-printed template rows 15-38
+            // Clear pre-printed template rows 15-38 (targeted insets preserve grid borders)
             for (let r = 0; r < maxRows; r++) {
                 const ry = startY - (r * rowStep);
-                whiteout(70, ry - 2, 405, rowStep);
+                whiteout(72, ry - 1.5, 120, 8.5);
+                whiteout(265, ry - 1.5, 45, 8.5);
+                whiteout(440, ry - 1.5, 65, 8.5);
             }
 
             items.slice(0, maxRows).forEach((it, idx) => {
@@ -14373,20 +14384,33 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Meta Header
-            drawText(billingNo, 475, 763.2, 8, true, darkInk);
-            drawText(date, 495, 726.1, 7.5, false, darkInk);
-            drawText(jobNo, 495, 714.5, 7.5, true, darkInk);
-            drawText(quoteNo, 495, 703.0, 7.5, false, darkInk);
+            drawText(billingNo, 475, 761.0, 8, true, darkInk);
+            drawText(date, 495, 724.5, 7.5, false, darkInk);
+            whiteout(490, 708.5, 60, 9);
+            drawText(jobNo, 495, 712.9, 7.5, true, darkInk);
+            whiteout(490, 697.0, 60, 9);
+            drawText(quoteNo, 495, 701.3, 7.5, false, darkInk);
 
-            // Customer Details
-            drawTextFit(name, 80, 668.2, 240, 6.5, false, darkInk, 5.2);
-            drawTextFit(plate, 400, 668.2, 140, 6.5, true, darkInk, 5.2);
-            drawTextFit(address, 80, 656.6, 240, 6.2, false, darkInk, 5.0);
-            drawTextFit(model, 400, 656.6, 140, 6.5, false, darkInk, 5.2);
-            drawTextFit(contact, 80, 645.0, 240, 6.5, false, darkInk, 5.2);
-            drawTextFit(color, 400, 645.0, 140, 6.5, false, darkInk, 5.2);
-            drawTextFit(email, 80, 633.5, 240, 6.2, false, darkInk, 5.0);
-            drawTextFit(km, 400, 633.5, 140, 6.5, false, darkInk, 5.2);
+            // Customer Details (with non-destructive placeholder masking)
+            whiteout(80, 662.5, 230, 9);
+            whiteout(395, 662.5, 140, 9);
+            drawTextFit(name, 80, 666.4, 230, 6.5, false, darkInk, 5.2);
+            drawTextFit(plate, 395, 666.4, 140, 6.5, true, darkInk, 5.2);
+
+            whiteout(80, 650.9, 230, 9);
+            whiteout(395, 650.9, 140, 9);
+            drawTextFit(address, 80, 654.8, 230, 6.2, false, darkInk, 5.0);
+            drawTextFit(model, 395, 654.8, 140, 6.5, false, darkInk, 5.2);
+
+            whiteout(80, 639.3, 230, 9);
+            whiteout(395, 639.3, 140, 9);
+            drawTextFit(contact, 80, 643.2, 230, 6.5, false, darkInk, 5.2);
+            drawTextFit(color, 395, 643.2, 140, 6.5, false, darkInk, 5.2);
+
+            whiteout(80, 627.7, 230, 9);
+            whiteout(395, 627.7, 140, 9);
+            drawTextFit(email, 80, 631.6, 230, 6.2, false, darkInk, 5.0);
+            drawTextFit(km, 395, 631.6, 140, 6.5, false, darkInk, 5.2);
 
             // Table Line Items (Up to 24 rows)
             const items = (window.billingItems && window.billingItems.length > 0)
@@ -14401,14 +14425,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let totalParts = 0;
             let totalMats = 0;
 
-            const startY = 585.1;
+            const startY = 583.2;
             const rowStep = 11.58;
             const maxRows = 24;
 
-            // Clear pre-printed template rows
+            // Clear pre-printed template rows (targeted insets preserve grid borders)
             for (let r = 0; r < maxRows; r++) {
                 const ry = startY - (r * rowStep);
-                whiteout(25, ry - 2, 530, rowStep);
+                whiteout(25, ry - 1.5, 155, 9.5);
+                whiteout(285, ry - 1.5, 45, 9.5);
+                whiteout(505, ry - 1.5, 45, 9.5);
             }
 
             items.slice(0, maxRows).forEach((it, idx) => {
@@ -14576,6 +14602,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawText(s, { x, y, size, font: f, color });
             };
 
+            const whiteout = (x, y, width, height) => {
+                page.drawRectangle({ x, y, width, height, color: white });
+            };
+
             const getVal = id => (document.getElementById(id)?.value || '').trim();
             const date = getVal('chk-input-date') || getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
             const name = getVal('chk-input-name') || getVal('f13-input-name') || '';
@@ -14585,26 +14615,36 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const remarks = getVal('chk-input-remarks') || 'Vehicle intake inspection cleared. No critical defects noted.';
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
-            // Top Header Info
-            drawTextFit(name, 120, 733.4, 250, 6.5, false, darkInk, 5.2);
-            drawText(date, 460, 733.4, 7.0, false, darkInk);
-            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 6.5, true, darkInk, 5.2);
-            drawTextFit(model, 120, 709.3, 200, 6.5, false, darkInk, 5.2);
+            // Top Header Info (with non-destructive placeholder masking)
+            whiteout(115, 734.5, 270, 10);
+            drawTextFit(name, 120, 739.0, 250, 6.5, false, darkInk, 5.2);
+            whiteout(485, 734.5, 70, 10);
+            drawText(date, 490, 739.0, 7.0, false, darkInk);
 
-            // Fuel Level Marker (Clean pill selector)
-            drawText('FUEL LEVEL:', 355, 709.3, 7, true, darkInk);
-            const fuelLevels = ['E', '1/4', '1/2', '3/4', 'F'];
+            whiteout(115, 718.5, 270, 10);
+            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 723.1, 250, 6.5, true, darkInk, 5.2);
+
+            whiteout(115, 702.5, 240, 10);
+            drawTextFit(model, 120, 707.3, 200, 6.5, false, darkInk, 5.2);
+
+            // Fuel Level Marker (aligned to template pre-printed labels E, 1/4, 1/2, 3/4, F)
+            const fuelCoords = {
+                'E': 445,
+                '1/4': 468,
+                '1/2': 494,
+                '3/4': 520,
+                'F': 548
+            };
             const activeLevel = window.checklistFuelLevel || '1/2';
-            let fx = 415;
-            fuelLevels.forEach(lvl => {
-                const isSel = (lvl === activeLevel);
-                if (isSel) {
-                    page.drawRectangle({ x: fx - 3, y: 706.5, width: 18, height: 11, color: darkInk });
-                    page.drawText(lvl, { x: fx, y: 709.3, size: 6.5, font: fontBold, color: white });
-                } else {
-                    page.drawText(lvl, { x: fx, y: 709.3, size: 6.5, font: fontNorm, color: darkInk });
-                }
-                fx += 20;
+            const markerX = fuelCoords[activeLevel] || 494;
+            // Draw clean rounded selector ring around active fuel level
+            page.drawRectangle({
+                x: markerX - 4,
+                y: 703.5,
+                width: 17,
+                height: 10,
+                borderColor: darkInk,
+                borderWidth: 1.2
             });
 
             // Vector checkmark, alert, and cross drawers

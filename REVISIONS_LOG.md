@@ -1,3 +1,34 @@
+## 📅 September 24, 2026 (2025 RO Excel Studio Multi-Sheet PDF Document Formatting, Typography & Vector Overhaul)
+
+### 📋 2025 RO Excel Studio Multi-Sheet PDF Document Formatting, Typography & Vector Overhaul (REV-146)
+* **Objective & Context**: In response to user instruction to extend the precision document alignment from Form 1/3 across all remaining worksheets (Quotation Form 2/3, Billing Statement, and Inspection Checklist), overhaul dynamic text coordinate placement, eradicate template placeholder text clashes (e.g. pre-printed `"0"` and `"0.00"` strings), eliminate horizontal line cutting through text, and protect table column borders from destructive block whiteouts.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - **Quotation (Form 2/3)**:
+      - Header: Anchored Quote No (`quoteNo`) to `Y = 775.5` directly on the pre-printed underline; centered Date to `X = 470, Y = 743.5` alongside the label; added non-destructive whiteout (`X: 475-540, Y: 729.5-739.5`) to eliminate the template's pre-printed `"0"` placeholder and drew `jobNo` at `X = 485, Y = 734.0` in bold; positioned Promise Date at `X = 470, Y = 724.6`.
+      - Customer Details: Masked template pre-printed `"0"` strings in both columns using targeted insets (`X: 115-320` and `X: 375-500`) without cutting border rules; dynamically injected Name (`Y = 696.3`), Address (`Y = 686.8`), Contact No (`Y = 677.4`), Plate No (`Y = 696.3`, bold), Year/Model (`Y = 686.8`), and Color (`Y = 677.4`) with 6.5pt clean sans-serif typography and `minSize: 5.2` auto-shrink.
+      - Line Items Table: Replaced monolithic 405pt block whiteout with targeted cell insets (`whiteout(72, ry - 1.5, 120, 8.5)` for Description, `whiteout(265, ry - 1.5, 45, 8.5)` for Labor placeholder `"0.00"`, `whiteout(440, ry - 1.5, 65, 8.5)` for Amount placeholder `"0.00"`), perfectly preserving vertical column grid lines and horizontal rules. Calibrated row baseline step to exact 9.46pt (`startY = 649.1`).
+    - **Billing Statement**:
+      - Header: Aligned Billing No (`billingNo`) to `X = 475, Y = 761.0` in bold; Date to `X = 495, Y = 724.5`; masked pre-printed `"0"` placeholders for Job Order No (`X: 490-550, Y: 708.5-717.5`) and Quotation No (`X: 490-550, Y: 697.0-706.0`) before drawing dynamic values at `Y = 712.9` and `Y = 701.3`.
+      - Customer Details: Corrected vertical baseline offsets to true template positions (`Y = 666.4, 654.8, 643.2, 631.6`); masked pre-printed `"0"` strings with targeted insets (`X: 80-310` and `X: 395-535`); rendered Name, Address, Contact, Email, Plate (bold), Model, Color, and KM reading with 6.5pt clean regular font and 5.2pt auto-shrink.
+      - Line Items Table: Replaced 530pt full-width whiteout with targeted cell insets (`whiteout(25, ry - 1.5, 155, 9.5)` for Description, `whiteout(285, ry - 1.5, 45, 9.5)` for Labor `"0.00"`, and `whiteout(505, ry - 1.5, 45, 9.5)` for Amount `"0.00"`). Set `startY = 583.2` to eliminate table header clipping.
+    - **Inspection Checklist**:
+      - Header Details: Masked pre-printed `"0"` placeholders across Customer Name, Date, Plate No, and Vehicle Model; aligned text baselines to `Y = 739.0` (Name & Date), `Y = 723.1` (Plate No, bold), and `Y = 707.3` (Vehicle Model) with 6.5pt typography.
+      - Fuel Gauge Indicator: Removed redundant `drawText('FUEL LEVEL:', ...)` string since the template already features a pre-printed label at `X = 379.9, Y = 707.8`; anchored fuel selector coordinates to exact template letter positions (`E: 445`, `1/4: 468`, `1/2: 494`, `3/4: 520`, `F: 548`) and rendered a clean vector border ring around the active level.
+  - `frontend/index.html`:
+    - Incremented client script cache buster query parameter to `v=2.99`.
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Updated Suite 49 (`AUT-FRONT-94`) and Suite 52 (`AUT-FRONT-98`) assertions to support calibrated coordinates and targeted cell whiteout masking.
+    - Added comprehensive unit test `AUT-FRONT-107` verifying Quotation, Billing, and Checklist multi-sheet precision coordinates, placeholder masking, and fuel selector ring positioning.
+    - Updated cache buster checks across test suites to recognize `v=2.99`.
+* **Automated & Manual QA Verification**:
+  - 142/142 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `SA-22` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.99`.
+* **GitHub Commit**: `fe04a58`.
+
+---
+
 ## 📅 September 24, 2026 (2025 RO Excel Studio PDF Document Formatting, Typography & Precise Coordinate Alignment)
 
 ### 📋 2025 RO Excel Studio PDF Document Formatting, Typography & Precise Coordinate Alignment (REV-145)
