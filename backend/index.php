@@ -394,33 +394,11 @@ if ($method === 'GET' && $route === '/audit-logs') {
 }
 
 // --- Protected Branch Routes ---
+// Read-only: the workshop operates two fixed branches (Marikina, Regalado). Branch
+// creation/editing/deletion was removed (REV-143) since the rest of the app hardcodes
+// exactly these two branches throughout, making free-form branch management unusable.
 if ($method === 'GET' && $route === '/branches') {
     BranchController::getBranches();
-    exit;
-}
-if ($method === 'GET' && $route === '/branches/all') {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    BranchController::getAllBranches();
-    exit;
-}
-if ($method === 'POST' && $route === '/branches') {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    BranchController::createBranch();
-    exit;
-}
-if ($method === 'PUT' && preg_match('#^/branches/(\d+)$#', $route, $m)) {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    BranchController::updateBranch($m[1]);
-    exit;
-}
-if ($method === 'DELETE' && preg_match('#^/branches/(\d+)$#', $route, $m)) {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    BranchController::deleteBranch($m[1]);
-    exit;
-}
-if ($method === 'POST' && preg_match('#^/branches/(\d+)/restore$#', $route, $m)) {
-    if (!Auth::requireRole(['owner', 'admin'])) exit;
-    BranchController::restoreBranch($m[1]);
     exit;
 }
 

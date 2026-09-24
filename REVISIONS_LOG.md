@@ -1,3 +1,28 @@
+## 📅 September 24, 2026 (Consolidated Daily Intakes Online Module & Clean Service Advisor Navigation)
+
+### 📋 Consolidated Daily Intakes Online Module & Clean Service Advisor Navigation (REV-143)
+* **Objective & Context**: In response to direct user feedback, streamline the Service Advisor navigation by removing the separate "Online Bookings" button from the left sidebar and top navigation. Instead, the Service Advisor accesses the Online Booking Module exclusively within "Daily Intakes" (`showSection('queue')`), keeping the sidebar clean (strictly 5 core operational tools: 2025 RO Excel Studio, Daily Intakes, Customer Lookup, Bay Status, TV Monitor). Inside Daily Intakes, the Online Booking Module sits right at the head of the queue, strictly isolated to the SA's branch with clean static text badge and 1-click `[Load to RO Studio]` handover.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - Removed `showSection('online-bookings', this)` from both `navHTML` and `sidebarNavHTML` for the `sa` role in `buildNavbar()`.
+    - Confined SA navigation strictly to 5 tools: 1. 2025 RO Excel Studio, 2. Daily Intakes, 3. Customer Lookup, 4. Bay Status, 5. TV Monitor.
+    - Verified that visiting Daily Intakes (`showSection('queue')`) displays the branch-isolated Online Booking Module at the head of the queue with active workshop floor jobs below.
+  - `frontend/index.html`:
+    - Bumped script query parameter cache buster to `v=2.97`.
+  - `tests/frontend/app.test.js`:
+    - Updated `AUT-FRONT-108` to verify that SA navbar excludes separate Online Bookings buttons and consolidates access into Daily Intakes.
+    - Updated `AUT-FRONT-112` for `v=2.97`.
+    - Added `AUT-FRONT-113` verifying the strict 5-item operational order for Service Advisor navigation.
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Synchronized cache buster assertions to accept `v=2.97`.
+* **Automated & Manual QA Verification**:
+  - 139/139 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `SA-20` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.97`.
+* **GitHub Commit**: `de84491`.
+
+---
+
 ## 📅 September 23, 2026 (Assistant Branch Dispatch & SA Branch-Locked Online Booking Handover)
 
 ### 📋 Assistant Branch Dispatch & SA Branch-Locked Online Booking Module to 2025 RO Studio Flow (REV-142)

@@ -29,10 +29,10 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.strictEqual(fn('all'), 'All Branches');
     });
 
-    it('AUT-FRONT-108: SA navbar exposes Online Bookings in both header and sidebar', () => {
+    it('AUT-FRONT-108: SA navbar excludes separate Online Bookings button and consolidates into Daily Intakes', () => {
         const matches = appJs.match(/showSection\('online-bookings', this\)/g) || [];
-        assert.strictEqual(matches.length, 2, 'SA must get Online Bookings in the header and sidebar nav');
-        assert.ok(appJs.includes('<i data-lucide="calendar-clock" class="w-4 h-4"></i> Online Bookings'));
+        assert.strictEqual(matches.length, 0, 'SA navbar and sidebar must not have separate Online Bookings buttons');
+        assert.ok(appJs.includes("showSection('queue', this)"));
         assert.ok(appJs.includes("const isOnlineBookingsView = (id === 'online-bookings');"));
         assert.ok(indexHtml.includes('#section-queue.queue-focus-online > :not(#container-online-queue)'));
     });
@@ -64,7 +64,19 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.ok(appJs.includes("onlineBranchFilter = payload.branch || 'all';"));
     });
 
-    it('AUT-FRONT-112: cache buster bumped to v=2.96', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=2.96"'));
+    it('AUT-FRONT-112: cache buster bumped to v=2.97', () => {
+        assert.ok(indexHtml.includes('src="js/app.js?v=2.97"'));
+    });
+
+    it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {
+        const saBlockMatch = appJs.match(/else if \(role === 'sa'\) \{([\s\S]*?)setupIntakeForm\('sa'\);/);
+        assert.ok(saBlockMatch, 'SA role block must exist in buildNavbar');
+        const saBlock = saBlockMatch[1];
+        assert.strictEqual(saBlock.includes("showSection('online-bookings'"), false, 'SA block must not contain online-bookings nav button');
+        assert.ok(saBlock.includes("showSection('form13'"), 'Must include 2025 RO Excel Studio');
+        assert.ok(saBlock.includes("showSection('queue'"), 'Must include Daily Intakes');
+        assert.ok(saBlock.includes("showSection('lookup'"), 'Must include Customer Lookup');
+        assert.ok(saBlock.includes("showSection('bays'"), 'Must include Bay Status');
+        assert.ok(saBlock.includes("openTVBroadcastHubModal()"), 'Must include TV Monitor');
     });
 });

@@ -1938,17 +1938,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     document.getElementById('header-actions').classList.add('hidden');
                 }
 
-                // Service Advisor Order: 1. 2025 RO Excel Studio, 2. Daily Intakes / Master Queue, 3. Online Bookings (own branch), 4. Customer Lookup, 5. Bay Status, 6. TV Monitor
+                // Service Advisor Order: 1. 2025 RO Excel Studio, 2. Daily Intakes (with integrated branch Online Module), 3. Customer Lookup, 4. Bay Status, 5. TV Monitor
                 navHTML += `<button onclick="showSection('form13', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> 2025 RO Excel Studio</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4"></i> Daily Intakes</button>`;
-                navHTML += `<button onclick="showSection('online-bookings', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-clock" class="w-4 h-4"></i> Online Bookings</button>`;
                 navHTML += `<button onclick="showSection('lookup', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="history" class="w-4 h-4"></i> Customer Lookup</button>`;
                 navHTML += `<button onclick="showSection('bays', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="layout-grid" class="w-4 h-4"></i> Bay Status</button>`;
                 navHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2 text-slate-700 cursor-pointer"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
                 sidebarNavHTML += `<button onclick="showSection('form13', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="file-spreadsheet" class="w-5 h-5 shrink-0 text-emerald-400"></i><span class="nav-text whitespace-nowrap">2025 RO Excel Studio</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="clipboard-list" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Daily Intakes</span></button>`;
-                sidebarNavHTML += `<button onclick="showSection('online-bookings', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="calendar-clock" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Online Bookings</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('lookup', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="history" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Customer Lookup</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('bays', this)" class="nav-btn w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-gray-100 flex items-center gap-3 text-slate-300 text-[13.5px]"><i data-lucide="layout-grid" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">Bay Status</span></button>`;
                 sidebarNavHTML += `<button onclick="openTVBroadcastHubModal()" type="button" class="w-full px-3.5 py-2.5 rounded-xl font-bold transition-all hover:bg-slate-800 flex items-center gap-3 text-slate-300 text-[13.5px] cursor-pointer"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text whitespace-nowrap">TV Monitor</span></button>`;
@@ -2624,165 +2622,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             } catch (err) {
                 console.error("Failed to load branches:", err);
-            }
-        }
-
-        // Tab switcher inside Staff Management
-        function switchStaffTab(tab) {
-            document.querySelectorAll('.staff-tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`staff-tab-${tab}`).classList.remove('hidden');
-
-            const tabs = ['roster', 'branches'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`btn-staff-tab-${t}`);
-                if (btn) {
-                    if (t === tab) {
-                        btn.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5 focus:outline-none";
-                    } else {
-                        btn.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5 focus:outline-none";
-                    }
-                }
-            });
-
-            if (tab === 'branches') {
-                loadBranchesList();
-            } else if (tab === 'roster') {
-                loadBranches();
-            }
-        }
-
-        // Branch management operations
-        async function loadBranchesList() {
-            try {
-                const branches = await apiRequest('/api/branches/all');
-                const tbody = document.getElementById('table-branches-list');
-                if (!tbody) return;
-
-                tbody.innerHTML = branches.map(b => `
-                    <tr class="${b.is_deleted ? 'opacity-65 bg-gray-50/50' : ''}">
-                        <td class="px-6 py-4 font-mono font-bold text-xs text-gray-700">${b.code}</td>
-                        <td class="px-6 py-4 font-bold text-gray-900">${b.name}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
-                                b.is_deleted ? 'bg-red-50 text-red-600 border border-red-200' :
-                                b.is_active ? 'bg-green-50 text-green-600 border border-green-200' :
-                                'bg-gray-100 text-gray-500 border border-gray-200'
-                            }">${b.is_deleted ? 'Deleted' : b.is_active ? 'Active' : 'Suspended'}</span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex gap-2 justify-end">
-                                ${b.is_deleted ? `
-                                    <button onclick="restoreBranch('${b.id}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-green-600 hover:bg-green-50 transition" title="Restore Branch">
-                                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                    </button>
-                                ` : `
-                                    <button onclick="editBranch('${b.id}', '${b.name.replace(/'/g, "\\'")}', '${b.code}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-blue-600 hover:bg-blue-50 transition" title="Edit Details">
-                                        <i data-lucide="edit-3" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="toggleBranchActive('${b.id}', ${!b.is_active})" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm transition ${b.is_active ? 'text-amber-500 hover:bg-amber-50' : 'text-green-600 hover:bg-green-50'}" title="${b.is_active ? 'Suspend Branch' : 'Activate Branch'}">
-                                        <i data-lucide="${b.is_active ? 'pause' : 'play'}" class="w-4 h-4"></i>
-                                    </button>
-                                    <button onclick="deleteBranch('${b.id}')" class="bg-white p-2 rounded-lg border border-gray-200 shadow-sm text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Delete Branch">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    </button>
-                                `}
-                            </div>
-                        </td>
-                    </tr>
-                `).join('') || `<tr><td colspan="4" class="text-center py-8 text-gray-500 font-medium">No branches configured.</td></tr>`;
-                lucide.createIcons();
-            } catch (err) {
-                showSystemToast("Failed to load branches register.", "error");
-            }
-        }
-
-        async function saveBranch() {
-            const id = document.getElementById('edit-branch-id').value;
-            const name = document.getElementById('branch-name').value.trim();
-            const code = document.getElementById('branch-code').value.trim();
-
-            if (!name || !code) {
-                return showSystemToast("Branch name and code are required.", "error");
-            }
-
-            try {
-                if (id) {
-                    await apiRequest(`/api/branches/${id}`, {
-                        method: 'PUT',
-                        body: { name, code }
-                    });
-                    showSystemToast("Branch details updated.", "success");
-                } else {
-                    await apiRequest('/api/branches', {
-                        method: 'POST',
-                        body: { name, code }
-                    });
-                    showSystemToast("Branch created successfully.", "success");
-                }
-                cancelBranchEdit();
-                loadBranchesList();
-                loadBranches();
-            } catch (err) {
-                showSystemToast(err.message || "Failed to save branch.", "error");
-            }
-        }
-
-        function editBranch(id, name, code) {
-            document.getElementById('edit-branch-id').value = id;
-            document.getElementById('branch-name').value = name;
-            document.getElementById('branch-code').value = code;
-            document.getElementById('branch-form-title').innerText = "Edit Branch";
-            document.getElementById('btn-cancel-branch-edit').classList.remove('hidden');
-        }
-
-        function cancelBranchEdit() {
-            document.getElementById('edit-branch-id').value = "";
-            document.getElementById('branch-name').value = "";
-            document.getElementById('branch-code').value = "";
-            document.getElementById('branch-form-title').innerText = "Add Branch";
-            document.getElementById('btn-cancel-branch-edit').classList.add('hidden');
-        }
-
-        async function toggleBranchActive(id, newStatus) {
-            try {
-                await apiRequest(`/api/branches/${id}`, {
-                    method: 'PUT',
-                    body: { isActive: newStatus ? 1 : 0 }
-                });
-                showSystemToast(newStatus ? "Branch activated." : "Branch suspended.", "success");
-                loadBranchesList();
-            } catch (err) {
-                showSystemToast(err.message || "Failed to toggle branch status.", "error");
-            }
-        }
-
-        async function deleteBranch(id) {
-            try {
-                const res = await apiRequest(`/api/branches/${id}`, {
-                    method: 'DELETE'
-                });
-                if (res.staffCount > 0) {
-                    showSystemToast(`Branch deleted. Warning: ${res.staffCount} staff member(s) are still assigned to this branch.`, "warning", "Assigned Staff Alert");
-                } else {
-                    showSystemToast("Branch soft-deleted successfully.", "success");
-                }
-                loadBranchesList();
-                loadBranches();
-            } catch (err) {
-                showSystemToast(err.message || "Failed to delete branch.", "error");
-            }
-        }
-
-        async function restoreBranch(id) {
-            try {
-                await apiRequest(`/api/branches/${id}/restore`, {
-                    method: 'POST'
-                });
-                showSystemToast("Branch successfully restored.", "success");
-                loadBranchesList();
-                loadBranches();
-            } catch (err) {
-                showSystemToast(err.message || "Failed to restore branch.", "error");
             }
         }
 
@@ -7118,7 +6957,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             chartInstances.branchShare = new Chart(ctxBranch, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Branch A', 'Branch B'],
+                    labels: ['Marikina', 'Regalado'],
                     datasets: [{
                         data: [branchA, branchB],
                         backgroundColor: [
