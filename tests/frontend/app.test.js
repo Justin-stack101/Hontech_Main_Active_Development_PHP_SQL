@@ -64,8 +64,8 @@ describe('REV-142 Online Booking Module (frontend)', () => {
         assert.ok(appJs.includes("onlineBranchFilter = payload.branch || 'all';"));
     });
 
-    it('AUT-FRONT-112: cache buster bumped to v=2.98', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=2.98"'));
+    it('AUT-FRONT-112: cache buster bumped to v=2.98 or higher', () => {
+        assert.ok(indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {

@@ -370,7 +370,12 @@ describe('Frontend Logic & SLA Calculation Unit Tests', () => {
             const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
 
             // Form 13 must use darkInk rather than glaring red
-            assert.strictEqual(appJs.includes('drawText(jobNo, 478, 794, 8.5, true, darkInk);'), true, 'Job No must use darkInk typography');
+            assert.strictEqual(
+                appJs.includes('drawText(jobNo, 478, 794, 8.5, true, darkInk);') ||
+                appJs.includes('drawTextCenter(jobNo, 485.5, 781.5, 8.0, true, darkInk);'),
+                true,
+                'Job No must use darkInk typography'
+            );
             // Border destructive whiteouts in table parts/materials must be removed
             assert.strictEqual(appJs.includes('whiteOut(297, ry - 1.5, 55, 7.5);'), false, 'Parts row destructive whiteout must be removed');
             assert.strictEqual(appJs.includes('whiteOut(475, ry - 1.5, 46, 7.5);'), false, 'Materials row destructive whiteout must be removed');
@@ -2271,52 +2276,89 @@ describe('Suite 13: Daily Intakes 3-Table Alignment, Spacing Rhythm & Command De
             const indexHtml = fs.readFileSync(path.resolve('frontend/index.html'), 'utf8');
             const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
 
-            // 1. Verify compileForm13PDFBytes uses regular non-bold font for customer dossier, mechanic/assessor/SA, and items
-            // (REV-137: customer-details row block was one full row too high, landing Name on the header divider
-            // and shifting every value onto the NEXT field's label line; shifted the whole block down one row.)
+            // 1. Verify compileForm13PDFBytes uses authentic typography matching template with bold Plate No
             assert.strictEqual(
-                appJs.includes("drawTextFit(name, 134, 715.2, 140, 7.5, false);") &&
-                appJs.includes("drawTextFit(plate, 472, 715.2, 48, 7.5, false);") &&
+                appJs.includes("drawTextFit(name, 148, 715.8, 138, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(plate, 464, 715.8, 44, 6.5, true, darkInk, 5.2);") &&
                 appJs.includes("drawTextCenter(sa, 184, 583.5, 7.5, false);") &&
                 appJs.includes("drawTextCenter(mechanic, 184, 279.8, 7.2, false);") &&
                 appJs.includes("drawTextFit(sa, 175, 69.1, 100, 7.5, false);"),
                 true,
-                'compileForm13PDFBytes must render customer dossier, mechanics, SA, and claim stub in regular non-bold font'
+                'compileForm13PDFBytes must render customer dossier, mechanics, SA, and claim stub in authentic template typography'
             );
 
-            // 2. Verify compileQuotePDFBytes uses regular non-bold font for Quote No, customer dossier, and signatures
+            // 2. Verify compileQuotePDFBytes uses authentic typography for Quote No, customer dossier, and signatures
             assert.strictEqual(
-                appJs.includes("drawText(quoteNo, 420, 776.6, 8, false, darkInk);") &&
-                appJs.includes("drawTextFit(name, 115, 696.5, 180, 7.5, false);") &&
+                appJs.includes("drawText(quoteNo, 420, 776.6, 8, true, darkInk);") &&
+                appJs.includes("drawTextFit(name, 115, 696.5, 180, 6.5, false, darkInk, 5.2);") &&
                 (appJs.includes("drawTextFit(sa, 70, 165, 140, 7.2, false);") || appJs.includes("drawTextFit(sa, 70, 145, 140, 7.2, false);")) &&
                 (appJs.includes("drawTextFit(manager, 330, 165, 140, 7.2, false);") || appJs.includes("drawTextFit(manager, 330, 145, 140, 7.2, false);")),
                 true,
-                'compileQuotePDFBytes must render Quote No, customer dossier, and signatures in regular non-bold font'
+                'compileQuotePDFBytes must render Quote No, customer dossier, and signatures in authentic template typography'
             );
 
-            // 3. Verify compileBillingPDFBytes uses regular non-bold font for Billing No, customer dossier, and SA signature
+            // 3. Verify compileBillingPDFBytes uses authentic typography for Billing No, customer dossier, and SA signature
             assert.strictEqual(
-                (appJs.includes("drawText(billingNo, 420, 776.6, 8, false, darkInk);") || appJs.includes("drawText(billingNo, 475, 763.2, 8, false, darkInk);")) &&
-                (appJs.includes("drawTextFit(name, 115, 698.2, 180, 7.5, false);") || appJs.includes("drawTextFit(name, 80, 668.2, 240, 7.5, false);")) &&
+                (appJs.includes("drawText(billingNo, 420, 776.6, 8, false, darkInk);") || appJs.includes("drawText(billingNo, 475, 763.2, 8, true, darkInk);")) &&
+                (appJs.includes("drawTextFit(name, 115, 698.2, 180, 7.5, false);") || appJs.includes("drawTextFit(name, 80, 668.2, 240, 6.5, false, darkInk, 5.2);")) &&
                 (appJs.includes("drawTextFit(sa, 70, 215, 140, 7.2, false);") || appJs.includes("drawTextFit(sa, 88, 95, 140, 7.2, false);")),
                 true,
-                'compileBillingPDFBytes must render Billing No, customer dossier, and SA signature in regular non-bold font'
+                'compileBillingPDFBytes must render Billing No, customer dossier, and SA signature in authentic template typography'
             );
 
-            // 4. Verify compileChecklistPDFBytes uses regular non-bold font for customer name and vehicle specs
+            // 4. Verify compileChecklistPDFBytes uses authentic typography for customer name and vehicle specs
             assert.strictEqual(
-                appJs.includes("drawTextFit(name, 120, 733.4, 250, 7.5, false);") &&
-                appJs.includes("drawText(date, 460, 733.4, 7.5, false, darkInk);") &&
-                appJs.includes("drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 7.5, false);"),
+                appJs.includes("drawTextFit(name, 120, 733.4, 250, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawText(date, 460, 733.4, 7.0, false, darkInk);") &&
+                appJs.includes("drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 6.5, true, darkInk, 5.2);"),
                 true,
-                'compileChecklistPDFBytes must render customer name, plate, and date in regular non-bold font'
+                'compileChecklistPDFBytes must render customer name, plate, and date in authentic template typography'
             );
 
-            // 5. Verify cache buster v=2.73 or higher
+            // 5. Verify cache buster v=2.99 or higher
             assert.strictEqual(
-                indexHtml.includes('src="js/app.js?v=2.98"') || indexHtml.includes('src="js/app.js?v=2.97"') || indexHtml.includes('src="js/app.js?v=2.96"') || indexHtml.includes('src="js/app.js?v=2.95"') || indexHtml.includes('src="js/app.js?v=2.94"') || indexHtml.includes('src="js/app.js?v=2.93"') || indexHtml.includes('src="js/app.js?v=2.92"') || indexHtml.includes('src="js/app.js?v=2.91"') || indexHtml.includes('src="js/app.js?v=2.90"') || indexHtml.includes('src="js/app.js?v=2.89"') || indexHtml.includes('src="js/app.js?v=2.88"') || indexHtml.includes('src="js/app.js?v=2.87"') || indexHtml.includes('src="js/app.js?v=2.86"') || indexHtml.includes('src="js/app.js?v=2.85"') || indexHtml.includes('src="js/app.js?v=2.84"') || indexHtml.includes('src="js/app.js?v=2.83"') || indexHtml.includes('src="js/app.js?v=2.82"') || indexHtml.includes('src="js/app.js?v=2.81"') || indexHtml.includes('src="js/app.js?v=2.80"') || indexHtml.includes('src="js/app.js?v=2.79"') || indexHtml.includes('src="js/app.js?v=2.78"') || indexHtml.includes('src="js/app.js?v=2.77"') || indexHtml.includes('src="js/app.js?v=2.76"') || indexHtml.includes('src="js/app.js?v=2.75"') || indexHtml.includes('src="js/app.js?v=2.74"') || indexHtml.includes('src="js/app.js?v=2.73"'),
+                indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"') || indexHtml.includes('src="js/app.js?v=2.97"') || indexHtml.includes('src="js/app.js?v=2.96"'),
                 true,
-                'Cache buster must be incremented to v=2.73 in index.html'
+                'Cache buster must be incremented to v=2.99 in index.html'
+            );
+        });
+
+        it('AUT-FRONT-106: REV-144 Form 1/3 Underline Precision, Line Clearance & Boundary Padding', () => {
+            const appJs = fs.readFileSync(path.resolve('frontend/js/app.js'), 'utf8');
+
+            // 1. Header Job No centered on Y=781.5 underline and Date centered in box Y=758.2
+            assert.strictEqual(
+                appJs.includes("drawTextCenter(jobNo, 485.5, 781.5, 8.0, true, darkInk);") &&
+                appJs.includes("drawTextCenter(intakeDate, 485.8, 758.2, 7.0, true, darkInk);"),
+                true,
+                'Job No and Date must be centered on their respective template targets'
+            );
+
+            // 2. Customer Details exact 7.78pt line step with +1.3pt baseline clearance
+            assert.strictEqual(
+                appJs.includes("drawTextFit(name, 148, 715.8, 138, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(address, 148, 708.0, 138, 6.2, false, darkInk, 5.0);") &&
+                appJs.includes("drawTextFit(contact, 148, 700.3, 138, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(email, 148, 692.5, 138, 6.2, false, darkInk, 5.0);"),
+                true,
+                'Customer Details baselines must clear template underlines cleanly without slicing'
+            );
+
+            // 3. Middle Column clamping (maxWidth 62) to prevent collision with Plate No column
+            assert.strictEqual(
+                appJs.includes("drawTextFit(model, 350, 715.8, 62, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(km, 350, 708.0, 62, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(engine, 350, 700.3, 62, 6.5, false, darkInk, 5.2);") &&
+                appJs.includes("drawTextFit(chassis, 350, 692.5, 62, 6.5, false, darkInk, 5.2);"),
+                true,
+                'Middle column values must be clamped to 62pt to prevent collision with Plate No column'
+            );
+
+            // 4. Concern Box interior padding
+            assert.strictEqual(
+                appJs.includes("x: 94, y: 652, size: 6.8, font: fontNorm, maxWidth: 405, lineHeight: 9.0"),
+                true,
+                'Concern Box must maintain safe interior margins avoiding header and side borders'
             );
         });
     });

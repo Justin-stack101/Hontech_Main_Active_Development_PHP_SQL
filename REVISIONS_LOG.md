@@ -1,3 +1,31 @@
+## 📅 September 24, 2026 (2025 RO Excel Studio PDF Document Formatting, Typography & Precise Coordinate Alignment)
+
+### 📋 2025 RO Excel Studio PDF Document Formatting, Typography & Precise Coordinate Alignment (REV-145)
+* **Objective & Context**: In response to user review of Job Order Form 1/3 and other studio sheets, eliminate all document formatting flaws, horizontal line piercing, text-column collisions, and font mismatches. Align the dynamic text injection across all 4 worksheets (Job Order, Quotation, Billing, Inspection Checklist) to the exact physical vector coordinates and 6.5pt clean sans-serif typography of the official templates, keeping key identifiers (Plate No, Job/Quote/Billing No) bolded for rapid scanning.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - **Job Order (Form 1/3)**:
+      - Header: Shifted Job Order No (`jobNo`) from floating at Y=794 down to `drawTextCenter(jobNo, 485.5, 781.5, 8.0, true, darkInk)` directly above the printed underline (Y=780.0). Centered Intake Date inside the pre-printed date rectangle `drawTextCenter(intakeDate, 485.8, 758.2, 7.0, true, darkInk)` (box bounds: X: 462.4-509.1, Y: 756.0-765.1).
+      - Customer Details: Replaced faulty 8.1pt decrement with exact 7.78pt template underline spacing and +1.3pt baseline clearance (Rows 1-4: Y = 715.8, 708.0, 700.3, 692.5). Prevents pre-printed underlines from slicing horizontally through contact numbers, emails, and color.
+      - Typography & Auto-Shrink: Standardized customer details to 6.5pt regular font (6.2pt for address/email) matching the official template. Set Plate No to bold 6.5pt. Configured `minSize: 5.2` and clamped Column 2 (`maxWidth: 62`) to prevent long model names (e.g. "Geely Coolray Sport") from colliding with the Plate No column.
+      - Concern Box: Repositioned text origin to `x: 94, y: 652` with `maxWidth: 405` and `lineHeight: 9.0` to preserve clean interior margins inside the bounding box (X: 88.6-508.5, Y: 611.4-665.4) without overlapping the top header line or side borders.
+    - **Quotation (Form 2/3)**:
+      - Standardized customer details typography to 6.5pt regular with bold Plate No (`X: 380, Y: 696.5`) and bold Quote No / Job No. Added `minSize: 5.2` auto-shrink.
+    - **Billing Statement**:
+      - Standardized customer details typography to 6.5pt regular with bold Plate No (`X: 400, Y: 668.2`) and bold Billing No / Job No. Added `minSize: 5.2` auto-shrink.
+    - **Inspection Checklist**:
+      - Standardized header details to 6.5pt regular with bold Plate No (`X: 120, Y: 720.8`).
+  - `tests/frontend/sla_and_logic.test.js`:
+    - Updated `AUT-FRONT-94` and `AUT-FRONT-23` to assert the calibrated coordinates and bold Plate No.
+    - Added `AUT-FRONT-106` verifying Job Order No underline centering, Date box alignment, 7.78pt row decrement with +1.3pt baseline clearance, middle-column width clamping (62pt), and Concern Box margin bounds.
+* **Automated & Manual QA Verification**:
+  - 141/141 automated tests passing across 63 suites (`npm.cmd test`).
+  - Synced `SA-21` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+* **Cache Busting**: `js/app.js?v=2.98`.
+* **GitHub Commit**: Traceable to REV-145.
+
+---
+
 ## 📅 September 24, 2026 (Official System Title Branding on Login Page & Document Title)
 
 ### 📋 Official System Title Branding on Login Page & Document Title (REV-144)

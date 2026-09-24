@@ -13876,36 +13876,35 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const assessor = getVal('f13-input-assessor') || 'Parts/Materials Controller';
             const manager = getVal('f13-input-manager') || 'General Manager';
 
-            // 1. Header
-            drawText(jobNo, 478, 794, 8.5, true, darkInk);
-            drawTextCenter(intakeDate, 505, 767.6, 7.5, true, darkInk);
+            // 1. Header (Job No underline at Y=780.0, Date box at X=462.4, Y=756.0-765.1)
+            drawTextCenter(jobNo, 485.5, 781.5, 8.0, true, darkInk);
+            drawTextCenter(intakeDate, 485.8, 758.2, 7.0, true, darkInk);
 
             // 2. Customer Details
-            // Row y-values were one full row (~8.1pt) too high, landing each value above its label line —
-            // Name floated above the header divider entirely, and every label below it showed the NEXT
-            // field's value (Name showed Address, Address showed Contact, etc). Shifted the whole 4-row
-            // block down by one row so each value sits on its own label's line, and added the missing 5th
-            // row position (previously absent) for Email/Chassis/Color.
-            drawTextFit(name, 134, 715.2, 140, 7.5, false);
-            drawTextFit(model, 348, 715.2, 72, 7.5, false, darkInk);
-            drawTextFit(plate, 472, 715.2, 48, 7.5, false);
+            // Pre-printed underlines are spaced at 7.78pt intervals (Y = 714.5, 706.7, 699.0, 691.2).
+            // Baselines sit +1.3pt above each line to prevent lines piercing through text.
+            // Sizing: 6.5pt clean regular sans-serif matching official template (6.2pt for address/email);
+            // Plate No bolded for quick reading; auto-shrink down to 5.2pt prevents column collision.
+            drawTextFit(name, 148, 715.8, 138, 6.5, false, darkInk, 5.2);
+            drawTextFit(model, 350, 715.8, 62, 6.5, false, darkInk, 5.2);
+            drawTextFit(plate, 464, 715.8, 44, 6.5, true, darkInk, 5.2);
 
-            drawTextFit(address, 134, 707.1, 140, 7, false);
-            drawTextFit(km, 348, 707.1, 72, 7.5, false);
-            drawTextFit(intakeDate, 472, 707.1, 48, 7, false);
+            drawTextFit(address, 148, 708.0, 138, 6.2, false, darkInk, 5.0);
+            drawTextFit(km, 350, 708.0, 62, 6.5, false, darkInk, 5.2);
+            drawTextFit(intakeDate, 464, 708.0, 44, 6.5, false, darkInk, 5.2);
 
-            drawTextFit(contact, 134, 698.9, 140, 7.5, false);
-            drawTextFit(engine, 348, 698.9, 72, 7, false);
-            drawTextFit(promiseDate, 472, 698.9, 48, 7, false);
+            drawTextFit(contact, 148, 700.3, 138, 6.5, false, darkInk, 5.2);
+            drawTextFit(engine, 350, 700.3, 62, 6.5, false, darkInk, 5.2);
+            drawTextFit(promiseDate, 464, 700.3, 44, 6.5, false, darkInk, 5.2);
 
-            drawTextFit(email, 136, 690.8, 138, 7, false);
-            drawTextFit(chassis, 348, 690.8, 72, 7, false);
-            drawTextFit(color, 475, 690.8, 46, 7, false, darkInk);
+            drawTextFit(email, 148, 692.5, 138, 6.2, false, darkInk, 5.0);
+            drawTextFit(chassis, 350, 692.5, 62, 6.5, false, darkInk, 5.2);
+            drawTextFit(color, 464, 692.5, 44, 6.5, false, darkInk, 5.2);
 
-            // 3. Concern Box
+            // 3. Concern Box (Header bottom line is Y=665.4, Left border X=88.6, Right X=508.5)
             if (concern) {
                 page.drawText(concern, {
-                    x: 82, y: 658, size: 7, font: fontNorm, maxWidth: 430, lineHeight: 9.5
+                    x: 94, y: 652, size: 6.8, font: fontNorm, maxWidth: 405, lineHeight: 9.0
                 });
             }
 
@@ -14145,18 +14144,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const manager = getVal('f13-input-manager') || 'General Manager';
 
             // Meta Header
-            drawText(quoteNo, 420, 776.6, 8, false, darkInk);
+            drawText(quoteNo, 420, 776.6, 8, true, darkInk);
             drawText(date, 440, 744.3, 7.5, false, darkInk);
-            drawText(jobNo, 440, 734.7, 7.5, false, darkInk);
+            drawText(jobNo, 440, 734.7, 7.5, true, darkInk);
             drawText(promiseDate, 440, 725.2, 7.5, false, darkInk);
 
             // Customer Details
-            drawTextFit(name, 115, 696.5, 180, 7.5, false);
-            drawTextFit(plate, 380, 696.5, 120, 7.5, false);
-            drawTextFit(address, 115, 686.9, 180, 7, false);
-            drawTextFit(model, 380, 686.9, 120, 7.5, false);
-            drawTextFit(contact, 115, 677.3, 180, 7.5, false);
-            drawTextFit(color, 380, 677.3, 120, 7.5, false);
+            drawTextFit(name, 115, 696.5, 180, 6.5, false, darkInk, 5.2);
+            drawTextFit(plate, 380, 696.5, 120, 6.5, true, darkInk, 5.2);
+            drawTextFit(address, 115, 686.9, 180, 6.2, false, darkInk, 5.0);
+            drawTextFit(model, 380, 686.9, 120, 6.5, false, darkInk, 5.2);
+            drawTextFit(contact, 115, 677.3, 180, 6.5, false, darkInk, 5.2);
+            drawTextFit(color, 380, 677.3, 120, 6.5, false, darkInk, 5.2);
 
             // Table Line Items (Up to 24 rows on template)
             const items = (window.form23Items && window.form23Items.length > 0)
@@ -14374,20 +14373,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Meta Header
-            drawText(billingNo, 475, 763.2, 8, false, darkInk);
+            drawText(billingNo, 475, 763.2, 8, true, darkInk);
             drawText(date, 495, 726.1, 7.5, false, darkInk);
-            drawText(jobNo, 495, 714.5, 7.5, false, darkInk);
+            drawText(jobNo, 495, 714.5, 7.5, true, darkInk);
             drawText(quoteNo, 495, 703.0, 7.5, false, darkInk);
 
             // Customer Details
-            drawTextFit(name, 80, 668.2, 240, 7.5, false);
-            drawTextFit(plate, 400, 668.2, 140, 7.5, false);
-            drawTextFit(address, 80, 656.6, 240, 7, false);
-            drawTextFit(model, 400, 656.6, 140, 7.5, false);
-            drawTextFit(contact, 80, 645.0, 240, 7.5, false);
-            drawTextFit(color, 400, 645.0, 140, 7.5, false);
-            drawTextFit(email, 80, 633.5, 240, 7, false);
-            drawTextFit(km, 400, 633.5, 140, 7.5, false);
+            drawTextFit(name, 80, 668.2, 240, 6.5, false, darkInk, 5.2);
+            drawTextFit(plate, 400, 668.2, 140, 6.5, true, darkInk, 5.2);
+            drawTextFit(address, 80, 656.6, 240, 6.2, false, darkInk, 5.0);
+            drawTextFit(model, 400, 656.6, 140, 6.5, false, darkInk, 5.2);
+            drawTextFit(contact, 80, 645.0, 240, 6.5, false, darkInk, 5.2);
+            drawTextFit(color, 400, 645.0, 140, 6.5, false, darkInk, 5.2);
+            drawTextFit(email, 80, 633.5, 240, 6.2, false, darkInk, 5.0);
+            drawTextFit(km, 400, 633.5, 140, 6.5, false, darkInk, 5.2);
 
             // Table Line Items (Up to 24 rows)
             const items = (window.billingItems && window.billingItems.length > 0)
@@ -14587,10 +14586,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
             // Top Header Info
-            drawTextFit(name, 120, 733.4, 250, 7.5, false);
-            drawText(date, 460, 733.4, 7.5, false, darkInk);
-            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 7.5, false);
-            drawTextFit(model, 120, 709.3, 200, 7.5, false);
+            drawTextFit(name, 120, 733.4, 250, 6.5, false, darkInk, 5.2);
+            drawText(date, 460, 733.4, 7.0, false, darkInk);
+            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 720.8, 250, 6.5, true, darkInk, 5.2);
+            drawTextFit(model, 120, 709.3, 200, 6.5, false, darkInk, 5.2);
 
             // Fuel Level Marker (Clean pill selector)
             drawText('FUEL LEVEL:', 355, 709.3, 7, true, darkInk);
