@@ -65,7 +65,7 @@ describe('REV-142 Online Booking Module (frontend)', () => {
     });
 
     it('AUT-FRONT-112: cache buster bumped to v=2.98 or higher', () => {
-        assert.ok(indexHtml.includes('src="js/app.js?v=3.03"') || indexHtml.includes('src="js/app.js?v=3.02"') || indexHtml.includes('src="js/app.js?v=3.01"') || indexHtml.includes('src="js/app.js?v=3.00"') || indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
+        assert.ok(indexHtml.includes('src="js/app.js?v=3.04"') || indexHtml.includes('src="js/app.js?v=3.03"') || indexHtml.includes('src="js/app.js?v=3.02"') || indexHtml.includes('src="js/app.js?v=3.01"') || indexHtml.includes('src="js/app.js?v=3.00"') || indexHtml.includes('src="js/app.js?v=2.99"') || indexHtml.includes('src="js/app.js?v=2.98"'));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {
@@ -160,15 +160,15 @@ describe('REV-142 Online Booking Module (frontend)', () => {
             'Diagnostic text must start at Y=492 below header bar'
         );
 
-        // 5. Verify Parts & Materials true 7.32pt row step and amount ghost whiteout
+        // 5. Verify Parts & Materials true 7.78pt row step and amount ghost whiteout
         assert.ok(
-            appJs.includes("Array.from({ length: 23 }, (_, i) => +(495.5 - i * 7.32).toFixed(1))"),
-            'ROW_Y must follow 7.32pt step starting at 495.5'
+            appJs.includes("Array.from({ length: 23 }, (_, i) => +(497.75 - i * 7.78).toFixed(2))"),
+            'ROW_Y must follow 7.78pt step starting at 497.75'
         );
         assert.ok(
-            appJs.includes("whiteOut(304, ry - 1.0, 45, 6.8);") &&
-            appJs.includes("whiteOut(475, ry - 1.0, 37, 6.8);"),
-            'Amount columns must mask pre-printed 0.00 ghosts'
+            appJs.includes("whiteOut(326, ry - 0.5, 22, 5.8);") &&
+            appJs.includes("whiteOut(488, ry - 0.5, 22, 5.8);"),
+            'Amount columns must mask pre-printed 0.00 ghosts cleanly without erasing grid lines'
         );
 
         // 6. Verify 1-click fast preset chips in index.html
@@ -183,12 +183,12 @@ describe('REV-142 Online Booking Module (frontend)', () => {
 
         // 7. Verify signatures alignments
         assert.ok(
-            appJs.includes("drawTextCenter(mechanic, 200.0, 292.0, 6.5, false);") &&
-            appJs.includes("drawTextCenter(assessor, 442.5, 292.0, 6.5, false);") &&
-            appJs.includes("drawTextCenter(sa, 200.0, 223.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(mechanic, 442.5, 223.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(name, 200.0, 182.5, 6.5, false);") &&
-            appJs.includes("drawTextCenter(manager, 442.5, 182.5, 6.5, false);"),
+            appJs.includes("drawTextCenter(mechanic, 200.0, 290.0, 6.5, false);") &&
+            appJs.includes("drawTextCenter(assessor, 435.0, 290.0, 6.5, false);") &&
+            appJs.includes("drawTextCenter(sa, 200.0, 220.5, 6.5, false);") &&
+            appJs.includes("drawTextCenter(mechanic, 435.0, 220.5, 6.5, false);") &&
+            appJs.includes("drawTextCenter(name, 200.0, 186.5, 6.5, false);") &&
+            appJs.includes("drawTextCenter(manager, 435.0, 186.5, 6.5, false);"),
             'All signature names must be centered above their respective underlines'
         );
 

@@ -13946,18 +13946,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 });
             }
 
-            // 6. Parts & Materials (Exact 7.32pt template row grid matching template lines)
-            // 6. Parts & Materials (Exact 7.32pt template row grid matching template lines starting at 495.5)
-            const ROW_Y = Array.from({ length: 23 }, (_, i) => +(495.5 - i * 7.32).toFixed(1));
+            // 6. Parts & Materials (True 7.78pt template grid starting at Y = 497.75)
+            const ROW_Y = Array.from({ length: 23 }, (_, i) => +(497.75 - i * 7.78).toFixed(2));
             let partsTotal = 0;
             let matsTotal = 0;
-
-            // Inset whiteout to mask template pre-printed "0.00" placeholders across all 23 rows in Amount columns
-            for (let r = 0; r < ROW_Y.length; r++) {
-                const ry = ROW_Y[r];
-                whiteOut(304, ry - 1.0, 45, 6.8);
-                whiteOut(475, ry - 1.0, 37, 6.8);
-            }
 
             (window.form13Parts || []).forEach((p, i) => {
                 if (i >= ROW_Y.length) return;
@@ -13971,6 +13963,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextCenter(String(qty), 245, ry, 6.2);
                 drawTextRight(price.toFixed(2), 293, ry, 6.2);
                 if (amt > 0) {
+                    // Targeted whiteout strictly inside cell padding to mask pre-printed 0.00 without touching horizontal or vertical grid lines
+                    whiteOut(326, ry - 0.5, 22, 5.8);
                     drawTextRight(amt.toFixed(2), 346, ry, 6.2, false);
                 }
             });
@@ -13987,41 +13981,45 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextCenter(String(qty), 415, ry, 6.2);
                 drawTextRight(price.toFixed(2), 471, ry, 6.2);
                 if (amt > 0) {
-                    drawTextRight(amt.toFixed(2), 510, ry, 6.2, false);
+                    // Targeted whiteout strictly inside cell padding to mask pre-printed 0.00 without touching horizontal or vertical grid lines
+                    whiteOut(488, ry - 0.5, 22, 5.8);
+                    drawTextRight(amt.toFixed(2), 508, ry, 6.2, false);
                 }
             });
 
-            // Subtotals & Total (cleanly mask pre-printed "-" and align totals)
-            whiteOut(300, 319.0, 48, 8);
+            // Subtotals & Totals (Cleanly mask only the pre-printed "-" inside the boxes, preserving all borders)
+            // Parts Subtotal Box: X=288.3 to 348.4, Y=314.65 to 323.71
+            whiteOut(290, 315.5, 56, 7.2);
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 320.5, 6.5, false);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 346, 317.5, 6.5, false);
             }
 
-            whiteOut(475, 319.0, 38, 8);
+            // Materials Subtotal Box: X=462.7 to 508.2, Y=314.91 to 323.71
+            whiteOut(464, 315.7, 43, 7.2);
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 510, 320.5, 6.5, false);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 506, 317.5, 6.5, false);
             }
 
+            // Grand Total Box: X=462.7 to 508.2, Y=306.87 to 314.91
             const grandTotal = partsTotal + matsTotal;
-            whiteOut(470, 311.5, 43, 9);
+            whiteOut(464, 307.8, 43, 6.2);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 512, 313.0, 7.2, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 506, 309.5, 7.0, true, darkInk);
             }
 
-            // Signatures block (Diagnosed by & Assessed by underlines at Y = 290.0)
-            drawTextCenter(mechanic, 200.0, 292.0, 6.5, false);
-            drawTextCenter(assessor, 442.5, 292.0, 6.5, false);
+            // Signatures block: Diagnosed by & Assessed by (Underlines at Y = 288.5, baseline Y = 290.0)
+            drawTextCenter(mechanic, 200.0, 290.0, 6.5, false);
+            drawTextCenter(assessor, 435.0, 290.0, 6.5, false);
 
-            // Certificate of Completion block (Underlines at Y = 222.0)
-            drawTextCenter(sa, 200.0, 223.5, 6.5, false);
-            drawTextCenter(mechanic, 442.5, 223.5, 6.5, false);
+            // Certificate of Completion block: Recommending Approval & Approved by (Underlines at Y = 219.0, baseline Y = 220.5)
+            drawTextCenter(sa, 200.0, 220.5, 6.5, false);
+            drawTextCenter(mechanic, 435.0, 220.5, 6.5, false);
 
-            // CONFORME (Customer) - mask template "0" ghost at X = 195.3, Y = 183.0 (Underlines at Y = 181.0)
-            whiteOut(185, 181.8, 30, 8.5);
-            drawTextCenter(name, 200.0, 182.5, 6.5, false);
-
-            // Concurred by (Manager)
-            drawTextCenter(manager, 442.5, 182.5, 6.5, false);
+            // CONFORME (Customer) & Concurred by (Manager): Underlines at Y = 185.0, baseline Y = 186.5
+            // Mask template ghost "0" at X = 189.9, Y = 185.4
+            whiteOut(180, 185.5, 30, 7.5);
+            drawTextCenter(name, 200.0, 186.5, 6.5, false);
+            drawTextCenter(manager, 435.0, 186.5, 6.5, false);
 
             // 7. Filipino Claim stub (all 5 pre-printed ghost placeholders masked and coordinates calibrated)
             whiteOut(148, 98.5, 138, 7.5);

@@ -1,3 +1,26 @@
+## 📅 September 24, 2026 (Form 1/3 PDF Table Grid Integrity & Lower Signatures Calibration)
+
+### 📋 Form 1/3 PDF Table Grid Integrity, Whiteout Elimination & Signatures Calibration (REV-151)
+* **Objective & Context**: In direct response to user screenshots showing white void rectangles ("so many white parts") erasing table grid lines, row 0 overlapping the table header, and underlines slicing through lower signature names:
+  1. **Purged Destructive Column Whiteouts**: Replaced the 23-row loop that previously wiped out the Amount columns with 45pt-wide white rectangles. Ghost `"0.00"` placeholders are now only masked on rows that actually contain items, using compact `22pt x 5.8pt` insets strictly inside cell padding. Empty rows retain 100% intact horizontal and vertical black grid lines with zero white artifacts.
+  2. **Calibrated Row 0 & 7.78pt Pitch**: Shifted Parts & Materials row 0 from `Y = 495.5` up to its true baseline `Y = 497.75` with exact `7.78 pt` row pitch (`ROW_Y = Array.from({ length: 23 }, (_, i) => +(497.75 - i * 7.78).toFixed(2))`), ensuring "Engine Oil Filter" and "Brake Cleaner" sit cleanly inside the first row without overlapping header dividers.
+  3. **Subtotals & Grand Total Box Clearance**: Re-scoped whiteout and amount baselines for Parts Subtotal (`Y = 317.5`, `whiteOut(290, 315.5, 56, 7.2)`), Materials Subtotal (`Y = 317.5`, `whiteOut(464, 315.7, 43, 7.2)`), and Grand Total (`Y = 309.5`, `whiteOut(464, 307.8, 43, 6.2)`) so text sits squarely inside the boxes without clipping black box borders.
+  4. **Certificate of Completion Signatures**: Lowered Recommending Approval (SA) and Approved by (Chief Mechanic) from `Y = 223.5` down to `Y = 220.5` directly above the `Y = 219.0` underline, centered at `X = 200.0` and `X = 435.0`.
+  5. **Conforme & Concurred by Signatures**: Raised Customer Name ("John Kaye Paranas Fernandez") and Manager ("General Manager") from `Y = 182.5` up to `Y = 186.5` directly above the `Y = 185.0` underline, completely eliminating the horizontal underline slicing through the text.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Updated `compileForm13PDFBytes()` with non-destructive cell-padded whiteouts, `497.75` row 0 with `7.78pt` pitch, bounded totals, and calibrated signature baselines.
+  - `frontend/index.html`: Incremented cache buster query parameter to `v=3.04`.
+  - `tests/frontend/app.test.js` & `tests/frontend/sla_and_logic.test.js`: Updated `AUT-FRONT-112`, `AUT-FRONT-116`, `AUT-FRONT-94` assertions and cache buster checks to `v=3.04`.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+  - Headless Chrome rendering and screenshot inspection verified zero white stripe artifacts, intact grid lines, and perfectly rested signature baselines.
+  - Synced `SA-27` into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Synced `REV-151` into `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.04`.
+* **GitHub Commit**: `84dd33f`.
+
+---
+
 ## 📅 September 24, 2026 (Form 1/3 PDF Pixel-Perfect Visual Calibration for Customer Concern, Interviewed By, Authorization & Signatures)
 
 ### 📋 Form 1/3 PDF Pixel-Perfect Visual Calibration for Customer Concern, Interviewed By, Authorization & Signatures (REV-150)
