@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (TV Page Never Served From a Stale Cache)
+
+### 🧹 HTML Pages Re-Checked on Every Load; Versioned In-App TV Frame (REV-198)
+* **Objective & Context**: The user reported the carry-over list still not auto-scrolling although it overflowed. The current page auto-scrolls both stand-alone and inside the app's TV frame (fresh browser at 1900x1000: carry-over list 0 -> 43 -> 123 -> 159 px and back). Cause: Apache served `tv.html` without any `Cache-Control` header, so browsers reused their saved copy by their own rules (hours for a file unchanged for days), and a hard refresh of the app does not always refresh the TV frame inside it, so the user kept running a TV page from before REV-196.
+* **Core Changes Made**:
+  - `.htaccess`: `Cache-Control: no-cache` for `*.html` (mod_headers): browsers re-check `index.html` and `tv.html` on every load (cheap with ETag). Scripts keep their `?v=` cache busters; API routing unchanged.
+  - `frontend/index.html`: the in-app TV frame loads `tv.html?embedded=1&v=198`, so a browser holding an old cached copy fetches the new page now.
+  - `frontend/index.html`: Incremented cache buster to v=3.51.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-157; AUT-FRONT-147 updated for the versioned frame link; added v=3.51 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-74 test row.
+  - `Revisions checklist.csv`: Appended REV-198 row.
+* **Automated & Manual QA Verification**:
+  - 186 automated unit tests passing (`npm test`).
+  - XAMPP headers: `tv.html` and `index.html` return `Cache-Control: no-cache`; `app.js?v=` unchanged; API still answers. Headless Chrome: in-app TV frame loads the versioned link and the carry-over list auto-scrolls (0 -> 43 -> 123 -> 159 px).
+* **Cache Busting**: `js/app.js?v=3.51`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Self-Update & Carry-Over Tag)
 
 ### 🔄 Open TVs Update Themselves; Returned Carry-Overs Tagged (REV-197)

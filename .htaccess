@@ -18,3 +18,14 @@ RewriteRule ^ - [L]
 # SPA Fallback — Serve frontend/index.html
 # =============================================
 RewriteRule ^frontend/.*$ frontend/index.html [L]
+
+# =============================================
+# REV-198: HTML pages are re-checked on every load (ETag makes it cheap), so an open
+# browser or TV never keeps running an old copy of index.html / tv.html after an update.
+# Scripts keep their ?v= cache busters.
+# =============================================
+<IfModule mod_headers.c>
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
