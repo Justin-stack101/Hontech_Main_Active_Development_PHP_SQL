@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (TV Monitor Phase 5: One TV Screen)
+
+### 📺 TV Monitor Phase 5: In-App TV Monitor Embeds the Smart TV Page (REV-188)
+* **Objective & Context**: Phase 5 of plan HONTECH-PLAN-TV-MONITOR-2026-V1.0 (approved decision 4: single TV codebase). The logged-in TV Monitor was a second, separate copy of the TV screen (about 250 lines of markup and 400 lines of rendering code) that loaded data once and never refreshed; an `index.html?mode=tv` mode was dead code.
+* **Core Changes Made**:
+  - `frontend/index.html`: `#section-tv` is now a "TV Monitor Preview" card with an iframe of `tv.html?embedded=1` (same screen as the lounge TV, signed in as the staff member for their branch), plus Broadcast Hub and Reload buttons. The old slide markup is removed.
+  - `frontend/js/app.js`: `showSection()` loads the frame only while the section is open and unloads it when leaving (no background polling or sound). Removed the old renderer and its helpers (`renderTV` body, `jumpToTVSlide`, `rotateTVSlides`, `startTVAutoScroll`, `getServiceTheme`), the dead `setupTVMode()` and the `?mode=tv` branches (`index.html?mode=tv` still redirects to `tv.html`). `renderTV()` stays as a no-op for existing callers; `isTVModuleActive()` returns false because tv.html plays its own announcements.
+  - `frontend/index.html`: Incremented cache buster to v=3.41.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-147; added v=3.41 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-64 test row.
+  - `Revisions checklist.csv`: Appended REV-188 row.
+* **Automated & Manual QA Verification**:
+  - 176 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome on XAMPP with a real SA login, 6/6: frame idle on other modules; Hub "Open In-App Slides" shows the section with `tv.html?embedded=1`; embedded TV signed in as the SA shows the live Marikina board without a PIN; leaving the section unloads the frame; paused broadcast shows the standby screen; old renderer removed and `renderTV` kept as a no-op. Screenshot checked.
+* **Cache Busting**: `js/app.js?v=3.41`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Phase 4: Display Integrity)
 
 ### 📺 TV Monitor Phase 4: One Group per Vehicle, Connection Badge, Sound Prompt (REV-187)

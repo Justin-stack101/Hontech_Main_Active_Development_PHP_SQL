@@ -58,8 +58,6 @@
         }
         window.getBranchDisplayName = getBranchDisplayName;
 
-        let tvSlideIndex = 0;
-        let tvInterval = null;
         let presencePingInterval = null;
 
         let devEmails = [];
@@ -1533,14 +1531,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 applyLoaderTheme(localStorage.getItem('hontech-loader-theme') || 'gears');
                 initSystemSettings();
                 initLayout();
-                const urlParams = new URLSearchParams(window.location.search);
-                const isTVMode = urlParams.get('mode') === 'tv';
-
-                if (isTVMode) {
-                    setupTVMode();
-                    return;
-                }
-
                 // Attempt auto-login if token cookie is already present
                 try {
                     const user = await apiRequest('/api/auth/me');
@@ -2354,25 +2344,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             }
 
-            if (id === 'tv') {
-                (async () => {
-                    try {
-                        await loadData();
-                        renderTV();
-                        jumpToTVSlide(0);
-                        if (window.HontechTVBroadcastManager) {
-                            await HontechTVBroadcastManager.loadSession();
-                        }
-                    } catch (e) {
-                        console.error('Error loading TV monitor:', e);
-                    }
-                })();
-                if (tvInterval) clearInterval(tvInterval);
-                tvInterval = setInterval(rotateTVSlides, 15000);
-            } else {
-                if (tvInterval) {
-                    clearInterval(tvInterval);
-                    tvInterval = null;
+            // REV-188: the in-app TV Monitor is frontend/tv.html in a frame; it polls and announces by
+            // itself, so it is loaded only while the section is open (no background polling or sound)
+            const tvFrame = document.getElementById('tv-inapp-frame');
+            if (tvFrame) {
+                if (id === 'tv') {
+                    if (!tvFrame.src.includes('tv.html')) tvFrame.src = tvFrame.dataset.src;
+                } else if (tvFrame.src.includes('tv.html')) {
+                    tvFrame.src = 'about:blank';
                 }
             }
             if (id === 'lookup') {
@@ -8148,41 +8127,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function showTVSectionDirect(btn) { showSection('tv', btn); }
         window.launchTVMode = launchTVMode;
 
-        function jumpToTVSlide(index) {
-            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
-            tvSlideIndex = ((index % slides.length) + slides.length) % slides.length;
-
-            slides.forEach((sId, i) => {
-                const el = document.getElementById(sId);
-                if (el) {
-                    if (i === tvSlideIndex) {
-                        el.classList.remove('hidden', 'fade-out');
-                        el.classList.add('fade-in');
-                    } else {
-                        el.classList.add('hidden');
-                        el.classList.remove('fade-in', 'fade-out');
-                    }
-                }
-                const dot = document.getElementById(`tv-dot-${i}`);
-                if (dot) {
-                    dot.className = `w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600 hover:bg-gray-400'}`;
-                }
-            });
-
-            if (tvInterval) {
-                clearInterval(tvInterval);
-                tvInterval = setInterval(rotateTVSlides, 12000);
-            }
-        }
-        window.jumpToTVSlide = jumpToTVSlide;
-
-        function rotateTVSlides() {
-            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
-            const nextIndex = (tvSlideIndex + 1) % slides.length;
-            jumpToTVSlide(nextIndex);
-        }
-        window.rotateTVSlides = rotateTVSlides;
-
         // =========================================================================
         // WIRELESS SMART TV BROADCAST HUB (HDMI-Free TV Access via Link & PIN)
         // =========================================================================
@@ -8461,6 +8405,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.launchTVMode = launchTVMode;
 
+        function reloadInAppTVPreview() {
+            const frame = document.getElementById('tv-inapp-frame');
+            if (frame) frame.src = frame.dataset.src;
+        }
+        window.reloadInAppTVPreview = reloadInAppTVPreview;
+
         function returnToDashboardFromTV() {
             let lastModule = localStorage.getItem('hontech-last-module');
             if (!lastModule || lastModule === 'tv' || !document.getElementById(`section-${lastModule}`)) {
@@ -8469,106 +8419,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             showSection(lastModule);
         }
         window.returnToDashboardFromTV = returnToDashboardFromTV;
-
-        function setupTVMode() {
-            initTimeFormatSetting();
-            document.getElementById('auth-view').classList.add('hidden');
-            document.getElementById('app-shell').classList.remove('hidden');
-            
-            const sidebar = document.getElementById('app-sidebar');
-            if (sidebar) sidebar.classList.add('hidden');
-
-            const mainContent = document.getElementById('main-content');
-            if (mainContent) {
-                mainContent.classList.remove('p-4', 'md:p-6', 'p-6', 'md:p-10');
-                mainContent.classList.add('p-0');
-            }
-            
-            const header = document.querySelector('header');
-            if (header) header.classList.add('hidden');
-            
-            const appShell = document.getElementById('app-shell');
-            if (appShell) appShell.classList.remove('layout-sidebar');
-
-            const dashHeader = document.getElementById('dashboard-header');
-            if (dashHeader) dashHeader.classList.add('hidden');
-            
-            showSection('tv');
-
-            // Initialize clock and date immediately
-            updateClock();
-            setInterval(updateClock, 1000);
-
-            // Initial weather fetch, and poll weather every 15 minutes
-            updateWeather();
-            setInterval(updateWeather, 900000);
-
-            // Initialize slide view at slide 0
-            jumpToTVSlide(0);
-
-            // TV synchronization via REST API polling every 2s
-            setInterval(async () => {
-                try {
-                    await loadData();
-                    renderTV();
-                } catch (e) {
-                    console.error('Error refreshing TV monitor:', e);
-                }
-            }, 2000);
-
-            // Set slide interval to 12 seconds
-            if (tvInterval) clearInterval(tvInterval);
-            tvInterval = setInterval(rotateTVSlides, 12000);
-
-            // Click anywhere on TV screen to manually jump to the next slide
-            const tvSection = document.getElementById('section-tv');
-            if (tvSection) {
-                tvSection.addEventListener('click', (e) => {
-                    if (e.target.closest('button, select, input, a, [onclick]')) return;
-                    rotateTVSlides();
-                });
-            }
-            
-            loadData().then(() => {
-                renderTV();
-                lucide.createIcons();
-            });
-
-            lucide.createIcons();
-        }
-
-        function getServiceTheme(category) {
-            const catLower = (category || '').toLowerCase();
-            if (catLower.includes('pms') && (catLower.includes('grs') || catLower.includes('gr'))) {
-                return {
-                    border: 'border-purple-600',
-                    text: 'text-purple-600',
-                    bgBadge: 'bg-purple-600',
-                    bgCard: 'bg-purple-50/30'
-                };
-            } else if (catLower.includes('pms')) {
-                return {
-                    border: 'border-emerald-500',
-                    text: 'text-emerald-600',
-                    bgBadge: 'bg-emerald-600',
-                    bgCard: 'bg-emerald-50/30'
-                };
-            } else if (catLower.includes('grs') || catLower.includes('gr')) {
-                return {
-                    border: 'border-red-600',
-                    text: 'text-red-600',
-                    bgBadge: 'bg-red-600',
-                    bgCard: 'bg-red-50/30'
-                };
-            } else {
-                return {
-                    border: 'border-blue-600',
-                    text: 'text-blue-600',
-                    bgBadge: 'bg-blue-600',
-                    bgCard: 'bg-blue-50/30'
-                };
-            }
-        }
 
         // --- TV AUDIO & VISUAL CHIME MODULE ---
         let tvAudioEnabled = true;
@@ -8836,8 +8686,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.dismissUniversalBroadcastToast = dismissUniversalBroadcastToast;
 
         function isTVModuleActive() {
-            const secTV = document.getElementById('section-tv');
-            return Boolean(secTV && !secTV.classList.contains('hidden'));
+            // REV-188: the TV screen (lounge or in-app) is frontend/tv.html, which plays its own
+            // announcements; the staff app never speaks them itself
+            return false;
         }
         window.isTVModuleActive = isTVModuleActive;
 
@@ -9434,242 +9285,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.triggerTVSlideAlertBanner = triggerTVSlideAlertBanner;
 
-        function renderTV() {
-            const tvSection = document.getElementById('section-tv');
-            if (tvSection && tvSection.classList.contains('hidden')) return;
-
-            // Slide Subtitles
-            const bayCount = getWorkshopBayCount();
-            const tvSlide1Sub = document.getElementById('tv-slide1-sub');
-            if (tvSlide1Sub) tvSlide1Sub.innerText = `Active Bays (1-${bayCount}) & Real-Time Allocations — Marikina Main Floor`;
-
-            const tvSlide2Sub = document.getElementById('tv-slide2-sub');
-            if (tvSlide2Sub) tvSlide2Sub.innerText = 'Live Queue & Turnaround Status — Marikina Main Branch';
-
-            const tvSlide3Sub = document.getElementById('tv-slide3-sub');
-            if (tvSlide3Sub) tvSlide3Sub.innerText = 'Live Turnaround Status by Work Classification — Marikina Workshop';
-
-            // Group 1: Waiting Jobs (Upcoming Queue) - Processing AND Waiting status shows on TV waiting list
-            const waitingJobs = allJobs.filter(j => isProcessingStatus(j.status) || j.status === 'Waiting');
-            // Group 2: Released (Ready, Ready to Release)
-            const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
-            // Group 3: Carry Over (Carry Over)
-            const carryOverAll = allJobs.filter(j => j.status === 'Carry Over');
-
-            // Detect newly ready vehicles to trigger Audio Chime, Voice Announcement & Visual TV Banner
-            const currentReadyKeys = new Set(releasedAll.map(j => String(j.id || j.claimStub || j.plate)));
-            if (previousReadyJobKeys.size > 0) {
-                releasedAll.forEach(job => {
-                    const key = String(job.id || job.claimStub || job.plate);
-                    if (!previousReadyJobKeys.has(key)) {
-                        announceVehicleReady(job);
-                    }
-                });
-            }
-            previousReadyJobKeys = currentReadyKeys;
-
-            // Detect newly processing vehicles to trigger Speech Announcement
-            const currentMonitoringKeys = new Set(waitingJobs.filter(j => isProcessingStatus(j.status)).map(j => String(j.id || j.claimStub || j.plate)));
-            if (previousMonitoringJobKeys.size > 0) {
-                waitingJobs.filter(j => isProcessingStatus(j.status)).forEach(job => {
-                    const key = String(job.id || job.claimStub || job.plate);
-                    if (!previousMonitoringJobKeys.has(key)) {
-                        announceVehicleProcessing(job, job.location || 'Waiting Area');
-                    }
-                });
-            }
-            previousMonitoringJobKeys = currentMonitoringKeys;
-
-            // Render Slide 2 Upcoming Queue List (Black, Red, White High Contrast for TV Viewers)
-            const tvAllUpcoming = document.getElementById('tv-all-upcoming-list');
-            const tvAllUpcomingCount = document.getElementById('tv-all-upcoming-count');
-            if (tvAllUpcomingCount) tvAllUpcomingCount.innerText = waitingJobs.length;
-            if (tvAllUpcoming) {
-                tvAllUpcoming.innerHTML = waitingJobs.map(job => `
-                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
-                        <div class="flex flex-col text-left">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                                <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200">${job.laneType || 'Flexible Lane'}</span>
-                            </div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5">${job.vehicle} · <span class="text-gray-900 font-extrabold">${job.customer || job.name || 'Customer'}</span></span>
-                        </div>
-                        <div class="flex flex-col items-end gap-1">
-                            <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
-                                ${job.category || 'General Service'}
-                            </span>
-                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">In Reception</span>
-                        </div>
-                    </div>
-                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Queue</div>`;
-            }
-
-            // Render Slide 2 Released List (High Visibility Ready for Release)
-            const tvAllReleased = document.getElementById('tv-all-released-list');
-            const tvAllReleasedCount = document.getElementById('tv-all-released-count');
-            if (tvAllReleasedCount) tvAllReleasedCount.innerText = releasedAll.length;
-            if (tvAllReleased) {
-                tvAllReleased.innerHTML = releasedAll.map(job => `
-                    <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
-                        <div class="flex flex-col text-left">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-emerald-300">Stub: ${job.claimStub || 'N/A'}</span>
-                            </div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 mt-0.5">${job.vehicle} · <span class="font-extrabold text-emerald-950">${job.customer || job.name || 'Customer'}</span></span>
-                        </div>
-                        <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm">
-                            Ready to Claim
-                        </span>
-                    </div>
-                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
-            }
-
-            // Render Slide 2 Carry Over List (Clean Grid with Full Vehicle Info)
-            const tvAllCarry = document.getElementById('tv-all-carryover-list');
-            const tvAllCarryCount = document.getElementById('tv-all-carryover-count');
-            if (tvAllCarryCount) tvAllCarryCount.innerText = carryOverAll.length;
-            if (tvAllCarry) {
-                tvAllCarry.innerHTML = carryOverAll.map(job => `
-                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
-                        <div class="flex flex-col text-left">
-                            <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-xs font-extrabold uppercase tracking-wider text-gray-900 truncate max-w-[180px]">${job.vehicle}</span>
-                            <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${job.category || 'General Repair'} · SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
-                        </div>
-                        <span class="bg-amber-100 text-amber-950 border-2 border-amber-400 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
-                            Carry Over
-                        </span>
-                    </div>
-                `).join('') || `<div class="w-full col-span-3 text-center py-6 text-gray-500 font-black uppercase italic text-xs tracking-widest">No Carry-Overs</div>`;
-            }
-
-            // GRS Active Bays slide (tv-slide-1) rendering (Dynamic 4-10 Bays)
-            const tvGRS = document.getElementById('tv-grs-list');
-            if (tvGRS) {
-                // Adaptive layout based on number of active bays
-                if (bayCount <= 4) {
-                    tvGRS.className = "grid grid-cols-2 gap-5 h-full";
-                } else if (bayCount <= 6) {
-                    tvGRS.className = "grid grid-cols-3 gap-4 h-full";
-                } else if (bayCount <= 8) {
-                    tvGRS.className = "grid grid-cols-4 gap-3.5 h-full";
-                } else {
-                    tvGRS.className = "grid grid-cols-5 gap-3 h-full";
-                }
-
-                let baysHTML = '';
-                for (let i = 1; i <= bayCount; i++) {
-                    const padBay = String(i).padStart(2, '0');
-                    const job = (allJobs || []).find(j => {
-                        if (j.status === 'Completed' || j.status === 'Released' || j.status === 'Pending') return false;
-                        if (!j.location || j.location === 'None' || j.location === 'Waiting Area') return false;
-                        if (Number(j.bayAssigned) === i || Number(j.bay_assigned) === i) return true;
-                        const cleanLoc = String(j.location).toLowerCase().replace(/[^a-z0-9]/g, '');
-                        return cleanLoc === `bay${i}` || cleanLoc === `lift${i}` || cleanLoc === `bay0${i}` || cleanLoc === `lift0${i}` || cleanLoc === `bay${padBay}`;
-                    });
-
-                    if (job) {
-                        baysHTML += `
-                            <div class="bg-white border-2 border-slate-900 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-md">
-                                <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-widest text-slate-900">BAY-${padBay}</span>
-                                    <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">IN SERVICE</span>
-                                </div>
-                                <div class="flex flex-col items-center my-auto text-center">
-                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
-                                    <span class="text-sm font-black uppercase tracking-wider text-slate-900 mt-1">${job.vehicle}</span>
-                                    <span class="text-xs font-extrabold uppercase text-slate-700 mt-0.5">${job.customer || job.name || 'Customer'}</span>
-                                </div>
-                                <div class="w-full pt-2.5 border-t-2 border-slate-200 flex items-center justify-between text-xs font-black text-slate-900 uppercase">
-                                    <span>${job.category || 'General Service'}</span>
-                                    <span class="text-slate-800 font-mono text-[10px] font-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300">${job.laneType || 'FLEXIBLE'}</span>
-                                </div>
-                            </div>`;
-                    } else {
-                        baysHTML += `
-                            <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-4 lg:p-5 flex flex-col justify-between items-center h-full relative shadow-2xs">
-                                <div class="w-full flex items-center justify-between">
-                                    <span class="text-xs font-black uppercase tracking-widest text-slate-700">BAY-${padBay}</span>
-                                    <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">AVAILABLE</span>
-                                </div>
-                                <div class="my-auto flex flex-col items-center">
-                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-700 tracking-wider">EMPTY</span>
-                                    <span class="text-xs font-black uppercase text-slate-600 mt-1 tracking-wide">Ready for Allocation</span>
-                                </div>
-                                <div class="h-3"></div>
-                            </div>`;
-                    }
-                }
-                tvGRS.innerHTML = baysHTML;
-            }
-
-            // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
-            const activeLaneJobs = (allJobs || []).filter(j => (isProcessingStatus(j.status) || j.status === 'Waiting' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && (j.location.startsWith('Bay') || j.location.startsWith('Lift')))) && j.status !== 'Completed' && j.status !== 'Released');
-            const renderLaneJobCard = (job) => {
-                let statusBadge = '';
-                if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
-                } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
-                    statusBadge = `<span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Ready</span>`;
-                } else if (job.status === 'Waiting') {
-                    statusBadge = `<span class="bg-gray-100 text-gray-900 border-2 border-gray-400 font-black text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md">In Queue</span>`;
-                } else {
-                    statusBadge = `<span class="bg-blue-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs">${isProcessingStatus(job.status) ? 'Processing' : job.status}</span>`;
-                }
-                return `
-                    <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            ${statusBadge}
-                        </div>
-                        <div class="flex items-center justify-between text-xs text-gray-900 font-black uppercase tracking-wider">
-                            <span class="truncate max-w-[150px]">${job.vehicle}</span>
-                            <span class="text-gray-950 font-black">${job.category || 'General'}</span>
-                        </div>
-                        <div class="flex items-center justify-between text-[10px] text-gray-700 font-bold border-t border-gray-200 pt-1.5">
-                            <span>SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
-                            <span class="font-extrabold text-gray-900">${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
-                        </div>
-                    </div>
-                `;
-            };
-
-            const expressLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
-            const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane');
-            const priorityLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane');
-            const flexibleLaneJobs = activeLaneJobs.filter(j => !['Express', 'Express Lane', 'Special', 'Specialty', 'Special Lane', 'Priority', 'Priority Lane'].includes(j.laneType));
-
-            const expressCount = document.getElementById('tv-express-lane-count');
-            if (expressCount) expressCount.innerText = expressLaneJobs.length;
-            const flexibleCount = document.getElementById('tv-flexible-lane-count');
-            if (flexibleCount) flexibleCount.innerText = flexibleLaneJobs.length;
-            const specialCount = document.getElementById('tv-special-lane-count');
-            if (specialCount) specialCount.innerText = specialLaneJobs.length;
-            const priorityCount = document.getElementById('tv-priority-lane-count');
-            if (priorityCount) priorityCount.innerText = priorityLaneJobs.length;
-
-            const expressList = document.getElementById('tv-express-lane-list');
-            const flexibleList = document.getElementById('tv-flexible-lane-list');
-            const specialList = document.getElementById('tv-special-lane-list');
-            const priorityList = document.getElementById('tv-priority-lane-list');
-
-            if (expressList) {
-                expressList.innerHTML = expressLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
-            }
-            if (flexibleList) {
-                flexibleList.innerHTML = flexibleLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
-            }
-            if (specialList) {
-                specialList.innerHTML = specialLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
-            }
-            if (priorityList) {
-                priorityList.innerHTML = priorityLaneJobs.map(renderLaneJobCard).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Lane</div>`;
-            }
-
-            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
-            startTVAutoScroll();
-        }
+        // REV-188: the in-app TV Monitor is now frontend/tv.html (it refreshes itself every 5 seconds).
+        // Kept as a no-op for the existing callers that refresh "the TV" after a data change.
+        function renderTV() {}
+        window.renderTV = renderTV;
 
         // Server-backed per-branch cache. localStorage remains the synchronous read path used by the
         // many render functions below, but it is now just a cache of the branch-scoped value the
@@ -10335,66 +9954,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
-        function startTVAutoScroll() {
-            const containers = {
-                'released': document.getElementById('tv-all-released-list')?.parentElement,
-                'upcoming': document.getElementById('tv-all-upcoming-list')?.parentElement,
-                'carryover': document.getElementById('tv-all-carryover-list')?.parentElement
-            };
-
-            if (!window.tvScrollIntervals) {
-                window.tvScrollIntervals = {};
-            }
-
-            Object.keys(containers).forEach(key => {
-                const container = containers[key];
-                if (!container) return;
-
-                const currentHeight = container.scrollHeight;
-                const prevHeight = previousScrollHeights[key] || 0;
-
-                // Only re-initialize if contents height has changed to prevent scroll resets
-                if (currentHeight !== prevHeight) {
-                    previousScrollHeights[key] = currentHeight;
-
-                    if (window.tvScrollIntervals[key]) {
-                        clearInterval(window.tvScrollIntervals[key]);
-                    }
-
-                    const maxScroll = currentHeight - container.clientHeight;
-                    if (maxScroll <= 0) {
-                        container.scrollTop = 0;
-                        return; // Content fits completely
-                    }
-
-                    let direction = 1; // 1 = down, -1 = up
-                    let delayCycles = 0;
-
-                    window.tvScrollIntervals[key] = setInterval(() => {
-                        const maxScrollNow = container.scrollHeight - container.clientHeight;
-                        if (maxScrollNow <= 0) return;
-
-                        const atBottom = container.scrollTop >= maxScrollNow - 1;
-                        const atTop = container.scrollTop === 0;
-
-                        if ((atBottom && direction === 1) || (atTop && direction === -1)) {
-                            delayCycles++;
-                            if (delayCycles < 30) return; // Pause for 3 seconds (30 * 100ms)
-                            
-                            direction = direction === 1 ? -1 : 1;
-                            delayCycles = 0;
-                        }
-
-                        if (direction === 1) {
-                            container.scrollTop += 1.5; // Smooth scroll down
-                        } else {
-                            container.scrollTop -= 2.5; // Fast scroll back up
-                        }
-                    }, 100);
-                }
-            });
-        }
-
         function populatePeriodicSaFilter() {
             const saFilterSelect = document.getElementById('periodic-search-sa');
             if (saFilterSelect) {
@@ -10411,10 +9970,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         async function loadData() {
             try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const isTVMode = urlParams.get('mode') === 'tv';
                 const isOwnerOrAdmin = currentUserRole === 'owner' || currentUserRole === 'admin';
-                const jobsUrl = isTVMode ? '/api/jobs?monitor=true' : (isOwnerOrAdmin ? '/api/jobs?all=true' : '/api/jobs');
+                const jobsUrl = isOwnerOrAdmin ? '/api/jobs?all=true' : '/api/jobs';
                 allJobs = await apiRequest(jobsUrl);
                 if (Array.isArray(allJobs)) {
                     allJobs.forEach(j => {
