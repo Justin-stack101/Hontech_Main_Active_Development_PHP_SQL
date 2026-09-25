@@ -1,3 +1,23 @@
+## 📅 September 25, 2026 (TV Auto-Scroll & Daily Reset)
+
+### 🔁 TV Lists Auto-Scroll; TV Resets Daily Like Daily Intakes, Carry-Overs Stay (REV-196)
+* **Objective & Context**: The user asked that lists which do not fit (e.g. a lane with 11 vehicles) scroll automatically from the top to the bottom, and that the TV follow the Daily Intakes table, which starts fresh each day, while carry-over vehicles stay permanently. Review found the TV feed returned every unfinished job of the branch regardless of date, so vehicles from earlier days (including unclaimed "Ready" ones) stayed on the TV forever.
+* **Core Changes Made**:
+  - `backend/controllers/TvController.php`: `feed()` now returns only jobs received today (Asia/Manila, `todayManila()`) plus carry-over vehicles (status Carry Over, or a carry-over record such as a returned carry-over back in service), the same carry-over test Daily Intakes uses. Pending / Completed / Released stay excluded. The TV polls every 5 seconds, so it resets itself when the date changes; nothing is deleted.
+  - `frontend/tv.html`: auto-scroll for every list that does not fit (innermost scroll areas only): pause 3 s at the top, scroll down at 40 px/s, pause 3 s at the bottom, return to the top, repeat. A slide rotates only after each long list on it reached the bottom once (safety cap 2 minutes); each slide starts at the top. Touching, clicking, a key or the mouse wheel pauses auto-scroll and rotation for 20 seconds. Lists that fit never move.
+  - `frontend/index.html`: Incremented cache buster to v=3.49.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-155; added v=3.49 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-72 test row.
+  - `Revisions checklist.csv`: Appended REV-196 row.
+* **Automated & Manual QA Verification**:
+  - 184 automated unit tests passing (`npm test`).
+  - Live feed vs Daily Intakes rule on XAMPP: identical (today's 2 active intakes + 7 carry-overs). Temporary database rows (removed afterwards): yesterday's Processing and unclaimed Ready to Release were reset off the TV; today's intake shown; a 5-day-old Carry Over and a returned carry-over stayed.
+  - Real-time headless Chrome 13/13: lane list pauses at the top, scrolls ~40 px/s, reaches the bottom, returns to the top; slide waits for it, then rotates; mouse-wheel scroll pauses it; short lists do not move. Regression: TV flow 9/9, display 12/12, announcements 8/8, responsive 22/22, security 26/26 (PIN throttle table cleared after the security run).
+* **Cache Busting**: `js/app.js?v=3.49`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Slides: Responsive & Scrollable)
 
 ### 📺 TV Slides 1-3 Responsive, Scrollable, No Overlapping Text (REV-195)

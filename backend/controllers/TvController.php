@@ -82,6 +82,12 @@ class TvController
         return self::canonicalBranch($branch) === 'East Branch' ? 'Regalado Branch' : 'Marikina Main Branch';
     }
 
+    /** Today's date at the shop (Asia/Manila), regardless of the server's timezone setting */
+    public static function todayManila(): string
+    {
+        return (new \DateTime('now', new \DateTimeZone('Asia/Manila')))->format('Y-m-d');
+    }
+
     /** "Juan Dela Cruz" -> "Juan D."; a single name is shown as is */
     public static function maskName(?string $name): string
     {
@@ -410,8 +416,13 @@ class TvController
             return;
         }
 
+        // REV-196: same day as Daily Intakes - today's intakes only (the TV resets itself when the date changes);
+        // carry-over vehicles stay on the TV until they are finished, whatever day they came in.
         [$branchSql, $params] = JobRepository::branchMatchSql($branch);
-        $stmt = $db->prepare("SELECT * FROM jobs WHERE is_deleted = 0 AND status NOT IN ('Pending', 'Completed', 'Released') AND {$branchSql} ORDER BY created_at ASC");
+        $stmt = $db->prepare("SELECT * FROM jobs WHERE is_deleted = 0 AND status NOT IN ('Pending', 'Completed', 'Released') AND {$branchSql}
+            AND (date_received = ? OR status IN ('Carry Over', 'Carry-Over') OR carry_over_status <> '')
+            ORDER BY created_at ASC");
+        $params[] = self::todayManila();
         $stmt->execute($params);
         $jobs = array_map(static function (array $j): array {
             return [

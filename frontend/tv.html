@@ -881,10 +881,12 @@
                     }
                 }
             }
+            resetTVAutoScroll();
         }
 
         function rotateSlides() {
             if (Date.now() - tvLastInteraction < TV_INTERACTION_HOLD_MS) return; // someone is reading / scrolling
+            if (!tvAutoScrollDone()) return; // a long list on this slide has not been shown to the end yet
             currentSlide = (currentSlide + 1) % 3;
             jumpToSlide(currentSlide);
         }
@@ -896,7 +898,60 @@
         ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => document.addEventListener(evt, e => {
             if (evt === 'keydown' || e.target.closest?.('#tv-main')) markTVInteraction();
         }, { passive: true }));
-        document.addEventListener('scroll', e => { if (e.target.closest?.('#tv-main')) markTVInteraction(); }, { passive: true, capture: true });
+
+        // REV-196: lists that do not fit scroll by themselves - down slowly, pause, back to the top, repeat.
+        // The slide only rotates after every long list on it has reached the bottom once (max 2 minutes).
+        const TV_AUTOSCROLL_SPEED = 40;        // px per second going down
+        const TV_AUTOSCROLL_RETURN_SPEED = 240; // px per second going back up
+        const TV_AUTOSCROLL_PAUSE_MS = 3000;    // pause at the top and at the bottom
+        const TV_AUTOSCROLL_MAX_SLIDE_MS = 120000;
+        const tvAutoScrollState = new Map();
+        let tvSlideShownAt = Date.now();
+        let tvAutoScrollLastFrame = 0;
+
+        function tvAutoScrollTargets() {
+            const slide = document.getElementById(`tv-slide-${currentSlide + 1}`);
+            if (!slide || slide.classList.contains('hidden')) return [];
+            const overflowing = [...slide.querySelectorAll('.tv-scroll')].filter(el => el.scrollHeight - el.clientHeight > 4 && el.clientHeight > 0);
+            // innermost lists only (on small screens the slide body and its lists both scroll)
+            return overflowing.filter(el => !overflowing.some(other => other !== el && el.contains(other)));
+        }
+
+        function resetTVAutoScroll() {
+            tvAutoScrollState.clear();
+            tvSlideShownAt = Date.now();
+            document.querySelectorAll('#tv-main .tv-scroll').forEach(el => { el.scrollTop = 0; });
+        }
+
+        function tvAutoScrollDone() {
+            if (Date.now() - tvSlideShownAt > TV_AUTOSCROLL_MAX_SLIDE_MS) return true;
+            return tvAutoScrollTargets().every(el => (tvAutoScrollState.get(el)?.cycles || 0) > 0);
+        }
+
+        function tvAutoScrollFrame(now) {
+            const dt = tvAutoScrollLastFrame ? Math.min(now - tvAutoScrollLastFrame, 100) / 1000 : 0;
+            tvAutoScrollLastFrame = now;
+            const userActive = Date.now() - tvLastInteraction < TV_INTERACTION_HOLD_MS;
+            tvAutoScrollTargets().forEach(el => {
+                let st = tvAutoScrollState.get(el);
+                if (!st) {
+                    st = { pos: el.scrollTop, dir: 1, pauseUntil: Date.now() + TV_AUTOSCROLL_PAUSE_MS, cycles: 0 };
+                    tvAutoScrollState.set(el, st);
+                }
+                const max = el.scrollHeight - el.clientHeight;
+                if (userActive) { st.pos = el.scrollTop; st.pauseUntil = Date.now() + TV_AUTOSCROLL_PAUSE_MS; return; }
+                if (Date.now() < st.pauseUntil) return;
+                st.pos = Math.min(Math.max(st.pos + st.dir * (st.dir > 0 ? TV_AUTOSCROLL_SPEED : TV_AUTOSCROLL_RETURN_SPEED) * dt, 0), max);
+                el.scrollTop = st.pos;
+                if (st.dir > 0 && st.pos >= max - 1) {
+                    st.dir = -1; st.cycles++; st.pauseUntil = Date.now() + TV_AUTOSCROLL_PAUSE_MS;
+                } else if (st.dir < 0 && st.pos <= 0) {
+                    st.dir = 1; st.pauseUntil = Date.now() + TV_AUTOSCROLL_PAUSE_MS;
+                }
+            });
+            requestAnimationFrame(tvAutoScrollFrame);
+        }
+        requestAnimationFrame(tvAutoScrollFrame);
 
         // Render all TV slides (Exact Match to app.js lines 8760-8980 & User Screenshot)
         function renderTVDisplay(jobs) {
