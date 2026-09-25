@@ -12,7 +12,7 @@
   - 182 automated unit tests passing (`npm test`).
   - Real-time headless Chrome, 10/10: TST 2025 record shows TST-0922-05, claim stub 092226J5, Manney Sarol, Sep 22, 2026 9:45 AM, concern and findings, Processing tag, "warranty starts on release", no Issue Back-Job, Claim Stub kept; no placeholder text; dossier Last Service 2026-09-22 and Primary Advisor Manney Sarol. With client-side simulated visits (no database change): newest-first order, released 10 days ago shows "20 days left" with Issue Back-Job, released 88 days ago shows "warranty ended 58 days ago", back-job visit shows "Back-job of SIM-REL-1: Aircon still warm", tab count (4).
 * **Cache Busting**: `js/app.js?v=3.47`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `d71a718` pushed to `origin/prototype_process`.
 
 ---
 
