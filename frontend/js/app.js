@@ -16548,8 +16548,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             (window.checklistInspectionPoints || []).forEach(point => {
                 if (point.group !== currentGroup) {
                     currentGroup = point.group;
+                    // Section band in the printed form's header gray (#D0D1D3) with black text,
+                    // so each part (Interior/Exterior, Under Hood, ...) is clearly separated
                     const groupHeader = document.createElement('div');
-                    groupHeader.className = 'pt-4 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200';
+                    groupHeader.className = 'chk-group-header mt-4 first:mt-1 px-3 py-2 rounded-md text-[11px] font-bold uppercase tracking-wide text-black';
+                    groupHeader.style.background = '#D0D1D3';
                     groupHeader.textContent = currentGroup;
                     container.appendChild(groupHeader);
                 }

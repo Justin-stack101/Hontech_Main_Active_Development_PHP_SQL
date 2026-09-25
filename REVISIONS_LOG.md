@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Checklist Section Header Bands)
+
+### 📋 Checklist Section Headers With Gray Background Band and Black Text (REV-168)
+* **Objective & Context**: The user reported that the checklist section titles (Interior/Exterior, Battery Performance (see attached ED-18 printout), Under Hood, Under Vehicle, Tire Condition, Brake Condition) blended into the plain white page, and asked for black text on a background color so the start of each part is easy to see.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: `renderChecklistTable()` renders each section title as a rounded band filled with `#D0D1D3`, the same header gray used on the printed CheckList_Result form, with bold black uppercase text (`px-3 py-2`, `mt-4` spacing between sections). Previously the titles were small gray text over a thin rule.
+  - `frontend/index.html`: Incremented cache buster to v=3.21.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-127 (form header gray band, bold black text, old plain header removed); added v=3.21 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-44 test row (workbook ranges extended to row 170).
+  - `Revisions checklist.csv`: Appended REV-168 row.
+* **Automated & Manual QA Verification**:
+  - 156/156 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the checklist editor in headless Chrome: all six sections start with a gray band and black title and are clearly separated.
+* **Cache Busting**: `js/app.js?v=3.21`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist Checkpoints Selection-Only)
 
 ### 📋 Checklist Checkpoints Selection-Only, Per-Item Notes Box Removed (REV-167)
