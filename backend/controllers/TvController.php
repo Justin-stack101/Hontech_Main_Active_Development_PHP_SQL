@@ -410,6 +410,8 @@ class TvController
             'branch'     => $branch,
             'branchName' => self::branchDisplayName($branch),
             'bayCount'   => max(1, (int)($bay['activeBayCount'] ?? 6)),
+            // REV-197: open TVs reload themselves when a new TV page is published
+            'tvVersion'  => (string)(@filemtime(dirname(__DIR__, 2) . '/frontend/tv.html') ?: ''),
         ];
         if (!$session['active'] && !self::staffFromCookie($db)) {
             ApiResponse::json($base + ['jobs' => []]); // standby: no job data while paused

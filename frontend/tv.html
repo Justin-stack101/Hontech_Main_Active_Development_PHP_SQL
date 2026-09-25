@@ -641,6 +641,7 @@
         // HDMI kiosk / in-app view run in the staff browser and read the staff member's own branch
         const isStaffTVView = tvUrlParams.get('kiosk') === 'true' || tvUrlParams.get('embedded') === '1';
         let tvBayCount = 6;
+        let tvLoadedVersion = null; // REV-197: version of this TV page, from the feed
         let tvFeedStarted = false;
 
         function escapeHtml(value) {
@@ -732,6 +733,11 @@
             }
             const feed = await res.json();
             setTVConnection(true);
+            // REV-197: an open TV only downloads data, not page updates - reload once when a new TV page is published
+            if (feed.tvVersion) {
+                if (tvLoadedVersion === null) tvLoadedVersion = feed.tvVersion;
+                else if (feed.tvVersion !== tvLoadedVersion) { location.reload(); return; }
+            }
             tvBayCount = Math.max(1, parseInt(feed.bayCount, 10) || 6);
             applyBranchLabels(feed);
             if (!feed.active) {
@@ -981,6 +987,7 @@
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-lg lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight whitespace-nowrap">${escapeHtml(job.plate)}</span>
                                 <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200 whitespace-nowrap">${escapeHtml(job.laneType || 'Flexible Lane')}</span>
+                                ${job.carryOverStatus ? '<span class="tv-carryover-tag bg-amber-100 text-amber-900 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-amber-300 whitespace-nowrap">Carry-Over</span>' : ''}
                             </div>
                             <span class="text-[11px] lg:text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5 truncate">${escapeHtml(job.vehicle)} · <span class="text-gray-900 font-extrabold">${escapeHtml(job.customer || job.name || 'Customer')}</span></span>
                         </div>

@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (TV Self-Update & Carry-Over Tag)
+
+### 🔄 Open TVs Update Themselves; Returned Carry-Overs Tagged (REV-197)
+* **Objective & Context**: The user asked why In Service and In Queue each showed 1 and why the carry-over list was not auto-scrolling. Review: the counts were correct - no intakes are dated today (Sep 25); the other 29 active Marikina vehicles are from Sep 20-22 and were reset off the TV by REV-196, and the two shown are carry-overs sent back into work. Auto-scroll worked at the user's screen size (1886x827: carry-over list 0 -> 40 -> 121 -> 159 px and back); an open TV page only downloads data, not page updates, so a TV opened before REV-196 kept the old page until reloaded.
+* **Core Changes Made**:
+  - `backend/controllers/TvController.php`: the feed includes `tvVersion` (modification time of `frontend/tv.html`).
+  - `frontend/tv.html`: the TV remembers the version it loaded and reloads itself once when a new version is published (the remembered token brings it straight back to the live screen). In Service / In Queue cards of returned carry-over vehicles show a "Carry-Over" tag.
+  - `frontend/index.html`: Incremented cache buster to v=3.50.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-156; added v=3.50 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-73 test row.
+  - `Revisions checklist.csv`: Appended REV-197 row.
+* **Automated & Manual QA Verification**:
+  - 185 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome 6/6 at 1886x827: feed carries the version; TV remembers it; NDH 5521 and JON 4912 tagged Carry-Over; after touching tv.html (content unchanged) the open TV reloaded within seconds, returned to the live screen without a PIN, and did not loop. Regression: TV flow 9/9, display 12/12, responsive 22/22, auto-scroll & daily reset 13/13.
+* **Cache Busting**: `js/app.js?v=3.50`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Auto-Scroll & Daily Reset)
 
 ### 🔁 TV Lists Auto-Scroll; TV Resets Daily Like Daily Intakes, Carry-Overs Stay (REV-196)
