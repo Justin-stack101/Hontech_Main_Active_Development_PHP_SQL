@@ -13,7 +13,7 @@
   - 172 automated unit tests passing (`npm test`).
   - Headless Chrome render of the Job Order Studio header: Save Draft, Reset Form, Export .xlsx and Register RO remain; no Import button.
 * **Cache Busting**: `js/app.js?v=3.37`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `06ced86` pushed to `origin/prototype_process`.
 
 ---
 
