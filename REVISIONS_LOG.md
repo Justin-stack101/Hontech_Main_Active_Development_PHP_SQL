@@ -1,3 +1,37 @@
+## 📅 September 25, 2026 (Billing Form 3/3 Measured Vector Alignment & Border-Safe Ghost Masking)
+
+### 📋 Billing Form 3/3 Measured Vector Alignment & Border-Safe Ghost Masking (REV-158)
+* **Objective & Context**: In direct response to the user's "Full PDF" screenshot of Form 3/3 (Billing_No) showing:
+  1. `BL-2026-8783` overlapping the "BILLING NO." title.
+  2. Caret-like `^` artifacts beside every Customer Details field and beside the Job Order / Quotation numbers.
+  3. Broken underlines leaving short stray line segments, and a broken line under the Job Order No box.
+  4. The Km Reading value overlapping the "Km Reading:" label.
+  5. The bill amount (`PHP 3,505.50`) overlapping and erasing part of the word "with".
+  6. Item descriptions crossing the table's left border, a dashed left border, and dash artifacts in empty AMOUNT cells.
+* **Vector Decompilation & Root Cause Analysis**:
+  - Measured the template geometry with pdfplumber on `Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf` (595x842pt).
+  - The `^` marks were the tops of the template's `0` placeholders (x = 210.6 and 490.4) left uncovered by undersized whiteouts, while the same whiteouts (x 80..310, y 662.5..671.5) cut through the underlines (y 662.4..663.2) and left the 310..337pt segments behind.
+  - Table whiteouts started at x = 25, erasing the left border (x 28.3..29.1). Rows used a 583.2 start with 11.58pt pitch, drifting off the true grid (first row bottom 580.0, pitch 11.609pt, 36 rows) and leaving slivers of the `0.00` placeholders.
+  - The amount whiteout (x 185..225) overlapped the word "with" (x 219.7), and the totals whiteout (x 500..555) left the right half of the `0.00` placeholders (x 548.5..565.7) visible.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Rebuilt `compileBillingPDFBytes()` placement on measured coordinates:
+    - Billing No at X = 491, Y = 757.2 on the underline right of "NO." (ends x 483.8); Date / Job Order No / Quotation No at X = 491 inside their boxes (Y = 723.6, 712.0, 700.4) with the `0` ghosts masked at x 524.6.
+    - Customer Details left values at X = 90 (underline 87.8..337.6), right values at X = 420 (underline 417.4..567.9, clear of "Km Reading:"); `0` ghost masks span exactly from each underline to the line above (`maskH = row.ceil - row.lineTop - 0.1`).
+    - 36-row table (`firstRowBottom = 580.0`, `rowStep = 11.609`) with LABOR and AMOUNT `0.00` masks strictly inside cell interiors; description at X = 31.5 inside the left border; QTY/FRT centered and LABOR/PARTS/MATERIALS/AMOUNT right-aligned to their column edges.
+    - LABOR, VAT 12%, MATERIALS and PARTS summary boxes masked per box and values vertically centered; TOTAL at Y = 116.3 inside its box.
+    - Bill amount right-aligned at X = 217.5 on its underline with auto-shrink (max 53pt), masking only the `0` placeholder so "with the following" stays intact.
+  - `frontend/index.html`: Incremented cache buster to v=3.11.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-117 asserting REV-158 coordinates, border-safe whiteouts and cache buster v=3.11; updated AUT-FRONT-94, AUT-FRONT-98 and the REV-121 billing assertions to the measured coordinates; added v=3.11 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`: Added SA-34 test row.
+  - `Revisions checklist.csv`: Appended REV-158 row.
+* **Automated & Manual QA Verification**:
+  - 146/146 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the compiled Billing PDF with the screenshot's sample data (Node + pdf-lib, rasterized with pdfplumber at 200/300 dpi) and confirmed: no `^` artifacts, intact underlines and table borders, no label overlaps, and no leftover `0.00` fragments.
+* **Cache Busting**: `js/app.js?v=3.11`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Quotation Form 2/3 Exact Visual Vector Alignment & Border-Safe Masking)
 
 ### 📋 Quotation Form 2/3 Exact Visual Vector Alignment & Border-Safe Masking (REV-157)
