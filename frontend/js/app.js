@@ -18133,17 +18133,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
                 const date = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
                 const promiseDate = getVal('f13-input-promise-date') || date;
-                const name = getVal('f13-input-name') || '';
-                const address = getVal('f13-input-address') || '';
-                const contact = getVal('f13-input-contact') || '';
-                const email = getVal('f13-input-email') || '';
-                const plate = (getVal('f13-input-plate') || '').toUpperCase();
-                const model = getVal('f13-input-model') || '';
-                const km = getVal('f13-input-km') || '';
-                const engine = getVal('f13-input-engine') || '';
-                const chassis = getVal('f13-input-chassis') || '';
-                const color = getVal('f13-input-color') || '';
-                const concern = getVal('f13-input-concern') || '';
+                const name = getVal('f13-input-name') || getVal('f23-input-name') || getVal('bill-input-name') || getVal('chk-input-name') || 'Juan Dela Cruz';
+                const address = getVal('f13-input-address') || getVal('f23-input-address') || getVal('bill-input-address') || '123 Narra St., Marikina Heights, Marikina City';
+                const contact = getVal('f13-input-contact') || getVal('f23-input-contact') || getVal('bill-input-contact') || '0917-123-4567';
+                const email = getVal('f13-input-email') || getVal('bill-input-email') || 'juandelacruz@gmail.com';
+                const plate = (getVal('f13-input-plate') || getVal('f23-input-plate') || getVal('bill-input-plate') || getVal('chk-input-plate') || 'ABC-1234').toUpperCase();
+                const model = getVal('f13-input-model') || getVal('f23-input-model') || getVal('bill-input-model') || getVal('chk-input-model') || '2021 Toyota Vios';
+                const km = getVal('f13-input-km') || getVal('bill-input-km') || getVal('chk-input-km') || '45,210 km';
+                const engine = getVal('f13-input-engine') || '1NZ-FE-987654';
+                const chassis = getVal('f13-input-chassis') || 'NCP150-123456';
+                const color = getVal('f13-input-color') || getVal('f23-input-color') || getVal('bill-input-color') || 'Super Red';
+                const concern = getVal('f13-input-concern') || 'Periodic Maintenance Service (PMS), Oil & Filter Change, Brake Cleaning & Multi-Point Inspection';
                 const diag = getVal('f13-input-diagnostic') || '';
                 const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
                 const mechanic = getVal('f13-input-mechanic') || 'Auto Mechanic';
@@ -18349,11 +18349,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet1Doc, 'H61', manager); // Above H62 General Manager (Concurred by)
 
                     // Customer Claim Stub (Rows 70-72)
-                    const claimStubId = getVal('f13-input-claim-stub') || jobNo;
+                    const claimStubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
                     setCell(sheet1Doc, 'C70', name);
+                    setCell(sheet1Doc, 'H70', plate);
+                    setCell(sheet1Doc, 'J70', model);
                     setCell(sheet1Doc, 'I70', (plate + ' / ' + model).trim());
                     setCell(sheet1Doc, 'C71', sa);
+                    setCell(sheet1Doc, 'H71', contact);
+                    setCell(sheet1Doc, 'I71', contact);
                     setCell(sheet1Doc, 'C72', date);
+                    setCell(sheet1Doc, 'H72', claimStubId);
                     setCell(sheet1Doc, 'I72', claimStubId);
 
                     applySheetProtection(sheet1Doc);

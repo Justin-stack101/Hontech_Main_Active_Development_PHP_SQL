@@ -1,3 +1,38 @@
+## 📅 September 25, 2026 (Form 1/3 & RO Excel Export Multi-Sheet Cross-Verification with Live PDF Data)
+
+### 📋 Form 1/3 & RO Excel Export Multi-Sheet Cross-Verification with Live PDF Data (REV-155)
+* **Objective & Context**: In direct response to user request: "make sure that what i type on the forms pdf it must be the same thing aswell on the exel. i know that the pdf is just an different format to export what i wanted is you verify that the system is on the pdf must be the same data with the exel becuase they are important":
+  1. **Root Cause Analysis & Discrepancy Elimination**:
+     - Investigated `exportOfficialXLSX()` in `frontend/js/app.js` and compared every cell reference against the PDF compilers (`compileForm13PDFBytes`, `compileQuotePDFBytes`, `compileBillingPDFBytes`, `compileChecklistPDFBytes`).
+     - Found that `exportOfficialXLSX()` extracted inputs with empty string fallbacks (`const name = getVal('f13-input-name') || '';`), meaning that if a user edited on the Quotation, Billing, or Checklist tab, or relied on the demo defaults, the Excel export cells were skipped because `setCell` ignores empty values (`if (textVal === '') return;`).
+     - In Sheet 1 (`Job_Order`):
+       - Row 70 (Claim Stub): only combined column `I70` (`plate / model`) was populated; `H70` (Plate) and `J70` (Model) were missing.
+       - Row 71 (Claim Stub): customer contact was completely omitted from the Excel injector (`setCell` for `H71`/`I71` was missing).
+       - Row 72 (Claim Stub): `H72` (the template's claim stub formula cell `=K2`) was not directly populated with `claimStubId`.
+  2. **Harmonized 1:1 Parity Implementation**:
+     - **Multi-Tier Cascade & Demo Fallbacks in `exportOfficialXLSX`**: Updated all variable declarations in `exportOfficialXLSX()` to use the identical cascading fallbacks as `compileForm13PDFBytes()` (`name`, `address`, `contact`, `email`, `plate`, `model`, `km`, `engine`, `chassis`, `color`, `concern`, `sa`, `mechanic`, `assessor`, `manager`).
+     - **Complete Sheet 1 Claim Stub OpenXML Injection**:
+       - Injected `H70` (Plate No.) and `J70` (Year/Model) alongside `I70`.
+       - Injected `H71` and `I71` with customer contact (`contact`), guaranteeing the claim stub contact in Excel matches the PDF.
+       - Injected `H72` and `I72` with `claimStubId`.
+     - **Cross-Sheet Multi-Sheet Verification**:
+       - Verified Sheet 1 (`Job_Order`): Header, Customer Dossier, Concern, Diagnostics, Parts (D27..G52), Materials (H27..K52), Subtotals (G53, K53, K54), all 6 Signatures, and complete Claim Stub.
+       - Verified Sheets 2–4 (`Quotation_No 1–3`): Quote No, Date, Job No, Promise Date, Customer Details, up to 30 items across Columns A–H with formulas/amounts, and Signatures (A62, F62, A65).
+       - Verified Sheets 5–6 (`Billing_No 1–2`): Billing No, Date, Job No, Quote No, Customer Details, Grand Total (C14), up to 36 line items, and SA Signature (A60).
+       - Verified Sheet 7 (`CheckList_Result`): Customer Name (C2), Date (AD2), Plate (C3), Model (C4), SA Inspector (M59/C63), Customer Conforme (M63), Remarks (M41/B53), Fuel Level checkmark, and 15-point multi-system inspection status marks.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Updated `exportOfficialXLSX()` with identical multi-tier variable cascades and complete claim stub cell injection (`H70`, `J70`, `H71`, `I71`, `H72`, `I72`).
+  - `frontend/index.html`: Incremented cache buster to `v=3.08`.
+  - `tests/frontend/sla_and_logic.test.js`: Updated cache buster assertions for `v=3.08`.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+  - Appended `SA-31` to `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Appended `REV-155` to `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.08`.
+* **GitHub Commit Traceability**: `e35479c`.
+
+---
+
 ## 📅 September 25, 2026 (Form 1/3 Customer Conforme Signature & Filipino Claim Stub Data Alignment)
 
 ### 📋 Form 1/3 Customer Conforme Signature & Filipino Claim Stub Data Alignment (REV-154)
