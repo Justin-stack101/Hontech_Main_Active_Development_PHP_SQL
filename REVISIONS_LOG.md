@@ -13,7 +13,7 @@
   - 170 automated unit tests passing (`npm test`).
   - Real-time headless Chrome on the real studio and viewer markup with the real switch / step / viewer functions (PDF compile stubbed): next goes Job_Order -> Quotation_No -> Billing_No -> CheckList_Result -> Job_Order, previous from Job_Order goes to CheckList_Result; in the Full PDF viewer the arrow and the Right / Left keys swap viewers and the studio follows. Screenshots of the toolbar and the viewer header checked.
 * **Cache Busting**: `js/app.js?v=3.35`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `e1aa8a0` pushed to `origin/prototype_process`.
 
 ---
 
