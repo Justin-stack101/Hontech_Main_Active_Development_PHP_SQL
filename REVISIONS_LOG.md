@@ -13,7 +13,7 @@
   - 165 automated unit tests passing (`npm test`).
   - Headless Chrome render of the Workshop_Monitoring card: no print button, Register button full width.
 * **Cache Busting**: `js/app.js?v=3.30`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `bcc6e05` pushed to `origin/prototype_process`.
 
 ---
 
