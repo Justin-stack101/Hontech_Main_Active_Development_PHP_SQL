@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (Billing Form 3/3 Service Advisor Signature Alignment)
+
+### 📋 Billing Form 3/3 Service Advisor Signature Alignment (REV-159)
+* **Objective & Context**: In direct response to the user's screenshot of the Billing Form 3/3 lower section, the Service Advisor name ("Manney Sarol") was left-aligned at a fixed X = 88 and floated off-center from both the signature line and the "Service Advisor" label beneath it.
+* **Vector Measurement & Root Cause Analysis**:
+  - Measured on `Current_2025 BLANK RO UPDATED.xlsx - Billing_No.pdf` with pdfplumber: the signature line spans x 28.6..218.1 (center 123.4) with its top edge at y 88.5; the "Service Advisor" label spans x 96.0..151.4 (center 123.7); "HONTECH MANGEMENT:" has its baseline at y 101.5.
+  - The old call `drawTextFit(sa, 88, 95, 140, 7.2, false)` left-aligned the name at X = 88, so its visual center shifted with every name length.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: `compileBillingPDFBytes()` now centers the Service Advisor name at X = 123.4 on baseline Y = 90.6 (just above the line, clear of "HONTECH MANGEMENT:"), with font size shrinking from 7.5pt to fit within 180pt for long names.
+  - `frontend/index.html`: Incremented cache buster to v=3.12.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-118 asserting the centered signature and cache buster v=3.12; updated the REV-121 and AUT-FRONT-94 signature assertions; added v=3.12 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-35 test row (workbook ranges extended to row 161).
+  - `Revisions checklist.csv`: Appended REV-159 row.
+* **Automated & Manual QA Verification**:
+  - 147/147 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the compiled Billing PDF at 300 dpi with "Manney Sarol" and confirmed the name is centered on the signature line and vertically aligned with the "Service Advisor" label.
+* **Cache Busting**: `js/app.js?v=3.12`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Billing Form 3/3 Measured Vector Alignment & Border-Safe Ghost Masking)
 
 ### 📋 Billing Form 3/3 Measured Vector Alignment & Border-Safe Ghost Masking (REV-158)

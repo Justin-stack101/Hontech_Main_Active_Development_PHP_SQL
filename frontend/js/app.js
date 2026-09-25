@@ -14608,8 +14608,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             })();
             drawTextRight(grandTotalStr, 217.5, 616.4, amtSize, true, darkInk);
 
-            // Authentic Plain Text Signatures (above Service Advisor line at y=82.7)
-            drawTextFit(sa, 88, 95, 140, 7.2, false);
+            // Service Advisor signature: centered on the signature line (x 28.6-218.1, top edge y 88.5),
+            // below "HONTECH MANGEMENT:" (baseline y 101.5); shrinks to fit the line width
+            const saSize = (() => {
+                let s = 7.5;
+                while (s > 5 && fontNorm.widthOfTextAtSize(sa, s) > 180) s -= 0.2;
+                return s;
+            })();
+            drawTextCenter(sa, 123.4, 90.6, saSize, false, darkInk);
 
             return await doc.save();
         }
