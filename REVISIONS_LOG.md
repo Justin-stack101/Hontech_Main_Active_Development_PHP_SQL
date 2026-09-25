@@ -1,3 +1,33 @@
+## 📅 September 25, 2026 (Quotation Form 2/3 Exact Visual Vector Alignment & Border-Safe Masking)
+
+### 📋 Quotation Form 2/3 Exact Visual Vector Alignment & Border-Safe Masking (REV-157)
+* **Objective & Context**: In direct response to the user's test feedback and visual proof screenshot showing that on "Full PDF":
+  1. Data was drawn ~42pt lower than the template's visual position: QT-2026-5777 landed inside the Promised Date box instead of above the QUOTATION NO. underline, Date/Job/Promised date landed next to Customer Details, and Customer details landed inside the Parts/Materials table rows.
+  2. Pre-printed template 0 ghost placeholders remained visible inside the Customer Details card.
+  3. Pre-printed 0.00 ghosts produced small artifacts inside the table cells.
+* **Vector Decompilation & Root Cause Analysis**:
+  - Measured rendered visual coordinates with pdfplumber on Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf.
+  - Discovered that the true visual positions in the PDF stream were shifted vertically by +42pt from initial pypdf unscaled text tokens:
+    - QUOTATION NO. underline is at Y = 769.77 (X = 454.63..519.38). Text baseline is at Y = 772.0.
+    - Right Meta Box: Date cell (Y = 740.30..749.74, baseline 742.8), Job Order No cell (Y = 730.86..740.30, baseline 733.2), Promised Date cell (Y = 721.42..730.86, baseline 723.8).
+    - Customer Details: Underlines are at Y = 693.10, 683.66, 674.22. Text baselines sit cleanly at Y = 694.8, 685.4, 675.9. Template ghost 0 characters sit at Y = 694.63, 685.19, 675.74. Whiteouts placed strictly above underline (y = 693.9, 684.5, 675.0, height 8.2) 100% eliminate ghosts while keeping 100% of black underline lines intact.
+    - 30 Table Line Items: Mapped exact 31 horizontal table dividers (655.34 down to 374.74). Whiteouts for LABOR and AMOUNT cells are bound strictly inside each row (botY + 0.8, height topY - botY - 0.9), wiping out all ghost 0.00 without touching any table grid borders.
+    - Totals block: Masked inside cell bounds (Y = 328.3..366.1) and aligned values to X = 516.5.
+    - Signatures: Service Advisor centered at X = 159.0, Y = 149.0, Manager centered at X = 424.0, Y = 149.0, and Customer Conforme centered at X = 298.0, Y = 102.0 with ghost 0 masked at Y = 98.0.
+* **Core Changes Made**:
+  - frontend/js/app.js: Updated compileQuotePDFBytes() with exact calibrated coordinates and border-safe whiteout rectangles. Verified with headless pypdfium2 rendering across top, middle, and bottom document slices.
+  - frontend/index.html: Incremented cache buster to v=3.10.
+  - tests/frontend/sla_and_logic.test.js: Added AUT-FRONT-111 asserting exact REV-157 coordinates, whiteouts, and cache buster v=3.10; updated multi-revision assertions AUT-FRONT-91, AUT-FRONT-94, AUT-FRONT-98, AUT-FRONT-107.
+  - Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv: Added SA-33 test row.
+  - Revisions checklist.csv: Appended REV-157 row.
+* **Automated & Manual QA Verification**:
+  - 145/145 automated unit tests passing across 63 test suites (npm.cmd test).
+  - Headless image verification confirmed 100% visual alignment of Quotation No, Meta Header, Customer Details, Table Rows, Totals, and Signatures.
+* **Cache Busting**: js/app.js?v=3.10.
+* **GitHub Commit Traceability**: 3e928c1.
+
+---
+
 ## 📅 September 25, 2026 (Quotation Form 2/3 PDF Coordinate Calibration & Overlap Elimination)
 
 ### 📋 Quotation Form 2/3 PDF Coordinate Calibration & Overlap Elimination (REV-156)
