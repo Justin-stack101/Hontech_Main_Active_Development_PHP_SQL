@@ -81,6 +81,13 @@ try {
     $db->exec("ALTER TABLE `jobs` MODIFY COLUMN `source` VARCHAR(50) NOT NULL DEFAULT 'Walk-in'");
     echo "SUCCESS: Widened `source` column on `jobs` table.\n";
 
+    // 2.10 REV-176: referral source captured on the Workshop_Monitoring intake (Referred By)
+    $checkCol = $db->query("SHOW COLUMNS FROM `jobs` LIKE 'referred_by'");
+    if ($checkCol->rowCount() === 0) {
+        $db->exec("ALTER TABLE `jobs` ADD COLUMN `referred_by` VARCHAR(100) NOT NULL DEFAULT 'Walk-in / Direct' AFTER `category`");
+        echo "SUCCESS: Added `referred_by` column to `jobs` table.\n";
+    }
+
     // 2.9 Password reset columns (hashed one-time code, expiry, failed-attempt counter)
     $resetColumns = [
         'reset_otp'              => "VARCHAR(64) NULL DEFAULT NULL",

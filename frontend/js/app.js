@@ -6487,7 +6487,42 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             document.getElementById('analytic-table-count').innerText = `${filtered.length} records`;
         }
 
+        // REV-176: Customer Referral Sources & Acquisition Channels (jobs.referred_by)
+        const REFERRAL_CHANNELS = [
+            { key: 'Social Media (Facebook, Instagram, etc.)', label: 'Social Media (Facebook, Instagram, etc.)' },
+            { key: 'Relative', label: 'Relatives / Family' },
+            { key: 'Friends', label: 'Friends / Word of Mouth' },
+            { key: 'Others', label: 'Others (Repeat, Drive-by, etc.)' },
+            { key: 'Walk-in / Direct', label: 'Not specified (Walk-in / Direct)' }
+        ];
+        function renderReferralAnalytics(jobs) {
+            const list = document.getElementById('analytics-referral-list');
+            if (!list) return;
+            const counts = Object.fromEntries(REFERRAL_CHANNELS.map(c => [c.key, 0]));
+            (jobs || []).forEach(j => {
+                const key = counts.hasOwnProperty(j.referredBy) ? j.referredBy : 'Walk-in / Direct';
+                counts[key]++;
+            });
+            const total = (jobs || []).length;
+            const known = total - counts['Walk-in / Direct'];
+            const totalEl = document.getElementById('analytics-referral-total');
+            if (totalEl) totalEl.textContent = `${known} of ${total} intakes with a referral source`;
+            list.innerHTML = REFERRAL_CHANNELS.map(c => {
+                const n = counts[c.key];
+                const pct = total ? Math.round((n / total) * 1000) / 10 : 0;
+                return `<div>
+                    <div class="flex items-center justify-between text-xs mb-1">
+                        <span class="font-semibold text-gray-800">${c.label}</span>
+                        <span class="font-mono text-gray-600"><strong class="text-gray-900">${n}</strong> · ${pct}%</span>
+                    </div>
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full ${c.key === 'Walk-in / Direct' ? 'bg-gray-300' : 'bg-gray-800'} rounded-full" style="width:${pct}%"></div></div>
+                </div>`;
+            }).join('');
+        }
+        window.renderReferralAnalytics = renderReferralAnalytics;
+
         function renderAnalytics(jobs, scope, startStr, endStr) {
+            renderReferralAnalytics(jobs);
             const total = jobs.length;
             const completed = jobs.filter(j => j.status === 'Completed' || j.status === 'Released').length;
             const carryover = jobs.filter(j => j.status === 'Carry Over').length;
@@ -12031,6 +12066,166 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.exportCustomerServicePassportPDF = exportCustomerServicePassportPDF;
 
+        // =========================================================================
+        // REV-176: CUSTOMER INTAKE PAPER & CLAIM STUB (Letter paper with a tear-off gate pass)
+        // =========================================================================
+        function formatClaimStubTime(timeStr) {
+            const m = String(timeStr || '').match(/^(\d{1,2}):(\d{2})/);
+            if (!m) return timeStr || '--:--';
+            let h = parseInt(m[1], 10);
+            const suffix = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${String(h).padStart(2, '0')}:${m[2]} ${suffix}`;
+        }
+        window.formatClaimStubTime = formatClaimStubTime;
+
+        function buildClaimStubPDF(job) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'letter'); // 215.9mm x 279.4mm
+            const W = 215.9, M = 14, CW = W - M * 2;
+            const red = [220, 38, 38], ink = [17, 24, 39], muted = [100, 116, 139], line = [203, 213, 225];
+            const branch = typeof getBranchDisplayName === 'function' ? getBranchDisplayName(job.branch || currentUserBranch) : (job.branch || 'Marikina Branch');
+            const dateStr = job.dateReceived ? String(job.dateReceived).slice(0, 10) : new Date().toISOString().split('T')[0];
+            const arrival = formatClaimStubTime(job.arrival);
+            const stubNo = job.claimStub || 'N/A';
+            const referredBy = job.referredBy && job.referredBy !== 'Walk-in / Direct' ? job.referredBy : 'Not specified';
+            const fit = (text, width) => doc.splitTextToSize(String(text || '—'), width)[0];
+
+            const header = (y, title) => {
+                doc.setFillColor(...red);
+                doc.rect(M, y, CW, 1.6, 'F');
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(...ink);
+                doc.text('HONTECH AUTOCENTER INC.', M, y + 9);
+                doc.setFontSize(8.5); doc.setTextColor(...muted);
+                doc.text(title, M, y + 14);
+                doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+                doc.text(`${branch}  |  Date: ${dateStr}`, M, y + 18.5);
+                // Prominent red Claim Stub box
+                doc.setDrawColor(...red); doc.setLineWidth(0.6); doc.setFillColor(255, 255, 255);
+                doc.roundedRect(W - M - 58, y + 4, 58, 17, 2, 2, 'FD');
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...red);
+                doc.text('CLAIM STUB NO.', W - M - 29, y + 9, { align: 'center' });
+                doc.setFontSize(15); doc.setTextColor(...ink);
+                doc.text(stubNo, W - M - 29, y + 17.5, { align: 'center' });
+            };
+
+            const cell = (x, y, w, h, label, value, opts = {}) => {
+                doc.setDrawColor(...line); doc.setLineWidth(0.25);
+                doc.rect(x, y, w, h);
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(...muted);
+                doc.text(label.toUpperCase(), x + 2.5, y + 4);
+                doc.setFont(opts.mono ? 'courier' : 'helvetica', 'bold'); doc.setFontSize(opts.size || 10.5); doc.setTextColor(...ink);
+                doc.text(fit(value, w - 5), x + 2.5, y + h - 3);
+            };
+
+            // ---------- Customer Intake Paper (shop copy) ----------
+            header(10, 'OFFICIAL CLAIM STUB & GATE PASS  -  CUSTOMER INTAKE PAPER');
+            let y = 36;
+            const half = CW / 2, rowH = 12.5;
+            cell(M, y, half, rowH, 'Customer Name', job.name);
+            cell(M + half, y, half, rowH, 'Contact Number', job.contact);
+            y += rowH;
+            cell(M, y, half, rowH, 'Plate Number', (job.plate || '').toUpperCase(), { mono: true });
+            cell(M + half, y, half, rowH, 'Vehicle Model', job.vehicle);
+            y += rowH;
+            cell(M, y, half, rowH, 'Service Category', job.category || 'PMS');
+            cell(M + half, y, half, rowH, 'Arrival Time', arrival, { mono: true });
+            y += rowH;
+            cell(M, y, half, rowH, 'Referred By', referredBy);
+            cell(M + half, y, half, rowH, 'Intake Source / Service Advisor', `${job.source === 'Online' ? 'Online Appointment' : 'Walk-in'}  /  ${job.saName || 'Service Advisor'}`, { size: 9.5 });
+            y += rowH;
+
+            // Scope of work / concern (multi-line)
+            const concernLines = doc.splitTextToSize(String(job.concern || 'Standard Periodic Maintenance Service (PMS) & multi-point inspection.'), CW - 5).slice(0, 4);
+            const concernH = 9 + concernLines.length * 3.8; // 9pt text, jsPDF line height 1.15
+            doc.setDrawColor(...line); doc.rect(M, y, CW, concernH);
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); doc.setTextColor(...muted);
+            doc.text('SERVICE CATEGORY & SCOPE OF WORK / CUSTOMER CONCERN', M + 2.5, y + 4);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...ink);
+            doc.text(concernLines, M + 2.5, y + 9);
+            y += concernH + 5;
+
+            // Reminders & legal gate pass policy
+            const reminders = [
+                '1. Present this Claim Stub / Gate Pass when claiming the vehicle and settling the bill. The vehicle is released only to the bearer of this stub.',
+                '2. Remove all personal valuables from the vehicle. HonTech is not liable for items left inside the vehicle.',
+                '3. Vehicles left unclaimed for more than 48 hours after the completion notice may be charged standard storage fees.',
+                '4. Data Privacy (RA 10173): I agree that HonTech AutoCenter may collect and process my personal data for this repair order, billing and service follow-ups.'
+            ];
+            const remLines = reminders.flatMap(r => doc.splitTextToSize(r, CW - 6));
+            const remH = 10 + remLines.length * 2.8; // 6.8pt text, jsPDF line height 1.15
+            doc.setFillColor(248, 250, 252); doc.setDrawColor(...line);
+            doc.roundedRect(M, y, CW, remH, 1.5, 1.5, 'FD');
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...ink);
+            doc.text('IMPORTANT REMINDERS & GATE PASS POLICY', M + 3, y + 4.5);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(6.8); doc.setTextColor(51, 65, 85);
+            doc.text(remLines, M + 3, y + 9);
+            y += remH + 14;
+
+            // Signatures
+            doc.setDrawColor(148, 163, 184); doc.setLineWidth(0.3);
+            doc.line(M, y, M + 80, y);
+            doc.line(W - M - 80, y, W - M, y);
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...ink);
+            doc.text('CUSTOMER SIGNATURE OVER PRINTED NAME', M, y + 4);
+            doc.text('SERVICE ADVISOR (COUNTER-SIGNATURE)', W - M - 80, y + 4);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor(...muted);
+            doc.text('I acknowledge the details, reminders and data privacy consent above.', M, y + 8);
+            doc.text(job.saName || 'Service Advisor', W - M - 80, y + 8);
+
+            // ---------- Tear-off line ----------
+            const tearY = 186;
+            doc.setDrawColor(148, 163, 184); doc.setLineWidth(0.3);
+            doc.setLineDashPattern([2, 1.5], 0);
+            doc.line(4, tearY, W - 4, tearY);
+            doc.setLineDashPattern([], 0);
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor(...muted);
+            doc.text('TEAR HERE  -  CUSTOMER COPY (CLAIM STUB & GATE PASS) BELOW  -  SHOP COPY ABOVE', W / 2, tearY - 1.5, { align: 'center' });
+
+            // ---------- Claim Stub & Gate Pass (customer copy) ----------
+            header(tearY + 6, 'CUSTOMER CLAIM STUB & GATE PASS  -  CUSTOMER COPY');
+            y = tearY + 32;
+            const third = CW / 3;
+            cell(M, y, third, rowH, 'Plate Number', (job.plate || '').toUpperCase(), { mono: true });
+            cell(M + third, y, third, rowH, 'Vehicle Model', job.vehicle);
+            cell(M + third * 2, y, third, rowH, 'Arrival Time', arrival, { mono: true });
+            y += rowH;
+            cell(M, y, third, rowH, 'Customer Name', job.name);
+            cell(M + third, y, third, rowH, 'Contact Number', job.contact);
+            cell(M + third * 2, y, third, rowH, 'Service Category', job.category || 'PMS');
+            y += rowH + 5;
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(51, 65, 85);
+            doc.text(doc.splitTextToSize('Keep this stub. Present it at the counter to claim your vehicle; the vehicle is released only to the bearer of this stub. Vehicles left more than 48 hours after the completion notice may be charged storage fees.', CW), M, y);
+            y += 16;
+            doc.setDrawColor(148, 163, 184);
+            doc.line(M, y, M + 80, y);
+            doc.line(W - M - 80, y, W - M, y);
+            doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(...ink);
+            doc.text('RELEASED BY (SERVICE ADVISOR / GUARD)', M, y + 4);
+            doc.text('RECEIVED BY (CUSTOMER)', W - M - 80, y + 4);
+
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(6); doc.setTextColor(148, 163, 184);
+            doc.text(`Printed ${new Date().toLocaleString('en-PH')}  |  HonTech AutoCenter ${branch}`, M, 274);
+            return doc;
+        }
+        window.buildClaimStubPDF = buildClaimStubPDF;
+
+        function printClaimStubPDF(job, options = {}) {
+            if (!window.jspdf) return showSystemToast('PDF engine is not loaded yet. Please try again.', 'error', 'Claim Stub');
+            const doc = buildClaimStubPDF(job);
+            const safeName = `Hontech_ClaimStub_${String(job.claimStub || job.plate || 'Vehicle').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            const pdfBlob = doc.output('blob');
+            if (options.open) {
+                const url = URL.createObjectURL(pdfBlob);
+                const w = window.open(url, '_blank');
+                if (!w) downloadBlob(pdfBlob, safeName);
+            } else {
+                downloadBlob(pdfBlob, safeName);
+            }
+            showSystemToast(`Customer Intake Paper & Claim Stub ${job.claimStub || ''} ready to print.`, 'success', 'Claim Stub');
+        }
+        window.printClaimStubPDF = printClaimStubPDF;
+
         function printJobClaimStubPDF(jobId) {
             let job = (typeof allJobs !== 'undefined' && Array.isArray(allJobs)) ? allJobs.find(j => String(j.id) === String(jobId) || String(j.job_id) === String(jobId)) : null;
             
@@ -12043,6 +12238,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             id: found.id || found.job_id,
                             claimStub: found.claim_stub || found.stub,
                             plate: found.plate || customerLookupRegistry[k].plate,
+                            name: found.name || customerLookupRegistry[k].name,
+                            contact: found.contact || customerLookupRegistry[k].contact,
+                            referredBy: found.referredBy || found.referred_by,
                             vehicle: found.vehicle || customerLookupRegistry[k].vehicle,
                             category: found.category,
                             saName: found.handled_by || found.sa,
@@ -12062,129 +12260,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return showSystemToast('Job record not found for Claim Stub generation.', 'error', 'Claim Stub');
             }
 
-            showSystemToast(`Printing Claim Stub for ${job.plate || 'Vehicle'}...`, 'info', 'Claim Stub');
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a5'); // 148mm x 210mm compact format
-
-            const todayStr = new Date().toISOString().split('T')[0];
-            const today = new Date().toLocaleDateString();
-            const time = new Date().toLocaleTimeString('en-US', { hour12: localStorage.getItem('timeFormat24h') === 'false', hour: '2-digit', minute: '2-digit' });
-
-            // Top Brand Bar (Red)
-            doc.setFillColor(220, 38, 38);
-            doc.rect(0, 0, 148, 6, 'F');
-
-            // Company Header
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(13);
-            doc.setTextColor(17, 24, 39);
-            doc.text('HONTECH AUTOCENTER INC.', 10, 15);
-
-            doc.setFontSize(8.5);
-            doc.setTextColor(100, 116, 139);
-            doc.text('CUSTOMER SERVICE CLAIM STUB & GATE PASS', 10, 20);
-
-            // Claim Stub Box
-            doc.setFillColor(248, 250, 252);
-            doc.setDrawColor(220, 38, 38);
-            doc.setLineWidth(0.4);
-            doc.roundedRect(95, 9, 43, 16, 2, 2, 'FD');
-
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(7.5);
-            doc.setTextColor(220, 38, 38);
-            doc.text('CLAIM STUB NO.', 116.5, 14, { align: 'center' });
-
-            doc.setFontSize(11);
-            doc.setTextColor(17, 24, 39);
-            doc.text(job.claimStub || 'N/A', 116.5, 21, { align: 'center' });
-
-            // Divider Line
-            doc.setDrawColor(226, 232, 240);
-            doc.setLineWidth(0.2);
-            doc.line(10, 28, 138, 28);
-
-            // Vehicle & Service Details Table
-            doc.autoTable({
-                startY: 31,
-                head: [['CUSTOMER & VEHICLE INFORMATION', 'SERVICE INTAKE DETAILS']],
-                body: [
-                    [
-                        `Plate Number: ${job.plate || 'N/A'}\nVehicle Model: ${job.vehicle || 'N/A'}\nIntake Date: ${job.dateReceived || todayStr}\nArrival Time: ${formatTime12Hour(job.arrival)}`,
-                        `Service Category: ${job.category || 'General Service'}\nService Advisor: ${job.saName || 'Assigned SA'}\nAssigned Bay: ${job.location || 'Bay 1'}\nPromised Time: ${job.promisedDate || formatTime12Hour(job.departure) || 'To be advised'}`
-                    ]
-                ],
-                theme: 'plain',
-                styles: { fontSize: 8, cellPadding: 3, lineColor: [226, 232, 240], lineWidth: 0.2 },
-                headStyles: { fillColor: [248, 250, 252], textColor: [17, 24, 39], fontStyle: 'bold' }
-            });
-
-            let nextY = doc.autoTable.previous.finalY + 5;
-
-            // Customer Concern / Scope of Work Box
-            doc.setFontSize(8.5);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(17, 24, 39);
-            doc.text('WORK ORDER & DIAGNOSTIC CONCERN:', 10, nextY);
-
-            doc.autoTable({
-                startY: nextY + 2,
-                body: [
-                    [job.concern || job.remarks || 'Standard Periodic Maintenance Service (PMS) & Workshop Multi-Point Inspection.']
-                ],
-                theme: 'plain',
-                styles: { fontSize: 7.5, cellPadding: 2.5, fontStyle: 'italic', textColor: [51, 65, 85], lineColor: [226, 232, 240], lineWidth: 0.2 }
-            });
-
-            nextY = doc.autoTable.previous.finalY + 5;
-
-            // Terms & Conditions Notice
-            doc.setFillColor(254, 242, 242);
-            doc.roundedRect(10, nextY, 128, 24, 1.5, 1.5, 'F');
-
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(7);
-            doc.setTextColor(153, 27, 27);
-            doc.text('IMPORTANT CUSTOMER REMINDERS & GATE PASS POLICY:', 13, nextY + 4.5);
-
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(6);
-            doc.setTextColor(127, 29, 29);
-            doc.text('1. Please present this official Claim Stub upon vehicle releasing & billing settlement.', 13, nextY + 9);
-            doc.text('2. Please remove all personal valuables from the vehicle before leaving the service bay.', 13, nextY + 13);
-            doc.text('3. Vehicles left unclaimed over 48 hours after notice may incur standard garage storage fees.', 13, nextY + 17);
-            doc.text('4. Official HonTech warranty covers specified labor and genuine replacement parts.', 13, nextY + 21);
-
-            nextY += 31;
-
-            // Signatures
-            doc.setFontSize(7);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(30, 41, 59);
-            doc.text('CUSTOMER SIGNATURE (Intake Acknowledged):', 10, nextY);
-            doc.text('AUTHORIZED SERVICE ADVISOR:', 78, nextY);
-
-            doc.setDrawColor(148, 163, 184);
-            doc.line(10, nextY + 10, 65, nextY + 10);
-            doc.line(78, nextY + 10, 135, nextY + 10);
-
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(6);
-            doc.setTextColor(100, 116, 139);
-            doc.text('Customer / Vehicle Owner', 10, nextY + 14);
-            doc.text((job.saName || 'Service Advisor') + ' (HonTech AutoCenter)', 78, nextY + 14);
-
-            // Footer
-            doc.setFontSize(6);
-            doc.setTextColor(148, 163, 184);
-            doc.text(`Printed on ${today} at ${time} | HonTech AutoCenter Marikina`, 10, 202);
-            doc.text('Customer Copy', 138, 202, { align: 'right' });
-
-            const safePlate = (job.plate || 'Vehicle').replace(/[^a-zA-Z0-9]/g, '_');
-            const pdfBlob = doc.output('blob');
-            downloadBlob(pdfBlob, `Hontech_ClaimStub_${job.claimStub || safePlate}.pdf`);
-            showSystemToast('Customer Claim Stub PDF generated successfully!', 'success', 'Claim Stub');
+            printClaimStubPDF(job, { download: true });
         }
         window.printJobClaimStubPDF = printJobClaimStubPDF;
 
@@ -13285,8 +13361,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const inputIds = [
                 'f13-input-job-no', 'f13-input-intake-date', 'f13-input-promise-date', 'f13-input-category',
-                'f13-input-source', 'f13-input-lane-type', 'f13-input-bay-location',
-                'f13-input-parts-status', 'f13-input-status', 'f13-input-carry-over',
+                'f13-input-source', 'f13-input-lane-type', 'f13-input-carry-over',
                 'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
                 'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
                 'f13-input-engine', 'f13-input-chassis',
@@ -14938,9 +15013,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             'f13-input-promise-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
             'f13-input-source': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'SOURCE' },
             'f13-input-lane-type': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'LANE TYPE' },
-            'f13-input-bay-location': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'BAY LOCATION' },
-            'f13-input-parts-status': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'PARTS STATUS' },
-            'f13-input-status': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'JOB STATUS' },
             'f13-input-carry-over': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'CARRY OVER' },
 
             // Customer Details (Upper document area)
@@ -15433,13 +15505,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Workshop Monitoring & Daily Intakes Dispatch Dossier
             const claimStub = (document.getElementById('f13-input-claim-stub')?.value || '').trim() || generateNextStudioClaimStub();
             const source = document.getElementById('f13-input-source')?.value || 'Walk-in';
-            // REV-175: branch comes from the logged-in SA account and the arrival clock is stamped at submission
+            // REV-175: branch comes from the logged-in SA account
             const targetBranch = currentUserBranch || 'Marikina Branch';
             const laneType = document.getElementById('f13-input-lane-type')?.value || 'Flexible Lane';
-            const bayLocation = document.getElementById('f13-input-bay-location')?.value || 'None';
-            const partsStatus = document.getElementById('f13-input-parts-status')?.value || 'Yes';
-            const arrivalTime = getStudioCurrentClockTime();
-            const floorStatus = document.getElementById('f13-input-status')?.value || 'Waiting';
+            // REV-176: Parts Availability, Bay Location and Initial Floor Status were removed from the intake;
+            // new intakes start unallocated and waiting in the queue
+            const bayLocation = 'None';
+            const partsStatus = 'Yes';
+            const floorStatus = 'Waiting';
+            // REV-176: arrival follows the live clock unless the SA set it manually
+            const arrivalTime = getMonitoringArrivalTime();
+            const referredBy = document.getElementById('mon-input-referred-by')?.value || '';
             const carryOver = document.getElementById('f13-input-carry-over')?.value || 'No';
 
             // Focus the Workshop_Monitoring copy of Plate / Model when that tab is open
@@ -15452,7 +15528,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return showSystemToast('Plate Number is required to register Repair Order.', 'error');
             }
             if (!name) {
-                document.getElementById('f13-input-name')?.focus();
+                focusStudioField('f13-input-name', 'mon-input-customer-name');
                 return showSystemToast('Customer Full Name is required.', 'error');
             }
             if (!vehicle) {
@@ -15491,6 +15567,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     dateReceived: intakeDate,
                     promisedDate: promisedDate || undefined,
                     category: category,
+                    referredBy: referredBy || undefined,
                     concern: concern,
                     evaluation: evaluation,
                     saName: saName || undefined,
@@ -15536,6 +15613,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 buildCustomerLookupRegistry();
                 if (typeof renderCustomerLookupModule === 'function') renderCustomerLookupModule();
                 if (typeof renderTableDailyIntakes === 'function') renderTableDailyIntakes();
+
+                // Next intake starts on the live clock again
+                if (typeof resetMonitoringArrivalToNow === 'function') resetMonitoringArrivalToNow();
 
                 const assignedJobId = createdJob?.data?.jobId || createdJob?.data?.job_id || createdJob?.jobId || customJobId || 'RO-REGISTERED';
                 if (isBookingHandover) {
@@ -15584,14 +15664,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const laneInput = document.getElementById('f13-input-lane-type');
             if (laneInput) laneInput.value = 'Flexible Lane';
 
-            const bayInput = document.getElementById('f13-input-bay-location');
-            if (bayInput) bayInput.value = 'None';
-
-            const partsInput = document.getElementById('f13-input-parts-status');
-            if (partsInput) partsInput.value = 'Yes';
-
-            const statusInput = document.getElementById('f13-input-status');
-            if (statusInput) statusInput.value = 'Waiting';
+            const referredByInput = document.getElementById('mon-input-referred-by');
+            if (referredByInput) referredByInput.value = '';
+            if (typeof resetMonitoringArrivalToNow === 'function') resetMonitoringArrivalToNow();
 
             const carryOverInput = document.getElementById('f13-input-carry-over');
             if (carryOverInput) carryOverInput.value = 'No';
@@ -15725,15 +15800,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const field = id => {
                 const el = document.getElementById(id);
                 if (!el) return '';
-                if (el.tagName === 'SELECT') return (el.selectedOptions[0]?.text || el.value || '').trim();
+                if (el.tagName === 'SELECT') return el.value ? (el.selectedOptions[0]?.text || el.value || '').trim() : '';
                 return (el.value || '').trim();
             };
+
+            // Copies on this tab follow the Job_Order values (unless being typed in)
+            Object.entries(MONITORING_JOB_ORDER_FIELDS).forEach(([key, [monId, f13Id]]) => {
+                const monEl = document.getElementById(monId);
+                const f13El = document.getElementById(f13Id);
+                if (!monEl || !f13El || document.activeElement === monEl) return;
+                if (key === 'category') {
+                    monEl.value = MONITORING_CATEGORIES.includes(f13El.value) ? f13El.value : 'Others';
+                } else {
+                    monEl.value = f13El.value || '';
+                }
+            });
+            if (typeof tickMonitoringArrival === 'function') tickMonitoringArrival();
+
             const rows = {
-                'mon-sum-job-no': 'f13-input-job-no', 'mon-sum-name': 'f13-input-name', 'mon-sum-plate': 'f13-input-plate',
-                'mon-sum-model': 'f13-input-model', 'mon-sum-category': 'f13-input-category', 'mon-sum-sa': 'f13-input-sa',
-                'mon-sum-claim-stub': 'f13-input-claim-stub',
-                'mon-sum-source': 'f13-input-source', 'mon-sum-lane': 'f13-input-lane-type', 'mon-sum-bay': 'f13-input-bay-location',
-                'mon-sum-parts': 'f13-input-parts-status', 'mon-sum-status': 'f13-input-status', 'mon-sum-carry-over': 'f13-input-carry-over'
+                'mon-sum-job-no': 'f13-input-job-no', 'mon-sum-name': 'f13-input-name', 'mon-sum-contact': 'f13-input-contact',
+                'mon-sum-plate': 'f13-input-plate', 'mon-sum-model': 'f13-input-model', 'mon-sum-category': 'f13-input-category',
+                'mon-sum-sa': 'f13-input-sa', 'mon-sum-claim-stub': 'f13-input-claim-stub',
+                'mon-sum-source': 'f13-input-source', 'mon-sum-referred-by': 'mon-input-referred-by',
+                'mon-sum-lane': 'f13-input-lane-type', 'mon-sum-carry-over': 'f13-input-carry-over'
             };
             Object.entries(rows).forEach(([outId, inId]) => {
                 const out = document.getElementById(outId);
@@ -15743,12 +15832,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 out.classList.toggle('text-gray-400', !val);
                 out.classList.toggle('text-gray-900', !!val);
             });
-
-            // Plate / Model copies on this tab follow the Job_Order values (unless being typed in)
-            [['mon-input-plate', 'f13-input-plate'], ['mon-input-model', 'f13-input-model']].forEach(([monId, f13Id]) => {
-                const monEl = document.getElementById(monId);
-                if (monEl && document.activeElement !== monEl) monEl.value = document.getElementById(f13Id)?.value || '';
-            });
+            const arrivalOut = document.getElementById('mon-sum-arrival');
+            if (arrivalOut) {
+                const arrivalEl = document.getElementById('mon-input-arrival-time');
+                const manual = arrivalEl?.dataset.mode === 'manual';
+                arrivalOut.textContent = `${formatClaimStubTime(getMonitoringArrivalTime())} (${manual ? 'manual' : 'live'})`;
+            }
 
             // Branch is taken from the logged-in SA account
             const branchName = getBranchDisplayName(currentUserBranch || 'Marikina Branch');
@@ -15758,9 +15847,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
 
             const missing = [];
+            if (!field('f13-input-name')) missing.push('Customer Name');
             if (!field('f13-input-plate')) missing.push('Plate Number');
             if (!field('f13-input-model')) missing.push('Model');
-            if (!field('f13-input-name')) missing.push('Customer Name');
             const ready = document.getElementById('mon-sum-ready');
             if (ready) {
                 ready.textContent = missing.length ? 'Incomplete' : 'Ready to register';
@@ -15776,21 +15865,108 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.renderMonitoringIntakeSummary = renderMonitoringIntakeSummary;
 
-        // Plate No. / Model typed on the Workshop_Monitoring tab update the Job_Order fields (and every synced sheet)
+        // REV-176: Workshop_Monitoring intake fields that mirror a Job_Order field
+        const MONITORING_JOB_ORDER_FIELDS = {
+            name: ['mon-input-customer-name', 'f13-input-name'],
+            contact: ['mon-input-contact', 'f13-input-contact'],
+            plate: ['mon-input-plate', 'f13-input-plate'],
+            model: ['mon-input-model', 'f13-input-model'],
+            category: ['mon-input-category', 'f13-input-category'],
+            concern: ['mon-input-concern', 'f13-input-concern']
+        };
+        const MONITORING_CATEGORIES = ['PMS', 'GRS', 'PMS & GRS', 'Others'];
+
+        // Values typed on the Workshop_Monitoring tab update the Job_Order fields (and every synced sheet)
         function syncMonitoringVehicleToJobOrder(field) {
-            const monEl = document.getElementById(`mon-input-${field}`);
-            const f13El = document.getElementById(`f13-input-${field}`);
+            const [monId, f13Id] = MONITORING_JOB_ORDER_FIELDS[field] || [];
+            const monEl = document.getElementById(monId);
+            const f13El = document.getElementById(f13Id);
             if (!monEl || !f13El) return;
             f13El.value = field === 'plate' ? monEl.value.toUpperCase() : monEl.value;
             f13El.dispatchEvent(new Event('input', { bubbles: true }));
+            f13El.dispatchEvent(new Event('change', { bubbles: true }));
         }
         window.syncMonitoringVehicleToJobOrder = syncMonitoringVehicleToJobOrder;
+
+        // REV-176: Arrival Time follows the live clock (updated every few seconds) until the SA edits it
+        function getMonitoringArrivalTime() {
+            const el = document.getElementById('mon-input-arrival-time');
+            if (!el || el.dataset.mode !== 'manual' || !el.value) return getStudioCurrentClockTime();
+            return el.value;
+        }
+        window.getMonitoringArrivalTime = getMonitoringArrivalTime;
+
+        function updateMonitoringArrivalModeTag() {
+            const el = document.getElementById('mon-input-arrival-time');
+            const tag = document.getElementById('mon-arrival-mode');
+            if (!el || !tag) return;
+            const manual = el.dataset.mode === 'manual';
+            tag.textContent = manual ? 'Manual' : 'Auto';
+            tag.className = 'px-1.5 py-0.5 rounded border text-[10px] font-medium ' + (manual ? 'border-gray-500 text-gray-800 bg-gray-100' : 'border-gray-300 text-gray-500');
+        }
+
+        function tickMonitoringArrival() {
+            const el = document.getElementById('mon-input-arrival-time');
+            if (!el || el.dataset.mode === 'manual') return;
+            el.value = getStudioCurrentClockTime();
+        }
+        window.tickMonitoringArrival = tickMonitoringArrival;
+
+        function setMonitoringArrivalManual() {
+            const el = document.getElementById('mon-input-arrival-time');
+            if (!el) return;
+            el.dataset.mode = el.value ? 'manual' : 'auto';
+            updateMonitoringArrivalModeTag();
+        }
+        window.setMonitoringArrivalManual = setMonitoringArrivalManual;
+
+        function resetMonitoringArrivalToNow() {
+            const el = document.getElementById('mon-input-arrival-time');
+            if (!el) return;
+            el.dataset.mode = 'auto';
+            el.value = getStudioCurrentClockTime();
+            updateMonitoringArrivalModeTag();
+            if (typeof renderMonitoringIntakeSummary === 'function') renderMonitoringIntakeSummary();
+        }
+        window.resetMonitoringArrivalToNow = resetMonitoringArrivalToNow;
+
+        // Print the Customer Intake Paper & Claim Stub from the values on the Workshop_Monitoring tab
+        function printMonitoringClaimStub() {
+            const val = id => (document.getElementById(id)?.value || '').trim();
+            const claimStubEl = document.getElementById('f13-input-claim-stub');
+            if (claimStubEl && !claimStubEl.value) claimStubEl.value = generateNextStudioClaimStub();
+            const job = {
+                claimStub: val('f13-input-claim-stub'),
+                name: val('f13-input-name'),
+                contact: val('f13-input-contact'),
+                plate: val('f13-input-plate').toUpperCase(),
+                vehicle: val('f13-input-model'),
+                category: val('f13-input-category'),
+                concern: val('f13-input-concern'),
+                arrival: getMonitoringArrivalTime(),
+                referredBy: val('mon-input-referred-by'),
+                source: val('f13-input-source'),
+                dateReceived: val('f13-input-intake-date') || new Date().toISOString().split('T')[0],
+                saName: val('f13-input-sa') || currentUserName || '',
+                branch: currentUserBranch || 'Marikina Branch'
+            };
+            if (!job.plate || !job.name) {
+                return showSystemToast('Enter the Customer Name and Plate No. before printing the Claim Stub.', 'error', 'Claim Stub');
+            }
+            printClaimStubPDF(job, { open: true });
+        }
+        window.printMonitoringClaimStub = printMonitoringClaimStub;
 
         document.addEventListener('DOMContentLoaded', () => {
             const view = document.getElementById('view-sheet-monitoring');
             if (!view) return;
             ['input', 'change'].forEach(evt => view.addEventListener(evt, renderMonitoringIntakeSummary));
-            renderMonitoringIntakeSummary();
+            resetMonitoringArrivalToNow();
+            // Live clock: keeps the automatic arrival time current while the tab is open
+            setInterval(() => {
+                tickMonitoringArrival();
+                if (!view.classList.contains('hidden')) renderMonitoringIntakeSummary();
+            }, 15000);
         });
 
         function syncJobOrderFieldsToQuote() {
@@ -18139,6 +18315,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     intakeDate: getVal('f13-input-intake-date'),
                     promiseDate: getVal('f13-input-promise-date'),
                     category: getVal('f13-input-category'),
+                    referredBy: getVal('mon-input-referred-by'),
                     name: getVal('f13-input-name'),
                     address: getVal('f13-input-address'),
                     contact: getVal('f13-input-contact'),
@@ -18196,6 +18373,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 setVal('f13-input-intake-date', draft.intakeDate);
                 setVal('f13-input-promise-date', draft.promiseDate);
                 setVal('f13-input-category', draft.category);
+                setVal('mon-input-referred-by', draft.referredBy || '');
                 setVal('f13-input-name', draft.name);
                 setVal('f13-input-address', draft.address);
                 setVal('f13-input-contact', draft.contact);

@@ -56,6 +56,35 @@ class JobController
     /**
      * Normalize lane type string consistently across the system
      */
+    /** REV-176: referral channels captured on the Workshop_Monitoring intake (Referred By) */
+    public const REFERRAL_SOURCES = ['Relative', 'Friends', 'Social Media (Facebook, Instagram, etc.)', 'Others'];
+    public const REFERRAL_DEFAULT = 'Walk-in / Direct';
+
+    public static function normalizeReferredBy($value): string
+    {
+        $v = trim((string)($value ?? ''));
+        return in_array($v, self::REFERRAL_SOURCES, true) ? $v : self::REFERRAL_DEFAULT;
+    }
+
+    /**
+     * REV-176: make sure jobs.referred_by exists (self-healing for databases that have not run
+     * backend/migration.php yet), so registering a job never fails on the new column.
+     */
+    public static function ensureReferredByColumn(\PDO $db): bool
+    {
+        static $ready = null;
+        if ($ready !== null) return $ready;
+        try {
+            if ($db->query("SHOW COLUMNS FROM `jobs` LIKE 'referred_by'")->rowCount() === 0) {
+                $db->exec("ALTER TABLE `jobs` ADD COLUMN `referred_by` VARCHAR(100) NOT NULL DEFAULT 'Walk-in / Direct' AFTER `category`");
+            }
+            $ready = true;
+        } catch (\Exception $e) {
+            $ready = false;
+        }
+        return $ready;
+    }
+
     public static function normalizeLaneType(?string $lane): string
     {
         if (empty($lane)) return 'Flexible Lane';
@@ -81,6 +110,7 @@ class JobController
             'contact'            => $job['contact'],
             'vehicle'            => $job['vehicle'],
             'category'           => $job['category'],
+            'referredBy'         => $job['referred_by'] ?? self::REFERRAL_DEFAULT,
             'concern'            => $job['concern'],
             'laneType'           => self::normalizeLaneType($job['lane_type'] ?? null),
             'dateReceived'       => $job['date_received'],
@@ -160,6 +190,7 @@ class JobController
         $engineNo     = trim($input['engineNo'] ?? ($input['engine'] ?? ''));
         $color        = trim($input['color'] ?? '');
         $category     = $input['category'] ?? '';
+        $referredBy   = self::normalizeReferredBy($input['referredBy'] ?? ($input['referred_by'] ?? null));
         $concern      = $input['concern'] ?? '';
         $evaluation   = trim($input['evaluation'] ?? ($input['diagnostic'] ?? ''));
         $dateReceived = $input['dateReceived'] ?? ($input['intakeDate'] ?? date('Y-m-d'));
@@ -209,6 +240,7 @@ class JobController
             $fromBookingId = !empty($input['fromBookingId']) ? trim((string)$input['fromBookingId']) : null;
             if ($fromBookingId !== null && $user['role'] === 'sa') {
                 $db   = Database::getConnection();
+                $hasReferral = self::ensureReferredByColumn($db);
                 $stmt = $db->prepare("SELECT * FROM jobs WHERE (id = ? OR job_id = ?) AND is_deleted = 0 AND source = 'Online' AND status = 'Pending'");
                 $stmt->execute([$fromBookingId, $fromBookingId]);
                 $booking = $stmt->fetch();
@@ -229,17 +261,16 @@ class JobController
                     'UPDATE jobs SET plate = ?, name = ?, address = ?, contact = ?, vehicle = ?, km_reading = ?,
                         engine_no = ?, color = ?, category = ?, concern = ?, evaluation = ?, lane_type = ?,
                         date_received = ?, promised_date = ?, arrival = ?, claim_stub = ?, status = ?,
-                        confirmed = 1, sa_name = ?
+                        confirmed = 1, sa_name = ?' . ($hasReferral ? ', referred_by = ?' : '') . '
                      WHERE id = ? AND is_deleted = 0'
                 );
-                $stmt->execute([
+                $stmt->execute(array_merge([
                     $plate, $name, $address, $contact, $vehicle, $kmReading,
                     $engineNo, $color, $category, $concern, $evaluation, $laneType,
                     $dateReceived, $promisedDate, $finalArrival ?: date('H:i'),
                     $claimStub ?: self::generateStubNumber(), $convertedStatus,
-                    $customSa ?: ($user['name'] ?? ''),
-                    $booking['id']
-                ]);
+                    $customSa ?: ($user['name'] ?? '')
+                ], $hasReferral ? [$referredBy] : [], [$booking['id']]));
 
                 $stmt = $db->prepare('SELECT * FROM jobs WHERE id = ?');
                 $stmt->execute([$booking['id']]);
@@ -255,22 +286,23 @@ class JobController
             $saName = $customSa ?: (($isWalkin && !empty($user['name'])) ? $user['name'] : '');
 
             $db   = Database::getConnection();
+            $hasReferral = self::ensureReferredByColumn($db);
             $stmt = $db->prepare(
                 'INSERT INTO jobs (
                     job_id, source, plate, name, address, contact, vehicle, km_reading, engine_no, color,
                     category, concern, evaluation, lane_type, date_received, promised_date, arrival,
                     appt_date, appt_time, confirmed, claim_stub, status, is_backjob, parent_job_id,
-                    backjob_reason, branch, location, sa_name
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                    backjob_reason, branch, location, sa_name' . ($hasReferral ? ', referred_by' : '') . '
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?' . ($hasReferral ? ', ?' : '') . ')'
             );
-            $stmt->execute([
+            $stmt->execute(array_merge([
                 $jobId, $source, $plate, $name, $address, $contact, $vehicle, $kmReading, $engineNo, $color,
                 $category, $concern, $evaluation, $laneType, $dateReceived, $promisedDate, $finalArrival,
                 !empty($apptDate) ? $apptDate : null,
                 $apptTime, $confirmed ? 1 : 0, $claimStub,
                 $initialStatus, $isBackjob, $parentJobId, $backjobReason,
                 $finalBranch, 'None', $saName
-            ]);
+            ], $hasReferral ? [$referredBy] : []));
 
             $newId = $db->lastInsertId();
 

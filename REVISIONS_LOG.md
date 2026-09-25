@@ -1,3 +1,28 @@
+## 📅 September 25, 2026 (Customer Intake Paper / Claim Stub, Workshop Monitoring Clean-Up & Referral Analytics)
+
+### 🧾 Customer Intake Paper & Claim Stub, Workshop Monitoring Clean-Up and Referral Analytics (REV-176)
+* **Objective & Context**: Implementation plan HONTECH-PLAN-REV176-2026-V1.0 (prepared for Justin Nolasco J., Catherine Ramos G. and Mary Dayne Villas T.): a customer-facing Intake Paper / Claim Stub with the intake details and referral source, a simpler Workshop Monitoring form, and a referral breakdown in Owner / Admin Analytics.
+* **Core Changes Made**:
+  - **Database**: `database.sql` and `backend/migration.php` add `jobs.referred_by VARCHAR(100) NOT NULL DEFAULT 'Walk-in / Direct'` after `category`. `JobController::ensureReferredByColumn()` adds the column on first use for databases that have not run the migration, so registering never fails on it.
+  - **Backend** (`backend/controllers/JobController.php`): `createJob()` saves `referredBy` (whitelisted to Relative, Friends, Social Media (Facebook, Instagram, etc.), Others; anything else is stored as Walk-in / Direct) for new intakes and for Online-booking handovers; `normalizeJob()` returns `referredBy`. Analytics reads it through the existing `/api/jobs/analytics` endpoint, so the breakdown follows the selected period and branch (a separate GROUP BY endpoint would ignore those filters).
+  - **Workshop_Monitoring card** (`frontend/index.html`): removed Parts Availability, Workshop Bay Location and Initial Floor Status (new intakes start as Waiting, unallocated). Added Customer Name, Contact Number, Service Category (PMS, GRS, PMS & GRS, Others), Scope of Work / Customer Concern (free text), Arrival Time (live clock with an Auto / Manual tag and a Now button) and Referred By. Customer, contact, plate, model, category and concern stay in sync with Job_Order; Job_Order categories outside the four show as Others. Added a Print Claim Stub button. The Job_Order category list gains GRS and PMS & GRS.
+  - **Customer Intake Paper & Claim Stub** (`frontend/js/app.js`): new `buildClaimStubPDF()` / `printClaimStubPDF()` produce a Letter page: the shop copy (header, red Claim Stub box, Customer Name, Contact, Plate, Vehicle Model, Service Category, 12-hour Arrival Time, Referred By, Intake Source / SA, Scope of Work, reminders on valuables, 48-hour storage and RA 10173 data privacy consent, customer and SA counter-signature) and, below a tear line, the customer Claim Stub & Gate Pass. The Customer Lookup "Stub PDF" button uses the same paper. The Claim Stub ID keeps the existing daily-ranked generator (e.g. 092526J1) so the J1, J2, J3 ranking is unchanged.
+  - **Arrival Time**: follows the clock (refreshed every 15 s) until the SA edits it; Register RO sends that time and the field returns to the live clock after registering or resetting (supersedes the REV-175 register-time stamp).
+  - **Analytics** (`#db-tab-analytics`): new "Customer Referral Sources & Acquisition Channels" card with count and percentage per channel plus Not specified, computed by `renderReferralAnalytics()` inside `renderAnalytics()`.
+  - Draft save / load keeps Referred By. Removed reset / reactive / magnifier code for the removed fields.
+  - `frontend/index.html`: Incremented cache buster to v=3.29.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-135; AUT-FRONT-79, 85, 132 and 134 list the new fields instead of the removed ones; added v=3.29 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-52 test row.
+  - `Revisions checklist.csv`: Appended REV-176 row.
+* **Automated & Manual QA Verification**:
+  - 164 automated unit tests passing (`npm test`).
+  - Backend end-to-end against the local MySQL database (PHP built-in server, real login): ran `backend/migration.php` (added `referred_by`); a Regalado SA registered a job with Social Media, which was stored and returned with `branch: East Branch`; an unknown referral value was stored as Walk-in / Direct; `/api/jobs/analytics` as Owner returned `referredBy` per job. The two test jobs were deleted afterwards (65 jobs before and after).
+  - Headless Chrome on the real studio markup and code: typed values reached Job_Order; a manual arrival survived the live clock tick; the payload carried referral, arrival and status Waiting; arrival returned to Auto after registering; Print used the form values. The claim stub PDF (built with the real code) and the analytics card (26 sample intakes) were rendered and checked.
+* **Cache Busting**: `js/app.js?v=3.29`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Workshop_Monitoring Automatic Branch & Arrival, Plate / Model Fields)
 
 ### 🗂️ Workshop_Monitoring: Automatic Branch & Arrival Time, Plate No., Model and Walk-in / Online Appointment (REV-175)

@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
     `contact`               VARCHAR(50) NULL DEFAULT NULL,
     `vehicle`               VARCHAR(255) NOT NULL,
     `category`              VARCHAR(100) NOT NULL,
+    `referred_by`           VARCHAR(100) NOT NULL DEFAULT 'Walk-in / Direct',  -- REV-176 referral source (Referred By)
     `concern`               TEXT NULL DEFAULT NULL,
 
     -- Lane Assignment
