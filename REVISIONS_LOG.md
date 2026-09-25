@@ -13,7 +13,7 @@
   - 181 automated unit tests passing (`npm test`).
   - Real-time headless Chrome, 5/5 (SA login, 39 customers): All_Customers active with the list and count; dossier opens on Customer_Details with the history count in the tab; Service_History shows the history sheet with matching cards; Regulars tab activates and filters; Clear returns to All_Customers.
 * **Cache Busting**: `js/app.js?v=3.46`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `5c8dffc` pushed to `origin/prototype_process`.
 
 ---
 
