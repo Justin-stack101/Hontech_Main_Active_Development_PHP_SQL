@@ -1,3 +1,33 @@
+## 📅 September 25, 2026 (Checklist UI / PDF / Excel Unified Wording, Colors & Status Symbols)
+
+### 📋 Checklist UI, PDF & Excel Share Printed-Form Wording, Colors & Status Symbols (REV-161)
+* **Objective & Context**: The user asked that the Checklist PDF and Excel export match the on-screen checklist so Service Advisors keep "their natural coloring perspective and data inputting from their past" (the paper CheckList_Result form). Before this revision the three outputs disagreed:
+  1. **UI** showed ✓ Good (green), ⚠ Attention (**orange**), ✕ Defect (red), under non-form section names ("Exterior & Electrical", "Interior & Controls", "Fluids & Engine Bay", "Underchassis & Fluids", "Tires & Brakes") and reworded item names.
+  2. **PDF** stamped the same ✓ for every status (REV-160).
+  3. **Excel** stamped the same ✓ for every status, put battery "Attention" in the **Good** box (the PDF used Replace), and overwrote two printed template texts: `M59` ("*Note: Brake fluid NOT filled...") with the Service Advisor name and `M41` ("Please Indicate Areas of External Damage or Wear") with the remarks.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - Added `CHECKLIST_STATUS_STYLES` as the single source of truth for status symbol, label, printed-form legend wording and printed box color (Good ✓ `#2FB044` Satisfactory; Attention ⚠ `#FFED00` May Require Future Attention; Defect ✕ `#EE1C25` Requires Immediate Attention; N/A — left blank on the form) plus `normalizeChecklistStatus()`.
+    - `defaultChecklistPoints` now uses the printed form's section names (Interior/Exterior, Battery Performance, Under Hood, Under Vehicle, Tire Condition, Brake Condition) and item wording.
+    - Added `canonicalizeChecklistPoints()` so older saved drafts are migrated to form wording and order while keeping each point's status and notes; applied on start-up and when a draft loads.
+    - `renderChecklistTable()`: status buttons are painted with the printed box colors when selected, show the form legend as a tooltip, and a legend row mirrors the form; Battery offers Good / Replace (form has no Attention box). Live canvas preview status cells use the same symbol and fill.
+    - `compileChecklistPDFBytes()`: draws ✓ / ⚠ / ✕ vectors per status (dark ink, centered in the matching box), including battery and all four brake boxes.
+    - `exportOfficialXLSX()`: stamps the same symbol per status into the matching green / yellow / red cell; battery Attention goes to Replace (`E30`); stopped overwriting `M59` and `M41`; remarks now word-wrap across the Comments lines `B53`-`B56`.
+    - "All Attn" keeps the battery on Replace, and the toast reports the real checkpoint count (23, not 15).
+  - `frontend/index.html`: Incremented cache buster to v=3.14.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-120; updated AUT-FRONT-95 (Sheet 7 coordinates) and AUT-FRONT-96 (symbol stamping, comments); added v=3.14 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-37 test row (workbook ranges extended to row 163).
+  - `Revisions checklist.csv`: Appended REV-161 row.
+* **Automated & Manual QA Verification**:
+  - 149/149 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the real `renderChecklistTable()` in headless Chrome with an old-format draft: sections and items show printed-form wording, selected buttons use the form's green / yellow / red, battery shows Good / Replace.
+  - Rendered the Checklist PDF with a Good / Attention / Defect rotation: ✓ / ⚠ / ✕ centered in the matching boxes.
+  - Ran the real `exportOfficialXLSX()` in headless Chrome and read the workbook back with openpyxl: every point's symbol lands in its matching colored cell, N/A rows stay blank, `M41` / `M59` keep their printed text, comments wrap over `B53`-`B55`, technician name in `C63`.
+* **Cache Busting**: `js/app.js?v=3.14`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist Result Status-Box Grid, Header & Signature Alignment)
 
 ### 📋 Checklist Result Measured Status-Box Grid, Header Ghost Masking, Comments & Signatures (REV-160)

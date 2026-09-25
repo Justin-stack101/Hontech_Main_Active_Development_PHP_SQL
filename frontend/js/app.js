@@ -14755,10 +14755,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const fuelX = fuelCenters[window.checklistFuelLevel || '1/2'] || fuelCenters['1/2'];
             page.drawEllipse({ x: fuelX, y: 709.0, xScale: 10.5, yScale: 6.2, borderColor: darkInk, borderWidth: 1.1 });
 
-            // Status mark: dark checkmark centered in the chosen green / yellow / red box (readable on every fill)
+            // Status marks match the on-screen buttons (CHECKLIST_STATUS_STYLES): ✓ Good, ⚠ Attention, ✕ Defect.
+            // Drawn as dark vectors centered in the chosen green / yellow / red box so they read on every fill.
             const drawCheckmark = (cx, cy) => {
                 page.drawLine({ start: { x: cx - 3.6, y: cy + 0.2 }, end: { x: cx - 1.1, y: cy - 2.8 }, thickness: 1.4, color: darkInk });
                 page.drawLine({ start: { x: cx - 1.1, y: cy - 2.8 }, end: { x: cx + 3.8, y: cy + 3.2 }, thickness: 1.4, color: darkInk });
+            };
+            const drawWarning = (cx, cy) => {
+                const top = { x: cx, y: cy + 4.2 }, left = { x: cx - 4.3, y: cy - 3.4 }, right = { x: cx + 4.3, y: cy - 3.4 };
+                page.drawLine({ start: left, end: top, thickness: 1.1, color: darkInk });
+                page.drawLine({ start: top, end: right, thickness: 1.1, color: darkInk });
+                page.drawLine({ start: right, end: left, thickness: 1.1, color: darkInk });
+                page.drawLine({ start: { x: cx, y: cy + 1.8 }, end: { x: cx, y: cy - 0.9 }, thickness: 1.1, color: darkInk });
+                page.drawCircle({ x: cx, y: cy - 2.1, size: 0.55, color: darkInk });
+            };
+            const drawCross = (cx, cy) => {
+                page.drawLine({ start: { x: cx - 3.2, y: cy - 3.2 }, end: { x: cx + 3.2, y: cy + 3.2 }, thickness: 1.4, color: darkInk });
+                page.drawLine({ start: { x: cx - 3.2, y: cy + 3.2 }, end: { x: cx + 3.2, y: cy - 3.2 }, thickness: 1.4, color: darkInk });
+            };
+            const drawStatusMark = (statusIdx, cx, cy) => {
+                if (statusIdx === 1) drawWarning(cx, cy);
+                else if (statusIdx === 2) drawCross(cx, cy);
+                else drawCheckmark(cx, cy);
             };
 
             // Status box column centers: G / Y / R
@@ -14798,8 +14816,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const statusIndex = (status) => {
                 const s = String(status || 'Good').toLowerCase();
                 if (s === 'n/a' || s === 'na') return -1;
-                if (s === 'attention' || s === 'attn') return 1;
-                if (s === 'defect') return 2;
+                if (s === 'attention' || s === 'attn' || s === 'warning') return 1;
+                if (s === 'defect' || s === 'bad' || s === 'immediate' || s === 'replace') return 2;
                 return 0;
             };
 
@@ -14809,7 +14827,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (pt.id === 'battery') {
                     // Battery Performance: Good box (y 492.1-506.3) or Replace box (y 477.2-491.4), column x 174.7-220.4
-                    drawCheckmark(197.5, idx === 0 ? 499.2 : 484.3);
+                    drawStatusMark(idx, 197.5, idx === 0 ? 499.2 : 484.3);
                     return;
                 }
 
@@ -14817,14 +14835,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (window.checklistBrakesNotInspected) return;
                     // Brake Condition: all four wheels (front row y 470.6-485.6, rear row y 441.3-455.4)
                     [478.1, 448.4].forEach(by => {
-                        drawCheckmark(TIRE_L_COLS[idx], by);
-                        drawCheckmark(TIRE_R_COLS[idx], by);
+                        drawStatusMark(idx, TIRE_L_COLS[idx], by);
+                        drawStatusMark(idx, TIRE_R_COLS[idx], by);
                     });
                     return;
                 }
 
                 const pos = checkpointPositions[pt.id];
-                if (pos) drawCheckmark(pos.cols[idx], pos.y);
+                if (pos) drawStatusMark(idx, pos.cols[idx], pos.y);
             });
 
             // "Brakes not inspected on this visit" checkbox (x 425.6-435.3, y 428.2-438.0)
@@ -16279,42 +16297,75 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // =========================================================================
         // HONTECH 2025 CHECKLIST_RESULT (SHEET 4/7) INTERACTIVE ENGINE
         // =========================================================================
+        // Sections and item wording mirror the printed CheckList_Result form (PDF + Excel sheet 7),
+        // so the on-screen checklist reads exactly like the paper form staff already fill in.
         const defaultChecklistPoints = [
-            { id: 'lights_ext', group: 'Exterior & Electrical', name: 'Exterior Headlights, Tail Lights & Turn Signals', status: 'Good', notes: 'All bulbs operational' },
-            { id: 'interior_light', group: 'Exterior & Electrical', name: 'Interior Light & Dashboard Bulbs', status: 'Good', notes: 'Dome & dash lamps clear' },
-            { id: 'horn_wipers', group: 'Interior & Controls', name: 'Windshield Washer Spray & Wiper Blades', status: 'Good', notes: 'Wipers clean with no streaks' },
-            { id: 'parking_brake', group: 'Interior & Controls', name: 'Parking Brake Lever & Cable Tension', status: 'Good', notes: 'Holds firmly on incline' },
-            { id: 'horn_op', group: 'Interior & Controls', name: 'Horn Operation & Warning Alert', status: 'Good', notes: 'Audible and responsive' },
-            { id: 'clutch_op', group: 'Interior & Controls', name: 'Clutch Operation & Pedal Travel (M/T)', status: 'Good', notes: 'Smooth engagement' },
-            { id: 'ac_cooling', group: 'Interior & Controls', name: 'Air Conditioning & Micron Cabin Filter', status: 'Good', notes: 'Blows cold at 6°C vent test' },
-            { id: 'battery', group: 'Battery & Electrical', name: 'Battery Health & Terminal Cables', status: 'Good', notes: '12.6V resting charge, tight clamps' },
-            { id: 'eng_oil', group: 'Fluids & Engine Bay', name: 'Engine Motor Oil (Level & Condition)', status: 'Good', notes: 'Level optimal at full dipstick mark' },
-            { id: 'air_filter', group: 'Fluids & Engine Bay', name: 'Engine Air Filter Condition & Housing Box', status: 'Good', notes: 'Clean element, no debris' },
-            { id: 'coolant', group: 'Fluids & Engine Bay', name: 'Radiator Coolant & Expansion Reservoir', status: 'Good', notes: 'No leaks, coolant pink' },
-            { id: 'hydraulic_clutch', group: 'Fluids & Engine Bay', name: 'Hydraulic Clutch Reservoir Fluid (M/T Vehicles)', status: 'Good', notes: 'Fluid level at max line' },
-            { id: 'brk_fluid', group: 'Underchassis & Fluids', name: 'Brake Lines, Hoses & Reservoir Fluid', status: 'Good', notes: 'No leaks, clear fluid' },
-            { id: 'suspension', group: 'Underchassis & Fluids', name: 'Front & Rear Shock Absorbers / Bushings', status: 'Good', notes: 'No oil weeping or clunking' },
-            { id: 'exhaust', group: 'Underchassis & Fluids', name: 'Exhaust Piping & Catalytic Muffler', status: 'Good', notes: 'Mounts secure, no exhaust leak' },
-            { id: 'fluid_leaks', group: 'Underchassis & Fluids', name: 'Engine Oil and/or Fluid Leaks Inspection', status: 'Good', notes: 'Underbody pan dry' },
-            { id: 'drive_shaft', group: 'Underchassis & Fluids', name: 'Drive Shaft Boots & Constant Velocity Joints', status: 'Good', notes: 'Boots intact, no tears' },
-            { id: 'tire_fl', group: 'Tires & Brakes', name: 'Front Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
-            { id: 'tire_fr', group: 'Tires & Brakes', name: 'Front Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
-            { id: 'tire_rl', group: 'Tires & Brakes', name: 'Rear Left Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
-            { id: 'tire_rr', group: 'Tires & Brakes', name: 'Rear Right Tire Tread & Pressure', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
-            { id: 'spare_tire', group: 'Tires & Brakes', name: 'Spare Tire, Jack & Lug Wrench Kit', status: 'Good', notes: 'Complete in trunk compartment' },
-            { id: 'brakes_pads', group: 'Tires & Brakes', name: 'Brake Pads & Disc Rotors Inspection', status: 'Good', notes: 'Pads at ~70% remaining life' }
+            { id: 'lights_ext', group: 'Interior/Exterior', name: 'Headlights (check high and low beams)/Taillights/Brake lights/Hazard warning lights/Turn signals/Exterior lamps', status: 'Good', notes: 'All bulbs operational' },
+            { id: 'interior_light', group: 'Interior/Exterior', name: 'Interior light', status: 'Good', notes: 'Dome & dash lamps clear' },
+            { id: 'horn_wipers', group: 'Interior/Exterior', name: 'Windshield washer spray/Wiper operation/Wiper blades/ Windshield condition', status: 'Good', notes: 'Wipers clean with no streaks' },
+            { id: 'parking_brake', group: 'Interior/Exterior', name: 'Parking brake', status: 'Good', notes: 'Holds firmly on incline' },
+            { id: 'horn_op', group: 'Interior/Exterior', name: 'Horn operation', status: 'Good', notes: 'Audible and responsive' },
+            { id: 'clutch_op', group: 'Interior/Exterior', name: 'Clutch operation (if applicable)', status: 'Good', notes: 'Smooth engagement' },
+            { id: 'ac_cooling', group: 'Interior/Exterior', name: 'Micron cabin filter**', status: 'Good', notes: 'Blows cold at 6°C vent test' },
+            { id: 'battery', group: 'Battery Performance (see attached ED-18 printout)', name: 'Battery', status: 'Good', notes: '12.6V resting charge, tight clamps' },
+            { id: 'eng_oil', group: 'Under Hood', name: 'Check fluid levels: Oil/Coolant/Power steering fluid/Brake fluid*/Windshield washer fluid/Automatic transmission fluid', status: 'Good', notes: 'Level optimal at full dipstick mark' },
+            { id: 'air_filter', group: 'Under Hood', name: 'Air filter condition**', status: 'Good', notes: 'Clean element, no debris' },
+            { id: 'coolant', group: 'Under Hood', name: 'External drive belts and radiator hoses', status: 'Good', notes: 'No leaks, coolant pink' },
+            { id: 'hydraulic_clutch', group: 'Under Hood', name: 'Hydraulic clutch reservoir fluid (M/T vehicles)', status: 'Good', notes: 'Fluid level at max line' },
+            { id: 'brk_fluid', group: 'Under Vehicle', name: 'Brake lines/Hoses/Parking brake cable', status: 'Good', notes: 'No leaks, clear fluid' },
+            { id: 'suspension', group: 'Under Vehicle', name: 'Shock absorbers/Struts/Suspension/Tie rod ends and boots/Steering gear and dust seals', status: 'Good', notes: 'No oil weeping or clunking' },
+            { id: 'exhaust', group: 'Under Vehicle', name: 'Exhaust system', status: 'Good', notes: 'Mounts secure, no exhaust leak' },
+            { id: 'fluid_leaks', group: 'Under Vehicle', name: 'Engine oil and/or fluid leaks', status: 'Good', notes: 'Underbody pan dry' },
+            { id: 'drive_shaft', group: 'Under Vehicle', name: 'Drive shaft boots/Constant velocity boots and bands', status: 'Good', notes: 'Boots intact, no tears' },
+            { id: 'tire_fl', group: 'Tire Condition', name: 'Left Front', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
+            { id: 'tire_fr', group: 'Tire Condition', name: 'Right Front', status: 'Good', notes: '32 PSI / 5.5mm tread depth' },
+            { id: 'tire_rl', group: 'Tire Condition', name: 'Left Rear', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
+            { id: 'tire_rr', group: 'Tire Condition', name: 'Right Rear', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
+            { id: 'spare_tire', group: 'Tire Condition', name: 'Spare', status: 'Good', notes: 'Complete in trunk compartment' },
+            { id: 'brakes_pads', group: 'Brake Condition', name: 'Brake pads (Left/Right Front & Left/Right Rear)', status: 'Good', notes: 'Pads at ~70% remaining life' }
         ];
 
-        // Ensure all registered points exist even when loaded from cached draft
-        if (!window.checklistInspectionPoints || !Array.isArray(window.checklistInspectionPoints)) {
-            window.checklistInspectionPoints = defaultChecklistPoints;
-        } else {
-            defaultChecklistPoints.forEach(dp => {
-                if (!window.checklistInspectionPoints.some(ep => ep.id === dp.id)) {
-                    window.checklistInspectionPoints.push({ ...dp });
-                }
-            });
+        // Single source of truth for checklist status symbols and colors, shared by the UI, PDF and Excel export.
+        // Fills are the exact status-box colors printed on the CheckList_Result form.
+        const CHECKLIST_STATUS_STYLES = {
+            'Good': { symbol: '✓', label: 'Good', formLabel: 'Satisfactory', fill: '#2FB044', text: '#FFFFFF' },
+            'Attention': { symbol: '⚠', label: 'Attention', formLabel: 'May Require Future Attention', fill: '#FFED00', text: '#1F2937' },
+            'Defect': { symbol: '✕', label: 'Defect', formLabel: 'Requires Immediate Attention', fill: '#EE1C25', text: '#FFFFFF' },
+            'N/A': { symbol: '—', label: 'N/A', formLabel: 'Not applicable (left blank on the form)', fill: '#374151', text: '#FFFFFF' }
+        };
+        window.CHECKLIST_STATUS_STYLES = CHECKLIST_STATUS_STYLES;
+
+        // Normalizes any stored status spelling to Good / Attention / Defect / N/A
+        function normalizeChecklistStatus(status) {
+            const s = String(status || 'Good').toLowerCase();
+            if (s === 'n/a' || s === 'na') return 'N/A';
+            if (s === 'attention' || s === 'attn' || s === 'warning') return 'Attention';
+            if (s === 'defect' || s === 'bad' || s === 'immediate' || s === 'replace') return 'Defect';
+            return 'Good';
         }
+        window.normalizeChecklistStatus = normalizeChecklistStatus;
+
+        // Rebuilds the checklist in printed-form order with printed-form wording, keeping each point's
+        // saved status and notes (older drafts stored the previous section/item names).
+        function canonicalizeChecklistPoints(points) {
+            const saved = Array.isArray(points) ? points : [];
+            const canonical = defaultChecklistPoints.map(dp => {
+                const existing = saved.find(ep => ep && ep.id === dp.id);
+                if (!existing) return { ...dp };
+                let status = normalizeChecklistStatus(existing.status);
+                // Battery Performance only has Good / Replace on the form; older "Attention" values become Replace
+                if (dp.id === 'battery' && status === 'Attention') status = 'Defect';
+                return { ...dp, status, notes: existing.notes !== undefined ? existing.notes : dp.notes };
+            });
+            saved.forEach(ep => {
+                if (ep && !defaultChecklistPoints.some(dp => dp.id === ep.id)) canonical.push({ ...ep });
+            });
+            return canonical;
+        }
+        window.canonicalizeChecklistPoints = canonicalizeChecklistPoints;
+
+        // Ensure all registered points exist even when loaded from cached draft
+        window.checklistInspectionPoints = canonicalizeChecklistPoints(window.checklistInspectionPoints);
 
         window.checklistBrakesNotInspected = window.checklistBrakesNotInspected || false;
 
@@ -16431,15 +16482,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function setAllChecklistItems(status) {
             (window.checklistInspectionPoints || []).forEach(p => {
-                p.status = status;
+                // Battery Performance only has Good / Replace on the printed form
+                p.status = (p.id === 'battery' && status === 'Attention') ? 'Defect' : status;
             });
             renderChecklistTable();
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
             scheduleFormStudioPdfRefresh();
-            showSystemToast(`Marked all 15 inspection checkpoints as ${status.toUpperCase()}!`, 'success', 'Checklist Updated');
+            const count = (window.checklistInspectionPoints || []).length;
+            showSystemToast(`Marked all ${count} inspection checkpoints as ${status.toUpperCase()}!`, 'success', 'Checklist Updated');
         }
         window.setAllChecklistItems = setAllChecklistItems;
+
+        // Status button painted with the printed form's box color when selected (green / yellow / red)
+        function checklistStatusButtonHtml(pointId, status, isSelected, labelOverride) {
+            const st = CHECKLIST_STATUS_STYLES[status];
+            const label = labelOverride || st.label;
+            const selectedStyle = `background:${st.fill};color:${st.text};box-shadow:0 0 0 2px ${st.fill}55;`;
+            return `<button type="button" onclick="setChecklistStatus('${pointId}', '${status}')" title="${st.formLabel}" aria-pressed="${isSelected}" style="${isSelected ? selectedStyle : ''}" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isSelected ? '' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}">${st.symbol} ${label}</button>`;
+        }
 
         function renderChecklistTable() {
             const container = document.getElementById('chk-items-container') || document.getElementById('checklist-items-container');
@@ -16447,6 +16508,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             container.innerHTML = '';
             let currentGroup = '';
+
+            // Legend mirrors the printed form: Satisfactory / May Require Future Attention / Requires Immediate Attention
+            const legend = document.createElement('div');
+            legend.className = 'flex flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-[10px] font-semibold text-gray-600';
+            legend.innerHTML = ['Good', 'Attention', 'Defect'].map(s => {
+                const st = CHECKLIST_STATUS_STYLES[s];
+                return `<span class="inline-flex items-center gap-1.5"><span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border border-gray-400 text-[9px] font-black" style="background:${st.fill};color:${st.text}">${st.symbol}</span>${st.formLabel}</span>`;
+            }).join('');
+            container.appendChild(legend);
 
             (window.checklistInspectionPoints || []).forEach(point => {
                 if (point.group !== currentGroup) {
@@ -16460,19 +16530,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const itemRow = document.createElement('div');
                 itemRow.className = 'p-3 bg-white border border-gray-200 rounded-xl space-y-2 hover:border-blue-300 transition shadow-2xs';
 
-                const isGood = point.status === 'Good';
-                const isAttn = point.status === 'Attention';
-                const isDefect = point.status === 'Defect';
-                const isNA = point.status === 'N/A';
+                const status = normalizeChecklistStatus(point.status);
+                // Battery Performance on the printed form only has Good / Replace boxes
+                const buttons = point.id === 'battery'
+                    ? [checklistStatusButtonHtml(point.id, 'Good', status === 'Good'),
+                       checklistStatusButtonHtml(point.id, 'Defect', status === 'Defect' || status === 'Attention', 'Replace'),
+                       checklistStatusButtonHtml(point.id, 'N/A', status === 'N/A')]
+                    : ['Good', 'Attention', 'Defect', 'N/A'].map(s => checklistStatusButtonHtml(point.id, s, status === s));
 
                 itemRow.innerHTML = `
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <span class="text-xs font-bold text-gray-800">${point.name}</span>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Good')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isGood ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-gray-100 hover:bg-emerald-50 text-gray-600'}">✓ Good</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Attention')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isAttn ? 'bg-amber-500 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-gray-100 hover:bg-amber-50 text-gray-600'}">⚠ Attention</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'Defect')" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isDefect ? 'bg-red-600 text-white shadow-xs ring-2 ring-red-400/40' : 'bg-gray-100 hover:bg-red-50 text-gray-600'}">✕ Defect</button>
-                            <button type="button" onclick="setChecklistStatus('${point.id}', 'N/A')" class="px-2 py-1 rounded-md text-[11px] font-bold transition cursor-pointer ${isNA ? 'bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-500'}">— N/A</button>
+                            ${buttons.join('')}
                         </div>
                     </div>
                     <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Inspection notes or findings..." class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition">
@@ -16526,14 +16596,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 (window.checklistInspectionPoints || []).forEach((p, idx) => {
                     const tr = document.createElement('tr');
                     tr.className = 'border-b border-black text-[8px]';
-                    let statusColor = 'text-emerald-700 font-bold';
-                    if (p.status === 'Attention') statusColor = 'text-amber-700 font-bold';
-                    else if (p.status === 'Defect') statusColor = 'text-red-700 font-black';
-                    else if (p.status === 'N/A') statusColor = 'text-gray-400';
+                    const status = normalizeChecklistStatus(p.status);
+                    const st = CHECKLIST_STATUS_STYLES[status];
+                    const statusLabel = (p.id === 'battery' && status !== 'Good' && status !== 'N/A') ? 'Replace' : st.label;
 
                     tr.innerHTML = `
                         <td class="p-1 border-r border-black font-medium">${p.name}</td>
-                        <td class="p-1 text-center border-r border-black ${statusColor}">${(p.status || 'Good').toUpperCase()}</td>
+                        <td class="p-1 text-center border-r border-black font-bold" title="${st.formLabel}" style="background:${st.fill};color:${st.text}">${st.symbol} ${statusLabel.toUpperCase()}</td>
                         <td class="p-1 italic text-gray-700">${escapeHtml(p.notes || '-')}</td>
                     `;
                     canvasTbody.appendChild(tr);
@@ -18063,7 +18132,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (Array.isArray(draft.materials)) window.form13Materials = draft.materials;
                 if (Array.isArray(draft.quoteItems)) window.form23Items = draft.quoteItems;
                 if (Array.isArray(draft.billingItems)) window.billingItems = draft.billingItems;
-                if (Array.isArray(draft.checklistPoints)) window.checklistInspectionPoints = draft.checklistPoints;
+                if (Array.isArray(draft.checklistPoints)) window.checklistInspectionPoints = canonicalizeChecklistPoints(draft.checklistPoints);
                 if (draft.checklistFuel) setChecklistFuel(draft.checklistFuel);
                 if (draft.checklistRemarks) setVal('chk-input-remarks', draft.checklistRemarks);
 
@@ -18563,19 +18632,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     // V1 Dynamic Template Formulas & Data Sync:
                     // C2: =Job_Order!C10 (Customer Name), AD2: =Job_Order!K5 (Date)
                     // C3: =Job_Order!K10 (Plate No), C4: =Job_Order!H10 (Vehicle Model)
-                    // M59: Service Advisor Inspector, M63: =Job_Order!C10 (Customer Conforme)
-                    // M41: Inspection Remarks
+                    // C63: Technician Name, M63: =Job_Order!C10 (Customer Signature)
+                    // B53-B56: Comments ruled lines (M41 and M59 are printed template headings and must stay intact)
                     setCell(sheet7Doc, 'C2', name);
                     setCell(sheet7Doc, 'AD2', date);
                     setCell(sheet7Doc, 'C3', plate);
                     setCell(sheet7Doc, 'C4', model);
-                    setCell(sheet7Doc, 'M59', sa);
                     setCell(sheet7Doc, 'M63', name);
+                    setCell(sheet7Doc, 'C63', sa);
 
                     const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
-                    setCell(sheet7Doc, 'M41', chkRemarks);
-                    setCell(sheet7Doc, 'C63', sa);
-                    setCell(sheet7Doc, 'B53', chkRemarks);
+                    // Word-wrap remarks onto the four Comments lines (~75 chars each at Arial 8pt across B:K)
+                    const commentLines = [];
+                    chkRemarks.split(/\r?\n/).forEach(para => {
+                        let line = '';
+                        para.split(/\s+/).filter(Boolean).forEach(word => {
+                            const test = line ? line + ' ' + word : word;
+                            if (test.length > 75 && line) {
+                                commentLines.push(line);
+                                line = word;
+                            } else {
+                                line = test;
+                            }
+                        });
+                        commentLines.push(line);
+                    });
+                    ['B53', 'B54', 'B55', 'B56'].forEach((cellRef, i) => {
+                        if (commentLines[i]) setCell(sheet7Doc, cellRef, commentLines[i]);
+                    });
 
                     // Fuel Level Selection Marking (Row 4)
                     const fuelLevel = window.checklistFuelLevel || '1/2';
@@ -18597,7 +18681,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         'horn_op':          { good: ['I18'], attn: ['J18'], defect: ['K18'] },
                         'clutch_op':        { good: ['I20'], attn: ['J20'], defect: ['K20'] },
                         'ac_cooling':       { good: ['I22'], attn: ['J22'], defect: ['K22'] },
-                        'battery':          { good: ['E28'], attn: ['E28'], defect: ['E30'] },
+                        'battery':          { good: ['E28'], attn: ['E30'], defect: ['E30'] }, // Good / Replace only
                         'eng_oil':          { good: ['I36'], attn: ['J36'], defect: ['K36'] },
                         'air_filter':       { good: ['I40'], attn: ['J40'], defect: ['K40'] },
                         'coolant':          { good: ['I42'], attn: ['J42'], defect: ['K42'] },
@@ -18627,17 +18711,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                         const mapping = gridMap[pt.id];
                         if (!mapping) return;
-                        const status = (pt.status || 'Good').toLowerCase();
-                        let targetCells = [];
-                        if (status === 'good' || status === 'ok' || status === 'satisfactory') {
-                            targetCells = mapping.good;
-                        } else if (status === 'attention' || status === 'attn' || status === 'warning') {
-                            targetCells = mapping.attn;
-                        } else if (status === 'defect' || status === 'bad' || status === 'immediate') {
-                            targetCells = mapping.defect;
-                        }
+                        // Same symbol as the on-screen button and the PDF: ✓ Good, ⚠ Attention, ✕ Defect (N/A left blank)
+                        const status = normalizeChecklistStatus(pt.status);
+                        const targetCells = status === 'Good' ? mapping.good
+                            : status === 'Attention' ? mapping.attn
+                            : status === 'Defect' ? mapping.defect
+                            : [];
                         (targetCells || []).forEach(cellRef => {
-                            setCell(sheet7Doc, cellRef, '✓');
+                            setCell(sheet7Doc, cellRef, CHECKLIST_STATUS_STYLES[status].symbol);
                         });
                     });
 
