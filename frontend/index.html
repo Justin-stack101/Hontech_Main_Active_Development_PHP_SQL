@@ -3683,7 +3683,21 @@
                             <!-- Form Grid: Ergonomic 2-Column Layout with Full Option Visibility -->
                             <div class="space-y-3.5">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                                    <!-- Row 1: Claim Stub & Arrival Time (Auto-filled / Stamped) -->
+                                    <!-- Row 1: Plate No. & Model (two-way synced with the Job_Order fields) -->
+                                    <div>
+                                        <label for="mon-input-plate" class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Plate No. <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <input type="text" id="mon-input-plate" oninput="syncMonitoringVehicleToJobOrder('plate')" placeholder="ABC-1234" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase">
+                                    </div>
+                                    <div>
+                                        <label for="mon-input-model" class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Model <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <input type="text" id="mon-input-model" oninput="syncMonitoringVehicleToJobOrder('model')" placeholder="e.g. 2021 Toyota Vios" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
+                                    </div>
+
+                                    <!-- Row 2: Claim Stub & Intake Source (branch and arrival time are stamped automatically on register) -->
                                     <div>
                                         <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
@@ -3697,37 +3711,12 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Arrival Time (Clock In) <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" title="Vehicle Arrival Timestamp (Clock In)">
-                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
-                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 2: Target Branch & Intake Source -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
-                                            <option value="East Branch">Regalado Branch</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                        <label for="f13-input-source" class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Intake Source
                                         </label>
                                         <select id="f13-input-source" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Walk-in" selected>Walk-in Customer</option>
-                                            <option value="Online">Online Booking Inquiry</option>
-                                            <option value="Returning">Returning / Repeat Customer</option>
-                                            <option value="Fleet">Fleet Account</option>
+                                            <option value="Walk-in" selected>Walk-in</option>
+                                            <option value="Online">Online Appointment</option>
                                         </select>
                                     </div>
 
@@ -3799,7 +3788,7 @@
                                     </div>
                                     <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-md text-[11px] text-slate-500 mt-auto">
                                         <i data-lucide="shield-check" class="w-4 h-4 text-gray-400 shrink-0"></i>
-                                        <span>Auto-syncs Floor Queue, TV Monitor, and MySQL database.</span>
+                                        <span>Branch (<span id="mon-auto-branch" class="font-medium text-slate-700">Marikina Branch</span>) and arrival time are stamped automatically when you register.</span>
                                     </div>
                                 </div>
 
@@ -3859,7 +3848,7 @@
                                 </div>
                                 <div class="flex items-center justify-between gap-3 py-2">
                                     <dt class="text-gray-500">Arrival Time</dt>
-                                    <dd id="mon-sum-arrival" class="font-mono text-right font-medium text-gray-900 truncate">—</dd>
+                                    <dd id="mon-sum-arrival" class="text-right font-medium text-gray-900 truncate">Stamped on register</dd>
                                 </div>
                                 <div class="flex items-center justify-between gap-3 py-2">
                                     <dt class="text-gray-500">Branch</dt>
@@ -7786,7 +7775,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.27"></script>
+    <script src="js/app.js?v=3.28"></script>
 </body>
 
 </html>

@@ -3890,14 +3890,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Sync with Monitoring Dispatch Card
             const fSource = document.getElementById('f13-input-source');
             if (fSource) fSource.value = 'Online';
-            const fBranch = document.getElementById('f13-input-target-branch');
-            if (fBranch && job.branch) {
-                Array.from(fBranch.options).forEach(opt => {
-                    if (opt.value.toLowerCase().includes(job.branch.toLowerCase()) || job.branch.toLowerCase().includes(opt.value.toLowerCase())) {
-                        fBranch.value = opt.value;
-                    }
-                });
-            }
 
             // Synchronize with other Studio sheets (Quotation, Billing, Checklist)
             if (typeof syncJobOrderFieldsToQuote === 'function') syncJobOrderFieldsToQuote();
@@ -13201,16 +13193,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 claimStubInput.value = generateNextStudioClaimStub();
             }
 
-            const arrivalTimeInput = document.getElementById('f13-input-arrival-time');
-            if (arrivalTimeInput && (!arrivalTimeInput.value || arrivalTimeInput.value === '')) {
-                arrivalTimeInput.value = getStudioCurrentClockTime();
-            }
-
-            const branchInput = document.getElementById('f13-input-target-branch');
-            if (branchInput && !branchInput.value) {
-                branchInput.value = 'Marikina Branch';
-            }
-
             // Default signatories
             const saInput = document.getElementById('f13-input-sa');
             if (saInput && !saInput.value) saInput.value = currentUserName || 'Roman Sarol';
@@ -13303,14 +13285,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const inputIds = [
                 'f13-input-job-no', 'f13-input-intake-date', 'f13-input-promise-date', 'f13-input-category',
-                'f13-input-target-branch', 'f13-input-source', 'f13-input-lane-type', 'f13-input-bay-location',
+                'f13-input-source', 'f13-input-lane-type', 'f13-input-bay-location',
                 'f13-input-parts-status', 'f13-input-status', 'f13-input-carry-over',
                 'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
                 'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
                 'f13-input-engine', 'f13-input-chassis',
                 'f13-input-concern', 'f13-input-diagnostic',
                 'f13-input-sa', 'f13-input-mechanic', 'f13-input-assessor', 'f13-input-manager',
-                'f13-input-claim-stub', 'f13-input-arrival-time'
+                'f13-input-claim-stub'
             ];
 
             inputIds.forEach(id => {
@@ -14954,7 +14936,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             'f13-input-job-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'JOB ORDER NO' },
             'f13-input-intake-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'DATE' },
             'f13-input-promise-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
-            'f13-input-target-branch': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'TARGET BRANCH' },
             'f13-input-source': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'SOURCE' },
             'f13-input-lane-type': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'LANE TYPE' },
             'f13-input-bay-location': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'BAY LOCATION' },
@@ -14991,7 +14972,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Customer Claim Stub (Very Bottom of Document)
             'f13-input-claim-stub': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'CLAIM STUB ID' },
-            'f13-input-arrival-time': { x: '50%', y: '88%', scale: 0.88, sheet: 'form13', label: 'ARRIVAL TIME' },
 
             // Sheet 2: Quotation_No
             'f23-input-quote-no': { x: '50%', y: '8%', scale: 0.88, sheet: 'quote', label: 'QUOTATION NO' },
@@ -15453,16 +15433,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Workshop Monitoring & Daily Intakes Dispatch Dossier
             const claimStub = (document.getElementById('f13-input-claim-stub')?.value || '').trim() || generateNextStudioClaimStub();
             const source = document.getElementById('f13-input-source')?.value || 'Walk-in';
-            const targetBranch = document.getElementById('f13-input-target-branch')?.value || 'Marikina Branch';
+            // REV-175: branch comes from the logged-in SA account and the arrival clock is stamped at submission
+            const targetBranch = currentUserBranch || 'Marikina Branch';
             const laneType = document.getElementById('f13-input-lane-type')?.value || 'Flexible Lane';
             const bayLocation = document.getElementById('f13-input-bay-location')?.value || 'None';
             const partsStatus = document.getElementById('f13-input-parts-status')?.value || 'Yes';
-            const arrivalTime = (document.getElementById('f13-input-arrival-time')?.value || '').trim() || getStudioCurrentClockTime();
+            const arrivalTime = getStudioCurrentClockTime();
             const floorStatus = document.getElementById('f13-input-status')?.value || 'Waiting';
             const carryOver = document.getElementById('f13-input-carry-over')?.value || 'No';
 
+            // Focus the Workshop_Monitoring copy of Plate / Model when that tab is open
+            const focusStudioField = (f13Id, monId) => {
+                const onMonitoring = typeof getActiveStudioSheet === 'function' && getActiveStudioSheet() === 'monitoring';
+                document.getElementById(onMonitoring ? monId : f13Id)?.focus();
+            };
             if (!plate) {
-                document.getElementById('f13-input-plate')?.focus();
+                focusStudioField('f13-input-plate', 'mon-input-plate');
                 return showSystemToast('Plate Number is required to register Repair Order.', 'error');
             }
             if (!name) {
@@ -15470,7 +15456,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return showSystemToast('Customer Full Name is required.', 'error');
             }
             if (!vehicle) {
-                document.getElementById('f13-input-model')?.focus();
+                focusStudioField('f13-input-model', 'mon-input-model');
                 return showSystemToast('Vehicle Model is required.', 'error');
             }
 
@@ -15591,9 +15577,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Reset Monitoring Dispatch Card
             const claimStubInput = document.getElementById('f13-input-claim-stub');
             if (claimStubInput) claimStubInput.value = generateNextStudioClaimStub();
-
-            const arrivalTimeInput = document.getElementById('f13-input-arrival-time');
-            if (arrivalTimeInput) arrivalTimeInput.value = getStudioCurrentClockTime();
 
             const sourceInput = document.getElementById('f13-input-source');
             if (sourceInput) sourceInput.value = 'Walk-in';
@@ -15748,7 +15731,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const rows = {
                 'mon-sum-job-no': 'f13-input-job-no', 'mon-sum-name': 'f13-input-name', 'mon-sum-plate': 'f13-input-plate',
                 'mon-sum-model': 'f13-input-model', 'mon-sum-category': 'f13-input-category', 'mon-sum-sa': 'f13-input-sa',
-                'mon-sum-claim-stub': 'f13-input-claim-stub', 'mon-sum-arrival': 'f13-input-arrival-time', 'mon-sum-branch': 'f13-input-target-branch',
+                'mon-sum-claim-stub': 'f13-input-claim-stub',
                 'mon-sum-source': 'f13-input-source', 'mon-sum-lane': 'f13-input-lane-type', 'mon-sum-bay': 'f13-input-bay-location',
                 'mon-sum-parts': 'f13-input-parts-status', 'mon-sum-status': 'f13-input-status', 'mon-sum-carry-over': 'f13-input-carry-over'
             };
@@ -15761,8 +15744,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 out.classList.toggle('text-gray-900', !!val);
             });
 
+            // Plate / Model copies on this tab follow the Job_Order values (unless being typed in)
+            [['mon-input-plate', 'f13-input-plate'], ['mon-input-model', 'f13-input-model']].forEach(([monId, f13Id]) => {
+                const monEl = document.getElementById(monId);
+                if (monEl && document.activeElement !== monEl) monEl.value = document.getElementById(f13Id)?.value || '';
+            });
+
+            // Branch is taken from the logged-in SA account
+            const branchName = getBranchDisplayName(currentUserBranch || 'Marikina Branch');
+            ['mon-sum-branch', 'mon-auto-branch'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = branchName;
+            });
+
             const missing = [];
             if (!field('f13-input-plate')) missing.push('Plate Number');
+            if (!field('f13-input-model')) missing.push('Model');
             if (!field('f13-input-name')) missing.push('Customer Name');
             const ready = document.getElementById('mon-sum-ready');
             if (ready) {
@@ -15773,11 +15770,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const note = document.getElementById('mon-sum-missing');
             if (note) {
                 note.textContent = missing.length
-                    ? `${missing.join(' and ')} ${missing.length > 1 ? 'are' : 'is'} required on the Job_Order tab before registering.`
+                    ? `${missing.length > 1 ? missing.slice(0, -1).join(', ') + ' and ' + missing[missing.length - 1] : missing[0]} ${missing.length > 1 ? 'are' : 'is'} required before registering.`
                     : 'Register Repair Order sends this entry to Daily Intakes, the Floor Queue and the TV Monitor.';
             }
         }
         window.renderMonitoringIntakeSummary = renderMonitoringIntakeSummary;
+
+        // Plate No. / Model typed on the Workshop_Monitoring tab update the Job_Order fields (and every synced sheet)
+        function syncMonitoringVehicleToJobOrder(field) {
+            const monEl = document.getElementById(`mon-input-${field}`);
+            const f13El = document.getElementById(`f13-input-${field}`);
+            if (!monEl || !f13El) return;
+            f13El.value = field === 'plate' ? monEl.value.toUpperCase() : monEl.value;
+            f13El.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        window.syncMonitoringVehicleToJobOrder = syncMonitoringVehicleToJobOrder;
 
         document.addEventListener('DOMContentLoaded', () => {
             const view = document.getElementById('view-sheet-monitoring');

@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Workshop_Monitoring Automatic Branch & Arrival, Plate / Model Fields)
+
+### 🗂️ Workshop_Monitoring: Automatic Branch & Arrival Time, Plate No., Model and Walk-in / Online Appointment (REV-175)
+* **Objective & Context**: The user asked to remove the Target Branch selection and the Arrival Time input from the Workshop Monitoring & Daily Intakes card, because the SA already belongs to a branch (e.g. Marikina) and both should be filled automatically when Register is pressed. The card must also contain Plate No., Model and a choice between Walk-in and Online Appointment.
+* **Core Changes Made**:
+  - `frontend/index.html`: Removed the Target Branch select and the Arrival Time input (with its clock button). Added Plate No. and Model inputs (`mon-input-plate`, `mon-input-model`) as the first row. Intake Source now offers only Walk-in and Online Appointment (values `Walk-in` / `Online`, unchanged for the backend). The info tile now reads "Branch (<SA branch>) and arrival time are stamped automatically when you register"; the preview shows the SA branch and "Stamped on register" for the arrival.
+  - `frontend/js/app.js`: `registerStudioROToSystem()` sends `branch: currentUserBranch` (the backend already forces an SA's own branch) and stamps `arrival` with the clock time at submission; a missing Plate / Model focuses the Workshop_Monitoring copy when that tab is open. New `syncMonitoringVehicleToJobOrder()` writes Plate No. / Model into the Job_Order fields and fires their input listeners, so Quotation, Billing, CheckList and the PDFs follow. `renderMonitoringIntakeSummary()` refreshes the copies from Job_Order, shows the SA branch and now also requires Model (as Register RO does). Removed the prefill / reset / online-booking / magnifier code for the removed inputs.
+  - `frontend/index.html`: Incremented cache buster to v=3.28.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-134; AUT-FRONT-79, 85 and 132 list the new Plate / Model inputs instead of the removed Branch / Arrival inputs; added v=3.28 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-51 test row.
+  - `Revisions checklist.csv`: Appended REV-175 row.
+* **Automated & Manual QA Verification**:
+  - 163 automated unit tests passing (`npm test`).
+  - Headless Chrome run of the real `registerStudioROToSystem()` with a stubbed API on the real studio markup: with a Regalado SA the payload carried `branch: East Branch` and the arrival equal to the clock time at submission; Plate / Model typed on the tab reached the Job_Order fields (plate upper-cased); source `Online` was sent for Online Appointment; missing Plate / Model blocked registration and the preview listed what is missing. Screenshot of the card verified.
+* **Cache Busting**: `js/app.js?v=3.28`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Workshop_Monitoring Tab First)
 
 ### 🗂️ RO Excel Studio: Workshop_Monitoring Moved to the First Tab (REV-174)
