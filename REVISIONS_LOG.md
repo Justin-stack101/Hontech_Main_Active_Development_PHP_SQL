@@ -13,7 +13,7 @@
   - 167 automated unit tests passing (`npm test`).
   - Real-time headless Chrome (DevTools protocol) on the real studio markup, CSS and functions: side-by-side 490 x 750 at left 74 px; right after Maximize the container is 94 px but the frame keeps its size; once settled (1590 px) one redraw centers the 490 x 750 page at left 550 px; Normal View redraws it back to left 74 px. Screenshot of the maximized pane confirmed the centered page.
 * **Cache Busting**: `js/app.js?v=3.32`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `80bd10d` pushed to `origin/prototype_process`.
 
 ---
 
