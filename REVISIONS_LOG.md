@@ -12,7 +12,7 @@
   - 155/155 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the checklist editor in headless Chrome: rows show only the item name and status selector; Inspector Remarks remains at the bottom.
 * **Cache Busting**: `js/app.js?v=3.20`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `ca6b710`.
 
 ---
 
