@@ -16,7 +16,7 @@
   - 175 automated unit tests passing (`npm test`).
   - Real-time headless Chrome on XAMPP with live data, 12/12: drawer hidden without `?dev=1` and shown with it; PIN entered with real keypad taps -> no sound prompt; no vehicle twice on Slide 2 and every group matches its statuses (12 In Service, 7 In Queue, 4 Ready, 7 Carry Over); unreachable server -> badge with last update time and board kept, cleared when back; TV reopened by itself -> sound prompt, one tap -> unlocked. Screenshot of Slide 2 checked.
 * **Cache Busting**: `js/app.js?v=3.40`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `624be9c` pushed to `origin/prototype_process`.
 
 ---
 
