@@ -98,7 +98,7 @@
                 <i data-lucide="tv" class="w-8 h-8"></i>
             </div>
             <h1 class="text-2xl font-black uppercase tracking-wider text-white">Smart TV Service Monitor</h1>
-            <p class="text-xs font-semibold text-gray-400 mt-1 uppercase tracking-widest">HonTech AutoCenter • Marikina Main</p>
+            <p class="text-xs font-semibold text-gray-400 mt-1 uppercase tracking-widest">HonTech AutoCenter</p>
 
             <!-- Status Guidance Note -->
             <div class="mt-6 mb-4 p-3 bg-gray-950 border border-gray-800 rounded-2xl w-full">
@@ -201,7 +201,7 @@
                 <!-- Bottom Red Vehicle Model Strip -->
                 <div class="bg-red-600 px-6 py-3 flex items-center justify-between text-white border-t border-red-700">
                     <span id="tv-ready-alert-model" class="text-sm md:text-base font-extrabold uppercase tracking-wider text-white truncate">HONDA CIVIC RS</span>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-red-200 shrink-0 ml-4">MARIKINA MAIN</span>
+                    <span id="tv-alert-branch" class="text-[10px] font-bold uppercase tracking-widest text-red-200 shrink-0 ml-4">MARIKINA MAIN</span>
                 </div>
             </div>
         </div>
@@ -215,7 +215,7 @@
                     </h1>
                     <span class="text-[11px] not-italic font-black uppercase tracking-wider bg-red-600/30 text-red-300 border border-red-500/50 px-3 py-1 rounded-full shadow-inner flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                        📍 Marikina Main Branch
+                        📍 <span id="tv-branch-label">Marikina Main Branch</span>
                     </span>
                 </div>
                 <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
@@ -677,28 +677,40 @@
             }
         }
 
-        // PIN Submission & Authentication
+        // REV-186: the PIN is exchanged for a branch-scoped TV token that this TV remembers
+        // (no PIN in the URL). A new PIN in the TV Broadcast Hub signs every TV of that branch out;
+        // pausing the broadcast only shows the standby screen until it goes live again.
+        const TV_TOKEN_KEY = 'hontech_tv_token';
+        const tvUrlParams = new URLSearchParams(window.location.search);
+        // HDMI kiosk / in-app view run in the staff browser and read the staff member's own branch
+        const isStaffTVView = tvUrlParams.get('kiosk') === 'true' || tvUrlParams.get('embedded') === '1';
+        let tvBayCount = 6;
+        let tvFeedStarted = false;
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
         async function submitPinAuthentication(pinToVerify) {
             const pin = pinToVerify || currentPin;
             const errEl = document.getElementById('auth-error-msg');
             errEl.innerText = 'Verifying PIN...';
-
             try {
                 const res = await fetch(tvApiUrl('/api/tv/verify-pin'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ pin })
                 });
-
-                const data = await res.json();
-
-                if (res.ok && data.valid) {
-                    localStorage.setItem('hontech_tv_token', data.token);
-                    localStorage.setItem('hontech_tv_pin', pin);
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.valid && data.token) {
+                    localStorage.setItem(TV_TOKEN_KEY, data.token);
+                    localStorage.removeItem('hontech_tv_pin');
                     errEl.innerText = '';
-                    enterActiveTVMode();
+                    currentPin = '';
+                    updatePinDots();
+                    startTVFeed();
                 } else {
-                    errEl.innerText = data.error || data.message || 'Invalid PIN or broadcast inactive.';
+                    errEl.innerText = data.error || data.message || 'Invalid PIN.';
                     currentPin = '';
                     updatePinDots();
                 }
@@ -708,106 +720,90 @@
         }
 
         function logoutTVSession() {
-            localStorage.removeItem('hontech_tv_token');
+            localStorage.removeItem(TV_TOKEN_KEY);
             localStorage.removeItem('hontech_tv_pin');
+            stopTVFeed();
             currentPin = '';
             updatePinDots();
             showScreen('auth');
-        }
-
-        let standbyPollInterval = null;
-
-        function startStandbyPolling() {
-            if (standbyPollInterval) return;
-            standbyPollInterval = setInterval(async () => {
-                try {
-                    const res = await fetch(tvApiUrl('/api/tv/session'));
-                    const session = await res.json();
-                    if (session && session.active) {
-                        clearInterval(standbyPollInterval);
-                        standbyPollInterval = null;
-                        const savedPin = localStorage.getItem('hontech_tv_pin');
-                        if (savedPin) {
-                            await submitPinAuthentication(savedPin);
-                        } else {
-                            showScreen('auth');
-                            const errEl = document.getElementById('auth-error-msg');
-                            if (errEl) errEl.innerText = '';
-                        }
-                    }
-                } catch (e) {
-                    console.warn('Standby poll error:', e);
-                }
-            }, 3000);
-        }
-
-        function stopStandbyPolling() {
-            if (standbyPollInterval) {
-                clearInterval(standbyPollInterval);
-                standbyPollInterval = null;
-            }
         }
 
         function showScreen(screen) {
             document.getElementById('screen-auth').classList.toggle('hidden', screen !== 'auth');
             document.getElementById('screen-standby').classList.toggle('hidden', screen !== 'standby');
             document.getElementById('screen-active-tv').classList.toggle('hidden', screen !== 'active');
-            
-            if (screen === 'standby') {
-                startStandbyPolling();
-            } else {
-                stopStandbyPolling();
-            }
-
             if (window.lucide) lucide.createIcons();
         }
 
-        // Check broadcast session status
-        async function checkBroadcastSession() {
-            try {
-                const res = await fetch(tvApiUrl('/api/tv/session'));
-                const session = await res.json();
-
-                if (!session.active) {
-                    showScreen('standby');
-                    return false;
-                } else {
-                    return true;
-                }
-            } catch (err) {
-                console.warn('Error checking TV session:', err);
-                return true; // fail-open in offline dev
-            }
+        function applyBranchLabels(feed) {
+            const name = feed.branchName || 'Marikina Main Branch';
+            const label = document.getElementById('tv-branch-label');
+            if (label) label.innerText = name;
+            const alertBranch = document.getElementById('tv-alert-branch');
+            if (alertBranch) alertBranch.innerText = name.replace(/ Branch$/i, '').toUpperCase();
+            const short = name.replace(/ Branch$/i, '');
+            const sub1 = document.getElementById('tv-slide1-sub');
+            if (sub1) sub1.innerText = `Active Bays (1-${tvBayCount}) & Real-Time Allocations — ${short} Floor`;
+            const sub2 = document.getElementById('tv-slide2-sub');
+            if (sub2) sub2.innerText = `Live Queue & Turnaround Status — ${name}`;
+            const sub3 = document.getElementById('tv-slide3-sub');
+            if (sub3) sub3.innerText = `Live Turnaround Status by Work Classification — ${short} Workshop`;
         }
 
-        async function enterActiveTVMode() {
-            const isSessionActive = await checkBroadcastSession();
-            if (!isSessionActive) return;
+        // One request returns the live flag, branch, bay count and jobs (polled every 5s)
+        async function fetchTVFeed() {
+            const token = localStorage.getItem(TV_TOKEN_KEY);
+            const headers = token ? { 'X-TV-Token': token } : {};
+            let res;
+            try {
+                res = await fetch(tvApiUrl('/api/tv/feed'), { headers, credentials: 'same-origin', cache: 'no-store' });
+            } catch (e) {
+                console.warn('TV feed unreachable:', e);
+                return;
+            }
+            if (res.status === 401) {
+                stopTVFeed();
+                localStorage.removeItem(TV_TOKEN_KEY);
+                showScreen('auth');
+                const errEl = document.getElementById('auth-error-msg');
+                if (errEl && token) errEl.innerText = 'This TV was signed out because a new PIN was generated. Enter the new PIN.';
+                return;
+            }
+            if (!res.ok) return;
+            const feed = await res.json();
+            tvBayCount = Math.max(1, parseInt(feed.bayCount, 10) || 6);
+            applyBranchLabels(feed);
+            if (!feed.active) {
+                showScreen('standby');
+                return;
+            }
+            if (document.getElementById('screen-active-tv').classList.contains('hidden')) {
+                showScreen('active');
+                jumpToSlide(currentSlide);
+                playChime();
+            }
+            tvJobs = Array.isArray(feed.jobs) ? feed.jobs : [];
+            renderTVDisplay(tvJobs);
+        }
 
-            showScreen('active');
-            jumpToSlide(currentSlide);
-            playChime();
-
-            // Load data immediately
-            await fetchTVJobs();
-
-            // Start slide rotation (every 12s)
+        function startTVFeed() {
+            if (tvFeedStarted) { fetchTVFeed(); return; }
+            tvFeedStarted = true;
+            fetchTVFeed();
+            dataPollInterval = setInterval(fetchTVFeed, 5000);
             if (slideInterval) clearInterval(slideInterval);
             slideInterval = setInterval(rotateSlides, 12000);
-
-            // Start data polling (every 6s)
-            if (dataPollInterval) clearInterval(dataPollInterval);
-            dataPollInterval = setInterval(fetchTVJobs, 6000);
-
-            // Start session heartbeat (every 5s)
-            if (sessionPollInterval) clearInterval(sessionPollInterval);
-            sessionPollInterval = setInterval(async () => {
-                const active = await checkBroadcastSession();
-                if (!active) {
-                    showScreen('standby');
-                }
-            }, 5000);
         }
+
+        function stopTVFeed() {
+            tvFeedStarted = false;
+            if (dataPollInterval) { clearInterval(dataPollInterval); dataPollInterval = null; }
+            if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
+        }
+
+        // Older names kept for existing callers
+        const enterActiveTVMode = startTVFeed;
+        const fetchTVJobs = fetchTVFeed;
 
         // TV Developer Simulation Toolbar Toggle
         function toggleTVDevDrawer(force) {
@@ -904,20 +900,6 @@
             jumpToSlide(currentSlide);
         }
 
-        // Fetch TV Jobs
-        async function fetchTVJobs() {
-            try {
-                const res = await fetch(tvApiUrl('/api/jobs/tv'));
-                const jobs = await res.json();
-                if (Array.isArray(jobs)) {
-                    tvJobs = jobs;
-                    renderTVDisplay(jobs);
-                }
-            } catch (e) {
-                console.warn('Error fetching jobs for TV:', e);
-            }
-        }
-
         // Render all TV slides (Exact Match to app.js lines 8760-8980 & User Screenshot)
         function renderTVDisplay(jobs) {
             const allJobs = Array.isArray(jobs) ? jobs : [];
@@ -944,14 +926,14 @@
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
                         <div class="flex flex-col text-left">
                             <div class="flex items-center gap-2.5">
-                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                                <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200">${job.laneType || 'Flexible Lane'}</span>
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${escapeHtml(job.plate)}</span>
+                                <span class="bg-gray-100 text-gray-700 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-gray-200">${escapeHtml(job.laneType || 'Flexible Lane')}</span>
                             </div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5">${job.vehicle} · <span class="text-gray-900 font-extrabold">${job.customer || job.name || 'Customer'}</span></span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 mt-0.5">${escapeHtml(job.vehicle)} · <span class="text-gray-900 font-extrabold">${escapeHtml(job.customer || job.name || 'Customer')}</span></span>
                         </div>
                         <div class="flex flex-col items-end gap-1">
                             <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
-                                ${job.category || 'General Service'}
+                                ${escapeHtml(job.category || 'General Service')}
                             </span>
                             <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">In Reception</span>
                         </div>
@@ -968,10 +950,10 @@
                     <div class="bg-emerald-50/70 border-2 border-emerald-500 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
                         <div class="flex flex-col text-left">
                             <div class="flex items-center gap-2.5">
-                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-emerald-300">Stub: ${job.claimStub || 'N/A'}</span>
+                                <span class="text-xl lg:text-2xl font-black uppercase italic text-gray-950 tracking-tight">${escapeHtml(job.plate)}</span>
+                                <span class="bg-emerald-100 text-emerald-800 font-extrabold text-[9px] uppercase px-2 py-0.5 rounded border border-emerald-300">Stub: ${escapeHtml(job.claimStub || 'N/A')}</span>
                             </div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 mt-0.5">${job.vehicle} · <span class="font-extrabold text-emerald-950">${job.customer || job.name || 'Customer'}</span></span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 mt-0.5">${escapeHtml(job.vehicle)} · <span class="font-extrabold text-emerald-950">${escapeHtml(job.customer || job.name || 'Customer')}</span></span>
                         </div>
                         <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-lg shadow-sm">
                             Ready to Claim
@@ -988,9 +970,9 @@
                 tvAllCarry.innerHTML = carryOverAll.map(job => `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform">
                         <div class="flex flex-col text-left">
-                            <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
-                            <span class="text-xs font-extrabold uppercase tracking-wider text-gray-900 truncate max-w-[180px]">${job.vehicle}</span>
-                            <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${job.category || 'General Repair'} · SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
+                            <span class="text-base font-black uppercase italic text-gray-950 tracking-tight">${escapeHtml(job.plate)}</span>
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-gray-900 truncate max-w-[180px]">${escapeHtml(job.vehicle)}</span>
+                            <span class="text-[10px] font-bold text-gray-700 uppercase tracking-wider">${escapeHtml(job.category || 'General Repair')} · SA: <strong class="text-gray-950 font-black">${escapeHtml(job.advisor || job.saName || job.sa_name || 'SA')}</strong></span>
                         </div>
                         <span class="bg-amber-100 text-amber-950 border-2 border-amber-400 font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shrink-0">
                             Carry Over
@@ -1003,7 +985,7 @@
             // SLIDE 1: WORKSHOP BAY MONITORING (6 Active Bays)
             // =========================================================
             const tvGRS = document.getElementById('tv-grs-list');
-            const bayCount = 6;
+            const bayCount = tvBayCount;
             if (tvGRS) {
                 let baysHTML = '';
                 for (let i = 1; i <= bayCount; i++) {
@@ -1024,13 +1006,13 @@
                                     <span class="bg-red-600 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">IN SERVICE</span>
                                 </div>
                                 <div class="flex flex-col items-center my-auto text-center">
-                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${job.plate}</span>
-                                    <span class="text-sm font-black uppercase tracking-wider text-slate-900 mt-1">${job.vehicle}</span>
-                                    <span class="text-xs font-extrabold uppercase text-slate-700 mt-0.5">${job.customer || job.name || 'Customer'}</span>
+                                    <span class="text-3xl lg:text-4xl font-black uppercase italic text-slate-950 tracking-tighter">${escapeHtml(job.plate)}</span>
+                                    <span class="text-sm font-black uppercase tracking-wider text-slate-900 mt-1">${escapeHtml(job.vehicle)}</span>
+                                    <span class="text-xs font-extrabold uppercase text-slate-700 mt-0.5">${escapeHtml(job.customer || job.name || 'Customer')}</span>
                                 </div>
                                 <div class="w-full pt-2.5 border-t-2 border-slate-200 flex items-center justify-between text-xs font-black text-slate-900 uppercase">
-                                    <span>${job.category || 'General Service'}</span>
-                                    <span class="text-slate-800 font-mono text-[10px] font-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300">${job.laneType || 'FLEXIBLE'}</span>
+                                    <span>${escapeHtml(job.category || 'General Service')}</span>
+                                    <span class="text-slate-800 font-mono text-[10px] font-black bg-slate-100 px-2 py-0.5 rounded border border-slate-300">${escapeHtml(job.laneType || 'FLEXIBLE')}</span>
                                 </div>
                             </div>`;
                     } else {
@@ -1058,7 +1040,7 @@
             const renderLaneJobCard = (job) => {
                 let statusBadge = '';
                 if (job.location && (job.location.startsWith('Bay') || job.location.startsWith('Lift'))) {
-                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${job.location.replace(/^Lift/i, 'Bay')}</span>`;
+                    statusBadge = `<span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg">${escapeHtml(job.location.replace(/^Lift/i, 'Bay'))}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-sm">Ready</span>`;
                 } else if (job.status === 'Waiting') {
@@ -1069,16 +1051,16 @@
                 return `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex flex-col gap-2 shadow-2xs hover:scale-[1.01] transition-transform duration-150 text-left">
                         <div class="flex items-center justify-between">
-                            <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${job.plate}</span>
+                            <span class="text-xl font-black uppercase italic text-gray-950 tracking-tight">${escapeHtml(job.plate)}</span>
                             ${statusBadge}
                         </div>
                         <div class="flex items-center justify-between text-xs text-gray-900 font-black uppercase tracking-wider">
-                            <span class="truncate max-w-[150px]">${job.vehicle}</span>
-                            <span class="text-gray-950 font-black">${job.category || 'General'}</span>
+                            <span class="truncate max-w-[150px]">${escapeHtml(job.vehicle)}</span>
+                            <span class="text-gray-950 font-black">${escapeHtml(job.category || 'General')}</span>
                         </div>
                         <div class="flex items-center justify-between text-[10px] text-gray-700 font-bold border-t border-gray-200 pt-1.5">
-                            <span>SA: <strong class="text-gray-950 font-black">${job.advisor || job.saName || job.sa_name || 'SA'}</strong></span>
-                            <span class="font-extrabold text-gray-900">${job.arrival ? `Arrival: ${job.arrival}` : ''}</span>
+                            <span>SA: <strong class="text-gray-950 font-black">${escapeHtml(job.advisor || job.saName || job.sa_name || 'SA')}</strong></span>
+                            <span class="font-extrabold text-gray-900">${job.arrival ? `Arrival: ${escapeHtml(job.arrival)}` : ''}</span>
                         </div>
                     </div>
                 `;
@@ -1298,32 +1280,13 @@
                 }
             });
 
-            // 1. Check for URL parameter auto-login (?pin=XXXX)
-            const queryPin = urlParams.get('pin');
-            const isKiosk = urlParams.get('kiosk') === 'true';
-            if (queryPin) {
-                currentPin = queryPin;
-                updatePinDots();
-                await submitPinAuthentication(queryPin);
-                if (reqSlide !== null) {
-                    jumpToSlide(currentSlide);
-                }
-                if (isKiosk) {
-                    try {
-                        toggleFullscreen();
-                    } catch (e) {}
-                }
-                return;
-            }
-
-            // 2. Check for saved token
-            const savedPin = localStorage.getItem('hontech_tv_pin');
-            if (savedPin) {
-                currentPin = savedPin;
-                updatePinDots();
-                await submitPinAuthentication(savedPin);
-                if (reqSlide !== null) {
-                    jumpToSlide(currentSlide);
+            // REV-186: a remembered TV token or the staff browser (HDMI kiosk / in-app view) goes straight
+            // to the feed; otherwise the TV shows the PIN keypad. PINs in the URL are no longer accepted.
+            localStorage.removeItem('hontech_tv_pin');
+            if (localStorage.getItem(TV_TOKEN_KEY) || isStaffTVView) {
+                startTVFeed();
+                if (tvUrlParams.get('kiosk') === 'true') {
+                    try { toggleFullscreen(); } catch (e) {}
                 }
             } else {
                 showScreen('auth');

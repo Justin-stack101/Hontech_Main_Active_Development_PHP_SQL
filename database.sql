@@ -175,3 +175,22 @@ CREATE TABLE IF NOT EXISTS `job_audit_logs` (
     INDEX `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+-- ============================================================
+-- SMART TV MONITOR (REV-186)
+-- One broadcast session (live flag + unique 4-digit PIN) per branch,
+-- and wrong-PIN throttling per device.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `tv_sessions` (
+    `branch`      VARCHAR(50) NOT NULL PRIMARY KEY,
+    `active`      TINYINT(1) NOT NULL DEFAULT 0,
+    `pin`         VARCHAR(8) NOT NULL,
+    `updated_by`  INT NULL DEFAULT NULL,
+    `updated_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `tv_pin_attempts` (
+    `ip`          VARCHAR(64) NOT NULL PRIMARY KEY,
+    `attempts`    INT NOT NULL DEFAULT 0,
+    `first_at`    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

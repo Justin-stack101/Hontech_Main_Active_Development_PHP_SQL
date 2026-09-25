@@ -7026,7 +7026,7 @@
                     <span id="tv-hub-header-badge" class="text-xs font-mono text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200 font-medium">Offline</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-mono text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200 font-medium">Marikina Branch</span>
+                    <span id="tv-hub-branch-badge" class="text-xs font-mono text-gray-500 bg-gray-100 px-2.5 py-0.5 rounded-md border border-gray-200 font-medium">Branch</span>
                     <button onclick="closeTVBroadcastHubModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-md hover:bg-gray-100 transition cursor-pointer" title="Close (Esc)">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </button>
@@ -7135,18 +7135,6 @@
                                     </div>
                                 </div>
 
-                                <!-- 3. 1-Click Bookmark URL -->
-                                <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-1">
-                                    <span class="text-[10px] font-black uppercase tracking-wider text-gray-500 block">
-                                        Save to TV Bookmarks (Auto-Login Link):
-                                    </span>
-                                    <div class="flex items-center gap-1.5">
-                                        <input type="text" id="tv-hub-autologin-url" readonly value="http://localhost:8000/tv.html?pin=8492" class="w-full bg-white border border-gray-300 text-gray-800 font-mono text-[11px] px-2.5 py-1.5 rounded-lg outline-none select-all truncate">
-                                        <button type="button" onclick="HontechTVBroadcastManager.copyAutoLoginUrl()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition cursor-pointer shrink-0" title="Copy Auto-Login Link">
-                                            Copy
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Right: QR Code Card (1 col) -->
@@ -7171,7 +7159,7 @@
                                 </div>
                                 <div class="p-2.5 rounded-lg bg-white border border-gray-200">
                                     <strong class="text-gray-900 block mb-0.5 font-bold">2. Enter Password</strong>
-                                    Type 4-digit code using the TV remote keypad.
+                                    Type the 4-digit code once; the TV remembers it. A new code signs all TVs out.
                                 </div>
                                 <div class="p-2.5 rounded-lg bg-white border border-gray-200">
                                     <strong class="text-gray-900 block mb-0.5 font-bold">3. Fullscreen</strong>
@@ -7781,7 +7769,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.38"></script>
+    <script src="js/app.js?v=3.39"></script>
 </body>
 
 </html>

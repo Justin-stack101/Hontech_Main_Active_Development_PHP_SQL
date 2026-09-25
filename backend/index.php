@@ -21,6 +21,7 @@ use App\Controllers\StaffController;
 use App\Controllers\PasswordResetController;
 use App\Controllers\DeveloperController;
 use App\Controllers\ExpressIssueController;
+use App\Controllers\TvController;
 
 // Load environment
 Env::load();
@@ -29,7 +30,7 @@ Env::load();
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-TV-Token');
 header('Access-Control-Allow-Credentials: true');
 
 // Handle CORS preflight
@@ -133,101 +134,15 @@ if ($method === 'GET' && preg_match('#^/jobs/export-download/([^/]+)$#', $route,
     exit;
 }
 
-// Public TV Display route (real-time workshop status for TV monitors)
-if ($method === 'GET' && ($route === '/jobs/tv' || ($route === '/jobs' && (empty($_COOKIE['token']) || !empty($_GET['monitor']))))) {
-    $db = \App\Config\Database::getConnection();
-    $stmt = $db->prepare("SELECT * FROM jobs WHERE is_deleted = 0 AND status NOT IN ('Completed', 'Released') ORDER BY updated_at DESC");
-    $stmt->execute();
-    $jobs = $stmt->fetchAll();
-    $result = array_map([\App\Controllers\JobController::class, 'normalizeJob'], $jobs);
-    \App\Utils\ApiResponse::json($result);
-    exit;
-}
-
-// TV Wireless Broadcast & Session Routes (Public for Smart TV access)
-$tvSessionFile = __DIR__ . '/tv_session.json';
-
-if ($method === 'GET' && $route === '/tv/session') {
-    $session = [
-        'active'        => false,
-        'pin'           => '8492',
-        'branch'        => 'Marikina Main Branch',
-        'updated_at'    => date('Y-m-d H:i:s')
-    ];
-    if (file_exists($tvSessionFile)) {
-        $saved = json_decode(file_get_contents($tvSessionFile), true);
-        if (is_array($saved)) {
-            $session = array_merge($session, $saved);
-        }
-    }
-    \App\Utils\ApiResponse::json($session);
-    exit;
-}
-
-if ($method === 'POST' && $route === '/tv/session') {
-    $input = json_decode(file_get_contents('php://input'), true) ?? [];
-    $session = [
-        'active'        => false,
-        'pin'           => '8492',
-        'branch'        => 'Marikina Main Branch',
-        'updated_at'    => date('Y-m-d H:i:s')
-    ];
-    if (file_exists($tvSessionFile)) {
-        $saved = json_decode(file_get_contents($tvSessionFile), true);
-        if (is_array($saved)) {
-            $session = array_merge($session, $saved);
-        }
-    }
-
-    if (isset($input['active'])) {
-        $session['active'] = (bool)$input['active'];
-    }
-    if (!empty($input['pin'])) {
-        $cleanPin = preg_replace('/\D/', '', substr((string)$input['pin'], 0, 8));
-        if (!empty($cleanPin)) {
-            $session['pin'] = $cleanPin;
-        }
-    } elseif (!empty($input['generate_pin'])) {
-        $session['pin'] = str_pad((string)random_int(1000, 9999), 4, '0', STR_PAD_LEFT);
-    }
-    $session['updated_at'] = date('Y-m-d H:i:s');
-    file_put_contents($tvSessionFile, json_encode($session, JSON_PRETTY_PRINT));
-    \App\Utils\ApiResponse::json(['message' => 'TV broadcast session updated.', 'session' => $session]);
-    exit;
-}
-
+// Public Smart TV routes (REV-186): the TV unlocks with its branch PIN and reads a branch-scoped,
+// PII-masked feed with the returned token (or as logged-in staff for the HDMI kiosk / in-app view).
+// Session control (start / stop / new PIN) is a protected route below.
 if ($method === 'POST' && $route === '/tv/verify-pin') {
-    $input = json_decode(file_get_contents('php://input'), true) ?? [];
-    $submittedPin = trim((string)($input['pin'] ?? ''));
-
-    $session = [
-        'active'        => false,
-        'pin'           => '8492',
-        'branch'        => 'Marikina Main Branch'
-    ];
-    if (file_exists($tvSessionFile)) {
-        $saved = json_decode(file_get_contents($tvSessionFile), true);
-        if (is_array($saved)) {
-            $session = array_merge($session, $saved);
-        }
-    }
-
-    if (!$session['active']) {
-        \App\Utils\ApiResponse::badRequest('TV Broadcast is currently inactive. Please ask workshop staff to activate the TV broadcast.');
-        exit;
-    }
-
-    if ($submittedPin === (string)$session['pin']) {
-        $token = hash('sha256', $session['pin'] . ($session['updated_at'] ?? ''));
-        \App\Utils\ApiResponse::json([
-            'valid'     => true,
-            'message'   => 'TV Access PIN verified successfully.',
-            'token'     => $token,
-            'branch'    => $session['branch']
-        ]);
-    } else {
-        \App\Utils\ApiResponse::unauthorized('Invalid TV Access PIN. Please enter the correct 4-digit PIN provided by staff.');
-    }
+    TvController::verifyPin();
+    exit;
+}
+if ($method === 'GET' && ($route === '/tv/feed' || $route === '/jobs/tv')) {
+    TvController::feed();
     exit;
 }
 
@@ -336,6 +251,17 @@ if ($method === 'PATCH' && preg_match('#^/auth/staff/(\d+)/branch$#', $route, $m
 if ($method === 'PUT' && preg_match('#^/auth/staff/(\d+)/edit$#', $route, $m)) {
     if (!Auth::requireRole(['owner', 'admin'])) exit;
     AuthController::editStaff($m[1]);
+    exit;
+}
+
+// --- Smart TV session control (REV-186): staff read their branch session; SA / Assistant control it ---
+if ($method === 'GET' && $route === '/tv/session') {
+    TvController::getSessionForStaff();
+    exit;
+}
+if ($method === 'POST' && $route === '/tv/session') {
+    if (!Auth::requireRole(['sa', 'assistant'])) exit;
+    TvController::updateSession();
     exit;
 }
 

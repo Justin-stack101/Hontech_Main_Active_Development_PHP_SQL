@@ -43,3 +43,6 @@ storage/
 scratch/
 tunnel_out.txt
 cloudflared.exe
+
+# Runtime state (REV-186: TV sessions live in the tv_sessions table)
+backend/tv_session.json

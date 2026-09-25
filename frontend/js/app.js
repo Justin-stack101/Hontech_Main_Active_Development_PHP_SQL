@@ -8187,10 +8187,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // WIRELESS SMART TV BROADCAST HUB (HDMI-Free TV Access via Link & PIN)
         // =========================================================================
         const HontechTVBroadcastManager = {
+            // REV-186: per-branch session from the server (PIN only visible to SA / Assistant)
             session: {
-                active: true,
-                pin: '8492',
-                branch: 'Marikina Main Branch'
+                active: false,
+                pin: '',
+                branch: '',
+                branchName: ''
             },
             async loadSession() {
                 try {
@@ -8262,7 +8264,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (res && res.session) {
                         this.session = res.session;
                         this.updateUI();
-                        showSystemToast(`New TV Access PIN generated: ${this.session.pin}`, 'success', 'TV Broadcast PIN');
+                        showSystemToast(`New TV Access PIN: ${this.session.pin}. TVs using the old PIN were signed out and must enter the new PIN.`, 'success', 'TV Broadcast PIN');
                     }
                 } catch (e) {
                     showSystemToast('Error regenerating TV PIN.', 'error');
@@ -8276,11 +8278,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const path = window.location.pathname;
                 const root = path.includes('/frontend') ? path.substring(0, path.lastIndexOf('/frontend')) : path.replace(/\/[^/]*$/, '');
                 const directUrl = `${protocol}//${host}${port}${root}/frontend/tv.html`;
-                const autoLoginUrl = `${directUrl}?pin=${this.session.pin || '8492'}`;
-                return { directUrl, autoLoginUrl };
+                // REV-186: no PIN in links; the HDMI kiosk runs in this staff browser and needs no PIN
+                const kioskUrl = `${directUrl}?kiosk=true`;
+                return { directUrl, kioskUrl };
             },
             updateUI() {
-                const { directUrl, autoLoginUrl } = this.getTVUrls();
+                const { directUrl } = this.getTVUrls();
+
+                const branchBadge = document.getElementById('tv-hub-branch-badge');
+                if (branchBadge && this.session.branchName) branchBadge.innerText = this.session.branchName;
 
                 // 1. Two-State Display: Offline vs Live
                 const offlineStateEl = document.getElementById('tv-hub-state-offline');
@@ -8333,18 +8339,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (displayUrlInput) displayUrlInput.value = directUrl;
 
                 const displayPinEl = document.getElementById('tv-hub-display-pin');
-                if (displayPinEl) displayPinEl.innerText = this.session.pin || '8492';
-
-                const autologinUrlInput = document.getElementById('tv-hub-autologin-url');
-                if (autologinUrlInput) autologinUrlInput.value = autoLoginUrl;
+                if (displayPinEl) displayPinEl.innerText = this.session.pin || '----';
 
                 const openTabBtn = document.getElementById('tv-hub-open-tab-btn');
-                if (openTabBtn) openTabBtn.href = autoLoginUrl;
+                if (openTabBtn) openTabBtn.href = directUrl;
 
-                // 4. Update QR Code
+                // 4. QR code of the plain TV link (never the PIN)
                 const qrImg = document.getElementById('tv-hub-qr-img');
                 if (qrImg) {
-                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(autoLoginUrl)}`;
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(directUrl)}`;
                 }
 
                 if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -8359,17 +8362,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     showSystemToast(directUrl, 'info', 'TV Link');
                 });
             },
-            copyAutoLoginUrl() {
-                const { autoLoginUrl } = this.getTVUrls();
-                navigator.clipboard?.writeText(autoLoginUrl).then(() => {
-                    showSystemToast('Auto-login TV link copied! Bookmark this on your Smart TV.', 'success', 'TV Broadcast Hub');
-                }).catch(() => {
-                    showSystemToast(autoLoginUrl, 'info', 'TV Auto-Login Link');
-                });
-            },
             launchDirectKiosk() {
-                const { autoLoginUrl } = this.getTVUrls();
-                window.open(autoLoginUrl, '_blank');
+                const { directUrl } = this.getTVUrls();
+                window.open(directUrl, '_blank');
             },
             async launchHDMIKiosk() {
                 try {
@@ -8384,9 +8379,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             this.updateUI();
                         }
                     }
-                    const { autoLoginUrl } = this.getTVUrls();
-                    const hdmiUrl = `${autoLoginUrl}&kiosk=true`;
-                    window.open(hdmiUrl, '_blank');
+                    const { kioskUrl } = this.getTVUrls();
+                    window.open(kioskUrl, '_blank');
                     showSystemToast('📺 HDMI Cinema Kiosk opened. Drag window to TV screen and press F11!', 'success', 'HDMI Output');
                 } catch (e) {
                     showSystemToast('Error opening HDMI kiosk.', 'error');

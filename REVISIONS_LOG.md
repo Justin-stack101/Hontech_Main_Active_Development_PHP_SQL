@@ -1,3 +1,27 @@
+## 📅 September 25, 2026 (TV Monitor Phases 2-3: Security, Privacy & Branch Isolation)
+
+### 📺 TV Monitor Phases 2-3: Secure Per-Branch Broadcast, Masked Names (REV-186)
+* **Objective & Context**: Phases 2 and 3 of plan HONTECH-PLAN-TV-MONITOR-2026-V1.0, done together because the TV token must carry the branch. Approved decisions: only SA and Assistant control the broadcast; names masked ("Juan D.") with plate and model; one session and PIN per branch; the TV remembers its access after the PIN is entered once and no PIN appears in URLs.
+* **Root Cause (verified before the change)**: `GET /api/tv/session` returned the PIN to anyone; `POST /api/tv/session` (start / stop / new PIN) needed no login; `/api/jobs/tv` and a no-cookie `GET /api/jobs` returned 39 jobs of both branches with full names and phone numbers, including 7 Pending online bookings, and the PIN token was never checked; one session (a JSON file tracked in git) served both branches; bays were fixed at 6; job values were inserted into the TV page unescaped.
+* **Core Changes Made**:
+  - `backend/controllers/TvController.php` (new): `tv_sessions` (branch, live flag, unique PIN) and `tv_pin_attempts` tables (created by `backend/migration.php`, `database.sql`, and on first use). `POST /tv/verify-pin` exchanges a PIN for a branch-scoped token (HMAC of branch + PIN), throttled to 5 wrong PINs per 10 minutes per device. `GET /tv/feed` (also `/jobs/tv`) accepts that token or a logged-in staff cookie (HDMI kiosk / in-app view) and returns the branch's live flag, name, bay count (branch bay settings) and arrived vehicles only (no Pending / Completed / Released) with only the fields the TV shows and the customer name masked. Pausing gives the TV a standby state without job data; a new PIN signs out every TV of the branch.
+  - `backend/index.php`: removed the public job list, the public session routes and the no-cookie `GET /jobs` fallback; `GET /tv/session` (staff; PIN only for SA / Assistant) and `POST /tv/session` (SA / Assistant) are protected; `X-TV-Token` allowed in CORS.
+  - `backend/tv_session.json`: removed from git and ignored (sessions live in the database).
+  - `frontend/tv.html`: PIN keypad -> token remembered on the TV (no `?pin=` auto-login, PIN never stored); one 5-second feed poll drives live / standby / signed-out; branch name and bay count from the feed; every job value escaped.
+  - `frontend/js/app.js` / `index.html` (TV Broadcast Hub): per-branch session and live branch badge; no auto-login links or PIN in the QR code; the HDMI kiosk opens `tv.html?kiosk=true` in the staff browser (no PIN); new PIN warns that TVs are signed out.
+  - `frontend/index.html`: Incremented cache buster to v=3.39.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-145; added v=3.39 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-62 test row.
+  - `Revisions checklist.csv`: Appended REV-186 row.
+* **Automated & Manual QA Verification**:
+  - 174 automated unit tests passing (`npm test`).
+  - Live API checks on XAMPP with real logins, 26/26: no-login session read / control, TV feed and `GET /jobs` rejected (401); SAs of both branches control their own sessions with different PINs; Owner cannot control (403) and never sees the PIN; PIN -> token -> Marikina-only feed without Pending / Completed / Released, without phone / address / full name, masked names, bay count; Regalado token sees only Regalado; swapped-branch token rejected; pause -> standby without data, resume without PIN; new PIN -> old token 401; 5 wrong PINs -> 429; logged-in SA reads own branch without PIN.
+  - Real-time headless Chrome end-to-end on XAMPP, 9/9: fresh TV shows the keypad and ignores `?pin=`; PIN typed on the keypad -> Marikina board with the branch bay count and masked names (previously a Regalado car appeared in Marikina Bay 1); pause -> standby within one poll; resume and reload -> live without PIN; new PIN -> signed out with an explanation; HDMI kiosk in a logged-in Regalado SA browser -> Regalado board without PIN. Both branch sessions left paused afterwards.
+* **Cache Busting**: `js/app.js?v=3.39`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Phase 1: Smart TV Page Loads on XAMPP)
 
 ### 📺 TV Monitor Phase 1: Smart TV Page Loads on XAMPP and Offline (REV-185)

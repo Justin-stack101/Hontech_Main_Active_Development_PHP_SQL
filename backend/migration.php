@@ -146,6 +146,10 @@ try {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
     echo "SUCCESS: `branch_bay_settings` table verified/created.\n";
 
+    // 6. REV-186: Smart TV per-branch broadcast sessions and PIN attempt throttling
+    \App\Controllers\TvController::ensureTables($db);
+    echo "SUCCESS: `tv_sessions` and `tv_pin_attempts` tables verified/created.\n";
+
     echo "SUCCESS: Migration completed successfully!\n";
 
 } catch (Exception $e) {
