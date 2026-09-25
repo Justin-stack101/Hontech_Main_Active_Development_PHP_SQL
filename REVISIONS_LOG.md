@@ -15,7 +15,7 @@
   - Server checks 6/6 on XAMPP (real Open-Meteo): Marikina reading fetched (26°C drizzle, feels like 33°, 89%) in 1.6 s; second request served from cache; Regalado reading at its own pin (26°C thunderstorm); service unreachable -> last reading marked stale; no reading -> unavailable. `GET /tv/weather` without token -> 401.
   - Real-time headless Chrome 7/7: Marikina and Regalado TVs (PIN) show their real temperature, condition, feels like and humidity; "As of 2:40 PM", "Weather unavailable" and "Rain likely by 11:00 PM (70%)" states render correctly. Screenshots checked.
 * **Cache Busting**: `js/app.js?v=3.43`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `3df762d` pushed to `origin/prototype_process`.
 
 ---
 
