@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Print Buttons Removed from PDF Views)
+
+### 🖥️ RO Excel Studio: Print Buttons Removed from the PDF Toolbar and Full PDF Viewers (REV-183)
+* **Objective & Context**: The user asked to remove the "Print Form 1/3" button shown while viewing the PDF (normal / maximized studio view and Full PDF), because the PDF viewer already has its own print button.
+* **Core Changes Made**:
+  - `frontend/index.html`: Removed "Print Form 1/3" from the Job_Order studio PDF toolbar, and the "Print Form 1/3" and "Print Checklist" buttons from the Job Order and Checklist Full PDF viewer headers (the other toolbars and viewers had none). The print icon in the studio top tab bar is unchanged; `printForm13()` / `printChecklist()` still exist.
+  - `frontend/index.html`: Incremented cache buster to v=3.36.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-142; added v=3.36 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-59 test row.
+  - `Revisions checklist.csv`: Appended REV-183 row.
+* **Automated & Manual QA Verification**:
+  - 171 automated unit tests passing (`npm test`).
+  - Headless Chrome render of the Job_Order toolbar and the Job Order / Checklist viewer headers: no Print button, other controls intact.
+* **Cache Busting**: `js/app.js?v=3.36`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Document Arrows in the Studio PDF View & Full PDF Viewer)
 
 ### 🗂️ RO Excel Studio: Previous / Next Document Arrows (REV-182)
