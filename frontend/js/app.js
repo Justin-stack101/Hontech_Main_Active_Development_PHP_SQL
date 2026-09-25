@@ -15200,6 +15200,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function getActiveStudioSheet() {
             if (window.currentFormStudioActiveSheet) return window.currentFormStudioActiveSheet;
+            if (document.getElementById('view-sheet-monitoring') && !document.getElementById('view-sheet-monitoring').classList.contains('hidden')) return 'monitoring';
             if (document.getElementById('view-sheet-checklist') && !document.getElementById('view-sheet-checklist').classList.contains('hidden')) return 'checklist';
             if (document.getElementById('view-sheet-billing') && !document.getElementById('view-sheet-billing').classList.contains('hidden')) return 'billing';
             if (document.getElementById('view-sheet-quote') && !document.getElementById('view-sheet-quote').classList.contains('hidden')) return 'quote';
@@ -15651,7 +15652,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 { id: 'tab-sheet-joborder', topId: 'tab-top-joborder', key: 'form13', view: 'view-sheet-form13' },
                 { id: 'tab-sheet-quote', topId: 'tab-top-quote', key: 'form23', view: 'view-sheet-quote' },
                 { id: 'tab-sheet-billing', topId: 'tab-top-billing', key: 'billing', view: 'view-sheet-billing' },
-                { id: 'tab-sheet-checklist', topId: 'tab-top-checklist', key: 'checklist', view: 'view-sheet-checklist' }
+                { id: 'tab-sheet-checklist', topId: 'tab-top-checklist', key: 'checklist', view: 'view-sheet-checklist' },
+                { id: 'tab-sheet-monitoring', topId: 'tab-top-monitoring', key: 'monitoring', view: 'view-sheet-monitoring' }
             ];
 
             const activeClass = 'px-3.5 py-1.5 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
@@ -15717,6 +15719,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncForm13Canvas();
                 calcForm13Totals();
                 generateForm13PDF(false);
+            } else if (sheetKey === 'monitoring') {
+                renderMonitoringIntakeSummary();
             }
 
             if (typeof lucide !== 'undefined' && lucide.createIcons) {
@@ -15731,6 +15735,56 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
         window.switchFormStudioSheet = switchFormStudioSheet;
+
+        // Workshop_Monitoring tab (REV-173): live preview of the Daily Intakes entry that
+        // registerStudioROToSystem() creates from the Job_Order and Workshop Monitoring fields
+        function renderMonitoringIntakeSummary() {
+            const field = id => {
+                const el = document.getElementById(id);
+                if (!el) return '';
+                if (el.tagName === 'SELECT') return (el.selectedOptions[0]?.text || el.value || '').trim();
+                return (el.value || '').trim();
+            };
+            const rows = {
+                'mon-sum-job-no': 'f13-input-job-no', 'mon-sum-name': 'f13-input-name', 'mon-sum-plate': 'f13-input-plate',
+                'mon-sum-model': 'f13-input-model', 'mon-sum-category': 'f13-input-category', 'mon-sum-sa': 'f13-input-sa',
+                'mon-sum-claim-stub': 'f13-input-claim-stub', 'mon-sum-arrival': 'f13-input-arrival-time', 'mon-sum-branch': 'f13-input-target-branch',
+                'mon-sum-source': 'f13-input-source', 'mon-sum-lane': 'f13-input-lane-type', 'mon-sum-bay': 'f13-input-bay-location',
+                'mon-sum-parts': 'f13-input-parts-status', 'mon-sum-status': 'f13-input-status', 'mon-sum-carry-over': 'f13-input-carry-over'
+            };
+            Object.entries(rows).forEach(([outId, inId]) => {
+                const out = document.getElementById(outId);
+                if (!out) return;
+                const val = field(inId);
+                out.textContent = inId === 'f13-input-plate' ? val.toUpperCase() || '—' : val || '—';
+                out.classList.toggle('text-gray-400', !val);
+                out.classList.toggle('text-gray-900', !!val);
+            });
+
+            const missing = [];
+            if (!field('f13-input-plate')) missing.push('Plate Number');
+            if (!field('f13-input-name')) missing.push('Customer Name');
+            const ready = document.getElementById('mon-sum-ready');
+            if (ready) {
+                ready.textContent = missing.length ? 'Incomplete' : 'Ready to register';
+                ready.className = 'px-1.5 py-0.5 rounded border text-[10px] font-medium shrink-0 ' +
+                    (missing.length ? 'border-gray-300 text-gray-500' : 'border-emerald-300 text-emerald-700 bg-emerald-50');
+            }
+            const note = document.getElementById('mon-sum-missing');
+            if (note) {
+                note.textContent = missing.length
+                    ? `${missing.join(' and ')} ${missing.length > 1 ? 'are' : 'is'} required on the Job_Order tab before registering.`
+                    : 'Register Repair Order sends this entry to Daily Intakes, the Floor Queue and the TV Monitor.';
+            }
+        }
+        window.renderMonitoringIntakeSummary = renderMonitoringIntakeSummary;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const view = document.getElementById('view-sheet-monitoring');
+            if (!view) return;
+            ['input', 'change'].forEach(evt => view.addEventListener(evt, renderMonitoringIntakeSummary));
+            renderMonitoringIntakeSummary();
+        });
 
         function syncJobOrderFieldsToQuote() {
             const getVal = id => (document.getElementById(id)?.value || '').trim();

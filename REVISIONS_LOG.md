@@ -1,3 +1,23 @@
+## 📅 September 25, 2026 (Workshop_Monitoring Studio Tab)
+
+### 🗂️ RO Excel Studio: New Workshop_Monitoring Tab for Daily Intakes Entry (REV-173)
+* **Objective & Context**: The user asked for another tab next to Job_Order, Quotation_No, Billing_No and CheckList_Result for the online monitoring part: the Workshop Monitoring & Daily Intakes data that is entered for the Daily Intakes queue.
+* **Core Changes Made**:
+  - `frontend/index.html`: Added a fifth tab button `Workshop_Monitoring` (after CheckList_Result, same Google-Sheets tab style) and a new view `#view-sheet-monitoring`. The Workshop Monitoring & Daily Intakes card (Claim Stub, Arrival Time, Branch, Intake Source, Lane, Bay, Parts, Floor Status, Carry-Over and the Register Repair Order button) moved there from the Job_Order tab with every field id unchanged, so `registerStudioROToSystem()`, the prefill and the draft save keep working.
+  - `frontend/index.html`: New "Daily Intakes Entry Preview" panel beside the card, in the neutral CheckList style: the Job_Order values that go into the entry (Job Order No., Customer, Plate, Vehicle, Service Category, Service Advisor) with an "Edit on Job_Order" link, the Workshop Monitoring values, and a Ready / Incomplete badge using the same Plate Number and Customer Name requirement as Register RO.
+  - `frontend/js/app.js`: `switchFormStudioSheet()` knows the `monitoring` tab; `getActiveStudioSheet()` reports it; new `renderMonitoringIntakeSummary()` refreshes the preview when the tab opens and on every edit in the tab.
+  - `frontend/index.html`: Incremented cache buster to v=3.26.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-132; AUT-FRONT-80 accepts the card on its own tab; AUT-FRONT-130 counts the Job_Order bands without the moved card; added v=3.26 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-49 test row.
+  - `Revisions checklist.csv`: Appended REV-173 row.
+* **Automated & Manual QA Verification**:
+  - 161 automated unit tests passing (`npm test`).
+  - Headless Chrome: the real `switchFormStudioSheet('monitoring')` shows only the new view, highlights its tab and `getActiveStudioSheet()` returns `monitoring`; the card is no longer on Job_Order. Screenshots with empty and filled data show the preview values and the Incomplete / Ready badge.
+* **Cache Busting**: `js/app.js?v=3.26`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Neutral Studio Section Header Bands)
 
 ### 🎨 RO Excel Studio: Neutral CheckList-Style Section Header Bands (REV-172)

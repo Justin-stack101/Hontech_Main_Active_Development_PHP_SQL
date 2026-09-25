@@ -2616,7 +2616,7 @@
 
             <!-- FORM 1/3 INTERACTIVE JOB ORDER STUDIO & LIVE PDF SYNCHRONIZER (PROTOTYPE) -->
             <div id="section-form13" class="section-content hidden fade-in py-1">
-                <!-- AUTHENTIC 2025 RO EXCEL WORKBOOK TOP TAB BAR (Strictly 4 Core SA Sheets) -->
+                <!-- AUTHENTIC 2025 RO EXCEL WORKBOOK TOP TAB BAR (4 Core SA Sheets + Workshop_Monitoring) -->
                 <div id="form-top-tab-bar" class="sticky top-0 z-30 bg-[#f8f9fa] border border-[#dadce0] px-3 py-1.5 flex flex-wrap items-center justify-between gap-3 shadow-xs mb-4 select-none font-sans rounded-xl backdrop-blur-md">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth">
                         <!-- Tab 1: Job_Order -->
@@ -2634,6 +2634,10 @@
                         <!-- Tab 4: CheckList_Result -->
                         <button type="button" id="tab-top-checklist" onclick="switchFormStudioSheet('checklist')" class="px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
                             <span>CheckList_Result</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
+                        </button>
+                        <!-- Tab 5: Workshop_Monitoring (Workshop Monitoring & Daily Intakes online entry, not a workbook sheet) -->
+                        <button type="button" id="tab-top-monitoring" onclick="switchFormStudioSheet('monitoring')" title="Workshop Monitoring & Daily Intakes" class="px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
+                            <span>Workshop_Monitoring</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
                         </button>
                     </div>
 
@@ -2690,152 +2694,6 @@
                             </div>
                         </div>
                         
-                        <!-- WORKSHOP MONITORING & DAILY INTAKES DISPATCH DOSSIER CARD (STEP 1) -->
-                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 space-y-4">
-                            <!-- Card Header Bar -->
-                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="min-w-0">
-                                        <div class="flex items-center gap-2 flex-wrap">
-                                            <h3 class="text-sm font-semibold text-gray-900">Workshop Monitoring & Daily Intakes</h3>
-                                        </div>
-                                        <p class="text-[11px] text-gray-500 font-medium truncate">Configure vehicle dispatch parameters for daily monitoring</p>
-                                    </div>
-                                </div>
-                                <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Auto-Prefilled</span>
-                            </div>
-
-                            <!-- Form Grid: Ergonomic 2-Column Layout with Full Option Visibility -->
-                            <div class="space-y-3.5">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                                    <!-- Row 1: Claim Stub & Arrival Time (Auto-filled / Stamped) -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026J1" 
-                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase" title="Customer Claim Stub identifier for Floor Queue">
-                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
-                                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Arrival Time (Clock In) <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" title="Vehicle Arrival Timestamp (Clock In)">
-                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
-                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Row 2: Target Branch & Intake Source -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
-                                            <option value="East Branch">Regalado Branch</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Intake Source
-                                        </label>
-                                        <select id="f13-input-source" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Walk-in" selected>Walk-in Customer</option>
-                                            <option value="Online">Online Booking Inquiry</option>
-                                            <option value="Returning">Returning / Repeat Customer</option>
-                                            <option value="Fleet">Fleet Account</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Row 3: Lane Classification & Bay Location -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Lane Classification <span class="text-red-500 ml-0.5">*</span>
-                                        </label>
-                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Flexible Lane" selected>Flexible Lane</option>
-                                            <option value="Express Lane">Express Lane (60m SLA)</option>
-                                            <option value="PMS & GRS Lane">PMS & GRS Lane</option>
-                                            <option value="Regular Lane">Regular Lane</option>
-                                            <option value="Priority Lane">Priority Lane</option>
-                                            <option value="Special Lane">Special Lane</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Workshop Bay Location
-                                        </label>
-                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="None" selected>None (Unallocated / Staging)</option>
-                                            <option value="Bay 1">Bay 1 (2-Post Lift)</option>
-                                            <option value="Bay 2">Bay 2 (2-Post Lift)</option>
-                                            <option value="Bay 3">Bay 3 (2-Post Lift)</option>
-                                            <option value="Bay 4">Bay 4 (4-Post Lift)</option>
-                                            <option value="Bay 5">Bay 5 (Scissor Lift)</option>
-                                            <option value="Bay 6 (Alignment)">Bay 6 (Wheel Alignment)</option>
-                                            <option value="Inspection Bay">Inspection / Diagnostic Bay</option>
-                                            <option value="Washing Bay">Car Wash & Detailing Bay</option>
-                                            <option value="Parking / Staging">Staging / Parking Slot</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Row 4: Parts Stock & Initial Floor Status -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Parts Availability
-                                        </label>
-                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Yes" selected>Yes — In Stock</option>
-                                            <option value="Pending Supplier Courier">Pending Supplier Courier</option>
-                                            <option value="Special Order">Special Order Required</option>
-                                            <option value="Customer Supplied">Customer Supplied Parts</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Initial Floor Status
-                                        </label>
-                                        <select id="f13-input-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="Waiting" selected>Waiting (In Queue)</option>
-                                            <option value="Processing">Processing (In Service)</option>
-                                            <option value="Pending Parts">Pending Parts</option>
-                                            <option value="Quality Control">Quality Control</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Row 5: Carry-Over (C.O.) & Quick Dispatch Note -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Carry-Over (C.O.)
-                                        </label>
-                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="No" selected>No (Standard Same-Day Job)</option>
-                                            <option value="Yes">Yes (Overnight Carry-Over)</option>
-                                        </select>
-                                    </div>
-                                    <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-md text-[11px] text-slate-500 mt-auto">
-                                        <i data-lucide="shield-check" class="w-4 h-4 text-gray-400 shrink-0"></i>
-                                        <span>Auto-syncs Floor Queue, TV Monitor, and MySQL database.</span>
-                                    </div>
-                                </div>
-
-                                <!-- Integrated Register RO to System Button (Prominent Action Bar) -->
-                                <div class="pt-1.5">
-                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 px-4 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
-                                        <i data-lucide="save" class="w-4 h-4"></i> Register Repair Order to System
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                         
                         <!-- Studio Header & Quick Preset Bar -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
@@ -3800,6 +3658,244 @@
                     </div>
                     </div>
                 </div>
+
+            <!-- =========================================================================
+                 SHEET VIEW 5: Workshop_Monitoring (Workshop Monitoring & Daily Intakes online entry)
+                 Dispatch fields for the Daily Intakes queue, Floor Queue and TV Monitor.
+                 ========================================================================= -->
+            <div id="view-sheet-monitoring" class="space-y-4 hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+                    <div id="monitoring-editor-pane" class="xl:col-span-7 space-y-4">
+                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 space-y-4">
+                            <!-- Card Header Bar -->
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <h3 class="text-sm font-semibold text-gray-900">Workshop Monitoring & Daily Intakes</h3>
+                                        </div>
+                                        <p class="text-[11px] text-gray-500 font-medium truncate">Configure vehicle dispatch parameters for daily monitoring</p>
+                                    </div>
+                                </div>
+                                <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Auto-Prefilled</span>
+                            </div>
+
+                            <!-- Form Grid: Ergonomic 2-Column Layout with Full Option Visibility -->
+                            <div class="space-y-3.5">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                                    <!-- Row 1: Claim Stub & Arrival Time (Auto-filled / Stamped) -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026J1" 
+                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase" title="Customer Claim Stub identifier for Floor Queue">
+                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
+                                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Arrival Time (Clock In) <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <div class="relative">
+                                            <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
+                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" title="Vehicle Arrival Timestamp (Clock In)">
+                                            <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
+                                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Row 2: Target Branch & Intake Source -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Target Branch <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="Marikina Branch" selected>Marikina Main Branch</option>
+                                            <option value="East Branch">Regalado Branch</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Intake Source
+                                        </label>
+                                        <select id="f13-input-source" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="Walk-in" selected>Walk-in Customer</option>
+                                            <option value="Online">Online Booking Inquiry</option>
+                                            <option value="Returning">Returning / Repeat Customer</option>
+                                            <option value="Fleet">Fleet Account</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Row 3: Lane Classification & Bay Location -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Lane Classification <span class="text-red-500 ml-0.5">*</span>
+                                        </label>
+                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="Flexible Lane" selected>Flexible Lane</option>
+                                            <option value="Express Lane">Express Lane (60m SLA)</option>
+                                            <option value="PMS & GRS Lane">PMS & GRS Lane</option>
+                                            <option value="Regular Lane">Regular Lane</option>
+                                            <option value="Priority Lane">Priority Lane</option>
+                                            <option value="Special Lane">Special Lane</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Workshop Bay Location
+                                        </label>
+                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="None" selected>None (Unallocated / Staging)</option>
+                                            <option value="Bay 1">Bay 1 (2-Post Lift)</option>
+                                            <option value="Bay 2">Bay 2 (2-Post Lift)</option>
+                                            <option value="Bay 3">Bay 3 (2-Post Lift)</option>
+                                            <option value="Bay 4">Bay 4 (4-Post Lift)</option>
+                                            <option value="Bay 5">Bay 5 (Scissor Lift)</option>
+                                            <option value="Bay 6 (Alignment)">Bay 6 (Wheel Alignment)</option>
+                                            <option value="Inspection Bay">Inspection / Diagnostic Bay</option>
+                                            <option value="Washing Bay">Car Wash & Detailing Bay</option>
+                                            <option value="Parking / Staging">Staging / Parking Slot</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Row 4: Parts Stock & Initial Floor Status -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Parts Availability
+                                        </label>
+                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="Yes" selected>Yes — In Stock</option>
+                                            <option value="Pending Supplier Courier">Pending Supplier Courier</option>
+                                            <option value="Special Order">Special Order Required</option>
+                                            <option value="Customer Supplied">Customer Supplied Parts</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Initial Floor Status
+                                        </label>
+                                        <select id="f13-input-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="Waiting" selected>Waiting (In Queue)</option>
+                                            <option value="Processing">Processing (In Service)</option>
+                                            <option value="Pending Parts">Pending Parts</option>
+                                            <option value="Quality Control">Quality Control</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Row 5: Carry-Over (C.O.) & Quick Dispatch Note -->
+                                    <div>
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
+                                            Carry-Over (C.O.)
+                                        </label>
+                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
+                                            <option value="No" selected>No (Standard Same-Day Job)</option>
+                                            <option value="Yes">Yes (Overnight Carry-Over)</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-md text-[11px] text-slate-500 mt-auto">
+                                        <i data-lucide="shield-check" class="w-4 h-4 text-gray-400 shrink-0"></i>
+                                        <span>Auto-syncs Floor Queue, TV Monitor, and MySQL database.</span>
+                                    </div>
+                                </div>
+
+                                <!-- Integrated Register RO to System Button (Prominent Action Bar) -->
+                                <div class="pt-1.5">
+                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 px-4 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
+                                        <i data-lucide="save" class="w-4 h-4"></i> Register Repair Order to System
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN: live preview of the Daily Intakes entry that Register RO will create -->
+                    <div id="monitoring-summary-pane" class="xl:col-span-5 space-y-4 xl:sticky xl:top-14 xl:self-start">
+                        <section class="bg-white border border-gray-200 rounded-lg">
+                            <div class="studio-section-head studio-section-head--inset flex items-center justify-between">
+                                <h3 class="text-[11px] font-semibold uppercase tracking-wide">Daily Intakes Entry Preview</h3>
+                                <span id="mon-sum-ready" class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Incomplete</span>
+                            </div>
+                            <div class="px-5 py-3 text-xs">
+                                <div class="flex items-center justify-between pb-1">
+                                    <p class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">From Job_Order</p>
+                                    <button type="button" onclick="switchFormStudioSheet('form13')" class="text-[11px] font-medium text-gray-700 hover:text-gray-900 underline underline-offset-2 cursor-pointer">Edit on Job_Order</button>
+                                </div>
+                                <dl class="divide-y divide-gray-100">
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Job Order No.</dt>
+                                    <dd id="mon-sum-job-no" class="font-mono text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Customer</dt>
+                                    <dd id="mon-sum-name" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Plate Number</dt>
+                                    <dd id="mon-sum-plate" class="font-mono text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Vehicle</dt>
+                                    <dd id="mon-sum-model" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Service Category</dt>
+                                    <dd id="mon-sum-category" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Service Advisor</dt>
+                                    <dd id="mon-sum-sa" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                </dl>
+                                <p class="pt-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-gray-500 border-t border-gray-200 mt-1">Workshop Monitoring</p>
+                                <dl class="divide-y divide-gray-100">
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Claim Stub ID</dt>
+                                    <dd id="mon-sum-claim-stub" class="font-mono text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Arrival Time</dt>
+                                    <dd id="mon-sum-arrival" class="font-mono text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Branch</dt>
+                                    <dd id="mon-sum-branch" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Intake Source</dt>
+                                    <dd id="mon-sum-source" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Lane</dt>
+                                    <dd id="mon-sum-lane" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Bay</dt>
+                                    <dd id="mon-sum-bay" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Parts</dt>
+                                    <dd id="mon-sum-parts" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Floor Status</dt>
+                                    <dd id="mon-sum-status" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                <div class="flex items-center justify-between gap-3 py-2">
+                                    <dt class="text-gray-500">Carry-Over</dt>
+                                    <dd id="mon-sum-carry-over" class="text-right font-medium text-gray-900 truncate">—</dd>
+                                </div>
+                                </dl>
+                                <p id="mon-sum-missing" class="mt-3 text-[11px] text-gray-500">Plate Number and Customer Name are required before registering.</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
             </div>
 
             <!-- VEHICLE INTAKE FORM (Clean, Simple Unified Layout Based on Past Design) -->
@@ -7690,7 +7786,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.25"></script>
+    <script src="js/app.js?v=3.26"></script>
 </body>
 
 </html>
