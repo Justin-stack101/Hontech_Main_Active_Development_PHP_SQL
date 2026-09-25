@@ -14,7 +14,7 @@
   - 161 automated unit tests passing (`npm test`).
   - Headless Chrome: the real `switchFormStudioSheet('monitoring')` shows only the new view, highlights its tab and `getActiveStudioSheet()` returns `monitoring`; the card is no longer on Job_Order. Screenshots with empty and filled data show the preview values and the Incomplete / Ready badge.
 * **Cache Busting**: `js/app.js?v=3.26`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `df95062` pushed to `origin/prototype_process`.
 
 ---
 
