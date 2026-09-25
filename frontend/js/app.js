@@ -14282,7 +14282,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         // not make it re-fit, so the resize must happen before src is (re)assigned.
                         if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'form13');
                         if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'form13');
-                        iframe.src = currentForm13PdfBlobUrl + '#toolbar=1&navpanes=0';
+                        iframe.src = currentForm13PdfBlobUrl + studioPdfViewerParams();
                     }
                     const enlargeIframe = document.getElementById('f13-enlarge-pdf-iframe');
                     if (enlargeIframe) {
@@ -14501,7 +14501,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (iframe) {
                         if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'quote');
                         if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'quote');
-                        iframe.src = currentQuotePdfBlobUrl + '#toolbar=1&navpanes=0';
+                        iframe.src = currentQuotePdfBlobUrl + studioPdfViewerParams();
                     }
                 }
             } catch (err) {
@@ -14720,7 +14720,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (iframe) {
                         if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'billing');
                         if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'billing');
-                        iframe.src = currentBillingPdfBlobUrl + '#toolbar=1&navpanes=0';
+                        iframe.src = currentBillingPdfBlobUrl + studioPdfViewerParams();
                     }
                 }
             } catch (err) {
@@ -14983,7 +14983,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     if (iframe) {
                         if (typeof applyStudioAspectFit === 'function') applyStudioAspectFit(iframe, 'checklist');
                         if (typeof reapplyStudioLockAfterReload === 'function') reapplyStudioLockAfterReload(iframe, 'checklist');
-                        iframe.src = currentChecklistPdfBlobUrl + '#toolbar=1&navpanes=0';
+                        iframe.src = currentChecklistPdfBlobUrl + studioPdfViewerParams();
                     }
                 }
             } catch (err) {
@@ -15284,7 +15284,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const pageAspect = dims.w / dims.h;
             const containerAspect = containerW / containerH;
             let fitW, fitH;
-            if (containerAspect > pageAspect) {
+            if (isStudioPDFMaximized) {
+                // REV-180: maximized view uses the whole pane; the viewer fits the page WIDTH (bigger page,
+                // scroll down to read) instead of fitting the whole page into the pane height
+                fitW = containerW;
+                fitH = containerH;
+            } else if (containerAspect > pageAspect) {
                 fitH = containerH;
                 fitW = containerH * pageAspect;
             } else {
@@ -15300,6 +15305,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             iframe.style.transformOrigin = '0 0';
         }
         window.applyStudioAspectFit = applyStudioAspectFit;
+
+        // REV-180: PDF viewer parameters for the studio iframes (fit to width while maximized)
+        function studioPdfViewerParams() {
+            return '#toolbar=1&navpanes=0' + (isStudioPDFMaximized ? '&view=FitH' : '');
+        }
+        window.studioPdfViewerParams = studioPdfViewerParams;
 
         // REV-178: when a studio PDF container changes size (Maximize / Normal View, Hide Preview, window
         // or sidebar resize) redraw the visible sheet's PDF once the layout has settled. The generators

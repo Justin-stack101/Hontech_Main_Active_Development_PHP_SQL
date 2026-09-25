@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Bigger PDF in Maximized Studio View)
+
+### 🖥️ RO Excel Studio: Maximized PDF Fills the Pane Width (REV-180)
+* **Objective & Context**: After REV-179 the maximized PDF was centered but still fitted to the pane height, so the page stayed narrow with large empty sides. The user asked for a bigger page without using Full PDF.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: `applyStudioAspectFit()` gives the iframe the whole pane while the studio is maximized (Normal View keeps the centered whole-page fit). New `studioPdfViewerParams()` adds `view=FitH` to the viewer parameters while maximized; the four studio iframes (Job_Order, Quotation_No, Billing_No, CheckList_Result) load their PDF with it. The browser PDF viewer then fits the page to the pane width and the user scrolls down to read; the viewer's own + / - zoom still works.
+  - `frontend/index.html`: Incremented cache buster to v=3.33.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-139; added v=3.33 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-56 test row.
+  - `Revisions checklist.csv`: Appended REV-180 row.
+* **Automated & Manual QA Verification**:
+  - 168 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome on the real studio markup and functions: maximized iframe 1590 x 750 (was 490 x 750); Normal View back to 490 x 750 centered. Screenshot with a studio PDF loaded shows the page at 196% fitted to the pane width.
+* **Cache Busting**: `js/app.js?v=3.33`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Maximized Studio PDF Shrinking Fix)
 
 ### 🖥️ RO Excel Studio: Maximized PDF No Longer Shrinks to a Thumbnail (REV-179)
