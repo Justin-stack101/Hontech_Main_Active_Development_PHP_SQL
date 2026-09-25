@@ -14217,36 +14217,57 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
             const manager = getVal('f13-input-manager') || 'General Manager';
 
-            // Meta Header — clear the full right-side header data column (Date, JO#, Promise)
-            // to remove pre-printed "0" placeholders before drawing real values.
-            whiteout(420, 720, 100, 62);
-            drawText(quoteNo, 420, 775.5, 8, true, darkInk);
-            drawText(date, 470, 743.5, 7.5, false, darkInk);
-            drawText(jobNo, 485, 734.0, 7.5, true, darkInk);
-            drawText(promiseDate, 470, 724.6, 7.5, false, darkInk);
+            // Meta Header:
+            // Pre-printed 'QUOTATION NO.' is at X=309.79, Y=728.98. Underline runs X=467.62..534.22 at Y=724.06.
+            // Center quoteNo directly above the underline:
+            drawTextCenter(quoteNo, 500.9, 726.5, 8.5, true, darkInk);
 
-            // Customer Details (with non-destructive placeholder masking).
-            // The template pre-prints "0" placeholders in every data cell of the
-            // customer details grid. A single wide whiteout per row (from the label
-            // right-edge at X≈110 to the page right margin at X≈510) ensures no stray
-            // "0" ghosts survive between the left and right column groups.
+            // Right Meta Box: cells bounded between X=467.98 and X=533.74.
+            // DATE: label at X=443.50, Y=699.34.
+            drawText(date, 472.0, 699.34, 7.2, false, darkInk);
+            // JOB ORDER NO.: label at X=404.11, Y=690.46. Ghost '0' at X=499.30.
+            whiteout(469.0, 688.0, 63.0, 7.5);
+            drawText(jobNo, 472.0, 690.46, 7.2, true, darkInk);
+            // PROMISED DATE: label at X=401.71, Y=681.58.
+            drawText(promiseDate, 472.0, 681.58, 7.2, false, darkInk);
 
-            // Row 1: Name + Plate No
-            whiteout(110, 692.0, 400, 9);
-            drawTextFit(name, 115, 696.3, 180, 6.5, false, darkInk, 5.2);
-            drawTextFit(plate, 380, 696.3, 120, 6.5, true, darkInk, 5.2);
+            // Customer Details (Header bar at Y=663.82)
+            // Left data column: X=133.34..340.0 (ghost '0' at 235.01).
+            // Right data column: X=406.39..533.74 (ghost '0' at 468.70).
+            // Row 1 (Y=654.94): Name + Plate No
+            whiteout(135.0, 652.5, 203.0, 7.5);
+            drawTextFit(name, 137.0, 654.94, 198, 6.5, false, darkInk, 5.0);
+            whiteout(408.0, 652.5, 124.0, 7.5);
+            drawTextFit(plate, 410.0, 654.94, 120, 6.5, true, darkInk, 5.0);
 
-            // Row 2: Address + Year/Model
-            whiteout(110, 682.5, 400, 9);
-            drawTextFit(address, 115, 686.8, 180, 6.2, false, darkInk, 5.0);
-            drawTextFit(model, 380, 686.8, 120, 6.5, false, darkInk, 5.2);
+            // Row 2 (Y=646.06): Address + Year/Model
+            whiteout(135.0, 643.5, 203.0, 7.5);
+            drawTextFit(address, 137.0, 646.06, 198, 6.2, false, darkInk, 4.8);
+            whiteout(408.0, 643.5, 124.0, 7.5);
+            drawTextFit(model, 410.0, 646.06, 120, 6.5, false, darkInk, 5.0);
 
-            // Row 3: Contact No + Color
-            whiteout(110, 673.0, 400, 9);
-            drawTextFit(contact, 115, 677.4, 180, 6.5, false, darkInk, 5.2);
-            drawTextFit(color, 380, 677.4, 120, 6.5, false, darkInk, 5.2);
+            // Row 3 (Y=637.18): Contact No + Color
+            whiteout(135.0, 634.8, 203.0, 7.5);
+            drawTextFit(contact, 137.0, 637.18, 198, 6.5, false, darkInk, 5.0);
+            whiteout(408.0, 634.8, 124.0, 7.5);
+            drawTextFit(color, 410.0, 637.18, 120, 6.5, false, darkInk, 5.0);
 
-            // Table Line Items (Up to 24 rows on template)
+            // Table Line Items: 30 verified row baselines from template content stream.
+            // Columns:
+            //   PARTS/MATERIAL desc: X=84.26..209.33 (inset start 86.5, max width 120)
+            //   QTY:                 X=209.33..240.53 (center 225.0)
+            //   FRT:                 X=240.53..280.97 (right 278.0)
+            //   LABOR:               X=280.97..339.55 (right 336.5, ghost '0.00' at 303.91)
+            //   PARTS:               X=339.55..406.03 (right 403.0)
+            //   MATERIALS:           X=406.03..467.26 (right 464.0)
+            //   AMOUNT:              X=467.26..533.74 (right 530.5, ghost '0.00' at 494.14)
+            const quoteRowBaselines = [
+                610.54, 601.18, 593.35, 584.47, 576.07, 567.19, 558.31, 549.43,
+                541.03, 532.15, 523.75, 515.35, 506.47, 497.59, 488.71, 479.83,
+                470.95, 462.07, 453.19, 444.31, 435.41, 426.53, 417.65, 408.77,
+                399.89, 391.01, 382.13, 373.25, 364.37, 355.49
+            ];
+
             const items = (window.form23Items && window.form23Items.length > 0)
                 ? window.form23Items
                 : ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0))
@@ -14257,35 +14278,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             let totalParts = 0;
             let totalMats = 0;
 
-            const startY = 649.1;
-            const rowStep = 9.46;
-            const maxRows = 24;
+            const maxRows = quoteRowBaselines.length;
 
-            // Clear ALL pre-printed template placeholder text in every row cell.
-            // The Quotation_No template pre-prints "0" in QTY cells and "0.00" in every
-            // numeric column (FRT, LABOR, PARTS, MATERIALS, AMOUNT). We must whiteout every
-            // column's interior (inset ~1pt from grid lines) so these ghosts never show through.
-            // Column interiors (approximate X positions from template grid):
-            //   PARTS/MATERIAL desc: X=72,  W=120
-            //   QTY:                 X=192, W=22
-            //   FRT:                 X=218, W=28
-            //   LABOR:               X=248, W=35
-            //   PARTS:               X=300, W=48
-            //   MATERIALS:           X=360, W=45
-            //   AMOUNT:              X=410, W=60
+            // Clear ghost '0.00' placeholders inside LABOR (X=282..338) and AMOUNT (X=469..532)
+            // without touching table grid borders.
             for (let r = 0; r < maxRows; r++) {
-                const ry = startY - (r * rowStep);
-                whiteout(72, ry - 1.5, 120, 8.5);   // PARTS/MATERIAL desc
-                whiteout(192, ry - 1.5, 22, 8.5);    // QTY
-                whiteout(218, ry - 1.5, 28, 8.5);    // FRT
-                whiteout(248, ry - 1.5, 35, 8.5);    // LABOR
-                whiteout(300, ry - 1.5, 48, 8.5);    // PARTS
-                whiteout(360, ry - 1.5, 45, 8.5);    // MATERIALS
-                whiteout(410, ry - 1.5, 60, 8.5);    // AMOUNT
+                const ry = quoteRowBaselines[r];
+                whiteout(282.0, ry - 1.5, 56.0, 7.5); // LABOR ghost
+                whiteout(469.0, ry - 1.5, 63.0, 7.5); // AMOUNT ghost
             }
 
             items.slice(0, maxRows).forEach((it, idx) => {
-                const ry = startY - (idx * rowStep);
+                const ry = quoteRowBaselines[idx];
                 const desc = it.desc || '';
                 const qty = Number(it.qty) || 1;
 
@@ -14312,40 +14316,41 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 totalParts += partsAmt;
                 totalMats += matsAmt;
 
-                drawTextFit(desc, 72, ry, 115, 6.8, false);
-                drawTextCenter(String(qty), 200, ry, 6.5);
+                drawTextFit(desc, 86.5, ry, 120, 6.5, false, darkInk, 5.0);
+                drawTextCenter(String(qty), 225.0, ry, 6.5, false, darkInk);
                 if (it.frt !== undefined && it.frt !== '') {
-                    drawTextCenter(Number(it.frt).toFixed(1), 237, ry, 6.5);
+                    drawTextRight(Number(it.frt).toFixed(1), 278.0, ry, 6.5, false, darkInk);
                 }
-                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 278, ry, 6.5);
-                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 342, ry, 6.5);
-                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 398, ry, 6.5);
-                // Only draw the row total when it has a real value; template "0.00" is
-                // already cleared by the whiteout loop above so blank rows stay clean.
-                if (rowTotal > 0) drawTextRight(rowTotal.toFixed(2), 465, ry, 6.8, false);
+                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 336.5, ry, 6.5, false, darkInk);
+                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 403.0, ry, 6.5, false, darkInk);
+                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 464.0, ry, 6.5, false, darkInk);
+                if (rowTotal > 0) drawTextRight(rowTotal.toFixed(2), 530.5, ry, 6.5, false, darkInk);
             });
 
-            // Clear pre-printed subtotal / summary placeholders.
-            // The template pre-prints "0.00" in every summary cell; wipe the full
-            // right-side summary block (spanning all 5 summary lines from about Y=320 to Y=370).
-            whiteout(300, 318, 175, 56);
+            // Totals Summary Matrix (Pre-printed labels at X=407.95, value cell X=467.26..533.74)
+            // Mask pre-printed 0.00 placeholders inside value cell:
+            whiteout(469.0, 309.0, 63.0, 40.0);
 
-            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 465, 364.6, 7.2, false);
+            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 530.5, 346.61, 7.2, false, darkInk);
             const subtotal = totalLabor + totalParts + totalMats;
             const vat12 = subtotal * 0.12;
-            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 465, 355.0, 7.2, false);
-            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 465, 345.5, 7.2, false);
-            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 465, 335.9, 7.2, false);
+            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 530.5, 337.73, 7.2, false, darkInk);
+            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 530.5, 328.85, 7.2, false, darkInk);
+            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 530.5, 319.97, 7.2, false, darkInk);
 
             const grandTotal = subtotal + vat12;
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 465, 326.3, 8, true, darkInk);
+                drawTextRight(grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 530.5, 311.09, 7.5, true, darkInk);
             }
 
-            // Authentic Plain Text Signatures (Rows 61-66)
-            drawTextFit(sa, 70, 145, 140, 7.2, false);
-            drawTextFit(manager, 330, 145, 140, 7.2, false);
-            drawTextFit(name, 200, 95, 200, 7.5, false);
+            // Authentic Signatures
+            // Prepared by (SA): underline at Y=137.30 (X=83.9..241.0, center=162.45)
+            drawTextCenter(sa, 162.45, 139.5, 6.5, false, darkInk);
+            // Approved by (Manager): underline at Y=137.30 (X=339.91..534.21, center=437.06)
+            drawTextCenter(manager, 437.06, 139.5, 6.5, false, darkInk);
+            // Customer Conforme: underline at Y=91.44 (X=209.69..406.51, center=308.10), ghost '0' at X=306.67
+            whiteout(280.0, 92.5, 56.0, 7.5);
+            drawTextCenter(name, 308.10, 94.5, 6.5, false, darkInk);
 
             return await doc.save();
         }

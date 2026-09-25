@@ -1,3 +1,37 @@
+## 📅 September 25, 2026 (Quotation Form 2/3 PDF Coordinate Calibration & Overlap Elimination)
+
+### 📋 Quotation Form 2/3 PDF Coordinate Calibration & Overlap Elimination (REV-156)
+* **Objective & Context**: In direct response to user request and screenshot showing formatting errors on the Quotation sheet (Form 2/3) when clicking Full PDF:
+  1. Quotation Number (`QT-2026-9749`) colliding and overlapping the large pre-printed `QUOTATION NO.` header text.
+  2. Right Meta Header: Date floating too high above the box; destructive whiteout cutting off `JOB ORDER NO.:` and `PROMISED DATE:` into `JOB OR` and `PROMIS`.
+  3. Customer Details: drawn ~45pt too high, text overlapping gray header bar, pre-printed template `0` ghosts visible next to Name and Plate, `Plate No:` label partially erased (`Pl  N `), right border cut up.
+  4. Table Line Items: 24-row whiteout loop started at `startY = 649.1` which was directly inside the Customer Details card.
+* **Vector Content Decompilation & Root Cause Analysis**:
+  - Decompiled the native vector content stream of `Current_2025 BLANK RO UPDATED.xlsx - Quotation_No.pdf` (MediaBox `[0, 0, 595, 842]` A4).
+  - Located the pre-printed underline for Quotation No at `Y = 724.06` (`X = 467.62..534.22`), right after `QUOTATION NO.` text ending at `X ≈ 462`.
+  - Identified that previous coordinates drew `quoteNo` at `X = 420, Y = 775.5` with a massive destructive whiteout `whiteout(420, 720, 100, 62)` that wiped out the pre-printed labels `JOB ORDER NO.:` and `PROMISED DATE:`.
+  - Measured true cell baselines: Date (`Y = 699.34`), Job Order No (`Y = 690.46`), Promised Date (`Y = 681.58`).
+  - Measured true Customer Details baselines: Row 1 (`Y = 654.94`), Row 2 (`Y = 646.06`), Row 3 (`Y = 637.18`) with gray header at `Y = 663.82`.
+  - Extracted 30 authentic table row baselines starting at `Y = 610.54` down to `Y = 355.49`, right-aligned totals at `X = 530.5`, and authentic underlines for SA, Manager, and Conforme signatures.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Overhauled `compileQuotePDFBytes()`:
+    - Purged destructive `whiteout(420, 720, 100, 62)`.
+    - Positioned `quoteNo` centered above the underline: `drawTextCenter(quoteNo, 500.9, 726.5, 8.5, true, darkInk)` with zero overlap into header text.
+    - Aligned `date` (`Y = 699.34`), `jobNo` (`Y = 690.46` with localized cell whiteout), and `promiseDate` (`Y = 681.58`) with labels 100% intact.
+    - Shifted Customer Details down to `Y = 654.94`, `646.06`, `637.18` with surgical column whiteouts preserving all borders and labels.
+    - Calibrated 30-row parts/labor table starting at `Y = 610.54` with non-destructive `LABOR` and `AMOUNT` ghost whiteouts.
+    - Aligned Totals block at `X = 530.5` (`Y = 346.61..311.09`) and centered lower signatures on authentic underlines.
+  - `frontend/index.html`: Incremented cache buster to `v=3.09`.
+  - `tests/frontend/sla_and_logic.test.js`: Updated assertions in `AUT-FRONT-40`, `AUT-FRONT-91`, `AUT-FRONT-94`, `AUT-FRONT-98`, and `AUT-FRONT-107` to support calibrated Quotation coordinates and `v=3.09`.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`: Added `SA-32` test row.
+  - `Revisions checklist.csv`: Appended `REV-156` row.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+* **Cache Busting**: `js/app.js?v=3.09`.
+* **GitHub Commit Traceability**: `cb4caa8`.
+
+---
+
 ## 📅 September 25, 2026 (Form 1/3 & RO Excel Export Multi-Sheet Cross-Verification with Live PDF Data)
 
 ### 📋 Form 1/3 & RO Excel Export Multi-Sheet Cross-Verification with Live PDF Data (REV-155)
