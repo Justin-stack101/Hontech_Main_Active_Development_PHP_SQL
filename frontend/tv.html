@@ -178,6 +178,10 @@
     <!-- 3. LIVE TV SERVICE MONITOR (Active Display View)                   -->
     <!-- ================================================================= -->
     <div id="screen-active-tv" class="hidden flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-gray-900">
+        <!-- REV-187: browsers block sound until the screen is touched once after the TV opens by itself -->
+        <button type="button" id="tv-sound-unlock" onclick="unlockTVAudio()" class="hidden absolute bottom-8 left-1/2 -translate-x-1/2 z-[90] px-6 py-3 rounded-2xl bg-gray-950/90 border border-gray-700 text-white text-sm font-black uppercase tracking-wider shadow-2xl flex items-center gap-2 cursor-pointer">
+            <i data-lucide="volume-2" class="w-5 h-5 text-emerald-400"></i> Tap anywhere to enable sound
+        </button>
         
         <!-- Live Multi-Event TV Notification Plaque (Signature Red-White-Red Automotive Plaque) -->
         <div id="tv-ready-alert-banner" class="hidden absolute top-8 md:top-12 left-1/2 transform -translate-x-1/2 z-[100] tv-broadcast-banner-active select-none transition-all duration-300">
@@ -216,6 +220,10 @@
                     <span class="text-[11px] not-italic font-black uppercase tracking-wider bg-red-600/30 text-red-300 border border-red-500/50 px-3 py-1 rounded-full shadow-inner flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                         📍 <span id="tv-branch-label">Marikina Main Branch</span>
+                    </span>
+                    <span id="tv-connection-badge" class="hidden text-[11px] not-italic font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/50 px-3 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span id="tv-connection-text">Connection lost</span>
                     </span>
                 </div>
                 <p id="tv-date-display" class="text-xs font-bold text-gray-400 mt-1.5 uppercase tracking-widest">Sunday, June 21, 2026</p>
@@ -346,7 +354,7 @@
                             <div class="bg-gray-950 py-3 px-5 text-center shrink-0 border-b border-gray-800 flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
-                                    <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">Service Queue (Waiting List)</h3>
+                                    <h3 class="text-base lg:text-lg font-black uppercase tracking-widest text-white">In Service &amp; In Queue</h3>
                                 </div>
                                 <span class="text-xs font-black px-3 py-0.5 rounded-full bg-red-600 text-white" id="tv-all-upcoming-count">0</span>
                             </div>
@@ -759,6 +767,7 @@
                 res = await fetch(tvApiUrl('/api/tv/feed'), { headers, credentials: 'same-origin', cache: 'no-store' });
             } catch (e) {
                 console.warn('TV feed unreachable:', e);
+                setTVConnection(false);
                 return;
             }
             if (res.status === 401) {
@@ -769,8 +778,12 @@
                 if (errEl && token) errEl.innerText = 'This TV was signed out because a new PIN was generated. Enter the new PIN.';
                 return;
             }
-            if (!res.ok) return;
+            if (!res.ok) {
+                setTVConnection(false);
+                return;
+            }
             const feed = await res.json();
+            setTVConnection(true);
             tvBayCount = Math.max(1, parseInt(feed.bayCount, 10) || 6);
             applyBranchLabels(feed);
             if (!feed.active) {
@@ -780,11 +793,56 @@
             if (document.getElementById('screen-active-tv').classList.contains('hidden')) {
                 showScreen('active');
                 jumpToSlide(currentSlide);
+                showSoundPromptIfBlocked();
                 playChime();
             }
             tvJobs = Array.isArray(feed.jobs) ? feed.jobs : [];
             renderTVDisplay(tvJobs);
         }
+
+        // REV-187: "Connection lost" badge keeps the last board visible but tells viewers it is not live
+        let tvLastUpdate = null;
+        function setTVConnection(ok) {
+            const badge = document.getElementById('tv-connection-badge');
+            if (ok) {
+                tvLastUpdate = new Date();
+                if (badge) badge.classList.add('hidden');
+                return;
+            }
+            if (!badge) return;
+            const text = document.getElementById('tv-connection-text');
+            if (text) text.innerText = tvLastUpdate
+                ? `Connection lost · last update ${tvLastUpdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+                : 'Connection lost';
+            badge.classList.remove('hidden');
+        }
+
+        // REV-187: a TV that opened by itself (remembered token, kiosk) has had no touch yet, so the
+        // browser blocks the chime and voice until someone taps the screen once
+        let tvAudioUnlocked = false;
+        function showSoundPromptIfBlocked() {
+            const hasGesture = navigator.userActivation ? navigator.userActivation.hasBeenActive : tvAudioUnlocked;
+            const prompt = document.getElementById('tv-sound-unlock');
+            if (prompt) prompt.classList.toggle('hidden', !tvAudioEnabled || hasGesture || tvAudioUnlocked);
+        }
+        function unlockTVAudio() {
+            tvAudioUnlocked = true;
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    window._tvUnlockCtx = window._tvUnlockCtx || new AudioContextClass();
+                    if (window._tvUnlockCtx.state === 'suspended') window._tvUnlockCtx.resume();
+                }
+                if ('speechSynthesis' in window) {
+                    const warm = new SpeechSynthesisUtterance(' ');
+                    warm.volume = 0;
+                    window.speechSynthesis.speak(warm);
+                }
+            } catch (e) {}
+            const prompt = document.getElementById('tv-sound-unlock');
+            if (prompt) prompt.classList.add('hidden');
+        }
+        ['pointerdown', 'keydown'].forEach(evt => document.addEventListener(evt, () => { if (!tvAudioUnlocked) unlockTVAudio(); }, { once: false }));
 
         function startTVFeed() {
             if (tvFeedStarted) { fetchTVFeed(); return; }
@@ -904,12 +962,14 @@
         function renderTVDisplay(jobs) {
             const allJobs = Array.isArray(jobs) ? jobs : [];
             
-            // Group 1: Waiting Jobs (Upcoming Queue) - Processing AND Waiting status shows on TV waiting list
-            const waitingJobs = allJobs.filter(j => j.status === 'Processing' || j.status === 'Monitoring' || j.status === 'Waiting');
-            // Group 2: Released (Ready, Ready to Release)
+            // REV-187: every vehicle is in exactly one group, by status
+            const inServiceJobs = allJobs.filter(j => j.status === 'Processing' || j.status === 'Monitoring');
+            const inQueueJobs = allJobs.filter(j => j.status === 'Waiting');
+            const waitingJobs = inServiceJobs.concat(inQueueJobs);
+            // Ready to claim
             const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
-            // Group 3: Carry Over (Carry Over)
-            const carryOverAll = allJobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over' || Boolean(j.carryOverStatus));
+            // Carry over (status only; a carry-over reason on an active job no longer duplicates it)
+            const carryOverAll = allJobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over');
 
             // Detect newly ready vehicles, bay allocations, and status changes to trigger Chime, Voice & Visual Plaque
             detectAndBroadcastAlerts(allJobs);
@@ -922,7 +982,7 @@
             const tvAllUpcomingCount = document.getElementById('tv-all-upcoming-count');
             if (tvAllUpcomingCount) tvAllUpcomingCount.innerText = waitingJobs.length;
             if (tvAllUpcoming) {
-                tvAllUpcoming.innerHTML = waitingJobs.map(job => `
+                const queueCard = (job, stage) => `
                     <div class="bg-white border-2 border-gray-900 rounded-xl px-4 py-3 flex items-center justify-between shadow-2xs hover:scale-[1.01] transition-transform duration-150">
                         <div class="flex flex-col text-left">
                             <div class="flex items-center gap-2.5">
@@ -935,10 +995,18 @@
                             <span class="bg-gray-950 text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-lg">
                                 ${escapeHtml(job.category || 'General Service')}
                             </span>
-                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">In Reception</span>
+                            <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">${stage}</span>
                         </div>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-gray-400 font-black uppercase italic text-sm tracking-widest">No Vehicles in Queue</div>`;
+                `;
+                const section = (title, list, stage, empty) => `
+                    <div class="flex items-center justify-between px-1 pt-1">
+                        <span class="text-[11px] font-black uppercase tracking-widest text-gray-500">${title}</span>
+                        <span class="text-[11px] font-black text-gray-500">${list.length}</span>
+                    </div>
+                    ${list.map(job => queueCard(job, stage)).join('') || `<div class="w-full text-center py-3 text-gray-400 font-black uppercase italic text-xs tracking-widest">${empty}</div>`}`;
+                tvAllUpcoming.innerHTML = section('In Service', inServiceJobs, 'In Service', 'No vehicles in service')
+                    + section('In Queue', inQueueJobs, 'In Queue', 'No vehicles waiting');
             }
 
             // Slide 2 Released List (High Visibility Ready for Release)
@@ -1283,6 +1351,11 @@
             // REV-186: a remembered TV token or the staff browser (HDMI kiosk / in-app view) goes straight
             // to the feed; otherwise the TV shows the PIN keypad. PINs in the URL are no longer accepted.
             localStorage.removeItem('hontech_tv_pin');
+            // REV-187: the simulation drawer is a developer tool, shown only with ?dev=1
+            if (tvUrlParams.get('dev') !== '1') {
+                document.getElementById('tv-btn-dev-drawer')?.classList.add('hidden');
+                document.getElementById('tv-dev-drawer')?.classList.add('hidden');
+            }
             if (localStorage.getItem(TV_TOKEN_KEY) || isStaffTVView) {
                 startTVFeed();
                 if (tvUrlParams.get('kiosk') === 'true') {

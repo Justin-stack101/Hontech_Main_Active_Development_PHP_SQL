@@ -1,3 +1,25 @@
+## 📅 September 25, 2026 (TV Monitor Phase 4: Display Integrity)
+
+### 📺 TV Monitor Phase 4: One Group per Vehicle, Connection Badge, Sound Prompt (REV-187)
+* **Objective & Context**: Phase 4 of plan HONTECH-PLAN-TV-MONITOR-2026-V1.0: fix what the TV shows.
+* **Root Cause**: A Monitoring / Processing vehicle with a carry-over reason appeared in both the queue and Carry Over; the "Service Queue (Waiting List)" also held vehicles already in service; the developer simulation drawer shipped on the real TV; when the server was unreachable the TV silently kept old data; a TV that opens by itself (remembered token, kiosk) has had no touch, so the browser blocks the chime and voice.
+* **Core Changes Made**:
+  - `frontend/tv.html`: vehicles are grouped strictly by status - In Service (Processing / Monitoring), In Queue (Waiting), Ready to Claim, Carry Over (status only). Slide 2's left column is now "In Service & In Queue" with two labelled sub-lists.
+  - `frontend/tv.html`: "Connection lost · last update hh:mm" badge while the feed cannot be reached (board kept, badge clears when the server is back).
+  - `frontend/tv.html`: "Tap anywhere to enable sound" prompt when the page opened without a touch; the first tap / key press unlocks audio and speech.
+  - `frontend/tv.html`: the developer simulation drawer and its button appear only with `?dev=1`.
+  - `frontend/index.html`: Incremented cache buster to v=3.40.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-146; added v=3.40 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-63 test row.
+  - `Revisions checklist.csv`: Appended REV-187 row.
+* **Automated & Manual QA Verification**:
+  - 175 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome on XAMPP with live data, 12/12: drawer hidden without `?dev=1` and shown with it; PIN entered with real keypad taps -> no sound prompt; no vehicle twice on Slide 2 and every group matches its statuses (12 In Service, 7 In Queue, 4 Ready, 7 Carry Over); unreachable server -> badge with last update time and board kept, cleared when back; TV reopened by itself -> sound prompt, one tap -> unlocked. Screenshot of Slide 2 checked.
+* **Cache Busting**: `js/app.js?v=3.40`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Phases 2-3: Security, Privacy & Branch Isolation)
 
 ### 📺 TV Monitor Phases 2-3: Secure Per-Branch Broadcast, Masked Names (REV-186)
