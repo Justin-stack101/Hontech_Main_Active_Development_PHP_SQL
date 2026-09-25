@@ -1,3 +1,23 @@
+## 📅 September 25, 2026 (Checklist Status Buttons Filled With Actual Form Colors)
+
+### 📋 Checklist Status Buttons Filled With Actual Printed-Form Colors (REV-165)
+* **Objective & Context**: The user asked for the checkpoint status options to "use actual colors, not like this small dot color". In REV-163 the selected option turned dark gray and the form colors appeared only as small 8px dots inside each option.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - `checklistStatusButtonHtml()`: the selected option is now filled with the printed form's actual box color (Good `#2FB044` with white text, Attention `#FFED00` with dark text, Defect / battery Replace `#EE1C25` with white text, N/A dark gray `#374151`) and set in semibold; unselected options stay plain white with gray text. The small dot swatches were removed from the buttons.
+    - `checklistSwatchHtml()` (legend): replaced the small dots with full 16px color blocks in the form colors.
+  - `frontend/index.html`: Incremented cache buster to v=3.18.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-124 (selected option filled with the form color, no dot swatches in buttons, full-size legend blocks); updated AUT-FRONT-122's selected-style assertion; added v=3.18 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-41 test row (workbook ranges extended to row 167).
+  - `Revisions checklist.csv`: Appended REV-165 row.
+* **Automated & Manual QA Verification**:
+  - 153/153 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the checklist editor in headless Chrome with Good, Attention, Defect, N/A and battery Replace selections: each selected option is fully filled with its form color and remains readable.
+* **Cache Busting**: `js/app.js?v=3.18`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (CheckList Studio Quick Actions Original Colors Restored)
 
 ### 📋 CheckList Studio Quick Actions Original Colors Restored (REV-164)

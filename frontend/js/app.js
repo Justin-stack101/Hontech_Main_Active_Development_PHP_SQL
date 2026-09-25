@@ -16491,19 +16491,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.setAllChecklistItems = setAllChecklistItems;
 
-        // Small square in the printed form's box color (the only color in the otherwise neutral editor)
+        // Legend color block in the printed form's actual box color
         function checklistSwatchHtml(status) {
             const st = CHECKLIST_STATUS_STYLES[status];
-            return status === 'N/A'
-                ? '<span class="inline-block w-2 h-2 rounded-[2px] border border-gray-400"></span>'
-                : `<span class="inline-block w-2 h-2 rounded-[2px]" style="background:${st.fill}"></span>`;
+            return `<span class="inline-block w-4 h-4 rounded-sm border border-black/10" style="background:${st.fill}"></span>`;
         }
 
-        // One option of the neutral segmented status control; selected option is dark
+        // One option of the segmented status control; the selected option is filled with the
+        // printed form's actual box color (green / yellow / red, dark gray for N/A)
         function checklistStatusButtonHtml(pointId, status, isSelected, labelOverride) {
             const st = CHECKLIST_STATUS_STYLES[status];
             const label = labelOverride || st.label;
-            return `<button type="button" onclick="setChecklistStatus('${pointId}', '${status}')" title="${st.symbol} ${st.formLabel}" aria-pressed="${isSelected}" class="inline-flex items-center gap-1.5 h-7 px-2.5 text-[11px] font-medium transition cursor-pointer ${isSelected ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}">${checklistSwatchHtml(status)}${label}</button>`;
+            const selectedStyle = isSelected ? ` style="background:${st.fill};color:${st.text}"` : '';
+            return `<button type="button" onclick="setChecklistStatus('${pointId}', '${status}')" title="${st.symbol} ${st.formLabel}" aria-pressed="${isSelected}"${selectedStyle} class="inline-flex items-center h-7 px-3 text-[11px] transition cursor-pointer ${isSelected ? 'font-semibold' : 'font-medium bg-white text-gray-600 hover:bg-gray-50'}">${label}</button>`;
         }
 
         function renderChecklistTable() {
