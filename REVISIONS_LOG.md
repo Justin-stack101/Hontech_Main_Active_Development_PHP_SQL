@@ -13,7 +13,7 @@
   - 176 automated unit tests passing (`npm test`).
   - Real-time headless Chrome on XAMPP with a real SA login, 6/6: frame idle on other modules; Hub "Open In-App Slides" shows the section with `tv.html?embedded=1`; embedded TV signed in as the SA shows the live Marikina board without a PIN; leaving the section unloads the frame; paused broadcast shows the standby screen; old renderer removed and `renderTV` kept as a no-op. Screenshot checked.
 * **Cache Busting**: `js/app.js?v=3.41`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `5a1443b` pushed to `origin/prototype_process`.
 
 ---
 
