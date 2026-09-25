@@ -44,6 +44,26 @@
     <script src="js/vendor/chart.min.js"></script>
     <link rel="stylesheet" href="css/main.css?v=4.75">
     <style>
+        /* RO Excel Studio section header band (REV-171): tinted background so every section title stands out */
+        .studio-section-head {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe !important;
+            border-left: 4px solid #2563eb !important;
+            border-radius: 0.5rem;
+            padding: 0.625rem 0.875rem !important;
+        }
+        .studio-section-head--inset { margin: 1rem 1.25rem 0; }
+        .studio-section-head h2,
+        .studio-section-head h3,
+        .studio-section-head span.uppercase,
+        .studio-section-head label.uppercase,
+        label.studio-section-head { color: #1e3a8a !important; }
+        .studio-section-head h2 + span,
+        .studio-section-head > span.rounded { background-color: #ffffff; border-color: #93c5fd !important; color: #1d4ed8 !important; }
+        .studio-section-head p,
+        .studio-section-head > span:not(.rounded) { color: #475569 !important; }
+        .studio-section-head :is(h2, h3, span.uppercase, label.uppercase) svg { color: #2563eb !important; }
+
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -2673,7 +2693,7 @@
                         <!-- WORKSHOP MONITORING & DAILY INTAKES DISPATCH DOSSIER CARD (STEP 1) -->
                         <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 space-y-4">
                             <!-- Card Header Bar -->
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
                                 <div class="flex items-center gap-2.5 min-w-0">
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2 flex-wrap">
@@ -2819,7 +2839,7 @@
                         
                         <!-- Studio Header & Quick Preset Bar -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                            <div class="studio-section-head flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                 <div class="flex items-center gap-3">
                                     <div>
                                         <div class="flex items-center gap-2">
@@ -2884,7 +2904,7 @@
 
                         <!-- Customer Details Card -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                     <i data-lucide="user" class="w-4 h-4 text-gray-400"></i> Customer Dossier
                                 </span>
@@ -2912,7 +2932,7 @@
 
                         <!-- Vehicle Specification Card -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                     <i data-lucide="car" class="w-4 h-4 text-gray-400"></i> Vehicle Technical Specifications
                                 </span>
@@ -2949,7 +2969,7 @@
                         <!-- Service Concern & Diagnostic Findings -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div>
-                                <div class="flex items-center justify-between mb-1.5">
+                                <div class="studio-section-head flex items-center justify-between mb-1.5">
                                     <label class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="clipboard" class="w-4 h-4 text-gray-400"></i> Customer's Description of Concern
                                     </label>
@@ -2965,7 +2985,7 @@
                             </div>
 
                             <div>
-                                <div class="flex items-center justify-between mb-1.5">
+                                <div class="studio-section-head flex items-center justify-between mb-1.5">
                                     <label class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="wrench" class="w-4 h-4 text-gray-400"></i> Diagnostic Result & Mechanic Notes
                                     </label>
@@ -2977,7 +2997,7 @@
 
                         <!-- Dynamic Parts Repeater Card -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <div>
                                     <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="package" class="w-4 h-4 text-gray-400"></i> Parts Repeater Table
@@ -3025,7 +3045,7 @@
 
                         <!-- Dynamic Materials Repeater Card -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <div>
                                     <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Materials & Consumables Repeater
@@ -3185,7 +3205,7 @@
                             
                             <!-- Quotation Header & Actions Bar -->
                             <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                                <div class="studio-section-head flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                     <div class="flex items-center gap-3">
                                         <div>
                                             <div class="flex items-center gap-2">
@@ -3229,7 +3249,7 @@
 
                             <!-- Customer & Vehicle Dossier (Two-Way Synced with Job Order) -->
                             <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3">
                                     <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="user-check" class="w-4 h-4 text-gray-400"></i> Customer & Vehicle Details
                                     </h3>
@@ -3266,7 +3286,7 @@
 
                             <!-- Quotation Line Items (Parts, Labor & Materials) -->
                             <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                                <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                                <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3">
                                     <div>
                                         <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                             <i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Quotation Line Items & Scope (Rows 17–52)
@@ -3393,7 +3413,7 @@
                         
                         <!-- Billing Header & Actions Bar -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
+                            <div class="studio-section-head flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                 <div class="flex items-center gap-3">
                                     <div>
                                         <div class="flex items-center gap-2">
@@ -3441,7 +3461,7 @@
 
                         <!-- Customer & Vehicle Dossier (Synced with Job Order) -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3">
                                 <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                     <i data-lucide="user-check" class="w-4 h-4 text-gray-400"></i> Customer & Vehicle Details
                                 </h3>
@@ -3482,7 +3502,7 @@
 
                         <!-- Billable Items & Charges Table -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-3">
                                 <div>
                                     <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
                                         <i data-lucide="shopping-cart" class="w-4 h-4 text-gray-400"></i> Billed Parts, Materials & Services
@@ -3616,7 +3636,7 @@
 
                         <!-- Checklist Header & Actions Bar -->
                         <section class="bg-white border border-gray-200 rounded-lg">
-                            <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-200">
+                            <div class="studio-section-head studio-section-head--inset flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-200">
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <h2 class="text-sm font-semibold text-gray-900">CheckList Studio</h2>
@@ -3665,7 +3685,7 @@
 
                         <!-- Fuel Gauge Selector -->
                         <section class="bg-white border border-gray-200 rounded-lg">
-                            <div class="flex items-center justify-between px-5 py-3 border-b border-gray-200">
+                            <div class="studio-section-head studio-section-head--inset flex items-center justify-between px-5 py-3 border-b border-gray-200">
                                 <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Fuel Level at Intake</h3>
                                 <span id="chk-fuel-label" class="text-xs font-medium text-gray-700">1/2 (50%)</span>
                             </div>
@@ -3682,7 +3702,7 @@
 
                         <!-- Multi-Point Inspection Categories Grid -->
                         <section class="bg-white border border-gray-200 rounded-lg">
-                            <div class="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b border-gray-200">
+                            <div class="studio-section-head studio-section-head--inset flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b border-gray-200">
                                 <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Multi-Point Receiving Checkpoints</h3>
                                 <div class="flex items-center gap-2">
                                     <button type="button" onclick="setAllChecklistItems('Good')" class="h-7 px-2.5 rounded-md text-[11px] font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 transition cursor-pointer" title="Mark all checkpoints as Good / Satisfactory">
@@ -3713,7 +3733,7 @@
 
                         <!-- Inspection Notes & Remarks -->
                         <section class="bg-white border border-gray-200 rounded-lg px-5 py-4 space-y-1.5 text-xs">
-                            <label for="chk-input-remarks" class="block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Inspector Remarks / Discovered Deficiencies</label>
+                            <label for="chk-input-remarks" class="studio-section-head block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Inspector Remarks / Discovered Deficiencies</label>
                             <textarea id="chk-input-remarks" oninput="syncChecklistCanvas()" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition resize-none" placeholder="Enter findings (e.g. Scratches on rear bumper, Front right tire 40% worn)..."></textarea>
                         </section>
 
@@ -7670,7 +7690,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.23"></script>
+    <script src="js/app.js?v=3.24"></script>
 </body>
 
 </html>
