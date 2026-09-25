@@ -1,3 +1,33 @@
+## 📅 September 25, 2026 (Form 1/3 Parts & Materials Table Amount Alignment & Ghost Crescent Removal)
+
+### 📋 Form 1/3 Parts & Materials Table Amount Alignment & Ghost Crescent Removal (REV-153)
+* **Objective & Context**: In direct response to user request and screenshot showing a trailing parenthesis artifact `)` on amount values (e.g. `450.00)` and `1850.00)`) and slight right-alignment offset relative to pre-printed `0.00` in rows below:
+  1. **Root Cause Analysis via Content Stream Decompilation**:
+     - Decompiled the vector content stream of `Current_2025 BLANK RO UPDATED_v3.xlsx - Job_Order_Wide.pdf`.
+     - In the Excel template, each row in the Parts AMOUNT column has pre-printed `0.00` (evaluating from `=QTY*PRICE`) drawn by Font0 glyphs `<0013 0011 0013 0013>` starting at `X = 339.56` with width `12.06 pt`, ending at `X = 351.62`.
+     - The Parts cell vertical lines are at `X = 287.96` (left) and `X = 353.29` (right).
+     - Previous `whiteOut(288.5, ry - 0.5, 62, 6.5)` only covered up to `X = 350.5`. This left the right `1.12 pt` slice of the template's final `0` exposed (from `X = 350.5` to `351.62`).
+     - Because `drawTextRight(amt.toFixed(2), 350.5, ...)` placed the right edge of the text at `X = 350.5`, the uncovered right arc of the pre-printed zero sat directly after the numbers, creating a phantom `)` artifact (e.g. `450.00)` and `1850.00)`).
+     - Furthermore, `350.5` was offset by `1.12 pt` to the left compared to the un-whited-out rows below where `0.00` ends at `X = 351.62`.
+  2. **Mathematical Calibration & Ghost Annihilation**:
+     - Parts AMOUNT: Expanded `whiteOut` width to `64.2 pt` (`X = 288.5` to `352.7`), safely covering up to `352.7` (1.08 pt past `0.00` and 0.59 pt inside vertical border line `353.29`), completely destroying the pre-printed character ghost.
+     - Calibrated `drawTextRight` alignment to `X = 351.6`, matching the exact horizontal alignment of `0.00` in rows below.
+     - Materials AMOUNT: Calibrated `whiteOut` to `48.2 pt` (`X = 474.5` to `522.7`, safely inside border `523.29`) and aligned text to `X = 521.4` (matching template `521.38`).
+     - Parts Subtotal, Materials Subtotal, and Grand Total: Calibrated whiteouts (`64.2 pt` & `47.7 pt`) and right-alignment (`X = 351.6` and `X = 521.4`).
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Updated `compileForm13PDFBytes()` with 64.2pt/48.2pt whiteout bounds and 351.6pt/521.4pt alignment.
+  - `frontend/index.html`: Incremented cache buster to `v=3.06`.
+  - `tests/frontend/app.test.js`: Updated AUT-FRONT-116 test assertion for calibrated whiteouts.
+  - `tests/frontend/sla_and_logic.test.js`: Synced cache buster references to accept `v=3.06`.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+  - Appended `SA-29` to `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Appended `REV-153` to `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.06`.
+* **GitHub Commit Traceability**: (Pending REV-153 commit).
+
+---
+
 ## 📅 September 25, 2026 (Current_2025 BLANK RO UPDATED_v3 Job_Order_Wide Official Template Migration & Precision Calibration)
 
 ### 📋 Current_2025 BLANK RO UPDATED_v3 Job_Order_Wide Template Migration & Precision Calibration (REV-152)

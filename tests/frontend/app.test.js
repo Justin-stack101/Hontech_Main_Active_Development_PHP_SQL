@@ -166,8 +166,8 @@ describe('REV-142 Online Booking Module (frontend)', () => {
             'ROW_Y must follow 8.11pt step starting at 494.6'
         );
         assert.ok(
-            appJs.includes("whiteOut(288.5, ry - 0.5, 62, 6.5);") &&
-            appJs.includes("whiteOut(474.5, ry - 0.5, 48, 6.5);"),
+            appJs.includes("whiteOut(288.5, ry - 0.5, 64.2, 6.5);") &&
+            appJs.includes("whiteOut(474.5, ry - 0.5, 48.2, 6.5);"),
             'Amount columns must mask pre-printed characters cleanly without erasing grid lines'
         );
 

@@ -13962,8 +13962,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextCenter(String(qty), 241.7, ry, 6.0);
                 drawTextRight(price.toFixed(2), 286.0, ry, 6.0);
                 if (amt > 0) {
-                    whiteOut(288.5, ry - 0.5, 62, 6.5);
-                    drawTextRight(amt.toFixed(2), 350.5, ry, 6.0, false);
+                    whiteOut(288.5, ry - 0.5, 64.2, 6.5);
+                    drawTextRight(amt.toFixed(2), 351.6, ry, 6.0, false);
                 }
             });
 
@@ -13979,29 +13979,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextCenter(String(qty), 412.5, ry, 6.0);
                 drawTextRight(price.toFixed(2), 471.5, ry, 6.0);
                 if (amt > 0) {
-                    whiteOut(474.5, ry - 0.5, 48, 6.5);
-                    drawTextRight(amt.toFixed(2), 521.5, ry, 6.0, false);
+                    whiteOut(474.5, ry - 0.5, 48.2, 6.5);
+                    drawTextRight(amt.toFixed(2), 521.4, ry, 6.0, false);
                 }
             });
 
             // Subtotals & Totals (Cleanly mask only the pre-printed characters inside the boxes)
             // Parts Subtotal Box: X=287.2 to 353.5, Y=305.19 to 314.72
-            whiteOut(288.5, 306.0, 63.5, 8.0);
+            whiteOut(288.5, 306.0, 64.2, 8.0);
             if (partsTotal > 0) {
-                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 350.5, 307.2, 6.5, false);
+                drawTextRight(partsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 351.6, 307.2, 6.5, false);
             }
 
             // Materials Subtotal Box: X=473.7 to 523.8, Y=305.19 to 314.72
-            whiteOut(475.0, 306.0, 47.5, 8.0);
+            whiteOut(475.0, 306.0, 47.7, 8.0);
             if (matsTotal > 0) {
-                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.5, 307.2, 6.5, false);
+                drawTextRight(matsTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.4, 307.2, 6.5, false);
             }
 
             // Grand Total Box: X=473.7 to 523.8, Y=297.08 to 305.19
             const grandTotal = partsTotal + matsTotal;
-            whiteOut(475.0, 298.0, 47.5, 6.5);
+            whiteOut(475.0, 298.0, 47.7, 6.5);
             if (grandTotal > 0) {
-                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.5, 299.1, 6.8, true, darkInk);
+                drawTextRight('PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 521.4, 299.1, 6.8, true, darkInk);
             }
 
             // Signatures block: Diagnosed by & Assessed by (Underlines at Y = 278.24)
