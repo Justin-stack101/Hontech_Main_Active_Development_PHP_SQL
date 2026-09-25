@@ -13,7 +13,7 @@
   - 186 automated unit tests passing (`npm test`).
   - XAMPP headers: `tv.html` and `index.html` return `Cache-Control: no-cache`; `app.js?v=` unchanged; API still answers. Headless Chrome: in-app TV frame loads the versioned link and the carry-over list auto-scrolls (0 -> 43 -> 123 -> 159 px).
 * **Cache Busting**: `js/app.js?v=3.51`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `2b58dd6` pushed to `origin/prototype_process`.
 
 ---
 
