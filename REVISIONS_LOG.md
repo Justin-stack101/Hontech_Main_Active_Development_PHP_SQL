@@ -27,6 +27,7 @@
 * **Automated & Manual QA Verification**:
   - 146/146 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the compiled Billing PDF with the screenshot's sample data (Node + pdf-lib, rasterized with pdfplumber at 200/300 dpi) and confirmed: no `^` artifacts, intact underlines and table borders, no label overlaps, and no leftover `0.00` fragments.
+* **Documentation Sync (follow-up)**: Synced SA-26 through SA-34 into `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.xlsx` (it previously stopped at SA-25), extending the Summary formulas, Status dropdown, conditional formatting and filter range from row 151 to row 160; corrected the REV-157 commit hash to `d8a826b` in this log and in `Revisions checklist.csv`.
 * **Cache Busting**: `js/app.js?v=3.11`.
 * **GitHub Commit Traceability**: `ee130e0`.
 
@@ -58,7 +59,7 @@
   - 145/145 automated unit tests passing across 63 test suites (npm.cmd test).
   - Headless image verification confirmed 100% visual alignment of Quotation No, Meta Header, Customer Details, Table Rows, Totals, and Signatures.
 * **Cache Busting**: js/app.js?v=3.10.
-* **GitHub Commit Traceability**: 3e928c1.
+* **GitHub Commit Traceability**: `d8a826b` (corrected from `3e928c1`, a pre-amend hash not present on any branch).
 
 ---
 
