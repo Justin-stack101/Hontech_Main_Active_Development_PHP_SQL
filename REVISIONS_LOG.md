@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (TV Monitor Slides: Responsive & Scrollable)
+
+### 📺 TV Slides 1-3 Responsive, Scrollable, No Overlapping Text (REV-195)
+* **Objective & Context**: The user reported poor UI behaviour and responsiveness on the TV monitor slides 1-3 and asked that every area be scrollable. Review found absolutely-positioned slides with fixed layouts (2-column bay grid forced to full height so bay text collided with the divider, fixed 4 lane columns, fixed 176px carry-over row), no scrolling on slide 1, a header that overflowed on narrow screens, and auto-rotation that flipped slides while someone was reading.
+* **Core Changes Made**:
+  - `frontend/tv.html`: slides now fill the space in normal flow inside `#tv-main`. Slide 1: the bay grid is the scroll area, 1 / 2 / 3 columns (phone / tablet-laptop / large TV), rows sized to their content and stretched to fill (`minmax(max-content, 1fr)`), long vehicle and customer names truncate. Slide 2: In Service & In Queue and Ready for Release sit side by side on large screens and stack on small ones; carry-over grid 1 / 2 / 3 columns; each list scrolls. Slide 3: lanes 1 / 2 / 4 columns, each lane list scrolls. New `.tv-scroll` class (touch, wheel, contained overscroll); cards use `min-w-0`/truncate so nothing overlaps. The header wraps on narrow screens, button labels hide below `md`, titles scale by screen size, the alert plaque fits phones, and the page itself never scrolls sideways (`overflow: clip`, decorative glows clipped). Auto-rotation pauses for 20 seconds after a scroll, touch, click or key press.
+  - `frontend/index.html`: Incremented cache buster to v=3.48.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-154; added v=3.48 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-71 test row.
+  - `Revisions checklist.csv`: Appended REV-195 row.
+* **Automated & Manual QA Verification**:
+  - 183 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome, 22/22, with 48 client-side simulated vehicles with long names (nothing saved) at 1920x1080, 1366x768, 1024x768 and 390x844: no sideways page scroll, header fits, slide inside the screen, no overlapping or clipped bay text, slide 1 scrolls (or all bays fit), slide 2 lists scroll, slide 3 lanes scroll; a real mouse-wheel scroll moves the bay grid and holds rotation, which resumes after 20 seconds. Regression: TV flow 9/9, REV-187 display 12/12 (selectors updated for the new plate classes and the REV-191 drawer removal), announcements 8/8.
+* **Cache Busting**: `js/app.js?v=3.48`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Customer Lookup: Useful Service_History Records)
 
 ### 🧾 Service_History Records Rebuilt with Real RO Data and Back-Job Warranty (REV-194)
