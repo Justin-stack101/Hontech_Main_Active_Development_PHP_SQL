@@ -3646,18 +3646,18 @@
                                     <p class="mt-0.5 text-xs text-gray-500">Multi-point vehicle intake inspection</p>
                                 </div>
 
-                                <!-- Quick Actions -->
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="save" class="w-3.5 h-3.5 text-gray-500"></i> Save Draft
+                                <!-- Quick Actions (original brand colors, current button shape) -->
+                                <div id="chk-quick-actions" class="flex flex-wrap items-center gap-2">
+                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="h-8 px-3 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-md transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
                                     </button>
-                                    <button type="button" onclick="setAllChecklistItems('OK')" class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="check-check" class="w-3.5 h-3.5 text-gray-500"></i> All Pass
+                                    <button type="button" onclick="setAllChecklistItems('OK')" class="h-8 px-3 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-md transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="check-check" class="w-3.5 h-3.5"></i> All Pass
                                     </button>
-                                    <button type="button" onclick="resetWorkbookToTemplate()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-gray-500"></i> Reset
+                                    <button type="button" onclick="resetWorkbookToTemplate()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-md transition flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
                                     </button>
-                                    <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-gray-900 hover:bg-gray-800 border border-gray-900 rounded-md transition flex items-center gap-1.5 cursor-pointer">
+                                    <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-md transition flex items-center gap-1.5 cursor-pointer">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
                                 </div>
@@ -7694,7 +7694,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.16"></script>
+    <script src="js/app.js?v=3.17"></script>
 </body>
 
 </html>

@@ -1,3 +1,25 @@
+## 📅 September 25, 2026 (CheckList Studio Quick Actions Original Colors Restored)
+
+### 📋 CheckList Studio Quick Actions Original Colors Restored (REV-164)
+* **Objective & Context**: The user approved the REV-163 professional design and asked to restore the original colors of the four CheckList Studio header buttons only: Save Draft, All Pass, Reset and Export .xlsx.
+* **Core Changes Made**:
+  - `frontend/index.html`: Restored the pre-REV-163 color classes on the Quick Actions while keeping the current button shape (`h-8 px-3 text-xs font-medium rounded-md`):
+    - Save Draft and All Pass: `text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border-emerald-200`.
+    - Reset: `text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border-gray-200`.
+    - Export .xlsx: `text-white bg-emerald-600 hover:bg-emerald-700 border-emerald-700`.
+    - Icons inherit the button text color again; added `id="chk-quick-actions"` to the button group. The rest of the REV-163 neutral design is unchanged.
+  - `frontend/index.html`: Incremented cache buster to v=3.17.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-123 asserting each Quick Action's original colors and current shape; AUT-FRONT-122 now excludes the Quick Actions from its neutral-palette check; added v=3.17 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-40 test row (workbook ranges extended to row 166).
+  - `Revisions checklist.csv`: Appended REV-164 row.
+* **Automated & Manual QA Verification**:
+  - 152/152 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the editor header in headless Chrome and confirmed the four buttons show their original colors in the current shape.
+* **Cache Busting**: `js/app.js?v=3.17`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (CheckList Studio Professional Neutral Redesign)
 
 ### 📋 CheckList Studio Professional Neutral Redesign & Fuel Selector Fix (REV-163)
