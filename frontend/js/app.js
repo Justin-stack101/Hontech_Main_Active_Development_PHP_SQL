@@ -10709,26 +10709,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             
             const totalCountEl = document.getElementById('lookup-total-count');
             if (totalCountEl) {
-                totalCountEl.innerText = `${totalCustomers} Customers (${safeJobs.length} Orders)`;
+                totalCountEl.innerText = `${totalCustomers} Customers · ${safeJobs.length} Orders`;
             }
 
             filterCustomerLookup();
         }
 
         let currentLookupFilterTab = 'all';
+        // REV-193: Customer Lookup uses the RO Excel Studio sheet-tab design
+        const LOOKUP_TAB_ACTIVE = 'px-3.5 py-1.5 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs';
+        const LOOKUP_TAB_INACTIVE = 'px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer';
+        function paintLookupTab(el, active) {
+            if (!el) return;
+            el.className = active ? LOOKUP_TAB_ACTIVE : LOOKUP_TAB_INACTIVE;
+            const caret = el.querySelector('span:last-child');
+            if (caret) caret.className = active ? 'text-[10px] text-[#1a73e8] leading-none' : 'text-[10px] text-[#5f6368] leading-none';
+        }
         function setLookupFilterTab(tab) {
             currentLookupFilterTab = tab;
-            const pills = ['all', 'regulars', 'backjobs', 'duepms'];
-            pills.forEach(p => {
-                const el = document.getElementById(`lookup-pill-${p}`);
-                if (el) {
-                    if (p === tab) {
-                        el.className = "px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5";
-                    } else {
-                        el.className = "px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-gray-200 transition cursor-pointer flex items-center gap-1.5";
-                    }
-                }
-            });
+            ['all', 'regulars', 'backjobs', 'duepms'].forEach(p => paintLookupTab(document.getElementById(`lookup-pill-${p}`), p === tab));
             filterCustomerLookup();
         }
         window.setLookupFilterTab = setLookupFilterTab;
@@ -10827,7 +10826,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 html += `
                     <div onclick="selectCustomerForLookup('${encodeURIComponent(cust.key)}')" 
                         data-cust-key="${encodeURIComponent(cust.key)}"
-                        class="lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group ${isSelected ? 'bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300'}">
+                        class="lookup-item-card p-3.5 rounded-lg border transition-all cursor-pointer select-none space-y-2 relative group ${isSelected ? 'bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300'}">
                         
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex items-center gap-2.5 min-w-0">
@@ -10873,22 +10872,21 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
         }
 
+        // REV-193: dossier sheets (Customer_Details | Service_History)
+        function switchLookupDossierTab(key) {
+            [['details', 'lookup-dtab-details', 'lookup-dview-details'], ['history', 'lookup-dtab-history', 'lookup-dview-history']].forEach(([k, tabId, viewId]) => {
+                paintLookupTab(document.getElementById(tabId), k === key);
+                document.getElementById(viewId)?.classList.toggle('hidden', k !== key);
+            });
+        }
+        window.switchLookupDossierTab = switchLookupDossierTab;
+
         function clearCustomerLookupSearch() {
             const searchInput = document.getElementById('lookup-search-input');
             const branchFilter = document.getElementById('lookup-branch-filter');
             if (searchInput) searchInput.value = '';
             if (branchFilter) branchFilter.value = 'all';
-            currentLookupFilterTab = 'all';
-            const pills = ['all', 'regulars', 'backjobs', 'duepms'];
-            pills.forEach(p => {
-                const el = document.getElementById(`lookup-pill-${p}`);
-                if (el) {
-                    el.className = p === 'all' 
-                        ? "px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-slate-900 text-white shadow-2xs transition cursor-pointer flex items-center gap-1.5"
-                        : "px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gray-100 text-gray-700 hover:bg-gray-200 transition cursor-pointer flex items-center gap-1.5";
-                }
-            });
-            filterCustomerLookup();
+            setLookupFilterTab('all');
         }
 
         function selectCustomerForLookup(rawCustomerKey, reFilterList = true) {
@@ -11001,10 +10999,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('dossier-loyalty-badge')) {
                 const badge = document.getElementById('dossier-loyalty-badge');
                 if (cust.jobs.length >= 2) {
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-900 text-white shadow-xs flex items-center gap-1";
-                    badge.innerHTML = `<i data-lucide="award" class="w-3 h-3 text-amber-400"></i> Regular (${cust.jobs.length} Visits)`;
+                    badge.className = "px-2.5 py-1 rounded-md text-[10.5px] font-medium bg-white text-gray-900 border border-gray-400 flex items-center gap-1";
+                    badge.innerHTML = `<i data-lucide="award" class="w-3 h-3 text-amber-600"></i> Regular (${cust.jobs.length} Visits)`;
                 } else {
-                    badge.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1";
+                    badge.className = "px-2.5 py-1 rounded-md text-[10.5px] font-medium bg-white text-gray-700 border border-gray-400 flex items-center gap-1";
                     badge.innerHTML = `<i data-lucide="user" class="w-3 h-3 text-slate-500"></i> Initial Visit Record`;
                 }
             }
@@ -11020,6 +11018,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (document.getElementById('dossier-history-count')) {
                 document.getElementById('dossier-history-count').innerText = `${cust.jobs.length} Orders`;
             }
+            const historyTabCount = document.getElementById('lookup-dtab-history-count');
+            if (historyTabCount) historyTabCount.innerText = `(${cust.jobs.length})`;
 
             // Calculate Days Ago for Last Release
             let daysAgoText = 'Recent';
@@ -11116,7 +11116,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     }
 
                     historyHTML += `
-                        <div class="bg-white border border-slate-200 hover:border-slate-400 p-4 md:p-4.5 rounded-2xl shadow-xs hover:shadow-md transition-all space-y-3">
+                        <div class="bg-white border border-gray-200 hover:border-gray-400 p-4 rounded-lg transition-all space-y-3">
                             <!-- Top Row: Service Category & Date + Status & Action Buttons -->
                             <div class="flex items-center justify-between gap-3 flex-wrap">
                                 <div class="flex items-center gap-2 flex-wrap">

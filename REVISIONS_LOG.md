@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Customer Lookup: RO Excel Studio Tab Design)
+
+### 🗂️ Customer Lookup Redesigned with the RO Excel Studio Sheet Tabs (REV-193)
+* **Objective & Context**: The user asked to improve the Customer Lookup design using the RO Excel Studio multiple-tab design as inspiration.
+* **Core Changes Made**:
+  - `frontend/index.html`: the filter pills became a sticky Sheets-style tab bar (All_Customers, Regulars, Back_Jobs, Due_for_PMS) with the customer/order count on the right, identical in style to the studio's tab bar. Search and branch controls moved into a studio card with a gray section head ("Search Customer Records") and studio inputs. "Matching Customers" and the history card use gray section heads. The dossier gained its own sheet tabs, Customer_Details (RO customer details box, actions, visit metrics) and Service_History (n) (history logs, taller list). The dark gradient contact bar became the gray studio band; action buttons use the studio button style (no emojis); cards are flat (`rounded-lg`, no heavy shadows).
+  - `frontend/js/app.js`: `paintLookupTab()` shares the studio active/inactive tab classes; `setLookupFilterTab()` and `clearCustomerLookupSearch()` use it; new `switchLookupDossierTab()`; the Service_History tab shows the order count; neutral loyalty badge; flatter list and history cards. Filtering, search and actions are unchanged.
+  - `frontend/index.html`: Incremented cache buster to v=3.46.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-152; added v=3.46 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-69 test row.
+  - `Revisions checklist.csv`: Appended REV-193 row.
+* **Automated & Manual QA Verification**:
+  - 181 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome, 5/5 (SA login, 39 customers): All_Customers active with the list and count; dossier opens on Customer_Details with the history count in the tab; Service_History shows the history sheet with matching cards; Regulars tab activates and filters; Clear returns to All_Customers.
+* **Cache Busting**: `js/app.js?v=3.46`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Simple TV Weather Box)
 
 ### 🌤️ TV Weather Box Back to the Simple Design (REV-192)
