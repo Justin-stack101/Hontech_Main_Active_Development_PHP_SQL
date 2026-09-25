@@ -1,3 +1,23 @@
+## 📅 September 25, 2026 (TV Monitor Phase 1: Smart TV Page Loads on XAMPP)
+
+### 📺 TV Monitor Phase 1: Smart TV Page Loads on XAMPP and Offline (REV-185)
+* **Objective & Context**: First phase of plan HONTECH-PLAN-TV-MONITOR-2026-V1.0 (approved). The review found the Smart TV page could not work on the XAMPP setup at all.
+* **Root Cause**: `tv.html` called `/api/tv/session`, `/api/tv/verify-pin` and `/api/jobs/tv` from the server root, which returns 404 when the app runs in the XAMPP project folder (PIN check and data load always failed with "Server connection error"). The TV Broadcast Hub handed out `<base>/tv.html` (404; the page is `frontend/tv.html`). The page also loaded Tailwind and Lucide from internet CDNs, so a TV without internet showed an unstyled page.
+* **Core Changes Made**:
+  - `frontend/tv.html`: `TV_API_BASE` / `tvApiUrl()` resolve the API like the main app's `apiRequest()` (`<project>/backend/index.php/api`), used by every TV request; Tailwind and Lucide load from the local copies (`js/tailwind.cdn.js`, `js/vendor/lucide.min.js`).
+  - `frontend/js/app.js`: `HontechTVBroadcastManager.getTVUrls()` builds `<project>/frontend/tv.html`.
+  - `frontend/index.html`: Incremented cache buster to v=3.38.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-144; added v=3.38 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-61 test row.
+  - `Revisions checklist.csv`: Appended REV-185 row.
+* **Automated & Manual QA Verification**:
+  - 173 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome on the live XAMPP URL `.../frontend/tv.html`: API base resolved to the project folder, PIN accepted, active TV screen shown with 39 live jobs, local Tailwind and Lucide loaded; screenshot checked.
+* **Cache Busting**: `js/app.js?v=3.38`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Excel Import Removed)
 
 ### 🗂️ RO Excel Studio: Import .xlsx Button and Logic Removed (REV-184)

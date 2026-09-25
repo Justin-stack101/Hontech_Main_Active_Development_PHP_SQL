@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HonTech AutoCenter — Smart TV Service Monitor</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (local copy, REV-185: the TV keeps working without internet on the shop LAN) -->
+    <script src="js/tailwind.cdn.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -27,8 +27,8 @@
             }
         }
     </script>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Lucide Icons (local copy) -->
+    <script src="js/vendor/lucide.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
         
@@ -445,6 +445,18 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script>
+        // REV-185: API base resolved like the main app (works under an XAMPP project folder and php -S)
+        const TV_API_BASE = (() => {
+            const path = window.location.pathname;
+            const root = path.includes('/frontend')
+                ? path.substring(0, path.lastIndexOf('/frontend'))
+                : path.replace(/\/[^/]*$/, '');
+            return root + '/backend/index.php/api';
+        })();
+        function tvApiUrl(route) {
+            return TV_API_BASE + String(route).replace(/^\/api/, '');
+        }
+
         // Global TV State
         let currentPin = '';
         let currentSlide = 0;
@@ -672,7 +684,7 @@
             errEl.innerText = 'Verifying PIN...';
 
             try {
-                const res = await fetch('/api/tv/verify-pin', {
+                const res = await fetch(tvApiUrl('/api/tv/verify-pin'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ pin })
@@ -709,7 +721,7 @@
             if (standbyPollInterval) return;
             standbyPollInterval = setInterval(async () => {
                 try {
-                    const res = await fetch('/api/tv/session');
+                    const res = await fetch(tvApiUrl('/api/tv/session'));
                     const session = await res.json();
                     if (session && session.active) {
                         clearInterval(standbyPollInterval);
@@ -753,7 +765,7 @@
         // Check broadcast session status
         async function checkBroadcastSession() {
             try {
-                const res = await fetch('/api/tv/session');
+                const res = await fetch(tvApiUrl('/api/tv/session'));
                 const session = await res.json();
 
                 if (!session.active) {
@@ -895,7 +907,7 @@
         // Fetch TV Jobs
         async function fetchTVJobs() {
             try {
-                const res = await fetch('/api/jobs/tv');
+                const res = await fetch(tvApiUrl('/api/jobs/tv'));
                 const jobs = await res.json();
                 if (Array.isArray(jobs)) {
                     tvJobs = jobs;

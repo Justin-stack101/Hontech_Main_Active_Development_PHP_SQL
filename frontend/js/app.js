@@ -8272,10 +8272,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const host = window.location.hostname || 'localhost';
                 const port = window.location.port ? `:${window.location.port}` : '';
                 const protocol = window.location.protocol || 'http:';
-                const basePath = window.location.pathname.replace(/\/frontend(\/.*)?$/, '');
-                const cleanBase = basePath ? basePath.replace(/\/+$/, '') : '';
-                
-                const directUrl = `${protocol}//${host}${port}${cleanBase}/tv.html`;
+                // REV-185: the TV page lives in /frontend (the old ${base}/tv.html link returned 404 on XAMPP)
+                const path = window.location.pathname;
+                const root = path.includes('/frontend') ? path.substring(0, path.lastIndexOf('/frontend')) : path.replace(/\/[^/]*$/, '');
+                const directUrl = `${protocol}//${host}${port}${root}/frontend/tv.html`;
                 const autoLoginUrl = `${directUrl}?pin=${this.session.pin || '8492'}`;
                 return { directUrl, autoLoginUrl };
             },
