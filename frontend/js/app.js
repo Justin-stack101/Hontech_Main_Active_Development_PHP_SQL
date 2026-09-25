@@ -12877,17 +12877,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             syncJobOrderFieldsToBilling();
             syncJobOrderFieldsToChecklist();
 
-            // Seed initial rows if empty
-            if (window.form13Parts.length === 0 && window.form13Materials.length === 0 && !window.form13Initialized) {
-                window.form13Parts = [
-                    { id: 1, desc: 'Engine Oil Filter (OEM)', qty: 1, price: 450.00 },
-                    { id: 2, desc: 'Fully Synthetic Motor Oil (5W-30 / 4L)', qty: 1, price: 1850.00 }
-                ];
-                window.form13Materials = [
-                    { id: 101, desc: 'Brake & Parts Cleaner Spray (500ml)', qty: 1, price: 350.00 },
-                    { id: 102, desc: 'Engine Flush Treatment (300ml)', qty: 1, price: 480.00 }
-                ];
-            }
+            // REV-200: the SA does not fill parts or materials on the Job Order (the parts area stays blank)
+            window.form13Parts = [];
+            window.form13Materials = [];
 
             // Responsive debounced PDF compiler for live typing connection (REV-111)
             let f13PdfDebounceTimer = null;
@@ -12906,7 +12898,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 syncJobOrderFieldsToQuote();
                 syncJobOrderFieldsToBilling();
                 syncJobOrderFieldsToChecklist();
-                syncJobOrderItemsToQuoteAndBilling();
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
@@ -13029,226 +13020,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.initForm13Studio = initForm13Studio;
 
         // Auto-cascading synchronization of line items across Job Order, Quotation, and Billing
-        function syncJobOrderItemsToQuoteAndBilling() {
-            const parts = Array.isArray(window.form13Parts) ? window.form13Parts : [];
-            const materials = Array.isArray(window.form13Materials) ? window.form13Materials : [];
 
-            // 1. Mirror to Quotation items with confirmed 0.00 labor default
-            const mirroredQuoteItems = [];
-            parts.forEach((p, idx) => {
-                mirroredQuoteItems.push({
-                    id: 'p-' + (p.id || idx + 1),
-                    desc: p.desc || '',
-                    qty: Number(p.qty) || 1,
-                    frt: 0.2,
-                    labor: 0.00,
-                    parts: Number(p.price) || 0,
-                    materials: 0.00,
-                    price: Number(p.price) || 0
-                });
-            });
-            materials.forEach((m, idx) => {
-                mirroredQuoteItems.push({
-                    id: 'm-' + (m.id || idx + 1),
-                    desc: m.desc || '',
-                    qty: Number(m.qty) || 1,
-                    frt: 0.1,
-                    labor: 0.00,
-                    parts: 0.00,
-                    materials: Number(m.price) || 0,
-                    price: Number(m.price) || 0
-                });
-            });
-
-            window.form23Items = mirroredQuoteItems;
-            if (typeof renderForm23Rows === 'function') renderForm23Rows();
-            if (typeof calcForm23Totals === 'function') calcForm23Totals();
-            if (typeof syncForm23Canvas === 'function') syncForm23Canvas();
-
-            // 2. Mirror to Billing items with confirmed 0.00 labor default
-            const mirroredBillItems = [];
-            parts.forEach(p => {
-                mirroredBillItems.push({
-                    desc: p.desc || '',
-                    qty: Number(p.qty) || 1,
-                    labor: 0.00,
-                    parts: Number(p.price) || 0,
-                    materials: 0.00,
-                    price: Number(p.price) || 0
-                });
-            });
-            materials.forEach(m => {
-                mirroredBillItems.push({
-                    desc: m.desc || '',
-                    qty: Number(m.qty) || 1,
-                    labor: 0.00,
-                    parts: 0.00,
-                    materials: Number(m.price) || 0,
-                    price: Number(m.price) || 0
-                });
-            });
-
-            window.billingItems = mirroredBillItems;
-            if (typeof renderBillingRows === 'function') renderBillingRows();
-            if (typeof calcBillingTotals === 'function') calcBillingTotals();
-            if (typeof syncBillingCanvas === 'function') syncBillingCanvas();
-        }
-        window.syncJobOrderItemsToQuoteAndBilling = syncJobOrderItemsToQuoteAndBilling;
-
-        function addForm13PartRow(desc = '', qty = 1, price = 0) {
-            window.form13Parts.push({
-                id: Date.now() + Math.random(),
-                desc: desc,
-                qty: Number(qty) || 1,
-                price: Number(price) || 0
-            });
-            renderForm13Rows();
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(150);
-        }
-        window.addForm13PartRow = addForm13PartRow;
-
-        function addForm13MaterialRow(desc = '', qty = 1, price = 0) {
-            window.form13Materials.push({
-                id: Date.now() + Math.random(),
-                desc: desc,
-                qty: Number(qty) || 1,
-                price: Number(price) || 0
-            });
-            renderForm13Rows();
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(150);
-        }
-        window.addForm13MaterialRow = addForm13MaterialRow;
-
-        function removeForm13PartRow(index) {
-            window.form13Parts.splice(index, 1);
-            renderForm13Rows();
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(150);
-        }
-        window.removeForm13PartRow = removeForm13PartRow;
-
-        function removeForm13MaterialRow(index) {
-            window.form13Materials.splice(index, 1);
-            renderForm13Rows();
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(150);
-        }
-        window.removeForm13MaterialRow = removeForm13MaterialRow;
-
-        function updateForm13PartField(index, field, value) {
-            if (!window.form13Parts[index]) return;
-            if (field === 'qty' || field === 'price') {
-                window.form13Parts[index][field] = Number(value) || 0;
-            } else {
-                window.form13Parts[index][field] = value;
-            }
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(250);
-        }
-        window.updateForm13PartField = updateForm13PartField;
-
-        function updateForm13MaterialField(index, field, value) {
-            if (!window.form13Materials[index]) return;
-            if (field === 'qty' || field === 'price') {
-                window.form13Materials[index][field] = Number(value) || 0;
-            } else {
-                window.form13Materials[index][field] = value;
-            }
-            calcForm13Totals();
-            syncForm13Canvas();
-            syncJobOrderItemsToQuoteAndBilling();
-            if (typeof saveWorkbookDraftOffline === 'function') saveWorkbookDraftOffline(true);
-            scheduleFormStudioPdfRefresh(250);
-        }
-        window.updateForm13MaterialField = updateForm13MaterialField;
-
+        // REV-200: the Job Order has no parts/materials editor (not SA-controlled); kept for existing callers
         function renderForm13Rows() {
-            // Render Parts Table Body in Editor
-            const partsBody = document.getElementById('f13-parts-table-body');
-            if (partsBody) {
-                if (window.form13Parts.length === 0) {
-                    partsBody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-gray-400 italic text-[11px]">No parts added. Click "+ Add Part Item" to begin.</td></tr>`;
-                } else {
-                    partsBody.innerHTML = window.form13Parts.map((part, idx) => {
-                        const amount = (Number(part.qty || 0) * Number(part.price || 0)).toFixed(2);
-                        return `
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="py-1.5 px-2">
-                                    <input type="text" value="${escapeHtml(part.desc || '')}" oninput="updateForm13PartField(${idx}, 'desc', this.value)" placeholder="Part Description..." class="w-full bg-transparent border-b border-gray-200 focus:border-gray-900 font-semibold text-gray-800 outline-none text-xs py-0.5">
-                                </td>
-                                <td class="py-1.5 px-2 text-center">
-                                    <input type="number" min="1" step="1" value="${part.qty}" oninput="updateForm13PartField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
-                                </td>
-                                <td class="py-1.5 px-2 text-right">
-                                    <input type="number" min="0" step="0.01" value="${part.price}" oninput="updateForm13PartField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
-                                </td>
-                                <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
-                                    ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                </td>
-                                <td class="py-1.5 px-2 text-center">
-                                    <button type="button" onclick="removeForm13PartRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 rounded transition cursor-pointer" title="Remove Item">
-                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            }
-
-            // Render Materials Table Body in Editor
-            const matsBody = document.getElementById('f13-materials-table-body');
-            if (matsBody) {
-                if (window.form13Materials.length === 0) {
-                    matsBody.innerHTML = `<tr><td colspan="5" class="py-3 text-center text-gray-400 italic text-[11px]">No materials added. Click "+ Add Material Item" to begin.</td></tr>`;
-                } else {
-                    matsBody.innerHTML = window.form13Materials.map((mat, idx) => {
-                        const amount = (Number(mat.qty || 0) * Number(mat.price || 0)).toFixed(2);
-                        return `
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="py-1.5 px-2">
-                                    <input type="text" value="${escapeHtml(mat.desc || '')}" oninput="updateForm13MaterialField(${idx}, 'desc', this.value)" placeholder="Material / Consumable..." class="w-full bg-transparent border-b border-gray-200 focus:border-gray-900 font-semibold text-gray-800 outline-none text-xs py-0.5">
-                                </td>
-                                <td class="py-1.5 px-2 text-center">
-                                    <input type="number" min="1" step="1" value="${mat.qty}" oninput="updateForm13MaterialField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
-                                </td>
-                                <td class="py-1.5 px-2 text-right">
-                                    <input type="number" min="0" step="0.01" value="${mat.price}" oninput="updateForm13MaterialField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
-                                </td>
-                                <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
-                                    ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                </td>
-                                <td class="py-1.5 px-2 text-center">
-                                    <button type="button" onclick="removeForm13MaterialRow(${idx})" class="p-1 text-gray-400 hover:text-red-600 rounded transition cursor-pointer" title="Remove Item">
-                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            }
-
-            if (typeof lucide !== 'undefined' && lucide.createIcons) {
-                lucide.createIcons();
-            }
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
         }
 
         function calcForm13Totals() {
@@ -14966,17 +14741,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (concernEl) concernEl.value = 'Periodic Maintenance Service (40K KM interval). Customer requests oil change, spark plug replacement, brake cleaning, and multi-point safety inspection.';
                 if (diagEl) diagEl.value = 'Completed engine compression check: OK. Brake pad thickness at 65% front, 70% rear. Suspension bushings intact. Recommend synthetic motor oil renewal and engine filter replacement.';
                 
-                window.form13Parts = [
-                    { id: 1, desc: 'Fully Synthetic Motor Oil (5W-30 / 4L)', qty: 1, price: 1850.00 },
-                    { id: 2, desc: 'OEM Engine Oil Filter', qty: 1, price: 450.00 },
-                    { id: 3, desc: 'Iridium Spark Plugs (Set of 4)', qty: 1, price: 1600.00 },
-                    { id: 4, desc: 'Cabin Air Filter', qty: 1, price: 550.00 }
-                ];
-                window.form13Materials = [
-                    { id: 101, desc: 'Engine Flush Treatment (300ml)', qty: 1, price: 480.00 },
-                    { id: 102, desc: 'Brake Cleaner Spray (500ml)', qty: 1, price: 350.00 },
-                    { id: 103, desc: 'Windshield Washer Fluid', qty: 1, price: 120.00 }
-                ];
             } else if (presetType === 'brakes') {
                 if (catEl) catEl.value = 'Brakes';
                 if (!nameEl.value) nameEl.value = 'Maria Santos';
@@ -14986,15 +14750,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (concernEl) concernEl.value = 'High-pitch squealing noise from front wheels during braking. Minor vibration felt on steering wheel upon heavy deceleration.';
                 if (diagEl) diagEl.value = 'Front brake pads worn down to 2.5mm (critical). Front brake rotors have minor scoring and runout. Recommend rotor resurfacing and ceramic brake pad replacement.';
 
-                window.form13Parts = [
-                    { id: 1, desc: 'Ceramic Front Brake Pads (Set)', qty: 1, price: 2400.00 },
-                    { id: 2, desc: 'Rear Brake Shoe Set', qty: 1, price: 1650.00 }
-                ];
-                window.form13Materials = [
-                    { id: 101, desc: 'Brake Fluid DOT 4 (1L)', qty: 1, price: 520.00 },
-                    { id: 102, desc: 'Brake Caliper High-Temp Grease', qty: 1, price: 280.00 },
-                    { id: 103, desc: 'Brake Cleaner Aerosol (500ml)', qty: 2, price: 350.00 }
-                ];
             } else if (presetType === 'aircon') {
                 if (catEl) catEl.value = 'Aircon';
                 if (!nameEl.value) nameEl.value = 'Antonio Luna';
@@ -15004,15 +14759,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (concernEl) concernEl.value = 'Air conditioning blowing warm air during traffic idling. Musty odor detected from blower vents upon startup.';
                 if (diagEl) diagEl.value = 'Low refrigerant pressure detected (25 psi low side). Evaporator core has minor dirt buildup. Expansion valve and condenser functioning normally. Recommend full AC flush, vacuum, and recharge.';
 
-                window.form13Parts = [
-                    { id: 1, desc: 'Cabin AC Charcoal Filter', qty: 1, price: 650.00 },
-                    { id: 2, desc: 'AC Compressor O-Ring Seal Kit', qty: 1, price: 380.00 }
-                ];
-                window.form13Materials = [
-                    { id: 101, desc: 'R134a Refrigerant Gas Recharge (1kg)', qty: 1, price: 1250.00 },
-                    { id: 102, desc: 'PAG 46 Compressor Oil (250ml)', qty: 1, price: 450.00 },
-                    { id: 103, desc: 'Evaporator Disinfectant Treatment', qty: 1, price: 420.00 }
-                ];
             }
 
             renderForm13Rows();
@@ -15358,14 +15104,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Trigger bidirectional sync and canvas renders
             if (sheetKey === 'form23' || sheetKey === 'quote') {
                 syncJobOrderFieldsToQuote();
-                syncJobOrderItemsToQuoteAndBilling();
                 renderForm23Rows();
                 calcForm23Totals();
                 syncForm23Canvas();
                 generateQuotePDF(false);
             } else if (sheetKey === 'billing') {
                 syncJobOrderFieldsToBilling();
-                syncJobOrderItemsToQuoteAndBilling();
                 renderBillingRows();
                 calcBillingTotals();
                 syncBillingCanvas();
@@ -17912,8 +17656,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     quoteJobRef: getVal('f23-input-job-no'),
                     billingJobRef: getVal('bill-input-job-no'),
                     billingQuoteRef: getVal('bill-input-quote-no'),
-                    parts: window.form13Parts || [],
-                    materials: window.form13Materials || [],
                     quoteItems: window.form23Items || [],
                     billingItems: window.billingItems || [],
                     checklistPoints: window.checklistInspectionPoints || [],
@@ -17971,8 +17713,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (draft.billingJobRef) setVal('bill-input-job-no', draft.billingJobRef);
                 if (draft.billingQuoteRef) setVal('bill-input-quote-no', draft.billingQuoteRef);
 
-                if (Array.isArray(draft.parts)) window.form13Parts = draft.parts;
-                if (Array.isArray(draft.materials)) window.form13Materials = draft.materials;
+                // REV-200: parts/materials in an older draft are ignored (not SA-controlled)
+                window.form13Parts = [];
+                window.form13Materials = [];
                 if (Array.isArray(draft.quoteItems)) window.form23Items = draft.quoteItems;
                 if (Array.isArray(draft.billingItems)) window.billingItems = draft.billingItems;
                 if (Array.isArray(draft.checklistPoints)) window.checklistInspectionPoints = canonicalizeChecklistPoints(draft.checklistPoints);
@@ -18302,9 +18045,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     (window.form13Parts || []).forEach(p => pTotal += (Number(p.qty) || 1) * (Number(p.price) || 0));
                     let mTotal = 0;
                     (window.form13Materials || []).forEach(m => mTotal += (Number(m.qty) || 1) * (Number(m.price) || 0));
-                    setCell(sheet1Doc, 'G53', pTotal, true);
-                    setCell(sheet1Doc, 'K53', mTotal, true);
-                    setCell(sheet1Doc, 'K54', pTotal + mTotal, true);
+                    if (pTotal) setCell(sheet1Doc, 'G53', pTotal, true);
+                    if (mTotal) setCell(sheet1Doc, 'K53', mTotal, true);
+                    if (pTotal + mTotal) setCell(sheet1Doc, 'K54', pTotal + mTotal, true);
 
                     // Personnel & Signatures (Exact template lines above titles)
                     // Row 53: Above C54 (Auto Mechanic) & I54 (Parts/Materials Controller)

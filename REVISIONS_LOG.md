@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Job Order: Parts & Materials Editor Removed)
+
+### 🧰 Job Order Tab: Parts & Materials Tables Removed (Not SA-Controlled) (REV-200)
+* **Objective & Context**: The user asked to remove the Parts Repeater Table and the Materials & Consumables Repeater from the Job Order tab because the Service Advisor has no authority over them. Review found that the Job Order parts/materials also overwrote the Quotation and Billing item lists on every Job Order keystroke and every switch to those tabs, and that sample parts were seeded into every new Job Order.
+* **Core Changes Made**:
+  - `frontend/index.html`: removed the Parts Repeater Table and Materials & Consumables Repeater cards (fast presets, add/remove rows, subtotals) and the "Estimated Job Order Total (Parts + Materials)" banner; the Service Advisor / Mechanic / Assessor / Manager signatories stay.
+  - `frontend/js/app.js`: removed the sample parts, the parts/materials of the PMS / Brakes / Aircon quick presets (their concern and diagnosis text stay), the add/remove/update row functions and `syncJobOrderItemsToQuoteAndBilling()`; Quotation and Billing keep their own items (header fields such as the customer name still copy from the Job Order); parts/materials in an older saved draft are ignored and no longer saved; the Excel export leaves the parts/materials total cells (G53, K53, K54) blank when empty. The Job Order PDF and Excel keep the parts area blank for the parts department.
+  - `frontend/index.html`: Incremented cache buster to v=3.53.
+  - `tests/frontend/sla_and_logic.test.js` / `tests/frontend/app.test.js`: Added AUT-FRONT-159; AUT-FRONT-91, AUT-FRONT-116 and AUT-FRONT-130 updated for the removed editor (Job Order now has 5 section headers); added v=3.53 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-76 test row.
+  - `Revisions checklist.csv`: Appended REV-200 row.
+* **Automated & Manual QA Verification**:
+  - 188 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome 8/8: Job Order tab has no parts/materials tables, presets or totals; an old draft with parts loads with none; signatories present; Quotation and Billing items (Front Brake Pads) survive Job Order typing and tab switches while the customer name still copies; Job Order PDF builds; exported Excel has blank parts/materials rows and totals (D27-K27, G53, K53, K54) with the customer name filled.
+* **Cache Busting**: `js/app.js?v=3.53`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Excel Claim Stub Rows)
 
 ### 🧾 Excel Export: Claim Stub Plate/Model and Contact Fixed (REV-199)

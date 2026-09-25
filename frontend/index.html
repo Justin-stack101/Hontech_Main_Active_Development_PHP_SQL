@@ -2868,115 +2868,8 @@
                             </div>
                         </div>
 
-                        <!-- Dynamic Parts Repeater Card -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
-                                <div>
-                                    <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
-                                        <i data-lucide="package" class="w-4 h-4 text-gray-400"></i> Parts Repeater Table
-                                    </span>
-                                    <p class="text-[10.5px] text-gray-400 font-medium">Replaced components & mechanical parts</p>
-                                </div>
-                                <button type="button" onclick="addForm13PartRow()" class="h-8 px-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Part Item
-                                </button>
-                            </div>
-
-                            <!-- 1-Click Fast Presets -->
-                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
-                                <button type="button" onclick="addForm13PartRow('Engine Oil Filter', 1, 450)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Oil Filter (₱450)</button>
-                                <button type="button" onclick="addForm13PartRow('Brake Pads (Front Set)', 1, 1850)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Brake Pads (₱1,850)</button>
-                                <button type="button" onclick="addForm13PartRow('Spark Plugs (Set of 4)', 1, 1200)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Spark Plugs (₱1,200)</button>
-                                <button type="button" onclick="addForm13PartRow('Air Filter Element', 1, 650)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Air Filter (₱650)</button>
-                            </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-xs text-left">
-                                    <thead>
-                                        <tr class="bg-gray-50 text-[11px] font-medium text-gray-500 border-b border-gray-200">
-                                            <th class="py-2 px-2.5">Description</th>
-                                            <th class="py-2 px-2 w-16 text-center">Qty</th>
-                                            <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
-                                            <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
-                                            <th class="py-2 px-2 w-10 text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="f13-parts-table-body" class="divide-y divide-gray-100">
-                                        <!-- Dynamically generated part rows -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="flex justify-end pt-1">
-                                <div class="text-right text-xs">
-                                    <span class="font-bold text-gray-500 uppercase tracking-wider">Parts Subtotal: </span>
-                                    <span id="f13-editor-parts-total" class="font-mono font-semibold text-gray-900 text-sm ml-2">₱ 0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Dynamic Materials Repeater Card -->
-                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
-                            <div class="studio-section-head flex items-center justify-between border-b border-gray-100 pb-2.5">
-                                <div>
-                                    <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
-                                        <i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Materials & Consumables Repeater
-                                    </span>
-                                    <p class="text-[10.5px] text-gray-400 font-medium">Fluids, cleaners, oils, and consumables</p>
-                                </div>
-                                <button type="button" onclick="addForm13MaterialRow()" class="h-8 px-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Material Item
-                                </button>
-                            </div>
-
-                            <!-- 1-Click Fast Presets -->
-                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
-                                <button type="button" onclick="addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Synthetic Oil (₱1,850)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Brake & Parts Cleaner', 1, 350)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Brake Cleaner (₱350)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Engine Flush Treatment', 1, 480)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Engine Flush (₱480)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Radiator Coolant (1L)', 1, 380)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Coolant (₱380)</button>
-                            </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-xs text-left">
-                                    <thead>
-                                        <tr class="bg-gray-50 text-[11px] font-medium text-gray-500 border-b border-gray-200">
-                                            <th class="py-2 px-2.5">Description</th>
-                                            <th class="py-2 px-2 w-16 text-center">Qty</th>
-                                            <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
-                                            <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
-                                            <th class="py-2 px-2 w-10 text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="f13-materials-table-body" class="divide-y divide-gray-100">
-                                        <!-- Dynamically generated material rows -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="flex justify-end pt-1">
-                                <div class="text-right text-xs">
-                                    <span class="font-bold text-gray-500 uppercase tracking-wider">Materials Subtotal: </span>
-                                    <span id="f13-editor-materials-total" class="font-mono font-semibold text-gray-900 text-sm ml-2">₱ 0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Grand Total & Signatories Card -->
+                        <!-- Signatories Card (REV-200: parts, materials and their totals are not filled by the SA) -->
                         <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
-                            <!-- Grand Total Banner -->
-                            <div class="bg-gray-900 rounded-md p-4 text-white flex items-center justify-between">
-                                <div>
-                                    <span class="text-[11px] uppercase font-bold tracking-widest text-slate-300">Estimated Job Order Total</span>
-                                    <p class="text-[11px] text-slate-400 mt-0.5">Parts + Materials Live Summary</p>
-                                </div>
-                                <div class="text-right">
-                                    <span id="f13-editor-grand-total" class="text-2xl font-semibold font-mono tracking-tight text-white">₱ 0.00</span>
-                                </div>
-                            </div>
-
                             <!-- Signatories Input Grid -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
                                 <div>
@@ -7556,7 +7449,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.52"></script>
+    <script src="js/app.js?v=3.53"></script>
 </body>
 
 </html>

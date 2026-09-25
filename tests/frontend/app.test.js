@@ -171,14 +171,10 @@ describe('REV-142 Online Booking Module (frontend)', () => {
             'Amount columns must mask pre-printed characters cleanly without erasing grid lines'
         );
 
-        // 6. Verify 1-click fast preset chips in index.html
+        // 6. REV-200: the Job Order has no parts/materials presets (not SA-controlled)
         assert.ok(
-            indexHtml.includes("onclick=\"addForm13PartRow('Engine Oil Filter', 1, 450)\""),
-            'index.html must provide 1-click preset for Engine Oil Filter'
-        );
-        assert.ok(
-            indexHtml.includes("onclick=\"addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)\""),
-            'index.html must provide 1-click preset for Synthetic Oil'
+            !indexHtml.includes('addForm13PartRow') && !indexHtml.includes('addForm13MaterialRow'),
+            'index.html must not offer parts/materials presets on the Job Order'
         );
 
         // 7. Verify signatures alignments
