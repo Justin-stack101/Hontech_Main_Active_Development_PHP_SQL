@@ -26,7 +26,7 @@
   - 148/148 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the compiled Checklist PDF at 200 dpi with a Good / Attention / Defect rotation across all 23 points, plus Fuel E and F and "Brakes not inspected" variants, and confirmed every mark is centered in the correct colored box with no header artifacts.
 * **Cache Busting**: `js/app.js?v=3.13`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `5855eac`.
 
 ---
 
