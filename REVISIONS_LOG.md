@@ -13,7 +13,7 @@
   - 188 automated unit tests passing (`npm test`).
   - Real-time headless Chrome 8/8: Job Order tab has no parts/materials tables, presets or totals; an old draft with parts loads with none; signatories present; Quotation and Billing items (Front Brake Pads) survive Job Order typing and tab switches while the customer name still copies; Job Order PDF builds; exported Excel has blank parts/materials rows and totals (D27-K27, G53, K53, K54) with the customer name filled.
 * **Cache Busting**: `js/app.js?v=3.53`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `28a7047` pushed to `origin/prototype_process`.
 
 ---
 
