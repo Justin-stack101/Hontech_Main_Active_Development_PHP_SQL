@@ -16418,18 +16418,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function setChecklistFuel(level) {
             window.checklistFuelLevel = level;
-            const levels = ['E', '14', '12', '34', 'F'];
-            levels.forEach(lvl => {
-                const btn = document.getElementById('chk-fuel-' + lvl);
-                if (btn) {
-                    const match = (lvl === '14' && level === '1/4') || (lvl === '12' && level === '1/2') || (lvl === '34' && level === '3/4') || (lvl === level);
-                    if (match) {
-                        btn.className = 'px-3 py-1.5 rounded-lg border-2 border-black bg-black text-white font-bold text-xs shadow-xs';
-                    } else {
-                        btn.className = 'px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-bold text-xs transition cursor-pointer';
-                    }
-                }
+            // Segmented fuel selector buttons are identified by data-fuel (they carry no id)
+            document.querySelectorAll('.chk-fuel-btn[data-fuel]').forEach(btn => {
+                const selected = btn.dataset.fuel === level;
+                btn.className = 'chk-fuel-btn h-9 font-medium transition cursor-pointer ' + (selected ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 hover:bg-gray-50');
+                btn.setAttribute('aria-pressed', String(selected));
             });
+            const fuelPercent = { 'E': '0%', '1/4': '25%', '1/2': '50%', '3/4': '75%', 'F': '100%' };
+            const fuelLabel = document.getElementById('chk-fuel-label');
+            if (fuelLabel) fuelLabel.textContent = `${level} (${fuelPercent[level] || ''})`;
 
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
@@ -16494,12 +16491,19 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.setAllChecklistItems = setAllChecklistItems;
 
-        // Status button painted with the printed form's box color when selected (green / yellow / red)
+        // Small square in the printed form's box color (the only color in the otherwise neutral editor)
+        function checklistSwatchHtml(status) {
+            const st = CHECKLIST_STATUS_STYLES[status];
+            return status === 'N/A'
+                ? '<span class="inline-block w-2 h-2 rounded-[2px] border border-gray-400"></span>'
+                : `<span class="inline-block w-2 h-2 rounded-[2px]" style="background:${st.fill}"></span>`;
+        }
+
+        // One option of the neutral segmented status control; selected option is dark
         function checklistStatusButtonHtml(pointId, status, isSelected, labelOverride) {
             const st = CHECKLIST_STATUS_STYLES[status];
             const label = labelOverride || st.label;
-            const selectedStyle = `background:${st.fill};color:${st.text};box-shadow:0 0 0 2px ${st.fill}55;`;
-            return `<button type="button" onclick="setChecklistStatus('${pointId}', '${status}')" title="${st.formLabel}" aria-pressed="${isSelected}" style="${isSelected ? selectedStyle : ''}" class="px-2.5 py-1 rounded-md text-[11px] font-extrabold transition cursor-pointer ${isSelected ? '' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}">${st.symbol} ${label}</button>`;
+            return `<button type="button" onclick="setChecklistStatus('${pointId}', '${status}')" title="${st.symbol} ${st.formLabel}" aria-pressed="${isSelected}" class="inline-flex items-center gap-1.5 h-7 px-2.5 text-[11px] font-medium transition cursor-pointer ${isSelected ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}">${checklistSwatchHtml(status)}${label}</button>`;
         }
 
         function renderChecklistTable() {
@@ -16509,12 +16513,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             container.innerHTML = '';
             let currentGroup = '';
 
-            // Legend mirrors the printed form: Satisfactory / May Require Future Attention / Requires Immediate Attention
+            // Legend mirrors the printed form: swatch = box color, symbol = mark printed in the PDF / Excel
             const legend = document.createElement('div');
-            legend.className = 'flex flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-[10px] font-semibold text-gray-600';
+            legend.className = 'flex flex-wrap items-center gap-x-5 gap-y-1 py-2 text-[11px] text-gray-500';
             legend.innerHTML = ['Good', 'Attention', 'Defect'].map(s => {
                 const st = CHECKLIST_STATUS_STYLES[s];
-                return `<span class="inline-flex items-center gap-1.5"><span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-sm border border-gray-400 text-[9px] font-black" style="background:${st.fill};color:${st.text}">${st.symbol}</span>${st.formLabel}</span>`;
+                return `<span class="inline-flex items-center gap-1.5">${checklistSwatchHtml(s)}${st.formLabel}</span>`;
             }).join('');
             container.appendChild(legend);
 
@@ -16522,13 +16526,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (point.group !== currentGroup) {
                     currentGroup = point.group;
                     const groupHeader = document.createElement('div');
-                    groupHeader.className = 'pt-2 pb-1 text-[11px] font-black uppercase text-gray-500 tracking-wider flex items-center gap-2 border-b border-gray-200';
-                    groupHeader.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-500"></span> ${currentGroup}`;
+                    groupHeader.className = 'pt-4 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-gray-500 border-b border-gray-200';
+                    groupHeader.textContent = currentGroup;
                     container.appendChild(groupHeader);
                 }
 
                 const itemRow = document.createElement('div');
-                itemRow.className = 'p-3 bg-white border border-gray-200 rounded-xl space-y-2 hover:border-blue-300 transition shadow-2xs';
+                itemRow.className = 'py-2.5 border-b border-gray-100 last:border-b-0 space-y-1.5';
 
                 const status = normalizeChecklistStatus(point.status);
                 // Battery Performance on the printed form only has Good / Replace boxes
@@ -16539,13 +16543,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     : ['Good', 'Attention', 'Defect', 'N/A'].map(s => checklistStatusButtonHtml(point.id, s, status === s));
 
                 itemRow.innerHTML = `
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                        <span class="text-xs font-bold text-gray-800">${point.name}</span>
-                        <div class="flex items-center gap-1">
+                    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+                        <span class="flex-1 min-w-[12rem] text-[13px] text-gray-800">${point.name}</span>
+                        <div class="inline-flex border border-gray-300 rounded-md overflow-hidden divide-x divide-gray-300 shrink-0" role="group" aria-label="Status">
                             ${buttons.join('')}
                         </div>
                     </div>
-                    <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Inspection notes or findings..." class="w-full bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-700 focus:bg-white focus:border-blue-500 outline-none transition">
+                    <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Notes" aria-label="Notes for ${escapeHtml(point.name)}" class="w-full h-8 bg-white border border-gray-200 rounded-md px-2.5 text-xs text-gray-700 placeholder:text-gray-400 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition">
                 `;
                 container.appendChild(itemRow);
             });

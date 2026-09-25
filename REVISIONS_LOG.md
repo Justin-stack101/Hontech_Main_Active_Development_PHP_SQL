@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (CheckList Studio Professional Neutral Redesign)
+
+### 📋 CheckList Studio Professional Neutral Redesign & Fuel Selector Fix (REV-163)
+* **Objective & Context**: The user asked to make the CheckList Studio editor "not colorful" and as professional as possible. The editor mixed amber, emerald and blue accents, a pulsing "Sheet 4 Active" badge, emoji status glyphs, heavy black-weight labels and rounded card-within-card rows.
+* **Design Direction**: Neutral gray scale with one dark primary action (Export .xlsx). The printed form's green / yellow / red are kept only as small 8px swatches on each status option and in the legend, so the mapping to the printed boxes stays visible without coloring the interface. The Checklist PDF and Excel export are unchanged and still match the printed form (REV-161).
+* **Bug Found & Fixed**: The fuel buttons in `frontend/index.html` have no `id`, but `setChecklistFuel()` looked them up with `getElementById('chk-fuel-' + lvl)`, so the highlight never moved from 1/2 and the "1/2 (50%)" label never updated. The selector now resolves buttons by `data-fuel` and updates the label and `aria-pressed`.
+* **Core Changes Made**:
+  - `frontend/index.html` (`#checklist-editor-pane`): Header, customer / vehicle fields, fuel level, checkpoints and remarks restyled as flat `rounded-lg` sections with gray borders; secondary actions as outlined buttons; Export .xlsx as the dark primary button; inputs with gray focus rings and associated `<label for>`; fuel level as a segmented control; brakes-not-inspected row as a neutral footer of the checkpoints section. All ids, handlers and the `.chk-fuel-btn` hook are unchanged.
+  - `frontend/js/app.js`: `renderChecklistTable()` renders a flat list with plain section headers and a neutral segmented status control per item (selected option dark, form-color swatch on each option, form legend and printed symbol in the tooltip); added `checklistSwatchHtml()`; fixed `setChecklistFuel()` as described above.
+  - `frontend/index.html`: Incremented cache buster to v=3.16.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-122 (no decorative amber / emerald / blue / pulse classes in the editor, single dark primary action, fuel selector by `data-fuel` with label sync, neutral segmented status control); added v=3.16 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-39 test row (workbook ranges extended to row 165).
+  - `Revisions checklist.csv`: Appended REV-163 row.
+* **Automated & Manual QA Verification**:
+  - 151/151 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the real editor markup and rendering code in headless Chrome at desktop (820px) and phone (390px) widths: neutral styling, selected statuses and fuel level highlighted, no horizontal overflow.
+* **Cache Busting**: `js/app.js?v=3.16`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist "Brakes not inspected" Checkbox Placement)
 
 ### 📋 Checklist "Brakes not inspected on this visit" Checkbox Moved Below the Checkpoints (REV-162)
