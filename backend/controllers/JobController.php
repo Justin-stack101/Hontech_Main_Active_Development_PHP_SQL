@@ -410,6 +410,10 @@ class JobController
                     $newStatus = ($job['status'] === 'Waiting' || $job['status'] === 'Pending') ? 'Processing' : $job['status'];
                     $stmt = $db->prepare('UPDATE jobs SET location = ?, bay_assigned = ?, status = ?, updated_at = NOW() WHERE id = ?');
                     $stmt->execute([$normalizedLocation, $bayNum, $newStatus, $job['id']]);
+                    // REV-189: announce the bay on the branch TV (only when the bay actually changed)
+                    if ((string)$job['location'] !== $normalizedLocation) {
+                        TvController::announce($db, $job, 'bay', $normalizedLocation, isset($user['id']) ? (int)$user['id'] : null);
+                    }
                 } else {
                     // Selecting Waiting Area preserves existing status (e.g. Processing remains Processing)
                     $stmt = $db->prepare("UPDATE jobs SET location = 'None', bay_assigned = NULL, updated_at = NOW() WHERE id = ?");
@@ -431,6 +435,9 @@ class JobController
 
                 $stmt = $db->prepare("UPDATE jobs SET `{$dbCol}` = ? WHERE id = ?");
                 $stmt->execute([$value, $job['id']]);
+                if ($dbCol === 'status') {
+                    TvController::announceStatusChange($db, $job, (string)$value, isset($user['id']) ? (int)$user['id'] : null);
+                }
 
                 // Record immutable audit log entry if edit reason provided
                 $editReason = trim($input['editReason'] ?? $input['edit_reason'] ?? $input['reason'] ?? '');
@@ -592,6 +599,9 @@ class JobController
             $sql  = 'UPDATE jobs SET ' . implode(', ', $setClauses) . ' WHERE id = ?';
             $stmt = $db->prepare($sql);
             $stmt->execute($params);
+
+            // REV-189: record the TV announcement for this status change (ready, released, carry-over, ...)
+            TvController::announceStatusChange($db, $job, $status, isset($user['id']) ? (int)$user['id'] : null);
 
             // Auto-calculate goalStatus
             $stmt = $db->prepare('SELECT * FROM jobs WHERE id = ?');

@@ -145,6 +145,10 @@ if ($method === 'GET' && ($route === '/tv/feed' || $route === '/jobs/tv')) {
     TvController::feed();
     exit;
 }
+if ($method === 'GET' && $route === '/tv/announcements') {
+    TvController::announcements();
+    exit;
+}
 
 // =============================================
 // PROTECTED ROUTES (require authentication)
@@ -262,6 +266,16 @@ if ($method === 'GET' && $route === '/tv/session') {
 if ($method === 'POST' && $route === '/tv/session') {
     if (!Auth::requireRole(['sa', 'assistant'])) exit;
     TvController::updateSession();
+    exit;
+}
+if ($method === 'POST' && $route === '/tv/announcements/recall') {
+    if (!Auth::requireRole(['sa', 'assistant'])) exit;
+    TvController::recall();
+    exit;
+}
+if ($method === 'POST' && $route === '/tv/announcements/test') {
+    if (!Auth::requireRole(['sa', 'assistant'])) exit;
+    TvController::testAnnouncement();
     exit;
 }
 

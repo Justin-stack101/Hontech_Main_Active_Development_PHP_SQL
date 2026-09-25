@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (TV Monitor Phase 6: Server-Driven Announcements)
+
+### 📺 TV Monitor Phase 6: Daily Intakes -> TV Announcements, Call Customer Again (REV-189)
+* **Objective & Context**: Phase 6 of plan HONTECH-PLAN-TV-MONITOR-2026-V1.0 (approved decisions 6-8: announce releases; chime + voice on the TV and only a subtle confirmation chime on the SA computer; a "Call Customer Again" button on Ready rows). The review found that nothing an SA did in Daily Intakes was ever spoken: the app only spoke when the TV section was open in the same tab, and the TV page guessed events by diffing job lists (it could never announce a release, and missed changes during reloads).
+* **Core Changes Made**:
+  - `backend/controllers/TvController.php`: new `tv_announcements` table (also in `database.sql` / `migration.php`). `announce()` / `announceStatusChange()` record bay, processing, ready, carry-over, returned and released events for the vehicle's branch (online bookings excluded). `GET /tv/announcements?after=` (TV token or staff) returns the branch's new announcements from the last 10 minutes; without `after` it returns only the latest id, so a TV that connects does not replay history. `POST /tv/announcements/recall` (SA / Assistant, own branch, Ready vehicles, once per 15 s) and `POST /tv/announcements/test` (sound check).
+  - `backend/controllers/JobController.php`: bay assignment (`PATCH /jobs/:id/field` location) and status changes (`PATCH /jobs/:id/status`, status field) record the announcement on the server, so every screen that changes a vehicle feeds the TV.
+  - `frontend/tv.html`: the list-diffing alert engine is replaced by `pollTVAnnouncements()` (every 3 s while live) and one phrase set (`TV_ANNOUNCEMENT_TEXT`); each announcement plays once, in order: banner, chime, voice. The voice uses plate and model, never the customer name ("Vehicle ABC 123, Toyota Vios, is now ready for claim. Please proceed to the service counter."; release: "... has been released. Thank you for choosing HonTech AutoCenter!"). Plates are spelled letter by letter without gaps.
+  - `frontend/js/app.js`: Ready / Released play a subtle confirmation chime only after the change is saved (the Ready chime and the release sound used to play before the save); the Release and Reopen confirm windows no longer chime when opened. Daily Intakes Ready rows get a "Call Again" button (`callCustomerAgain()`). Settings "Test Voice" is now "Test TV Announcement" and plays on the branch TV; the app-side voice toggle is removed (the TV has its own Voice button).
+  - `frontend/index.html`: Incremented cache buster to v=3.42.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-148; AUT-FRONT-69 checks the server-driven announcements instead of the removed diff engine; added v=3.42 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-65 test row.
+  - `Revisions checklist.csv`: Appended REV-189 row.
+* **Automated & Manual QA Verification**:
+  - 177 automated unit tests passing (`npm test`).
+  - End-to-end on XAMPP with real logins, 8/8: a temporary Marikina vehicle (TVTEST-189) was moved to Bay 3, set Ready, called again from the real Daily Intakes page (button present and pressed), released, then a sound check was sent. The Marikina lounge TV (PIN) played exactly five announcements once each, in order (ALLOCATED: BAY-3, READY FOR CLAIM, CALLING AGAIN, OFFICIALLY RELEASED, SOUND CHECK), with plate and model and no names; a second Call Again within 15 s was refused; the Regalado TV heard nothing; a TV that connected afterwards replayed nothing. Speech captured in headless Chrome (no audio device). The test vehicle and its announcements were deleted (65 jobs before and after).
+* **Cache Busting**: `js/app.js?v=3.42`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Phase 5: One TV Screen)
 
 ### 📺 TV Monitor Phase 5: In-App TV Monitor Embeds the Smart TV Page (REV-188)

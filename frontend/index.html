@@ -4887,14 +4887,11 @@
                             <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
                                 <div>
                                     <span class="text-[11px] font-bold text-gray-900 block">Automated TV Voice Announcements (TTS)</span>
-                                    <span class="text-[10px] text-gray-500 block">Speaks customer name and bay when vehicle is moved to Monitoring or Ready</span>
+                                    <span class="text-[10px] text-gray-500 block">The waiting lounge TV announces plate and model (bay, processing, ready, carry-over, released). Send a test to your branch TV.</span>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <button type="button" onclick="toggleTVVoice()" id="settings-btn-tv-voice" class="px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="mic" class="w-3.5 h-3.5 text-emerald-600"></i> Voice: Enabled
-                                    </button>
                                     <button type="button" onclick="testTVVoiceAnnouncement()" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-600"></i> Test Voice
+                                        <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-600"></i> Test TV Announcement
                                     </button>
                                 </div>
                             </div>
@@ -7534,7 +7531,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.41"></script>
+    <script src="js/app.js?v=3.42"></script>
 </body>
 
 </html>

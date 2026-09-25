@@ -194,3 +194,17 @@ CREATE TABLE IF NOT EXISTS `tv_pin_attempts` (
     `attempts`    INT NOT NULL DEFAULT 0,
     `first_at`    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- REV-189: TV announcements recorded when an SA changes a vehicle; each TV plays them once, in order
+CREATE TABLE IF NOT EXISTS `tv_announcements` (
+    `id`          INT AUTO_INCREMENT PRIMARY KEY,
+    `branch`      VARCHAR(50) NOT NULL,
+    `type`        VARCHAR(20) NOT NULL,
+    `job_id`      VARCHAR(30) NULL DEFAULT NULL,
+    `plate`       VARCHAR(20) NOT NULL DEFAULT '',
+    `vehicle`     VARCHAR(255) NOT NULL DEFAULT '',
+    `bay`         VARCHAR(20) NULL DEFAULT NULL,
+    `created_by`  INT NULL DEFAULT NULL,
+    `created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX `idx_tv_ann_branch_id` (`branch`, `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

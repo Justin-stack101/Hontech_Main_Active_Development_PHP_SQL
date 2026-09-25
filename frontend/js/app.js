@@ -3357,7 +3357,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                 if (newStatus === 'Ready' || newStatus === 'Ready to Release') {
                     if (job) announceVehicleReady(job);
-                    else playAutomotiveChime();
                 } else if (newStatus === 'Processing' || newStatus === 'Monitoring') {
                     showSystemToast(`Vehicle moved to Processing. You can now assign a workshop bay.`, 'info', 'Status: Processing');
                     if (job) announceVehicleProcessing(job, job.location || 'Waiting Area');
@@ -3382,6 +3381,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     method: 'PATCH',
                     body: { status: normalizedNewStatus }
                 });
+                // REV-189: the server announces the change on the branch TV; the SA computer only plays a
+                // subtle confirmation chime once a Ready / Released change is saved
+                if (['Ready', 'Ready to Release', 'Released'].includes(normalizedNewStatus)) playAutomotiveChime('lounge');
 
                 await loadData();
                 renderStaffTables();
@@ -3396,7 +3398,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function completeRelease(jobId) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
-            playAutomotiveChime('lounge');
             const idInput = document.getElementById('release-confirm-job-id');
             const msgEl = document.getElementById('release-confirm-message');
             const modalEl = document.getElementById('release-confirm-modal');
@@ -3430,9 +3431,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const autoDeparture = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
                 job.departure = autoDeparture;
 
-                // 2. Play celebratory lounge chime on release
-                playReleaseConfirmSound();
-
                 // 3. Final auto-calculate before completing
                 const computed = calculateGoalStatusForJob(job);
                 if (computed !== 'N/A' && job.goalStatus !== computed) {
@@ -3461,6 +3459,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 job.departure = autoDeparture;
                 job.location = 'None';
                 job.bayAssigned = null;
+                playReleaseConfirmSound(); // REV-189: confirmation only after the release is saved
 
                 if (typeof announceVehicleReleased === 'function') {
                     announceVehicleReleased(job);
@@ -3480,7 +3479,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function reopenSameDayJob(jobId) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
-            playAutomotiveChime('lounge');
             const idInput = document.getElementById('reopen-confirm-job-id');
             const msgEl = document.getElementById('reopen-confirm-message');
             const modalEl = document.getElementById('reopen-confirm-modal');
@@ -3534,7 +3532,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 job.status = 'Processing';
                 job.departure = '';
 
-                playAutomotiveChime('lounge');
                 if (typeof announceVehicleReturnActive === 'function') {
                     announceVehicleReturnActive(job);
                 }
@@ -4531,6 +4528,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                         <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
                                     </select>
                                 </div>
+                                ${(job.status === 'Ready to Release' || job.status === 'Ready') ? `
+                                <button type="button" onclick="callCustomerAgain('${job.id}')" class="mt-1.5 inline-flex items-center justify-center gap-1 min-w-[125px] max-w-[140px] px-2 py-1 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-[11px] font-semibold transition cursor-pointer shadow-2xs" title="Announce this vehicle again on the waiting lounge TV">
+                                    <i data-lucide="megaphone" class="w-3 h-3"></i> Call Again
+                                </button>` : ''}
                                 ` : `
                                 <span class="inline-flex items-center justify-center font-bold text-xs uppercase tracking-tight px-2.5 py-1.5 rounded-lg shadow-2xs min-w-[130px] max-w-[145px] whitespace-nowrap truncate" 
                                       style="${
@@ -8955,15 +8956,32 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.announceVehicleReturnActive = announceVehicleReturnActive;
 
-        function testTVVoiceAnnouncement() {
-            const sampleJob = {
-                plate: 'NDO 8492',
-                customer: 'Sophia Loren',
-                location: 'Service Bay 1',
-                claimStub: 'CS-104'
-            };
-            showSystemToast('Broadcasting live TV voice announcement sample...', 'info', 'TV Voice System');
-            announceVehicleProcessing(sampleJob, 'Service Bay 1');
+        // REV-189: "Call Customer Again" replays the ready announcement on the branch TV
+        let callAgainBusy = false;
+        async function callCustomerAgain(jobId) {
+            if (callAgainBusy) return;
+            callAgainBusy = true;
+            try {
+                const res = await apiRequest('/api/tv/announcements/recall', { method: 'POST', body: { jobId } });
+                showSystemToast(`Calling ${res?.plate || 'the customer'} again on the waiting lounge TV.`, 'success', 'Call Customer Again');
+            } catch (err) {
+                showSystemToast(err.message || 'Could not call the customer again.', 'warning', 'Call Customer Again');
+            } finally {
+                setTimeout(() => { callAgainBusy = false; }, 1500);
+            }
+        }
+        window.callCustomerAgain = callCustomerAgain;
+
+        // REV-189: the TV (not this computer) speaks announcements, so the test plays on the branch TV
+        async function testTVVoiceAnnouncement() {
+            try {
+                const res = await apiRequest('/api/tv/announcements/test', { method: 'POST' });
+                showSystemToast(res?.active
+                    ? 'Test announcement sent. Your branch TV will chime and speak within a few seconds.'
+                    : 'Test announcement sent, but the TV broadcast is paused. Start it in the TV Broadcast Hub to hear it.', res?.active ? 'success' : 'warning', 'TV Sound Check');
+            } catch (err) {
+                showSystemToast(err.message || 'Could not send the test announcement.', 'error', 'TV Sound Check');
+            }
         }
         window.testTVVoiceAnnouncement = testTVVoiceAnnouncement;
 

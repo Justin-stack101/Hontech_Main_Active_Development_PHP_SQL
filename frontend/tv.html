@@ -470,11 +470,10 @@
         let currentSlide = 0;
         let slideInterval = null;
         let dataPollInterval = null;
+        let announcementPollInterval = null;
         let sessionPollInterval = null;
         let tvAudioEnabled = true;
         let tvJobs = [];
-        let jobStateSnapshotMap = new Map();
-        let isInitialLoad = true;
         let tvAnnouncementQueue = [];
         let isTVAnnouncementPlaying = false;
         let tvAlertPlaqueTimer = null;
@@ -565,7 +564,7 @@
         // Spaced plate formatter for natural text-to-speech pronunciation
         function formatPlateForSpeech(plate) {
             if (!plate) return 'vehicle';
-            return String(plate).toUpperCase().split('').join(' ');
+            return String(plate).toUpperCase().replace(/\s+/g, '').split('').join(' ');
         }
 
         // Web Speech TTS Voice announcement (Relaxing Soft Female Voice with Callback)
@@ -849,6 +848,8 @@
             tvFeedStarted = true;
             fetchTVFeed();
             dataPollInterval = setInterval(fetchTVFeed, 5000);
+            if (announcementPollInterval) clearInterval(announcementPollInterval);
+            announcementPollInterval = setInterval(pollTVAnnouncements, 3000);
             if (slideInterval) clearInterval(slideInterval);
             slideInterval = setInterval(rotateSlides, 12000);
         }
@@ -856,6 +857,8 @@
         function stopTVFeed() {
             tvFeedStarted = false;
             if (dataPollInterval) { clearInterval(dataPollInterval); dataPollInterval = null; }
+            if (announcementPollInterval) { clearInterval(announcementPollInterval); announcementPollInterval = null; }
+            tvLastAnnouncementId = null;
             if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
         }
 
@@ -971,8 +974,6 @@
             // Carry over (status only; a carry-over reason on an active job no longer duplicates it)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over' || j.status === 'Carry-Over');
 
-            // Detect newly ready vehicles, bay allocations, and status changes to trigger Chime, Voice & Visual Plaque
-            detectAndBroadcastAlerts(allJobs);
 
             // =========================================================
             // SLIDE 2: UPCOMING QUEUE, READY TO CLAIM, & CARRY OVER
@@ -1171,101 +1172,58 @@
             }
         }
 
-        // Live Deep State Alert Detection Engine (Tracks Status, Location & Bay Allocations)
-        function detectAndBroadcastAlerts(allJobs) {
-            const jobsList = Array.isArray(allJobs) ? allJobs : [];
+        // REV-189: announcements come from the server (recorded when an SA assigns a bay or changes a
+        // status in Daily Intakes, or presses "Call Customer Again"). Each is played once, in order:
+        // plaque banner -> chime -> voice. Names are never spoken; plate and model identify the car.
+        const TV_ANNOUNCEMENT_TEXT = {
+            bay:        a => ({ statusText: `ALLOCATED: ${String(a.bay || 'BAY').toUpperCase().replace(/^BAY\s*/, 'BAY-')}`, theme: 'blue',    speech: `Vehicle ${a.plateSpoken}, ${a.model}, has been assigned to ${a.bay || 'a service bay'}.` }),
+            processing: a => ({ statusText: 'WORKSHOP PROCESSING',  theme: 'red',     speech: `Vehicle ${a.plateSpoken}, ${a.model}, is now being serviced.` }),
+            ready:      a => ({ statusText: 'READY FOR CLAIM',      theme: 'emerald', speech: `Vehicle ${a.plateSpoken}, ${a.model}, is now ready for claim. Please proceed to the service counter.` }),
+            recall:     a => ({ statusText: 'READY FOR CLAIM · CALLING AGAIN', theme: 'emerald', speech: `Calling again. Vehicle ${a.plateSpoken}, ${a.model}, is ready for claim. Please proceed to the service counter.` }),
+            carryover:  a => ({ statusText: 'CARRY-OVER VEHICLE',   theme: 'amber',   speech: `Vehicle ${a.plateSpoken}, ${a.model}, will be carried over while awaiting parts or extended service.` }),
+            returned:   a => ({ statusText: 'BACK IN SERVICE',      theme: 'red',     speech: `Vehicle ${a.plateSpoken}, ${a.model}, is back in service.` }),
+            released:   a => ({ statusText: 'OFFICIALLY RELEASED',  theme: 'emerald', speech: `Vehicle ${a.plateSpoken} has been released. Thank you for choosing HonTech AutoCenter!` }),
+            test:       a => ({ statusText: 'SOUND CHECK',          theme: 'blue',    speech: 'This is a test announcement from the HonTech Service Monitor.' })
+        };
 
-            if (isInitialLoad) {
-                jobsList.forEach(job => {
-                    const key = String(job.id || job.claimStub || job.plate);
-                    jobStateSnapshotMap.set(key, {
-                        status: job.status,
-                        location: job.location || '',
-                        bayAssigned: job.bayAssigned || job.bay_assigned || null,
-                        carryOverStatus: job.carryOverStatus || null
-                    });
-                });
-                isInitialLoad = false;
+        function buildTVAnnouncement(item) {
+            const make = TV_ANNOUNCEMENT_TEXT[item.type];
+            if (!make) return null;
+            const model = item.vehicle || 'Vehicle';
+            const text = make({ plateSpoken: formatPlateForSpeech(item.plate), model, bay: item.bay });
+            return { statusText: text.statusText, plate: item.plate, model, theme: text.theme, speechText: `Attention please. ${text.speech}` };
+        }
+
+        let tvLastAnnouncementId = null;
+        let tvAnnouncementPollBusy = false;
+        async function pollTVAnnouncements() {
+            if (tvAnnouncementPollBusy) return;
+            // Only a live board announces; standby / PIN screens restart from "now" when they go live
+            if (document.getElementById('screen-active-tv').classList.contains('hidden')) {
+                tvLastAnnouncementId = null;
                 return;
             }
-
-            jobsList.forEach(job => {
-                const key = String(job.id || job.claimStub || job.plate);
-                const prev = jobStateSnapshotMap.get(key);
-
-                if (prev) {
-                    const prevLoc = String(prev.location || '').trim();
-                    const currLoc = String(job.location || '').trim();
-                    const prevStatus = prev.status;
-                    const currStatus = job.status;
-                    const customerName = job.customer || job.name || 'valued customer';
-                    const plateSpoken = formatPlateForSpeech(job.plate);
-                    const modelName = job.vehicle || job.model || 'HONDA VEHICLE';
-
-                    // 1. LOCATION / BAY TRANSITION (e.g. Waiting Area -> Bay 1, Bay 1 -> Bay 2)
-                    const isCurrBay = currLoc && currLoc !== 'None' && currLoc !== 'Waiting Area';
-                    if (isCurrBay && currLoc !== prevLoc) {
-                        const bayClean = currLoc.replace(/^lift/i, 'Bay ').replace(/^bay\s*/i, 'Bay ');
-                        const bayUpper = currLoc.toUpperCase().replace(/^LIFT\s*/, 'BAY-').replace(/^BAY\s*/, 'BAY-');
-                        enqueueTVAnnouncement({
-                            statusText: `ALLOCATED: ${bayUpper}`,
-                            plate: job.plate,
-                            model: modelName,
-                            theme: 'blue',
-                            speechText: `Attention please. Vehicle ${plateSpoken}, customer ${customerName}, has been allocated to ${bayClean}.`
-                        });
-                    }
-                    // 2. STATUS TRANSITION TO READY FOR RELEASE
-                    else if ((currStatus === 'Ready' || currStatus === 'Ready to Release') && prevStatus !== 'Ready' && prevStatus !== 'Ready to Release') {
-                        enqueueTVAnnouncement({
-                            statusText: 'READY FOR RELEASE',
-                            plate: job.plate,
-                            model: modelName,
-                            theme: 'emerald',
-                            speechText: `Attention please. Customer ${customerName}, vehicle ${plateSpoken} is now ready for release. Please proceed to the cashier.`
-                        });
-                    }
-                    // 3. STATUS TRANSITION TO WORKSHOP PROCESSING
-                    else if ((currStatus === 'Processing' || currStatus === 'Monitoring') && prevStatus !== 'Processing' && prevStatus !== 'Monitoring' && prevStatus !== 'Ready' && prevStatus !== 'Ready to Release') {
-                        const locText = (currLoc && currLoc !== 'None') ? currLoc.replace(/^lift/i, 'Bay ') : 'workshop reception';
-                        enqueueTVAnnouncement({
-                            statusText: 'WORKSHOP PROCESSING',
-                            plate: job.plate,
-                            model: modelName,
-                            theme: 'red',
-                            speechText: `Attention please. Vehicle ${plateSpoken} is now entering workshop processing in ${locText}.`
-                        });
-                    }
-                    // 4. STATUS TRANSITION TO CARRY-OVER
-                    else if ((currStatus === 'Carry Over' || Boolean(job.carryOverStatus)) && prevStatus !== 'Carry Over' && !prev.carryOverStatus) {
-                        enqueueTVAnnouncement({
-                            statusText: 'CARRY-OVER VEHICLE',
-                            plate: job.plate,
-                            model: modelName,
-                            theme: 'amber',
-                            speechText: `Attention please. Vehicle ${plateSpoken} has been logged as carry over awaiting parts or extended service.`
-                        });
-                    }
-                    // 5. STATUS TRANSITION TO RELEASED
-                    else if ((currStatus === 'Released' || currStatus === 'Completed') && prevStatus !== 'Released' && prevStatus !== 'Completed') {
-                        enqueueTVAnnouncement({
-                            statusText: 'OFFICIALLY RELEASED',
-                            plate: job.plate,
-                            model: modelName,
-                            theme: 'emerald',
-                            speechText: `Attention please. Vehicle ${plateSpoken}, customer ${customerName}, has been officially released. Thank you for choosing HonTech AutoCenter.`
-                        });
-                    }
+            tvAnnouncementPollBusy = true;
+            try {
+                const token = localStorage.getItem(TV_TOKEN_KEY);
+                const query = tvLastAnnouncementId === null ? '' : `?after=${tvLastAnnouncementId}`;
+                const res = await fetch(tvApiUrl('/api/tv/announcements') + query, { headers: token ? { 'X-TV-Token': token } : {}, credentials: 'same-origin', cache: 'no-store' });
+                if (!res.ok) return;
+                const data = await res.json();
+                if (tvLastAnnouncementId === null) {
+                    tvLastAnnouncementId = data.latestId || 0; // connect: start from now, no replay
+                    return;
                 }
-
-                // Update snapshot for next diff
-                jobStateSnapshotMap.set(key, {
-                    status: job.status,
-                    location: job.location || '',
-                    bayAssigned: job.bayAssigned || job.bay_assigned || null,
-                    carryOverStatus: job.carryOverStatus || null
+                (data.items || []).forEach(item => {
+                    tvLastAnnouncementId = Math.max(tvLastAnnouncementId, item.id);
+                    const announcement = buildTVAnnouncement(item);
+                    if (announcement) enqueueTVAnnouncement(announcement);
                 });
-            });
+            } catch (e) {
+                console.warn('TV announcements unreachable:', e);
+            } finally {
+                tvAnnouncementPollBusy = false;
+            }
         }
 
         function triggerTVAlertPlaque({ statusText, plate, model, theme, speechText }) {
