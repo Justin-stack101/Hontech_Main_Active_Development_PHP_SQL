@@ -28,7 +28,7 @@
   - 146/146 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the compiled Billing PDF with the screenshot's sample data (Node + pdf-lib, rasterized with pdfplumber at 200/300 dpi) and confirmed: no `^` artifacts, intact underlines and table borders, no label overlaps, and no leftover `0.00` fragments.
 * **Cache Busting**: `js/app.js?v=3.11`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `ee130e0`.
 
 ---
 
