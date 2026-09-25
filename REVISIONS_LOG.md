@@ -12,7 +12,7 @@
   - 162 automated unit tests passing (`npm test`).
   - Headless Chrome render of the tab bar shows Workshop_Monitoring first.
 * **Cache Busting**: `js/app.js?v=3.27`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `ce129c4` pushed to `origin/prototype_process`.
 
 ---
 
