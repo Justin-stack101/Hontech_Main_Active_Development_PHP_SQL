@@ -65,7 +65,7 @@ describe('REV-142 Online Booking Module (frontend)', () => {
     });
 
     it('AUT-FRONT-112: cache buster bumped to v=2.98 or higher', () => {
-        assert.ok(Boolean(/src="js\/app\.js\?v=(?:3\.(?:0[0-9]|1[0-9])|2\.(?:8[7-9]|9[0-9]))"/.test(indexHtml)));
+        assert.ok(Boolean(/src="js\/app\.js\?v=(?:3\.[0-9]{2}|2\.(?:8[7-9]|9[0-9]))"/.test(indexHtml)));
     });
 
     it('AUT-FRONT-113: SA navigation order strictly adheres to 5 core operational tools', () => {

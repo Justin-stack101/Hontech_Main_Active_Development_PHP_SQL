@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Checklist Checkpoints Selection-Only)
+
+### 📋 Checklist Checkpoints Selection-Only, Per-Item Notes Box Removed (REV-167)
+* **Objective & Context**: The user asked to remove the text box under each checklist checkpoint because the Service Advisor should only select a status for each item. Findings continue to go in the single Inspector Remarks / Discovered Deficiencies field, which prints in the Comments area of the Checklist PDF and Excel.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: `renderChecklistTable()` no longer renders the per-item notes `<input>`; each checkpoint row now shows only the item name and its Good / Attention / Defect / N/A selector (battery Good / Replace / N/A). The stored `notes` values are kept internally (used by the Brakes-not-inspected restore) and were never printed on the PDF or Excel, so outputs are unchanged.
+  - `frontend/index.html`: Incremented cache buster to v=3.20.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-126 (no text input or notes handler in checkpoint rows, status selector kept, Inspector Remarks kept); added v=3.20 to multi-revision cache buster checks. Widened the version pattern in AUT-FRONT-104 and AUT-FRONT-112 (`tests/frontend/app.test.js`) from 3.00-3.19 to 3.00-3.99, since v=3.20 was the first version beyond it.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-43 test row (workbook ranges extended to row 169).
+  - `Revisions checklist.csv`: Appended REV-167 row.
+* **Automated & Manual QA Verification**:
+  - 155/155 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the checklist editor in headless Chrome: rows show only the item name and status selector; Inspector Remarks remains at the bottom.
+* **Cache Busting**: `js/app.js?v=3.20`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist Brake Condition Per-Wheel Status)
 
 ### 📋 Checklist Brake Condition Per-Wheel Status (REV-166)

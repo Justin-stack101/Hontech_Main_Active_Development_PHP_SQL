@@ -16555,7 +16555,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 const itemRow = document.createElement('div');
-                itemRow.className = 'py-2.5 border-b border-gray-100 last:border-b-0 space-y-1.5';
+                itemRow.className = 'py-2.5 border-b border-gray-100 last:border-b-0';
 
                 const status = normalizeChecklistStatus(point.status);
                 // Battery Performance on the printed form only has Good / Replace boxes
@@ -16572,8 +16572,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ${buttons.join('')}
                         </div>
                     </div>
-                    <input type="text" value="${escapeHtml(point.notes || '')}" oninput="updateChecklistNotes('${point.id}', this.value)" placeholder="Notes" aria-label="Notes for ${escapeHtml(point.name)}" class="w-full h-8 bg-white border border-gray-200 rounded-md px-2.5 text-xs text-gray-700 placeholder:text-gray-400 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition">
                 `;
+                // Selection only: the SA marks each checkpoint's status; findings go in Inspector Remarks
                 container.appendChild(itemRow);
             });
         }
