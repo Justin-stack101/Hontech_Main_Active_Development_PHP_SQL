@@ -15,7 +15,7 @@
   - 177 automated unit tests passing (`npm test`).
   - End-to-end on XAMPP with real logins, 8/8: a temporary Marikina vehicle (TVTEST-189) was moved to Bay 3, set Ready, called again from the real Daily Intakes page (button present and pressed), released, then a sound check was sent. The Marikina lounge TV (PIN) played exactly five announcements once each, in order (ALLOCATED: BAY-3, READY FOR CLAIM, CALLING AGAIN, OFFICIALLY RELEASED, SOUND CHECK), with plate and model and no names; a second Call Again within 15 s was refused; the Regalado TV heard nothing; a TV that connected afterwards replayed nothing. Speech captured in headless Chrome (no audio device). The test vehicle and its announcements were deleted (65 jobs before and after).
 * **Cache Busting**: `js/app.js?v=3.42`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `a35baf7` pushed to `origin/prototype_process`.
 
 ---
 
