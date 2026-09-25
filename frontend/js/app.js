@@ -15300,6 +15300,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }
             iframe.style.width = `${Math.round(fitW)}px`;
             iframe.style.height = `${Math.round(fitH)}px`;
+            // REV-178: center the fitted page in its container (Maximize / Normal View widens the pane)
+            iframe.style.left = `${Math.max(0, Math.round((containerW - fitW) / 2))}px`;
+            iframe.style.top = `${Math.max(0, Math.round((containerH - fitH) / 2))}px`;
             iframe.style.transform = 'translate(0px, 0px) scale(1)';
             iframe.style.transformOrigin = '0 0';
         }

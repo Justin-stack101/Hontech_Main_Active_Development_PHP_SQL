@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Centered PDF in Maximized Studio View)
+
+### 🖥️ RO Excel Studio: PDF Page Centered in Maximize / Normal View (REV-178)
+* **Objective & Context**: When the user pressed Maximize (button then reads "Normal View"), the PDF page stayed on the left side of the wide pane with empty space to the right. The user asked for the page to be centered in place, without opening the PDF in a new tab.
+* **Root Cause**: `applyStudioAspectFit()` sized the iframe to the page aspect ratio but it stayed absolutely positioned at `top: 0; left: 0`, so in the full-width pane the fitted page was pinned to the left.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: `applyStudioAspectFit()` now also sets `left` / `top` to center the fitted page in its container. It runs on every Maximize / Normal View toggle and every PDF refresh, so all four studio tabs (Job_Order, Quotation_No, Billing_No, CheckList_Result) are centered in both views; no new tab is opened.
+  - `frontend/index.html`: Incremented cache buster to v=3.31.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-137; added v=3.31 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-54 test row.
+  - `Revisions checklist.csv`: Appended REV-178 row.
+* **Automated & Manual QA Verification**:
+  - 166 automated unit tests passing (`npm test`).
+  - Headless Chrome run of the real `applyStudioAspectFit()`: in a 1560 px maximized pane the 458 px page is placed at left 551 px (centered); in a 560 px side-by-side pane at left 51 px.
+* **Cache Busting**: `js/app.js?v=3.31`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Workshop_Monitoring Claim Stub Printing Removed)
 
 ### 🧾 Workshop_Monitoring: Print Claim Stub Button Removed (REV-177)
