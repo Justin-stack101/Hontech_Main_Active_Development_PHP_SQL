@@ -12,7 +12,7 @@
   - 171 automated unit tests passing (`npm test`).
   - Headless Chrome render of the Job_Order toolbar and the Job Order / Checklist viewer headers: no Print button, other controls intact.
 * **Cache Busting**: `js/app.js?v=3.36`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `1ed0466` pushed to `origin/prototype_process`.
 
 ---
 
