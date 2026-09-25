@@ -44,25 +44,25 @@
     <script src="js/vendor/chart.min.js"></script>
     <link rel="stylesheet" href="css/main.css?v=4.75">
     <style>
-        /* RO Excel Studio section header band (REV-171): tinted background so every section title stands out */
+        /* RO Excel Studio section header band (REV-172): same neutral gray band as the CheckList
+           checkpoint groups (printed form header gray #D0D1D3, black text) on every studio section */
         .studio-section-head {
-            background-color: #eff6ff;
-            border: 1px solid #bfdbfe !important;
-            border-left: 4px solid #2563eb !important;
-            border-radius: 0.5rem;
-            padding: 0.625rem 0.875rem !important;
+            background-color: #D0D1D3;
+            border: 0 !important;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem !important;
         }
         .studio-section-head--inset { margin: 1rem 1.25rem 0; }
         .studio-section-head h2,
         .studio-section-head h3,
         .studio-section-head span.uppercase,
         .studio-section-head label.uppercase,
-        label.studio-section-head { color: #1e3a8a !important; }
+        label.studio-section-head { color: #000000 !important; font-weight: 700 !important; }
         .studio-section-head h2 + span,
-        .studio-section-head > span.rounded { background-color: #ffffff; border-color: #93c5fd !important; color: #1d4ed8 !important; }
+        .studio-section-head > span.rounded { background-color: #ffffff; border-color: #9ca3af !important; color: #374151 !important; }
         .studio-section-head p,
-        .studio-section-head > span:not(.rounded) { color: #475569 !important; }
-        .studio-section-head :is(h2, h3, span.uppercase, label.uppercase) svg { color: #2563eb !important; }
+        .studio-section-head > span:not(.rounded) { color: #374151 !important; }
+        .studio-section-head :is(h2, h3, span.uppercase, label.uppercase) svg { color: #374151 !important; }
 
         /* Mobile Touch & Scroll Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -7690,7 +7690,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.24"></script>
+    <script src="js/app.js?v=3.25"></script>
 </body>
 
 </html>

@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Neutral Studio Section Header Bands)
+
+### 🎨 RO Excel Studio: Neutral CheckList-Style Section Header Bands (REV-172)
+* **Objective & Context**: The user found the REV-171 blue header bands too colorful and asked for a professional color, taking inspiration from the CheckList design.
+* **Root Cause**: REV-171 used a light blue band with a blue left accent, blue titles and blue icons, which did not match the neutral gray scale of the CheckList tab.
+* **Core Changes Made**:
+  - `frontend/index.html`: `.studio-section-head` now uses the same band as the CheckList checkpoint groups (`chk-group-header`): printed form header gray `#D0D1D3`, no border or accent stripe, rounded corners, black bold titles, dark gray (#374151) subtitles and icons, white badges with a gray border. It applies to the same 18 section headers on the Job_Order, Quotation_No, Billing_No and CheckList_Result tabs. Button colors are unchanged.
+  - `frontend/index.html`: Incremented cache buster to v=3.25.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-131; AUT-FRONT-130 no longer pins the blue colors; added v=3.25 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-48 test row.
+  - `Revisions checklist.csv`: Appended REV-172 row.
+* **Automated & Manual QA Verification**:
+  - 160 automated unit tests passing (`npm test`).
+  - Rendered all four studio tabs in headless Chrome: every section title sits on the same gray band as the CheckList groups, with black titles that are easy to read, and no blue remains.
+* **Cache Busting**: `js/app.js?v=3.25`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (RO Excel Studio Section Header Bands)
 
 ### 🎨 RO Excel Studio: Colored Section Header Bands on All Tabs (REV-171)
