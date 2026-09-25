@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Simple TV Weather Box)
+
+### 🌤️ TV Weather Box Back to the Simple Design (REV-192)
+* **Objective & Context**: The user asked to make the TV weather box simple like the old one (icon, temperature, condition) and make sure it works. REV-190 had added feels-like/humidity, a rain line and a credit line.
+* **Core Changes Made**:
+  - `frontend/tv.html`: weather box restored to the old two-line layout (icon, temperature, condition); removed the feels-like/humidity, rain-likely, "As of" and credit lines and `formatTVTime`. The data is still the real Open-Meteo reading for the branch (server cache 15 minutes, TV refresh 10 minutes); the credit moved to the box tooltip; no reading shows "--°C / Unavailable".
+  - `frontend/index.html`: Incremented cache buster to v=3.45.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-151; AUT-FRONT-149 updated for the simple box; added v=3.45 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-68 test row.
+  - `Revisions checklist.csv`: Appended REV-192 row.
+* **Automated & Manual QA Verification**:
+  - 180 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome, 5/5: Marikina TV showed 26°C Partly Cloudy and Regalado TV 26°C Drizzle, matching the server readings; both boxes have two lines only; no reading shows "--°C / Unavailable".
+* **Cache Busting**: `js/app.js?v=3.45`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Developer TV Simulation in the Ctrl+D Toolbox)
 
 ### 🛠️ Developer Toolbox: TV Simulation Moved to Ctrl+D, Locked to Development (REV-191)

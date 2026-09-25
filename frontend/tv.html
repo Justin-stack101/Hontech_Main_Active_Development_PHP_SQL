@@ -240,19 +240,14 @@
                 </button>
 
 
-                <!-- Weather Widget (REV-190: real Open-Meteo reading for this branch, fetched and cached by the server) -->
-                <div id="tv-weather-box" class="flex items-center gap-3 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl" title="Weather data: Open-Meteo">
+                <!-- Weather Widget (REV-192: simple icon, temperature and condition; real Open-Meteo reading for this branch, cached by the server) -->
+                <div id="tv-weather-box" class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl" title="Weather data: Open-Meteo">
                     <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
-                        <i data-lucide="cloud" class="w-6 h-6 text-gray-500"></i>
+                        <i data-lucide="cloud" class="w-5 h-5 text-gray-500"></i>
                     </span>
                     <div class="text-left leading-none">
-                        <p class="flex items-baseline gap-2">
-                            <span id="tv-temp-display" class="text-lg font-black text-white">--°C</span>
-                            <span id="tv-weather-text" class="text-[10px] font-bold text-gray-300 uppercase tracking-wider">Loading weather</span>
-                        </p>
-                        <p id="tv-weather-detail" class="hidden text-[10px] font-semibold text-gray-400 mt-1"></p>
-                        <p id="tv-weather-rain" class="hidden text-[10px] font-bold text-sky-300 mt-1"></p>
-                        <p class="text-[8px] font-medium text-gray-500 mt-1"><span id="tv-weather-asof"></span>Weather: Open-Meteo</p>
+                        <p id="tv-temp-display" class="text-lg font-black text-white">--°C</p>
+                        <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Loading</p>
                     </div>
                 </div>
                 <div>
@@ -800,47 +795,21 @@
         ];
         let weatherPollInterval = null;
 
-        function formatTVTime(hhmm) {
-            const m = String(hhmm || '').match(/(\d{1,2}):(\d{2})/);
-            if (!m) return '';
-            const h = parseInt(m[1], 10);
-            return `${h % 12 || 12}:${m[2]} ${h >= 12 ? 'PM' : 'AM'}`;
-        }
-
         function renderTVWeather(w) {
             const temp = document.getElementById('tv-temp-display');
             const text = document.getElementById('tv-weather-text');
-            const detail = document.getElementById('tv-weather-detail');
-            const rain = document.getElementById('tv-weather-rain');
-            const asof = document.getElementById('tv-weather-asof');
             const icon = document.getElementById('tv-weather-icon-wrap');
             if (!w || !w.available) {
                 temp.innerText = '--°C';
-                text.innerText = 'Weather unavailable';
-                detail.classList.add('hidden');
-                rain.classList.add('hidden');
-                asof.innerText = '';
-                icon.innerHTML = '<i data-lucide="cloud-off" class="w-6 h-6 text-gray-500"></i>';
+                text.innerText = 'Unavailable';
+                icon.innerHTML = '<i data-lucide="cloud-off" class="w-5 h-5 text-gray-500"></i>';
             } else {
                 const look = TV_WEATHER_LOOK.find(l => l.codes.includes(w.code)) || TV_WEATHER_LOOK[2];
                 temp.innerText = `${w.temperature}°C`;
                 text.innerText = look.text;
-                const parts = [];
-                if (w.feelsLike !== null && w.feelsLike !== undefined) parts.push(`Feels like ${w.feelsLike}°`);
-                if (w.humidity !== null && w.humidity !== undefined) parts.push(`Humidity ${w.humidity}%`);
-                detail.innerText = parts.join(' · ');
-                detail.classList.toggle('hidden', parts.length === 0);
-                // Rain line only when it is not already raining; "now" when the likely hour has started
-                const alreadyWet = /rain|drizzle|thunder/i.test(look.text);
-                const rainLikely = !alreadyWet && w.rainAt && w.rainChance >= 50;
-                const rainHour = parseInt(String(w.rainAt || '').slice(0, 2), 10);
-                const rainWhen = rainHour <= new Date().getHours() ? 'now' : `by ${formatTVTime(w.rainAt)}`;
-                rain.innerText = rainLikely ? `Rain likely ${rainWhen} (${w.rainChance}%)` : '';
-                rain.classList.toggle('hidden', !rainLikely);
-                asof.innerText = w.stale && w.fetchedAt ? `As of ${formatTVTime(String(w.fetchedAt).slice(11, 16))} · ` : '';
-                const iconName = w.isDay ? look.day : look.night;
-                const color = rainLikely || /rain|drizzle|thunder/i.test(look.text) ? 'text-sky-300' : (w.isDay ? 'text-amber-400' : 'text-indigo-200');
-                icon.innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6 ${color}"></i>`;
+                const wet = /rain|drizzle|thunder/i.test(look.text);
+                const color = wet ? 'text-sky-300' : (w.isDay ? 'text-amber-400' : 'text-indigo-200');
+                icon.innerHTML = `<i data-lucide="${w.isDay ? look.day : look.night}" class="w-5 h-5 ${color}"></i>`;
             }
             if (window.lucide) lucide.createIcons();
         }
