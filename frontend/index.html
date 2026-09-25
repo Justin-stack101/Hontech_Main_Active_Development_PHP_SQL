@@ -2731,10 +2731,6 @@
                                     <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Export exact official 2025 Excel Workbook (.xlsx)">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
-                                    <label class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Import filled .xlsx file">
-                                        <i data-lucide="upload" class="w-3.5 h-3.5"></i> Import .xlsx
-                                        <input type="file" id="input-import-xlsx-file" accept=".xlsx,.xls" onchange="importOfficialXLSX(event)" class="hidden">
-                                    </label>
                                     <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro" class="h-8 px-3 text-xs font-medium text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
                                         <i data-lucide="save" class="w-3.5 h-3.5"></i> Register RO
                                     </button>
@@ -7785,8 +7781,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.36"></script>
+    <script src="js/app.js?v=3.37"></script>
 </body>
 
 </html>

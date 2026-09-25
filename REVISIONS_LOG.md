@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Excel Import Removed)
+
+### 🗂️ RO Excel Studio: Import .xlsx Button and Logic Removed (REV-184)
+* **Objective & Context**: The user asked to remove the Excel import button and its logic because the import process is not needed yet.
+* **Core Changes Made**:
+  - `frontend/index.html`: Removed the "Import .xlsx" button (and its hidden file input) from the Form 1/3 Job Order Studio header, and the `<script src="js/vendor/xlsx.full.min.js">` tag: SheetJS was used only by the import, so the page no longer downloads it. The library file stays in `js/vendor/` so the import can be restored later.
+  - `frontend/js/app.js`: Removed `importOfficialXLSX()`. Export .xlsx (JSZip based) is unchanged.
+  - `frontend/index.html`: Incremented cache buster to v=3.37.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-143; added v=3.37 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-60 test row.
+  - `Revisions checklist.csv`: Appended REV-184 row.
+* **Automated & Manual QA Verification**:
+  - 172 automated unit tests passing (`npm test`).
+  - Headless Chrome render of the Job Order Studio header: Save Draft, Reset Form, Export .xlsx and Register RO remain; no Import button.
+* **Cache Busting**: `js/app.js?v=3.37`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Print Buttons Removed from PDF Views)
 
 ### 🖥️ RO Excel Studio: Print Buttons Removed from the PDF Toolbar and Full PDF Viewers (REV-183)
