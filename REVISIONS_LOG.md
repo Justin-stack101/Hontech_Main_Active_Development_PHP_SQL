@@ -13,7 +13,7 @@
   - 166 automated unit tests passing (`npm test`).
   - Headless Chrome run of the real `applyStudioAspectFit()`: in a 1560 px maximized pane the 458 px page is placed at left 551 px (centered); in a 560 px side-by-side pane at left 51 px.
 * **Cache Busting**: `js/app.js?v=3.31`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `de56540` pushed to `origin/prototype_process`.
 
 ---
 
