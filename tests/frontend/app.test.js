@@ -197,11 +197,12 @@ describe('REV-142 Online Booking Module (frontend)', () => {
             appJs.includes("whiteOut(138, 76.8, 149, 7.5);") &&
             appJs.includes("whiteOut(354, 76.8, 168, 7.5);") &&
             appJs.includes("drawTextFit(name, 140, 77.9, 146, 6.2, false);") &&
-            appJs.includes("drawTextCenter(plate, 378.1, 77.9, 6.2, false);") &&
-            appJs.includes("drawTextCenter(model, 472.75, 77.9, 6.2, false);") &&
+            appJs.includes("drawTextCenter(plate, 378.1, 77.9, 6.2, true);") &&
+            appJs.includes("drawTextFit(model, 424.0, 77.9, 96, 6.2, false);") &&
             appJs.includes("drawTextFit(sa, 140, 67.8, 146, 6.2, false);") &&
-            appJs.includes("drawTextCenter(intakeDate, 212.6, 57.8, 6.2, false);") &&
-            appJs.includes("drawTextCenter(stubId, 438.45, 57.8, 7.0, true);"),
+            appJs.includes("drawTextFit(contact, 355, 67.8, 160, 6.2, false);") &&
+            appJs.includes("drawTextFit(intakeDate, 140, 57.8, 146, 6.2, false);") &&
+            appJs.includes("drawTextCenter(stubId, 438.45, 57.8, 7.5, true);"),
             'Filipino claim stub must mask ghost placeholders and place data on true lines'
         );
     });

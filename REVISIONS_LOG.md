@@ -1,3 +1,36 @@
+## 📅 September 25, 2026 (Form 1/3 Customer Conforme Signature & Filipino Claim Stub Data Alignment)
+
+### 📋 Form 1/3 Customer Conforme Signature & Filipino Claim Stub Data Alignment (REV-154)
+* **Objective & Context**: In direct response to user request and screenshot showing missing customer name above the `CONFORME: Customer's Name & Signature` line and missing/unaligned data on the bottom Filipino Claim Stub (`Name`, `Plate No./Year/Model`, `Contact`, `Date`):
+  1. **Root Cause Analysis**:
+     - Customer Dossier input fields were unpopulated when the studio opened without previous local storage or prefilled booking data, leaving `name`, `contact`, `plate`, and `model` as empty strings.
+     - While other studio worksheets (Quotation, Billing, Checklist) had default fallbacks, `compileForm13PDFBytes()` did not have fallback defaults for these fields, resulting in empty strings drawn onto the canvas.
+     - In the bottom Filipino Claim Stub:
+       - `Contact` drawing logic was completely omitted from the compiler.
+       - `intakeDate` was centered at `X = 212.6` across the entire underline width, creating an awkward large gap between `Date : ` label and the date string.
+       - Keystrokes in `f13-input-name` and vehicle fields were only scheduled on `change` events rather than immediate 350ms debounced `input` events, preventing real-time preview updates during live typing.
+  2. **Engineering & Coordinate Calibration**:
+     - **Default Seeding & Resilient Fallbacks**: Updated `initForm13Studio()` in `frontend/js/app.js` to seed standard default demo values (`Juan Dela Cruz`, `0917-123-4567`, `123 Narra St...`, `ABC-1234`, `2021 Toyota Vios`, etc.) if empty, and added resilient fallback chains across `compileForm13PDFBytes()`.
+     - **Live Typing Sync**: Updated `onReactiveJobOrderInput()` in `frontend/js/app.js` to schedule debounced PDF regeneration (`350ms`) on active typing keystrokes (`input` events).
+     - **CONFORME Customer Signature**: Calibrated `drawTextCenter(name, 184.7, 169.0, 6.5, false)` with safe underline whiteout, ensuring the customer's name sits cleanly centered directly above the pre-printed `Customer's Name & Signature` line.
+     - **Filipino Claim Stub Geometric Alignment**:
+       - Row 1: Left-aligned `name` at `X = 140` (`Y = 77.9`, max width `146pt`); centered `plate` at `X = 378.1`; left-aligned `model` at `X = 424` (`Y = 77.9`, max width `96pt`).
+       - Row 2: Left-aligned `sa` at `X = 140` (`Y = 67.8`, max width `146pt`); added missing `contact` drawing left-aligned at `X = 355` (`Y = 67.8`, max width `160pt`).
+       - Row 3: Left-aligned `intakeDate` at `X = 140` (`Y = 57.8`, max width `146pt`), creating a perfectly aligned vertical column with `name` and `sa`; centered bold `stubId` at `X = 438.45` (`Y = 57.8`, 7.5pt font).
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Seeded initial customer dossier demo defaults in `initForm13Studio()`, enabled 350ms debounced reactive preview refresh on input keystrokes, added multi-tier fallbacks in `compileForm13PDFBytes()`, added missing claim stub `contact` drawing, and aligned claim stub `intakeDate` to `X = 140`.
+  - `frontend/index.html`: Incremented cache buster to `v=3.07`.
+  - `tests/frontend/app.test.js`: Updated AUT-FRONT-116 test assertion for calibrated claim stub arguments.
+  - `tests/frontend/sla_and_logic.test.js`: Synced cache buster references to accept `v=3.07` and satisfied AUT-FRONT-94.
+* **Automated & Manual QA Verification**:
+  - 144/144 automated unit tests passing across 63 test suites (`npm.cmd test`).
+  - Appended `SA-30` to `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv`.
+  - Appended `REV-154` to `Revisions checklist.csv`.
+* **Cache Busting**: `js/app.js?v=3.07`.
+* **GitHub Commit Traceability**: `31be322`.
+
+---
+
 ## 📅 September 25, 2026 (Form 1/3 Parts & Materials Table Amount Alignment & Ghost Crescent Removal)
 
 ### 📋 Form 1/3 Parts & Materials Table Amount Alignment & Ghost Crescent Removal (REV-153)

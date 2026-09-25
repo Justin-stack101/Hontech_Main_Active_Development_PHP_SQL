@@ -13223,6 +13223,44 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const managerInput = document.getElementById('f13-input-manager');
             if (managerInput && !managerInput.value) managerInput.value = 'General Manager';
 
+            // Default Customer Dossier Demo Defaults if empty
+            const nameInput = document.getElementById('f13-input-name');
+            if (nameInput && !nameInput.value) nameInput.value = 'Juan Dela Cruz';
+
+            const contactInput = document.getElementById('f13-input-contact');
+            if (contactInput && !contactInput.value) contactInput.value = '0917-123-4567';
+
+            const addressInput = document.getElementById('f13-input-address');
+            if (addressInput && !addressInput.value) addressInput.value = '123 Narra St., Marikina Heights, Marikina City';
+
+            const emailInput = document.getElementById('f13-input-email');
+            if (emailInput && !emailInput.value) emailInput.value = 'juandelacruz@gmail.com';
+
+            const plateInput = document.getElementById('f13-input-plate');
+            if (plateInput && !plateInput.value) plateInput.value = 'ABC-1234';
+
+            const modelInput = document.getElementById('f13-input-model');
+            if (modelInput && !modelInput.value) modelInput.value = '2021 Toyota Vios';
+
+            const colorInput = document.getElementById('f13-input-color');
+            if (colorInput && !colorInput.value) colorInput.value = 'Super Red';
+
+            const kmInput = document.getElementById('f13-input-km');
+            if (kmInput && !kmInput.value) kmInput.value = '45,210 km';
+
+            const engineInput = document.getElementById('f13-input-engine');
+            if (engineInput && !engineInput.value) engineInput.value = '1NZ-FE-987654';
+
+            const chassisInput = document.getElementById('f13-input-chassis');
+            if (chassisInput && !chassisInput.value) chassisInput.value = 'NCP150-123456';
+
+            const concernInput = document.getElementById('f13-input-concern');
+            if (concernInput && !concernInput.value) concernInput.value = 'Periodic Maintenance Service (PMS), Oil & Filter Change, Brake Cleaning & Multi-Point Inspection';
+
+            syncJobOrderFieldsToQuote();
+            syncJobOrderFieldsToBilling();
+            syncJobOrderFieldsToChecklist();
+
             // Seed initial rows if empty
             if (window.form13Parts.length === 0 && window.form13Materials.length === 0 && !window.form13Initialized) {
                 window.form13Parts = [
@@ -13256,11 +13294,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof saveWorkbookDraftOffline === 'function') {
                     saveWorkbookDraftOffline(true);
                 }
-                // REV-141: Auto-magnifier decommissioned. Steady 100% aspect-fit PDF preview.
-                if (e && e.type !== 'input') {
-                    const isImmediate = e.type === 'change';
-                    scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
-                }
+                // Live typing reactive PDF refresh with 350ms debounce
+                const isImmediate = e && e.type === 'change';
+                scheduleFormStudioPdfRefresh(isImmediate ? 0 : 350);
             };
             window.onReactiveJobOrderInput = onReactiveJobOrderInput;
 
@@ -13865,16 +13901,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const jobNo = getVal('f13-input-job-no') || 'HT-JO-0001';
             const intakeDate = getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
             const promiseDate = getVal('f13-input-promise-date') || intakeDate;
-            const name = getVal('f13-input-name') || '';
-            const address = getVal('f13-input-address') || '';
-            const contact = getVal('f13-input-contact') || '';
-            const email = getVal('f13-input-email') || '';
-            const plate = (getVal('f13-input-plate') || '').toUpperCase();
-            const model = getVal('f13-input-model') || '';
-            const color = getVal('f13-input-color') || '';
-            const km = getVal('f13-input-km') || '';
-            const engine = getVal('f13-input-engine') || '';
-            const chassis = getVal('f13-input-chassis') || '';
+            const name = getVal('f13-input-name') || getVal('f23-input-name') || getVal('bill-input-name') || getVal('chk-input-name') || 'Juan Dela Cruz';
+            const address = getVal('f13-input-address') || getVal('f23-input-address') || '123 Narra St., Marikina Heights, Marikina City';
+            const contact = getVal('f13-input-contact') || getVal('f23-input-contact') || '0917-123-4567';
+            const email = getVal('f13-input-email') || 'juandelacruz@gmail.com';
+            const plate = (getVal('f13-input-plate') || getVal('f23-input-plate') || 'ABC-1234').toUpperCase();
+            const model = getVal('f13-input-model') || getVal('f23-input-model') || '2021 Toyota Vios';
+            const color = getVal('f13-input-color') || getVal('f23-input-color') || 'Super Red';
+            const km = getVal('f13-input-km') || '45,210 km';
+            const engine = getVal('f13-input-engine') || '1NZ-FE-987654';
+            const chassis = getVal('f13-input-chassis') || 'NCP150-123456';
             const concern = getVal('f13-input-concern') || '';
             const diagnostic = getVal('f13-input-diagnostic') || '';
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
@@ -14027,16 +14063,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             // Row 1 (Y = 77.9)
             drawTextFit(name, 140, 77.9, 146, 6.2, false);
-            drawTextCenter(plate, 378.1, 77.9, 6.2, false);
-            drawTextCenter(model, 472.75, 77.9, 6.2, false);
+            drawTextCenter(plate, 378.1, 77.9, 6.2, true);
+            drawTextFit(model, 424.0, 77.9, 96, 6.2, false);
 
             // Row 2 (Y = 67.8)
             drawTextFit(sa, 140, 67.8, 146, 6.2, false);
+            drawTextFit(contact, 355, 67.8, 160, 6.2, false);
 
             // Row 3 (Y = 57.8)
-            drawTextCenter(intakeDate, 212.6, 57.8, 6.2, false);
+            drawTextFit(intakeDate, 140, 57.8, 146, 6.2, false);
             const stubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
-            drawTextCenter(stubId, 438.45, 57.8, 7.0, true);
+            drawTextCenter(stubId, 438.45, 57.8, 7.5, true);
 
             return await doc.save();
         }
