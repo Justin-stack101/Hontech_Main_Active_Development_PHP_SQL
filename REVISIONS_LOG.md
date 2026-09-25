@@ -13,7 +13,7 @@
   - 163 automated unit tests passing (`npm test`).
   - Headless Chrome run of the real `registerStudioROToSystem()` with a stubbed API on the real studio markup: with a Regalado SA the payload carried `branch: East Branch` and the arrival equal to the clock time at submission; Plate / Model typed on the tab reached the Job_Order fields (plate upper-cased); source `Online` was sent for Online Appointment; missing Plate / Model blocked registration and the preview listed what is missing. Screenshot of the card verified.
 * **Cache Busting**: `js/app.js?v=3.28`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `91dfa7b` pushed to `origin/prototype_process`.
 
 ---
 
