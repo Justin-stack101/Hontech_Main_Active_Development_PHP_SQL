@@ -1,3 +1,27 @@
+## 📅 September 25, 2026 (Checklist Brake Condition Per-Wheel Status)
+
+### 📋 Checklist Brake Condition Per-Wheel Status (REV-166)
+* **Objective & Context**: The user asked to be able to select more than one status for Brake Condition. A single "Brake pads (Left/Right Front & Left/Right Rear)" row forced one status onto all four wheels. The user chose per-wheel status, matching the four separate brake boxes on the printed CheckList_Result form, the PDF and the Excel sheet.
+* **Core Changes Made**:
+  - `frontend/js/app.js`:
+    - `defaultChecklistPoints`: replaced `brakes_pads` with four Brake Condition rows, `brake_fl` (Left Front), `brake_fr` (Right Front), `brake_rl` (Left Rear) and `brake_rr` (Right Rear), each with its own Good / Attention / Defect / N/A status and notes; added `BRAKE_WHEEL_IDS`.
+    - `canonicalizeChecklistPoints()`: older drafts with a single `brakes_pads` status seed all four wheels with that status and notes; the legacy entry is not carried forward.
+    - `toggleChecklistBrakesNotInspected()`: now sets all four wheels to N/A and restores each wheel's own previous status and notes when unticked (previously it hard-coded the restored notes). "All Good" / "All Attn" leave the wheels on N/A while brakes are marked not inspected.
+    - `compileChecklistPDFBytes()`: each wheel is stamped in its own brake box (front row Y 478.1, rear row Y 448.4; left / right box columns); the legacy `brakes_pads` path is kept for un-migrated data.
+    - `exportOfficialXLSX()`: each wheel maps to its own cells (Left Front M31/N31/O31, Right Front AI31/AK31/AN31, Left Rear M35/N35/O35, Right Rear AI35/AK35/AN35); brakes-not-inspected skips all brake cells.
+  - `frontend/index.html`: Incremented cache buster to v=3.19.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-125 (four wheel rows, legacy migration, per-wheel toggle restore, PDF and Excel per-wheel mapping); added v=3.19 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-42 test row (workbook ranges extended to row 168).
+  - `Revisions checklist.csv`: Appended REV-166 row.
+* **Automated & Manual QA Verification**:
+  - 154/154 automated unit tests passing across 63 test suites (`npm test`).
+  - Ran the real migration and toggle code in Node: a legacy `brakes_pads` Attention draft becomes four Attention wheels; ticking and unticking "Brakes not inspected" restores each wheel's own status and notes.
+  - Rendered the UI in headless Chrome (four independent wheel rows), rendered the PDF with a different status per wheel, and ran the real Excel export read back with openpyxl: every wheel's symbol lands in its own box / cells.
+* **Cache Busting**: `js/app.js?v=3.19`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist Status Buttons Filled With Actual Form Colors)
 
 ### 📋 Checklist Status Buttons Filled With Actual Printed-Form Colors (REV-165)

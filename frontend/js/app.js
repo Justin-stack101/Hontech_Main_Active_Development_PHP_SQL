@@ -14810,8 +14810,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'tire_fr': { y: 627.3, cols: TIRE_R_COLS },
                 'tire_rl': { y: 583.6, cols: TIRE_L_COLS },
                 'tire_rr': { y: 583.6, cols: TIRE_R_COLS },
-                'spare_tire': { y: 539.9, cols: TIRE_L_COLS }
+                'spare_tire': { y: 539.9, cols: TIRE_L_COLS },
+                // Brake Condition, one box per wheel (front row y 470.6-485.6, rear row y 441.3-455.4)
+                'brake_fl': { y: 478.1, cols: TIRE_L_COLS },
+                'brake_fr': { y: 478.1, cols: TIRE_R_COLS },
+                'brake_rl': { y: 448.4, cols: TIRE_L_COLS },
+                'brake_rr': { y: 448.4, cols: TIRE_R_COLS }
             };
+            const brakeWheelIds = ['brake_fl', 'brake_fr', 'brake_rl', 'brake_rr'];
 
             const statusIndex = (status) => {
                 const s = String(status || 'Good').toLowerCase();
@@ -14832,14 +14838,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 if (pt.id === 'brakes_pads') {
+                    // Legacy single brake status (pre per-wheel drafts): stamp all four wheels
                     if (window.checklistBrakesNotInspected) return;
-                    // Brake Condition: all four wheels (front row y 470.6-485.6, rear row y 441.3-455.4)
                     [478.1, 448.4].forEach(by => {
                         drawStatusMark(idx, TIRE_L_COLS[idx], by);
                         drawStatusMark(idx, TIRE_R_COLS[idx], by);
                     });
                     return;
                 }
+
+                if (brakeWheelIds.includes(pt.id) && window.checklistBrakesNotInspected) return;
 
                 const pos = checkpointPositions[pt.id];
                 if (pos) drawStatusMark(idx, pos.cols[idx], pos.y);
@@ -16322,8 +16330,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             { id: 'tire_rl', group: 'Tire Condition', name: 'Left Rear', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
             { id: 'tire_rr', group: 'Tire Condition', name: 'Right Rear', status: 'Good', notes: '32 PSI / 5.0mm tread depth' },
             { id: 'spare_tire', group: 'Tire Condition', name: 'Spare', status: 'Good', notes: 'Complete in trunk compartment' },
-            { id: 'brakes_pads', group: 'Brake Condition', name: 'Brake pads (Left/Right Front & Left/Right Rear)', status: 'Good', notes: 'Pads at ~70% remaining life' }
+            // Brake Condition: one status per wheel, matching the four brake boxes on the printed form
+            { id: 'brake_fl', group: 'Brake Condition', name: 'Left Front', status: 'Good', notes: 'Pads at ~70% remaining life' },
+            { id: 'brake_fr', group: 'Brake Condition', name: 'Right Front', status: 'Good', notes: 'Pads at ~70% remaining life' },
+            { id: 'brake_rl', group: 'Brake Condition', name: 'Left Rear', status: 'Good', notes: 'Pads at ~70% remaining life' },
+            { id: 'brake_rr', group: 'Brake Condition', name: 'Right Rear', status: 'Good', notes: 'Pads at ~70% remaining life' }
         ];
+        const BRAKE_WHEEL_IDS = ['brake_fl', 'brake_fr', 'brake_rl', 'brake_rr'];
 
         // Single source of truth for checklist status symbols and colors, shared by the UI, PDF and Excel export.
         // Fills are the exact status-box colors printed on the CheckList_Result form.
@@ -16349,8 +16362,11 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         // saved status and notes (older drafts stored the previous section/item names).
         function canonicalizeChecklistPoints(points) {
             const saved = Array.isArray(points) ? points : [];
+            // Older drafts stored one 'brakes_pads' status for all four wheels; seed each wheel from it
+            const legacyBrakes = saved.find(ep => ep && ep.id === 'brakes_pads');
             const canonical = defaultChecklistPoints.map(dp => {
-                const existing = saved.find(ep => ep && ep.id === dp.id);
+                const existing = saved.find(ep => ep && ep.id === dp.id)
+                    || (legacyBrakes && BRAKE_WHEEL_IDS.includes(dp.id) ? legacyBrakes : null);
                 if (!existing) return { ...dp };
                 let status = normalizeChecklistStatus(existing.status);
                 // Battery Performance only has Good / Replace on the form; older "Attention" values become Replace
@@ -16358,7 +16374,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 return { ...dp, status, notes: existing.notes !== undefined ? existing.notes : dp.notes };
             });
             saved.forEach(ep => {
-                if (ep && !defaultChecklistPoints.some(dp => dp.id === ep.id)) canonical.push({ ...ep });
+                if (ep && ep.id !== 'brakes_pads' && !defaultChecklistPoints.some(dp => dp.id === ep.id)) canonical.push({ ...ep });
             });
             return canonical;
         }
@@ -16436,17 +16452,22 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function toggleChecklistBrakesNotInspected(checked) {
             window.checklistBrakesNotInspected = Boolean(checked);
-            const bp = (window.checklistInspectionPoints || []).find(p => p.id === 'brakes_pads');
-            if (bp) {
+            // Applies to all four brake wheels; each wheel's own status and notes are restored when unticked
+            (window.checklistInspectionPoints || []).filter(p => BRAKE_WHEEL_IDS.includes(p.id)).forEach(bp => {
                 if (checked) {
-                    bp.prevStatus = bp.status;
+                    if (bp.status !== 'N/A' || bp.prevStatus === undefined) {
+                        bp.prevStatus = bp.status;
+                        bp.prevNotes = bp.notes;
+                    }
                     bp.status = 'N/A';
                     bp.notes = 'Brakes not inspected on this visit';
                 } else {
                     bp.status = bp.prevStatus || 'Good';
-                    bp.notes = 'Pads at ~70% remaining life';
+                    bp.notes = bp.prevNotes !== undefined ? bp.prevNotes : 'Pads at ~70% remaining life';
+                    delete bp.prevStatus;
+                    delete bp.prevNotes;
                 }
-            }
+            });
             renderChecklistTable();
             syncChecklistCanvas();
             saveWorkbookDraftOffline(true);
@@ -16479,6 +16500,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         function setAllChecklistItems(status) {
             (window.checklistInspectionPoints || []).forEach(p => {
+                // Brake wheels stay N/A while "Brakes not inspected on this visit" is ticked
+                if (window.checklistBrakesNotInspected && BRAKE_WHEEL_IDS.includes(p.id)) return;
                 // Battery Performance only has Good / Replace on the printed form
                 p.status = (p.id === 'battery' && status === 'Attention') ? 'Defect' : status;
             });
@@ -18700,6 +18723,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         'tire_rl':          { good: ['M15'],  attn: ['N15'],  defect: ['O15'] },
                         'tire_rr':          { good: ['AI15'], attn: ['AK15'], defect: ['AN15'] },
                         'spare_tire':       { good: ['M21'],  attn: ['N21'],  defect: ['O21'] },
+                        // Brake Condition, one set of boxes per wheel
+                        'brake_fl':         { good: ['M31'],  attn: ['N31'],  defect: ['O31'] },
+                        'brake_fr':         { good: ['AI31'], attn: ['AK31'], defect: ['AN31'] },
+                        'brake_rl':         { good: ['M35'],  attn: ['N35'],  defect: ['O35'] },
+                        'brake_rr':         { good: ['AI35'], attn: ['AK35'], defect: ['AN35'] },
+                        // Legacy single brake status (pre per-wheel drafts)
                         'brakes_pads': {
                             good: ['M31', 'AI31', 'M35', 'AI35'],
                             attn: ['N31', 'AK31', 'N35', 'AK35'],
@@ -18708,9 +18737,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     };
 
                     const brakesNotInspected = Boolean(window.checklistBrakesNotInspected);
+                    const brakeCellIds = ['brake_fl', 'brake_fr', 'brake_rl', 'brake_rr', 'brakes_pads'];
 
                     (window.checklistInspectionPoints || []).forEach(pt => {
-                        if (pt.id === 'brakes_pads' && brakesNotInspected) {
+                        if (brakeCellIds.includes(pt.id) && brakesNotInspected) {
                             return; // Brakes not inspected, skip stamping individual brake color boxes
                         }
                         const mapping = gridMap[pt.id];
