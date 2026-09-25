@@ -13135,6 +13135,59 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.closeChecklistEnlargeModal = closeChecklistEnlargeModal;
 
+        // REV-182: arrows to move between the four studio documents (Job_Order -> Quotation_No ->
+        // Billing_No -> CheckList_Result, wrapping around) in the studio PDF view and in the Full PDF viewer
+        const STUDIO_DOCUMENT_ORDER = [
+            { sheet: 'form13', modal: 'modal-f13-enlarge', open: () => openForm13EnlargeModal(), close: () => closeForm13EnlargeModal() },
+            { sheet: 'form23', modal: 'modal-f23-enlarge', open: () => openQuoteEnlargeModal(), close: () => closeQuoteEnlargeModal() },
+            { sheet: 'billing', modal: 'modal-billing-enlarge', open: () => openBillingEnlargeModal(), close: () => closeBillingEnlargeModal() },
+            { sheet: 'checklist', modal: 'modal-checklist-enlarge', open: () => openChecklistEnlargeModal(), close: () => closeChecklistEnlargeModal() }
+        ];
+
+        function getStudioDocumentIndex() {
+            const active = currentFormStudioActiveSheet || 'form13';
+            const key = active === 'joborder' ? 'form13' : active === 'quote' ? 'form23' : active;
+            return STUDIO_DOCUMENT_ORDER.findIndex(d => d.sheet === key);
+        }
+        window.getStudioDocumentIndex = getStudioDocumentIndex;
+
+        function stepStudioDocument(direction) {
+            const n = STUDIO_DOCUMENT_ORDER.length;
+            const current = getStudioDocumentIndex();
+            const next = current < 0 ? (direction > 0 ? 0 : n - 1) : (current + direction + n) % n;
+            switchFormStudioSheet(STUDIO_DOCUMENT_ORDER[next].sheet);
+        }
+        window.stepStudioDocument = stepStudioDocument;
+
+        let isSteppingEnlargedDocument = false;
+        async function stepEnlargedDocument(direction) {
+            if (isSteppingEnlargedDocument) return;
+            const n = STUDIO_DOCUMENT_ORDER.length;
+            const current = STUDIO_DOCUMENT_ORDER.findIndex(d => !document.getElementById(d.modal)?.classList.contains('hidden'));
+            if (current < 0) return;
+            const next = STUDIO_DOCUMENT_ORDER[(current + direction + n) % n];
+            isSteppingEnlargedDocument = true;
+            try {
+                // Keep the studio on the same document underneath, so closing the viewer lands there
+                switchFormStudioSheet(next.sheet);
+                STUDIO_DOCUMENT_ORDER[current].close();
+                await next.open();
+            } finally {
+                isSteppingEnlargedDocument = false;
+            }
+        }
+        window.stepEnlargedDocument = stepEnlargedDocument;
+
+        // Left / Right arrow keys switch documents while a Full PDF viewer is open
+        window.addEventListener('keydown', (e) => {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            if (e.target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName)) return;
+            const anyOpen = STUDIO_DOCUMENT_ORDER.some(d => !document.getElementById(d.modal)?.classList.contains('hidden'));
+            if (!anyOpen) return;
+            e.preventDefault();
+            stepEnlargedDocument(e.key === 'ArrowRight' ? 1 : -1);
+        });
+
         // Listen for ESC to close whichever enlarge modal is currently open
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' || e.key === 'Esc') {

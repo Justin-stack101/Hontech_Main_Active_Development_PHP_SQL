@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Document Arrows in the Studio PDF View & Full PDF Viewer)
+
+### 🗂️ RO Excel Studio: Previous / Next Document Arrows (REV-182)
+* **Objective & Context**: The user asked for arrows to switch between the documents while viewing the PDF, both in the studio (normal and maximized) and in the Full PDF viewer.
+* **Core Changes Made**:
+  - `frontend/index.html`: Each studio PDF toolbar (Job_Order, Quotation_No, Billing_No, CheckList_Result) and each Full PDF viewer header gets a neutral "‹ n / 4 ›" control; tooltips name the previous and next document.
+  - `frontend/js/app.js`: `STUDIO_DOCUMENT_ORDER` lists the four documents in workbook order (Workshop_Monitoring has no PDF and is skipped). `stepStudioDocument(±1)` switches the studio sheet (wrapping around; the maximized view stays maximized). `stepEnlargedDocument(±1)` moves the studio to the next document, closes the open Full PDF viewer and opens the next one with its live PDF. Left / Right arrow keys do the same while a Full PDF viewer is open (ignored while typing in a field).
+  - `frontend/index.html`: Incremented cache buster to v=3.35.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-141; added v=3.35 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-58 test row.
+  - `Revisions checklist.csv`: Appended REV-182 row.
+* **Automated & Manual QA Verification**:
+  - 170 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome on the real studio and viewer markup with the real switch / step / viewer functions (PDF compile stubbed): next goes Job_Order -> Quotation_No -> Billing_No -> CheckList_Result -> Job_Order, previous from Job_Order goes to CheckList_Result; in the Full PDF viewer the arrow and the Right / Left keys swap viewers and the studio follows. Screenshots of the toolbar and the viewer header checked.
+* **Cache Busting**: `js/app.js?v=3.35`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Neutral Full PDF Viewer Headers)
 
 ### 🎨 RO Excel Studio: Professional Full PDF Viewer Headers (REV-181)
