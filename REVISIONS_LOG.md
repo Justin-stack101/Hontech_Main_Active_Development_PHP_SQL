@@ -12,7 +12,7 @@
   - 187 automated unit tests passing (`npm test`).
   - Real-time headless Chrome 3/3: a real export from the Studio (NDA 4521, 2021 Toyota Vios, 0917-555-0192) was captured and its Job_Order sheet read: H70 "NDA 4521", I70 empty, J70 "2021 Toyota Vios", H71 "0917-555-0192", I71 empty, H72 claim stub 092526J1.
 * **Cache Busting**: `js/app.js?v=3.52`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `a25ae6a` pushed to `origin/prototype_process`.
 
 ---
 
