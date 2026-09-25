@@ -19,7 +19,7 @@
   - Backend end-to-end against the local MySQL database (PHP built-in server, real login): ran `backend/migration.php` (added `referred_by`); a Regalado SA registered a job with Social Media, which was stored and returned with `branch: East Branch`; an unknown referral value was stored as Walk-in / Direct; `/api/jobs/analytics` as Owner returned `referredBy` per job. The two test jobs were deleted afterwards (65 jobs before and after).
   - Headless Chrome on the real studio markup and code: typed values reached Job_Order; a manual arrival survived the live clock tick; the payload carried referral, arrival and status Waiting; arrival returned to Auto after registering; Print used the form values. The claim stub PDF (built with the real code) and the analytics card (26 sample intakes) were rendered and checked.
 * **Cache Busting**: `js/app.js?v=3.29`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `6e2e2ae` pushed to `origin/prototype_process`.
 
 ---
 
