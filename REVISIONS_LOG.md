@@ -15,7 +15,7 @@
   - 157/157 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered all four tabs in headless Chrome from the real markup and row renderers: consistent cards, labels, inputs, quick actions and PDF toolbar; Job Order cards are no longer nested; toolbar labels stay on one line.
 * **Cache Busting**: `js/app.js?v=3.22`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `eb52a03`.
 
 ---
 
