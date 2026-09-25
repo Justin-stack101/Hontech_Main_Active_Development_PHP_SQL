@@ -5636,30 +5636,26 @@
                         <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
                             <i data-lucide="volume-2" class="w-3.5 h-3.5 text-red-500"></i> TV Signage & Voice Announcement Simulator
                         </span>
-                        <span class="text-[9px] text-slate-400 font-mono font-bold uppercase bg-slate-900 px-2 py-0.5 rounded border border-slate-800">5 LIVE EVENTS</span>
+                        <span class="text-[9px] text-slate-400 font-mono font-bold uppercase bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Plays on your branch TV</span>
                     </div>
 
                     <!-- Custom Simulation Inputs in Toolbox -->
                     <div class="p-3 bg-slate-900/90 border border-slate-800 rounded-xl mb-3 flex flex-col gap-2">
                         <div class="flex gap-2">
-                            <div class="w-1/3">
+                            <div class="w-1/2">
                                 <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Plate</label>
                                 <input type="text" id="dev-sim-modal-plate" value="NDO 8492" class="w-full bg-slate-950 border border-slate-700 text-white font-mono font-bold text-xs px-2.5 py-1.5 rounded-lg uppercase outline-none focus:border-red-500 transition">
                             </div>
-                            <div class="w-1/3">
+                            <div class="w-1/2">
                                 <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Car Model</label>
                                 <input type="text" id="dev-sim-modal-vehicle" value="Honda Civic RS" class="w-full bg-slate-950 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 transition">
-                            </div>
-                            <div class="w-1/3">
-                                <label class="text-[8.5px] font-bold uppercase text-slate-400 block mb-0.5">Customer Name</label>
-                                <input type="text" id="dev-sim-modal-customer" value="Sophia Loren" class="w-full bg-slate-950 border border-slate-700 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg outline-none focus:border-red-500 transition">
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <!-- 01. Monitoring -->
-                        <button onclick="triggerTVSimulationEvent('monitoring', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
+                        <button onclick="devSimulateTVEvent('processing')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-blue-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
                             <div class="flex items-center justify-between mb-1.5">
                                 <div class="text-xs font-black uppercase text-blue-400 flex items-center gap-1.5">
                                     <span class="p-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20"><i data-lucide="radio" class="w-3.5 h-3.5"></i></span>
@@ -5671,7 +5667,7 @@
                         </button>
 
                         <!-- 02. Bay Allocation -->
-                        <button onclick="triggerTVSimulationEvent('bay_assigned', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
+                        <button onclick="devSimulateTVEvent('bay')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
                             <div class="flex items-center justify-between mb-1.5">
                                 <div class="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5">
                                     <span class="p-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i></span>
@@ -5683,7 +5679,7 @@
                         </button>
 
                         <!-- 03. Ready for Release -->
-                        <button onclick="triggerTVSimulationEvent('ready', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
+                        <button onclick="devSimulateTVEvent('ready')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
                             <div class="flex items-center justify-between mb-1.5">
                                 <div class="text-xs font-black uppercase text-emerald-400 flex items-center gap-1.5">
                                     <span class="p-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i></span>
@@ -5695,7 +5691,7 @@
                         </button>
 
                         <!-- 04. Carry Over -->
-                        <button onclick="triggerTVSimulationEvent('carryover', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-purple-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
+                        <button onclick="devSimulateTVEvent('carryover')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-purple-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98]">
                             <div class="flex items-center justify-between mb-1.5">
                                 <div class="text-xs font-black uppercase text-purple-400 flex items-center gap-1.5">
                                     <span class="p-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20"><i data-lucide="clock" class="w-3.5 h-3.5"></i></span>
@@ -5707,7 +5703,7 @@
                         </button>
 
                         <!-- 05. Return to Active -->
-                        <button onclick="triggerTVSimulationEvent('return_active', { plate: document.getElementById('dev-sim-modal-plate')?.value, vehicle: document.getElementById('dev-sim-modal-vehicle')?.value, customer: document.getElementById('dev-sim-modal-customer')?.value }); toggleDevToolbox(false);" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98] sm:col-span-2">
+                        <button onclick="devSimulateTVEvent('returned')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-left transition duration-150 cursor-pointer group shadow-xs active:scale-[0.98] sm:col-span-2">
                             <div class="flex items-center justify-between mb-1.5">
                                 <div class="text-xs font-black uppercase text-cyan-400 flex items-center gap-1.5">
                                     <span class="p-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></span>
@@ -5716,6 +5712,30 @@
                                 <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-cyan-400">05</span>
                             </div>
                             <p class="text-[9.5px] text-slate-400 leading-tight">Re-activates vehicle into active service workflow queue</p>
+                        </button>
+
+                        <!-- 06. Released -->
+                        <button onclick="devSimulateTVEvent('released')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="text-xs font-black uppercase text-emerald-400 flex items-center gap-1.5">
+                                    <span class="p-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></span>
+                                    <span>Released</span>
+                                </div>
+                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-emerald-400">06</span>
+                            </div>
+                            <p class="text-[9.5px] text-slate-400 leading-tight">Release announcement with thank-you message</p>
+                        </button>
+
+                        <!-- 07. Call Customer Again -->
+                        <button onclick="devSimulateTVEvent('recall')" class="p-3 bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-sky-500/40 rounded-2xl text-left transition cursor-pointer group">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <div class="text-xs font-black uppercase text-sky-400 flex items-center gap-1.5">
+                                    <span class="p-1 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20"><i data-lucide="megaphone" class="w-3.5 h-3.5"></i></span>
+                                    <span>Call Customer Again</span>
+                                </div>
+                                <span class="font-mono text-[9px] font-bold text-slate-400 group-hover:text-sky-400">07</span>
+                            </div>
+                            <p class="text-[9.5px] text-slate-400 leading-tight">Repeats the ready-for-claim call</p>
                         </button>
                     </div>
                 </div>
@@ -7531,7 +7551,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.43"></script>
+    <script src="js/app.js?v=3.44"></script>
 </body>
 
 </html>

@@ -76,6 +76,19 @@ if (str_starts_with($route, '/auth/developer/') && Env::get('APP_ENV', 'developm
     exit;
 }
 
+// REV-191: Ctrl+D Developer Toolbox (development only, logged-in staff). `status` lets the app open the
+// toolbox; `tv-simulate` plays a test announcement on the user's branch TV.
+if ($method === 'GET' && $route === '/auth/developer/status') {
+    if (!Auth::authenticateUser()) exit;
+    \App\Utils\ApiResponse::json(['development' => true]);
+    exit;
+}
+if ($method === 'POST' && $route === '/auth/developer/tv-simulate') {
+    if (!Auth::authenticateUser()) exit;
+    TvController::simulate();
+    exit;
+}
+
 // Developer sandbox email routes (development only)
 if ($method === 'GET' && $route === '/auth/developer/emails') {
     DeveloperController::getSimulatedEmails();

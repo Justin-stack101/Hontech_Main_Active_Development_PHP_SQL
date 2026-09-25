@@ -1473,12 +1473,29 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             }, stepInterval);
         }
 
-        function toggleDevToolbox(forceState) {
+        // REV-191: the Developer Toolbox opens only for a logged-in user on a development server
+        // (the server answers /auth/developer/status only when APP_ENV=development)
+        let devToolboxAllowed = null;
+        async function canOpenDevToolbox() {
+            if (!currentUserRole) return false;
+            if (devToolboxAllowed !== null) return devToolboxAllowed;
+            try {
+                const res = await apiRequest('/api/auth/developer/status');
+                devToolboxAllowed = Boolean(res && res.development);
+            } catch (e) {
+                devToolboxAllowed = false;
+            }
+            return devToolboxAllowed;
+        }
+        window.canOpenDevToolbox = canOpenDevToolbox;
+
+        async function toggleDevToolbox(forceState) {
             const modal = document.getElementById('dev-toolbox-modal');
             if (!modal) return;
 
             const isHidden = modal.classList.contains('hidden');
             const shouldShow = typeof forceState === 'boolean' ? forceState : isHidden;
+            if (shouldShow && !(await canOpenDevToolbox())) return;
 
             if (shouldShow) {
                 modal.classList.remove('hidden');
@@ -1995,6 +2012,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('app-shell').classList.add('hidden');
                 document.getElementById('auth-view').classList.remove('hidden');
                 currentUserRole = '';
+                devToolboxAllowed = null;
                 currentUserName = '';
                 currentUserEmail = '';
                 currentUserBranch = 'Marikina Branch';
@@ -8491,92 +8509,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
         window.toggleTVDevToolbox = toggleDevToolbox;
 
-        function toggleTVDevDrawer(force) {
-            const drawer = document.getElementById('tv-dev-drawer');
-            if (!drawer) return;
-            if (force !== undefined) {
-                if (force) drawer.classList.remove('hidden');
-                else drawer.classList.add('hidden');
-            } else {
-                drawer.classList.toggle('hidden');
-            }
-            if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                window.lucide.createIcons();
-            }
-        }
-        window.toggleTVDevDrawer = toggleTVDevDrawer;
-
-        function triggerTVSimulationEvent(eventType, customData = {}) {
-            const inputPlate = (document.getElementById('tv-dev-input-plate')?.value?.trim()) || customData.plate || 'NDO 8492';
-            const inputVehicle = (document.getElementById('tv-dev-input-vehicle')?.value?.trim()) || customData.vehicle || 'Honda Civic RS';
-            const inputCustomer = (document.getElementById('tv-dev-input-customer')?.value?.trim()) || customData.customer || 'Sophia Loren';
-
-            const sampleJob = {
-                plate: inputPlate,
-                customer: inputCustomer,
-                name: inputCustomer,
-                vehicle: inputVehicle,
-                location: customData.location || 'Bay 1',
-                claimStub: customData.claimStub || 'CS-104',
-                carryOverStatus: customData.reason || 'Awaiting Parts'
-            };
-
-            if (eventType === 'monitoring') {
-                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Monitoring`, 'info', 'TV Dev Simulator');
-                announceVehicleMonitoring(sampleJob, sampleJob.location || 'Workshop Queue');
-            } else if (eventType === 'bay_assigned') {
-                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Bay Allocation`, 'info', 'TV Dev Simulator');
-                announceBayAllocation(sampleJob, sampleJob.location || 'Bay 1');
-            } else if (eventType === 'ready') {
-                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Ready for Release`, 'success', 'TV Dev Simulator');
-                announceVehicleReady(sampleJob);
-            } else if (eventType === 'carryover') {
-                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Carry Over`, 'warning', 'TV Dev Simulator');
-                announceVehicleCarryOver(sampleJob);
-            } else if (eventType === 'return_active') {
-                showSystemToast(`Simulating: ${sampleJob.plate} (${inputCustomer}) -> Return to Active`, 'info', 'TV Dev Simulator');
-                announceVehicleReturnActive(sampleJob);
+        // REV-191: Ctrl+D TV simulator - records a real announcement for the user's branch TV
+        async function devSimulateTVEvent(type) {
+            const plate = (document.getElementById('dev-sim-modal-plate')?.value || 'DEV 001').trim();
+            const vehicle = (document.getElementById('dev-sim-modal-vehicle')?.value || 'Test Vehicle').trim();
+            try {
+                const res = await apiRequest('/api/auth/developer/tv-simulate', { method: 'POST', body: { type, plate, vehicle } });
+                showSystemToast(res?.active
+                    ? `Sent to the ${res.branchName} TV. It plays within a few seconds.`
+                    : `Sent, but the ${res?.branchName || 'branch'} TV broadcast is paused. Start it in the TV Broadcast Hub to hear it.`, res?.active ? 'success' : 'warning', 'TV Simulation');
+            } catch (err) {
+                showSystemToast(err.message || 'Simulation failed.', 'error', 'TV Simulation');
             }
         }
-        window.triggerTVSimulationEvent = triggerTVSimulationEvent;
-
-        function simulateVehicleMonitoringEvent() {
-            triggerTVSimulationEvent('monitoring');
-        }
-        window.simulateVehicleMonitoringEvent = simulateVehicleMonitoringEvent;
-
-        function simulateBayAllocationEvent() {
-            triggerTVSimulationEvent('bay_assigned');
-        }
-        window.simulateBayAllocationEvent = simulateBayAllocationEvent;
-
-        function simulateVehicleReadyEvent() {
-            triggerTVSimulationEvent('ready');
-        }
-        window.simulateVehicleReadyEvent = simulateVehicleReadyEvent;
-
-        function simulateCarryOverEvent() {
-            triggerTVSimulationEvent('carryover');
-        }
-        window.simulateCarryOverEvent = simulateCarryOverEvent;
-
-        function simulateReturnActiveEvent() {
-            triggerTVSimulationEvent('return_active');
-        }
-        window.simulateReturnActiveEvent = simulateReturnActiveEvent;
-
-        function dispatchCustomTVSimulation() {
-            const plateInput = document.getElementById('tv-dev-sim-plate');
-            const customerInput = document.getElementById('tv-dev-sim-customer');
-            const statusSelect = document.getElementById('tv-dev-sim-status');
-
-            const plate = (plateInput && plateInput.value.trim()) || 'NDO 8492';
-            const customer = (customerInput && customerInput.value.trim()) || 'Sophia Loren';
-            const statusType = (statusSelect && statusSelect.value) || 'Monitoring';
-
-            triggerTVSimulationEvent(statusType.toLowerCase().replace(/\s+/g, '_'), { plate, customer });
-        }
-        window.dispatchCustomTVSimulation = dispatchCustomTVSimulation;
+        window.devSimulateTVEvent = devSimulateTVEvent;
 
         function formatPlateForSpeech(rawPlate) {
             if (!rawPlate) return 'vehicle';

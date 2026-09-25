@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (Developer TV Simulation in the Ctrl+D Toolbox)
+
+### 🛠️ Developer Toolbox: TV Simulation Moved to Ctrl+D, Locked to Development (REV-191)
+* **Objective & Context**: The user asked to hide the developer simulation test and put it in the Ctrl+D UI. The review found two developer surfaces: the TV page's `?dev=1` simulation drawer and the staff app's Ctrl+D "Developer Toolbox & Sandbox", whose TV simulator no longer reached the TV since REV-189 (it only showed a toast). Ctrl+D also opened for anyone, even on the login screen.
+* **Core Changes Made**:
+  - `frontend/tv.html`: removed the developer drawer, its button and its simulation code; the lounge TV has no developer controls.
+  - `backend/index.php` / `TvController::simulate()`: `GET /auth/developer/status` and `POST /auth/developer/tv-simulate` (logged-in; behind the existing guard that removes every `/auth/developer/` route unless `APP_ENV=development`). The simulation records a real announcement for the user's branch TV with the entered plate and model.
+  - `frontend/js/app.js`: `canOpenDevToolbox()` - Ctrl+D opens only for a logged-in user and only when the server answers the development status (checked once per login). `devSimulateTVEvent()` replaces the old app-only `triggerTVSimulationEvent()` / `simulate*()` / `toggleTVDevDrawer()` code and reports whether the branch broadcast is live.
+  - `frontend/index.html`: toolbox TV simulator shows "Plays on your branch TV", plate and car model inputs (customer name removed - names are never spoken), and seven events (Processing, Bay, Ready, Carry Over, Return to Active, Released, Call Customer Again); the toolbox stays open so several can be sent.
+  - `frontend/index.html`: Incremented cache buster to v=3.44.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-150; AUT-FRONT-146 now checks that the TV has no developer controls; added v=3.44 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-67 test row.
+  - `Revisions checklist.csv`: Appended REV-191 row.
+* **Automated & Manual QA Verification**:
+  - 179 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome, 8/8: lounge TV has no developer drawer; on XAMPP (development) Ctrl+D does nothing when logged out and opens for a logged-in SA; the toolbox "Released" and "Call Customer Again" buttons played on the Marikina TV (PIN) in order and the toolbox stayed open; the simulation route refuses requests without login (401). On a separate `php -S` server loading a copy of `.env` with `APP_ENV=production`: developer routes return 404 and Ctrl+D stays closed for a logged-in SA. The real `.env` was not changed; simulated announcements were removed afterwards.
+* **Cache Busting**: `js/app.js?v=3.44`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Real Weather on the TV)
 
 ### 🌦️ TV Monitor: Real Per-Branch Weather Box (REV-190)

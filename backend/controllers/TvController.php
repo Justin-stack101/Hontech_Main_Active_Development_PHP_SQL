@@ -501,4 +501,22 @@ class TvController
         $session = self::getSession($db, $user['branch'] ?? '');
         ApiResponse::json(['message' => 'Test announcement sent.', 'active' => (bool)$session['active']]);
     }
+
+    /** POST /auth/developer/tv-simulate — development only (router guard): { type, plate, vehicle } on the user's branch TV */
+    public static function simulate(): void
+    {
+        $user = Auth::getCurrentUser();
+        $input = json_decode(file_get_contents('php://input'), true) ?? [];
+        $type = (string)($input['type'] ?? '');
+        if (!in_array($type, self::ANNOUNCEMENT_TYPES, true) || $type === 'test') {
+            ApiResponse::badRequest('Unknown simulation type.');
+            return;
+        }
+        $db = Database::getConnection();
+        $plate = strtoupper(substr(trim((string)($input['plate'] ?? 'DEV 001')), 0, 20)) ?: 'DEV 001';
+        $vehicle = substr(trim((string)($input['vehicle'] ?? 'Test Vehicle')), 0, 255) ?: 'Test Vehicle';
+        self::announce($db, ['branch' => $user['branch'] ?? '', 'job_id' => null, 'plate' => $plate, 'vehicle' => $vehicle], $type, $type === 'bay' ? 'Bay 1' : null, (int)$user['id']);
+        $session = self::getSession($db, $user['branch'] ?? '');
+        ApiResponse::json(['message' => 'Simulation sent to the branch TV.', 'active' => (bool)$session['active'], 'branchName' => self::branchDisplayName($session['branch'])]);
+    }
 }
