@@ -15,7 +15,7 @@
   - 179 automated unit tests passing (`npm test`).
   - Real-time headless Chrome, 8/8: lounge TV has no developer drawer; on XAMPP (development) Ctrl+D does nothing when logged out and opens for a logged-in SA; the toolbox "Released" and "Call Customer Again" buttons played on the Marikina TV (PIN) in order and the toolbox stayed open; the simulation route refuses requests without login (401). On a separate `php -S` server loading a copy of `.env` with `APP_ENV=production`: developer routes return 404 and Ctrl+D stays closed for a logged-in SA. The real `.env` was not changed; simulated announcements were removed afterwards.
 * **Cache Busting**: `js/app.js?v=3.44`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `4a7564b` pushed to `origin/prototype_process`.
 
 ---
 
