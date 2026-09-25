@@ -18,7 +18,7 @@
   - Ran the real migration and toggle code in Node: a legacy `brakes_pads` Attention draft becomes four Attention wheels; ticking and unticking "Brakes not inspected" restores each wheel's own status and notes.
   - Rendered the UI in headless Chrome (four independent wheel rows), rendered the PDF with a different status per wheel, and ran the real Excel export read back with openpyxl: every wheel's symbol lands in its own box / cells.
 * **Cache Busting**: `js/app.js?v=3.19`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `891d737`.
 
 ---
 
