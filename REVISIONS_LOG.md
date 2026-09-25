@@ -14,7 +14,7 @@
   - Live feed vs Daily Intakes rule on XAMPP: identical (today's 2 active intakes + 7 carry-overs). Temporary database rows (removed afterwards): yesterday's Processing and unclaimed Ready to Release were reset off the TV; today's intake shown; a 5-day-old Carry Over and a returned carry-over stayed.
   - Real-time headless Chrome 13/13: lane list pauses at the top, scrolls ~40 px/s, reaches the bottom, returns to the top; slide waits for it, then rotates; mouse-wheel scroll pauses it; short lists do not move. Regression: TV flow 9/9, display 12/12, announcements 8/8, responsive 22/22, security 26/26 (PIN throttle table cleared after the security run).
 * **Cache Busting**: `js/app.js?v=3.49`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `6070d37` pushed to `origin/prototype_process`.
 
 ---
 
