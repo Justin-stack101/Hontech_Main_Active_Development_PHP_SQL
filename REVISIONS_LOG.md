@@ -12,7 +12,7 @@
   - 150/150 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the updated card from `frontend/index.html` in headless Chrome and confirmed the checkbox appears after the checkpoint list and directly above Inspector Remarks.
 * **Cache Busting**: `js/app.js?v=3.15`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `878b4bc`.
 
 ---
 
