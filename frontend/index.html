@@ -2619,6 +2619,10 @@
                 <!-- AUTHENTIC 2025 RO EXCEL WORKBOOK TOP TAB BAR (4 Core SA Sheets + Workshop_Monitoring) -->
                 <div id="form-top-tab-bar" class="sticky top-0 z-30 bg-[#f8f9fa] border border-[#dadce0] px-3 py-1.5 flex flex-wrap items-center justify-between gap-3 shadow-xs mb-4 select-none font-sans rounded-xl backdrop-blur-md">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth">
+                        <!-- Tab 0: Workshop_Monitoring (first: Step 1 of the intake) (Workshop Monitoring & Daily Intakes online entry, not a workbook sheet) -->
+                        <button type="button" id="tab-top-monitoring" onclick="switchFormStudioSheet('monitoring')" title="Workshop Monitoring & Daily Intakes" class="px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
+                            <span>Workshop_Monitoring</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
+                        </button>
                         <!-- Tab 1: Job_Order -->
                         <button type="button" id="tab-top-joborder" onclick="switchFormStudioSheet('form13')" class="px-3.5 py-1.5 text-xs font-bold text-[#1a73e8] bg-[#e8f0fe] border-b-2 border-[#1a73e8] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer shadow-2xs">
                             <span>Job_Order</span><span class="text-[10px] text-[#1a73e8] leading-none">▾</span>
@@ -2634,10 +2638,6 @@
                         <!-- Tab 4: CheckList_Result -->
                         <button type="button" id="tab-top-checklist" onclick="switchFormStudioSheet('checklist')" class="px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
                             <span>CheckList_Result</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
-                        </button>
-                        <!-- Tab 5: Workshop_Monitoring (Workshop Monitoring & Daily Intakes online entry, not a workbook sheet) -->
-                        <button type="button" id="tab-top-monitoring" onclick="switchFormStudioSheet('monitoring')" title="Workshop Monitoring & Daily Intakes" class="px-3.5 py-1.5 text-xs font-medium text-[#3c4043] hover:bg-[#e8eaed] rounded-t flex items-center gap-1.5 whitespace-nowrap shrink-0 transition cursor-pointer">
-                            <span>Workshop_Monitoring</span><span class="text-[10px] text-[#5f6368] leading-none">▾</span>
                         </button>
                     </div>
 
@@ -7786,7 +7786,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.26"></script>
+    <script src="js/app.js?v=3.27"></script>
 </body>
 
 </html>

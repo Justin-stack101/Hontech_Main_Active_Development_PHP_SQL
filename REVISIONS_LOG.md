@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Workshop_Monitoring Tab First)
+
+### 🗂️ RO Excel Studio: Workshop_Monitoring Moved to the First Tab (REV-174)
+* **Objective & Context**: The user asked to put Workshop_Monitoring first in the studio tab bar, followed by Job_Order, Quotation_No, Billing_No and CheckList_Result, since the Workshop Monitoring & Daily Intakes entry is Step 1 of the intake.
+* **Core Changes Made**:
+  - `frontend/index.html`: Moved the `tab-top-monitoring` button before `tab-top-joborder`. Tab order is now Workshop_Monitoring, Job_Order, Quotation_No, Billing_No, CheckList_Result. Job_Order stays the tab that opens by default.
+  - `frontend/index.html`: Incremented cache buster to v=3.27.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-133 (exact tab order); AUT-FRONT-132 no longer pins the old position; added v=3.27 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-50 test row.
+  - `Revisions checklist.csv`: Appended REV-174 row.
+* **Automated & Manual QA Verification**:
+  - 162 automated unit tests passing (`npm test`).
+  - Headless Chrome render of the tab bar shows Workshop_Monitoring first.
+* **Cache Busting**: `js/app.js?v=3.27`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Workshop_Monitoring Studio Tab)
 
 ### 🗂️ RO Excel Studio: New Workshop_Monitoring Tab for Daily Intakes Entry (REV-173)
