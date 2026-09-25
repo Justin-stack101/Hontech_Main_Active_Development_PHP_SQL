@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Maximized Studio PDF Shrinking Fix)
+
+### 🖥️ RO Excel Studio: Maximized PDF No Longer Shrinks to a Thumbnail (REV-179)
+* **Objective & Context**: After REV-178 the user pressed Maximize ("Normal View") and the PDF showed as a tiny thumbnail in the middle-left of the pane.
+* **Root Cause**: `toggleStudioMaximizedPDF()` swaps the canvas pane from `xl:col-span-5` to `xl:col-span-12` and immediately re-fitted the iframe. The Tailwind CDN only generates `xl:col-span-12` after its DOM observer runs, so at that instant the pane spanned a single grid column (measured 94 px wide in a reproduction on the real markup) and the PDF was fitted to that width (94 x 144 px); REV-178's vertical centering then moved the tiny frame down. Before REV-178 the same early fit left the page at its old side-by-side size on the left.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: removed the immediate re-fit from `toggleStudioMaximizedPDF()`. New `watchStudioPdfContainers()` (started on DOMContentLoaded) observes the four studio PDF containers with a `ResizeObserver`; when the visible sheet's container really changes size it calls `scheduleFormStudioPdfRefresh(150)`, whose generator re-fits and centers the iframe before loading the PDF (the order PDFium needs to fit the new box). This also covers Hide Preview, window resizes and sidebar collapse. Hidden tabs (0 size) are ignored.
+  - `frontend/index.html`: Incremented cache buster to v=3.32.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-138; AUT-FRONT-137 checks the watcher instead of the toggle re-fit; added v=3.32 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-55 test row.
+  - `Revisions checklist.csv`: Appended REV-179 row.
+* **Automated & Manual QA Verification**:
+  - 167 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome (DevTools protocol) on the real studio markup, CSS and functions: side-by-side 490 x 750 at left 74 px; right after Maximize the container is 94 px but the frame keeps its size; once settled (1590 px) one redraw centers the 490 x 750 page at left 550 px; Normal View redraws it back to left 74 px. Screenshot of the maximized pane confirmed the centered page.
+* **Cache Busting**: `js/app.js?v=3.32`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Centered PDF in Maximized Studio View)
 
 ### 🖥️ RO Excel Studio: PDF Page Centered in Maximize / Normal View (REV-178)

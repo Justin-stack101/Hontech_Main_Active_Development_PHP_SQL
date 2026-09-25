@@ -13007,16 +13007,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
             });
 
-            // Re-fit active iframe aspect ratio
-            const activeSheet = typeof getActiveStudioSheet === 'function' ? getActiveStudioSheet() : 'form13';
-            let activeIframeId = 'f13-pdf-iframe';
-            if (activeSheet === 'quote' || activeSheet === 'f23') activeIframeId = 'f23-pdf-iframe';
-            else if (activeSheet === 'billing') activeIframeId = 'billing-pdf-iframe';
-            else if (activeSheet === 'checklist') activeIframeId = 'checklist-pdf-iframe';
-            const activeIframe = document.getElementById(activeIframeId);
-            if (activeIframe && typeof applyStudioAspectFit === 'function') {
-                applyStudioAspectFit(activeIframe, activeSheet);
-            }
+            // REV-178: no re-fit here. The new column span only takes effect after layout settles, so a
+            // fit measured now would use the old (or a one-column) width; the studio PDF resize watcher
+            // re-fits and redraws the active PDF once the pane has its final size.
 
             if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
             showSystemToast(
@@ -15307,6 +15300,37 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             iframe.style.transformOrigin = '0 0';
         }
         window.applyStudioAspectFit = applyStudioAspectFit;
+
+        // REV-178: when a studio PDF container changes size (Maximize / Normal View, Hide Preview, window
+        // or sidebar resize) redraw the visible sheet's PDF once the layout has settled. The generators
+        // re-fit the iframe before loading the PDF, which is what makes PDFium fit the new box.
+        const STUDIO_PDF_IFRAMES = { 'f13-pdf-iframe': 'form13', 'f23-pdf-iframe': 'form23', 'billing-pdf-iframe': 'billing', 'checklist-pdf-iframe': 'checklist' };
+        function watchStudioPdfContainers() {
+            if (typeof ResizeObserver === 'undefined') return;
+            const lastSize = new Map();
+            const observer = new ResizeObserver(entries => {
+                entries.forEach(entry => {
+                    const wrap = entry.target;
+                    const w = Math.round(entry.contentRect.width), h = Math.round(entry.contentRect.height);
+                    if (!w || !h) return; // hidden tab
+                    const prev = lastSize.get(wrap);
+                    lastSize.set(wrap, { w, h });
+                    if (!prev || (Math.abs(prev.w - w) < 4 && Math.abs(prev.h - h) < 4)) return;
+                    const sheet = STUDIO_PDF_IFRAMES[wrap.dataset.studioPdfIframe];
+                    const active = currentFormStudioActiveSheet || 'form13';
+                    const isActive = sheet === active || (sheet === 'form13' && active === 'joborder') || (sheet === 'form23' && active === 'quote');
+                    if (isActive && typeof scheduleFormStudioPdfRefresh === 'function') scheduleFormStudioPdfRefresh(150);
+                });
+            });
+            Object.keys(STUDIO_PDF_IFRAMES).forEach(id => {
+                const wrap = document.getElementById(id)?.parentElement;
+                if (!wrap) return;
+                wrap.dataset.studioPdfIframe = id;
+                observer.observe(wrap);
+            });
+        }
+        window.watchStudioPdfContainers = watchStudioPdfContainers;
+        document.addEventListener('DOMContentLoaded', watchStudioPdfContainers);
 
         function reapplyStudioLockAfterReload(iframe, sheet) {
             if (!iframe) return;
