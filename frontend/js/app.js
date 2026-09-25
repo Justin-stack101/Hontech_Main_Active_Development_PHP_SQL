@@ -10638,6 +10638,31 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         let selectedLookupCustomerKey = null;
         let customerLookupRegistry = {};
 
+        // REV-194: real job fields for the Customer Lookup (the API returns camelCase: dateReceived, saName, claimStub...)
+        function lookupJobDate(job) {
+            return String(job.dateReceived || job.date_received || job.date || job.createdAt || job.created_at || '').split(/[T ]/)[0];
+        }
+        function lookupJobSA(job) {
+            return (job.saName || job.sa_name || job.handled_by || job.sa || '').trim();
+        }
+        const LOOKUP_BACKJOB_WARRANTY_DAYS = 30; // same 30-day standard used by the back-job intake modal
+        function lookupDaysBetween(from, to = new Date()) {
+            const d = new Date(`${from}T00:00:00`);
+            if (!from || isNaN(d.getTime())) return null;
+            const t = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+            return Math.round((t - d) / 86400000);
+        }
+        function lookupFormatDate(ymd) {
+            const d = new Date(`${ymd}T00:00:00`);
+            return !ymd || isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        function lookupFormatTime(hhmm) {
+            const m = String(hhmm || '').match(/^(\d{1,2}):(\d{2})/);
+            if (!m) return '';
+            const h = parseInt(m[1], 10);
+            return `${h % 12 || 12}:${m[2]} ${h >= 12 ? 'PM' : 'AM'}`;
+        }
+
         function buildCustomerLookupRegistry() {
             const safeJobs = Array.isArray(allJobs) ? allJobs : [];
             const registry = {};
@@ -10692,9 +10717,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Sort jobs within each customer newest to oldest
             Object.values(registry).forEach(cust => {
                 cust.jobs.sort((a, b) => {
-                    const dateA = new Date(a.date || a.created_at || 0);
-                    const dateB = new Date(b.date || b.created_at || 0);
-                    return dateB - dateA;
+                    const byDate = lookupJobDate(b).localeCompare(lookupJobDate(a));
+                    return byDate !== 0 ? byDate : String(b.createdAt || b.created_at || '').localeCompare(String(a.createdAt || a.created_at || ''));
                 });
             });
 
@@ -10766,10 +10790,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 } else if (currentLookupFilterTab === 'duepms') {
                     const latestJob = cust.jobs[0];
                     if (!latestJob) return false;
-                    const d = new Date(latestJob.date || latestJob.created_at);
-                    if (isNaN(d.getTime())) return false;
-                    const diffDays = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24);
-                    if (diffDays < 30) return false; // Due for PMS if >30 days since last service
+                    const diffDays = lookupDaysBetween(lookupJobDate(latestJob));
+                    if (diffDays === null || diffDays < 30) return false; // Due for PMS if >30 days since last service
                 }
 
                 // Query search
@@ -10816,7 +10838,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             filtered.forEach(cust => {
                 const isSelected = cust.key === selectedLookupCustomerKey;
                 const latestJob = cust.jobs[0] || {};
-                const lastDate = latestJob.date || latestJob.created_at || 'Recent';
+                const lastDate = lookupFormatDate(lookupJobDate(latestJob)) || 'Recent';
                 const lastCategory = latestJob.category || 'Service';
                 const hasBackJob = cust.jobs.some(j => (j.category || '').toLowerCase().includes('back-job') || (j.category || '').toLowerCase().includes('warranty'));
                 const isRegular = cust.jobs.length >= 2;
@@ -10908,7 +10930,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             if (cardState) cardState.classList.remove('hidden');
 
             const latestJob = cust.jobs[0] || {};
-            const rawLastDate = latestJob.date || latestJob.created_at;
+            const rawLastDate = lookupJobDate(latestJob);
             const rawIntake = latestJob.dateReceived || latestJob.date_received || latestJob.date || latestJob.created_at || '';
             const intakeDateFormatted = rawIntake ? String(rawIntake).split('T')[0] : '___________________';
             const rawPromise = latestJob.promisedDate || latestJob.promised_date || latestJob.promiseDate || latestJob.promise_date || '';
@@ -11070,7 +11092,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Calculate Preferred Service Advisor
             const saCounts = {};
             cust.jobs.forEach(j => {
-                const sa = j.handled_by || j.sa;
+                const sa = lookupJobSA(j);
                 if (sa && sa !== '-' && sa !== 'Front Desk SA') {
                     saCounts[sa] = (saCounts[sa] || 0) + 1;
                 }
@@ -11087,95 +11109,118 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 document.getElementById('dossier-preferred-sa').innerText = preferredSA;
             }
 
-            // Render Historical Orders Timeline with Clean Corporate Automotive Detail
+            // REV-194: Service_History records - real RO fields, back-job warranty and actions (RO Excel Studio style)
             const timelineEl = document.getElementById('dossier-history-timeline');
             if (timelineEl) {
                 let historyHTML = '';
+                const esc = v => escapeHtml(String(v ?? ''));
+                const field = (label, value, mono = false) => `
+                            <div class="min-w-0">
+                                <p class="text-[10.5px] font-medium text-gray-500">${label}</p>
+                                <p class="text-xs ${value ? `font-semibold text-gray-900 ${mono ? 'font-mono' : ''}` : 'text-gray-400'} truncate" title="${esc(value)}">${value ? esc(value) : '—'}</p>
+                            </div>`;
                 cust.jobs.forEach((job, idx) => {
-                    const jobId = job.job_id || job.id || job._id || `JOB-${idx + 1}`;
-                    const stub = job.claim_stub || job.stub || 'N/A';
-                    const category = job.category || 'General Repair (GRS)';
-                    const date = job.date || job.created_at || 'Recent';
-                    const time = job.appt_time || job.arrival || '';
-                    const fullDateStr = time ? `${date} • ${time}` : date;
-                    const status = (job.status || 'Pending').toUpperCase();
-                    const sa = job.handled_by || job.sa || 'Front Desk SA';
-                    const mechanic = job.mechanic || 'Assigned Technician';
-                    const bay = job.bay_number || job.bay || (job.status === 'Pending' ? 'Staging Area' : 'Bay 1');
-                    const concern = job.concern || job.evaluation || job.diagnosis || 'Standard periodic service maintenance';
-                    const remarks = job.remarks || job.goal_remarks || 'Inspection completed according to workshop checklist.';
+                    const jobId = job.id || job.job_id || job._id || '';
+                    const status = job.status || 'Pending';
+                    const isDone = ['Released', 'Completed'].includes(status);
+                    const isCancelled = status === 'Cancelled';
+                    const dateIn = lookupJobDate(job);
+                    const daysAgo = lookupDaysBetween(dateIn);
+                    const agoText = daysAgo === null ? '' : daysAgo <= 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
+                    const timeIn = lookupFormatTime(job.arrival || job.apptTime || job.appt_time);
+                    const bay = job.bayAssigned ? `Bay ${job.bayAssigned}` : (job.location && job.location !== 'None' ? job.location : '');
+                    const completed = job.dateCompleted || job.date_completed || '';
+                    const promised = job.promisedDate || job.promised_date || '';
+                    const concern = (job.concern || '').trim();
+                    const findings = (job.evaluation || '').trim();
+                    const remarks = (job.remarks || '').trim();
+                    const recommendation = job.recommendation && job.recommendation !== 'None'
+                        ? `${job.recommendation}${job.recommendationNotes ? ` - ${job.recommendationNotes}` : ''}` : '';
 
-                    // Clean Status Badge
-                    let statusBadgeClass = 'bg-slate-100 text-slate-700 border-slate-200';
-                    if (status.includes('COMPLETED') || status.includes('RELEASED')) {
-                        statusBadgeClass = 'bg-slate-100 text-emerald-800 border-slate-200 font-bold';
-                    } else if (status.includes('PROGRESS') || status.includes('BAY')) {
-                        statusBadgeClass = 'bg-slate-900 text-white border-slate-900 font-bold';
-                    } else if (status.includes('CANCEL')) {
-                        statusBadgeClass = 'bg-slate-100 text-rose-700 border-slate-200 font-bold';
+                    // Status tag
+                    let statusClass = 'bg-white text-gray-700 border-gray-300';
+                    if (isDone) statusClass = 'bg-emerald-50 text-emerald-800 border-emerald-200';
+                    else if (status === 'Ready to Release' || status === 'Ready') statusClass = 'bg-amber-50 text-amber-800 border-amber-200';
+                    else if (isCancelled) statusClass = 'bg-rose-50 text-rose-700 border-rose-200';
+                    else if (status !== 'Pending') statusClass = 'bg-[#e8f0fe] text-[#1a73e8] border-[#c6dafc]';
+
+                    // Back-job warranty (30 days from release/completion)
+                    let warrantyHTML;
+                    let canBackJob = false;
+                    if (isDone) {
+                        const since = completed || dateIn;
+                        const used = lookupDaysBetween(String(since).split(/[T ]/)[0]);
+                        const left = used === null ? null : LOOKUP_BACKJOB_WARRANTY_DAYS - used;
+                        canBackJob = true;
+                        if (left === null) {
+                            warrantyHTML = `<span class="text-gray-600">Released · warranty date unknown</span>`;
+                        } else if (left >= 0) {
+                            const until = new Date(`${String(since).split(/[T ]/)[0]}T00:00:00`);
+                            until.setDate(until.getDate() + LOOKUP_BACKJOB_WARRANTY_DAYS);
+                            warrantyHTML = `<i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i><span class="text-emerald-800 font-semibold">Back-job warranty: ${left} day${left === 1 ? '' : 's'} left</span><span class="text-gray-500">(until ${until.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })})</span>`;
+                        } else {
+                            warrantyHTML = `<i data-lucide="shield-off" class="w-3.5 h-3.5 text-gray-400"></i><span class="text-gray-600">30-day warranty ended ${-left} day${-left === 1 ? '' : 's'} ago · back-job needs management review</span>`;
+                        }
+                    } else if (isCancelled) {
+                        warrantyHTML = `<i data-lucide="x-circle" class="w-3.5 h-3.5 text-rose-500"></i><span class="text-gray-600">Cancelled · no warranty</span>`;
+                    } else {
+                        warrantyHTML = `<i data-lucide="wrench" class="w-3.5 h-3.5 text-[#1a73e8]"></i><span class="text-gray-700">Still in the shop (${esc(status)}) · warranty starts on release</span>`;
                     }
 
+                    const backJobNote = job.isBackjob || job.is_backjob
+                        ? `<div class="mx-4 mt-3 px-3 py-2 rounded-md bg-amber-50 border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 mt-0.5 shrink-0"></i>
+                                <span><strong>Back-job</strong>${job.parentJobId || job.parent_job_id ? ` of ${esc(job.parentJobId || job.parent_job_id)}` : ''}${job.backjobReason || job.backjob_reason ? `: ${esc(job.backjobReason || job.backjob_reason)}` : ''}</span>
+                           </div>` : '';
+
+                    const notes = [['Remarks', remarks], ['Recommendation', recommendation]].filter(([, v]) => v)
+                        .map(([k, v]) => `<p class="text-xs text-gray-700"><span class="font-semibold text-gray-900">${k}:</span> ${esc(v)}</p>`).join('');
+
                     historyHTML += `
-                        <div class="bg-white border border-gray-200 hover:border-gray-400 p-4 rounded-lg transition-all space-y-3">
-                            <!-- Top Row: Service Category & Date + Status & Action Buttons -->
-                            <div class="flex items-center justify-between gap-3 flex-wrap">
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="w-6 h-6 rounded-lg bg-slate-900 text-white font-black text-xs flex items-center justify-center shadow-2xs">
-                                        #${cust.jobs.length - idx}
-                                    </span>
-                                    <span class="text-xs font-black text-slate-900 bg-slate-100 border border-slate-200 px-2.5 py-0.5 rounded-lg">${category}</span>
-                                    <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-                                        <i data-lucide="clock" class="w-3 h-3 text-slate-300"></i> ${fullDateStr}
-                                    </span>
+                        <div class="lookup-history-record bg-white border border-gray-200 hover:border-gray-400 rounded-lg overflow-hidden transition" data-job-id="${esc(jobId)}">
+                            <div class="bg-[#f1f3f4] border-b border-[#dadce0] px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-baseline gap-2 flex-wrap min-w-0">
+                                    <span class="text-[11px] font-medium text-gray-500">Visit ${cust.jobs.length - idx}</span>
+                                    <span class="text-sm font-semibold text-gray-900">${esc(lookupFormatDate(dateIn) || 'Date not recorded')}</span>
+                                    <span class="text-[11px] text-gray-500">${[timeIn, agoText].filter(Boolean).map(esc).join(' · ')}</span>
                                 </div>
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded-lg border ${statusBadgeClass}">
-                                        ${status}
-                                    </span>
-                                    <!-- Print Claim Stub PDF Button with Red PDF Indicator -->
-                                    <button type="button" onclick="printJobClaimStubPDF('${jobId}')" 
-                                        class="group px-3 py-1.5 bg-white hover:bg-red-50 text-slate-700 hover:text-red-700 border border-slate-300 hover:border-red-300 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs"
-                                        title="Export & Print Official Customer Claim Stub (PDF)">
-                                        <i data-lucide="printer" class="w-3.5 h-3.5 text-red-600 group-hover:scale-110 transition-transform"></i>
-                                        <span>Stub</span>
-                                        <span class="bg-red-600 text-white text-[9px] font-black px-1.5 py-0.2 rounded tracking-tighter">PDF</span>
-                                    </button>
-                                    <!-- Flag Back-Job Button with Distinct Down Arrow Action Indicator -->
-                                    <button type="button" onclick="openBackJobReasonModal('${jobId}')" 
-                                        class="group px-3 py-1.5 bg-white hover:bg-amber-50 text-slate-700 hover:text-amber-900 border border-slate-300 hover:border-amber-400 rounded-xl text-xs font-bold uppercase tracking-wide transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs"
-                                        title="Initiate Back-Job Return Intake and record customer complaints">
-                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-600 group-hover:-rotate-45 transition-transform"></i>
-                                        <span>🔁 Issue Back-Job in Forms</span>
-                                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-700 group-hover:translate-y-0.5 transition-all"></i>
-                                    </button>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-white text-gray-800 border border-gray-300">${esc(job.category || 'Service')}</span>
+                                    ${job.isBackjob || job.is_backjob ? '<span class="px-2 py-0.5 rounded-md text-[10.5px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">Back-Job</span>' : ''}
+                                    <span class="lookup-history-status px-2 py-0.5 rounded-md text-[10.5px] font-semibold border ${statusClass}">${esc(status)}</span>
                                 </div>
                             </div>
-
-                            <!-- Bottom Summary: Clean Key Details & Concern Box -->
-                            <div class="text-xs text-slate-600 bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80 flex flex-col gap-2">
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-600 font-medium">
-                                    <div class="flex items-center gap-1.5 truncate">
-                                        <i data-lucide="hash" class="w-3 h-3 text-slate-400 shrink-0"></i>
-                                        <span class="truncate"><strong class="text-slate-800 font-bold">Job:</strong> ${jobId}</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 truncate">
-                                        <i data-lucide="user" class="w-3 h-3 text-slate-400 shrink-0"></i>
-                                        <span class="truncate"><strong class="text-slate-800 font-bold">Advisor:</strong> ${sa}</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 truncate">
-                                        <i data-lucide="layout-grid" class="w-3 h-3 text-slate-400 shrink-0"></i>
-                                        <span class="truncate"><strong class="text-slate-800 font-bold">Bay:</strong> ${bay}</span>
-                                    </div>
-                                    <div class="flex items-center gap-1.5 truncate">
-                                        <i data-lucide="wrench" class="w-3 h-3 text-slate-400 shrink-0"></i>
-                                        <span class="truncate"><strong class="text-slate-800 font-bold">Tech:</strong> ${mechanic}</span>
-                                    </div>
+                            ${backJobNote}
+                            <div class="px-4 pt-3 grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2.5">
+                                ${field('Job Order No.', jobId, true)}
+                                ${field('Claim Stub', job.claimStub || job.claim_stub || '', true)}
+                                ${field('Service Advisor', lookupJobSA(job))}
+                                ${field('Bay', bay)}
+                                ${field('Source', job.source || '')}
+                                ${field('Parts', job.partsAvailable && job.partsAvailable !== 'Pending' ? (job.partsAvailable === 'Yes' ? 'Available' : job.partsAvailable === 'No' ? 'Not available' : job.partsAvailable) : '')}
+                                ${field('Promise Date', lookupFormatDate(String(promised).split(/[T ]/)[0]))}
+                                ${field(isDone ? 'Completed' : 'Branch', isDone ? lookupFormatDate(String(completed).split(/[T ]/)[0]) : (job.branch || ''))}
+                            </div>
+                            <div class="px-4 py-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="rounded-md border border-gray-200 bg-[#f8f9fa] px-3 py-2">
+                                    <p class="text-[10.5px] font-medium text-gray-500">Customer Concern</p>
+                                    <p class="text-xs ${concern ? 'text-gray-900' : 'text-gray-400'}">${concern ? esc(concern) : 'Not recorded'}</p>
                                 </div>
-                                <div class="text-xs text-slate-800 pt-2 border-t border-slate-200/70 leading-relaxed bg-white/70 p-2.5 rounded-lg border border-slate-150">
-                                    <span class="font-bold text-slate-900 flex items-center gap-1.5 mb-0.5">
-                                        <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-slate-500"></i> Customer Concern / Diagnosis:
-                                    </span>
-                                    <p class="text-slate-700 font-normal pl-5">${concern}</p>
+                                <div class="rounded-md border border-gray-200 bg-[#f8f9fa] px-3 py-2">
+                                    <p class="text-[10.5px] font-medium text-gray-500">Findings / Work Done</p>
+                                    <p class="text-xs ${findings ? 'text-gray-900' : 'text-gray-400'}">${findings ? esc(findings) : 'Not recorded yet'}</p>
+                                </div>
+                                ${notes ? `<div class="md:col-span-2 space-y-1">${notes}</div>` : ''}
+                            </div>
+                            <div class="bg-[#f8f9fa] border-t border-[#dadce0] px-4 py-2 flex flex-wrap items-center justify-between gap-2">
+                                <div class="lookup-history-warranty flex items-center gap-1.5 text-[11px] flex-wrap">${warrantyHTML}</div>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="printJobClaimStubPDF('${esc(jobId)}')" class="h-7 px-2.5 text-[11px] font-medium text-gray-700 bg-white hover:bg-gray-100 border border-gray-300 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download this visit's claim stub (PDF)">
+                                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-red-600"></i> Claim Stub
+                                    </button>
+                                    ${canBackJob ? `<button type="button" onclick="openBackJobReasonModal('${esc(jobId)}')" class="h-7 px-2.5 text-[11px] font-medium text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Customer came back for this job: start a back-job intake">
+                                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Issue Back-Job
+                                    </button>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -11189,13 +11234,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const cardKey = decodeURIComponent(card.getAttribute('data-cust-key') || '');
                 const isCurrent = cardKey === decodedKey;
                 if (isCurrent) {
-                    card.className = "lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs";
+                    card.className = "lookup-item-card p-3.5 rounded-lg border transition-all cursor-pointer select-none space-y-2 relative group bg-slate-50 border-slate-900 ring-1 ring-slate-900 shadow-2xs";
                     const avatar = card.querySelector('.lookup-avatar');
                     if (avatar) avatar.className = "lookup-avatar w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center font-black text-xs shrink-0 transition";
                     const plate = card.querySelector('.lookup-plate');
                     if (plate) plate.className = "lookup-plate font-mono font-bold text-[10px] px-2 py-0.5 rounded bg-slate-900 text-white shrink-0";
                 } else {
-                    card.className = "lookup-item-card p-3.5 rounded-xl border transition-all cursor-pointer select-none space-y-2 relative group bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300";
+                    card.className = "lookup-item-card p-3.5 rounded-lg border transition-all cursor-pointer select-none space-y-2 relative group bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300";
                     const avatar = card.querySelector('.lookup-avatar');
                     if (avatar) avatar.className = "lookup-avatar w-9 h-9 rounded-lg bg-slate-100 text-slate-700 border border-slate-200 flex items-center justify-center font-black text-xs shrink-0 transition";
                     const plate = card.querySelector('.lookup-plate');

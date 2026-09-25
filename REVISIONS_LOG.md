@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Customer Lookup: Useful Service_History Records)
+
+### 🧾 Service_History Records Rebuilt with Real RO Data and Back-Job Warranty (REV-194)
+* **Objective & Context**: The user liked the REV-193 layout and asked to make the Service_History cards meaningful and useful for staff. Review found the old card read snake_case fields the API does not return (`claim_stub`, `date`, `handled_by`, `mechanic`, `bay`), so it showed invented values ("Recent", "Front Desk SA", "Bay 1", "Assigned Technician", "Standard periodic service maintenance"). The same issue made the dossier "Last Service" read "Recent", the preferred advisor "Front Desk SA", and history sorting/Due-for-PMS use `created_at` only.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: helpers `lookupJobDate()`, `lookupJobSA()`, `lookupDaysBetween()`, `lookupFormatDate()`, `lookupFormatTime()` read the real API fields. Each visit record now has a gray studio band (visit number, intake date, arrival time, "3 days ago", service type, Back-Job tag, color-coded status), an RO-style field grid (Job Order No., Claim Stub, Service Advisor, Bay, Source, Parts, Promise Date, Completed/Branch; blanks show "—"), Customer Concern and Findings / Work Done side by side, Remarks and Recommendation when recorded, a back-job note linking the original job and reason, and a footer with the 30-day back-job warranty status ("20 days left (until Oct 5)", "warranty ended … needs management review", "Still in the shop … warranty starts on release", "Cancelled"). Actions: Claim Stub (all visits) and Issue Back-Job (released/completed visits only). Values are HTML-escaped. History sorts by intake date; Due for PMS, Last Service and Primary Advisor use the real fields; the selected list card keeps the flat corners.
+  - `frontend/index.html`: Incremented cache buster to v=3.47.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-153; added v=3.47 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-70 test row.
+  - `Revisions checklist.csv`: Appended REV-194 row.
+* **Automated & Manual QA Verification**:
+  - 182 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome, 10/10: TST 2025 record shows TST-0922-05, claim stub 092226J5, Manney Sarol, Sep 22, 2026 9:45 AM, concern and findings, Processing tag, "warranty starts on release", no Issue Back-Job, Claim Stub kept; no placeholder text; dossier Last Service 2026-09-22 and Primary Advisor Manney Sarol. With client-side simulated visits (no database change): newest-first order, released 10 days ago shows "20 days left" with Issue Back-Job, released 88 days ago shows "warranty ended 58 days ago", back-job visit shows "Back-job of SIM-REL-1: Aircon still warm", tab count (4).
+* **Cache Busting**: `js/app.js?v=3.47`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Customer Lookup: RO Excel Studio Tab Design)
 
 ### 🗂️ Customer Lookup Redesigned with the RO Excel Studio Sheet Tabs (REV-193)
