@@ -18320,15 +18320,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet1Doc, 'C61', name); // Above C62 Customer's Name & Signature (CONFORME)
                     setCell(sheet1Doc, 'H61', manager); // Above H62 General Manager (Concurred by)
 
-                    // Customer Claim Stub (Rows 70-72)
+                    // Customer Claim Stub (Rows 70-72), template layout: H70 plate | I70 empty gap | J70:K70 year/model;
+                    // H71 contact. REV-199: I70 ("plate / model") and I71 (contact again) are no longer written - they
+                    // cut the text off at J70 ("ABC-") and printed the contact twice.
                     const claimStubId = getVal('f13-input-claim-stub') || ('CS-' + (jobNo.replace(/[^0-9]/g, '').slice(-4) || '8821'));
                     setCell(sheet1Doc, 'C70', name);
                     setCell(sheet1Doc, 'H70', plate);
                     setCell(sheet1Doc, 'J70', model);
-                    setCell(sheet1Doc, 'I70', (plate + ' / ' + model).trim());
                     setCell(sheet1Doc, 'C71', sa);
                     setCell(sheet1Doc, 'H71', contact);
-                    setCell(sheet1Doc, 'I71', contact);
                     setCell(sheet1Doc, 'C72', date);
                     setCell(sheet1Doc, 'H72', claimStubId, false, true); // replaces =K2 (Job Order No) with the Claim Stub ID the PDF prints
 

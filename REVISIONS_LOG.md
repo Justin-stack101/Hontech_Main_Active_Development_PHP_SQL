@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Excel Claim Stub Rows)
+
+### 🧾 Excel Export: Claim Stub Plate/Model and Contact Fixed (REV-199)
+* **Objective & Context**: The user reported that the exported Excel claim stub showed "ABC-1234 | ABC- | 2021 Toyota Vios" and the contact twice, while the PDF showed it correctly, and asked to verify whether it is a real problem. Verified against the official template: row 70 is H70 plate, I70 an empty gap, J70:K70 year/model; row 71 contact is H71. The export additionally wrote "plate / model" into the gap cell I70 (Excel cut it off at J70, showing "ABC-") and the contact again into I71.
+* **Core Changes Made**:
+  - `frontend/js/app.js` (`exportOfficialXLSX`): stopped writing I70 and I71; plate (H70), year/model (J70:K70), contact (H71) and claim stub (H72) are unchanged and match the PDF.
+  - `frontend/index.html`: Incremented cache buster to v=3.52.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-158; AUT-FRONT-89 now checks H70 plate + J70 model instead of I70; added v=3.52 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-75 test row.
+  - `Revisions checklist.csv`: Appended REV-199 row.
+* **Automated & Manual QA Verification**:
+  - 187 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome 3/3: a real export from the Studio (NDA 4521, 2021 Toyota Vios, 0917-555-0192) was captured and its Job_Order sheet read: H70 "NDA 4521", I70 empty, J70 "2021 Toyota Vios", H71 "0917-555-0192", I71 empty, H72 claim stub 092526J1.
+* **Cache Busting**: `js/app.js?v=3.52`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Page Never Served From a Stale Cache)
 
 ### 🧹 HTML Pages Re-Checked on Every Load; Versioned In-App TV Frame (REV-198)
