@@ -1,3 +1,32 @@
+## 📅 September 25, 2026 (PDF ↔ Excel Data Parity Verification & Fixes)
+
+### 📋 PDF and Excel Data Parity: Shared Data, Line-Item and Totals Rules (REV-170)
+* **Objective & Context**: The user asked to verify that every value on the PDFs also appears, identically, in the exported Excel workbook. The real PDF compilers and the real `exportOfficialXLSX()` were run on one data set in headless Chrome, the workbook was recalculated in LibreOffice (separate profile), and every field, item row and total was compared. Two scenarios were used: all tabs synced to the same customer data, and a different value on each tab to reveal which source each output reads.
+* **Differences found (before this revision)**:
+  1. Billing sheets listed the Quotation items while the Billing PDF listed the Billing items.
+  2. Totals: the PDFs charged VAT 12% on the whole subtotal; the official workbook formulas (Quotation H46, Billing H54) charge VAT 12% on LABOR only. The Billing PDF subtracted the discount; the workbook ignored it.
+  3. Item columns: Excel put every un-typed item under PARTS and wrote unit prices, while the PDFs split items into LABOR / PARTS / MATERIALS and multiply by quantity. Labor amounts written to column E were discarded because E keeps the template formula `=D*550`.
+  4. Template formulas overrode written values because the workbook recalculates on open: the Job Order Claim Stub cell (H72, `=K2`) showed the Job Order No.; Quotation, Billing and Checklist header cells (`=Job_Order!...`) always showed the Job Order values, so edits made on those tabs reached the PDF but not Excel.
+  5. The Job Order TOTAL cell (K51) was empty while the PDF printed Parts + Materials.
+  6. On screen, "Total Quotation Estimate" and "Grand Total Due" used yet another calculation without VAT.
+* **User decisions**: VAT 12% follows the official workbook (on LABOR only); the discount is subtracted in both the PDF and Excel.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Added shared rules used by the PDFs, the Excel export and the on-screen totals: `splitLineItemAmounts()`, `computeLineItemTotals()`, `getQuoteLineItems()`, `getBillingLineItems()`, `getQuoteHeaderData()`, `getBillingHeaderData()` and `getChecklistHeaderData()`.
+  - Quotation, Billing and Checklist PDFs now read their header values, line items and totals through these rules (VAT 12% on labor; Billing total less discount).
+  - `exportOfficialXLSX()`: `setCell` gained a `replaceFormula` option and a `setFormula` helper was added. Quotation and Billing sheets use their own PDF's header values, lines and column split (amounts x qty, labor replaces `=D*550`); Billing H57 subtracts the discount; the Claim Stub replaces `=K2`; Checklist header cells use the Checklist values (plate with km, as printed); Job Order K51 = `G50+K50`.
+  - `calcForm23Totals()` / `calcBillingTotals()` use the same rules; `frontend/index.html` Billing summary gains a "VAT 12% (on labor)" line and the Quotation total note mentions the labor VAT.
+  - `frontend/index.html`: Incremented cache buster to v=3.23.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-129; updated AUT-FRONT-88/89/90/92/95/96/117 to accept the shared-rule equivalents of the lines they checked; added v=3.23 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-46 test row (workbook ranges extended to row 172).
+  - `Revisions checklist.csv`: Appended REV-170 row.
+* **Automated & Manual QA Verification**:
+  - 158/158 automated unit tests passing across 63 test suites (`npm test`).
+  - End-to-end parity run (both scenarios): every Quotation and Billing item row (LABOR / PARTS / MATERIALS / AMOUNT), LABOR, VAT 12%, MATERIALS, PARTS, TOTAL, Billing "amount of", Job Order parts / materials subtotals and TOTAL match between the printed PDF and the LibreOffice-recalculated workbook; header cells after recalculation equal the values each PDF prints (Job Order, Quotation and Billing numbers read from the drawn PDF text). On-screen totals equal the PDF and Excel totals.
+* **Cache Busting**: `js/app.js?v=3.23`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Studio-Wide CheckList Design & Shared PDF Toolbar)
 
 ### 📋 Shared PDF Toolbar & CheckList Design Applied to Job Order, Quotation and Billing (REV-169)

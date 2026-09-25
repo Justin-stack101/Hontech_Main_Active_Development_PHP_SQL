@@ -13814,6 +13814,126 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.syncForm13Canvas = syncForm13Canvas;
 
+        // =========================================================================
+        // SHARED PDF / EXCEL DATA RULES (REV-170)
+        // The PDF compilers and exportOfficialXLSX() read form data through these helpers,
+        // so each printed PDF and its sheet in the official workbook always show the same values.
+        // =========================================================================
+        const studioVal = id => (document.getElementById(id)?.value || '').trim();
+
+        // Splits a line item into LABOR / PARTS / MATERIALS amounts (unit rate x qty), matching the
+        // workbook item columns E / F / G. Items without explicit amounts are classified by description.
+        function splitLineItemAmounts(it) {
+            const item = it || {};
+            const desc = item.desc || item.description || '';
+            const qty = Number(item.qty) || 1;
+            const d = desc.toLowerCase();
+            const isLabor = ['labor', 'service', 'cleaning', 'alignment'].some(k => d.includes(k));
+            const isMat = ['fluid', 'oil', 'flush', 'gas'].some(k => d.includes(k));
+
+            let laborRate = Number(item.labor) || 0;
+            let partsRate = Number(item.parts !== undefined ? item.parts : 0) || 0;
+            let matsRate = Number(item.materials !== undefined ? item.materials : 0) || 0;
+            if (!laborRate && !partsRate && !matsRate) {
+                const raw = Number(item.price ?? item.unitPrice ?? 0) || 0;
+                if (isLabor) laborRate = raw;
+                else if (isMat) matsRate = raw;
+                else partsRate = raw;
+            }
+
+            const frt = (item.frt !== undefined && item.frt !== '' && item.frt !== null) ? Number(item.frt) : null;
+            const labor = laborRate * qty;
+            const parts = partsRate * qty;
+            const materials = matsRate * qty;
+            return { desc, qty, frt, labor, parts, materials, total: labor + parts + materials };
+        }
+        window.splitLineItemAmounts = splitLineItemAmounts;
+
+        // Official workbook totals (Quotation H45:H49, Billing H53:H57): VAT 12% is charged on LABOR only,
+        // TOTAL = LABOR + VAT + MATERIALS + PARTS, less the billing discount (never below zero).
+        function computeLineItemTotals(rows, discount = 0) {
+            const sum = key => rows.reduce((acc, r) => acc + (Number(r[key]) || 0), 0);
+            const labor = sum('labor');
+            const parts = sum('parts');
+            const materials = sum('materials');
+            const vat = labor * 0.12;
+            const disc = Math.max(0, Number(discount) || 0);
+            return { labor, vat, materials, parts, discount: disc, total: Math.max(0, labor + vat + materials + parts - disc) };
+        }
+        window.computeLineItemTotals = computeLineItemTotals;
+
+        const hasItems = list => Array.isArray(list) && list.length > 0;
+        const jobOrderItems = () => [...(window.form13Parts || []), ...(window.form13Materials || [])];
+
+        // Quotation lines: Quotation items, else the Job Order parts & materials, else the Billing items
+        function getQuoteLineItems() {
+            if (hasItems(window.form23Items)) return window.form23Items;
+            if (hasItems(window.form13Parts) || hasItems(window.form13Materials)) return jobOrderItems();
+            return window.billingItems || [];
+        }
+
+        // Billing lines: Billing items, else the Quotation items, else the Job Order parts & materials
+        function getBillingLineItems() {
+            if (hasItems(window.billingItems)) return window.billingItems;
+            if (hasItems(window.form23Items)) return window.form23Items;
+            if (hasItems(window.form13Parts) || hasItems(window.form13Materials)) return jobOrderItems();
+            return [];
+        }
+
+        const studioSA = () => studioVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+
+        // Quotation header: values typed on the Quotation tab win, the Job Order fills the gaps
+        function getQuoteHeaderData() {
+            const date = studioVal('f23-input-date') || new Date().toISOString().split('T')[0];
+            return {
+                quoteNo: studioVal('f23-input-quote-no') || 'QT-2026-0001',
+                date,
+                jobNo: studioVal('f23-input-job-no') || studioVal('f13-input-job-no') || 'HT-JO-0001',
+                promiseDate: studioVal('f13-input-promise-date') || date,
+                name: studioVal('f23-input-name') || studioVal('f13-input-name') || '',
+                plate: (studioVal('f23-input-plate') || studioVal('f13-input-plate') || '').toUpperCase(),
+                address: studioVal('f23-input-address') || studioVal('f13-input-address') || '',
+                model: studioVal('f23-input-model') || studioVal('f13-input-model') || '',
+                contact: studioVal('f23-input-contact') || studioVal('f13-input-contact') || '',
+                color: studioVal('f23-input-color') || studioVal('f13-input-color') || '',
+                sa: studioSA(),
+                manager: studioVal('f13-input-manager') || 'General Manager'
+            };
+        }
+
+        // Billing header: values typed on the Billing tab win, the Job Order fills the gaps
+        function getBillingHeaderData() {
+            return {
+                billingNo: studioVal('bill-input-billing-no') || 'BL-2026-0001',
+                date: studioVal('bill-input-date') || new Date().toISOString().split('T')[0],
+                jobNo: studioVal('bill-input-job-no') || studioVal('f13-input-job-no') || 'HT-JO-0001',
+                quoteNo: studioVal('bill-input-quote-no') || 'QT-2026-0001',
+                name: studioVal('bill-input-name') || studioVal('f13-input-name') || '',
+                plate: (studioVal('bill-input-plate') || studioVal('f13-input-plate') || '').toUpperCase(),
+                address: studioVal('bill-input-address') || studioVal('f13-input-address') || '',
+                model: studioVal('bill-input-model') || studioVal('f13-input-model') || '',
+                contact: studioVal('bill-input-contact') || studioVal('f13-input-contact') || '',
+                color: studioVal('bill-input-color') || studioVal('f13-input-color') || '',
+                email: studioVal('f13-input-email') || '',
+                km: studioVal('bill-input-km') || studioVal('f13-input-km') || '',
+                discount: Number(document.getElementById('bill-input-discount')?.value) || 0,
+                sa: studioSA()
+            };
+        }
+
+        // Checklist header: values typed on the Checklist tab win, the Job Order fills the gaps
+        function getChecklistHeaderData() {
+            return {
+                date: studioVal('chk-input-date') || studioVal('f13-input-intake-date') || new Date().toISOString().split('T')[0],
+                name: studioVal('chk-input-name') || studioVal('f13-input-name') || '',
+                plate: (studioVal('chk-input-plate') || studioVal('f13-input-plate') || '').toUpperCase(),
+                model: studioVal('chk-input-model') || studioVal('f13-input-model') || '',
+                km: studioVal('chk-input-km') || studioVal('f13-input-km') || '',
+                remarks: studioVal('chk-input-remarks') || 'Vehicle intake inspection cleared. No critical defects noted.',
+                sa: studioSA()
+            };
+        }
+
         let form13TemplateArrayBuffer = null;
 
         async function getForm13TemplateBuffer() {
@@ -14204,19 +14324,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawRectangle({ x, y, width, height, color: rgb(1, 1, 1) });
             };
 
-            const getVal = id => (document.getElementById(id)?.value || '').trim();
-            const quoteNo = getVal('f23-input-quote-no') || 'QT-2026-0001';
-            const date = getVal('f23-input-date') || new Date().toISOString().split('T')[0];
-            const jobNo = getVal('f23-input-job-no') || getVal('f13-input-job-no') || 'HT-JO-0001';
-            const promiseDate = getVal('f13-input-promise-date') || date;
-            const name = getVal('f23-input-name') || getVal('f13-input-name') || '';
-            const plate = (getVal('f23-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
-            const address = getVal('f23-input-address') || getVal('f13-input-address') || '';
-            const model = getVal('f23-input-model') || getVal('f13-input-model') || '';
-            const contact = getVal('f23-input-contact') || getVal('f13-input-contact') || '';
-            const color = getVal('f23-input-color') || getVal('f13-input-color') || '';
-            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
-            const manager = getVal('f13-input-manager') || 'General Manager';
+            // Same values the Excel export writes to the Quotation sheets (shared rules, REV-170)
+            const { quoteNo, date, jobNo, promiseDate, name, plate, address, model, contact, color, sa, manager } = getQuoteHeaderData();
 
             // Meta Header:
             // Pre-printed 'QUOTATION NO.' underline is at Y=769.77 (runs X=454.63..519.38).
@@ -14267,55 +14376,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 quoteRowBaselines.push(botY + 2.0);
             }
 
-            const items = (window.form23Items && window.form23Items.length > 0)
-                ? window.form23Items
-                : ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0))
-                    ? [...(window.form13Parts || []), ...(window.form13Materials || [])]
-                    : (window.billingItems || []);
-
-            let totalLabor = 0;
-            let totalParts = 0;
-            let totalMats = 0;
-
             const maxRows = quoteRowBaselines.length;
+            const rows = getQuoteLineItems().slice(0, maxRows).map(splitLineItemAmounts);
 
-            items.slice(0, maxRows).forEach((it, idx) => {
+            rows.forEach((row, idx) => {
                 const ry = quoteRowBaselines[idx];
-                const desc = it.desc || '';
-                const qty = Number(it.qty) || 1;
-
-                const isLabor = desc && (desc.toLowerCase().includes('labor') || desc.toLowerCase().includes('service') || desc.toLowerCase().includes('cleaning') || desc.toLowerCase().includes('alignment'));
-                const isMat = desc && (desc.toLowerCase().includes('fluid') || desc.toLowerCase().includes('oil') || desc.toLowerCase().includes('flush') || desc.toLowerCase().includes('gas'));
-
-                let laborRate = Number(it.labor) || 0;
-                let partsRate = Number(it.parts !== undefined ? it.parts : 0);
-                let matsRate = Number(it.materials !== undefined ? it.materials : 0);
-
-                if (!laborRate && !partsRate && !matsRate) {
-                    const raw = Number(it.price || 0);
-                    if (isLabor) laborRate = raw;
-                    else if (isMat) matsRate = raw;
-                    else partsRate = raw;
-                }
-
-                const laborAmt = laborRate * qty;
-                const partsAmt = partsRate * qty;
-                const matsAmt = matsRate * qty;
-                const rowTotal = laborAmt + partsAmt + matsAmt;
-
-                totalLabor += laborAmt;
-                totalParts += partsAmt;
-                totalMats += matsAmt;
-
-                drawTextFit(desc, 84.0, ry, 118, 6.5, false, darkInk, 5.0);
-                drawTextCenter(String(qty), 218.5, ry, 6.5, false, darkInk);
-                if (it.frt !== undefined && it.frt !== '') {
-                    drawTextRight(Number(it.frt).toFixed(1), 271.0, ry, 6.5, false, darkInk);
-                }
-                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 327.5, ry, 6.5, false, darkInk);
-                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 392.0, ry, 6.5, false, darkInk);
-                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 452.0, ry, 6.5, false, darkInk);
-                if (rowTotal > 0) drawTextRight(rowTotal.toFixed(2), 516.5, ry, 6.5, false, darkInk);
+                drawTextFit(row.desc, 84.0, ry, 118, 6.5, false, darkInk, 5.0);
+                drawTextCenter(String(row.qty), 218.5, ry, 6.5, false, darkInk);
+                if (row.frt !== null) drawTextRight(row.frt.toFixed(1), 271.0, ry, 6.5, false, darkInk);
+                if (row.labor > 0) drawTextRight(row.labor.toFixed(2), 327.5, ry, 6.5, false, darkInk);
+                if (row.parts > 0) drawTextRight(row.parts.toFixed(2), 392.0, ry, 6.5, false, darkInk);
+                if (row.materials > 0) drawTextRight(row.materials.toFixed(2), 452.0, ry, 6.5, false, darkInk);
+                if (row.total > 0) drawTextRight(row.total.toFixed(2), 516.5, ry, 6.5, false, darkInk);
             });
 
             // Totals Summary Matrix
@@ -14326,16 +14398,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             whiteout(455.5, 337.8, 63.0, 7.8);
             whiteout(455.5, 328.3, 63.0, 7.8);
 
-            if (totalLabor > 0) drawTextRight(totalLabor.toFixed(2), 516.5, 367.5, 7.2, false, darkInk);
-            const subtotal = totalLabor + totalParts + totalMats;
-            const vat12 = subtotal * 0.12;
-            if (vat12 > 0) drawTextRight(vat12.toFixed(2), 516.5, 358.0, 7.2, false, darkInk);
-            if (totalMats > 0) drawTextRight(totalMats.toFixed(2), 516.5, 348.6, 7.2, false, darkInk);
-            if (totalParts > 0) drawTextRight(totalParts.toFixed(2), 516.5, 339.2, 7.2, false, darkInk);
+            // Workbook rule: VAT 12% on LABOR only; TOTAL = LABOR + VAT + MATERIALS + PARTS (Quotation H45:H49)
+            const totals = computeLineItemTotals(rows);
+            if (totals.labor > 0) drawTextRight(totals.labor.toFixed(2), 516.5, 367.5, 7.2, false, darkInk);
+            if (totals.vat > 0) drawTextRight(totals.vat.toFixed(2), 516.5, 358.0, 7.2, false, darkInk);
+            if (totals.materials > 0) drawTextRight(totals.materials.toFixed(2), 516.5, 348.6, 7.2, false, darkInk);
+            if (totals.parts > 0) drawTextRight(totals.parts.toFixed(2), 516.5, 339.2, 7.2, false, darkInk);
 
-            const grandTotal = subtotal + vat12;
-            if (grandTotal > 0) {
-                drawTextRight(grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 516.5, 329.8, 7.5, true, darkInk);
+            if (totals.total > 0) {
+                drawTextRight(totals.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), 516.5, 329.8, 7.5, true, darkInk);
             }
 
             // Authentic Signatures
@@ -14468,20 +14539,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawRectangle({ x, y, width, height, color: rgb(1, 1, 1) });
             };
 
-            const getVal = id => (document.getElementById(id)?.value || '').trim();
-            const billingNo = getVal('bill-input-billing-no') || 'BL-2026-0001';
-            const date = getVal('bill-input-date') || new Date().toISOString().split('T')[0];
-            const jobNo = getVal('bill-input-job-no') || getVal('f13-input-job-no') || 'HT-JO-0001';
-            const quoteNo = getVal('bill-input-quote-no') || 'QT-2026-0001';
-            const name = getVal('bill-input-name') || getVal('f13-input-name') || '';
-            const plate = (getVal('bill-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
-            const address = getVal('bill-input-address') || getVal('f13-input-address') || '';
-            const model = getVal('bill-input-model') || getVal('f13-input-model') || '';
-            const contact = getVal('bill-input-contact') || getVal('f13-input-contact') || '';
-            const color = getVal('bill-input-color') || getVal('f13-input-color') || '';
-            const email = getVal('f13-input-email') || '';
-            const km = getVal('bill-input-km') || getVal('f13-input-km') || '';
-            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+            // Same values the Excel export writes to the Billing sheets (shared rules, REV-170)
+            const { billingNo, date, jobNo, quoteNo, name, plate, address, model, contact, color, email, km, discount, sa } = getBillingHeaderData();
 
             // Coordinates below are measured from the Billing_No template (595x842pt).
             // Whiteouts only cover the template's "0"/"0.00" placeholder glyphs, never grid lines.
@@ -14511,19 +14570,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 drawTextFit(row.right, 420, row.base + 1.2, 145, 7, !!row.rightBold, darkInk, 5.0);
             });
 
-            // Table Line Items (Up to 24 rows)
-            const items = (window.billingItems && window.billingItems.length > 0)
-                ? window.billingItems
-                : (window.form23Items && window.form23Items.length > 0)
-                    ? window.form23Items
-                    : ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0))
-                        ? [...(window.form13Parts || []), ...(window.form13Materials || [])]
-                        : [];
-
-            let totalLabor = 0;
-            let totalParts = 0;
-            let totalMats = 0;
-
+            // Table Line Items
             // Table grid: 36 rows, first row's bottom line top edge at y 580.0, pitch 11.609pt.
             // Columns: DESC 29.1-180.3 | QTY 181.1-217.6 | FRT 218.4-266.5 | LABOR 267.3-337.1
             //          PARTS 337.9-417.0 | MATERIALS 417.9-487.2 | AMOUNT 488.0-567.1
@@ -14538,62 +14585,34 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 whiteout(488.4, rb + 0.2, 78.3, 10.4);
             }
 
-            items.slice(0, maxRows).forEach((it, idx) => {
+            const rows = getBillingLineItems().slice(0, maxRows).map(splitLineItemAmounts);
+            rows.forEach((row, idx) => {
                 const ry = firstRowBottom - (idx * rowStep) + 2.9;
-                const desc = it.desc || '';
-                const qty = Number(it.qty) || 1;
-
-                const isLabor = desc && (desc.toLowerCase().includes('labor') || desc.toLowerCase().includes('service') || desc.toLowerCase().includes('cleaning') || desc.toLowerCase().includes('alignment'));
-                const isMat = desc && (desc.toLowerCase().includes('fluid') || desc.toLowerCase().includes('oil') || desc.toLowerCase().includes('flush') || desc.toLowerCase().includes('gas'));
-
-                let laborRate = Number(it.labor) || 0;
-                let partsRate = Number(it.parts !== undefined ? it.parts : 0);
-                let matsRate = Number(it.materials !== undefined ? it.materials : 0);
-
-                if (!laborRate && !partsRate && !matsRate) {
-                    const raw = Number(it.price || 0);
-                    if (isLabor) laborRate = raw;
-                    else if (isMat) matsRate = raw;
-                    else partsRate = raw;
-                }
-
-                const laborAmt = laborRate * qty;
-                const partsAmt = partsRate * qty;
-                const matsAmt = matsRate * qty;
-                const rowTotal = laborAmt + partsAmt + matsAmt;
-
-                totalLabor += laborAmt;
-                totalParts += partsAmt;
-                totalMats += matsAmt;
-
-                drawTextFit(desc, 31.5, ry, 146, 6.8, false);
-                drawTextCenter(String(qty), 199.4, ry, 6.5);
-                if (it.frt !== undefined && it.frt !== '') {
-                    drawTextCenter(Number(it.frt).toFixed(1), 242.5, ry, 6.5);
-                }
-                if (laborAmt > 0) drawTextRight(laborAmt.toFixed(2), 334, ry, 6.5);
-                if (partsAmt > 0) drawTextRight(partsAmt.toFixed(2), 414, ry, 6.5);
-                if (matsAmt > 0) drawTextRight(matsAmt.toFixed(2), 484.5, ry, 6.5);
-                drawTextRight(rowTotal.toFixed(2), 564.5, ry, 6.8, false);
+                drawTextFit(row.desc, 31.5, ry, 146, 6.8, false);
+                drawTextCenter(String(row.qty), 199.4, ry, 6.5);
+                if (row.frt !== null) drawTextCenter(row.frt.toFixed(1), 242.5, ry, 6.5);
+                if (row.labor > 0) drawTextRight(row.labor.toFixed(2), 334, ry, 6.5);
+                if (row.parts > 0) drawTextRight(row.parts.toFixed(2), 414, ry, 6.5);
+                if (row.materials > 0) drawTextRight(row.materials.toFixed(2), 484.5, ry, 6.5);
+                drawTextRight(row.total.toFixed(2), 564.5, ry, 6.8, false);
             });
 
+            // Workbook rule: VAT 12% on LABOR only; TOTAL = LABOR + VAT + MATERIALS + PARTS - discount (Billing H53:H57)
+            const totals = computeLineItemTotals(rows, discount);
+
             // Subtotal boxes (x 488.0-567.1): clear each box's "0.00" placeholder, then stamp the value
-            const subtotal = totalLabor + totalParts + totalMats;
-            const vat12 = subtotal * 0.12;
             const summaryBoxes = [
-                { value: totalLabor, bottom: 162.0, top: 172.8 },  // LABOR
-                { value: vat12, bottom: 150.4, top: 161.1 },       // VAT 12%
-                { value: totalMats, bottom: 138.8, top: 149.5 },   // MATERIALS
-                { value: totalParts, bottom: 125.3, top: 137.9 }   // PARTS
+                { value: totals.labor, bottom: 162.0, top: 172.8 },      // LABOR
+                { value: totals.vat, bottom: 150.4, top: 161.1 },        // VAT 12%
+                { value: totals.materials, bottom: 138.8, top: 149.5 },  // MATERIALS
+                { value: totals.parts, bottom: 125.3, top: 137.9 }       // PARTS
             ];
             summaryBoxes.forEach(box => {
                 whiteout(488.4, box.bottom + 0.2, 78.3, box.top - box.bottom - 0.4);
                 drawTextRight(box.value.toFixed(2), 564.5, (box.bottom + box.top) / 2 - 2.6, 7.2, false);
             });
 
-            const discount = Number(document.getElementById('bill-input-discount')?.value) || 0;
-            const grandTotal = Math.max(0, subtotal + vat12 - discount);
-            const grandTotalStr = 'PHP ' + grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const grandTotalStr = 'PHP ' + totals.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
             // TOTAL box (y 113.2-124.9)
             whiteout(488.6, 114.1, 78.0, 9.9);
@@ -14719,14 +14738,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 page.drawRectangle({ x, y, width, height, color: white });
             };
 
-            const getVal = id => (document.getElementById(id)?.value || '').trim();
-            const date = getVal('chk-input-date') || getVal('f13-input-intake-date') || new Date().toISOString().split('T')[0];
-            const name = getVal('chk-input-name') || getVal('f13-input-name') || '';
-            const plate = (getVal('chk-input-plate') || getVal('f13-input-plate') || '').toUpperCase();
-            const model = getVal('chk-input-model') || getVal('f13-input-model') || '';
-            const km = getVal('chk-input-km') || getVal('f13-input-km') || '';
-            const remarks = getVal('chk-input-remarks') || 'Vehicle intake inspection cleared. No critical defects noted.';
-            const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
+            // Same values the Excel export writes to the CheckList_Result sheet (shared rules, REV-170)
+            const { date, name, plate, model, km, remarks, sa } = getChecklistHeaderData();
 
             // Coordinates below are measured from the CheckList_Result template (595x842pt).
             // Whiteouts only cover the template's "0" placeholder glyphs, never underlines or grid lines.
@@ -15875,10 +15888,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.updateForm23Item = updateForm23Item;
 
         function calcForm23Totals() {
-            let total = 0;
-            (window.form23Items || []).forEach(item => {
-                total += (Number(item.qty) || 1) * (Number(item.price) || 0);
-            });
+            // Same lines and workbook rule as the Quotation PDF and Excel (labor VAT 12% included)
+            const total = computeLineItemTotals(getQuoteLineItems().map(splitLineItemAmounts)).total;
 
             const formatted = '₱' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const totalEl = document.getElementById('f23-grand-total');
@@ -16178,33 +16189,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.updateBillingItem = updateBillingItem;
 
         function calcBillingTotals() {
-            let partsSubtotal = 0;
-            let laborSubtotal = 0;
-            let total = 0;
+            // Same lines and workbook rule as the Billing PDF and Excel: VAT 12% on labor, less discount
             const discount = Number(document.getElementById('bill-input-discount')?.value) || 0;
-
-            (window.billingItems || []).forEach(item => {
-                const qty = Number(item.qty) || 1;
-                const price = Number(item.price) || 0;
-                const amt = qty * price;
-                total += amt;
-                const desc = (item.desc || '').toLowerCase();
-                const isLabor = desc.includes('labor') || desc.includes('service') || desc.includes('repair') || desc.includes('package') || desc.includes('cleaning') || desc.includes('alignment');
-                if (isLabor) {
-                    laborSubtotal += amt;
-                } else {
-                    partsSubtotal += amt;
-                }
-            });
-
-            const grandTotal = Math.max(0, total - discount);
+            const totals = computeLineItemTotals(getBillingLineItems().map(splitLineItemAmounts), discount);
+            const grandTotal = totals.total;
             const fmt = val => '₱' + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
             const partsEl = document.getElementById('bill-summary-parts');
-            if (partsEl) partsEl.innerText = fmt(partsSubtotal);
+            if (partsEl) partsEl.innerText = fmt(totals.parts + totals.materials);
 
             const laborEl = document.getElementById('bill-summary-labor');
-            if (laborEl) laborEl.innerText = fmt(laborSubtotal);
+            if (laborEl) laborEl.innerText = fmt(totals.labor);
+
+            const vatEl = document.getElementById('bill-summary-vat');
+            if (vatEl) vatEl.innerText = fmt(totals.vat);
 
             const totalEl = document.getElementById('bill-summary-grand-total');
             if (totalEl) totalEl.innerText = fmt(grandTotal);
@@ -18305,7 +18303,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 const SML_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
                 const serializeSheet = doc => serializer.serializeToString(doc).replace(/\sxmlns=""/g, '');
 
-                const setCell = (doc, cellRef, textVal, isNumber = false) => {
+                // replaceFormula: drop the template formula so the cell shows exactly the value the PDF prints
+                // (the workbook recalculates on open, so a kept formula would override the written value)
+                const setCell = (doc, cellRef, textVal, isNumber = false, replaceFormula = false) => {
                     if (textVal === undefined || textVal === null || textVal === '') return;
                     let cell = null;
                     try {
@@ -18350,10 +18350,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                         }
                     }
                     if (cell) {
-                        // Retain existing formula if present
+                        // Retain existing formula if present (unless the caller replaces it)
                         let fClone = null;
                         const fNodes = cell.getElementsByTagName('f');
-                        if (fNodes.length > 0) {
+                        if (fNodes.length > 0 && !replaceFormula) {
                             fClone = fNodes[0].cloneNode(true);
                         }
                         while (cell.firstChild) cell.removeChild(cell.firstChild);
@@ -18375,6 +18375,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             cell.appendChild(isEl);
                         }
                     }
+                };
+
+                // Replaces a cell's content with a formula (the workbook recalculates it on open)
+                const setFormula = (doc, cellRef, formula) => {
+                    setCell(doc, cellRef, 0, true, true);
+                    const cell = Array.from(doc.getElementsByTagName('c')).find(c => c.getAttribute('r') === cellRef);
+                    if (!cell) return;
+                    while (cell.firstChild) cell.removeChild(cell.firstChild);
+                    const fEl = doc.createElementNS(SML_NS, 'f');
+                    fEl.textContent = formula;
+                    cell.appendChild(fEl);
                 };
 
                 // Helper to lock worksheet against unauthorized cell edits upon export (REV-107)
@@ -18483,6 +18494,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
                     // Personnel & Signatures (Exact template lines above titles)
                     // Row 53: Above C54 (Auto Mechanic) & I54 (Parts/Materials Controller)
+                    // TOTAL (K51) is an empty money cell in the template; the Job Order PDF prints Parts + Materials there
+                    setFormula(sheet1Doc, 'K51', 'G50+K50');
+
                     setCell(sheet1Doc, 'C53', mechanic);
                     setCell(sheet1Doc, 'I53', assessor);
 
@@ -18502,35 +18516,30 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     setCell(sheet1Doc, 'H71', contact);
                     setCell(sheet1Doc, 'I71', contact);
                     setCell(sheet1Doc, 'C72', date);
-                    setCell(sheet1Doc, 'H72', claimStubId);
-                    setCell(sheet1Doc, 'I72', claimStubId);
+                    setCell(sheet1Doc, 'H72', claimStubId, false, true); // replaces =K2 (Job Order No) with the Claim Stub ID the PDF prints
 
                     applySheetProtection(sheet1Doc);
                     zip.file('xl/worksheets/sheet1.xml', serializeSheet(sheet1Doc));
                 }
 
-                // Gather unified repair order items across Form 1/3, Quotation, and Billing
-                let unifiedItems = [];
-                if (window.form23Items && window.form23Items.length > 0) {
-                    unifiedItems = window.form23Items;
-                } else if ((window.form13Parts && window.form13Parts.length > 0) || (window.form13Materials && window.form13Materials.length > 0)) {
-                    unifiedItems = [...(window.form13Parts || []), ...(window.form13Materials || [])];
-                } else if (window.billingItems && window.billingItems.length > 0) {
-                    unifiedItems = window.billingItems;
-                }
+                // Quotation and Billing sheets use the same header values, line items, column split and
+                // totals as their PDFs (shared rules, REV-170)
+                const quoteHeader = getQuoteHeaderData();
+                const quoteRows = getQuoteLineItems().slice(0, 30).map(splitLineItemAmounts);
+                const billHeader = getBillingHeaderData();
+                const billRows = getBillingLineItems().slice(0, 36).map(splitLineItemAmounts);
 
-                // Calculate grand total of unified items
-                let unifiedGrandTotal = 0;
-                unifiedItems.forEach(it => {
-                    const uQty = Number(it.qty) || 1;
-                    const uLabor = Number(it.labor) || 0;
-                    let uParts = Number(it.parts !== undefined ? it.parts : 0);
-                    let uMaterials = Number(it.materials !== undefined ? it.materials : 0);
-                    if (uParts === 0 && uMaterials === 0 && uLabor === 0) {
-                        uParts = Number(it.price || it.unitPrice || 0);
-                    }
-                    unifiedGrandTotal += (uLabor + uParts + uMaterials) > 0 ? (uLabor + uParts + uMaterials) * uQty : ((Number(it.price) || 0) * uQty);
-                });
+                // Writes one item row into columns A (desc), C (qty), D (FRT), E (labor), F (parts), G (materials), H (amount).
+                // E holds the template formula =D*550; a labor amount replaces it so the sheet shows the PDF amount.
+                const writeItemRow = (doc, rIdx, row) => {
+                    setCell(doc, 'A' + rIdx, row.desc);
+                    setCell(doc, 'C' + rIdx, row.qty, true);
+                    if (row.frt !== null && row.frt > 0) setCell(doc, 'D' + rIdx, row.frt, true);
+                    if (row.labor > 0) setCell(doc, 'E' + rIdx, row.labor, true, true);
+                    if (row.parts > 0) setCell(doc, 'F' + rIdx, row.parts, true);
+                    if (row.materials > 0) setCell(doc, 'G' + rIdx, row.materials, true);
+                    setCell(doc, 'H' + rIdx, row.total, true);
+                };
 
                 // 2. PATCH QUOTATION SHEETS: sheet2.xml (Quotation_No 1), sheet3.xml (Quotation_No 2), sheet4.xml (Quotation_No 3)
                 // Auto-sync and mirror full quotation items across all 3 sheets per user directive
@@ -18548,46 +18557,25 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const qStr = await qFile.async('text');
                     const qDoc = parser.parseFromString(qStr, 'text/xml');
 
-                    setCell(qDoc, 'H2', quoteNo);
-                    setCell(qDoc, 'H5', date);
-                    setCell(qDoc, 'H6', jobNo);
-                    setCell(qDoc, 'H7', promiseDate);
-                    setCell(qDoc, 'B10', name);
-                    setCell(qDoc, 'G10', plate);
-                    setCell(qDoc, 'B11', address);
-                    setCell(qDoc, 'G11', model);
-                    setCell(qDoc, 'B12', contact);
-                    setCell(qDoc, 'G12', color);
+                    // Header cells hold =Job_Order!... formulas; the Quotation PDF values replace them
+                    setCell(qDoc, 'H2', quoteHeader.quoteNo);
+                    setCell(qDoc, 'H5', quoteHeader.date);
+                    setCell(qDoc, 'H6', quoteHeader.jobNo, false, true);
+                    setCell(qDoc, 'H7', quoteHeader.promiseDate);
+                    setCell(qDoc, 'B10', quoteHeader.name, false, true);
+                    setCell(qDoc, 'G10', quoteHeader.plate, false, true);
+                    setCell(qDoc, 'B11', quoteHeader.address, false, true);
+                    setCell(qDoc, 'G11', quoteHeader.model, false, true);
+                    setCell(qDoc, 'B12', quoteHeader.contact, false, true);
+                    setCell(qDoc, 'G12', quoteHeader.color, false, true);
 
-                    // Inject up to 30 items per sheet across rows 15 to 44
-                    unifiedItems.slice(0, 30).forEach((it, idx) => {
-                        const rIdx = 15 + idx;
-                        if (rIdx <= 44) {
-                            const desc = it.desc || it.description || '';
-                            const qty = Number(it.qty) || 1;
-                            const frt = Number(it.frt) || 0;
-                            const labor = Number(it.labor) || 0;
-                            let parts = Number(it.parts !== undefined ? it.parts : 0);
-                            let materials = Number(it.materials !== undefined ? it.materials : 0);
-                            if (parts === 0 && materials === 0 && labor === 0) {
-                                parts = Number(it.price || it.unitPrice || 0);
-                            }
-                            const total = (labor + parts + materials) > 0 ? (labor + parts + materials) * qty : ((Number(it.price) || 0) * qty);
-
-                            setCell(qDoc, 'A' + rIdx, desc);
-                            setCell(qDoc, 'C' + rIdx, qty, true);
-                            if (frt > 0) setCell(qDoc, 'D' + rIdx, frt, true);
-                            if (labor > 0) setCell(qDoc, 'E' + rIdx, labor, true);
-                            if (parts > 0) setCell(qDoc, 'F' + rIdx, parts, true);
-                            if (materials > 0) setCell(qDoc, 'G' + rIdx, materials, true);
-                            setCell(qDoc, 'H' + rIdx, total, true);
-                        }
-                    });
+                    // Up to 30 items across rows 15 to 44 (LABOR / VAT / MATERIALS / PARTS / TOTAL formulas in H45:H49)
+                    quoteRows.forEach((row, idx) => writeItemRow(qDoc, 15 + idx, row));
 
                     // Authentic Quotation signatures (Rows 61-66)
-                    setCell(qDoc, 'A62', sa);      // Service Advisor (Prepared by)
-                    setCell(qDoc, 'F62', manager); // General Manager (Approved by)
-                    setCell(qDoc, 'A65', name);    // Customer Conforme
+                    setCell(qDoc, 'A62', quoteHeader.sa);      // Service Advisor (Prepared by)
+                    setCell(qDoc, 'F62', quoteHeader.manager); // General Manager (Approved by)
+                    setCell(qDoc, 'A65', quoteHeader.name);    // Customer Conforme
 
                     applySheetProtection(qDoc);
                     zip.file(qFilePath, serializeSheet(qDoc));
@@ -18608,47 +18596,28 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     const bStr = await bFile.async('text');
                     const bDoc = parser.parseFromString(bStr, 'text/xml');
 
-                    setCell(bDoc, 'H2', billingNo);
-                    setCell(bDoc, 'H5', date);
-                    setCell(bDoc, 'H6', jobNo);
-                    setCell(bDoc, 'H7', quoteNo);
-                    setCell(bDoc, 'B10', name);
-                    setCell(bDoc, 'G10', plate);
-                    setCell(bDoc, 'B11', address);
-                    setCell(bDoc, 'G11', model);
-                    setCell(bDoc, 'B12', contact);
-                    setCell(bDoc, 'G12', color);
-                    setCell(bDoc, 'B13', email);
-                    setCell(bDoc, 'G13', km);
-                    setCell(bDoc, 'C14', unifiedGrandTotal, true);
+                    // Header cells hold =Job_Order!... / ='Quotation_No 1'!H2 formulas; the Billing PDF values replace them
+                    setCell(bDoc, 'H2', billHeader.billingNo);
+                    setCell(bDoc, 'H5', billHeader.date);
+                    setCell(bDoc, 'H6', billHeader.jobNo, false, true);
+                    setCell(bDoc, 'H7', billHeader.quoteNo, false, true);
+                    setCell(bDoc, 'B10', billHeader.name, false, true);
+                    setCell(bDoc, 'G10', billHeader.plate, false, true);
+                    setCell(bDoc, 'B11', billHeader.address, false, true);
+                    setCell(bDoc, 'G11', billHeader.model, false, true);
+                    setCell(bDoc, 'B12', billHeader.contact, false, true);
+                    setCell(bDoc, 'G12', billHeader.color, false, true);
+                    setCell(bDoc, 'B13', billHeader.email, false, true);
+                    setCell(bDoc, 'G13', billHeader.km, false, true);
 
-                    // Inject up to 36 items per sheet across rows 17 to 52
-                    unifiedItems.slice(0, 36).forEach((it, idx) => {
-                        const rIdx = 17 + idx;
-                        if (rIdx <= 52) {
-                            const desc = it.desc || it.description || '';
-                            const qty = Number(it.qty) || 1;
-                            const frt = Number(it.frt) || 0;
-                            const labor = Number(it.labor) || 0;
-                            let parts = Number(it.parts !== undefined ? it.parts : 0);
-                            let materials = Number(it.materials !== undefined ? it.materials : 0);
-                            if (parts === 0 && materials === 0 && labor === 0) {
-                                parts = Number(it.price || 0);
-                            }
-                            const total = (labor + parts + materials) > 0 ? (labor + parts + materials) * qty : ((Number(it.price) || 0) * qty);
+                    // Up to 36 items across rows 17 to 52 (LABOR / VAT / MATERIALS / PARTS / TOTAL formulas in H53:H57)
+                    billRows.forEach((row, idx) => writeItemRow(bDoc, 17 + idx, row));
 
-                            setCell(bDoc, 'A' + rIdx, desc);
-                            setCell(bDoc, 'C' + rIdx, qty, true);
-                            if (frt > 0) setCell(bDoc, 'D' + rIdx, frt, true);
-                            if (labor > 0) setCell(bDoc, 'E' + rIdx, labor, true);
-                            if (parts > 0) setCell(bDoc, 'F' + rIdx, parts, true);
-                            if (materials > 0) setCell(bDoc, 'G' + rIdx, materials, true);
-                            setCell(bDoc, 'H' + rIdx, total, true);
-                        }
-                    });
+                    // TOTAL (H57) less the Discount / Promo, as on the Billing PDF; C14 ("amount of") keeps =H57
+                    if (billHeader.discount > 0) setFormula(bDoc, 'H57', `SUM(H53:H56)-${billHeader.discount}`);
 
                     // Authentic Billing signature (Row 60 above Service Advisor)
-                    setCell(bDoc, 'A60', sa);
+                    setCell(bDoc, 'A60', billHeader.sa);
 
                     applySheetProtection(bDoc);
                     zip.file(bFilePath, serializeSheet(bDoc));
@@ -18665,14 +18634,16 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     // C3: =Job_Order!K10 (Plate No), C4: =Job_Order!H10 (Vehicle Model)
                     // C63: Technician Name, M63: =Job_Order!C10 (Customer Signature)
                     // B53-B56: Comments ruled lines (M41 and M59 are printed template headings and must stay intact)
-                    setCell(sheet7Doc, 'C2', name);
-                    setCell(sheet7Doc, 'AD2', date);
-                    setCell(sheet7Doc, 'C3', plate);
-                    setCell(sheet7Doc, 'C4', model);
-                    setCell(sheet7Doc, 'M63', name);
-                    setCell(sheet7Doc, 'C63', sa);
+                    // Header cells hold =Job_Order!... formulas; the Checklist PDF values replace them
+                    const chkHeader = getChecklistHeaderData();
+                    setCell(sheet7Doc, 'C2', chkHeader.name, false, true);
+                    setCell(sheet7Doc, 'AD2', chkHeader.date, false, true);
+                    setCell(sheet7Doc, 'C3', chkHeader.plate + (chkHeader.km ? ` (${chkHeader.km})` : ''), false, true);
+                    setCell(sheet7Doc, 'C4', chkHeader.model, false, true);
+                    setCell(sheet7Doc, 'M63', chkHeader.name, false, true);
+                    setCell(sheet7Doc, 'C63', chkHeader.sa);
 
-                    const chkRemarks = getVal('chk-input-remarks') || 'Standard vehicle intake inspection cleared.';
+                    const chkRemarks = chkHeader.remarks;
                     // Word-wrap remarks onto the four Comments lines (~75 chars each at Arial 8pt across B:K)
                     const commentLines = [];
                     chkRemarks.split(/\r?\n/).forEach(para => {
