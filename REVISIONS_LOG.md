@@ -15,7 +15,7 @@
   - 147/147 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the compiled Billing PDF at 300 dpi with "Manney Sarol" and confirmed the name is centered on the signature line and vertically aligned with the "Service Advisor" label.
 * **Cache Busting**: `js/app.js?v=3.12`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `3828720`.
 
 ---
 
