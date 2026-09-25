@@ -12,7 +12,7 @@
   - 183 automated unit tests passing (`npm test`).
   - Real-time headless Chrome, 22/22, with 48 client-side simulated vehicles with long names (nothing saved) at 1920x1080, 1366x768, 1024x768 and 390x844: no sideways page scroll, header fits, slide inside the screen, no overlapping or clipped bay text, slide 1 scrolls (or all bays fit), slide 2 lists scroll, slide 3 lanes scroll; a real mouse-wheel scroll moves the bay grid and holds rotation, which resumes after 20 seconds. Regression: TV flow 9/9, REV-187 display 12/12 (selectors updated for the new plate classes and the REV-191 drawer removal), announcements 8/8.
 * **Cache Busting**: `js/app.js?v=3.48`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `36bb515` pushed to `origin/prototype_process`.
 
 ---
 
