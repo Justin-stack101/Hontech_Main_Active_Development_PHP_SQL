@@ -9923,55 +9923,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         let previousScrollHeights = {};
-        async function updateWeather() {
-            try {
-                // Marikina, Philippines Coordinates
-                const lat = 14.6507;
-                const lon = 121.1029;
-                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`);
-                const data = await res.json();
-                
-                if (data && data.current) {
-                    const temp = Math.round(data.current.temperature_2m);
-                    const code = data.current.weather_code;
-                    
-                    // Map WMO Weather Codes to text & Lucide icons
-                    let weatherText = 'Clear';
-                    let iconName = 'sun';
-                    
-                    if (code === 0) { weatherText = 'Sunny'; iconName = 'sun'; }
-                    else if (code >= 1 && code <= 3) { weatherText = 'Partly Cloudy'; iconName = 'cloud-sun'; }
-                    else if (code >= 45 && code <= 48) { weatherText = 'Foggy'; iconName = 'cloud-fog'; }
-                    else if (code >= 51 && code <= 67) { weatherText = 'Rainy'; iconName = 'cloud-rain'; }
-                    else if (code >= 80 && code <= 82) { weatherText = 'Showers'; iconName = 'cloud-drizzle'; }
-                    else if (code >= 95 && code <= 99) { weatherText = 'Thunderstorm'; iconName = 'cloud-lightning'; }
-                    
-                    const tempEl = document.getElementById('tv-temp-display');
-                    const textEl = document.getElementById('tv-weather-text');
-                    const iconWrapEl = document.getElementById('tv-weather-icon-wrap');
-                    
-                    if (tempEl) tempEl.innerText = `${temp}°C`;
-                    if (textEl) textEl.innerText = weatherText;
-                    if (iconWrapEl) {
-                        iconWrapEl.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5 text-amber-400"></i>`;
-                        lucide.createIcons();
-                    }
-                }
-            } catch (err) {
-                console.warn('Weather fetch failed, using fallback:', err);
-                const hour = new Date().getHours();
-                const isDay = hour > 6 && hour < 18;
-                const fallbackTemp = isDay ? 32 : 26;
-                
-                if (document.getElementById('tv-temp-display')) document.getElementById('tv-temp-display').innerText = `${fallbackTemp}°C`;
-                if (document.getElementById('tv-weather-text')) document.getElementById('tv-weather-text').innerText = isDay ? 'Sunny' : 'Clear';
-                if (document.getElementById('tv-weather-icon-wrap')) {
-                    document.getElementById('tv-weather-icon-wrap').innerHTML = `<i data-lucide="${isDay ? 'sun' : 'moon'}" class="w-5 h-5 text-amber-400"></i>`;
-                    lucide.createIcons();
-                }
-            }
-        }
-
         function populatePeriodicSaFilter() {
             const saFilterSelect = document.getElementById('periodic-search-sa');
             if (saFilterSelect) {

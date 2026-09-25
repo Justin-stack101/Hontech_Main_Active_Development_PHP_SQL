@@ -54,6 +54,12 @@ class TvController
             `created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX `idx_tv_ann_branch_id` (`branch`, `id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        // REV-190: one cached Open-Meteo reading per branch, shared by every TV of the branch
+        $db->exec("CREATE TABLE IF NOT EXISTS `tv_weather_cache` (
+            `branch`      VARCHAR(50) NOT NULL PRIMARY KEY,
+            `payload`     TEXT NOT NULL,
+            `fetched_at`  DATETIME NOT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
         $db->exec("CREATE TABLE IF NOT EXISTS `tv_pin_attempts` (
             `ip`          VARCHAR(64) NOT NULL PRIMARY KEY,
             `attempts`    INT NOT NULL DEFAULT 0,
@@ -223,6 +229,95 @@ class TvController
             $type = in_array($old, ['Carry Over', 'Released', 'Completed'], true) ? 'returned' : 'processing';
         }
         if ($type) self::announce($db, $jobBefore, $type, null, $userId);
+    }
+
+    // ------------------------------------------------------------------ weather (REV-190)
+
+    /** Branch locations (Google Maps pins supplied by the team) */
+    public const BRANCH_LOCATIONS = [
+        'Marikina Branch' => ['lat' => 14.6500919, 'lon' => 121.1134286, 'label' => 'Marikina Heights'],
+        'East Branch'     => ['lat' => 14.7184148, 'lon' => 121.0612352, 'label' => 'Regalado Ave'],
+    ];
+    private const WEATHER_CACHE_MINUTES = 15;
+    /** Overridable in tests to simulate an unreachable weather service */
+    public static string $weatherApi = 'https://api.open-meteo.com/v1/forecast';
+
+    /** Current conditions + next-3-hours rain chance from Open-Meteo (free, no key); null when unreachable */
+    public static function fetchWeather(string $branch): ?array
+    {
+        $loc = self::BRANCH_LOCATIONS[self::canonicalBranch($branch)];
+        $url = self::$weatherApi . '?' . http_build_query([
+            'latitude'       => $loc['lat'],
+            'longitude'      => $loc['lon'],
+            'current'        => 'temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,is_day',
+            'hourly'         => 'precipitation_probability',
+            'forecast_hours' => 4,
+            'timezone'       => 'Asia/Manila',
+        ]);
+        $ctx = stream_context_create(['http' => ['timeout' => 6, 'ignore_errors' => false], 'https' => ['timeout' => 6]]);
+        $raw = @file_get_contents($url, false, $ctx);
+        $data = $raw ? json_decode($raw, true) : null;
+        if (!is_array($data) || !isset($data['current']['temperature_2m'])) return null;
+
+        $c = $data['current'];
+        $times = $data['hourly']['time'] ?? [];
+        $probs = $data['hourly']['precipitation_probability'] ?? [];
+        $rainChance = 0;
+        $rainAt = null;
+        foreach ($probs as $i => $prob) {
+            $prob = (int)$prob;
+            $rainChance = max($rainChance, $prob);
+            if ($rainAt === null && $prob >= 50 && isset($times[$i])) $rainAt = substr($times[$i], 11, 5);
+        }
+        return [
+            'available'   => true,
+            'temperature' => (int)round($c['temperature_2m']),
+            'feelsLike'   => isset($c['apparent_temperature']) ? (int)round($c['apparent_temperature']) : null,
+            'humidity'    => isset($c['relative_humidity_2m']) ? (int)$c['relative_humidity_2m'] : null,
+            'code'        => (int)($c['weather_code'] ?? 0),
+            'isDay'       => (bool)($c['is_day'] ?? 1),
+            'rainChance'  => $rainChance,
+            'rainAt'      => $rainAt,
+            'location'    => $loc['label'],
+            'source'      => 'Open-Meteo',
+        ];
+    }
+
+    /** Cached reading for a branch: fresh (< 15 min), refreshed, last known (stale) or unavailable */
+    public static function weatherForBranch(\PDO $db, string $branch): array
+    {
+        self::ensureTables($db);
+        $branch = self::canonicalBranch($branch);
+        $stmt = $db->prepare('SELECT payload, fetched_at, fetched_at >= (NOW() - INTERVAL ' . self::WEATHER_CACHE_MINUTES . ' MINUTE) AS fresh FROM tv_weather_cache WHERE branch = ?');
+        $stmt->execute([$branch]);
+        $row = $stmt->fetch();
+        if ($row && (int)$row['fresh'] === 1) {
+            return json_decode($row['payload'], true) + ['stale' => false, 'fetchedAt' => $row['fetched_at']];
+        }
+        $fresh = self::fetchWeather($branch);
+        if ($fresh) {
+            $db->prepare('REPLACE INTO tv_weather_cache (branch, payload, fetched_at) VALUES (?, ?, NOW())')->execute([$branch, json_encode($fresh)]);
+            $stmt->execute([$branch]);
+            $row = $stmt->fetch();
+            return $fresh + ['stale' => false, 'fetchedAt' => $row['fetched_at']];
+        }
+        if ($row) {
+            // Service unreachable: last real reading, marked with its time (never invented values)
+            return json_decode($row['payload'], true) + ['stale' => true, 'fetchedAt' => $row['fetched_at']];
+        }
+        return ['available' => false, 'source' => 'Open-Meteo'];
+    }
+
+    /** GET /tv/weather — TV token or staff: the branch's weather box */
+    public static function weather(): void
+    {
+        $db = Database::getConnection();
+        $branch = self::viewerBranch($db);
+        if (!$branch) {
+            ApiResponse::unauthorized('TV access token required. Enter the TV Access PIN.');
+            return;
+        }
+        ApiResponse::json(self::weatherForBranch($db, $branch));
     }
 
     // ------------------------------------------------------------------ routes

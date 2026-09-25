@@ -208,3 +208,10 @@ CREATE TABLE IF NOT EXISTS `tv_announcements` (
     `created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX `idx_tv_ann_branch_id` (`branch`, `id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- REV-190: one cached Open-Meteo weather reading per branch for the TV weather box (15-minute cache)
+CREATE TABLE IF NOT EXISTS `tv_weather_cache` (
+    `branch`      VARCHAR(50) NOT NULL PRIMARY KEY,
+    `payload`     TEXT NOT NULL,
+    `fetched_at`  DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

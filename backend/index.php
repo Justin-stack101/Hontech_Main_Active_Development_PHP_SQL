@@ -145,6 +145,10 @@ if ($method === 'GET' && ($route === '/tv/feed' || $route === '/jobs/tv')) {
     TvController::feed();
     exit;
 }
+if ($method === 'GET' && $route === '/tv/weather') {
+    TvController::weather();
+    exit;
+}
 if ($method === 'GET' && $route === '/tv/announcements') {
     TvController::announcements();
     exit;

@@ -148,7 +148,7 @@ try {
 
     // 6. REV-186: Smart TV per-branch broadcast sessions and PIN attempt throttling
     \App\Controllers\TvController::ensureTables($db);
-    echo "SUCCESS: `tv_sessions`, `tv_pin_attempts` and `tv_announcements` tables verified/created.\n";
+    echo "SUCCESS: `tv_sessions`, `tv_pin_attempts`, `tv_announcements` and `tv_weather_cache` tables verified/created.\n";
 
     echo "SUCCESS: Migration completed successfully!\n";
 

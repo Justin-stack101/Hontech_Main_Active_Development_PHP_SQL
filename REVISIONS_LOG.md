@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (Real Weather on the TV)
+
+### 🌦️ TV Monitor: Real Per-Branch Weather Box (REV-190)
+* **Objective & Context**: The user asked to make the TV weather box real and as functional as possible. The review found the box was hard-coded ("32°C Sunny"); an unused Marikina-only weather function in the staff app also invented "32°C / 26°C" when offline. Branch locations come from the Google Maps pins the user provided: Marikina Main 14.6500919, 121.1134286 (Hontech Auto Center Inc) and Regalado 14.7184148, 121.0612352.
+* **Core Changes Made**:
+  - `backend/controllers/TvController.php`: `fetchWeather()` reads Open-Meteo (free, no API key) for the branch pin: temperature, feels like, humidity, WMO condition code, day / night and the precipitation probability of the next hours. `weatherForBranch()` caches one reading per branch for 15 minutes in the new `tv_weather_cache` table (also `database.sql` / `migration.php`), so every TV of a branch shares one request and TVs need no internet. When the service is unreachable it returns the last real reading marked stale with its time; with no reading it returns "unavailable" - never invented values. `GET /tv/weather` (TV token or staff).
+  - `frontend/tv.html`: the weather box shows temperature, condition with a day / night icon, "Feels like / Humidity", "Rain likely by 3:00 PM (70%)" (or "now") only when rain is expected and it is not already raining, "As of 2:40 PM" when showing the last reading, "Weather unavailable" otherwise, and the required "Weather: Open-Meteo" credit. Refreshed every 10 minutes while the TV is live.
+  - `frontend/js/app.js`: removed the unused `updateWeather()` with its invented fallback.
+  - `frontend/index.html`: Incremented cache buster to v=3.43.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-149; added v=3.43 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-66 test row.
+  - `Revisions checklist.csv`: Appended REV-190 row.
+* **Automated & Manual QA Verification**:
+  - 178 automated unit tests passing (`npm test`).
+  - Server checks 6/6 on XAMPP (real Open-Meteo): Marikina reading fetched (26°C drizzle, feels like 33°, 89%) in 1.6 s; second request served from cache; Regalado reading at its own pin (26°C thunderstorm); service unreachable -> last reading marked stale; no reading -> unavailable. `GET /tv/weather` without token -> 401.
+  - Real-time headless Chrome 7/7: Marikina and Regalado TVs (PIN) show their real temperature, condition, feels like and humidity; "As of 2:40 PM", "Weather unavailable" and "Rain likely by 11:00 PM (70%)" states render correctly. Screenshots checked.
+* **Cache Busting**: `js/app.js?v=3.43`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (TV Monitor Phase 6: Server-Driven Announcements)
 
 ### 📺 TV Monitor Phase 6: Daily Intakes -> TV Announcements, Call Customer Again (REV-189)

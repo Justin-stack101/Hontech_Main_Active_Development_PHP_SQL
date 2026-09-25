@@ -244,17 +244,21 @@
                     <i data-lucide="terminal" class="w-4 h-4 text-red-500"></i> TV Dev Tools
                 </button>
 
-                <!-- Weather Widget -->
-                <div class="flex items-center gap-2.5 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl">
+                <!-- Weather Widget (REV-190: real Open-Meteo reading for this branch, fetched and cached by the server) -->
+                <div id="tv-weather-box" class="flex items-center gap-3 bg-gray-800/40 border border-gray-850 px-4 py-2 rounded-2xl" title="Weather data: Open-Meteo">
                     <span id="tv-weather-icon-wrap" class="flex items-center justify-center">
-                        <i data-lucide="sun" class="w-5 h-5 text-amber-400"></i>
+                        <i data-lucide="cloud" class="w-6 h-6 text-gray-500"></i>
                     </span>
                     <div class="text-left leading-none">
-                        <p id="tv-temp-display" class="text-lg font-black text-white">32°C</p>
-                        <p id="tv-weather-text" class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mt-0.5">Sunny</p>
+                        <p class="flex items-baseline gap-2">
+                            <span id="tv-temp-display" class="text-lg font-black text-white">--°C</span>
+                            <span id="tv-weather-text" class="text-[10px] font-bold text-gray-300 uppercase tracking-wider">Loading weather</span>
+                        </p>
+                        <p id="tv-weather-detail" class="hidden text-[10px] font-semibold text-gray-400 mt-1"></p>
+                        <p id="tv-weather-rain" class="hidden text-[10px] font-bold text-sky-300 mt-1"></p>
+                        <p class="text-[8px] font-medium text-gray-500 mt-1"><span id="tv-weather-asof"></span>Weather: Open-Meteo</p>
                     </div>
                 </div>
-                
                 <div>
                     <p id="tv-clock-display" class="text-4xl font-black text-gray-300 tabular-nums leading-none font-mono">00:00</p>
                     <div class="flex gap-2 justify-end mt-2">
@@ -843,6 +847,75 @@
         }
         ['pointerdown', 'keydown'].forEach(evt => document.addEventListener(evt, () => { if (!tvAudioUnlocked) unlockTVAudio(); }, { once: false }));
 
+        // REV-190: real weather for the branch (the server caches Open-Meteo for 15 minutes; no invented values)
+        const TV_WEATHER_LOOK = [
+            { codes: [0], text: 'Clear', day: 'sun', night: 'moon' },
+            { codes: [1, 2], text: 'Partly Cloudy', day: 'cloud-sun', night: 'cloud-moon' },
+            { codes: [3], text: 'Overcast', day: 'cloud', night: 'cloud' },
+            { codes: [45, 48], text: 'Foggy', day: 'cloud-fog', night: 'cloud-fog' },
+            { codes: [51, 53, 55, 56, 57], text: 'Drizzle', day: 'cloud-drizzle', night: 'cloud-drizzle' },
+            { codes: [61, 63, 66, 80, 81], text: 'Rain', day: 'cloud-rain', night: 'cloud-rain' },
+            { codes: [65, 67, 82], text: 'Heavy Rain', day: 'cloud-rain', night: 'cloud-rain' },
+            { codes: [95, 96, 99], text: 'Thunderstorm', day: 'cloud-lightning', night: 'cloud-lightning' }
+        ];
+        let weatherPollInterval = null;
+
+        function formatTVTime(hhmm) {
+            const m = String(hhmm || '').match(/(\d{1,2}):(\d{2})/);
+            if (!m) return '';
+            const h = parseInt(m[1], 10);
+            return `${h % 12 || 12}:${m[2]} ${h >= 12 ? 'PM' : 'AM'}`;
+        }
+
+        function renderTVWeather(w) {
+            const temp = document.getElementById('tv-temp-display');
+            const text = document.getElementById('tv-weather-text');
+            const detail = document.getElementById('tv-weather-detail');
+            const rain = document.getElementById('tv-weather-rain');
+            const asof = document.getElementById('tv-weather-asof');
+            const icon = document.getElementById('tv-weather-icon-wrap');
+            if (!w || !w.available) {
+                temp.innerText = '--°C';
+                text.innerText = 'Weather unavailable';
+                detail.classList.add('hidden');
+                rain.classList.add('hidden');
+                asof.innerText = '';
+                icon.innerHTML = '<i data-lucide="cloud-off" class="w-6 h-6 text-gray-500"></i>';
+            } else {
+                const look = TV_WEATHER_LOOK.find(l => l.codes.includes(w.code)) || TV_WEATHER_LOOK[2];
+                temp.innerText = `${w.temperature}°C`;
+                text.innerText = look.text;
+                const parts = [];
+                if (w.feelsLike !== null && w.feelsLike !== undefined) parts.push(`Feels like ${w.feelsLike}°`);
+                if (w.humidity !== null && w.humidity !== undefined) parts.push(`Humidity ${w.humidity}%`);
+                detail.innerText = parts.join(' · ');
+                detail.classList.toggle('hidden', parts.length === 0);
+                // Rain line only when it is not already raining; "now" when the likely hour has started
+                const alreadyWet = /rain|drizzle|thunder/i.test(look.text);
+                const rainLikely = !alreadyWet && w.rainAt && w.rainChance >= 50;
+                const rainHour = parseInt(String(w.rainAt || '').slice(0, 2), 10);
+                const rainWhen = rainHour <= new Date().getHours() ? 'now' : `by ${formatTVTime(w.rainAt)}`;
+                rain.innerText = rainLikely ? `Rain likely ${rainWhen} (${w.rainChance}%)` : '';
+                rain.classList.toggle('hidden', !rainLikely);
+                asof.innerText = w.stale && w.fetchedAt ? `As of ${formatTVTime(String(w.fetchedAt).slice(11, 16))} · ` : '';
+                const iconName = w.isDay ? look.day : look.night;
+                const color = rainLikely || /rain|drizzle|thunder/i.test(look.text) ? 'text-sky-300' : (w.isDay ? 'text-amber-400' : 'text-indigo-200');
+                icon.innerHTML = `<i data-lucide="${iconName}" class="w-6 h-6 ${color}"></i>`;
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        async function fetchTVWeather() {
+            try {
+                const token = localStorage.getItem(TV_TOKEN_KEY);
+                const res = await fetch(tvApiUrl('/api/tv/weather'), { headers: token ? { 'X-TV-Token': token } : {}, credentials: 'same-origin', cache: 'no-store' });
+                if (!res.ok) return;
+                renderTVWeather(await res.json());
+            } catch (e) {
+                console.warn('TV weather unreachable:', e); // keep the last reading on screen
+            }
+        }
+
         function startTVFeed() {
             if (tvFeedStarted) { fetchTVFeed(); return; }
             tvFeedStarted = true;
@@ -850,6 +923,9 @@
             dataPollInterval = setInterval(fetchTVFeed, 5000);
             if (announcementPollInterval) clearInterval(announcementPollInterval);
             announcementPollInterval = setInterval(pollTVAnnouncements, 3000);
+            fetchTVWeather();
+            if (weatherPollInterval) clearInterval(weatherPollInterval);
+            weatherPollInterval = setInterval(fetchTVWeather, 10 * 60 * 1000);
             if (slideInterval) clearInterval(slideInterval);
             slideInterval = setInterval(rotateSlides, 12000);
         }
@@ -858,6 +934,7 @@
             tvFeedStarted = false;
             if (dataPollInterval) { clearInterval(dataPollInterval); dataPollInterval = null; }
             if (announcementPollInterval) { clearInterval(announcementPollInterval); announcementPollInterval = null; }
+            if (weatherPollInterval) { clearInterval(weatherPollInterval); weatherPollInterval = null; }
             tvLastAnnouncementId = null;
             if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
         }
