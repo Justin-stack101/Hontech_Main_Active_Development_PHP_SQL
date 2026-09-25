@@ -24,7 +24,7 @@
   - Rendered the Checklist PDF with a Good / Attention / Defect rotation: ✓ / ⚠ / ✕ centered in the matching boxes.
   - Ran the real `exportOfficialXLSX()` in headless Chrome and read the workbook back with openpyxl: every point's symbol lands in its matching colored cell, N/A rows stay blank, `M41` / `M59` keep their printed text, comments wrap over `B53`-`B55`, technician name in `C63`.
 * **Cache Busting**: `js/app.js?v=3.14`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `5495682`.
 
 ---
 
