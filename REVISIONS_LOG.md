@@ -12,7 +12,7 @@
   - 168 automated unit tests passing (`npm test`).
   - Real-time headless Chrome on the real studio markup and functions: maximized iframe 1590 x 750 (was 490 x 750); Normal View back to 490 x 750 centered. Screenshot with a studio PDF loaded shows the page at 196% fitted to the pane width.
 * **Cache Busting**: `js/app.js?v=3.33`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `52614b2` pushed to `origin/prototype_process`.
 
 ---
 
