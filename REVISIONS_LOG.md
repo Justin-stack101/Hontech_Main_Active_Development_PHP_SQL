@@ -18,7 +18,7 @@
   - Live API checks on XAMPP with real logins, 26/26: no-login session read / control, TV feed and `GET /jobs` rejected (401); SAs of both branches control their own sessions with different PINs; Owner cannot control (403) and never sees the PIN; PIN -> token -> Marikina-only feed without Pending / Completed / Released, without phone / address / full name, masked names, bay count; Regalado token sees only Regalado; swapped-branch token rejected; pause -> standby without data, resume without PIN; new PIN -> old token 401; 5 wrong PINs -> 429; logged-in SA reads own branch without PIN.
   - Real-time headless Chrome end-to-end on XAMPP, 9/9: fresh TV shows the keypad and ignores `?pin=`; PIN typed on the keypad -> Marikina board with the branch bay count and masked names (previously a Regalado car appeared in Marikina Bay 1); pause -> standby within one poll; resume and reload -> live without PIN; new PIN -> signed out with an explanation; HDMI kiosk in a logged-in Regalado SA browser -> Regalado board without PIN. Both branch sessions left paused afterwards.
 * **Cache Busting**: `js/app.js?v=3.39`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `9a4fe7f` pushed to `origin/prototype_process`.
 
 ---
 
