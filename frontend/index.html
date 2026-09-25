@@ -3826,12 +3826,9 @@
                                     </div>
                                 </div>
 
-                                <!-- Actions: print the customer intake paper / claim stub, then register -->
-                                <div class="pt-1.5 flex flex-col sm:flex-row gap-2">
-                                    <button type="button" onclick="printMonitoringClaimStub()" id="mon-btn-print-claim-stub" class="sm:w-auto bg-white hover:bg-gray-50 text-gray-800 font-semibold text-sm py-2.5 px-4 border border-gray-300 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Print the Customer Intake Paper & Claim Stub (PDF)">
-                                        <i data-lucide="printer" class="w-4 h-4"></i> Print Claim Stub
-                                    </button>
-                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 px-4 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
+                                <!-- Integrated Register RO to System Button (Prominent Action Bar) -->
+                                <div class="pt-1.5">
+                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 px-4 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
                                         <i data-lucide="save" class="w-4 h-4"></i> Register Repair Order to System
                                     </button>
                                 </div>
@@ -7808,7 +7805,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.29"></script>
+    <script src="js/app.js?v=3.30"></script>
 </body>
 
 </html>

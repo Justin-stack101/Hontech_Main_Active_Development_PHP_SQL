@@ -15930,33 +15930,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.resetMonitoringArrivalToNow = resetMonitoringArrivalToNow;
 
-        // Print the Customer Intake Paper & Claim Stub from the values on the Workshop_Monitoring tab
-        function printMonitoringClaimStub() {
-            const val = id => (document.getElementById(id)?.value || '').trim();
-            const claimStubEl = document.getElementById('f13-input-claim-stub');
-            if (claimStubEl && !claimStubEl.value) claimStubEl.value = generateNextStudioClaimStub();
-            const job = {
-                claimStub: val('f13-input-claim-stub'),
-                name: val('f13-input-name'),
-                contact: val('f13-input-contact'),
-                plate: val('f13-input-plate').toUpperCase(),
-                vehicle: val('f13-input-model'),
-                category: val('f13-input-category'),
-                concern: val('f13-input-concern'),
-                arrival: getMonitoringArrivalTime(),
-                referredBy: val('mon-input-referred-by'),
-                source: val('f13-input-source'),
-                dateReceived: val('f13-input-intake-date') || new Date().toISOString().split('T')[0],
-                saName: val('f13-input-sa') || currentUserName || '',
-                branch: currentUserBranch || 'Marikina Branch'
-            };
-            if (!job.plate || !job.name) {
-                return showSystemToast('Enter the Customer Name and Plate No. before printing the Claim Stub.', 'error', 'Claim Stub');
-            }
-            printClaimStubPDF(job, { open: true });
-        }
-        window.printMonitoringClaimStub = printMonitoringClaimStub;
-
         document.addEventListener('DOMContentLoaded', () => {
             const view = document.getElementById('view-sheet-monitoring');
             if (!view) return;

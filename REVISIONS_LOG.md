@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Workshop_Monitoring Claim Stub Printing Removed)
+
+### 🧾 Workshop_Monitoring: Print Claim Stub Button Removed (REV-177)
+* **Objective & Context**: The user asked to remove the claim stub printing part that REV-176 added to the Workshop_Monitoring tab.
+* **Core Changes Made**:
+  - `frontend/index.html`: Removed the "Print Claim Stub" button from the Workshop Monitoring & Daily Intakes card; the Register Repair Order button is full width again. The Claim Stub ID field (auto-generated) stays.
+  - `frontend/js/app.js`: Removed `printMonitoringClaimStub()`. The Customer Lookup "Stub PDF" button (present before REV-176) keeps working through `printClaimStubPDF()`.
+  - `frontend/index.html`: Incremented cache buster to v=3.30.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-136; AUT-FRONT-135 no longer expects the button; added v=3.30 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-53 test row.
+  - `Revisions checklist.csv`: Appended REV-177 row.
+* **Automated & Manual QA Verification**:
+  - 165 automated unit tests passing (`npm test`).
+  - Headless Chrome render of the Workshop_Monitoring card: no print button, Register button full width.
+* **Cache Busting**: `js/app.js?v=3.30`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Customer Intake Paper / Claim Stub, Workshop Monitoring Clean-Up & Referral Analytics)
 
 ### 🧾 Customer Intake Paper & Claim Stub, Workshop Monitoring Clean-Up and Referral Analytics (REV-176)
