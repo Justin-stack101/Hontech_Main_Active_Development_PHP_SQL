@@ -13,7 +13,7 @@
   - 185 automated unit tests passing (`npm test`).
   - Real-time headless Chrome 6/6 at 1886x827: feed carries the version; TV remembers it; NDH 5521 and JON 4912 tagged Carry-Over; after touching tv.html (content unchanged) the open TV reloaded within seconds, returned to the live screen without a PIN, and did not loop. Regression: TV flow 9/9, display 12/12, responsive 22/22, auto-scroll & daily reset 13/13.
 * **Cache Busting**: `js/app.js?v=3.50`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `a3b1f92` pushed to `origin/prototype_process`.
 
 ---
 
