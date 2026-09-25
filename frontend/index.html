@@ -2647,47 +2647,42 @@
                     <!-- ==========================================
                          LEFT COLUMN: SA SMART INTERACTIVE EDITOR
                          ========================================== -->
-                    <div id="form13-editor-pane" class="xl:col-span-7 space-y-5">
+                    <div id="form13-editor-pane" class="xl:col-span-7 space-y-4">
                         
                         <!-- Back-Job Warranty Return Alert Banner (Active when customer is returning for warranty back-job) -->
-                        <div id="f13-backjob-banner" class="hidden bg-gradient-to-r from-amber-50 to-red-50 border-2 border-red-500 rounded-2xl p-4 shadow-sm">
+                        <div id="f13-backjob-banner" class="hidden bg-gradient-to-r from-amber-50 to-red-50 border-2 border-red-500 rounded-lg p-4">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                 <div class="flex items-start sm:items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                                    <div class="w-9 h-9 rounded-md bg-red-600 text-white flex items-center justify-center shrink-0">
                                         <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
                                     </div>
                                     <div>
                                         <div class="flex items-center gap-2 flex-wrap">
-                                            <span class="text-[10px] font-black text-red-700 uppercase tracking-wider bg-red-100 px-2 py-0.5 rounded border border-red-200">WARRANTY BACK-JOB RETURN</span>
-                                            <span id="f13-backjob-parent-ref" class="text-xs font-black text-slate-900">Ref Job: #HT-JO-XXXX</span>
+                                            <span class="text-[10px] font-semibold text-red-700 uppercase tracking-wider bg-red-100 px-2 py-0.5 rounded border border-red-200">WARRANTY BACK-JOB RETURN</span>
+                                            <span id="f13-backjob-parent-ref" class="text-xs font-semibold text-slate-900">Ref Job: #HT-JO-XXXX</span>
                                         </div>
                                         <p id="f13-backjob-reason-text" class="text-xs text-slate-600 mt-0.5 font-medium">Customer complaint / reason</p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="cancelStudioBackJobMode()" class="text-xs font-bold text-slate-600 hover:text-red-700 bg-white hover:bg-red-50 border border-slate-200 hover:border-red-300 px-2.5 py-1.5 rounded-lg transition cursor-pointer shrink-0 shadow-2xs">
+                                <button type="button" onclick="cancelStudioBackJobMode()" class="text-xs font-bold text-slate-600 hover:text-red-700 bg-white hover:bg-red-50 border border-slate-200 hover:border-red-300 px-2.5 py-1.5 rounded-lg transition cursor-pointer shrink-0">
                                     Clear Back-Job Flag
                                 </button>
                             </div>
                         </div>
                         
                         <!-- WORKSHOP MONITORING & DAILY INTAKES DISPATCH DOSSIER CARD (STEP 1) -->
-                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
+                        <div id="f13-monitoring-dispatch-card" class="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 space-y-4">
                             <!-- Card Header Bar -->
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3 gap-2 flex-wrap sm:flex-nowrap">
                                 <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-9 h-9 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
-                                        <i data-lucide="gauge" class="w-4.5 h-4.5"></i>
-                                    </div>
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2 flex-wrap">
-                                            <h3 class="text-xs sm:text-sm font-black text-gray-900 uppercase tracking-tight">Workshop Monitoring & Daily Intakes</h3>
+                                            <h3 class="text-sm font-semibold text-gray-900">Workshop Monitoring & Daily Intakes</h3>
                                         </div>
                                         <p class="text-[11px] text-gray-500 font-medium truncate">Configure vehicle dispatch parameters for daily monitoring</p>
                                     </div>
                                 </div>
-                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Auto-Prefilled
-                                </span>
+                                <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Auto-Prefilled</span>
                             </div>
 
                             <!-- Form Grid: Ergonomic 2-Column Layout with Full Option Visibility -->
@@ -2695,24 +2690,24 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                                     <!-- Row 1: Claim Stub & Arrival Time (Auto-filled / Stamped) -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026J1" 
-                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 uppercase shadow-2xs outline-none transition" title="Customer Claim Stub identifier for Floor Queue">
+                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase" title="Customer Claim Stub identifier for Floor Queue">
                                             <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
                                                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Arrival Time (Clock In) <span class="text-red-500 ml-0.5">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="text" id="f13-input-arrival-time" placeholder="HH:MM (e.g. 08:30)" maxlength="8"
-                                                class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-mono font-bold text-xs text-gray-900 shadow-2xs outline-none transition" title="Vehicle Arrival Timestamp (Clock In)">
+                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" title="Vehicle Arrival Timestamp (Clock In)">
                                             <button type="button" onclick="stampStudioArrivalClock()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Stamp Current Clock Time">
                                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                             </button>
@@ -2721,19 +2716,19 @@
 
                                     <!-- Row 2: Target Branch & Intake Source -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Target Branch <span class="text-red-500 ml-0.5">*</span>
                                         </label>
-                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-target-branch" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Marikina Branch" selected>Marikina Main Branch</option>
                                             <option value="East Branch">Regalado Branch</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Intake Source
                                         </label>
-                                        <select id="f13-input-source" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-source" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Walk-in" selected>Walk-in Customer</option>
                                             <option value="Online">Online Booking Inquiry</option>
                                             <option value="Returning">Returning / Repeat Customer</option>
@@ -2743,10 +2738,10 @@
 
                                     <!-- Row 3: Lane Classification & Bay Location -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Lane Classification <span class="text-red-500 ml-0.5">*</span>
                                         </label>
-                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-lane-type" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Flexible Lane" selected>Flexible Lane</option>
                                             <option value="Express Lane">Express Lane (60m SLA)</option>
                                             <option value="PMS & GRS Lane">PMS & GRS Lane</option>
@@ -2756,10 +2751,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Workshop Bay Location
                                         </label>
-                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-bay-location" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="None" selected>None (Unallocated / Staging)</option>
                                             <option value="Bay 1">Bay 1 (2-Post Lift)</option>
                                             <option value="Bay 2">Bay 2 (2-Post Lift)</option>
@@ -2775,10 +2770,10 @@
 
                                     <!-- Row 4: Parts Stock & Initial Floor Status -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Parts Availability
                                         </label>
-                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-parts-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Yes" selected>Yes — In Stock</option>
                                             <option value="Pending Supplier Courier">Pending Supplier Courier</option>
                                             <option value="Special Order">Special Order Required</option>
@@ -2786,10 +2781,10 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Initial Floor Status
                                         </label>
-                                        <select id="f13-input-status" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-status" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Waiting" selected>Waiting (In Queue)</option>
                                             <option value="Processing">Processing (In Service)</option>
                                             <option value="Pending Parts">Pending Parts</option>
@@ -2799,42 +2794,37 @@
 
                                     <!-- Row 5: Carry-Over (C.O.) & Quick Dispatch Note -->
                                     <div>
-                                        <label class="h-5 flex items-center text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
                                             Carry-Over (C.O.)
                                         </label>
-                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-200 focus:border-red-500 rounded-xl px-3 py-2 font-semibold text-xs text-gray-800 shadow-2xs outline-none transition cursor-pointer">
+                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="No" selected>No (Standard Same-Day Job)</option>
                                             <option value="Yes">Yes (Overnight Carry-Over)</option>
                                         </select>
                                     </div>
-                                    <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 mt-auto">
-                                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+                                    <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-md text-[11px] text-slate-500 mt-auto">
+                                        <i data-lucide="shield-check" class="w-4 h-4 text-gray-400 shrink-0"></i>
                                         <span>Auto-syncs Floor Queue, TV Monitor, and MySQL database.</span>
                                     </div>
                                 </div>
 
                                 <!-- Integrated Register RO to System Button (Prominent Action Bar) -->
                                 <div class="pt-1.5">
-                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 active:scale-[0.99] text-white font-black text-xs uppercase tracking-wider py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
-                                        <i data-lucide="save" class="w-4 h-4"></i> 💾 Register Repair Order to System
+                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro-card" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 px-4 rounded-md transition flex items-center justify-center gap-2 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
+                                        <i data-lucide="save" class="w-4 h-4"></i> Register Repair Order to System
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Studio Header & Quick Preset Bar -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center shrink-0">
-                                        <i data-lucide="file-text" class="w-5 h-5"></i>
-                                    </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Form 1/3 Job Order Studio</h2>
-                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live 1:1 Sync
-                                            </span>
+                                            <h2 class="text-sm font-semibold text-gray-900">Form 1/3 Job Order Studio</h2>
+                                            <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Live 1:1 Sync</span>
                                         </div>
                                         <p class="text-xs text-gray-500 font-medium">Interactive Service Advisor Editor & Physical Form Synchronizer</p>
                                     </div>
@@ -2842,20 +2832,20 @@
 
                                 <!-- Quick Presets & Layout Controls -->
                                 <div class="flex flex-wrap items-center gap-1.5">
-                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:border-emerald-300 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Save offline draft to local browser storage">
+                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="h-8 px-3 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Save offline draft to local browser storage">
                                         <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
                                     </button>
-                                    <button type="button" onclick="resetForm13Studio()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-300 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Reset Form 1/3 inputs to blank">
+                                    <button type="button" onclick="resetForm13Studio()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 hover:border-amber-300 border border-gray-200 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Reset Form 1/3 inputs to blank">
                                         <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Form
                                     </button>
-                                    <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs" title="Export exact official 2025 Excel Workbook (.xlsx)">
+                                    <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Export exact official 2025 Excel Workbook (.xlsx)">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
-                                    <label class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer" title="Import filled .xlsx file">
+                                    <label class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Import filled .xlsx file">
                                         <i data-lucide="upload" class="w-3.5 h-3.5"></i> Import .xlsx
                                         <input type="file" id="input-import-xlsx-file" accept=".xlsx,.xls" onchange="importOfficialXLSX(event)" class="hidden">
                                     </label>
-                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro" class="px-3 py-1 text-xs font-black text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
+                                    <button type="button" onclick="registerStudioROToSystem()" id="f13-btn-register-ro" class="h-8 px-3 text-xs font-medium text-white bg-red-600 hover:bg-red-700 border border-red-700 rounded-lg transition flex items-center gap-1 cursor-pointer" title="Register Repair Order to System (Push to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup)">
                                         <i data-lucide="save" class="w-3.5 h-3.5"></i> Register RO
                                     </button>
                                 </div>
@@ -2864,20 +2854,20 @@
                             <!-- Timing & Job Header Fields -->
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order No.</label>
-                                    <input type="text" id="f13-input-job-no" placeholder="e.g. HT-JO-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Job Order No.</label>
+                                    <input type="text" id="f13-input-job-no" placeholder="e.g. HT-JO-0001" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Intake Date</label>
-                                    <input type="date" id="f13-input-intake-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Intake Date</label>
+                                    <input type="date" id="f13-input-intake-date" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Promise Date</label>
-                                    <input type="date" id="f13-input-promise-date" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Promise Date</label>
+                                    <input type="date" id="f13-input-promise-date" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Service Category</label>
-                                    <select id="f13-input-category" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Service Category</label>
+                                    <select id="f13-input-category" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                         <option value="PMS">PMS (Periodic)</option>
                                         <option value="Brakes">Brake System</option>
                                         <option value="Underchassis">Underchassis / Suspension</option>
@@ -2889,111 +2879,112 @@
                                         <option value="Others">General Repair</option>
                                     </select>
                                 </div>
+                            </div>
                         </div>
 
                         <!-- Customer Details Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
-                                <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
-                                    <i data-lucide="user" class="w-4 h-4 text-red-500"></i> Customer Dossier
+                                <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                    <i data-lucide="user" class="w-4 h-4 text-gray-400"></i> Customer Dossier
                                 </span>
                                 <span class="text-[10.5px] text-gray-400 font-medium">Official Contact & Billing</span>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Full Name <span class="text-red-500">*</span></label>
-                                    <input type="text" id="f13-input-name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Customer Full Name <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact No. / Viber</label>
-                                    <input type="text" id="f13-input-contact" placeholder="e.g. 0917-123-4567" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Contact No. / Viber</label>
+                                    <input type="text" id="f13-input-contact" placeholder="e.g. 0917-123-4567" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
-                                    <input type="text" id="f13-input-address" placeholder="e.g. 123 Narra St., Marikina Heights, Marikina City" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Address</label>
+                                    <input type="text" id="f13-input-address" placeholder="e.g. 123 Narra St., Marikina Heights, Marikina City" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">E-Mail Address</label>
-                                    <input type="email" id="f13-input-email" placeholder="e.g. juandelacruz@gmail.com" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">E-Mail Address</label>
+                                    <input type="email" id="f13-input-email" placeholder="e.g. juandelacruz@gmail.com" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Vehicle Specification Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
-                                <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
-                                    <i data-lucide="car" class="w-4 h-4 text-red-500"></i> Vehicle Technical Specifications
+                                <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                    <i data-lucide="car" class="w-4 h-4 text-gray-400"></i> Vehicle Technical Specifications
                                 </span>
                                 <span class="text-[10.5px] text-gray-400 font-medium">Physical Identifiers</span>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number <span class="text-red-500">*</span></label>
-                                    <input type="text" id="f13-input-plate" placeholder="ABC-1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Plate Number <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-plate" placeholder="ABC-1234" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Model <span class="text-red-500">*</span></label>
-                                    <input type="text" id="f13-input-model" placeholder="e.g. 2021 Toyota Vios" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Year / Model <span class="text-red-500">*</span></label>
+                                    <input type="text" id="f13-input-model" placeholder="e.g. 2021 Toyota Vios" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
-                                    <input type="text" id="f13-input-color" placeholder="e.g. Super Red" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Body Color</label>
+                                    <input type="text" id="f13-input-color" placeholder="e.g. Super Red" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">KM Reading (Odometer)</label>
-                                    <input type="text" id="f13-input-km" placeholder="e.g. 45,210 km" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">KM Reading (Odometer)</label>
+                                    <input type="text" id="f13-input-km" placeholder="e.g. 45,210 km" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Engine Number</label>
-                                    <input type="text" id="f13-input-engine" placeholder="e.g. 1NZ-FE-987654" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Engine Number</label>
+                                    <input type="text" id="f13-input-engine" placeholder="e.g. 1NZ-FE-987654" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Chassis No. (VIN)</label>
-                                    <input type="text" id="f13-input-chassis" placeholder="e.g. NCP150-123456" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Chassis No. (VIN)</label>
+                                    <input type="text" id="f13-input-chassis" placeholder="e.g. NCP150-123456" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Service Concern & Diagnostic Findings -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
-                                    <label class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
-                                        <i data-lucide="clipboard" class="w-4 h-4 text-red-500"></i> Customer's Description of Concern
+                                    <label class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="clipboard" class="w-4 h-4 text-gray-400"></i> Customer's Description of Concern
                                     </label>
                                     <span class="text-[10px] text-gray-400">Filled by Service Advisor</span>
                                 </div>
                                 <div class="flex flex-wrap gap-1.5 mb-2">
-                                    <button type="button" onclick="appendConcernPreset('PMS 10k standard checkup & change oil.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ PMS Checkup</button>
-                                    <button type="button" onclick="appendConcernPreset('Brake squealing noise upon deceleration.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ Brake Squeal</button>
-                                    <button type="button" onclick="appendConcernPreset('Aircon not cooling during idle/traffic.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ AC Weak</button>
-                                    <button type="button" onclick="appendConcernPreset('Knocking vibration on front underchassis.')" class="text-[10px] bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded-md font-medium transition">+ Suspension</button>
+                                    <button type="button" onclick="appendConcernPreset('PMS 10k standard checkup & change oil.')" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-2 py-1 rounded-md font-medium transition cursor-pointer">+ PMS Checkup</button>
+                                    <button type="button" onclick="appendConcernPreset('Brake squealing noise upon deceleration.')" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-2 py-1 rounded-md font-medium transition cursor-pointer">+ Brake Squeal</button>
+                                    <button type="button" onclick="appendConcernPreset('Aircon not cooling during idle/traffic.')" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-2 py-1 rounded-md font-medium transition cursor-pointer">+ AC Weak</button>
+                                    <button type="button" onclick="appendConcernPreset('Knocking vibration on front underchassis.')" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 px-2 py-1 rounded-md font-medium transition cursor-pointer">+ Suspension</button>
                                 </div>
-                                <textarea id="f13-input-concern" rows="2" placeholder="Describe customer's requested services, issues, or specific complaints..." class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs font-medium text-gray-900 focus:border-red-500 outline-none transition custom-scroll"></textarea>
+                                <textarea id="f13-input-concern" rows="2" placeholder="Describe customer's requested services, issues, or specific complaints..." class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 custom-scroll"></textarea>
                             </div>
 
                             <div>
                                 <div class="flex items-center justify-between mb-1.5">
-                                    <label class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-1.5">
-                                        <i data-lucide="wrench" class="w-4 h-4 text-red-500"></i> Diagnostic Result & Mechanic Notes
+                                    <label class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="wrench" class="w-4 h-4 text-gray-400"></i> Diagnostic Result & Mechanic Notes
                                     </label>
                                     <span class="text-[10px] text-gray-400">Filled by Chief Mechanic</span>
                                 </div>
-                                <textarea id="f13-input-diagnostic" rows="2" placeholder="Initial diagnostic findings, mechanical inspection notes, and recommended solutions..." class="w-full bg-white border border-gray-200 rounded-xl p-3 text-xs font-medium text-gray-900 focus:border-red-500 outline-none transition custom-scroll"></textarea>
+                                <textarea id="f13-input-diagnostic" rows="2" placeholder="Initial diagnostic findings, mechanical inspection notes, and recommended solutions..." class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 custom-scroll"></textarea>
                             </div>
                         </div>
 
                         <!-- Dynamic Parts Repeater Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <div>
-                                    <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
-                                        <i data-lucide="package" class="w-4 h-4 text-red-500"></i> Parts Repeater Table
+                                    <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="package" class="w-4 h-4 text-gray-400"></i> Parts Repeater Table
                                     </span>
                                     <p class="text-[10.5px] text-gray-400 font-medium">Replaced components & mechanical parts</p>
                                 </div>
-                                <button type="button" onclick="addForm13PartRow()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                <button type="button" onclick="addForm13PartRow()" class="h-8 px-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Part Item
                                 </button>
                             </div>
@@ -3001,21 +2992,21 @@
                             <!-- 1-Click Fast Presets -->
                             <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
                                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
-                                <button type="button" onclick="addForm13PartRow('Engine Oil Filter', 1, 450)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Oil Filter (₱450)</button>
-                                <button type="button" onclick="addForm13PartRow('Brake Pads (Front Set)', 1, 1850)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Brake Pads (₱1,850)</button>
-                                <button type="button" onclick="addForm13PartRow('Spark Plugs (Set of 4)', 1, 1200)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Spark Plugs (₱1,200)</button>
-                                <button type="button" onclick="addForm13PartRow('Air Filter Element', 1, 650)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Air Filter (₱650)</button>
+                                <button type="button" onclick="addForm13PartRow('Engine Oil Filter', 1, 450)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Oil Filter (₱450)</button>
+                                <button type="button" onclick="addForm13PartRow('Brake Pads (Front Set)', 1, 1850)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Brake Pads (₱1,850)</button>
+                                <button type="button" onclick="addForm13PartRow('Spark Plugs (Set of 4)', 1, 1200)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Spark Plugs (₱1,200)</button>
+                                <button type="button" onclick="addForm13PartRow('Air Filter Element', 1, 650)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Air Filter (₱650)</button>
                             </div>
 
                             <div class="overflow-x-auto">
                                 <table class="w-full text-xs text-left">
                                     <thead>
-                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
-                                            <th class="py-2 px-2.5 rounded-l-lg">Description</th>
+                                        <tr class="bg-gray-50 text-[11px] font-medium text-gray-500 border-b border-gray-200">
+                                            <th class="py-2 px-2.5">Description</th>
                                             <th class="py-2 px-2 w-16 text-center">Qty</th>
                                             <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
                                             <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
-                                            <th class="py-2 px-2 w-10 text-center rounded-r-lg"></th>
+                                            <th class="py-2 px-2 w-10 text-center"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="f13-parts-table-body" class="divide-y divide-gray-100">
@@ -3027,21 +3018,21 @@
                             <div class="flex justify-end pt-1">
                                 <div class="text-right text-xs">
                                     <span class="font-bold text-gray-500 uppercase tracking-wider">Parts Subtotal: </span>
-                                    <span id="f13-editor-parts-total" class="font-mono font-black text-gray-900 text-sm ml-2">₱ 0.00</span>
+                                    <span id="f13-editor-parts-total" class="font-mono font-semibold text-gray-900 text-sm ml-2">₱ 0.00</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Dynamic Materials Repeater Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-3.5">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-3.5">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-2.5">
                                 <div>
-                                    <span class="text-xs font-black text-gray-800 uppercase tracking-wider flex items-center gap-2">
-                                        <i data-lucide="layers" class="w-4 h-4 text-red-500"></i> Materials & Consumables Repeater
+                                    <span class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Materials & Consumables Repeater
                                     </span>
                                     <p class="text-[10.5px] text-gray-400 font-medium">Fluids, cleaners, oils, and consumables</p>
                                 </div>
-                                <button type="button" onclick="addForm13MaterialRow()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer active:scale-95">
+                                <button type="button" onclick="addForm13MaterialRow()" class="h-8 px-3 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md text-xs font-medium transition flex items-center gap-1.5 cursor-pointer">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Material Item
                                 </button>
                             </div>
@@ -3049,21 +3040,21 @@
                             <!-- 1-Click Fast Presets -->
                             <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
                                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fast Presets:</span>
-                                <button type="button" onclick="addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Synthetic Oil (₱1,850)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Brake & Parts Cleaner', 1, 350)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Brake Cleaner (₱350)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Engine Flush Treatment', 1, 480)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Engine Flush (₱480)</button>
-                                <button type="button" onclick="addForm13MaterialRow('Radiator Coolant (1L)', 1, 380)" class="text-[11px] bg-gray-100 hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-gray-200 text-gray-700 rounded-lg px-2 py-0.5 font-medium transition cursor-pointer active:scale-95">+ Coolant (₱380)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Fully Synthetic 5W-40 (4L)', 1, 1850)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Synthetic Oil (₱1,850)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Brake & Parts Cleaner', 1, 350)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Brake Cleaner (₱350)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Engine Flush Treatment', 1, 480)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Engine Flush (₱480)</button>
+                                <button type="button" onclick="addForm13MaterialRow('Radiator Coolant (1L)', 1, 380)" class="text-[11px] bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md px-2 py-1 font-medium transition cursor-pointer">+ Coolant (₱380)</button>
                             </div>
 
                             <div class="overflow-x-auto">
                                 <table class="w-full text-xs text-left">
                                     <thead>
-                                        <tr class="bg-gray-100 text-gray-700 font-bold border-b border-gray-200">
-                                            <th class="py-2 px-2.5 rounded-l-lg">Description</th>
+                                        <tr class="bg-gray-50 text-[11px] font-medium text-gray-500 border-b border-gray-200">
+                                            <th class="py-2 px-2.5">Description</th>
                                             <th class="py-2 px-2 w-16 text-center">Qty</th>
                                             <th class="py-2 px-2 w-28 text-right">Unit Price (₱)</th>
                                             <th class="py-2 px-2 w-28 text-right">Amount (₱)</th>
-                                            <th class="py-2 px-2 w-10 text-center rounded-r-lg"></th>
+                                            <th class="py-2 px-2 w-10 text-center"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="f13-materials-table-body" class="divide-y divide-gray-100">
@@ -3075,75 +3066,75 @@
                             <div class="flex justify-end pt-1">
                                 <div class="text-right text-xs">
                                     <span class="font-bold text-gray-500 uppercase tracking-wider">Materials Subtotal: </span>
-                                    <span id="f13-editor-materials-total" class="font-mono font-black text-gray-900 text-sm ml-2">₱ 0.00</span>
+                                    <span id="f13-editor-materials-total" class="font-mono font-semibold text-gray-900 text-sm ml-2">₱ 0.00</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Grand Total & Signatories Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <!-- Grand Total Banner -->
-                            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-4 text-white flex items-center justify-between shadow-sm">
+                            <div class="bg-gray-900 rounded-md p-4 text-white flex items-center justify-between">
                                 <div>
                                     <span class="text-[11px] uppercase font-bold tracking-widest text-slate-300">Estimated Job Order Total</span>
                                     <p class="text-[11px] text-slate-400 mt-0.5">Parts + Materials Live Summary</p>
                                 </div>
                                 <div class="text-right">
-                                    <span id="f13-editor-grand-total" class="text-2xl font-black font-mono tracking-tight text-white">₱ 0.00</span>
+                                    <span id="f13-editor-grand-total" class="text-2xl font-semibold font-mono tracking-tight text-white">₱ 0.00</span>
                                 </div>
                             </div>
 
                             <!-- Signatories Input Grid -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Service Advisor (Interviewed By)</label>
-                                    <input type="text" id="f13-input-sa" placeholder="e.g. Roman Sarol" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Service Advisor (Interviewed By)</label>
+                                    <input type="text" id="f13-input-sa" placeholder="e.g. Roman Sarol" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Diagnosed By (Auto Mechanic)</label>
-                                    <input type="text" id="f13-input-mechanic" placeholder="e.g. Chief Mechanic" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Diagnosed By (Auto Mechanic)</label>
+                                    <input type="text" id="f13-input-mechanic" placeholder="e.g. Chief Mechanic" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Assessed By (Parts Controller)</label>
-                                    <input type="text" id="f13-input-assessor" placeholder="e.g. Parts Controller" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Assessed By (Parts Controller)</label>
+                                    <input type="text" id="f13-input-assessor" placeholder="e.g. Parts Controller" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Approved By (Branch Manager)</label>
-                                    <input type="text" id="f13-input-manager" placeholder="e.g. General Manager" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-red-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Approved By (Branch Manager)</label>
+                                    <input type="text" id="f13-input-manager" placeholder="e.g. General Manager" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                             </div>
                         </div>
 
-                    </div>
                     </div>
 
                     <!-- ==========================================
                          RIGHT COLUMN: 1:1 LIVE FORM 1/3 CANVAS SHEET
                          ========================================== -->
                     <div id="form13-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
-                        <!-- Canvas Control Toolbar -->
-                        <div id="form13-canvas-toolbar" class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                    <i data-lucide="file-check" class="w-4 h-4 text-red-600"></i>
-                                    <span class="font-black text-gray-900">Job_Order (Form 1/3 Official PDF View)</span>
-                                </span>
-                                <span id="f13-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>Live Synced</span>
+                        <!-- PDF View Toolbar (shared design across all studio tabs) -->
+                        <div id="form13-canvas-toolbar" class="studio-pdf-toolbar bg-white border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-gray-200">
+                                <div class="min-w-0">
+                                    <h3 class="text-sm font-semibold text-gray-900 truncate">Job_Order</h3>
+                                    <p class="text-[11px] text-gray-500 truncate">Form 1/3 · Official PDF view</p>
+                                </div>
+                                <span id="f13-live-sync-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-600 whitespace-nowrap shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Live synced</span>
                             </div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 text-xs" title="Maximize PDF view (hides forms)">
+                            <div class="flex flex-wrap items-center gap-2 px-4 py-2.5">
+                                <div class="inline-flex h-8 border border-gray-300 rounded-md overflow-hidden divide-x divide-gray-300 text-xs font-medium" role="group" aria-label="Zoom"><button type="button" onclick="setStudioManualZoom(1.0)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="Fit page (100%)">Fit</button><button type="button" onclick="setStudioManualZoom(1.85)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="185% for easier reading">185%</button></div>
+                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Maximize PDF view (hides forms)">
                                     <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> <span class="label-canvas-maximize-pdf">Maximize</span>
                                 </button>
-                                <button type="button" onclick="openForm13EnlargeModal()" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Enlarge Document to Fullscreen High-Definition View">
+                                <button type="button" onclick="openForm13EnlargeModal()" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Open the document in a full-screen view">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </button>
-                                <button type="button" onclick="generateForm13PDF(true)" class="px-2.5 py-1 bg-slate-900 hover:bg-black rounded-lg text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95" title="Download compiled PDF file">
+                                <button type="button" onclick="generateForm13PDF(true)" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Download the compiled PDF">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
                                 </button>
-                                <button type="button" onclick="printForm13()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold rounded-lg transition flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-2xs" title="Print Form 1/3 & Claim Stub">
-                                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-700"></i> Print Form 1/3
+                                <button type="button" onclick="printForm13()" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Print Form 1/3 & Claim Stub">
+                                    <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Form 1/3
                                 </button>
-                                <button type="button" onclick="toggleForm13DocumentPane()" class="p-1 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-800 transition flex items-center cursor-pointer" title="Hide Document Preview">
+                                <button type="button" onclick="toggleForm13DocumentPane()" class="ml-auto h-8 w-8 inline-flex items-center justify-center text-gray-500 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer" title="Hide Document Preview" aria-label="Hide Document Preview">
                                     <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
@@ -3190,21 +3181,16 @@
                     <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
                         <!-- LEFT COLUMN: SA QUOTATION SMART INTERACTIVE EDITOR -->
-                        <div id="form23-editor-pane" class="xl:col-span-7 space-y-5">
+                        <div id="form23-editor-pane" class="xl:col-span-7 space-y-4">
                             
                             <!-- Quotation Header & Actions Bar -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                                 <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                                            <i data-lucide="calculator" class="w-5 h-5"></i>
-                                        </div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Quotation Studio (Quotation_No)</h2>
-                                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Sheet 2 Active
-                                                </span>
+                                                <h2 class="text-sm font-semibold text-gray-900">Quotation Studio (Quotation_No)</h2>
+                                                <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Sheet 2 Active</span>
                                             </div>
                                             <p class="text-xs text-gray-500 font-medium">Service Quotation Specification & Cost Estimator</p>
                                         </div>
@@ -3212,13 +3198,13 @@
 
                                     <!-- Quick Actions -->
                                     <div class="flex flex-wrap items-center gap-1.5">
-                                        <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <button type="button" onclick="saveWorkbookDraftOffline()" class="h-8 px-3 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                             <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
                                         </button>
-                                        <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                        <button type="button" onclick="resetWorkbookToTemplate()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
                                         </button>
-                                        <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                        <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                             <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                         </button>
                                     </div>
@@ -3227,67 +3213,67 @@
                                 <!-- Quotation Meta Fields -->
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation No.</label>
-                                        <input type="text" id="f23-input-quote-no" placeholder="e.g. QT-2026-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-blue-500 outline-none transition">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Quotation No.</label>
+                                        <input type="text" id="f23-input-quote-no" placeholder="e.g. QT-2026-0001" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quotation Date</label>
-                                        <input type="date" id="f23-input-date" onchange="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Quotation Date</label>
+                                        <input type="date" id="f23-input-date" onchange="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
-                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-blue-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Job Order Ref</label>
+                                        <input type="text" id="f23-input-job-no" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" placeholder="HT-JO-XXXX">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Customer & Vehicle Dossier (Two-Way Synced with Job Order) -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                                 <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                        <i data-lucide="user-check" class="w-4 h-4 text-blue-600"></i> Customer & Vehicle Details
+                                    <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="user-check" class="w-4 h-4 text-gray-400"></i> Customer & Vehicle Details
                                     </h3>
-                                    <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
+                                    <span class="text-[11px] text-gray-400">Synced with Job Order</span>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
-                                        <input type="text" id="f23-input-name" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Full Customer Name">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Customer Name</label>
+                                        <input type="text" id="f23-input-name" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2" placeholder="Full Customer Name">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
-                                        <input type="text" id="f23-input-plate" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-800 focus:border-blue-500 outline-none transition" placeholder="ABC-1234">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Plate Number</label>
+                                        <input type="text" id="f23-input-plate" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase" placeholder="ABC-1234">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Address</label>
-                                        <input type="text" id="f23-input-address" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="Street, City">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Address</label>
+                                        <input type="text" id="f23-input-address" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2" placeholder="Street, City">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Year / Make / Model</label>
-                                        <input type="text" id="f23-input-model" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. 2021 Toyota Vios 1.3">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Year / Make / Model</label>
+                                        <input type="text" id="f23-input-model" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2" placeholder="e.g. 2021 Toyota Vios 1.3">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact Number</label>
-                                        <input type="text" id="f23-input-contact" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="09XX-XXX-XXXX">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Contact Number</label>
+                                        <input type="text" id="f23-input-contact" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2" placeholder="09XX-XXX-XXXX">
                                     </div>
                                     <div>
-                                        <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Body Color</label>
-                                        <input type="text" id="f23-input-color" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-800 focus:border-blue-500 outline-none transition" placeholder="e.g. Silver">
+                                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Body Color</label>
+                                        <input type="text" id="f23-input-color" oninput="syncQuoteFieldsToJobOrder()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2" placeholder="e.g. Silver">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Quotation Line Items (Parts, Labor & Materials) -->
-                            <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                            <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                                 <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                                     <div>
-                                        <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                            <i data-lucide="layers" class="w-4 h-4 text-blue-600"></i> Quotation Line Items & Scope (Rows 17–52)
+                                        <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                            <i data-lucide="layers" class="w-4 h-4 text-gray-400"></i> Quotation Line Items & Scope (Rows 17–52)
                                         </h3>
                                         <p class="text-[11px] text-gray-500">Add service jobs, replacement parts, or package estimates</p>
                                     </div>
-                                    <button type="button" onclick="addForm23ItemRow()" class="px-3 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-xl transition flex items-center gap-1 cursor-pointer">
+                                    <button type="button" onclick="addForm23ItemRow()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line Item
                                     </button>
                                 </div>
@@ -3295,16 +3281,16 @@
                                 <!-- Preset Packages -->
                                 <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
                                     <span class="font-bold text-gray-400 uppercase text-[10px]">Presets:</span>
-                                    <button type="button" onclick="applyQuotePreset('pms')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">PMS 10K Package</button>
-                                    <button type="button" onclick="applyQuotePreset('brakes')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Brake Overhaul</button>
-                                    <button type="button" onclick="applyQuotePreset('aircon')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Aircon Cleaning</button>
-                                    <button type="button" onclick="applyQuotePreset('underchassis')" class="px-2.5 py-1 bg-gray-100 hover:bg-blue-50 hover:text-blue-700 border border-gray-200 rounded-lg font-semibold transition cursor-pointer">Underchassis Rebuild</button>
+                                    <button type="button" onclick="applyQuotePreset('pms')" class="px-2 py-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md font-medium transition cursor-pointer">PMS 10K Package</button>
+                                    <button type="button" onclick="applyQuotePreset('brakes')" class="px-2 py-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md font-medium transition cursor-pointer">Brake Overhaul</button>
+                                    <button type="button" onclick="applyQuotePreset('aircon')" class="px-2 py-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md font-medium transition cursor-pointer">Aircon Cleaning</button>
+                                    <button type="button" onclick="applyQuotePreset('underchassis')" class="px-2 py-1 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-md font-medium transition cursor-pointer">Underchassis Rebuild</button>
                                 </div>
 
                                 <!-- Items Table -->
-                                <div class="overflow-x-auto rounded-xl border border-gray-200">
+                                <div class="overflow-x-auto rounded-md border border-gray-200">
                                     <table class="w-full text-left text-xs border-collapse">
-                                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-600 font-bold uppercase text-[10px]">
+                                        <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 font-medium uppercase text-[10px]">
                                             <tr>
                                                 <th class="py-2.5 px-3 w-10 text-center">#</th>
                                                 <th class="py-2.5 px-3">Description / Scope of Work</th>
@@ -3321,13 +3307,13 @@
                                 </div>
 
                                 <!-- Quotation Totals Summary Card -->
-                                <div class="bg-slate-900 text-white rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                                <div class="bg-gray-900 text-white rounded-md p-4 flex flex-wrap items-center justify-between gap-4">
                                     <div>
                                         <div class="text-[11px] text-slate-400 uppercase font-bold tracking-wider">Total Quotation Estimate</div>
                                         <div class="text-xs text-slate-400 mt-0.5">Includes parts, materials & labor scope</div>
                                     </div>
                                     <div class="text-right">
-                                        <div class="text-2xl font-black text-emerald-400 font-mono" id="f23-grand-total">₱0.00</div>
+                                        <div class="text-2xl font-semibold text-white font-mono" id="f23-grand-total">₱0.00</div>
                                         <div class="text-[10px] text-slate-400">Official HonTech 2025 Pricing</div>
                                     </div>
                                 </div>
@@ -3336,30 +3322,27 @@
 
                                                 <!-- RIGHT COLUMN: 1:1 AUTHENTIC OFFICIAL 2025 EXCEL SHEET CANVAS (FORM 2/3 QUOTATION) -->
                         <div id="form23-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
-                            <!-- Control Bar -->
-                            <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-blue-600"></i>
-                                        <span class="font-black text-gray-900">Quotation_No (Official PDF View)</span>
-                                    </span>
-                                    <span id="f23-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>Live Synced</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
-                                        <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
-                                        <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                            <!-- PDF View Toolbar (shared design across all studio tabs) -->
+                            <div id="form23-canvas-toolbar" class="studio-pdf-toolbar bg-white border border-gray-200 rounded-lg">
+                                <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-gray-200">
+                                    <div class="min-w-0">
+                                        <h3 class="text-sm font-semibold text-gray-900 truncate">Quotation_No</h3>
+                                        <p class="text-[11px] text-gray-500 truncate">Form 2/3 · Official PDF view</p>
                                     </div>
-                                    <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 text-xs" title="Maximize PDF view (hides forms)">
+                                    <span id="f23-live-sync-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-600 whitespace-nowrap shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Live synced</span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2 px-4 py-2.5">
+                                    <div class="inline-flex h-8 border border-gray-300 rounded-md overflow-hidden divide-x divide-gray-300 text-xs font-medium" role="group" aria-label="Zoom"><button type="button" onclick="setStudioManualZoom(1.0)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="Fit page (100%)">Fit</button><button type="button" onclick="setStudioManualZoom(1.85)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="185% for easier reading">185%</button></div>
+                                    <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Maximize PDF view (hides forms)">
                                         <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> <span class="label-canvas-maximize-pdf">Maximize</span>
                                     </button>
-                                    <button type="button" onclick="openQuoteEnlargeModal()" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Enlarge Document to Fullscreen High-Definition View">
+                                    <button type="button" onclick="openQuoteEnlargeModal()" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Open the document in a full-screen view">
                                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                     </button>
-                                    <button type="button" onclick="generateQuotePDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Quotation PDF">
+                                    <button type="button" onclick="generateQuotePDF(true)" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Download the compiled PDF">
                                         <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
                                     </button>
-                                    <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                    <button type="button" onclick="exportOfficialXLSX()" class="ml-auto h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-md transition cursor-pointer whitespace-nowrap" title="Export the official Excel workbook">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
                                 </div>
@@ -3406,21 +3389,16 @@
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
                     <!-- LEFT COLUMN: SA BILLING SMART INTERACTIVE EDITOR -->
-                    <div id="billing-editor-pane" class="xl:col-span-7 space-y-5">
+                    <div id="billing-editor-pane" class="xl:col-span-7 space-y-4">
                         
                         <!-- Billing Header & Actions Bar -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-3.5">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center shrink-0">
-                                        <i data-lucide="receipt" class="w-5 h-5"></i>
-                                    </div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <h2 class="text-base font-black text-gray-900 uppercase tracking-tight">Billing Studio (Billing_No)</h2>
-                                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span> Sheet 3 Active
-                                            </span>
+                                            <h2 class="text-sm font-semibold text-gray-900">Billing Studio (Billing_No)</h2>
+                                            <span class="px-1.5 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-500 shrink-0">Sheet 3 Active</span>
                                         </div>
                                         <p class="text-xs text-gray-500 font-medium">Service Billing Statement & Invoice Settlement Engine</p>
                                     </div>
@@ -3428,13 +3406,13 @@
 
                                 <!-- Quick Actions -->
                                 <div class="flex flex-wrap items-center gap-1.5">
-                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                    <button type="button" onclick="saveWorkbookDraftOffline()" class="h-8 px-3 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Draft
                                     </button>
-                                    <button type="button" onclick="resetWorkbookToTemplate()" class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                    <button type="button" onclick="resetWorkbookToTemplate()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-amber-50 hover:text-amber-800 border border-gray-200 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
                                     </button>
-                                    <button type="button" onclick="exportOfficialXLSX()" class="px-2.5 py-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer shadow-xs">
+                                    <button type="button" onclick="exportOfficialXLSX()" class="h-8 px-3 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                         <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                     </button>
                                 </div>
@@ -3443,82 +3421,82 @@
                             <!-- Billing Meta Fields -->
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing No.</label>
-                                    <input type="text" id="bill-input-billing-no" placeholder="e.g. BL-2026-0001" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-800 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Billing No.</label>
+                                    <input type="text" id="bill-input-billing-no" placeholder="e.g. BL-2026-0001" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Date</label>
-                                    <input type="date" id="bill-input-date" onchange="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-800 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Billing Date</label>
+                                    <input type="date" id="bill-input-date" onchange="syncBillingCanvas()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Job Order Ref</label>
-                                    <input type="text" id="bill-input-job-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-purple-500 outline-none transition" placeholder="HT-JO-XXXX">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Job Order Ref</label>
+                                    <input type="text" id="bill-input-job-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" placeholder="HT-JO-XXXX">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Quote Ref</label>
-                                    <input type="text" id="bill-input-quote-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold text-gray-700 focus:border-purple-500 outline-none transition" placeholder="QT-2026-XXXX">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Quote Ref</label>
+                                    <input type="text" id="bill-input-quote-no" oninput="syncBillingCanvas()" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono" placeholder="QT-2026-XXXX">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Customer & Vehicle Dossier (Synced with Job Order) -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                                <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                    <i data-lucide="user-check" class="w-4 h-4 text-purple-600"></i> Customer & Vehicle Details
+                                <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                    <i data-lucide="user-check" class="w-4 h-4 text-gray-400"></i> Customer & Vehicle Details
                                 </h3>
-                                <span class="text-[11px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md">Synced with Job Order</span>
+                                <span class="text-[11px] text-gray-400">Synced with Job Order</span>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Customer Name</label>
-                                    <input type="text" id="bill-input-name" oninput="syncBillingToJobOrder()" placeholder="Customer Name" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Customer Name</label>
+                                    <input type="text" id="bill-input-name" oninput="syncBillingToJobOrder()" placeholder="Customer Name" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Contact No. / Viber</label>
-                                    <input type="text" id="bill-input-contact" oninput="syncBillingToJobOrder()" placeholder="0917-XXX-XXXX" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Contact No. / Viber</label>
+                                    <input type="text" id="bill-input-contact" oninput="syncBillingToJobOrder()" placeholder="0917-XXX-XXXX" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Billing Address</label>
-                                    <input type="text" id="bill-input-address" oninput="syncBillingToJobOrder()" placeholder="Billing Address" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Billing Address</label>
+                                    <input type="text" id="bill-input-address" oninput="syncBillingToJobOrder()" placeholder="Billing Address" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Plate Number</label>
-                                    <input type="text" id="bill-input-plate" oninput="syncBillingToJobOrder()" placeholder="ABC 1234" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-bold uppercase text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Plate Number</label>
+                                    <input type="text" id="bill-input-plate" oninput="syncBillingToJobOrder()" placeholder="ABC 1234" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Make / Model / Year</label>
-                                    <input type="text" id="bill-input-model" oninput="syncBillingToJobOrder()" placeholder="e.g. Honda Civic RS" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Make / Model / Year</label>
+                                    <input type="text" id="bill-input-model" oninput="syncBillingToJobOrder()" placeholder="e.g. Honda Civic RS" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Color</label>
-                                    <input type="text" id="bill-input-color" oninput="syncBillingToJobOrder()" placeholder="e.g. Pearl White" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Color</label>
+                                    <input type="text" id="bill-input-color" oninput="syncBillingToJobOrder()" placeholder="e.g. Pearl White" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
                                 <div>
-                                    <label class="block text-[10.5px] font-bold text-gray-600 uppercase tracking-wider mb-1">Mileage / Odometer (KM)</label>
-                                    <input type="text" id="bill-input-km" oninput="syncBillingToJobOrder()" placeholder="e.g. 45,000" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 font-mono font-semibold text-gray-900 focus:border-purple-500 outline-none transition">
+                                    <label class="block text-[11px] font-medium text-gray-500 mb-1">Mileage / Odometer (KM)</label>
+                                    <input type="text" id="bill-input-km" oninput="syncBillingToJobOrder()" placeholder="e.g. 45,000" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Billable Items & Charges Table -->
-                        <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs space-y-4">
+                        <div class="bg-white border border-gray-200 rounded-lg p-5 space-y-4">
                             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                                 <div>
-                                    <h3 class="text-xs font-black uppercase tracking-wider text-gray-800 flex items-center gap-2">
-                                        <i data-lucide="shopping-cart" class="w-4 h-4 text-purple-600"></i> Billed Parts, Materials & Services
+                                    <h3 class="text-[11px] font-semibold uppercase tracking-wide text-gray-600 flex items-center gap-2">
+                                        <i data-lucide="shopping-cart" class="w-4 h-4 text-gray-400"></i> Billed Parts, Materials & Services
                                     </h3>
                                     <p class="text-[11px] text-gray-500 mt-0.5">Line items consolidated from Job Order & Quotation</p>
                                 </div>
-                                <button type="button" onclick="addBillingItemRow()" class="px-2.5 py-1 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition active:scale-95 flex items-center gap-1 cursor-pointer">
+                                <button type="button" onclick="addBillingItemRow()" class="h-8 px-3 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-lg transition flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Line
                                 </button>
                             </div>
 
                             <div class="overflow-x-auto max-h-[300px] custom-scroll">
                                 <table class="w-full text-xs text-left">
-                                    <thead class="bg-gray-50 text-[10.5px] font-bold uppercase tracking-wider text-gray-600 border-b border-gray-200">
+                                    <thead class="bg-gray-50 text-[10px] font-medium uppercase tracking-wide text-gray-500 border-b border-gray-200">
                                         <tr>
                                             <th class="py-2.5 px-3 w-10 text-center">#</th>
                                             <th class="py-2.5 px-3">Description</th>
@@ -3535,7 +3513,7 @@
                             </div>
 
                             <!-- Financial Summary Matrix -->
-                            <div class="bg-purple-50/60 border border-purple-150 rounded-xl p-4 space-y-2 text-xs">
+                            <div class="bg-gray-50 border border-gray-200 rounded-md p-4 space-y-2 text-xs">
                                 <div class="flex justify-between text-gray-700">
                                     <span>Parts & Materials Subtotal:</span>
                                     <span id="bill-summary-parts" class="font-mono font-bold">₱0.00</span>
@@ -3544,16 +3522,16 @@
                                     <span>Labor & Services Subtotal:</span>
                                     <span id="bill-summary-labor" class="font-mono font-bold">₱0.00</span>
                                 </div>
-                                <div class="flex items-center justify-between text-gray-700 pt-1 border-t border-purple-200/60">
+                                <div class="flex items-center justify-between text-gray-700 pt-1 border-t border-gray-200">
                                     <span class="font-bold">Discount / Promo:</span>
                                     <div class="flex items-center gap-1">
                                         <span class="text-gray-500">₱</span>
-                                        <input type="number" id="bill-input-discount" value="0" min="0" step="50" oninput="calcBillingTotals()" class="w-24 px-2 py-1 text-right font-mono font-bold border border-gray-200 rounded bg-white outline-none focus:border-purple-500 text-xs">
+                                        <input type="number" id="bill-input-discount" value="0" min="0" step="50" oninput="calcBillingTotals()" class="w-24 bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-2 py-1 text-right font-mono">
                                     </div>
                                 </div>
-                                <div class="flex justify-between items-center pt-2 border-t-2 border-purple-300 font-black text-sm text-purple-950">
+                                <div class="flex justify-between items-center pt-2 border-t border-gray-300 font-semibold text-sm text-gray-900">
                                     <span class="uppercase tracking-wide">Grand Total Due:</span>
-                                    <span id="bill-summary-grand-total" class="text-base font-mono font-black text-purple-900">₱0.00</span>
+                                    <span id="bill-summary-grand-total" class="text-base font-mono font-semibold text-gray-900">₱0.00</span>
                                 </div>
                             </div>
                         </div>
@@ -3562,30 +3540,27 @@
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC BILLING PHYSICAL CANVAS -->
                     <div id="billing-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
-                        <!-- Control Bar -->
-                        <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                    <i data-lucide="receipt" class="w-4 h-4 text-purple-600"></i>
-                                    <span class="font-black text-gray-900">Billing_No (Official PDF View)</span>
-                                </span>
-                                <span id="bill-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>Live Synced</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
-                                    <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
-                                    <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                        <!-- PDF View Toolbar (shared design across all studio tabs) -->
+                        <div id="billing-canvas-toolbar" class="studio-pdf-toolbar bg-white border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-gray-200">
+                                <div class="min-w-0">
+                                    <h3 class="text-sm font-semibold text-gray-900 truncate">Billing_No</h3>
+                                    <p class="text-[11px] text-gray-500 truncate">Form 3/3 · Official PDF view</p>
                                 </div>
-                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 text-xs" title="Maximize PDF view (hides forms)">
+                                <span id="bill-live-sync-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-600 whitespace-nowrap shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Live synced</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 px-4 py-2.5">
+                                <div class="inline-flex h-8 border border-gray-300 rounded-md overflow-hidden divide-x divide-gray-300 text-xs font-medium" role="group" aria-label="Zoom"><button type="button" onclick="setStudioManualZoom(1.0)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="Fit page (100%)">Fit</button><button type="button" onclick="setStudioManualZoom(1.85)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="185% for easier reading">185%</button></div>
+                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Maximize PDF view (hides forms)">
                                     <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> <span class="label-canvas-maximize-pdf">Maximize</span>
                                 </button>
-                                <button type="button" onclick="openBillingEnlargeModal()" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Enlarge Document to Fullscreen High-Definition View">
+                                <button type="button" onclick="openBillingEnlargeModal()" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Open the document in a full-screen view">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </button>
-                                <button type="button" onclick="generateBillingPDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Billing PDF">
+                                <button type="button" onclick="generateBillingPDF(true)" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Download the compiled PDF">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
                                 </button>
-                                <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                <button type="button" onclick="exportOfficialXLSX()" class="ml-auto h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-md transition cursor-pointer whitespace-nowrap" title="Export the official Excel workbook">
                                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                 </button>
                             </div>
@@ -3742,30 +3717,27 @@
 
                     <!-- RIGHT COLUMN: 1:1 AUTHENTIC CHECKLIST PHYSICAL CANVAS -->
                     <div id="checklist-canvas-pane" class="xl:col-span-5 space-y-3 xl:sticky xl:top-14 xl:self-start">
-                        <!-- Control Bar -->
-                        <div class="bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs">
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                                    <i data-lucide="check-square" class="w-4 h-4 text-amber-600"></i>
-                                    <span class="font-black text-gray-900">CheckList_Result (Official PDF View)</span>
-                                </span>
-                                <span id="chk-live-sync-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Live Synced</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 text-[10px] font-bold">
-                                    <button type="button" onclick="setStudioManualZoom(1.0)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="100% Fit">Fit</button>
-                                    <button type="button" onclick="setStudioManualZoom(1.85)" class="px-2 py-0.5 rounded text-gray-700 hover:text-black transition cursor-pointer" title="185% Senior Legibility">185%</button>
+                        <!-- PDF View Toolbar (shared design across all studio tabs) -->
+                        <div id="checklist-canvas-toolbar" class="studio-pdf-toolbar bg-white border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-gray-200">
+                                <div class="min-w-0">
+                                    <h3 class="text-sm font-semibold text-gray-900 truncate">CheckList_Result</h3>
+                                    <p class="text-[11px] text-gray-500 truncate">Inspection checklist · Official PDF view</p>
                                 </div>
-                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 text-xs" title="Maximize PDF view (hides forms)">
+                                <span id="chk-live-sync-badge" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-gray-300 text-[10px] font-medium text-gray-600 whitespace-nowrap shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Live synced</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 px-4 py-2.5">
+                                <div class="inline-flex h-8 border border-gray-300 rounded-md overflow-hidden divide-x divide-gray-300 text-xs font-medium" role="group" aria-label="Zoom"><button type="button" onclick="setStudioManualZoom(1.0)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="Fit page (100%)">Fit</button><button type="button" onclick="setStudioManualZoom(1.85)" class="px-3 bg-white hover:bg-gray-50 text-gray-700 transition cursor-pointer" title="185% for easier reading">185%</button></div>
+                                <button type="button" onclick="toggleStudioMaximizedPDF()" class="btn-canvas-maximize-pdf h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Maximize PDF view (hides forms)">
                                     <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i> <span class="label-canvas-maximize-pdf">Maximize</span>
                                 </button>
-                                <button type="button" onclick="openChecklistEnlargeModal()" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Enlarge Document to Fullscreen High-Definition View">
+                                <button type="button" onclick="openChecklistEnlargeModal()" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Open the document in a full-screen view">
                                     <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Full PDF
                                 </button>
-                                <button type="button" onclick="generateChecklistPDF(true)" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg transition flex items-center gap-1 cursor-pointer" title="Download compiled Checklist PDF">
+                                <button type="button" onclick="generateChecklistPDF(true)" class="h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 rounded-md transition cursor-pointer whitespace-nowrap" title="Download the compiled PDF">
                                     <i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF
                                 </button>
-                                <button type="button" onclick="exportOfficialXLSX()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95">
+                                <button type="button" onclick="exportOfficialXLSX()" class="ml-auto h-8 px-3 inline-flex items-center gap-1.5 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 border border-emerald-700 rounded-md transition cursor-pointer whitespace-nowrap" title="Export the official Excel workbook">
                                     <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> Export .xlsx
                                 </button>
                             </div>
@@ -7694,7 +7666,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.21"></script>
+    <script src="js/app.js?v=3.22"></script>
 </body>
 
 </html>

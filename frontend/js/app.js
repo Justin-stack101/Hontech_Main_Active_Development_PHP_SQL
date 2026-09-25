@@ -12929,12 +12929,13 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (lbl) lbl.innerText = isStudioPDFMaximized ? 'Normal View' : 'Maximize';
                 const icon = btn.querySelector('i');
                 if (icon) icon.setAttribute('data-lucide', isStudioPDFMaximized ? 'minimize-2' : 'maximize-2');
+                // Neutral toolbar: the active (maximized) state is shown as the dark selected button
                 if (isStudioPDFMaximized) {
-                    btn.classList.add('bg-red-50', 'text-red-700', 'border-red-300');
-                    btn.classList.remove('bg-slate-100', 'text-slate-800', 'border-slate-300');
+                    btn.classList.add('bg-gray-900', 'text-white', 'border-gray-900');
+                    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300', 'hover:bg-gray-50');
                 } else {
-                    btn.classList.remove('bg-red-50', 'text-red-700', 'border-red-300');
-                    btn.classList.add('bg-slate-100', 'text-slate-800', 'border-slate-300');
+                    btn.classList.remove('bg-gray-900', 'text-white', 'border-gray-900');
+                    btn.classList.add('bg-white', 'text-gray-700', 'border-gray-300', 'hover:bg-gray-50');
                 }
             });
 
@@ -13574,15 +13575,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     partsBody.innerHTML = window.form13Parts.map((part, idx) => {
                         const amount = (Number(part.qty || 0) * Number(part.price || 0)).toFixed(2);
                         return `
-                            <tr class="hover:bg-gray-50/80 transition">
+                            <tr class="hover:bg-gray-50 transition">
                                 <td class="py-1.5 px-2">
-                                    <input type="text" value="${escapeHtml(part.desc || '')}" oninput="updateForm13PartField(${idx}, 'desc', this.value)" placeholder="Part Description..." class="w-full bg-transparent border-b border-gray-200 focus:border-red-500 font-semibold text-gray-800 outline-none text-xs py-0.5">
+                                    <input type="text" value="${escapeHtml(part.desc || '')}" oninput="updateForm13PartField(${idx}, 'desc', this.value)" placeholder="Part Description..." class="w-full bg-transparent border-b border-gray-200 focus:border-gray-900 font-semibold text-gray-800 outline-none text-xs py-0.5">
                                 </td>
                                 <td class="py-1.5 px-2 text-center">
-                                    <input type="number" min="1" step="1" value="${part.qty}" oninput="updateForm13PartField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                    <input type="number" min="1" step="1" value="${part.qty}" oninput="updateForm13PartField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
                                 </td>
                                 <td class="py-1.5 px-2 text-right">
-                                    <input type="number" min="0" step="0.01" value="${part.price}" oninput="updateForm13PartField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                    <input type="number" min="0" step="0.01" value="${part.price}" oninput="updateForm13PartField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
                                 </td>
                                 <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
                                     ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -13607,15 +13608,15 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     matsBody.innerHTML = window.form13Materials.map((mat, idx) => {
                         const amount = (Number(mat.qty || 0) * Number(mat.price || 0)).toFixed(2);
                         return `
-                            <tr class="hover:bg-gray-50/80 transition">
+                            <tr class="hover:bg-gray-50 transition">
                                 <td class="py-1.5 px-2">
-                                    <input type="text" value="${escapeHtml(mat.desc || '')}" oninput="updateForm13MaterialField(${idx}, 'desc', this.value)" placeholder="Material / Consumable..." class="w-full bg-transparent border-b border-gray-200 focus:border-red-500 font-semibold text-gray-800 outline-none text-xs py-0.5">
+                                    <input type="text" value="${escapeHtml(mat.desc || '')}" oninput="updateForm13MaterialField(${idx}, 'desc', this.value)" placeholder="Material / Consumable..." class="w-full bg-transparent border-b border-gray-200 focus:border-gray-900 font-semibold text-gray-800 outline-none text-xs py-0.5">
                                 </td>
                                 <td class="py-1.5 px-2 text-center">
-                                    <input type="number" min="1" step="1" value="${mat.qty}" oninput="updateForm13MaterialField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                    <input type="number" min="1" step="1" value="${mat.qty}" oninput="updateForm13MaterialField(${idx}, 'qty', this.value)" class="w-14 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-center font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
                                 </td>
                                 <td class="py-1.5 px-2 text-right">
-                                    <input type="number" min="0" step="0.01" value="${mat.price}" oninput="updateForm13MaterialField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-red-500 outline-none text-xs">
+                                    <input type="number" min="0" step="0.01" value="${mat.price}" oninput="updateForm13MaterialField(${idx}, 'price', this.value)" class="w-24 bg-gray-50 border border-gray-200 rounded px-1.5 py-0.5 text-right font-mono font-bold text-gray-800 focus:border-gray-900 outline-none text-xs">
                                 </td>
                                 <td class="py-1.5 px-2 text-right font-mono font-bold text-gray-900 text-xs">
                                     ₱ ${Number(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -15809,17 +15810,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             (window.form23Items || []).forEach((item, idx) => {
                 const rowTotal = (Number(item.qty) || 1) * (Number(item.price) || 0);
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-blue-50/40 transition';
+                tr.className = 'hover:bg-gray-50 transition';
                 tr.innerHTML = `
                     <td class="py-2 px-3 text-center text-gray-400 font-mono font-bold">${idx + 1}</td>
                     <td class="py-2 px-3">
-                        <input type="text" value="${item.desc || ''}" oninput="updateForm23Item(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-medium text-gray-800 outline-none text-xs" placeholder="Item or Service Description">
+                        <input type="text" value="${item.desc || ''}" oninput="updateForm23Item(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-medium text-gray-800 outline-none text-xs" placeholder="Item or Service Description">
                     </td>
                     <td class="py-2 px-2 text-center">
-                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateForm23Item(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-mono text-center text-gray-800 outline-none text-xs">
+                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateForm23Item(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-mono text-center text-gray-800 outline-none text-xs">
                     </td>
                     <td class="py-2 px-3 text-right">
-                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateForm23Item(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-blue-500 font-mono text-right text-gray-800 outline-none text-xs">
+                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateForm23Item(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-mono text-right text-gray-800 outline-none text-xs">
                     </td>
                     <td class="py-2 px-3 text-right font-mono font-bold text-gray-900">
                         ₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -16112,17 +16113,17 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             (window.billingItems || []).forEach((item, idx) => {
                 const rowTotal = (Number(item.qty) || 1) * (Number(item.price) || 0);
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-purple-50/40 transition';
+                tr.className = 'hover:bg-gray-50 transition';
                 tr.innerHTML = `
                     <td class="py-2 px-3 text-center text-gray-400 font-mono font-bold">${idx + 1}</td>
                     <td class="py-2 px-3">
-                        <input type="text" value="${item.desc || ''}" oninput="updateBillingItem(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-medium text-gray-800 outline-none text-xs" placeholder="Billed Line Item / Repair Service">
+                        <input type="text" value="${item.desc || ''}" oninput="updateBillingItem(${idx}, 'desc', this.value)" class="w-full bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-medium text-gray-800 outline-none text-xs" placeholder="Billed Line Item / Repair Service">
                     </td>
                     <td class="py-2 px-2 text-center">
-                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateBillingItem(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-mono text-center text-gray-800 outline-none text-xs">
+                        <input type="number" min="1" value="${item.qty || 1}" oninput="updateBillingItem(${idx}, 'qty', this.value)" class="w-14 bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-mono text-center text-gray-800 outline-none text-xs">
                     </td>
                     <td class="py-2 px-3 text-right">
-                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateBillingItem(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-purple-500 font-mono text-right text-gray-800 outline-none text-xs">
+                        <input type="number" min="0" step="50" value="${item.price || 0}" oninput="updateBillingItem(${idx}, 'price', this.value)" class="w-24 bg-transparent border-0 border-b border-transparent focus:border-gray-900 font-mono text-right text-gray-800 outline-none text-xs">
                     </td>
                     <td class="py-2 px-3 text-right font-mono font-bold text-gray-900">
                         ₱${rowTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

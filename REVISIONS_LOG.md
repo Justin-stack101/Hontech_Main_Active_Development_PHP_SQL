@@ -1,3 +1,24 @@
+## 📅 September 25, 2026 (Studio-Wide CheckList Design & Shared PDF Toolbar)
+
+### 📋 Shared PDF Toolbar & CheckList Design Applied to Job Order, Quotation and Billing (REV-169)
+* **Objective & Context**: The user approved the CheckList Studio design and asked to improve the PDF view toolbar ("CheckList_Result (Official PDF View)", where labels such as "Full PDF" and "Download PDF" wrapped and each tab used its own accent color) and to apply the same design to the Job Order, Quotation_No and Billing_No tabs.
+* **Core Changes Made**:
+  - `frontend/index.html` (PDF toolbars, all four tabs): one shared `studio-pdf-toolbar` layout. Row 1 holds the sheet title, a short subtitle (e.g. "Form 2/3 · Official PDF view") and a neutral "Live synced" tag; row 2 holds a Fit / 185% segmented zoom control, outlined Maximize, Full PDF and Download PDF buttons (`whitespace-nowrap`, so labels no longer wrap) and the green Export .xlsx button aligned right. Job Order keeps Print Form 1/3 and the hide-preview button and now also gets the zoom control. Added ids `form23-canvas-toolbar`, `billing-canvas-toolbar` and `checklist-canvas-toolbar`; all existing ids, handlers and the `btn-canvas-maximize-pdf` / `label-canvas-maximize-pdf` hooks are unchanged.
+  - `frontend/index.html` (Job Order, Quotation, Billing editors): applied the CheckList design language: flat `rounded-lg` cards without shadows, removed decorative icon tiles and pulsing badges, plain `text-sm` titles, small uppercase gray section headings with gray icons, `text-[11px]` gray labels, inputs / selects / textareas with gray borders and a gray focus ring, neutral outlined "Add item" and preset buttons, gray table headers, and neutral totals panels. Save Draft / Reset / Export .xlsx keep their original colors in the current button shape; Register RO and the warranty back-job alert stay red.
+  - `frontend/index.html` (Job Order structure fix): the "Form 1/3 Job Order Studio" card was never closed, so Customer Dossier and every later card rendered nested inside it. The card now closes after its Job Order / date / category fields, and the matching extra closing tag at the end of the pane was removed. Removed the duplicate 💾 emoji next to the save icon on the card's Register button (the top bar label is unchanged).
+  - `frontend/js/app.js`: Job Order, Quotation and Billing item rows use the neutral gray focus and hover colors; the Maximize button's active state now uses the dark selected style of the new toolbar.
+  - `frontend/index.html`: Incremented cache buster to v=3.22.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-128 (shared toolbar on all four tabs with preserved hooks and no wrapping, CheckList design in the three editors with original quick-action colors, Job Order card no longer nested, neutral item rows and maximize state); added v=3.22 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-45 test row (workbook ranges extended to row 171).
+  - `Revisions checklist.csv`: Appended REV-169 row.
+* **Automated & Manual QA Verification**:
+  - 157/157 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered all four tabs in headless Chrome from the real markup and row renderers: consistent cards, labels, inputs, quick actions and PDF toolbar; Job Order cards are no longer nested; toolbar labels stay on one line.
+* **Cache Busting**: `js/app.js?v=3.22`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist Section Header Bands)
 
 ### 📋 Checklist Section Headers With Gray Background Band and Black Text (REV-168)
