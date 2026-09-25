@@ -3725,17 +3725,17 @@
                                 </div>
                             </div>
 
-                            <!-- Brakes Not Inspected on this visit Toggle (M37) -->
+                            <div id="checklist-items-container" class="space-y-3 max-h-[380px] overflow-y-auto custom-scroll pr-1">
+                                <!-- Dynamically populated inspection checkpoints with OK / ATTN / DEFECT buttons -->
+                            </div>
+
+                            <!-- Brakes Not Inspected on this visit Toggle (M37): placed after the checkpoints, below Brake Condition, as on the printed form -->
                             <div class="flex items-center justify-between p-2.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs">
                                 <label class="flex items-center gap-2 font-bold text-amber-950 cursor-pointer select-none">
                                     <input type="checkbox" id="chk-brakes-not-inspected" onchange="toggleChecklistBrakesNotInspected(this.checked)" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-gray-300">
                                     <span>Brakes not inspected on this visit</span>
                                 </label>
                                 <span class="text-[10px] font-mono font-bold text-amber-700 bg-amber-100/60 px-2 py-0.5 rounded">Sheet 7: M37</span>
-                            </div>
-
-                            <div id="checklist-items-container" class="space-y-3 max-h-[380px] overflow-y-auto custom-scroll pr-1">
-                                <!-- Dynamically populated inspection checkpoints with OK / ATTN / DEFECT buttons -->
                             </div>
                         </div>
 
@@ -7701,7 +7701,7 @@
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
     <script src="js/vendor/xlsx.full.min.js"></script>
-    <script src="js/app.js?v=3.14"></script>
+    <script src="js/app.js?v=3.15"></script>
 </body>
 
 </html>

@@ -1,3 +1,21 @@
+## 📅 September 25, 2026 (Checklist "Brakes not inspected" Checkbox Placement)
+
+### 📋 Checklist "Brakes not inspected on this visit" Checkbox Moved Below the Checkpoints (REV-162)
+* **Objective & Context**: The user asked to move the "Brakes not inspected on this visit" checkbox from the top of the Multi-Point Receiving Checkpoints card to the bottom, right before "Inspector Remarks / Discovered Deficiencies". This also matches the printed CheckList_Result form, where the checkbox sits directly below the Brake Condition boxes.
+* **Core Changes Made**:
+  - `frontend/index.html`: Moved the `#chk-brakes-not-inspected` toggle block (Sheet 7: M37) from above `#checklist-items-container` to below it, inside the same card, so it is the last element before the Inspector Remarks card. No behavior changed; the checkbox still calls `toggleChecklistBrakesNotInspected()`.
+  - `frontend/index.html`: Incremented cache buster to v=3.15.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-121 asserting the checkbox order (checkpoints, then brakes checkbox, then Inspector Remarks) and that only one checkbox exists; added v=3.15 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-38 test row (workbook ranges extended to row 164).
+  - `Revisions checklist.csv`: Appended REV-162 row.
+* **Automated & Manual QA Verification**:
+  - 150/150 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the updated card from `frontend/index.html` in headless Chrome and confirmed the checkbox appears after the checkpoint list and directly above Inspector Remarks.
+* **Cache Busting**: `js/app.js?v=3.15`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Checklist UI / PDF / Excel Unified Wording, Colors & Status Symbols)
 
 ### 📋 Checklist UI, PDF & Excel Share Printed-Form Wording, Colors & Status Symbols (REV-161)
