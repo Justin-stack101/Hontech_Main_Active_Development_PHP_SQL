@@ -14695,15 +14695,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const fontNorm = await doc.embedFont(StandardFonts.Helvetica);
 
             const darkInk = rgb(0.08, 0.08, 0.08);
-            const greenInk = rgb(0.1, 0.6, 0.2);
-            const amberInk = rgb(0.8, 0.5, 0.0);
-            const redInk = rgb(0.8, 0.1, 0.1);
             const white = rgb(1, 1, 1);
-
-            const drawText = (str, x, y, size = 7.5, isBold = false, color = darkInk) => {
-                if (!str && str !== 0) return;
-                page.drawText(String(str), { x, y, size, font: isBold ? fontBold : fontNorm, color });
-            };
 
             const drawTextFit = (str, x, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 5.5) => {
                 if (!str && str !== 0) return;
@@ -14735,106 +14727,138 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const remarks = getVal('chk-input-remarks') || 'Vehicle intake inspection cleared. No critical defects noted.';
             const sa = getVal('f13-input-sa') || (typeof currentUserName !== 'undefined' ? currentUserName : '') || 'Roman Sarol';
 
-            // Top Header Info (with non-destructive placeholder masking)
-            whiteout(115, 734.5, 270, 10);
-            drawTextFit(name, 120, 739.0, 250, 6.5, false, darkInk, 5.2);
-            whiteout(485, 734.5, 70, 10);
-            drawText(date, 490, 739.0, 7.0, false, darkInk);
-
-            whiteout(115, 718.5, 270, 10);
-            drawTextFit(plate + (km ? ` (${km})` : ''), 120, 723.1, 250, 6.5, true, darkInk, 5.2);
-
-            whiteout(115, 702.5, 240, 10);
-            drawTextFit(model, 120, 707.3, 200, 6.5, false, darkInk, 5.2);
-
-            // Fuel Level Marker (aligned to template pre-printed labels E, 1/4, 1/2, 3/4, F)
-            const fuelCoords = {
-                'E': 445,
-                '1/4': 468,
-                '1/2': 494,
-                '3/4': 520,
-                'F': 548
+            // Coordinates below are measured from the CheckList_Result template (595x842pt).
+            // Whiteouts only cover the template's "0" placeholder glyphs, never underlines or grid lines.
+            const drawTextCenterFit = (str, centerX, y, maxWidth, initialSize = 7.5, isBold = false, color = darkInk, minSize = 5.0) => {
+                if (!str && str !== 0) return;
+                const s = String(str);
+                const f = isBold ? fontBold : fontNorm;
+                let size = initialSize;
+                while (size > minSize && f.widthOfTextAtSize(s, size) > maxWidth) size -= 0.2;
+                page.drawText(s, { x: centerX - f.widthOfTextAtSize(s, size) / 2, y, size, font: f, color });
             };
-            const activeLevel = window.checklistFuelLevel || '1/2';
-            const markerX = fuelCoords[activeLevel] || 494;
-            // Draw clean rounded selector ring around active fuel level
-            page.drawRectangle({
-                x: markerX - 4,
-                y: 703.5,
-                width: 17,
-                height: 10,
-                borderColor: darkInk,
-                borderWidth: 1.2
-            });
 
-            // Vector checkmark, alert, and cross drawers
+            // Top Header: values on the underlines x 114.2-290.8 (label baselines 737.3 / 721.5 / 705.7)
+            whiteout(115.2, 734.0, 5.6, 12.2);   // "0" under CUSTOMER NAME (underline top 733.9)
+            drawTextFit(name, 117, 735.6, 172, 7.5, false, darkInk, 5.0);
+            whiteout(115.2, 718.2, 5.6, 12.2);   // "0" under PLATE NUMBER (underline top 718.1)
+            drawTextFit(plate + (km ? ` (${km})` : ''), 117, 719.8, 172, 7.5, true, darkInk, 5.0);
+            whiteout(115.2, 702.4, 5.6, 12.2);   // "0" under VEHICLE YEAR MODEL (underline top 702.3)
+            drawTextFit(model, 117, 704.0, 172, 7.5, false, darkInk, 5.0);
+
+            // DATE: centered on its underline x 470.0-563.2
+            whiteout(514.3, 734.0, 5.6, 12.2);
+            drawTextCenterFit(date, 516.6, 735.6, 90, 7.5, false, darkInk);
+
+            // Fuel Level: ring the selected label inside its cell (cells between x 434.1 / 460.0 / 485.5 / 511.4 / 536.9 / 562.8, y 702.3-717.3)
+            const fuelCenters = { 'E': 447.05, '1/4': 472.85, '1/2': 498.6, '3/4': 524.3, 'F': 550.25 };
+            const fuelX = fuelCenters[window.checklistFuelLevel || '1/2'] || fuelCenters['1/2'];
+            page.drawEllipse({ x: fuelX, y: 709.0, xScale: 10.5, yScale: 6.2, borderColor: darkInk, borderWidth: 1.1 });
+
+            // Status mark: dark checkmark centered in the chosen green / yellow / red box (readable on every fill)
             const drawCheckmark = (cx, cy) => {
-                page.drawLine({ start: { x: cx - 2.5, y: cy }, end: { x: cx - 0.8, y: cy - 2.2 }, thickness: 1.2, color: greenInk });
-                page.drawLine({ start: { x: cx - 0.8, y: cy - 2.2 }, end: { x: cx + 3, y: cy + 2.5 }, thickness: 1.2, color: greenInk });
-            };
-            const drawAlert = (cx, cy) => {
-                page.drawText('!', { x: cx - 1.5, y: cy - 2.5, size: 7.5, font: fontBold, color: amberInk });
-            };
-            const drawCross = (cx, cy) => {
-                page.drawLine({ start: { x: cx - 2.5, y: cy - 2.5 }, end: { x: cx + 2.5, y: cy + 2.5 }, thickness: 1.2, color: redInk });
-                page.drawLine({ start: { x: cx - 2.5, y: cy + 2.5 }, end: { x: cx + 2.5, y: cy - 2.5 }, thickness: 1.2, color: redInk });
+                page.drawLine({ start: { x: cx - 3.6, y: cy + 0.2 }, end: { x: cx - 1.1, y: cy - 2.8 }, thickness: 1.4, color: darkInk });
+                page.drawLine({ start: { x: cx - 1.1, y: cy - 2.8 }, end: { x: cx + 3.8, y: cy + 3.2 }, thickness: 1.4, color: darkInk });
             };
 
-            // 15-Point Inspection Stamp Mapping
+            // Status box column centers: G / Y / R
+            const LEFT_COLS = [253.1, 267.8, 282.9];     // Interior, Under Hood, Under Vehicle (x 246.1 / 260.8 / 275.5 / 290.3)
+            const TIRE_L_COLS = [315.0, 329.3, 343.55];  // Tire & Brake left-side boxes (x 308.4 / 322.3 / 337.0 / 350.1)
+            const TIRE_R_COLS = [524.5, 539.35, 554.9];  // Tire & Brake right-side boxes (x 517.3 / 532.4 / 547.0 / 562.8)
+
+            // Row vertical centers (midpoint between the row's border lines)
             const checkpointPositions = {
-                'lights_ext': { y: 642.3, col: 'left' },
-                'ac_cooling': { y: 618.3, col: 'left' },
-                'horn_wipers': { y: 595.2, col: 'left' },
-                'battery': { y: 464.2, col: 'left' },
-                'eng_oil': { y: 401.7, col: 'left' },
-                'brk_fluid': { y: 389.2, col: 'left' },
-                'coolant': { y: 372.8, col: 'left' },
-                'suspension': { y: 302.5, col: 'left' },
-                'exhaust': { y: 279.5, col: 'left' },
-                'tire_fl': { y: 579.8, xG: 392, xA: 405, xR: 418 },
-                'tire_fr': { y: 579.8, xG: 472, xA: 485, xR: 498 },
-                'tire_rl': { y: 526.8, xG: 392, xA: 405, xR: 418 },
-                'tire_rr': { y: 526.8, xG: 472, xA: 485, xR: 498 },
-                'spare_tire': { y: 473.8, xG: 392, xA: 405, xR: 418 },
-                'brakes_pads': { y: 382.4, xG: 432, xA: 445, xR: 458 }
+                // Interior/Exterior
+                'lights_ext': { y: 644.4, cols: LEFT_COLS },
+                'interior_light': { y: 624.7, cols: LEFT_COLS },
+                'horn_wipers': { y: 605.0, cols: LEFT_COLS },
+                'parking_brake': { y: 585.8, cols: LEFT_COLS },
+                'horn_op': { y: 571.0, cols: LEFT_COLS },
+                'clutch_op': { y: 556.1, cols: LEFT_COLS },
+                'ac_cooling': { y: 541.2, cols: LEFT_COLS },
+                // Under Hood
+                'eng_oil': { y: 436.6, cols: LEFT_COLS },
+                'air_filter': { y: 417.5, cols: LEFT_COLS },
+                'coolant': { y: 402.3, cols: LEFT_COLS },
+                'hydraulic_clutch': { y: 387.5, cols: LEFT_COLS },
+                // Under Vehicle
+                'brk_fluid': { y: 358.1, cols: LEFT_COLS },
+                'suspension': { y: 338.9, cols: LEFT_COLS },
+                'exhaust': { y: 320.0, cols: LEFT_COLS },
+                'fluid_leaks': { y: 305.2, cols: LEFT_COLS },
+                'drive_shaft': { y: 290.8, cols: LEFT_COLS },
+                // Tire Condition
+                'tire_fl': { y: 627.3, cols: TIRE_L_COLS },
+                'tire_fr': { y: 627.3, cols: TIRE_R_COLS },
+                'tire_rl': { y: 583.6, cols: TIRE_L_COLS },
+                'tire_rr': { y: 583.6, cols: TIRE_R_COLS },
+                'spare_tire': { y: 539.9, cols: TIRE_L_COLS }
             };
 
-            const leftX_Good = 241;
-            const leftX_Attn = 254;
-            const leftX_Defect = 267;
+            const statusIndex = (status) => {
+                const s = String(status || 'Good').toLowerCase();
+                if (s === 'n/a' || s === 'na') return -1;
+                if (s === 'attention' || s === 'attn') return 1;
+                if (s === 'defect') return 2;
+                return 0;
+            };
 
             (window.checklistInspectionPoints || []).forEach(pt => {
+                const idx = statusIndex(pt.status);
+                if (idx < 0) return;
+
+                if (pt.id === 'battery') {
+                    // Battery Performance: Good box (y 492.1-506.3) or Replace box (y 477.2-491.4), column x 174.7-220.4
+                    drawCheckmark(197.5, idx === 0 ? 499.2 : 484.3);
+                    return;
+                }
+
+                if (pt.id === 'brakes_pads') {
+                    if (window.checklistBrakesNotInspected) return;
+                    // Brake Condition: all four wheels (front row y 470.6-485.6, rear row y 441.3-455.4)
+                    [478.1, 448.4].forEach(by => {
+                        drawCheckmark(TIRE_L_COLS[idx], by);
+                        drawCheckmark(TIRE_R_COLS[idx], by);
+                    });
+                    return;
+                }
+
                 const pos = checkpointPositions[pt.id];
-                if (!pos) return;
-
-                const status = (pt.status || 'Good').toLowerCase();
-                let x = leftX_Good;
-                if (pos.col === 'left') {
-                    if (status === 'attention' || status === 'attn') x = leftX_Attn;
-                    else if (status === 'defect') x = leftX_Defect;
-                } else {
-                    if (status === 'attention' || status === 'attn') x = pos.xA;
-                    else if (status === 'defect') x = pos.xR;
-                    else x = pos.xG;
-                }
-
-                if (status === 'attention' || status === 'attn') {
-                    drawAlert(x, pos.y);
-                } else if (status === 'defect') {
-                    drawCross(x, pos.y);
-                } else {
-                    drawCheckmark(x, pos.y);
-                }
+                if (pos) drawCheckmark(pos.cols[idx], pos.y);
             });
 
-            // Comments / Remarks
+            // "Brakes not inspected on this visit" checkbox (x 425.6-435.3, y 428.2-438.0)
+            if (window.checklistBrakesNotInspected) drawCheckmark(430.5, 433.1);
+
+            // Comments: word-wrap onto the 5 ruled lines (rule tops 237.8 / 222.0 / 206.2 / 190.4 / 174.8, x 34.6-290.8)
             if (remarks) {
-                page.drawText(remarks, { x: 55, y: 175, size: 7, font: fontNorm, maxWidth: 200, lineHeight: 9 });
+                const commentSize = 7;
+                const commentWidth = 248;
+                const lines = [];
+                String(remarks).split(/\r?\n/).forEach(para => {
+                    let line = '';
+                    para.split(/\s+/).filter(Boolean).forEach(word => {
+                        const test = line ? line + ' ' + word : word;
+                        if (fontNorm.widthOfTextAtSize(test, commentSize) > commentWidth && line) {
+                            lines.push(line);
+                            line = word;
+                        } else {
+                            line = test;
+                        }
+                    });
+                    lines.push(line);
+                });
+                [239.6, 223.8, 208.0, 192.2, 176.6].forEach((baseY, i) => {
+                    if (lines[i]) drawTextFit(lines[i], 38, baseY, commentWidth, commentSize, false, darkInk, 5.0);
+                });
             }
 
-            // Technician and Customer Signature
-            drawTextFit(sa, 150, 55.8, 140, 7.5, true);
-            drawTextFit(name, 410, 55.8, 140, 7.5, true);
+            // TECHNICIAN NAME: centered on its underline x 114.2-245.9 (top edge y 112.5)
+            drawTextCenterFit(sa, 180.05, 114.4, 125, 7.5, false, darkInk);
+
+            // CUSTOMER SIGNATURE: mask "0" (x 434.0-438.2), center name on underline x 308.1-563.2
+            whiteout(433.4, 112.6, 5.4, 12.2);
+            drawTextCenterFit(name, 435.65, 114.4, 240, 7.5, false, darkInk);
 
             return await doc.save();
         }

@@ -1,3 +1,35 @@
+## 📅 September 25, 2026 (Checklist Result Status-Box Grid, Header & Signature Alignment)
+
+### 📋 Checklist Result Measured Status-Box Grid, Header Ghost Masking, Comments & Signatures (REV-160)
+* **Objective & Context**: In direct response to the user's screenshot of the Checklist Result PDF showing that status marks were "not properly saved on the boxes":
+  1. Green checkmarks landed between rows and outside the green / yellow / red status boxes (e.g. under Headlights, Interior light, Windshield, and on Tire / Brake rows).
+  2. Several inspection points (Interior light, Parking brake, Horn, Clutch, Air filter, Hydraulic clutch, Fluid leaks, Drive shaft) had no position at all and were never stamped.
+  3. Caret-like artifacts appeared before Customer Name, Plate Number, Vehicle Year Model and Date values, and the Date overlapped its underline.
+  4. Green checkmarks were invisible on green boxes; Comments and the Technician / Customer signatures were drawn far below their template fields (Y = 175 and Y = 55.8).
+* **Vector Measurement & Root Cause Analysis** (pdfplumber on `Current_2025 BLANK RO UPDATED.xlsx - CheckList_Result.pdf`, 595x842pt):
+  - Status column centers: left tables G/Y/R = X 253.1 / 267.8 / 282.9; tire & brake left boxes = X 315.0 / 329.3 / 343.55; right boxes = X 524.5 / 539.35 / 554.9.
+  - Row centers taken as midpoints between the measured row border lines (e.g. Headlights 644.4, Interior light 624.7, ... Drive shaft 290.8; tires 627.3 / 583.6 / 539.9; brakes 478.1 / 448.4; battery Good 499.2 / Replace 484.3).
+  - The old header whiteouts (height 10 from y 734.5) stopped below the tops of the template's `0` placeholders (top 745.6), leaving the caret artifacts.
+* **Core Changes Made**:
+  - `frontend/js/app.js`: Rebuilt `compileChecklistPDFBytes()` placement:
+    - Header values at X = 117 on the underlines (7.5pt, plate bold), `0` placeholders fully masked (x 115.2, height 12.2) above each underline; Date centered at X = 516.6 on its underline with its `0` masked.
+    - Fuel level: ellipse ring centered on the selected label inside its measured cell (E 447.05, 1/4 472.85, 1/2 498.6, 3/4 524.3, F 550.25).
+    - All 23 inspection points mapped to their template rows; a dark checkmark is centered in the Satisfactory / Future Attention / Immediate Attention box matching the status (N/A leaves the row blank). Battery maps to the Good / Replace box; Brake Pads stamp all four wheel boxes, or the "Brakes not inspected on this visit" checkbox when that option is set.
+    - Comments word-wrap onto the five ruled lines (baselines 239.6 .. 176.6, max width 248pt).
+    - Technician name centered on its underline (X = 180.05, Y = 114.4); customer name centered on the Customer Signature line (X = 435.65, Y = 114.4) with its `0` placeholder masked.
+    - Removed the unused green / amber / red ink helpers.
+  - `frontend/index.html`: Incremented cache buster to v=3.13.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-119 asserting the measured grid, header masking, row coverage for all points, comments and signatures; updated AUT-FRONT-94 and AUT-FRONT-107 checklist assertions; added v=3.13 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-36 test row (workbook ranges extended to row 162).
+  - `Revisions checklist.csv`: Appended REV-160 row.
+* **Automated & Manual QA Verification**:
+  - 148/148 automated unit tests passing across 63 test suites (`npm test`).
+  - Rendered the compiled Checklist PDF at 200 dpi with a Good / Attention / Defect rotation across all 23 points, plus Fuel E and F and "Brakes not inspected" variants, and confirmed every mark is centered in the correct colored box with no header artifacts.
+* **Cache Busting**: `js/app.js?v=3.13`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Billing Form 3/3 Service Advisor Signature Alignment)
 
 ### 📋 Billing Form 3/3 Service Advisor Signature Alignment (REV-159)
