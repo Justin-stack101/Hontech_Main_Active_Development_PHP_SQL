@@ -23,7 +23,7 @@
   - 158/158 automated unit tests passing across 63 test suites (`npm test`).
   - End-to-end parity run (both scenarios): every Quotation and Billing item row (LABOR / PARTS / MATERIALS / AMOUNT), LABOR, VAT 12%, MATERIALS, PARTS, TOTAL, Billing "amount of", Job Order parts / materials subtotals and TOTAL match between the printed PDF and the LibreOffice-recalculated workbook; header cells after recalculation equal the values each PDF prints (Job Order, Quotation and Billing numbers read from the drawn PDF text). On-screen totals equal the PDF and Excel totals.
 * **Cache Busting**: `js/app.js?v=3.23`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `755e226`.
 
 ---
 
