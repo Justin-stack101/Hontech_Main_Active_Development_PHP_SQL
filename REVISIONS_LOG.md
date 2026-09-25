@@ -14,7 +14,7 @@
   - 173 automated unit tests passing (`npm test`).
   - Real-time headless Chrome on the live XAMPP URL `.../frontend/tv.html`: API base resolved to the project folder, PIN accepted, active TV screen shown with 39 live jobs, local Tailwind and Lucide loaded; screenshot checked.
 * **Cache Busting**: `js/app.js?v=3.38`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `6364f24` pushed to `origin/prototype_process`.
 
 ---
 
