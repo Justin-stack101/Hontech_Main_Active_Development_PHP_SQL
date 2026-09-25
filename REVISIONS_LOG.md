@@ -15,7 +15,7 @@
   - 151/151 automated unit tests passing across 63 test suites (`npm test`).
   - Rendered the real editor markup and rendering code in headless Chrome at desktop (820px) and phone (390px) widths: neutral styling, selected statuses and fuel level highlighted, no horizontal overflow.
 * **Cache Busting**: `js/app.js?v=3.16`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: `da403bb`.
 
 ---
 
