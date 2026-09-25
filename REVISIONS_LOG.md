@@ -1,3 +1,22 @@
+## 📅 September 25, 2026 (Neutral Full PDF Viewer Headers)
+
+### 🎨 RO Excel Studio: Professional Full PDF Viewer Headers (REV-181)
+* **Objective & Context**: The user found the header of the Full PDF viewer (e.g. "FORM 1/3 JOB ORDER DOCUMENT") too colorful and asked for a professional design.
+* **Root Cause**: The four enlarge modals kept the old dark slate header with a colored icon tile (red / blue / purple / amber), colored document-number pills, a pulsing green "Full Scale High-Def" pill, marketing subtitles and colored print buttons.
+* **Core Changes Made**:
+  - `frontend/index.html`: The Job Order, Quotation, Billing and Checklist Full PDF viewers share one neutral header matching the studio PDF toolbar: white bar with a gray divider, "Form 1/3 · Job Order" style title, neutral gray-bordered document number (same ids, still filled by JS), "<Sheet> · Official PDF view" subtitle, white bordered New Tab / Download PDF / Print buttons (same actions) and a gray close button. The overlay is a lighter gray, the body is light gray with a bordered white document frame.
+  - `frontend/index.html`: Incremented cache buster to v=3.34.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-140; added v=3.34 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-57 test row.
+  - `Revisions checklist.csv`: Appended REV-181 row.
+* **Automated & Manual QA Verification**:
+  - 169 automated unit tests passing (`npm test`).
+  - Headless Chrome render of all four modal headers from the real markup: neutral, consistent, all buttons present.
+* **Cache Busting**: `js/app.js?v=3.34`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Bigger PDF in Maximized Studio View)
 
 ### 🖥️ RO Excel Studio: Maximized PDF Fills the Pane Width (REV-180)
