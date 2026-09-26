@@ -15,7 +15,7 @@
   - Live 11/11 (XAMPP + headless Chrome, temporary job removed afterwards): backend normalizer; saving "PMS & GRS Lane" through PATCH /jobs/{id}/field keeps it and the TV feed carries it; all three dropdowns and the Daily Intakes table list exactly the four lanes; Express 1h30 and 2h00 on time, 2h10 late; no 60-minute Express text or Special / Regular options on the page; TV slide 3 columns and the PMS & GRS vehicle in its column. Regression: TV flow 9/9, responsive 22/22, auto-scroll 13/13 (tests now wait for the TV keypad script before typing the PIN).
   - Existing data: 8 Special Lane records now read as Flexible Lane.
 * **Cache Busting**: `js/app.js?v=3.54`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `3aecfad` pushed to `origin/prototype_process`.
 
 ---
 
