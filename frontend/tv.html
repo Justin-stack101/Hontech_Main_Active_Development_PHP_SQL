@@ -356,7 +356,7 @@
                         <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse shrink-0"></span>
-                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Express (PMS ≤ 60m)</h3>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Express (≤ 2 Hours)</h3>
                             </div>
                             <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-red-600 text-white shrink-0 ml-1.5" id="tv-express-lane-count">0</span>
                         </div>
@@ -367,18 +367,18 @@
                         <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
-                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Flexible Lane (GRS)</h3>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Flexible Lane</h3>
                             </div>
                             <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-flexible-lane-count">0</span>
                         </div>
                         <div class="tv-scroll p-3 bg-white flex-1 min-h-0 custom-scroll space-y-2.5" id="tv-flexible-lane-list"></div>
                     </div>
-                    <!-- Special Lane Column -->
+                    <!-- PMS & GRS Lane Column (REV-201: replaces the retired Special Lane) -->
                     <div class="bg-white rounded-2xl border-2 border-gray-900 overflow-hidden flex flex-col shadow-sm min-h-0">
                         <div class="bg-gray-950 py-3 px-3.5 text-center border-b border-gray-800 shrink-0 flex items-center justify-between">
                             <div class="flex items-center gap-2 min-w-0">
                                 <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span>
-                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">Specialty (Heavy Work)</h3>
+                                <h3 class="text-xs sm:text-sm lg:text-base font-black uppercase tracking-wider text-white truncate">PMS &amp; GRS Lane</h3>
                             </div>
                             <span class="text-xs font-black px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-200 border border-gray-700 shrink-0 ml-1.5" id="tv-special-lane-count">0</span>
                         </div>
@@ -1133,10 +1133,11 @@
                 `;
             };
 
+            // REV-201: lanes arrive normalized from the server (Flexible, Express Lane, PMS & GRS Lane, Priority Lane)
             const expressLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane');
-            const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Special' || j.laneType === 'Specialty' || j.laneType === 'Special Lane');
+            const specialLaneJobs = activeLaneJobs.filter(j => j.laneType === 'PMS & GRS Lane');
             const priorityLaneJobs = activeLaneJobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane');
-            const flexibleLaneJobs = activeLaneJobs.filter(j => !['Express', 'Express Lane', 'Special', 'Specialty', 'Special Lane', 'Priority', 'Priority Lane'].includes(j.laneType));
+            const flexibleLaneJobs = activeLaneJobs.filter(j => !['Express', 'Express Lane', 'PMS & GRS Lane', 'Priority', 'Priority Lane'].includes(j.laneType));
 
             const expressCount = document.getElementById('tv-express-lane-count');
             if (expressCount) expressCount.innerText = expressLaneJobs.length;

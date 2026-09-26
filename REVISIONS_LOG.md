@@ -1,3 +1,24 @@
+## 📅 September 26, 2026 (Four Lanes & 2-Hour Express Limit)
+
+### 🛣️ Lanes: Flexible, Express (2 Hours), PMS & GRS, Priority (REV-201)
+* **Objective & Context**: The user asked to limit the lane list to Flexible, Express (2 hours), PMS & GRS and Priority, and to make the Express limit 2 hours in all text on the system. Review found six lanes in the Studio (incl. Regular and Special), four in the intake forms (incl. Special), three in the Daily Intakes online table (incl. Regular), "PMS & GRS Lane" silently converted to Flexible Lane by both normalizers, and the Express SLA enforced as 60 minutes in three code paths plus analytics and help text ("≤ 60m").
+* **Core Changes Made**:
+  - `frontend/index.html`: Studio lane select and the walk-in / booking intake selects now list Flexible Lane, Express Lane (2 Hours), PMS & GRS Lane, Priority Lane; Express analytics and help texts changed from 60 minutes to 2 hours.
+  - `frontend/js/app.js` / `backend/controllers/JobController.php`: `normalizeLaneType` keeps PMS & GRS Lane as its own lane; retired Special / Regular (and unknown) lanes read as Flexible Lane, so existing records display correctly without a database change. `getAvailableLanesForJob` and the online-table lane select use the four lanes. New `EXPRESS_LANE_SLA_MINUTES = 120` used by the goal status, the Daily Intakes SLA badge and the delay report. Lane share chart: Flexible, Express (2 Hours), PMS & GRS, Priority.
+  - `frontend/tv.html`: slide 3 columns Express (≤ 2 Hours) | Flexible Lane | PMS & GRS Lane | Priority (the Specialty column is now PMS & GRS).
+  - `frontend/index.html`: Incremented cache buster to v=3.54.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-160; added v=3.54 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-77 test row.
+  - `Revisions checklist.csv`: Appended REV-201 row.
+* **Automated & Manual QA Verification**:
+  - 189 automated unit tests passing (`npm test`).
+  - Live 11/11 (XAMPP + headless Chrome, temporary job removed afterwards): backend normalizer; saving "PMS & GRS Lane" through PATCH /jobs/{id}/field keeps it and the TV feed carries it; all three dropdowns and the Daily Intakes table list exactly the four lanes; Express 1h30 and 2h00 on time, 2h10 late; no 60-minute Express text or Special / Regular options on the page; TV slide 3 columns and the PMS & GRS vehicle in its column. Regression: TV flow 9/9, responsive 22/22, auto-scroll 13/13 (tests now wait for the TV keypad script before typing the PIN).
+  - Existing data: 8 Special Lane records now read as Flexible Lane.
+* **Cache Busting**: `js/app.js?v=3.54`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 25, 2026 (Job Order: Parts & Materials Editor Removed)
 
 ### 🧰 Job Order Tab: Parts & Materials Tables Removed (Not SA-Controlled) (REV-200)

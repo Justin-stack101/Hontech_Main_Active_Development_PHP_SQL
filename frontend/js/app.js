@@ -2681,19 +2681,20 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         function normalizeLaneType(lane) {
             if (!lane) return 'Flexible Lane';
             const str = String(lane).trim().toLowerCase();
+            // REV-201: four lanes - Flexible, Express (2 hours), PMS & GRS, Priority.
+            // Retired Special / Regular lanes (and anything unknown) read as Flexible Lane.
             if (str.includes('express')) return 'Express Lane';
-            if (str.includes('special')) return 'Special Lane';
             if (str.includes('priority')) return 'Priority Lane';
-            if (str.includes('flex') || str.includes('ordinary') || str.includes('pms & grs') || str.includes('standard')) return 'Flexible Lane';
+            if (str.includes('pms') || str.includes('grs')) return 'PMS & GRS Lane';
             return 'Flexible Lane';
         }
         window.normalizeLaneType = normalizeLaneType;
 
         function getAvailableLanesForJob(category) {
             return [
-                { value: 'Express Lane', label: 'Express Lane' },
                 { value: 'Flexible Lane', label: 'Flexible Lane' },
-                { value: 'Special Lane', label: 'Special Lane' },
+                { value: 'Express Lane', label: 'Express Lane (2 Hours)' },
+                { value: 'PMS & GRS Lane', label: 'PMS & GRS Lane' },
                 { value: 'Priority Lane', label: 'Priority Lane' }
             ];
         }
@@ -3894,6 +3895,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.loadOnlineBookingToForm13 = loadOnlineBookingToForm13;
 
+        const EXPRESS_LANE_SLA_MINUTES = 120; // REV-201: the Express Lane limit is 2 hours
+
         function calculateGoalStatusForJob(job) {
             const isPMS = job.category && job.category.toUpperCase().includes('PMS');
             const isExpress = job.laneType && (job.laneType === 'Express' || job.laneType === 'Express Lane');
@@ -3907,8 +3910,8 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 let diff = depMin - arrMin;
                 if (diff < 0) diff += 24 * 60;
                 
-                // Express Lane turnaround SLA: <= 60 mins; Standard PMS SLA: <= 120 mins
-                const maxAllowedMinutes = isExpress ? 60 : 120;
+                // Express Lane and Standard PMS turnaround SLA: <= 120 mins (2 hours) (REV-201)
+                const maxAllowedMinutes = EXPRESS_LANE_SLA_MINUTES;
                 return diff <= maxAllowedMinutes ? 'Successful' : 'Failed';
             } catch (e) {
                 return 'N/A';
@@ -4017,9 +4020,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                 </span>
                             ` : `
                                 <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-semibold py-1.5 px-3 rounded-lg border border-slate-200 bg-white cursor-pointer shadow-2xs w-full min-w-[140px]">
-                                    <option value="Flexible Lane" ${curLane === 'Flexible Lane' ? 'selected' : ''}>Flexible Lane</option>
-                                    <option value="Express Lane" ${curLane === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                    <option value="Regular Lane" ${curLane === 'Regular Lane' ? 'selected' : ''}>Regular Lane</option>
+                                    ${getAvailableLanesForJob().map(o => `<option value="${o.value}" ${normalizeLaneType(curLane) === o.value ? 'selected' : ''}>${o.label}</option>`).join('')}
                                 </select>
                             `}
                         </td>
@@ -4426,7 +4427,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             ${showGoal ? (() => {
                                 const isExpress = (job.laneType && job.laneType.toLowerCase().includes('express')) || (job.category && job.category.toUpperCase().includes('EXPRESS'));
                                 const isPMS = job.category && job.category.toUpperCase().includes('PMS');
-                                const maxAllowedSLA = isExpress ? 60 : 120; // 60 mins for Express, 120 mins (2 Hours) for Standard PMS
+                                const maxAllowedSLA = EXPRESS_LANE_SLA_MINUTES; // REV-201: 2 hours for Express and Standard PMS
                                 
                                 const isDone = job.status === 'Completed' || job.status === 'Released';
                                 const reportedIssue = (window.reportedExpressIssues && (window.reportedExpressIssues[job.id] || window.reportedExpressIssues[job.job_id] || window.reportedExpressIssues[job.plate])) || null;
@@ -6156,7 +6157,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 }
 
                 const isExpressLane = (j.laneType && j.laneType.toLowerCase().includes('express')) || (j.category && j.category.toUpperCase().includes('EXPRESS'));
-                const maxAllowedSLA = isExpressLane ? 60 : 120; // 60 mins for Express, 120 mins (2 Hours) for Standard PMS
+                const maxAllowedSLA = EXPRESS_LANE_SLA_MINUTES; // REV-201: 2 hours for Express and Standard PMS
                 const isOverrun = duration > maxAllowedSLA || j.status === 'Delayed' || j.goalRemarks === 'Failed' || (j.remarks && j.remarks.toLowerCase().includes('delay')) || (j.evaluation && j.evaluation.toLowerCase().includes('delay'));
 
                 if (isOverrun) {
@@ -7004,18 +7005,18 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             });
 
             // --- 5. LANE SHARE ---
-            const flexLane = jobs.filter(j => j.laneType === 'Flexible' || j.laneType === 'Flexible Lane' || !j.laneType).length;
+            const flexLane = jobs.filter(j => normalizeLaneType(j.laneType) === 'Flexible Lane').length;
             const expressLane = jobs.filter(j => j.laneType === 'Express' || j.laneType === 'Express Lane').length;
-            const specialLane = jobs.filter(j => j.laneType === 'Special' || j.laneType === 'Special Lane').length;
+            const pmsGrsLane = jobs.filter(j => normalizeLaneType(j.laneType) === 'PMS & GRS Lane').length;
             const priorityLane = jobs.filter(j => j.laneType === 'Priority' || j.laneType === 'Priority Lane').length;
 
             const ctxLane = document.getElementById('chart-lane-share').getContext('2d');
             chartInstances.laneShare = new Chart(ctxLane, {
                 type: 'pie',
                 data: {
-                    labels: ['Flexible Lane', 'Express Lane', 'Special Lane', 'Priority Lane'],
+                    labels: ['Flexible Lane', 'Express Lane (2 Hours)', 'PMS & GRS Lane', 'Priority Lane'],
                     datasets: [{
-                        data: [flexLane, expressLane, specialLane, priorityLane],
+                        data: [flexLane, expressLane, pmsGrsLane, priorityLane],
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.85)',
                             'rgba(16, 185, 129, 0.85)',

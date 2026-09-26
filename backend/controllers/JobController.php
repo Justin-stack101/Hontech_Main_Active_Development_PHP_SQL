@@ -89,10 +89,11 @@ class JobController
     {
         if (empty($lane)) return 'Flexible Lane';
         $l = strtolower(trim($lane));
+        // REV-201: four lanes - Flexible, Express (2 hours), PMS & GRS, Priority.
+        // Retired Special / Regular lanes (and anything unknown) read as Flexible Lane.
         if (str_contains($l, 'express')) return 'Express Lane';
-        if (str_contains($l, 'special')) return 'Special Lane';
         if (str_contains($l, 'priority')) return 'Priority Lane';
-        if (str_contains($l, 'flex') || str_contains($l, 'ordinary') || str_contains($l, 'standard') || str_contains($l, 'pms & grs')) return 'Flexible Lane';
+        if (str_contains($l, 'pms') || str_contains($l, 'grs')) return 'PMS & GRS Lane';
         return 'Flexible Lane';
     }
 

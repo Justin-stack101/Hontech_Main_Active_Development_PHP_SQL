@@ -1569,7 +1569,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-xs md:text-sm font-black uppercase tracking-wider text-gray-900">Express Lane Performance & Delay Root Causes</h4>
-                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 60 mins) & Categorized Reasons for Unsuccessful Services</p>
+                                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Turnaround Target (≤ 2 hours) & Categorized Reasons for Unsuccessful Services</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
@@ -1585,18 +1585,18 @@
                                     <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">Express Turnaround Target</span>
                                     <div class="flex items-baseline gap-2 mt-1">
                                         <span id="insight-express-success-rate" class="text-3xl font-black text-gray-900">0%</span>
-                                        <span class="text-xs font-bold text-gray-500 uppercase">Target Met (≤ 60m)</span>
+                                        <span class="text-xs font-bold text-gray-500 uppercase">Target Met (≤ 2 hrs)</span>
                                     </div>
                                     <div class="w-full bg-gray-200 h-2 rounded-full mt-2.5 overflow-hidden">
                                         <div id="insight-express-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 <div class="pt-3 border-t border-gray-200 text-[11px] font-bold text-gray-700 flex justify-between">
-                                    <span>Successful (≤ 60m): <strong id="insight-express-os" class="text-emerald-700 font-black">0</strong></span>
-                                    <span>Unsuccessful (> 60m): <strong id="insight-express-of" class="text-rose-700 font-black">0</strong></span>
+                                    <span>Successful (≤ 2 hrs): <strong id="insight-express-os" class="text-emerald-700 font-black">0</strong></span>
+                                    <span>Unsuccessful (> 2 hrs): <strong id="insight-express-of" class="text-rose-700 font-black">0</strong></span>
                                 </div>
                                 <p class="text-[10px] text-gray-400 font-medium leading-relaxed">
-                                    Vehicles on the Express Lane exceeding 60 minutes are marked Unsuccessful with logged operational reasons.
+                                    Vehicles on the Express Lane exceeding 2 hours are marked Unsuccessful with logged operational reasons.
                                 </p>
                             </div>
 
@@ -3705,11 +3705,9 @@
                                         </label>
                                         <select id="f13-input-lane-type" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
                                             <option value="Flexible Lane" selected>Flexible Lane</option>
-                                            <option value="Express Lane">Express Lane (60m SLA)</option>
-                                            <option value="PMS & GRS Lane">PMS & GRS Lane</option>
-                                            <option value="Regular Lane">Regular Lane</option>
+                                            <option value="Express Lane">Express Lane (2 Hours)</option>
+                                            <option value="PMS & GRS Lane">PMS &amp; GRS Lane</option>
                                             <option value="Priority Lane">Priority Lane</option>
-                                            <option value="Special Lane">Special Lane</option>
                                         </select>
                                     </div>
 
@@ -4074,9 +4072,9 @@
                                 <div id="div-walkin-lane-wrap" class="relative">
                                     <select id="intake-walkin-lane-type"
                                         class="w-full bg-white border border-gray-200 focus:border-red-600 focus:ring-1 focus:ring-red-500 rounded-xl px-3 py-2.5 outline-none font-bold text-xs text-gray-900 transition cursor-pointer appearance-none">
-                                        <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
-                                        <option value="Special Lane">Special Lane</option>
+                                        <option value="Express Lane">Express Lane (2 Hours)</option>
+                                        <option value="PMS & GRS Lane">PMS &amp; GRS Lane</option>
                                         <option value="Priority Lane">Priority Lane</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-3"></i>
@@ -4085,9 +4083,9 @@
                                 <div id="div-booking-lane-wrap" class="relative hidden">
                                     <select id="intake-lane-type"
                                         class="w-full bg-white border border-gray-200 focus:border-red-600 focus:ring-1 focus:ring-red-500 rounded-xl px-3 py-2.5 outline-none font-bold text-xs text-gray-900 transition cursor-pointer appearance-none">
-                                        <option value="Express Lane">Express Lane</option>
                                         <option value="Flexible Lane" selected>Flexible Lane</option>
-                                        <option value="Special Lane">Special Lane</option>
+                                        <option value="Express Lane">Express Lane (2 Hours)</option>
+                                        <option value="PMS & GRS Lane">PMS &amp; GRS Lane</option>
                                         <option value="Priority Lane">Priority Lane</option>
                                     </select>
                                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400 pointer-events-none absolute right-3 top-3"></i>
@@ -6117,7 +6115,7 @@
                         <div class="border border-gray-200 p-3.5 rounded-xl space-y-1.5 bg-white">
                             <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">Performance</span>
                             <h5 class="font-bold text-gray-900">Turnaround SLA</h5>
-                            <p class="text-[11px] text-gray-500 leading-relaxed">Track quick-service turnaround against the 60-minute benchmark.</p>
+                            <p class="text-[11px] text-gray-500 leading-relaxed">Track quick-service turnaround against the 2-hour Express Lane limit.</p>
                         </div>
                         <div class="border border-gray-200 p-3.5 rounded-xl space-y-1.5 bg-white">
                             <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">Analytics</span>
@@ -6162,7 +6160,7 @@
                     <div class="border border-gray-200 rounded-xl p-4 space-y-1 bg-white">
                         <div class="flex items-center justify-between">
                             <h5 class="font-bold text-gray-900">4. Express Lane & Delay Intelligence</h5>
-                            <span class="text-[10px] text-gray-500 font-medium">SLA (≤60m) Tracking</span>
+                            <span class="text-[10px] text-gray-500 font-medium">SLA (≤ 2 hrs) Tracking</span>
                         </div>
                         <p class="text-[11px] text-gray-600 leading-relaxed">
                             Evaluates turnaround duration distributions, ranks delay root causes, breaks down category SLAs, and provides an audit log for delayed services.
@@ -6185,11 +6183,11 @@
                                 <tr>
                                     <td class="px-4 py-2.5 font-bold text-gray-900">Turnaround Duration</td>
                                     <td class="px-4 py-2.5 text-gray-600">Departure Time − Arrival Time</td>
-                                    <td class="px-4 py-2.5 text-right text-gray-600">≤ 60 mins (Express)</td>
+                                    <td class="px-4 py-2.5 text-right text-gray-600">≤ 2 hours (Express)</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2.5 font-bold text-gray-900">SLA Compliance Rate</td>
-                                    <td class="px-4 py-2.5 text-gray-600">(On-time Jobs ≤ 60m ÷ Total Express Jobs) × 100</td>
+                                    <td class="px-4 py-2.5 text-gray-600">(On-time Jobs ≤ 2 hrs ÷ Total Express Jobs) × 100</td>
                                     <td class="px-4 py-2.5 text-right font-bold text-emerald-600">≥ 90%</td>
                                 </tr>
                                 <tr>
@@ -7449,7 +7447,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.53"></script>
+    <script src="js/app.js?v=3.54"></script>
 </body>
 
 </html>
