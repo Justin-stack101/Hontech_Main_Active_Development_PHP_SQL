@@ -2743,7 +2743,7 @@
                             </div>
 
                             <!-- Timing & Job Header Fields -->
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
                                 <div>
                                     <label class="block text-[11px] font-medium text-gray-500 mb-1">Job Order No.</label>
                                     <input type="text" id="f13-input-job-no" placeholder="e.g. HT-JO-0001" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono">
@@ -2756,7 +2756,8 @@
                                     <label class="block text-[11px] font-medium text-gray-500 mb-1">Promise Date</label>
                                     <input type="date" id="f13-input-promise-date" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                 </div>
-                                <div>
+                                <!-- REV-202: Service Category is chosen on Workshop_Monitoring; hidden here, still used by the PDF / Excel / register -->
+                                <div class="hidden" aria-hidden="true">
                                     <label class="block text-[11px] font-medium text-gray-500 mb-1">Service Category</label>
                                     <select id="f13-input-category" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2">
                                         <option value="PMS">PMS (Periodic)</option>
@@ -3711,16 +3712,7 @@
                                         </select>
                                     </div>
 
-                                    <!-- Row 7: Carry-Over (C.O.) & automatic branch note -->
-                                    <div>
-                                        <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Carry-Over (C.O.)
-                                        </label>
-                                        <select id="f13-input-carry-over" class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 cursor-pointer">
-                                            <option value="No" selected>No (Standard Same-Day Job)</option>
-                                            <option value="Yes">Yes (Overnight Carry-Over)</option>
-                                        </select>
-                                    </div>
+                                    <!-- Row 7: automatic branch note (REV-202: no carry-over choice at intake - carry-over is set later from Daily Intakes) -->
                                     <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-md text-[11px] text-slate-500 mt-auto">
                                         <i data-lucide="shield-check" class="w-4 h-4 text-gray-400 shrink-0"></i>
                                         <span>Branch (<span id="mon-auto-branch" class="font-medium text-slate-700">Marikina Branch</span>) is taken from your account when you register.</span>
@@ -3804,10 +3796,6 @@
                                 <div class="flex items-center justify-between gap-3 py-2">
                                     <dt class="text-gray-500">Lane</dt>
                                     <dd id="mon-sum-lane" class="text-right font-medium text-gray-900 truncate">—</dd>
-                                </div>
-                                <div class="flex items-center justify-between gap-3 py-2">
-                                    <dt class="text-gray-500">Carry-Over</dt>
-                                    <dd id="mon-sum-carry-over" class="text-right font-medium text-gray-900 truncate">—</dd>
                                 </div>
                                 </dl>
                                 <p id="mon-sum-missing" class="mt-3 text-[11px] text-gray-500">Plate Number and Customer Name are required before registering.</p>
@@ -7447,7 +7435,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.54"></script>
+    <script src="js/app.js?v=3.55"></script>
 </body>
 
 </html>

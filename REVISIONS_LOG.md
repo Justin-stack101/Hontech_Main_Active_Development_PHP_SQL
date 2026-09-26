@@ -1,3 +1,22 @@
+## 📅 September 26, 2026 (Registered ROs No Longer Marked Carry-Over)
+
+### 🧾 Registered ROs Are Same-Day Jobs; C.O. Field and Job Order Category Removed (REV-202)
+* **Objective & Context**: The user reported that an RO sent to Daily Intakes was shown as carry-over and suspected the Carry-Over (C.O.) field, and asked to remove it and the Service Category from the Job_Order tab. Review: the backend ignored the C.O. value; the real cause was Daily Intakes showing the orange "Carry-Over" tag (and counting the vehicle as carry-over) for any job with a promise date, while the Studio fills the Promise Date (today by default), so every registered RO looked like a carry-over. Service Category is already chosen on the Workshop_Monitoring tab (synced into the Job Order).
+* **Core Changes Made**:
+  - `frontend/js/app.js`: a vehicle is carry-over only by status Carry Over or a carry-over record (the Carry-Over tag and the tab counts no longer use the promise date; the Carry-Over table already worked this way). The status menu's "Return Carry Over" label also follows the carry-over record instead of the promise date. The C.O. value is no longer read, reset, synced or sent.
+  - `frontend/index.html`: removed the Carry-Over (C.O.) select and its summary row from Workshop_Monitoring; the Job_Order Service Category select is hidden (it keeps the value chosen on Workshop_Monitoring for the PDF, Excel, drafts and registration); the Job_Order header row is now three columns.
+  - `frontend/index.html`: Incremented cache buster to v=3.55.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-161; AUT-FRONT-79, AUT-FRONT-85 and AUT-FRONT-132 updated for the removed C.O. field; added v=3.55 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-78 test row.
+  - `Revisions checklist.csv`: Appended REV-202 row.
+* **Automated & Manual QA Verification**:
+  - 190 automated unit tests passing (`npm test`).
+  - Real-time headless Chrome 5/5 on XAMPP: no C.O. field on Workshop_Monitoring; no Service Category on Job_Order; an RO registered from the Studio (RTZ 2020, category GRS chosen on Workshop_Monitoring, promise date today) was saved as Waiting with no carry-over record, category GRS and the promise date kept, and listed in Daily Intakes without the Carry-Over tag. Test vehicle removed afterwards.
+* **Cache Busting**: `js/app.js?v=3.55`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 26, 2026 (Four Lanes & 2-Hour Express Limit)
 
 ### 🛣️ Lanes: Flexible, Express (2 Hours), PMS & GRS, Priority (REV-201)

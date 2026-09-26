@@ -3984,9 +3984,9 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const tabCountBooking = document.getElementById('queue-tab-count-booking');
             const tabCountCarry = document.getElementById('queue-tab-count-carryover');
             
-            if (tabCountDaily) tabCountDaily.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (!j.promisedDate && !j.carryOverStatus)).length;
+            if (tabCountDaily) tabCountDaily.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (!j.carryOverStatus && j.status !== 'Carry Over')).length;
             if (tabCountBooking) tabCountBooking.innerText = pendingOnline.length;
-            if (tabCountCarry) tabCountCarry.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (j.promisedDate || j.carryOverStatus || j.status === 'Carry Over')).length;
+            if (tabCountCarry) tabCountCarry.innerText = safeJobs.filter(j => j.status !== 'Completed' && j.status !== 'Released' && (j.carryOverStatus || j.status === 'Carry Over')).length;
 
             if (onlineQueueEl) onlineQueueEl.classList.toggle('hidden', !canViewOnline);
             if (dailyIntakesEl) dailyIntakesEl.classList.toggle('hidden', isTech);
@@ -4284,7 +4284,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                             <td class="px-3.5 py-3.5 align-middle">
                                 <div class="flex flex-col gap-0.5">
                                     <span class="inline-flex items-center justify-center w-fit font-mono font-bold text-xs uppercase tracking-wide bg-slate-100 text-slate-900 px-2.5 py-1 rounded-md border border-slate-200 shadow-2xs">${job.plate}</span>
-                                    ${(job.promisedDate || job.carryOverStatus) ? `
+                                    ${(job.carryOverStatus || job.status === 'Carry Over') ? `
                                     <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[8.5px] font-bold uppercase tracking-wider px-1 py-0.2 rounded border border-orange-200">
                                         Carry-Over
                                     </span>
@@ -4542,7 +4542,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                                             title="Change Status">
                                         <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
                                         <option value="Processing" style="background-color: white; color: #374151;" ${isProcessingStatus(job.status) ? 'selected' : ''}>Processing</option>
-                                        <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
+                                        <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${job.carryOverStatus ? 'Return Carry Over' : 'Carry Over'}</option>
                                         <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
                                         <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
                                     </select>
@@ -12910,7 +12910,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
 
             const inputIds = [
                 'f13-input-job-no', 'f13-input-intake-date', 'f13-input-promise-date', 'f13-input-category',
-                'f13-input-source', 'f13-input-lane-type', 'f13-input-carry-over',
+                'f13-input-source', 'f13-input-lane-type',
                 'f13-input-name', 'f13-input-contact', 'f13-input-address', 'f13-input-email',
                 'f13-input-plate', 'f13-input-model', 'f13-input-color', 'f13-input-km',
                 'f13-input-engine', 'f13-input-chassis',
@@ -14346,7 +14346,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             'f13-input-promise-date': { x: '50%', y: '8%', scale: 0.88, sheet: 'form13', label: 'PROMISE DATE' },
             'f13-input-source': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'SOURCE' },
             'f13-input-lane-type': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'LANE TYPE' },
-            'f13-input-carry-over': { x: '50%', y: '12%', scale: 0.88, sheet: 'form13', label: 'CARRY OVER' },
 
             // Customer Details (Upper document area)
             'f13-input-name': { x: '50%', y: '17%', scale: 0.88, sheet: 'form13', label: 'CUSTOMER NAME' },
@@ -14865,7 +14864,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // REV-176: arrival follows the live clock unless the SA set it manually
             const arrivalTime = getMonitoringArrivalTime();
             const referredBy = document.getElementById('mon-input-referred-by')?.value || '';
-            const carryOver = document.getElementById('f13-input-carry-over')?.value || 'No';
 
             // Focus the Workshop_Monitoring copy of Plate / Model when that tab is open
             const focusStudioField = (f13Id, monId) => {
@@ -14927,7 +14925,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                     partsStatus: partsStatus,
                     arrival: arrivalTime,
                     status: floorStatus,
-                    carryOver: carryOver,
                     isBackjob: isBackJobActive ? 1 : 0,
                     parentJobId: parentJobId,
                     backjobReason: backjobReason
@@ -15016,9 +15013,6 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const referredByInput = document.getElementById('mon-input-referred-by');
             if (referredByInput) referredByInput.value = '';
             if (typeof resetMonitoringArrivalToNow === 'function') resetMonitoringArrivalToNow();
-
-            const carryOverInput = document.getElementById('f13-input-carry-over');
-            if (carryOverInput) carryOverInput.value = 'No';
 
             const randSuffix = String(Math.floor(1000 + Math.random() * 9000));
             const jobNoInput = document.getElementById('f13-input-job-no');
@@ -15169,7 +15163,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 'mon-sum-plate': 'f13-input-plate', 'mon-sum-model': 'f13-input-model', 'mon-sum-category': 'f13-input-category',
                 'mon-sum-sa': 'f13-input-sa', 'mon-sum-claim-stub': 'f13-input-claim-stub',
                 'mon-sum-source': 'f13-input-source', 'mon-sum-referred-by': 'mon-input-referred-by',
-                'mon-sum-lane': 'f13-input-lane-type', 'mon-sum-carry-over': 'f13-input-carry-over'
+                'mon-sum-lane': 'f13-input-lane-type'
             };
             Object.entries(rows).forEach(([outId, inId]) => {
                 const out = document.getElementById(outId);
