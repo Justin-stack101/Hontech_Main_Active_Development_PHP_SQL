@@ -13,7 +13,7 @@
   - 190 automated unit tests passing (`npm test`).
   - Real-time headless Chrome 5/5 on XAMPP: no C.O. field on Workshop_Monitoring; no Service Category on Job_Order; an RO registered from the Studio (RTZ 2020, category GRS chosen on Workshop_Monitoring, promise date today) was saved as Waiting with no carry-over record, category GRS and the promise date kept, and listed in Daily Intakes without the Carry-Over tag. Test vehicle removed afterwards.
 * **Cache Busting**: `js/app.js?v=3.55`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `c5de0c6` pushed to `origin/prototype_process`.
 
 ---
 
