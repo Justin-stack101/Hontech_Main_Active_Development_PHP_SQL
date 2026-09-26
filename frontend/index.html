@@ -3667,12 +3667,12 @@
                                     <!-- Row 5: Claim Stub (auto-generated) & Intake Source -->
                                     <div>
                                         <label class="h-5 flex items-center text-[11px] font-medium text-gray-500 mb-1">
-                                            Claim Stub ID <span class="text-red-500 ml-0.5">*</span>
+                                            Claim Stub ID <span class="ml-1 text-[10px] text-gray-400 font-normal">(assigned in order on register)</span>
                                         </label>
                                         <div class="relative">
-                                            <input type="text" id="f13-input-claim-stub" placeholder="e.g. 092026J1" 
-                                                class="w-full bg-white border border-gray-300 rounded-md text-xs text-gray-900 focus:border-gray-900 focus:ring-1 focus:ring-gray-900 outline-none transition px-3 py-2 font-mono uppercase" title="Customer Claim Stub identifier for Floor Queue">
-                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Regenerate Next Sequential Stub">
+                                            <input type="text" id="f13-input-claim-stub" readonly placeholder="e.g. 092026J1"
+                                                class="w-full bg-gray-50 border border-gray-300 rounded-md text-xs text-gray-900 outline-none px-3 py-2 font-mono uppercase cursor-default" title="Next claim stub (MMDDYY + J + customer number for the day). The number is assigned in order when you register.">
+                                            <button type="button" onclick="refreshStudioClaimStub()" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-700 cursor-pointer transition" title="Refresh the next claim stub number">
                                                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
                                             </button>
                                         </div>
@@ -7435,7 +7435,7 @@
 
     <!-- CLIENT SCRIPT LOGIC -->
     <script src="js/vendor/jszip.min.js"></script>
-    <script src="js/app.js?v=3.55"></script>
+    <script src="js/app.js?v=3.56"></script>
 </body>
 
 </html>

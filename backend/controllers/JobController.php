@@ -38,19 +38,57 @@ class JobController
     /**
      * Generate a claim stub number unique to the current date
      */
+    /**
+     * REV-203: claim stubs are assigned by the server only, first come first served:
+     * MMDDYY (Manila date) + "J" + the customer's number for that day (J1, J2, J3 ...).
+     * One counter row per day; the atomic INSERT ... ON DUPLICATE KEY UPDATE with LAST_INSERT_ID
+     * gives every registration its own number even when two SAs register at the same moment.
+     */
+    public static function claimStubDatePrefix(): string
+    {
+        return (new \DateTime('now', new \DateTimeZone('Asia/Manila')))->format('mdy');
+    }
+
+    public static function ensureClaimStubCounterTable(\PDO $db): void
+    {
+        $db->exec("CREATE TABLE IF NOT EXISTS `claim_stub_counters` (
+            `stub_date` CHAR(6) NOT NULL PRIMARY KEY,
+            `last_no`   INT NOT NULL DEFAULT 0,
+            `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    }
+
     private static function generateStubNumber(): string
     {
         $db = Database::getConnection();
+        self::ensureClaimStubCounterTable($db);
+        $datePrefix = self::claimStubDatePrefix();
+        // never below a number already printed today (older stubs, or ones typed in before REV-203)
+        $floor = (new JobRepository($db))->getNextStubCount($datePrefix) + 1;
+        $stmt = $db->prepare('INSERT INTO claim_stub_counters (stub_date, last_no) VALUES (?, LAST_INSERT_ID(?))
+            ON DUPLICATE KEY UPDATE last_no = LAST_INSERT_ID(GREATEST(last_no + 1, ?))');
+        $stmt->execute([$datePrefix, $floor, $floor]);
+        $next = (int)$db->query('SELECT LAST_INSERT_ID()')->fetchColumn();
+        return $datePrefix . 'J' . $next;
+    }
 
-        $mm = date('m');
-        $dd = date('d');
-        $yy = date('y');
-        $datePrefix = "{$mm}{$dd}{$yy}";
+    /** REV-203: the number the next registration will get (preview only, nothing is reserved) */
+    public static function peekNextStubNumber(): string
+    {
+        $db = Database::getConnection();
+        self::ensureClaimStubCounterTable($db);
+        $datePrefix = self::claimStubDatePrefix();
+        $stmt = $db->prepare('SELECT last_no FROM claim_stub_counters WHERE stub_date = ?');
+        $stmt->execute([$datePrefix]);
+        $counter = (int)($stmt->fetchColumn() ?: 0);
+        $used = (new JobRepository($db))->getNextStubCount($datePrefix);
+        return $datePrefix . 'J' . (max($counter, $used) + 1);
+    }
 
-        $repo = new JobRepository($db);
-        $count = $repo->getNextStubCount($datePrefix);
-
-        return $datePrefix . 'J' . ($count + 1);
+    /** GET /jobs/next-claim-stub */
+    public static function nextClaimStub(): void
+    {
+        echo json_encode(['claimStub' => self::peekNextStubNumber()]);
     }
 
     /**
@@ -220,15 +258,13 @@ class JobController
             $jobId    = $customJobId ?: ($prefix . random_int(1000, 9999));
 
             $finalArrival   = $arrival;
-            $claimStub      = !empty($input['claimStub']) ? trim($input['claimStub']) : '';
+            // REV-203: the client's claim stub is only a preview; the server assigns the real one
+            $claimStub      = '';
             $initialStatus  = !empty($input['status']) ? $input['status'] : 'Pending';
 
             if ($isWalkin) {
                 if (empty($finalArrival)) {
                     $finalArrival = date('H:i');
-                }
-                if (empty($claimStub)) {
-                    $claimStub = self::generateStubNumber();
                 }
                 if ($initialStatus === 'Pending') {
                     $initialStatus = 'Waiting';
@@ -258,6 +294,7 @@ class JobController
                 }
 
                 $convertedStatus = ($initialStatus === 'Pending') ? 'Waiting' : $initialStatus;
+                $claimStub = !empty($booking['claim_stub']) ? $booking['claim_stub'] : self::generateStubNumber();
                 $stmt = $db->prepare(
                     'UPDATE jobs SET plate = ?, name = ?, address = ?, contact = ?, vehicle = ?, km_reading = ?,
                         engine_no = ?, color = ?, category = ?, concern = ?, evaluation = ?, lane_type = ?,
@@ -269,7 +306,7 @@ class JobController
                     $plate, $name, $address, $contact, $vehicle, $kmReading,
                     $engineNo, $color, $category, $concern, $evaluation, $laneType,
                     $dateReceived, $promisedDate, $finalArrival ?: date('H:i'),
-                    $claimStub ?: self::generateStubNumber(), $convertedStatus,
+                    $claimStub, $convertedStatus,
                     $customSa ?: ($user['name'] ?? '')
                 ], $hasReferral ? [$referredBy] : [], [$booking['id']]));
 
@@ -285,6 +322,11 @@ class JobController
                 : ($user['branch'] ?: 'Branch A');
 
             $saName = $customSa ?: (($isWalkin && !empty($user['name'])) ? $user['name'] : '');
+
+            // REV-203: every vehicle that enters the floor (not a pending online booking) gets the next number
+            if ($initialStatus !== 'Pending') {
+                $claimStub = self::generateStubNumber();
+            }
 
             $db   = Database::getConnection();
             $hasReferral = self::ensureReferredByColumn($db);
@@ -384,7 +426,7 @@ class JobController
                 'carryOverStatus'    => 'carry_over_status',
                 'saName'             => 'sa_name',
                 'laneType'           => 'lane_type',
-                'claimStub'          => 'claim_stub',
+                // REV-203: 'claimStub' is not editable - assigned once by the server
                 'confirmed'          => 'confirmed',
                 'apptDate'           => 'appt_date',
                 'apptTime'           => 'appt_time',

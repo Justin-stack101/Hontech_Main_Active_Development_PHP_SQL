@@ -311,6 +311,13 @@ if ($method === 'POST' && $route === '/jobs') {
     JobController::createJob();
     exit;
 }
+// REV-203: preview of the next claim stub (the real one is assigned on registration)
+if ($method === 'GET' && $route === '/jobs/next-claim-stub') {
+    if (!Auth::authenticateUser()) exit;
+    JobController::nextClaimStub();
+    exit;
+}
+
 if ($method === 'PATCH' && preg_match('#^/jobs/([^/]+)/field$#', $route, $m)) {
     JobController::updateJobField($m[1]);
     exit;

@@ -131,6 +131,13 @@ CREATE TABLE IF NOT EXISTS `jobs` (
 
 
 -- ============================================================
+-- CLAIM STUB COUNTERS (REV-203): one row per day, MMDDYY -> last customer number (J1, J2 ...)
+CREATE TABLE IF NOT EXISTS `claim_stub_counters` (
+    `stub_date`  CHAR(6) NOT NULL PRIMARY KEY,
+    `last_no`    INT NOT NULL DEFAULT 0,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- EXPRESS LANE ISSUES TABLE
 -- Tracks 2-Hour SLA Delay Reports filed by Service Advisors
 -- ============================================================

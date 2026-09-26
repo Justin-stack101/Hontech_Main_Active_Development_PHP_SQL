@@ -1,3 +1,24 @@
+## 📅 September 26, 2026 (Claim Stubs: First Come, First Served)
+
+### 🎫 Claim Stubs Assigned by the Server in Order, per Manila Day (REV-203)
+* **Objective & Context**: The user asked that claim stubs follow a strict first-come-first-served rule: MMDDYY + "J" (job) + the customer's number for that day (J1, J2, J3 ...), restarting each date. Review found duplicates (two 092626J1) and gaps (J3 without J2) because: (1) the server saved whatever stub the Studio sent, and the Studio computed "next" from its possibly stale job list; (2) the server's own generator read the highest number and added one without locking, so two simultaneous registrations could get the same number; (3) PHP runs on Europe/Berlin time, so between 00:00 and 06:00 Manila the date part was yesterday; (4) back-jobs ("Back-job" vs "Back-Job") never got a server number; (5) the Daily Intakes walk-in form previewed a different format (MMDDYY-001); (6) stubs could be edited afterwards.
+* **Core Changes Made**:
+  - `backend/controllers/JobController.php`: `claimStubDatePrefix()` (Asia/Manila); `generateStubNumber()` uses a per-day counter row (`claim_stub_counters`) with an atomic `INSERT ... ON DUPLICATE KEY UPDATE last_no = LAST_INSERT_ID(GREATEST(last_no + 1, ?))`, never below a number already used that day; `peekNextStubNumber()` / `GET /jobs/next-claim-stub` preview without reserving. On create, the client's stub is ignored and every vehicle entering the floor (status not Pending, incl. back-jobs and Studio walk-ins) is numbered; an online booking gets its number when accepted into the queue (or when handed over from the Studio). `claimStub` removed from the editable fields.
+  - `backend/index.php`, `backend/migration.php`, `database.sql`: preview route and `claim_stub_counters` table.
+  - `frontend/index.html` / `frontend/js/app.js`: the Studio Claim Stub field is read-only ("assigned in order on register"), filled from the server preview (refresh button asks the server); after registering it shows the number the server assigned, which the success message also uses; the Daily Intakes walk-in preview uses the same MMDDYYJn format; the local fallback uses the Manila date.
+  - `frontend/index.html`: Incremented cache buster to v=3.56.
+  - `tests/frontend/sla_and_logic.test.js`: Added AUT-FRONT-162; AUT-FRONT-80 and AUT-FRONT-83 updated for the server counter; added v=3.56 to multi-revision cache buster checks.
+  - `Hontech Documentation/HONTECH_QA_TEST_CHECKLIST.csv` and `.xlsx`: Added SA-79 test row.
+  - `Revisions checklist.csv`: Appended REV-203 row.
+* **Automated & Manual QA Verification**:
+  - 191 automated unit tests passing (`npm test`).
+  - Live on XAMPP + headless Chrome 11/11 (passed on repeated runs): date part is the Manila date (092626) while PHP reports Berlin time; preview 092626J4 does not reserve; six simultaneous registrations each sending "HACK1" received J4-J9 (all different, consecutive, none HACK1); the next got J10; a pending online booking had no stub and received J11 when accepted; editing a stub was refused; the Studio field is read-only, previewed J12, and a Studio registration received J12 and showed it. Test vehicles removed and today's counter restored afterwards.
+  - Existing records were not renumbered: 092626 already has two J1 and one J3 (issued before this fix); the next customer today gets J4.
+* **Cache Busting**: `js/app.js?v=3.56`.
+* **GitHub Commit Traceability**: Pending remote sync.
+
+---
+
 ## 📅 September 26, 2026 (Registered ROs No Longer Marked Carry-Over)
 
 ### 🧾 Registered ROs Are Same-Day Jobs; C.O. Field and Job Order Category Removed (REV-202)

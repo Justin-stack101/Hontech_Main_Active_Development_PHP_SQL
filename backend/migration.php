@@ -150,6 +150,10 @@ try {
     \App\Controllers\TvController::ensureTables($db);
     echo "SUCCESS: `tv_sessions`, `tv_pin_attempts`, `tv_announcements` and `tv_weather_cache` tables verified/created.\n";
 
+    // 7. REV-203: per-day claim stub counter (first come first served J1, J2, J3 ...)
+    \App\Controllers\JobController::ensureClaimStubCounterTable($db);
+    echo "SUCCESS: `claim_stub_counters` table verified/created.\n";
+
     echo "SUCCESS: Migration completed successfully!\n";
 
 } catch (Exception $e) {

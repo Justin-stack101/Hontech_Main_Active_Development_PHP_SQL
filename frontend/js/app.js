@@ -2663,19 +2663,26 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
 
         // Live claim stub preview generated local for guidance, final saved one is computed securely on the backend
+        // REV-203: claim stubs are assigned by the server in order (MMDDYY + J + customer number);
+        // these only show the next number
         function generateStubNumber() {
-            const d = new Date();
-            const mm = String(d.getMonth() + 1).padStart(2, '0');
-            const dd = String(d.getDate()).padStart(2, '0');
-            const yy = String(d.getFullYear()).slice(2);
-            const datePrefix = `${mm}${dd}${yy}`;
-            const count = allJobs.filter(j => j.claimStub && j.claimStub.startsWith(datePrefix)).length + 1;
-            return `${datePrefix}-${count.toString().padStart(3, '0')}`;
+            return generateNextStudioClaimStub();
         }
 
-        function updateStubPreview() {
+        async function fetchNextClaimStub() {
+            try {
+                const res = await apiRequest('/api/jobs/next-claim-stub');
+                if (res && res.claimStub) return res.claimStub;
+            } catch (e) { /* offline: fall back to the local estimate */ }
+            return generateNextStudioClaimStub();
+        }
+        window.fetchNextClaimStub = fetchNextClaimStub;
+
+        async function updateStubPreview() {
             const preview = document.getElementById('intake-stub-preview');
             if (preview) preview.value = generateStubNumber();
+            const next = await fetchNextClaimStub();
+            if (preview) preview.value = next;
         }
 
         function normalizeLaneType(lane) {
@@ -12767,11 +12774,10 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         window.stampStudioArrivalClock = stampStudioArrivalClock;
 
         function generateNextStudioClaimStub() {
-            const now = new Date();
-            const mm = String(now.getMonth() + 1).padStart(2, '0');
-            const dd = String(now.getDate()).padStart(2, '0');
-            const yy = String(now.getFullYear()).slice(-2);
-            const prefix = `${mm}${dd}${yy}`;
+            // REV-203: Manila date, like the server
+            const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', month: '2-digit', day: '2-digit', year: '2-digit' })
+                .formatToParts(new Date()).map(x => [x.type, x.value]));
+            const prefix = `${parts.month}${parts.day}${parts.year}`;
 
             const jobsList = Array.isArray(window.allJobs) ? window.allJobs : [];
             let maxIndex = 0;
@@ -12794,13 +12800,12 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
         }
         window.generateNextStudioClaimStub = generateNextStudioClaimStub;
 
-        function refreshStudioClaimStub() {
+        async function refreshStudioClaimStub(silent = false) {
             const stubEl = document.getElementById('f13-input-claim-stub');
-            if (stubEl) {
-                stubEl.value = generateNextStudioClaimStub();
-                if (typeof showSystemToast === 'function') {
-                    showSystemToast(`Next sequential claim stub generated: ${stubEl.value}`, 'info', 'Claim Stub Generated');
-                }
+            if (!stubEl) return;
+            stubEl.value = await fetchNextClaimStub();
+            if (!silent && typeof showSystemToast === 'function') {
+                showSystemToast(`Next claim stub: ${stubEl.value}. The number is assigned in order when you register.`, 'info', 'Claim Stub');
             }
         }
         window.refreshStudioClaimStub = refreshStudioClaimStub;
@@ -12825,6 +12830,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             const claimStubInput = document.getElementById('f13-input-claim-stub');
             if (claimStubInput && (!claimStubInput.value || claimStubInput.value === '')) {
                 claimStubInput.value = generateNextStudioClaimStub();
+                refreshStudioClaimStub(true);
             }
 
             // Default signatories
@@ -14964,10 +14970,14 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
                 if (typeof resetMonitoringArrivalToNow === 'function') resetMonitoringArrivalToNow();
 
                 const assignedJobId = createdJob?.data?.jobId || createdJob?.data?.job_id || createdJob?.jobId || customJobId || 'RO-REGISTERED';
+                // REV-203: the server assigns the claim stub in order; keep it on the form (PDF / Excel)
+                const assignedStub = createdJob?.claimStub || createdJob?.data?.claimStub || claimStub;
+                const stubField = document.getElementById('f13-input-claim-stub');
+                if (stubField && assignedStub) stubField.value = assignedStub;
                 if (isBookingHandover) {
-                    showSystemToast(`Online booking ${assignedJobId} (Stub: ${claimStub}) registered to the workshop floor and cleared from the Booking Module.`, 'success', 'Booking Handover Complete');
+                    showSystemToast(`Online booking ${assignedJobId} (Stub: ${assignedStub}) registered to the workshop floor and cleared from the Booking Module.`, 'success', 'Booking Handover Complete');
                 } else {
-                    showSystemToast(`Repair Order [${assignedJobId} / Stub: ${claimStub}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
+                    showSystemToast(`Repair Order [${assignedJobId} / Stub: ${assignedStub}] registered! Synced to MySQL, Daily Intakes Queue, TV Monitor, and Customer Lookup.`, 'success', '1-Button System Sync Complete');
                 }
 
                 // Keep SA in studio view
@@ -15003,6 +15013,7 @@ Prepared for HonTech AutoCenter IT Operations & Academic Audit.
             // Reset Monitoring Dispatch Card
             const claimStubInput = document.getElementById('f13-input-claim-stub');
             if (claimStubInput) claimStubInput.value = generateNextStudioClaimStub();
+            refreshStudioClaimStub(true);
 
             const sourceInput = document.getElementById('f13-input-source');
             if (sourceInput) sourceInput.value = 'Walk-in';
