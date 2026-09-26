@@ -15,7 +15,7 @@
   - Live on XAMPP + headless Chrome 11/11 (passed on repeated runs): date part is the Manila date (092626) while PHP reports Berlin time; preview 092626J4 does not reserve; six simultaneous registrations each sending "HACK1" received J4-J9 (all different, consecutive, none HACK1); the next got J10; a pending online booking had no stub and received J11 when accepted; editing a stub was refused; the Studio field is read-only, previewed J12, and a Studio registration received J12 and showed it. Test vehicles removed and today's counter restored afterwards.
   - Existing records were not renumbered: 092626 already has two J1 and one J3 (issued before this fix); the next customer today gets J4.
 * **Cache Busting**: `js/app.js?v=3.56`.
-* **GitHub Commit Traceability**: Pending remote sync.
+* **GitHub Commit Traceability**: Commit `651bcca` pushed to `origin/prototype_process`.
 
 ---
 
